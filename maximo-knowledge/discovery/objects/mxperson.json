@@ -1,0 +1,66 @@
+{
+  "system": "maximo",
+  "object_structure": "mxperson",
+  "resource": "person",
+  "endpoint": "/oslc/os/mxperson",
+  "primary_key": "personid",
+  "use_cases": [
+    "reporter-tracking"
+  ],
+  "relationships": [
+    "locationorg -> location/org (verified field)"
+  ],
+  "notes": [
+    "Data scoped to site BSR; always filter oslc.where=siteid=\"BSR\" in the downstream app."
+  ],
+  "verified_at": "2026-08-12T11:26:12Z",
+  "status": "verified",
+  "access": "http_200",
+  "important_fields": [
+    "personuid",
+    "firstname",
+    "plusgptwissuecounter",
+    "birthdate",
+    "plusgperperfauth",
+    "transemailelection_description",
+    "city",
+    "loctoservreq",
+    "plusgisospec",
+    "plusgsolnapprover",
+    "hiredate",
+    "plusgiscertified",
+    "plusgauditapprover",
+    "plusgmocrevapp",
+    "personid",
+    "sms_collectionref",
+    "href",
+    "plusgrcfaapprover",
+    "email_collectionref",
+    "status_description",
+    "locationorg",
+    "plusgtechauthority",
+    "plusgperareaauth",
+    "phone_collectionref",
+    "transemailelection",
+    "statusdate",
+    "statusiface",
+    "acceptingwfmail",
+    "plusgfinauthority",
+    "displayname",
+    "addressline2",
+    "addressline1",
+    "plusgperissueauth",
+    "status"
+  ],
+  "field_candidates": [
+    "personuid",
+    "personid"
+  ],
+  "pagination": {
+    "method": "oslc.paging + pageno + oslc.pageSize",
+    "single_record_via": "resource href"
+  },
+  "sample": null,
+  "catalog_source": "oslc-catalog",
+  "data_scope": "BSR (org IP)"
+}

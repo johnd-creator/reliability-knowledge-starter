@@ -1,0 +1,237 @@
+"""Mapper + sync-engine tests (fakes — no network, no DB)."""
+
+from __future__ import annotations
+
+import unittest
+import json
+from datetime import datetime, timezone
+from typing import Any, Mapping
+
+from src.adapters.maximo.mappers import equipment_from_payload, work_order_from_payload
+from src.adapters.maximo.oslc_client import oslc_boolean, oslc_number, oslc_timestamp
+from src.repositories.store import _row
+from src.services.sync import ObjectSyncConfig, SyncService
+
+SAMPLE_ASSET = {
+    "assetnum": "BSR-101",
+    "description": "Boiler Feed Pump A",
+    "location": "BSR-PLANT",
+    "siteid": "BSR",
+    "orgid": "IP",
+    "status": "OPERATING",
+    "assettype": "PUMP",
+    "isrunning": "true",  # Maximo stringifies booleans
+    "priority": "2",
+    "changedate": "2026-08-17T09:00:00Z",
+    "totdowntime": "12.5",
+}
+
+SAMPLE_WO = {
+    "wonum": "WO-2001",
+    "assetnum": "BSR-101",
+    "status": "CLOSE",
+    "worktype": "PM",
+    "changedate": "2026-08-18T01:30:00Z",
+    "actlabhrs": "3.5",
+    "istask": "false",
+    "seksi": "Operasi",
+    "bu": "Generation",
+    "jumlahhidup": "1",
+    "luasareatanam": "12.5",
+}
+
+
+class CoercionTest(unittest.TestCase):
+    def test_boolean_strings(self):
+        self.assertIs(oslc_boolean("true"), True)
+        self.assertIs(oslc_boolean("1"), True)
+        self.assertIs(oslc_boolean("false"), False)
+        self.assertIsNone(oslc_boolean(""))
+        self.assertIs(oslc_boolean(True), True)
+
+    def test_number_strings(self):
+        self.assertEqual(oslc_number("12.5"), 12.5)
+        self.assertIsNone(oslc_number("n/a"))
+
+    def test_timestamp_variants(self):
+        self.assertEqual(
+            oslc_timestamp("2026-08-17T09:00:00Z"),
+            datetime(2026, 8, 17, 9, 0, tzinfo=timezone.utc),
+        )
+        self.assertIsNone(oslc_timestamp(""))
+
+
+class MapperTest(unittest.TestCase):
+    def test_equipment_requires_primary_key(self):
+        with self.assertRaises(ValueError):
+            equipment_from_payload({"description": "missing asset number"})
+
+    def test_equipment_contract_shape(self):
+        e = equipment_from_payload(SAMPLE_ASSET)
+        self.assertEqual(e.id, "BSR-101")
+        self.assertEqual(e.status, "OPERATING")
+        self.assertIs(e.is_running, True)  # coerced from "true"
+        self.assertEqual(e.downtime_total_hours, 12.5)
+        # vendor quarantine
+        self.assertEqual(e.maximo_source.siteid, "BSR")
+        self.assertEqual(e.maximo_source.assetnum, "BSR-101")
+        self.assertTrue(type(e).__dataclass_params__.frozen)
+        row = _row(e)
+        self.assertTrue(json.dumps(row))
+        self.assertNotIn("maximo_source", row)
+        self.assertEqual(row["sources"]["maximo"]["assetnum"], "BSR-101")
+
+    def test_verified_mxapiasset_extra_fields_stay_quarantined(self):
+        e = equipment_from_payload({
+            **SAMPLE_ASSET,
+            "assettype_description": "Production Assets",
+            "plant_description": "PLTU BSR",
+            "ytdcost": "12.5",
+            "disabled": "false",
+            "href": "https://should-not-be-stored",
+            "changeby": "PERSON-1",
+        })
+        self.assertEqual(e.maximo_source.extra["assettype_description"], "Production Assets")
+        self.assertEqual(e.maximo_source.extra["ytdcost"], 12.5)
+        self.assertIs(e.maximo_source.extra["disabled"], False)
+        self.assertNotIn("href", e.maximo_source.extra)
+        self.assertNotIn("changeby", e.maximo_source.extra)
+
+    def test_work_order_contract_shape(self):
+        w = work_order_from_payload(SAMPLE_WO)
+        self.assertEqual(w.id, "WO-2001")
+        self.assertEqual(w.work_type, "PM")
+        self.assertEqual(w.actual_labor_hours, 3.5)
+        self.assertEqual(w.sources["maximo"]["wonum"], "WO-2001")
+        self.assertEqual(w.sources["maximo"]["extra"]["seksi"], "Operasi")
+        self.assertEqual(w.sources["maximo"]["extra"]["jumlahhidup"], 1.0)
+
+
+class FakeStore:
+    def __init__(self):
+        self.entities: list[tuple[str, object]] = []
+        self.cursors: dict[str, datetime | None] = {}
+        self.runs: list = []
+        self.unchanged: set[tuple[str, str, str, datetime]] = set()
+        self.status_history: list[object] = []
+
+    def get_cursor(self, scope):
+        return self.cursors.get(scope)
+
+    def set_cursor(self, scope, watermark, rows_seen):
+        self.cursors[scope] = watermark
+
+    def upsert_for(self, entity_name, entity):
+        self.entities.append((entity_name, entity))
+
+    def is_unchanged(self, entity_name, entity_id, compare_column, source_value):
+        return (entity_name, entity_id, compare_column, source_value) in self.unchanged
+
+    def record_equipment_status(self, entity):
+        self.status_history.append(entity)
+
+    def record_run(self, stats):
+        self.runs.append(stats)
+
+
+class FakeClient:
+    """Records iterate() calls; returns canned pages."""
+
+    def __init__(self, pages):
+        self.pages = pages
+        self.calls: list[dict] = []
+
+    def iterate(self, object_structure, *, where=None, required_scope=None, select=None, order_by=None, max_pages=1000):
+        self.calls.append({"os": object_structure, "where": where, "required_scope": required_scope, "order_by": order_by})
+        yield from self.pages
+
+
+class SyncEngineTest(unittest.TestCase):
+    CFG = ObjectSyncConfig(
+        object_structure="mxasset",
+        entity_name="equipment",
+        mapper=equipment_from_payload,
+        watermark_field="changedate",
+        order_by="-changedate",
+    )
+
+    def test_full_sync_first_run(self):
+        store, client = FakeStore(), FakeClient([SAMPLE_ASSET])
+        stats = SyncService(client, store).sync(self.CFG)
+        self.assertEqual(stats.mode, "full")
+        self.assertEqual(stats.upserted, 1)
+        self.assertEqual(len(store.entities), 1)
+        self.assertEqual(client.calls[0]["where"], 'siteid="BSR"')  # site scope default
+        self.assertEqual(client.calls[0]["required_scope"], 'siteid="BSR"')
+        self.assertEqual(stats.watermark, datetime(2026, 8, 17, 9, 0, tzinfo=timezone.utc))
+
+    def test_incremental_uses_watermark(self):
+        store = FakeStore()
+        store.cursors["mxasset"] = datetime(2026, 8, 17, 9, 0, tzinfo=timezone.utc)
+        client = FakeClient([])
+        stats = SyncService(client, store).sync(self.CFG)
+        self.assertEqual(stats.mode, "incremental")
+        self.assertIn("changedate >= ", client.calls[0]["where"])
+
+    def test_bad_row_skipped_not_fatal(self):
+        bad: Mapping[str, Any] = {"description": "no assetnum at all"}  # mapper ok but id=""
+        store, client = FakeStore(), FakeClient([bad, SAMPLE_ASSET])
+        # make the mapper raise for the first row
+        original = self.CFG.mapper
+
+        def flaky(member):
+            if member is bad:
+                raise ValueError("flaky")
+            return original(member)
+
+        cfg = ObjectSyncConfig(
+            object_structure="mxasset", entity_name="equipment",
+            mapper=flaky, watermark_field="changedate",
+        )
+        stats = SyncService(client, store).sync(cfg)
+        self.assertEqual(stats.rows_seen, 2)
+        self.assertEqual(stats.upserted, 1)
+        self.assertEqual(stats.skipped, 1)
+
+    def test_no_watermark_object_always_full(self):
+        cfg = ObjectSyncConfig(
+            object_structure="mxapilabor", entity_name="labor",
+            mapper=lambda m: None, watermark_field=None,
+        )
+        store = FakeStore()
+        store.cursors["mxapilabor"] = datetime(2026, 1, 1, tzinfo=timezone.utc)
+        client = FakeClient([])
+        stats = SyncService(client, store).sync(cfg)
+        self.assertEqual(stats.mode, "full")  # labor has no watermark by design
+        self.assertNotIn("changedate", client.calls[0]["where"])
+
+    def test_unchanged_row_is_skipped(self):
+        store = FakeStore()
+        changed = datetime(2026, 8, 17, 9, 0, tzinfo=timezone.utc)
+        store.unchanged.add(("equipment", "BSR-101", "source_changed_at", changed))
+        client = FakeClient([SAMPLE_ASSET])
+        stats = SyncService(client, store).sync(self.CFG)
+        self.assertEqual(stats.upserted, 0)
+        self.assertEqual(stats.skipped, 1)
+        self.assertEqual(store.entities, [])
+
+    def test_custom_scope_is_forwarded(self):
+        store, client = FakeStore(), FakeClient([])
+        cfg = ObjectSyncConfig(
+            object_structure="mxapilabor", entity_name="labor",
+            mapper=lambda m: None, watermark_field=None,
+            scope_clause='worksite="BSR"', compare_column=None,
+        )
+        SyncService(client, store).sync(cfg)
+        self.assertEqual(client.calls[0]["where"], 'worksite="BSR"')
+        self.assertEqual(client.calls[0]["required_scope"], 'worksite="BSR"')
+
+    def test_run_logged(self):
+        store, client = FakeStore(), FakeClient([SAMPLE_ASSET])
+        SyncService(client, store).sync(self.CFG)
+        self.assertEqual(len(store.runs), 1)
+        self.assertIsNotNone(store.runs[0].finished_at)
+
+
+if __name__ == "__main__":
+    unittest.main()

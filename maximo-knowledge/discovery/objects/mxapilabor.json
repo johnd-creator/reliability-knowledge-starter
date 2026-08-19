@@ -1,0 +1,48 @@
+{
+  "system": "maximo",
+  "object_structure": "mxapilabor",
+  "resource": "labor",
+  "endpoint": "/oslc/os/mxapilabor",
+  "primary_key": "laborcode",
+  "use_cases": [
+    "work-order-resource-analysis"
+  ],
+  "relationships": [
+    "personid -> person (foreign key to MXPERSON; verified field)"
+  ],
+  "notes": [
+    "Data scoped to site BSR; always filter oslc.where=siteid=\"BSR\" in the downstream app."
+  ],
+  "verified_at": "2026-08-12T11:26:12Z",
+  "status": "verified",
+  "access": "http_200",
+  "important_fields": [
+    "status_description",
+    "ytdothrs",
+    "laborid",
+    "reportedhrs",
+    "orgid",
+    "laborcode",
+    "lbsdatafromwo",
+    "worksite",
+    "assigned",
+    "personid",
+    "href",
+    "ytdhrsrefused",
+    "availfactor",
+    "status"
+  ],
+  "field_candidates": [
+    "laborid",
+    "orgid",
+    "laborcode",
+    "personid"
+  ],
+  "pagination": {
+    "method": "oslc.paging + pageno + oslc.pageSize",
+    "single_record_via": "resource href"
+  },
+  "sample": null,
+  "catalog_source": "oslc-catalog",
+  "data_scope": "BSR (org IP)"
+}

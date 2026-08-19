@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Maximo Endpoint Knowledge",
+  "type": "object",
+  "required": [
+    "resource",
+    "endpoint",
+    "method",
+    "status"
+  ],
+  "properties": {
+    "resource": {
+      "type": "string"
+    },
+    "endpoint": {
+      "type": "string"
+    },
+    "method": {
+      "enum": [
+        "GET",
+        "HEAD",
+        "OPTIONS"
+      ]
+    },
+    "status": {
+      "enum": [
+        "unknown",
+        "documented",
+        "verified",
+        "forbidden",
+        "deprecated"
+      ]
+    },
+    "access": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "parameters": {
+      "type": "array"
+    },
+    "important_fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "relationships": {
+      "type": "array"
+    },
+    "use_cases": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "verified_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

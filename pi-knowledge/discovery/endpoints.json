@@ -1,0 +1,473 @@
+{
+ "system": "pi",
+ "source": "documented (public OSIsoft PI Web API surface)",
+ "instance_verified": true,
+ "generated_at": "2026-08-18T04:40:00+00:00",
+ "resources": [
+  {
+   "system": "pi",
+   "resource": "system",
+   "endpoint": "/",
+   "method": "GET",
+   "status": "documented",
+   "access": "unknown",
+   "description": "PI Web API root: links to top-level collections (dataservers, assetdatabases, ...).",
+   "parameters": [],
+   "important_fields": [
+    "Links"
+   ],
+   "relationships": [
+    "dataservers",
+    "assetdatabases"
+   ],
+   "use_cases": [
+    "reachability-check",
+    "link-discovery"
+   ],
+   "notes": [
+    "Use as the first reachability probe in --probe-system."
+   ],
+   "verified_at": null
+  },
+  {
+   "system": "pi",
+   "resource": "dataservers",
+   "endpoint": "/dataservers",
+   "method": "GET",
+   "status": "documented",
+   "access": "unknown",
+   "description": "List PI Data Archive servers known to the Web API.",
+   "parameters": [
+    {
+     "name": "search",
+     "required": false
+    }
+   ],
+   "important_fields": [
+    "Name",
+    "WebId",
+    "ServerVersion",
+    "IsConnected",
+    "Links"
+   ],
+   "relationships": [
+    "points"
+   ],
+   "use_cases": [
+    "server-inventory"
+   ],
+   "notes": [
+    "Server WebId feeds /dataservers/{webId}/points."
+   ],
+   "verified_at": null
+  },
+  {
+   "system": "pi",
+   "resource": "points",
+   "endpoint": "/dataservers/{webId}/points",
+   "method": "GET",
+   "status": "documented",
+   "access": "unknown",
+   "description": "List PI Points on a data server (paginated by MaxCount).",
+   "parameters": [
+    {
+     "name": "webId",
+     "required": true,
+     "in": "path"
+    },
+    {
+     "name": "nameFilter",
+     "required": false
+    },
+    {
+     "name": "maxCount",
+     "required": false
+    },
+    {
+     "name": "startIndex",
+     "required": false
+    }
+   ],
+   "important_fields": [
+    "Name",
+    "WebId",
+    "PointType",
+    "Units",
+    "Descriptor",
+    "Links"
+   ],
+   "relationships": [
+    "streams"
+   ],
+   "use_cases": [
+    "point-catalog",
+    "tag-mapping"
+   ],
+   "notes": [
+    "Do NOT brute-force WebIds or tag names (AGENTS rule 4).",
+    "Record Units and PointType whenever a point is discovered (AGENTS rule 9)."
+   ],
+   "verified_at": null
+  },
+  {
+   "system": "pi",
+   "resource": "point-by-path",
+   "endpoint": "/points",
+   "method": "GET",
+   "status": "documented",
+   "access": "unknown",
+   "description": "Resolve a single point by its canonical path (\\\\server\\tag).",
+   "parameters": [
+    {
+     "name": "path",
+     "required": true
+    }
+   ],
+   "important_fields": [
+    "Name",
+    "WebId",
+    "Units",
+    "PointType"
+   ],
+   "relationships": [
+    "streams"
+   ],
+   "use_cases": [
+    "tag-lookup"
+   ],
+   "notes": [
+    "Use only for tags whose names are already authorized/known."
+   ],
+   "verified_at": null
+  },
+  {
+   "system": "pi",
+   "resource": "stream-value",
+   "endpoint": "/streams/{webId}/value",
+   "method": "GET",
+   "status": "verified",
+   "access": "http_200",
+   "description": "Current (snapshot) value of a stream.",
+   "parameters": [
+    {
+     "name": "webId",
+     "required": true,
+     "in": "path"
+    }
+   ],
+   "important_fields": [
+    "Value",
+    "Units",
+    "Timestamp",
+    "Good",
+    "IsSubstituted"
+   ],
+   "relationships": [
+    "points"
+   ],
+   "use_cases": [
+    "live-indicator",
+    "running-status"
+   ],
+   "notes": [
+    "Snapshot only; not history. Record Units + data type."
+   ],
+   "verified_at": "2026-08-18T04:40:00+00:00"
+  },
+  {
+   "system": "pi",
+   "resource": "stream-recorded",
+   "endpoint": "/streams/{webId}/recorded",
+   "method": "GET",
+   "status": "verified",
+   "access": "http_200",
+   "description": "Recorded (raw archive) values for a stream within a time range.",
+   "parameters": [
+    {
+     "name": "webId",
+     "required": true,
+     "in": "path"
+    },
+    {
+     "name": "startTime",
+     "required": false
+    },
+    {
+     "name": "endTime",
+     "required": false
+    },
+    {
+     "name": "maxCount",
+     "required": false
+    }
+   ],
+   "important_fields": [
+    "Items[].Value",
+    "Items[].Timestamp",
+    "Items[].Good"
+   ],
+   "relationships": [
+    "points"
+   ],
+   "use_cases": [
+    "history",
+    "trend-analysis"
+   ],
+   "notes": [
+    "Prefer bounded time ranges to respect rate limits."
+   ],
+   "verified_at": "2026-08-18T04:40:00+00:00"
+  },
+  {
+   "system": "pi",
+   "resource": "stream-interpolated",
+   "endpoint": "/streams/{webId}/interpolated",
+   "method": "GET",
+   "status": "verified",
+   "access": "http_200",
+   "description": "Interpolated values at regular intervals for a stream.",
+   "parameters": [
+    {
+     "name": "webId",
+     "required": true,
+     "in": "path"
+    },
+    {
+     "name": "startTime",
+     "required": false
+    },
+    {
+     "name": "endTime",
+     "required": false
+    },
+    {
+     "name": "interval",
+     "required": false
+    }
+   ],
+   "important_fields": [
+    "Items[].Value",
+    "Items[].Timestamp"
+   ],
+   "relationships": [
+    "points"
+   ],
+   "use_cases": [
+    "aligned-history",
+    "kpi-window"
+   ],
+   "notes": [
+    "Useful for fixed-window reliability KPIs."
+   ],
+   "verified_at": "2026-08-18T04:40:00+00:00"
+  },
+  {
+   "system": "pi",
+   "resource": "assetdatabases",
+   "endpoint": "/assetdatabases",
+   "method": "GET",
+   "status": "documented",
+   "access": "unknown",
+   "description": "List AF (Asset Framework) databases.",
+   "parameters": [],
+   "important_fields": [
+    "Name",
+    "WebId",
+    "Links"
+   ],
+   "relationships": [
+    "elements"
+   ],
+   "use_cases": [
+    "af-navigation"
+   ],
+   "notes": [
+    "Entry point for AF element/attribute hierarchy."
+   ],
+   "verified_at": null
+  },
+  {
+   "system": "pi",
+   "resource": "elements",
+   "endpoint": "/elements/{webId}/elements",
+   "method": "GET",
+   "status": "documented",
+   "access": "unknown",
+   "description": "Child elements of an AF element (hierarchy navigation).",
+   "parameters": [
+    {
+     "name": "webId",
+     "required": true,
+     "in": "path"
+    }
+   ],
+   "important_fields": [
+    "Name",
+    "WebId",
+    "Links"
+   ],
+   "relationships": [
+    "attributes",
+    "elements"
+   ],
+   "use_cases": [
+    "asset-hierarchy"
+   ],
+   "notes": [
+    "Walk to map AF elements to Maximo assets."
+   ],
+   "verified_at": null
+  },
+  {
+   "system": "pi",
+   "resource": "attributes",
+   "endpoint": "/elements/{webId}/attributes",
+   "method": "GET",
+   "status": "documented",
+   "access": "unknown",
+   "description": "Attributes of an AF element (measurements / properties).",
+   "parameters": [
+    {
+     "name": "webId",
+     "required": true,
+     "in": "path"
+    }
+   ],
+   "important_fields": [
+    "Name",
+    "WebId",
+    "Type",
+    "DefaultUnitsName",
+    "Links"
+   ],
+   "relationships": [
+    "streams"
+   ],
+   "use_cases": [
+    "condition-monitoring",
+    "bearing-temp",
+    "vibration",
+    "mw"
+   ],
+   "notes": [
+    "Record Type + DefaultUnitsName with every attribute (AGENTS rule 9)."
+   ],
+   "verified_at": null
+  },
+  {
+   "system": "pi",
+   "resource": "stream-plot",
+   "endpoint": "/streams/{webId}/plot",
+   "method": "GET",
+   "status": "verified",
+   "access": "http_200",
+   "description": "Sampled plot series for a time range (few points, fast rendering).",
+   "parameters": [],
+   "important_fields": [],
+   "relationships": [
+    "streams"
+   ],
+   "use_cases": [],
+   "notes": [
+    "Useful for lightweight charts; fewer points than interpolated."
+   ],
+   "verified_at": "2026-08-18T04:40:00+00:00"
+  },
+  {
+   "system": "pi",
+   "resource": "stream-end",
+   "endpoint": "/streams/{webId}/end",
+   "method": "GET",
+   "status": "verified",
+   "access": "http_200",
+   "description": "End-of-stream value of a stream.",
+   "parameters": [],
+   "important_fields": [],
+   "relationships": [
+    "streams"
+   ],
+   "use_cases": [],
+   "notes": [
+    "For String attrs the end value is the string itself (e.g. KKS code)."
+   ],
+   "verified_at": "2026-08-18T04:40:00+00:00"
+  },
+  {
+   "system": "pi",
+   "resource": "streamsets-value",
+   "endpoint": "/streamsets/{webId}/value",
+   "method": "GET",
+   "status": "verified",
+   "access": "http_200_empty",
+   "description": "Multi-stream snapshot reads.",
+   "parameters": [],
+   "important_fields": [],
+   "relationships": [
+    "streams"
+   ],
+   "use_cases": [],
+   "notes": [
+    "Instance returns Items=[] for String and Double attributes \u2014 unusable; keep per-stream /streams calls."
+   ],
+   "verified_at": "2026-08-18T04:40:00+00:00"
+  },
+  {
+   "system": "pi",
+   "resource": "batch",
+   "endpoint": "/batch",
+   "method": "GET",
+   "status": "forbidden",
+   "access": "http_405_get_post_only",
+   "description": "JSON batch controller (multiple operations in one request).",
+   "parameters": [],
+   "important_fields": [],
+   "relationships": [
+    "streams"
+   ],
+   "use_cases": [],
+   "notes": [
+    "POST-only (GET -> 405). POST is outside the read-only boundary \u2014 never use."
+   ],
+   "verified_at": "2026-08-18T04:40:00+00:00"
+  },
+  {
+   "system": "pi",
+   "resource": "system-versions",
+   "endpoint": "/system/versions",
+   "method": "GET",
+   "status": "verified",
+   "access": "http_200",
+   "description": "Installed PI Web API plugin versions.",
+   "parameters": [],
+   "important_fields": [],
+   "relationships": [
+    "streams"
+   ],
+   "use_cases": [],
+   "notes": [
+    "REST 1.19.x; OMF write plugin present."
+   ],
+   "verified_at": "2026-08-18T04:40:00+00:00"
+  },
+  {
+   "system": "pi",
+   "resource": "system-status",
+   "endpoint": "/system/status",
+   "method": "GET",
+   "status": "forbidden",
+   "access": "http_401",
+   "description": "Server health status.",
+   "parameters": [],
+   "important_fields": [],
+   "relationships": [
+    "streams"
+   ],
+   "use_cases": [],
+   "notes": [
+    "Current account lacks permission."
+   ],
+   "verified_at": "2026-08-18T04:40:00+00:00"
+  }
+ ],
+ "instructions": "All entries are status=documented. After an authorized --execute probe, flip matching entries to verified (or forbidden) and fill verified_at."
+}

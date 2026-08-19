@@ -1,0 +1,219 @@
+{
+  "system": "pi",
+  "scope": "BSR1 reliability key parameters",
+  "status": "verified",
+  "verified_at": "2026-08-14T04:42:26+00:00",
+  "samples": [
+    {
+      "element_path": "BSR > BSR1 > Boiler System > BSR1.Pulverizer > BSR1.Pulverizer A",
+      "attribute": "Gearbox Bearing Temperature",
+      "units": "degree Celsius",
+      "type": "Double",
+      "snapshot_value": null,
+      "snapshot_good": null,
+      "snapshot_units_abbr": null,
+      "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0QLcIwncUU7hG40gBQVrgiewVD16UWpqMlM3_ZUa0Lu8fwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5QVUxWRVJJWkVSXEJTUjEuUFVMVkVSSVpFUiBBfEdFQVJCT1ggQkVBUklORyBURU1QRVJBVFVSRQ"
+    },
+    {
+      "element_path": "BSR > BSR1 > Boiler System > BSR1.Pulverizer > BSR1.Pulverizer A",
+      "attribute": "Motor Inboard Bearing Temperature",
+      "units": "degree Celsius",
+      "type": "Double",
+      "snapshot_value": null,
+      "snapshot_good": null,
+      "snapshot_units_abbr": null,
+      "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0QLcIwncUU7hG40gBQVrgiewvFz_SWGN4lI2jDE9I1IegQUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5QVUxWRVJJWkVSXEJTUjEuUFVMVkVSSVpFUiBBfE1PVE9SIElOQk9BUkQgQkVBUklORyBURU1QRVJBVFVSRQ"
+    },
+    {
+      "element_path": "BSR > BSR1 > Boiler System > BSR1.Pulverizer > BSR1.Pulverizer A",
+      "attribute": "Motor Outboard Bearing Temperature",
+      "units": "degree Celsius",
+      "type": "Double",
+      "snapshot_value": null,
+      "snapshot_good": null,
+      "snapshot_units_abbr": null,
+      "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0QLcIwncUU7hG40gBQVrgiewJdp6zAb32lQ8JLiQpMeR4AUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5QVUxWRVJJWkVSXEJTUjEuUFVMVkVSSVpFUiBBfE1PVE9SIE9VVEJPQVJEIEJFQVJJTkcgVEVNUEVSQVRVUkU"
+    },
+    {
+      "element_path": "BSR > BSR1 > Boiler System > BSR1.Pulverizer > BSR1.Pulverizer B",
+      "attribute": "Gearbox Bearing Temperature",
+      "units": "degree Celsius",
+      "type": "Double",
+      "snapshot_value": null,
+      "snapshot_good": null,
+      "snapshot_units_abbr": null,
+      "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0QMMIwncUU7hG40gBQVrgiewST16UWpqMlM3_ZUa0Lu8fwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5QVUxWRVJJWkVSXEJTUjEuUFVMVkVSSVpFUiBCfEdFQVJCT1ggQkVBUklORyBURU1QRVJBVFVSRQ"
+    },
+    {
+      "element_path": "BSR > BSR1 > Boiler System > BSR1.Pulverizer > BSR1.Pulverizer B",
+      "attribute": "Motor Inboard Bearing Temperature",
+      "units": "degree Celsius",
+      "type": "Double",
+      "snapshot_value": null,
+      "snapshot_good": null,
+      "snapshot_units_abbr": null,
+      "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0QMMIwncUU7hG40gBQVrgiewoVz_SWGN4lI2jDE9I1IegQUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5QVUxWRVJJWkVSXEJTUjEuUFVMVkVSSVpFUiBCfE1PVE9SIElOQk9BUkQgQkVBUklORyBURU1QRVJBVFVSRQ"
+    },
+    {
+      "element_path": "BSR > BSR1 > Boiler System > BSR1.Pulverizer > BSR1.Pulverizer B",
+      "attribute": "Motor Outboard Bearing Temperature",
+      "units": "degree Celsius",
+      "type": "Double",
+      "snapshot_value": null,
+      "snapshot_good": null,
+      "snapshot_units_abbr": null,
+      "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0QMMIwncUU7hG40gBQVrgiewONp6zAb32lQ8JLiQpMeR4AUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5QVUxWRVJJWkVSXEJTUjEuUFVMVkVSSVpFUiBCfE1PVE9SIE9VVEJPQVJEIEJFQVJJTkcgVEVNUEVSQVRVUkU"
+    },
+    {
+      "element_path": "BSR > BSR1 > Boiler System > BSR1.Pulverizer > BSR1.Pulverizer C",
+      "attribute": "Gearbox Bearing Temperature",
+      "units": "degree Celsius",
+      "type": "Double",
+      "snapshot_value": null,
+      "snapshot_good": null,
+      "snapshot_units_abbr": null,
+      "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0QM8IwncUU7hG40gBQVrgiewSj16UWpqMlM3_ZUa0Lu8fwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5QVUxWRVJJWkVSXEJTUjEuUFVMVkVSSVpFUiBDfEdFQVJCT1ggQkVBUklORyBURU1QRVJBVFVSRQ"
+    },
+    {
+      "element_path": "BSR > BSR1 > Boiler System > BSR1.Pulverizer > BSR1.Pulverizer C",
+      "attribute": "Motor Inboard Bearing Temperature",
+      "units": "degree Celsius",
+      "type": "Double",
+      "snapshot_value": null,
+      "snapshot_good": null,
+      "snapshot_units_abbr": null,
+      "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0QM8IwncUU7hG40gBQVrgiewolz_SWGN4lI2jDE9I1IegQUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5QVUxWRVJJWkVSXEJTUjEuUFVMVkVSSVpFUiBDfE1PVE9SIElOQk9BUkQgQkVBUklORyBURU1QRVJBVFVSRQ"
+    },
+    {
+      "element_path": "BSR > BSR1 > Turbine System > BSR1.Turbine",
+      "attribute": "Bearing 1X Vibration",
+      "units": "Micrometer",
+      "type": "Double",
+      "snapshot_value": 51.494140625,
+      "snapshot_good": true,
+      "snapshot_units_abbr": "Micron",
+      "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0QVMIwncUU7hG40gBQVrgiewQmx8DnTyklsYjN_QxTEBFgUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXFRVUkJJTkUgU1lTVEVNXEJTUjEuVFVSQklORXxCRUFSSU5HIDFYIFZJQlJBVElPTg"
+    },
+    {
+      "element_path": "BSR > BSR1 > Turbine System > BSR1.Turbine",
+      "attribute": "Bearing 1X Vibration Prediction",
+      "units": "Micrometer",
+      "type": "Double",
+      "snapshot_value": 51.16685485839844,
+      "snapshot_good": true,
+      "snapshot_units_abbr": "Micron",
+      "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0QVMIwncUU7hG40gBQVrgiewdWkSfOamDVE_N9PUx7j4LgUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXFRVUkJJTkUgU1lTVEVNXEJTUjEuVFVSQklORXxCRUFSSU5HIDFYIFZJQlJBVElPTiBQUkVESUNUSU9O"
+    },
+    {
+      "element_path": "BSR > BSR1 > Turbine System > BSR1.Turbine",
+      "attribute": "Bearing 2X Vibration",
+      "units": "Micrometer",
+      "type": "Double",
+      "snapshot_value": 62.548828125,
+      "snapshot_good": true,
+      "snapshot_units_abbr": "Micron",
+      "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0QVMIwncUU7hG40gBQVrgieweb88oI7APVghxOTlBBULaQUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXFRVUkJJTkUgU1lTVEVNXEJTUjEuVFVSQklORXxCRUFSSU5HIDJYIFZJQlJBVElPTg"
+    },
+    {
+      "element_path": "BSR > BSR1 > Turbine System > BSR1.Turbine",
+      "attribute": "Bearing 2X Vibration Prediction",
+      "units": "Micrometer",
+      "type": "Double",
+      "snapshot_value": null,
+      "snapshot_good": null,
+      "snapshot_units_abbr": null,
+      "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0QVMIwncUU7hG40gBQVrgiewtnSCSh-d4lgRadrxVGpUVAUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXFRVUkJJTkUgU1lTVEVNXEJTUjEuVFVSQklORXxCRUFSSU5HIDJYIFZJQlJBVElPTiBQUkVESUNUSU9O"
+    },
+    {
+      "element_path": "BSR > BSR1 > NPHR > NPHR",
+      "attribute": "BSR1.Generator Gross Capacity rev",
+      "units": "",
+      "type": "Single",
+      "snapshot_value": 524.9414,
+      "snapshot_good": true,
+      "snapshot_units_abbr": "",
+      "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0Q7YPF5SIn8BG2wmz22qNNYw_CGbYoXCjketT7ShHsX7lQUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXE5QSFJ8QlNSMS5HRU5FUkFUT1IgR1JPU1MgQ0FQQUNJVFkgUkVW"
+    },
+    {
+      "element_path": "BSR > BSR1 > Turbine System > BSR1.Turbine",
+      "attribute": "Generator Net Capacity",
+      "units": "megawatt",
+      "type": "Double",
+      "snapshot_value": 498.544921875,
+      "snapshot_good": true,
+      "snapshot_units_abbr": "MW",
+      "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0QVMIwncUU7hG40gBQVrgiew4RAWw8TCUFQvweY4BQ_z0wUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXFRVUkJJTkUgU1lTVEVNXEJTUjEuVFVSQklORXxHRU5FUkFUT1IgTkVUIENBUEFDSVRZ"
+    },
+    {
+      "element_path": "BSR > BSR1 > NPHR > NPHR",
+      "attribute": "Aux Load Calculated",
+      "units": "",
+      "type": "Double",
+      "snapshot_value": null,
+      "snapshot_good": null,
+      "snapshot_units_abbr": null,
+      "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0Q7YPF5SIn8BG2wmz22qNNYwFmK4Web6yU-i0IQ1q2H_CwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXE5QSFJ8QVVYIExPQUQgQ0FMQ1VMQVRFRA"
+    },
+    {
+      "element_path": "BSR > BSR1 > NPHR > NPHR",
+      "attribute": "Net Load Calculated",
+      "units": "",
+      "type": "Double",
+      "snapshot_value": null,
+      "snapshot_good": null,
+      "snapshot_units_abbr": null,
+      "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0Q7YPF5SIn8BG2wmz22qNNYwO7tP7qZK-EecUVGJfWU3UQUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXE5QSFJ8TkVUIExPQUQgQ0FMQ1VMQVRFRA"
+    },
+    {
+      "element_path": "BSR > BSR1 > NPHR > NPHR",
+      "attribute": "BSR.MAIN STEAM FLOW",
+      "units": "",
+      "type": "Single",
+      "snapshot_value": 1690.9541,
+      "snapshot_good": true,
+      "snapshot_units_abbr": "",
+      "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0Q7YPF5SIn8BG2wmz22qNNYwQcZIKixDvEOVd8zrs7IQtwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXE5QSFJ8QlNSLk1BSU4gU1RFQU0gRkxPVw"
+    },
+    {
+      "element_path": "BSR > BSR1 > NPHR > NPHR",
+      "attribute": "BSR.MAIN STEAM HEAD PRE1",
+      "units": "",
+      "type": "Single",
+      "snapshot_value": 14.13916,
+      "snapshot_good": true,
+      "snapshot_units_abbr": "",
+      "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0Q7YPF5SIn8BG2wmz22qNNYwVRtzg5jQDkywoHATTBakEgUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXE5QSFJ8QlNSLk1BSU4gU1RFQU0gSEVBRCBQUkUx"
+    },
+    {
+      "element_path": "BSR > BSR1 > Turbine System > BSR1.Turbine",
+      "attribute": "Speed",
+      "units": "revolution per minute",
+      "type": "Double",
+      "snapshot_value": 3002.946533203125,
+      "snapshot_good": true,
+      "snapshot_units_abbr": "rpm",
+      "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0QVMIwncUU7hG40gBQVrgiewRFjw4PNV81UKQq1PCBKxwwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXFRVUkJJTkUgU1lTVEVNXEJTUjEuVFVSQklORXxTUEVFRA"
+    },
+    {
+      "element_path": "BSR > BSR1 > Turbine System > BSR1.Turbine",
+      "attribute": "Axial Displacement 1",
+      "units": "",
+      "type": "Double",
+      "snapshot_value": 0.2858593165874481,
+      "snapshot_good": true,
+      "snapshot_units_abbr": "",
+      "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0QVMIwncUU7hG40gBQVrgiewDJxXVH_sJFIgmguYNMn5LgUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXFRVUkJJTkUgU1lTVEVNXEJTUjEuVFVSQklORXxBWElBTCBESVNQTEFDRU1FTlQgMQ"
+    },
+    {
+      "element_path": "BSR > BSR1 > Turbine System > BSR1.Turbine",
+      "attribute": "Axial Displacement 2",
+      "units": "",
+      "type": "Double",
+      "snapshot_value": 0.31078121066093445,
+      "snapshot_good": true,
+      "snapshot_units_abbr": "",
+      "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0QVMIwncUU7hG40gBQVrgiewZnkThIzOqVUvi0ZLWAbvSgUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXFRVUkJJTkUgU1lTVEVNXEJTUjEuVFVSQklORXxBWElBTCBESVNQTEFDRU1FTlQgMg"
+    }
+  ],
+  "count": 21
+}

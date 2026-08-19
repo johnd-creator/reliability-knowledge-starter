@@ -1,0 +1,23 @@
+{
+  "system": "maximo",
+  "object_structure": "mxapimeter",
+  "resource": "meter",
+  "endpoint": "/oslc/os/mxapimeter",
+  "primary_key": "metername",
+  "use_cases": [
+    "condition-monitoring"
+  ],
+  "relationships": [],
+  "notes": [
+    "READ action not allowed for this account (BMXAA0024E). Field list pending read-enabled credential."
+  ],
+  "verified_at": null,
+  "status": "forbidden",
+  "access": "http_400",
+  "important_fields": [],
+  "field_candidates": [],
+  "pagination": {},
+  "sample": null,
+  "catalog_source": "oas-documented",
+  "data_scope": "BSR (org IP)"
+}

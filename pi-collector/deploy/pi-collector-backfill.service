@@ -1,0 +1,19 @@
+[Unit]
+Description=PI Collector — nightly recorded backfill (off-hours only)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+# Adjust paths to your install location
+User=picollector
+WorkingDirectory=/opt/pi-collector
+EnvironmentFile=/opt/pi-collector/.env
+ExecStart=/opt/pi-collector/.venv/bin/picollector backfill-recorded --start "2024-01-01T00:00:00Z" --end "*"
+# Safety nets on top of the in-app circuit breaker:
+TimeoutStartSec=8h
+# Hard memory cap
+MemoryMax=1G
+# Re-raise if the app aborted due to circuit breaker (exit 1) — journald keeps
+# the output; the next timer run resumes from where it stopped (idempotent upserts)
+SuccessExitStatus=0 1

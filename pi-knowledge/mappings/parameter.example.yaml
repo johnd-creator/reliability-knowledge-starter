@@ -1,0 +1,21 @@
+business_name: BSR1 Turbine Bearing 1 Left Temperature
+equipment: BSR1.Turbine
+parameter: bearing_temperature
+position: bearing_1_left
+unit: degree Celsius
+status: verified
+
+source:
+  system: pi
+  asset_server: PIAF
+  af_database: Indonesia Power Corporate
+  element_path: "\\PIAF\Indonesia Power Corporate\BSR\BSR1\Turbine System\BSR1.Turbine"
+  attribute: Bearing 1 Left Temperature
+  web_id: "<verified — see discovery/attributes.json>"
+
+reliability_use:
+  - condition_monitoring
+  - bearing_health
+  - anomaly_detection
+
+verified_at: "2026-08-14T04:30:00+00:00"

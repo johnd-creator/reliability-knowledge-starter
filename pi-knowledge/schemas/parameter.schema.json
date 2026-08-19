@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PI Reliability Parameter",
+  "type": "object",
+  "required": [
+    "business_name",
+    "equipment",
+    "parameter",
+    "status"
+  ],
+  "properties": {
+    "business_name": {
+      "type": "string"
+    },
+    "equipment": {
+      "type": "string"
+    },
+    "parameter": {
+      "type": "string"
+    },
+    "position": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "unit": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "status": {
+      "enum": [
+        "unknown",
+        "documented",
+        "verified",
+        "broken",
+        "deprecated"
+      ]
+    },
+    "stream_status": {
+      "enum": [
+        "ok",
+        "gone",
+        "error",
+        "unknown"
+      ],
+      "description": "Result of GET /streams/{webId}/value verification. gone = referenced PI Point deleted (HTTP 410)."
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "tag": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "web_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "attribute_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "reliability_use": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

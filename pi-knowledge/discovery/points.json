@@ -1,0 +1,313 @@
+{
+  "system": "pi",
+  "endpoint": "/dataservers/{webId}/points",
+  "server": "PI1",
+  "name_filter": "*BEARING*",
+  "access": "http_200",
+  "status": "verified",
+  "verified_at": "2026-08-14T04:26:20+00:00",
+  "points": [
+    {
+      "name": "ADP.7X SHAFT VIB BEARING 7 MAIN TURBINE",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBA_SwAAAUEkxXEFEUC43WCBTSEFGVCBWSUIgQkVBUklORyA3IE1BSU4gVFVSQklORQ",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "No.7 Bearing Vib X",
+      "path": "\\\\PI1\\ADP.7X SHAFT VIB BEARING 7 MAIN TURBINE",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP.7Y SHAFT VIB BEARING 7 MAIN TURBINE",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBA_iwAAAUEkxXEFEUC43WSBTSEFGVCBWSUIgQkVBUklORyA3IE1BSU4gVFVSQklORQ",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "No.7 Bearing Vib Y",
+      "path": "\\\\PI1\\ADP.7Y SHAFT VIB BEARING 7 MAIN TURBINE",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP.8X SHAFT VIB BEARING 8 MAIN TURBINE",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBA_ywAAAUEkxXEFEUC44WCBTSEFGVCBWSUIgQkVBUklORyA4IE1BSU4gVFVSQklORQ",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "No.8 Bearing Vib X",
+      "path": "\\\\PI1\\ADP.8X SHAFT VIB BEARING 8 MAIN TURBINE",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP.8Y SHAFT VIB BEARING 8 MAIN TURBINE",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBAAC0AAAUEkxXEFEUC44WSBTSEFGVCBWSUIgQkVBUklORyA4IE1BSU4gVFVSQklORQ",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "No.8 Bearing Vib Y",
+      "path": "\\\\PI1\\ADP.8Y SHAFT VIB BEARING 8 MAIN TURBINE",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP.9X SHAFT VIB BEARING 9 MAIN TURBINE",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBAAS0AAAUEkxXEFEUC45WCBTSEFGVCBWSUIgQkVBUklORyA5IE1BSU4gVFVSQklORQ",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "No.9 Bearing Vib X",
+      "path": "\\\\PI1\\ADP.9X SHAFT VIB BEARING 9 MAIN TURBINE",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP.9Y SHAFT VIB BEARING 9 MAIN TURBINE",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBAAi0AAAUEkxXEFEUC45WSBTSEFGVCBWSUIgQkVBUklORyA5IE1BSU4gVFVSQklORQ",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "No.9 Bearing Vib Y",
+      "path": "\\\\PI1\\ADP.9Y SHAFT VIB BEARING 9 MAIN TURBINE",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP.COVER VIB BEARING 1 MAIN TURBINE",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBAAy0AAAUEkxXEFEUC5DT1ZFUiBWSUIgQkVBUklORyAxIE1BSU4gVFVSQklORQ",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "Rotor Vibration bearing #1 Absolute",
+      "path": "\\\\PI1\\ADP.COVER VIB BEARING 1 MAIN TURBINE",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP.COVER VIB BEARING 2 MAIN TURBINE",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBABC0AAAUEkxXEFEUC5DT1ZFUiBWSUIgQkVBUklORyAyIE1BSU4gVFVSQklORQ",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "Rotor Vibration bearing #2 Absolute",
+      "path": "\\\\PI1\\ADP.COVER VIB BEARING 2 MAIN TURBINE",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP.COVER VIB BEARING 3 MAIN TURBINE",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBABS0AAAUEkxXEFEUC5DT1ZFUiBWSUIgQkVBUklORyAzIE1BSU4gVFVSQklORQ",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "Rotor Vibration bearing #3 Absolute",
+      "path": "\\\\PI1\\ADP.COVER VIB BEARING 3 MAIN TURBINE",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP.COVER VIB BEARING 4 MAIN TURBINE",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBABi0AAAUEkxXEFEUC5DT1ZFUiBWSUIgQkVBUklORyA0IE1BSU4gVFVSQklORQ",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "Rotor Vibration bearing #4 Absolute",
+      "path": "\\\\PI1\\ADP.COVER VIB BEARING 4 MAIN TURBINE",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP.COVER VIB BEARING 5 MAIN TURBINE",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBABy0AAAUEkxXEFEUC5DT1ZFUiBWSUIgQkVBUklORyA1IE1BSU4gVFVSQklORQ",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "Rotor Vibration bearing #5 Absolute",
+      "path": "\\\\PI1\\ADP.COVER VIB BEARING 5 MAIN TURBINE",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP.COVER VIB BEARING 6 MAIN TURBINE",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBACC0AAAUEkxXEFEUC5DT1ZFUiBWSUIgQkVBUklORyA2IE1BSU4gVFVSQklORQ",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "Rotor Vibration bearing #6 Absolute",
+      "path": "\\\\PI1\\ADP.COVER VIB BEARING 6 MAIN TURBINE",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP.COVER VIB BEARING 7 MAIN TURBINE",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBACS0AAAUEkxXEFEUC5DT1ZFUiBWSUIgQkVBUklORyA3IE1BSU4gVFVSQklORQ",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "Rotor Vibration bearing #7 Absoluite",
+      "path": "\\\\PI1\\ADP.COVER VIB BEARING 7 MAIN TURBINE",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP.COVER VIB BEARING 8 MAIN TURBINE",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBACi0AAAUEkxXEFEUC5DT1ZFUiBWSUIgQkVBUklORyA4IE1BSU4gVFVSQklORQ",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "Rotor Vibration bearing #8 Absoluite",
+      "path": "\\\\PI1\\ADP.COVER VIB BEARING 8 MAIN TURBINE",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP.COVER VIB BEARING 9 MAIN TURBINE",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBACy0AAAUEkxXEFEUC5DT1ZFUiBWSUIgQkVBUklORyA5IE1BSU4gVFVSQklORQ",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "Rotor Vibration bearing #9 Absoluite",
+      "path": "\\\\PI1\\ADP.COVER VIB BEARING 9 MAIN TURBINE",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP1. BEARING OIL PRESS LL TRIPPED",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBA_V4CAAUEkxXEFEUDEuIEJFQVJJTkcgT0lMIFBSRVNTIExMIFRSSVBQRUQ",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "BEARING OIL PRESS LL TRIPPED",
+      "path": "\\\\PI1\\ADP1. BEARING OIL PRESS LL TRIPPED",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP1. BEARING TEMP H TRIPPED",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBABl8CAAUEkxXEFEUDEuIEJFQVJJTkcgVEVNUCBIIFRSSVBQRUQ",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "BEARING TEMP H TRIPPED",
+      "path": "\\\\PI1\\ADP1. BEARING TEMP H TRIPPED",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP1.BEARING #1 OIL TEMP",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBAY1IAAAUEkxXEFEUDEuQkVBUklORyAjMSBPSUwgVEVNUA",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "BEARING #1 OIL TEMP",
+      "path": "\\\\PI1\\ADP1.BEARING #1 OIL TEMP",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP1.BEARING #2 OIL TEMP",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBAZFIAAAUEkxXEFEUDEuQkVBUklORyAjMiBPSUwgVEVNUA",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "BEARING #2 OIL TEMP",
+      "path": "\\\\PI1\\ADP1.BEARING #2 OIL TEMP",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP1.BEARING #3 OIL TEMP",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBAZVIAAAUEkxXEFEUDEuQkVBUklORyAjMyBPSUwgVEVNUA",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "BEARING #3 OIL TEMP",
+      "path": "\\\\PI1\\ADP1.BEARING #3 OIL TEMP",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP1.BEARING #4 OIL TEMP",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBAZlIAAAUEkxXEFEUDEuQkVBUklORyAjNCBPSUwgVEVNUA",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "BEARING #4 OIL TEMP",
+      "path": "\\\\PI1\\ADP1.BEARING #4 OIL TEMP",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP1.BEARING #5 OIL TEMP",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBAZ1IAAAUEkxXEFEUDEuQkVBUklORyAjNSBPSUwgVEVNUA",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "BEARING #5 OIL TEMP",
+      "path": "\\\\PI1\\ADP1.BEARING #5 OIL TEMP",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP1.BEARING #6 OIL TEMP",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBAaFIAAAUEkxXEFEUDEuQkVBUklORyAjNiBPSUwgVEVNUA",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "BEARING #6 OIL TEMP",
+      "path": "\\\\PI1\\ADP1.BEARING #6 OIL TEMP",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP1.BFPT A.Bearing 1 Drain Oil Temperature",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBAmFIAAAUEkxXEFEUDEuQkZQVCBBLkJFQVJJTkcgMSBEUkFJTiBPSUwgVEVNUEVSQVRVUkU",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "BFPT A NO.1 BRG OTL OIL TEM",
+      "path": "\\\\PI1\\ADP1.BFPT A.Bearing 1 Drain Oil Temperature",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP1.BFPT A.Bearing 1 Metal Temperature No 1",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBAlFIAAAUEkxXEFEUDEuQkZQVCBBLkJFQVJJTkcgMSBNRVRBTCBURU1QRVJBVFVSRSBOTyAx",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "BFPT A NO.1 BEARING TEMP1",
+      "path": "\\\\PI1\\ADP1.BFPT A.Bearing 1 Metal Temperature No 1",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP1.BFPT A.Bearing 1 Metal Temperature No 2",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBAlVIAAAUEkxXEFEUDEuQkZQVCBBLkJFQVJJTkcgMSBNRVRBTCBURU1QRVJBVFVSRSBOTyAy",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "BFPT A NO.1 BEARING TEMP2",
+      "path": "\\\\PI1\\ADP1.BFPT A.Bearing 1 Metal Temperature No 2",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP1.BFPT A.Bearing 1X Axis Vibration",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBAllIAAAUEkxXEFEUDEuQkZQVCBBLkJFQVJJTkcgMVggQVhJUyBWSUJSQVRJT04",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "BFPT A NO.1 BEARING VIB X",
+      "path": "\\\\PI1\\ADP1.BFPT A.Bearing 1X Axis Vibration",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP1.BFPT A.Bearing 1Y Axis Vibration",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBAl1IAAAUEkxXEFEUDEuQkZQVCBBLkJFQVJJTkcgMVkgQVhJUyBWSUJSQVRJT04",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "BFPT A NO.1 BEARING VIB Y",
+      "path": "\\\\PI1\\ADP1.BFPT A.Bearing 1Y Axis Vibration",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP1.BFPT A.Bearing 2 Drain Oil Temperature",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBAnlIAAAUEkxXEFEUDEuQkZQVCBBLkJFQVJJTkcgMiBEUkFJTiBPSUwgVEVNUEVSQVRVUkU",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "BFPT A NO.2 BRG OTL OIL TEM",
+      "path": "\\\\PI1\\ADP1.BFPT A.Bearing 2 Drain Oil Temperature",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    },
+    {
+      "name": "ADP1.BFPT A.Bearing 2 Metal Temperature No 1",
+      "web_id": "F1DP2dBunJOlC0ifiqTkEvHTBAmlIAAAUEkxXEFEUDEuQkZQVCBBLkJFQVJJTkcgMiBNRVRBTCBURU1QRVJBVFVSRSBOTyAx",
+      "point_type": "Float32",
+      "units": null,
+      "descriptor": "BFPT A NO.2 BEARING TEMP1",
+      "path": "\\\\PI1\\ADP1.BFPT A.Bearing 2 Metal Temperature No 1",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:26:20+00:00"
+    }
+  ],
+  "count": 30,
+  "note": "Truncated sample (maxCount cap). Do not brute-force tags (AGENTS rule 4)."
+}

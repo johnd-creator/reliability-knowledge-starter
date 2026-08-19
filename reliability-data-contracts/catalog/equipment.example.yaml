@@ -1,0 +1,30 @@
+id: BSR-ASSET-EXAMPLE
+name: Junction Box of Boiler House
+description: Example equipment record (sanitized template, BSR scope)
+location_id: BHAR
+equipment_class: PRODUCTION
+unit: CS01
+status: DECOMMISSIONED
+status_description: Decommissioned
+is_running: false
+priority: 1
+failure_code: IP-PNLELC
+parent_id: CS10CV-001
+ancestor_id: CS-001
+
+sources:
+  maximo:
+    object_structure: MXASSET
+    assetnum: CS10CVA02GA000-001   # natural key
+    assetid: 231317                # internal numeric id
+    location: BHAR
+    siteid: BSR
+    orgid: IP
+    status: DECOMMISSIONED
+    assettype: PRODUCTION
+    plant: TU
+    eq11: CS01
+    changedate: "2020-03-12T11:19:30+07:00"   # delta-sync watermark
+  pi:
+    element_web_id: "<VERIFY>"
+    element_path: "<VERIFY>"

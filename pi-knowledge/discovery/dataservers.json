@@ -1,0 +1,28 @@
+{
+  "system": "pi",
+  "endpoint": "/dataservers",
+  "access": "http_200",
+  "status": "verified",
+  "verified_at": "2026-08-14T04:25:00+00:00",
+  "data_servers": [
+    {
+      "name": "PI1",
+      "web_id": "F1DS2dBunJOlC0ifiqTkEvHTBAUEkx",
+      "server_version": "",
+      "is_connected": false,
+      "path": "\\\\PIServers[PI1]",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:25:00+00:00"
+    },
+    {
+      "name": "pi2",
+      "web_id": "F1DS2Od2Kws0r0iLyVwLqOS-SQUEky",
+      "server_version": "",
+      "is_connected": false,
+      "path": "\\\\PIServers[pi2]",
+      "status": "verified",
+      "verified_at": "2026-08-14T04:25:00+00:00"
+    }
+  ],
+  "count": 2
+}

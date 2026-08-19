@@ -1,0 +1,25 @@
+{
+  "system": "maximo",
+  "catalog_version": 1,
+  "last_updated": "2026-08-12",
+  "resources": [
+    {
+      "resource": "openapi",
+      "endpoint": "/maximo/oslc/oas",
+      "method": "GET",
+      "status": "documented",
+      "access": "redirect_login_required",
+      "description": "Maximo OpenAPI/OAS document endpoint used by the Swagger UI.",
+      "parameters": [],
+      "important_fields": [],
+      "relationships": [],
+      "use_cases": ["api-discovery", "endpoint-catalog-generation"],
+      "notes": [
+        "Swagger UI is reachable at /maximo/oas3/api.html.",
+        "Playwright observed HTTP redirect to /maximo/webclient/login/login.jsp?appservauth=true without an authenticated browser session.",
+        "OAS document contents remain unverified until the same browser session is authenticated."
+      ],
+      "verified_at": "2026-08-12"
+    }
+  ]
+}

@@ -1,0 +1,206 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reliability-data-contracts/schemas/equipment.schema.json",
+  "title": "Equipment",
+  "description": "Vendor-neutral equipment/asset contract. Maximo source identity is preserved under sources.maximo. Verified against mxasset (69 fields, site BSR).",
+  "type": "object",
+  "required": ["id", "name"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Organization-owned stable equipment identifier"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": ["string", "null"]
+    },
+    "location_id": {
+      "type": ["string", "null"]
+    },
+    "equipment_class": {
+      "type": ["string", "null"],
+      "description": "e.g. PRODUCTION, pump, valve"
+    },
+    "unit": {
+      "type": ["string", "null"],
+      "description": "Plant / generating unit context"
+    },
+    "status": {
+      "type": ["string", "null"],
+      "description": "Lifecycle status e.g. OPERATING, DECOMMISSIONED"
+    },
+    "status_description": {
+      "type": ["string", "null"]
+    },
+    "is_running": {
+      "type": ["boolean", "null"]
+    },
+    "priority": {
+      "type": ["integer", "null"]
+    },
+    "parent_id": {
+      "type": ["string", "null"],
+      "description": "Parent equipment in the asset hierarchy"
+    },
+    "ancestor_id": {
+      "type": ["string", "null"]
+    },
+    "has_children": {
+      "type": ["boolean", "null"]
+    },
+    "failure_code": {
+      "type": ["string", "null"]
+    },
+    "is_safety_critical": {
+      "type": ["boolean", "null"]
+    },
+    "is_calibration": {
+      "type": ["boolean", "null"]
+    },
+    "installed_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "status_changed_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "source_changed_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Last modification timestamp from the source system (delta-sync watermark)"
+    },
+    "purchase_price": {
+      "type": ["number", "null"]
+    },
+    "replacement_cost": {
+      "type": ["number", "null"]
+    },
+    "total_cost": {
+      "type": ["number", "null"]
+    },
+    "downtime_total_hours": {
+      "type": ["number", "null"]
+    },
+    "manufacturer": {
+      "type": ["string", "null"]
+    },
+    "vendor": {
+      "type": ["string", "null"]
+    },
+    "sources": {
+      "type": "object",
+      "properties": {
+        "maximo": {
+          "type": ["object", "null"],
+          "description": "Verified mapping to mxasset / mxapiasset (site BSR)",
+          "properties": {
+            "object_structure": {
+              "type": ["string", "null"],
+              "enum": ["MXASSET", "MXAPIASSET", null]
+            },
+            "assetnum": {
+              "type": ["string", "null"],
+              "description": "Natural key (primary key)"
+            },
+            "assetid": {
+              "type": ["integer", "null"],
+              "description": "Maximo internal numeric ID"
+            },
+            "location": {
+              "type": ["string", "null"]
+            },
+            "siteid": {
+              "type": ["string", "null"],
+              "description": "Site scope, e.g. BSR"
+            },
+            "orgid": {
+              "type": ["string", "null"],
+              "description": "Organization, e.g. IP"
+            },
+            "status": {
+              "type": ["string", "null"]
+            },
+            "assettype": {
+              "type": ["string", "null"]
+            },
+            "plant": {
+              "type": ["string", "null"]
+            },
+            "eq11": {
+              "type": ["string", "null"],
+              "description": "Unit code e.g. CS01"
+            },
+            "parent": {
+              "type": ["string", "null"]
+            },
+            "ancestor": {
+              "type": ["string", "null"]
+            },
+            "children": {
+              "type": ["boolean", "null"]
+            },
+            "failurecode": {
+              "type": ["string", "null"]
+            },
+            "priority": {
+              "type": ["integer", "null"]
+            },
+            "isrunning": {
+              "type": ["boolean", "null"]
+            },
+            "issafety": {
+              "type": ["boolean", "null"]
+            },
+            "iscalibration": {
+              "type": ["boolean", "null"]
+            },
+            "installdate": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            },
+            "statusdate": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            },
+            "changedate": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            },
+            "purchaseprice": {
+              "type": ["number", "null"]
+            },
+            "replacecost": {
+              "type": ["number", "null"]
+            },
+            "totalcost": {
+              "type": ["number", "null"]
+            },
+            "totdowntime": {
+              "type": ["number", "null"]
+            },
+            "manufacturer": {
+              "type": ["string", "null"]
+            },
+            "vendor": {
+              "type": ["string", "null"]
+            }
+          }
+        },
+        "pi": {
+          "type": ["object", "null"],
+          "properties": {
+            "element_web_id": {
+              "type": ["string", "null"]
+            },
+            "element_path": {
+              "type": ["string", "null"]
+            }
+          }
+        }
+      }
+    }
+  }
+}

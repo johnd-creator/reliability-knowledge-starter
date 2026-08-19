@@ -1,0 +1,24 @@
+{
+  "system": "maximo",
+  "openapi_available": true,
+  "filtering": true,
+  "sorting": true,
+  "pagination": true,
+  "field_selection": true,
+  "search": true,
+  "openapi_version": "3.0.0",
+  "object_structure_count": 462,
+  "oslc_query_parameters": [
+    "collectioncount",
+    "lean",
+    "opmodeor",
+    "oslc.orderBy",
+    "oslc.pageSize",
+    "oslc.paging",
+    "oslc.properties",
+    "oslc.searchTerms",
+    "oslc.select",
+    "oslc.where",
+    "stablepaging"
+  ]
+}

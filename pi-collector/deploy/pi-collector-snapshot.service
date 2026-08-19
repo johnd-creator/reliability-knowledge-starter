@@ -1,0 +1,17 @@
+[Unit]
+Description=PI Collector — continuous snapshot collector (5-minute cycle)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=picollector
+WorkingDirectory=/opt/pi-collector
+EnvironmentFile=/opt/pi-collector/.env
+ExecStart=/opt/pi-collector/.venv/bin/picollector run --mode snapshot --interval-seconds 300
+Restart=on-failure
+RestartSec=60
+MemoryMax=512M
+
+[Install]
+WantedBy=multi-user.target

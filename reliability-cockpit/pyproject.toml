@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reliability-cockpit"
+version = "0.1.0"
+description = "Reliability Cockpit — knowledge consumer sidecar (read-only Maximo/PI sync + vendor-neutral API)"
+requires-python = ">=3.11"
+dependencies = [
+    "requests>=2.32,<3.0",
+    "SQLAlchemy>=2.0,<3.0",
+    "psycopg[binary]>=3.1,<4.0",
+    "fastapi>=0.111,<1.0",
+    "uvicorn[standard]>=0.30,<1.0",
+]
+
+[project.scripts]
+cockpit = "src.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["src*"]

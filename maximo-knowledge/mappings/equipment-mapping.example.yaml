@@ -1,0 +1,9 @@
+equipment_id: BFP-1A
+maximo:
+  assetnum: "<VERIFY>"
+  location: "<VERIFY>"
+business:
+  equipment_class: boiler_feed_pump
+  unit: "<VERIFY>"
+status: unknown
+verified_at: null

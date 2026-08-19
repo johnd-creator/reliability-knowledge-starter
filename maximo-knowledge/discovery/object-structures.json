@@ -1,0 +1,142 @@
+{
+  "system": "maximo",
+  "catalog_version": 2,
+  "source": "live-oslc+authenticated-oas",
+  "base_url": "http://maximo.plnindonesiapower.co.id/maximo",
+  "last_updated": "2026-08-12T11:26:12Z",
+  "note": "462 object structures cataloged from authenticated OAS. 7 verified via live OSLC query; 5 forbidden (account lacks READ). Capabilities confirmed.",
+  "object_structures": [
+    {
+      "name": "mxasset",
+      "resource": "asset",
+      "readable": "Asset Definition",
+      "status": "verified",
+      "access": "http_200",
+      "field_count": 69,
+      "primary_key": "assetnum",
+      "verified_at": "2026-08-12T11:26:12Z"
+    },
+    {
+      "name": "mxapiasset",
+      "resource": "asset",
+      "readable": "Maximo API Asset Definition",
+      "status": "verified",
+      "access": "http_200",
+      "field_count": 73,
+      "primary_key": "assetnum",
+      "verified_at": "2026-08-12T11:26:12Z"
+    },
+    {
+      "name": "mxwodetail",
+      "resource": "workorder",
+      "readable": "Work Order with Plans and Reservations",
+      "status": "verified",
+      "access": "http_200",
+      "field_count": 166,
+      "primary_key": "wonum",
+      "verified_at": "2026-08-12T11:26:12Z"
+    },
+    {
+      "name": "mxapiwodetail",
+      "resource": "workorder",
+      "readable": "Maximo API Work Order Detail",
+      "status": "forbidden",
+      "access": "http_400",
+      "field_count": 0,
+      "primary_key": "wonum",
+      "verified_at": null
+    },
+    {
+      "name": "mxperson",
+      "resource": "person",
+      "readable": "Person Definition",
+      "status": "verified",
+      "access": "http_200",
+      "field_count": 34,
+      "primary_key": "personid",
+      "verified_at": "2026-08-12T11:26:12Z"
+    },
+    {
+      "name": "mxitem",
+      "resource": "materials",
+      "readable": "Item Definition",
+      "status": "verified",
+      "access": "http_200",
+      "field_count": 40,
+      "primary_key": "itemnum",
+      "verified_at": "2026-08-12T11:26:12Z"
+    },
+    {
+      "name": "mxapilabor",
+      "resource": "labor",
+      "readable": "Maximo API Labor",
+      "status": "verified",
+      "access": "http_200",
+      "field_count": 14,
+      "primary_key": "laborcode",
+      "verified_at": "2026-08-12T11:26:12Z"
+    },
+    {
+      "name": "mxapisr",
+      "resource": "sr",
+      "readable": "Maximo API Service Request",
+      "status": "verified",
+      "access": "http_200",
+      "field_count": 96,
+      "primary_key": "ticketid",
+      "verified_at": "2026-08-12T11:26:12Z"
+    },
+    {
+      "name": "mxapifailurecode",
+      "resource": "failurecode",
+      "readable": "Maximo API Failure Codes",
+      "status": "forbidden",
+      "access": "http_400",
+      "field_count": 0,
+      "primary_key": "failurecode",
+      "verified_at": null
+    },
+    {
+      "name": "mxapilocation",
+      "resource": "location",
+      "readable": "Maximo API Location",
+      "status": "forbidden",
+      "access": "http_400",
+      "field_count": 0,
+      "primary_key": "location",
+      "verified_at": null
+    },
+    {
+      "name": "mxapipm",
+      "resource": "preventivemaintenance",
+      "readable": "Maximo API Preventive Maintenance",
+      "status": "forbidden",
+      "access": "http_400",
+      "field_count": 0,
+      "primary_key": "pmnum",
+      "verified_at": null
+    },
+    {
+      "name": "mxapimeter",
+      "resource": "meter",
+      "readable": "Maximo API Meter",
+      "status": "forbidden",
+      "access": "http_400",
+      "field_count": 0,
+      "primary_key": "metername",
+      "verified_at": null
+    },
+    {
+      "name": "mxapijobplan",
+      "resource": "jobplan",
+      "readable": "Maximo API Job Plan",
+      "status": "forbidden",
+      "access": "http_400",
+      "field_count": 0,
+      "primary_key": "jpnum",
+      "verified_at": null
+    }
+  ],
+  "full_catalog_ref": "discovery/oslc/catalog.json",
+  "total_in_oas": 462
+}

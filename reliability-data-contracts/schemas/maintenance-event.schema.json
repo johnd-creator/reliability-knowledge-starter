@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reliability-data-contracts/schemas/maintenance-event.schema.json",
+  "title": "MaintenanceEvent",
+  "description": "Vendor-neutral maintenance execution event, derived from work order actuals. A WorkOrder is the planning/scheduling document; a MaintenanceEvent captures what actually happened on the equipment — actual start/finish, realized duration, labor hours, and downtime. Derived from mxwodetail actual fields (site BSR).",
+  "type": "object",
+  "required": ["id", "equipment_id"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Stable event identifier (typically the originating work order id)"
+    },
+    "equipment_id": {
+      "type": "string",
+      "description": "Asset the event was performed on"
+    },
+    "work_order_id": {
+      "type": ["string", "null"],
+      "description": "Originating work order, if applicable"
+    },
+    "event_type": {
+      "type": ["string", "null"],
+      "enum": ["CM", "PM", "INSPECTION", "CALIBRATION", "REPAIR", "EMERGENCY", null],
+      "description": "CM=corrective, PM=preventive, etc."
+    },
+    "status": {
+      "type": ["string", "null"],
+      "description": "Completion status e.g. CLOSE, COMP, WAPPR"
+    },
+    "actual_start": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "actual_finish": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "duration_hours": {
+      "type": ["number", "null"],
+      "description": "Realized execution duration (actual_finish - actual_start)"
+    },
+    "labor_hours": {
+      "type": ["number", "null"]
+    },
+    "downtime_hours": {
+      "type": ["number", "null"],
+      "description": "Equipment downtime attributable to this event"
+    },
+    "failure_code": {
+      "type": ["string", "null"],
+      "description": "Failure code if the event was failure-related"
+    },
+    "reported_by": {
+      "type": ["string", "null"]
+    },
+    "lead": {
+      "type": ["string", "null"]
+    },
+    "source_changed_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "changedate from the originating work order; delta-sync watermark"
+    },
+    "sources": {
+      "type": "object",
+      "properties": {
+        "maximo": {
+          "type": ["object", "null"],
+          "description": "Derived from mxwodetail actual fields (site BSR)",
+          "properties": {
+            "origin": {
+              "type": ["string", "null"],
+              "enum": ["MXWODETAIL", null]
+            },
+            "wonum": {
+              "type": ["string", "null"]
+            },
+            "assetnum": {
+              "type": ["string", "null"]
+            },
+            "worktype": {
+              "type": ["string", "null"]
+            },
+            "status": {
+              "type": ["string", "null"]
+            },
+            "actstart": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            },
+            "actfinish": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            },
+            "actlabhrs": {
+              "type": ["number", "null"]
+            },
+            "downtime": {
+              "type": ["number", "null"]
+            },
+            "failurecode": {
+              "type": ["string", "null"]
+            },
+            "reportedby": {
+              "type": ["string", "null"]
+            },
+            "lead": {
+              "type": ["string", "null"]
+            },
+            "changedate": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            }
+          }
+        }
+      }
+    }
+  }
+}

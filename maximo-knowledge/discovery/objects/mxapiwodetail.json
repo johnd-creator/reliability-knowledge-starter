@@ -1,0 +1,24 @@
+{
+  "system": "maximo",
+  "object_structure": "mxapiwodetail",
+  "resource": "workorder",
+  "endpoint": "/oslc/os/mxapiwodetail",
+  "primary_key": "wonum",
+  "use_cases": [
+    "work-order-history",
+    "failure-analysis"
+  ],
+  "relationships": [],
+  "notes": [
+    "READ action not allowed for this account (BMXAA0024E). Field list pending read-enabled credential."
+  ],
+  "verified_at": null,
+  "status": "forbidden",
+  "access": "http_400",
+  "important_fields": [],
+  "field_candidates": [],
+  "pagination": {},
+  "sample": null,
+  "catalog_source": "oas-documented",
+  "data_scope": "BSR (org IP)"
+}

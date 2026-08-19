@@ -1,0 +1,11 @@
+{
+  "_note": "VERIFIED snapshot from PI Web API (BSR1.Turbine > Bearing 1 Left Temperature)",
+  "_source_attribute": "AF element BSR1.Turbine, attribute 'Bearing 1 Left Temperature'",
+  "_acquired_at": "2026-08-14T04:30:00+00:00",
+  "Timestamp": "2026-08-14T04:30:00Z",
+  "Value": 77.80802917480469,
+  "UnitsAbbreviation": "deg C",
+  "DefaultUnitsName": "degree Celsius",
+  "Good": true,
+  "IsSubstituted": null
+}

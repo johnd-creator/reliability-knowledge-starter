@@ -1,0 +1,77 @@
+{
+  "system": "maximo",
+  "object_structure": "mxitem",
+  "resource": "materials",
+  "endpoint": "/oslc/os/mxitem",
+  "primary_key": "itemnum",
+  "use_cases": [
+    "spare-parts-analysis"
+  ],
+  "relationships": [
+    "itemspec_collectionref -> item specifications (verified collectionref)",
+    "itemcondition_collectionref -> item conditions (verified collectionref)",
+    "itemorginfo_collectionref -> item org info (verified collectionref)",
+    "conversion_collectionref -> unit conversions (verified collectionref)",
+    "metername -> meter (verified field; MXAPIMETER forbidden)"
+  ],
+  "notes": [
+    "Data scoped to site BSR; always filter oslc.where=siteid=\"BSR\" in the downstream app."
+  ],
+  "verified_at": "2026-08-12T11:26:12Z",
+  "status": "verified",
+  "access": "http_200",
+  "important_fields": [
+    "rotating",
+    "validasikp",
+    "pluscismte",
+    "description",
+    "itemcondition_collectionref",
+    "lottype_description",
+    "istgp",
+    "pluscisinhousecal",
+    "issueunit",
+    "iskit",
+    "itemid",
+    "sparepartautoadd",
+    "href",
+    "prorate",
+    "status_description",
+    "attachonissue",
+    "conditionenabled",
+    "orderunit",
+    "loading",
+    "itemspec_collectionref",
+    "np_statusrolldown",
+    "pluscsolution",
+    "taxexempt",
+    "conversion_collectionref",
+    "lottype",
+    "statusdate",
+    "itemnum",
+    "inspectionrequired",
+    "site",
+    "itemorginfo_collectionref",
+    "itemorginfo",
+    "itemtype",
+    "statusiface",
+    "metername",
+    "capitalized",
+    "outside",
+    "itemsetid",
+    "iscrew",
+    "hardresissue",
+    "status"
+  ],
+  "field_candidates": [
+    "itemid",
+    "itemnum",
+    "itemsetid"
+  ],
+  "pagination": {
+    "method": "oslc.paging + pageno + oslc.pageSize",
+    "single_record_via": "resource href"
+  },
+  "sample": null,
+  "catalog_source": "oslc-catalog",
+  "data_scope": "BSR (org IP)"
+}

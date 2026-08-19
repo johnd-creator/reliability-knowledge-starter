@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reliability-data-contracts/schemas/location.schema.json",
+  "title": "Location",
+  "description": "Vendor-neutral location contract. Locations organize assets and work into a functional hierarchy (plant → unit → system → component). The Maximo MXAPILOCATION object (underlying LOCHIERARCHY) is currently forbidden (BMXAA0024E); location identity is preserved as location_id on Equipment/WorkOrder/ServiceRequest until a read-enabled credential makes the full location master accessible.",
+  "type": "object",
+  "required": ["id"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Organization-owned stable location identifier"
+    },
+    "name": {
+      "type": ["string", "null"]
+    },
+    "description": {
+      "type": ["string", "null"]
+    },
+    "type": {
+      "type": ["string", "null"],
+      "description": "Functional type e.g. OPERATING, STORAGE, HOLDING"
+    },
+    "status": {
+      "type": ["string", "null"],
+      "description": "Lifecycle status e.g. ACTIVE, INACTIVE"
+    },
+    "parent_id": {
+      "type": ["string", "null"],
+      "description": "Parent location in the hierarchy"
+    },
+    "ancestor_id": {
+      "type": ["string", "null"]
+    },
+    "site_id": {
+      "type": ["string", "null"],
+      "description": "Site scope, e.g. BSR"
+    },
+    "org_id": {
+      "type": ["string", "null"],
+      "description": "Organization, e.g. IP"
+    },
+    "source_changed_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Last modification timestamp from the source system (delta-sync watermark)"
+    },
+    "sources": {
+      "type": "object",
+      "properties": {
+        "maximo": {
+          "type": ["object", "null"],
+          "description": "MXAPILOCATION (underlying LOCHIERARCHY) is currently forbidden; fields will populate once READ is granted",
+          "properties": {
+            "origin": {
+              "type": ["string", "null"],
+              "enum": ["MXAPILOCATION", null]
+            },
+            "location": {
+              "type": ["string", "null"],
+              "description": "Natural key (primary key)"
+            },
+            "siteid": {
+              "type": ["string", "null"]
+            },
+            "orgid": {
+              "type": ["string", "null"]
+            },
+            "type": {
+              "type": ["string", "null"]
+            },
+            "status": {
+              "type": ["string", "null"]
+            },
+            "parent": {
+              "type": ["string", "null"]
+            },
+            "ancestor": {
+              "type": ["string", "null"]
+            },
+            "changedate": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            }
+          }
+        }
+      }
+    }
+  }
+}

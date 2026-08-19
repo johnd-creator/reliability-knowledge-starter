@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maximo-knowledge/schemas/object.schema.json",
+  "title": "Maximo Object Structure Knowledge",
+  "description": "Per-object knowledge record produced by OSLC discovery. Read by humans and AI tools (Codex/GLM) to build read-only data fetcher applications.",
+  "type": "object",
+  "required": ["system", "object_structure", "resource", "status"],
+  "additionalProperties": false,
+  "properties": {
+    "system": {
+      "type": "string",
+      "const": "maximo"
+    },
+    "object_structure": {
+      "type": "string",
+      "description": "Maximo integration object structure name, e.g. MXASSET, MXWODETAIL"
+    },
+    "resource": {
+      "type": "string",
+      "description": "Normalized reliability resource, e.g. asset, workorder"
+    },
+    "status": {
+      "enum": ["unknown", "documented", "verified", "forbidden", "deprecated"]
+    },
+    "access": {
+      "type": "string",
+      "description": "Observed access result, e.g. http_200, http_403, unknown"
+    },
+    "endpoint": {
+      "type": "string",
+      "description": "Canonical OSLC query endpoint for this object structure"
+    },
+    "primary_key": {
+      "type": ["string", "null"],
+      "description": "Verified primary-key field. Null until confirmed."
+    },
+    "field_candidates": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Heuristic identifier-like field names (candidates for PK/filters)"
+    },
+    "important_fields": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Business field names observed on a minimal sample"
+    },
+    "pagination": {
+      "type": "object",
+      "properties": {
+        "total_count": {"type": ["integer", "null"]},
+        "next_page": {"type": "boolean"},
+        "prev_page": {"type": "boolean"},
+        "method": {"type": "string", "description": "How pagination is performed (curated, e.g. 'oslc.paging + pageno + oslc.pageSize')."},
+        "single_record_via": {"type": "string", "description": "How a single record is fetched (curated, e.g. 'resource href')."}
+      },
+      "additionalProperties": false
+    },
+    "sample": {
+      "description": "Sanitized single record sample. Sensitive/personal fields are redacted or removed."
+    },
+    "use_cases": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "relationships": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Verified relationships to other object structures"
+    },
+    "notes": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "verified_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "catalog_source": {
+      "enum": ["oslc-catalog", "seed-fallback", "oas-documented"],
+      "description": "Origin of the catalog entry: live OSLC catalog, documented seed fallback, or OAS-documented (object present in the authenticated OAS but not OSLC-queryable by this account)."
+    },
+    "data_scope": {
+      "type": "string",
+      "description": "Organizational scope of the observed data, e.g. 'BSR (org IP)'."
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reliability-data-contracts/schemas/person.schema.json",
+  "title": "Person",
+  "description": "Vendor-neutral person/contact contract. Verified against mxperson (34 fields, site BSR). Personal contact data (email, phone) is exposed as collection references only; do not persist raw personal values.",
+  "type": "object",
+  "required": ["id"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Person identifier"
+    },
+    "display_name": {
+      "type": ["string", "null"]
+    },
+    "first_name": {
+      "type": ["string", "null"]
+    },
+    "status": {
+      "type": ["string", "null"]
+    },
+    "status_changed_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "location_org": {
+      "type": ["string", "null"]
+    },
+    "hire_date": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "sources": {
+      "type": "object",
+      "properties": {
+        "maximo": {
+          "type": ["object", "null"],
+          "description": "Verified mapping to mxperson (site BSR)",
+          "properties": {
+            "object_structure": {
+              "type": ["string", "null"],
+              "enum": ["MXPERSON", null]
+            },
+            "personid": {
+              "type": ["string", "null"],
+              "description": "Natural key"
+            },
+            "personuid": {
+              "type": ["integer", "null"]
+            },
+            "displayname": {
+              "type": ["string", "null"]
+            },
+            "firstname": {
+              "type": ["string", "null"]
+            },
+            "status": {
+              "type": ["string", "null"]
+            },
+            "statusdate": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            },
+            "locationorg": {
+              "type": ["string", "null"]
+            },
+            "hiredate": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            }
+          }
+        }
+      }
+    }
+  }
+}

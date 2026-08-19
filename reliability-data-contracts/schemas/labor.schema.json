@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reliability-data-contracts/schemas/labor.schema.json",
+  "title": "Labor",
+  "description": "Vendor-neutral labor/craft resource contract. Verified against mxapilabor (14 fields, site BSR).",
+  "type": "object",
+  "required": ["id"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Labor code"
+    },
+    "person_id": {
+      "type": ["string", "null"],
+      "description": "Reference to Person"
+    },
+    "status": {
+      "type": ["string", "null"]
+    },
+    "status_description": {
+      "type": ["string", "null"]
+    },
+    "work_site": {
+      "type": ["string", "null"]
+    },
+    "is_assigned": {
+      "type": ["boolean", "null"]
+    },
+    "availability_factor": {
+      "type": ["number", "null"]
+    },
+    "reported_hours": {
+      "type": ["number", "null"]
+    },
+    "year_to_date_other_hours": {
+      "type": ["number", "null"]
+    },
+    "year_to_date_refused_hours": {
+      "type": ["number", "null"]
+    },
+    "sources": {
+      "type": "object",
+      "properties": {
+        "maximo": {
+          "type": ["object", "null"],
+          "description": "Verified mapping to mxapilabor (site BSR)",
+          "properties": {
+            "object_structure": {
+              "type": ["string", "null"],
+              "enum": ["MXAPILABOR", null]
+            },
+            "laborcode": {
+              "type": ["string", "null"],
+              "description": "Natural key"
+            },
+            "laborid": {
+              "type": ["integer", "null"]
+            },
+            "personid": {
+              "type": ["string", "null"]
+            },
+            "status": {
+              "type": ["string", "null"]
+            },
+            "worksite": {
+              "type": ["string", "null"]
+            },
+            "assigned": {
+              "type": ["boolean", "null"]
+            },
+            "availfactor": {
+              "type": ["number", "null"]
+            },
+            "reportedhrs": {
+              "type": ["number", "null"]
+            },
+            "ytdothrs": {
+              "type": ["number", "null"]
+            },
+            "ytdhrsrefused": {
+              "type": ["number", "null"]
+            },
+            "orgid": {
+              "type": ["string", "null"]
+            }
+          }
+        }
+      }
+    }
+  }
+}

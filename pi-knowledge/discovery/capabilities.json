@@ -1,0 +1,41 @@
+{
+ "system": "pi",
+ "instance_verified": true,
+ "base_url": "https://pivision.plnindonesiapower.co.id/piwebapi",
+ "verified_at": "2026-08-18T04:40:00+00:00",
+ "capabilities": {
+  "snapshot": "verified",
+  "recorded": "verified",
+  "interpolated": "verified",
+  "summary": "verified",
+  "plot": "verified",
+  "batch": "forbidden",
+  "end": "verified",
+  "streamsets": "verified-empty",
+  "system-versions": "verified",
+  "system-status": "forbidden",
+  "omf": "forbidden"
+ },
+ "evidence": {
+  "snapshot": "GET /streams/{webId}/value -> 200 (Bearing 1 Left Temperature = 77.8 degC)",
+  "recorded": "GET /streams/{webId}/recorded -> 200 (5 values over 24h, good=True)",
+  "interpolated": "GET /streams/{webId}/interpolated -> 200 (3 values @30m interval)",
+  "summary": "GET /streams/{webId}/summary -> 200 (hourly Average over 24h)",
+  "plot": "GET /streams/{webId}/plot?startTime=*&endTime=*&intervals=10 -> 200 (sampled series)",
+  "batch": "GET /batch -> 405 Method Not Allowed (POST-only controller; read-only policy forbids)",
+  "end": "GET /streams/{webId}/end -> 200 (end-of-stream value)",
+  "streamsets": "GET /streamsets/{webId}/value -> 200 but Items=[] on both String and Double attrs; unusable here",
+  "system-versions": "GET /system/versions -> 200 (REST 1.19.x, OMF plugin present)",
+  "system-status": "GET /system/status -> 401 (needs higher privilege)",
+  "omf": "root Links expose Omf controller (OMF 1.19 plugin) \u2014 data WRITE channel, forbidden by policy"
+ },
+ "notes": [
+  "Units are NOT present at the PI Point level (/dataservers/{id}/points returns Units=null).",
+  "Units ARE present at the AF Attribute level (DefaultUnitsName: 'degree Celsius', 'Micrometer').",
+  "Prefer AF attributes over raw PI points for business-meaningful mapping with units.",
+  "QUIRK: selectedFields query param returns an empty object {} on this instance (tested /attributes/{id}?selectedFields=Name,Path,WebId) \u2014 do NOT use selectedFields; fetch full bodies instead.",
+  "Root controllers exposed: AssetServers, DataServers, Omf, Self, System.",
+  "QUIRK: selectedFields query param returns an empty object {} on this instance (tested /attributes/{id}?selectedFields=Name,Path,WebId) \u2014 do NOT use selectedFields; fetch full bodies instead.",
+  "Root controllers exposed: AssetServers, DataServers, Omf, Self, System."
+ ]
+}

@@ -1,0 +1,8323 @@
+{
+  "system": "maximo",
+  "catalog_version": 2,
+  "source": "authenticated-oas",
+  "base_url": "http://maximo.plnindonesiapower.co.id/maximo",
+  "object_structure_count": 462,
+  "note": "Field-level detail requires live OSLC sampling (GET /oslc/os/{name}?_maxitems=1). Capabilities confirmed from shared OSLC parameters.",
+  "object_structures": [
+    {
+      "name": "arcmaxrelationship",
+      "canonical": "ARCMAXRELATIONSHIP",
+      "readable": "Object, Attribute and Relationship export object for Optim integration",
+      "resource": "other",
+      "endpoint": "/oslc/os/arcmaxrelationship",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "cxrlaos",
+      "canonical": "CXRLAOS",
+      "readable": "RLA Object",
+      "resource": "other",
+      "endpoint": "/oslc/os/cxrlaos",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "cxticket",
+      "canonical": "CXTICKET",
+      "readable": "CUST TICKET INBOUND",
+      "resource": "other",
+      "endpoint": "/oslc/os/cxticket",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "cxwo",
+      "canonical": "CXWO",
+      "readable": "CUST WO",
+      "resource": "other",
+      "endpoint": "/oslc/os/cxwo",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmd_leadshiftho",
+      "canonical": "DMD_LEADSHIFTHO",
+      "readable": "DMD_LEADSHIFTHO",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmd_leadshiftho",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmd_logentryinfo",
+      "canonical": "DMD_LOGENTRYINFO",
+      "readable": "DMD_LOGENTRYINFO",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmd_logentryinfo",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmd_logsheethdr",
+      "canonical": "DMD_LOGSHEETHDR",
+      "readable": "DMD_LOGSHEETHDR",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmd_logsheethdr",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmd_logsheetinfo",
+      "canonical": "DMD_LOGSHEETINFO",
+      "readable": "DMD_LOGSHEETINFO",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmd_logsheetinfo",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmd_logsheetsync",
+      "canonical": "DMD_LOGSHEETSYNC",
+      "readable": "DMD_LOGSHEETSYNC",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmd_logsheetsync",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmd_logsr",
+      "canonical": "DMD_LOGSR",
+      "readable": "DMD_LOGSR",
+      "resource": "sr",
+      "endpoint": "/oslc/os/dmd_logsr",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmd_master",
+      "canonical": "DMD_MASTER",
+      "readable": "DIAMOND - MASTER DATA",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmd_master",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmd_oplogabn",
+      "canonical": "DMD_OPLOGABN",
+      "readable": "DMD_OPLOGABN",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmd_oplogabn",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmd_oploginfo",
+      "canonical": "DMD_OPLOGINFO",
+      "readable": "DMD_OPLOGINFO",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmd_oploginfo",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmd_oploginfo2",
+      "canonical": "DMD_OPLOGINFO2",
+      "readable": "DMD_OPLOGINFO2",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmd_oploginfo2",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmd_oplogsheethdr",
+      "canonical": "DMD_OPLOGSHEETHDR",
+      "readable": "DMD_OPLOGSHEETHDR",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmd_oplogsheethdr",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmd_opoplog",
+      "canonical": "DMD_OPOPLOG",
+      "readable": "DMD_OPOPLOG",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmd_opoplog",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmd_person_area",
+      "canonical": "DMD_PERSON_AREA",
+      "readable": "DIAMOND - Person AREA (Loader)",
+      "resource": "person",
+      "endpoint": "/oslc/os/dmd_person_area",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmd_person_role",
+      "canonical": "DMD_PERSON_ROLE",
+      "readable": "DIAMOND - Person ROLE (Loader)",
+      "resource": "person",
+      "endpoint": "/oslc/os/dmd_person_role",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmd_shiftabsinfo",
+      "canonical": "DMD_SHIFTABSINFO",
+      "readable": "DMD_SHIFTABSINFO",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmd_shiftabsinfo",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmd_shifthoabn",
+      "canonical": "DMD_SHIFTHOABN",
+      "readable": "DMD_SHIFTHOABN",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmd_shifthoabn",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmd_shifthoinfo",
+      "canonical": "DMD_SHIFTHOINFO",
+      "readable": "DMD_SHIFTHOINFO",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmd_shifthoinfo",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmd_shifthoinfo2",
+      "canonical": "DMD_SHIFTHOINFO2",
+      "readable": "DMD_SHIFTHOINFO2",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmd_shifthoinfo2",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmd_shifthomonitor",
+      "canonical": "DMD_SHIFTHOMONITOR",
+      "readable": "DMD_SHIFTHOMONITOR",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmd_shifthomonitor",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmd_shiftlogabn",
+      "canonical": "DMD_SHIFTLOGABN",
+      "readable": "DMD_SHIFTLOGABN",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmd_shiftlogabn",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmd_shiftloginfo",
+      "canonical": "DMD_SHIFTLOGINFO",
+      "readable": "DMD_SHIFTLOGINFO",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmd_shiftloginfo",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmd_shiftmeetinfo",
+      "canonical": "DMD_SHIFTMEETINFO",
+      "readable": "DMD_SHIFTMEETINFO",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmd_shiftmeetinfo",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmd_user",
+      "canonical": "DMD_USER",
+      "readable": "DIAMOND - USER",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmd_user",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmdareakerja",
+      "canonical": "DMDAREAKERJA",
+      "readable": "DMDAREAKERJA",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmdareakerja",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmdketabsen",
+      "canonical": "DMDKETABSEN",
+      "readable": "DMDKETABSEN",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmdketabsen",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmdkondisiopr",
+      "canonical": "DMDKONDISIOPR",
+      "readable": "DMDKONDISIOPR",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmdkondisiopr",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmdlapcounter",
+      "canonical": "DMDLAPCOUNTER",
+      "readable": "DMDLAPCOUNTER",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmdlapcounter",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmdlaporanopr",
+      "canonical": "DMDLAPORANOPR",
+      "readable": "DMDLAPORANOPR",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmdlaporanopr",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmdlogsheet",
+      "canonical": "DMDLOGSHEET",
+      "readable": "DMDLOGSHEET",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmdlogsheet",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmdlogsheetdtl",
+      "canonical": "DMDLOGSHEETDTL",
+      "readable": "DMDLOGSHEETDTL",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmdlogsheetdtl",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmdlogsheethdr",
+      "canonical": "DMDLOGSHEETHDR",
+      "readable": "DMDLOGSHEETHDR",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmdlogsheethdr",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmdnotif",
+      "canonical": "DMDNOTIF",
+      "readable": "DMDNOTIF",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmdnotif",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmdoplogbook",
+      "canonical": "DMDOPLOGBOOK",
+      "readable": "DMDOPLOGBOOK",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmdoplogbook",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmdoplogbookentry",
+      "canonical": "DMDOPLOGBOOKENTRY",
+      "readable": "DMDOPLOGBOOKENTRY",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmdoplogbookentry",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmdpersonareainfo",
+      "canonical": "DMDPERSONAREAINFO",
+      "readable": "DMDPERSONAREAINFO",
+      "resource": "person",
+      "endpoint": "/oslc/os/dmdpersonareainfo",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmdshiftabs",
+      "canonical": "DMDSHIFTABS",
+      "readable": "DMDSHIFTABS",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmdshiftabs",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmdshiftabsarea",
+      "canonical": "DMDSHIFTABSAREA",
+      "readable": "DMDSHIFTABSAREA",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmdshiftabsarea",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmdshiftho",
+      "canonical": "DMDSHIFTHO",
+      "readable": "DMDSHIFTHO",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmdshiftho",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmdshiftlog",
+      "canonical": "DMDSHIFTLOG",
+      "readable": "DMDSHIFTLOG",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmdshiftlog",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmdsitehier",
+      "canonical": "DMDSITEHIER",
+      "readable": "DMDSITEHIER",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmdsitehier",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dmdstatuscstm",
+      "canonical": "DMDSTATUSCSTM",
+      "readable": "DMDSTATUSCSTM",
+      "resource": "other",
+      "endpoint": "/oslc/os/dmdstatuscstm",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dom_inspeksimesin",
+      "canonical": "DOM_INSPEKSIMESIN",
+      "readable": "DOMINION - MASTER INSPEKSI MESIN & DETAILS PM (Loader)",
+      "resource": "preventivemaintenance",
+      "endpoint": "/oslc/os/dom_inspeksimesin",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dom_merktipe",
+      "canonical": "DOM_MERKTIPE",
+      "readable": "DOMINION - MASTER MERK & TIPE (Loader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/dom_merktipe",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dom_pmline",
+      "canonical": "DOM_PMLINE",
+      "readable": "DOMINION - MAPPING PM TO SCOPE (Loader)",
+      "resource": "preventivemaintenance",
+      "endpoint": "/oslc/os/dom_pmline",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dom_scopedetails",
+      "canonical": "DOM_SCOPEDETAILS",
+      "readable": "DOMINION - SCOPE STANDARD DETAILS (Loader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/dom_scopedetails",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dom_scopeline",
+      "canonical": "DOM_SCOPELINE",
+      "readable": "DOMINION - INSPEKSI SCOPE LINE (Loader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/dom_scopeline",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "dom_scopestd",
+      "canonical": "DOM_SCOPESTD",
+      "readable": "DOMINION - MASTER SCOPE STANDAR (Loader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/dom_scopestd",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ebsvalidwo2reqos",
+      "canonical": "EBSVALIDWO2REQOS",
+      "readable": "EBSVALIDWO2REQOS Definition for web service interaction",
+      "resource": "other",
+      "endpoint": "/oslc/os/ebsvalidwo2reqos",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ebsvalidwo2resos",
+      "canonical": "EBSVALIDWO2RESOS",
+      "readable": "EBSVALIDWO2RESOS Definition for web service interaction",
+      "resource": "other",
+      "endpoint": "/oslc/os/ebsvalidwo2resos",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ebsvalidworeqos",
+      "canonical": "EBSVALIDWOREQOS",
+      "readable": "EBSVALIDWOREQOS Definition for web service interaction",
+      "resource": "other",
+      "endpoint": "/oslc/os/ebsvalidworeqos",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ebsvalidworesos",
+      "canonical": "EBSVALIDWORESOS",
+      "readable": "EBSVALIDWORESOS Definition for web service interaction",
+      "resource": "other",
+      "endpoint": "/oslc/os/ebsvalidworesos",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ecointbakumutu",
+      "canonical": "ECOINTBAKUMUTU",
+      "readable": "ProECO Baku Mutu",
+      "resource": "other",
+      "endpoint": "/oslc/os/ecointbakumutu",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ecointbakumutuline",
+      "canonical": "ECOINTBAKUMUTULINE",
+      "readable": "ProECO Line Baku Mutu",
+      "resource": "other",
+      "endpoint": "/oslc/os/ecointbakumutuline",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ecomeasurementint",
+      "canonical": "ECOMEASUREMENTINT",
+      "readable": "ProECO Measurement",
+      "resource": "other",
+      "endpoint": "/oslc/os/ecomeasurementint",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ecometer",
+      "canonical": "ECOMETER",
+      "readable": "ProECO Master Parameter",
+      "resource": "meter",
+      "endpoint": "/oslc/os/ecometer",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ecometergroup",
+      "canonical": "ECOMETERGROUP",
+      "readable": "ProECO Meter Group",
+      "resource": "meter",
+      "endpoint": "/oslc/os/ecometergroup",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ecometeringroup",
+      "canonical": "ECOMETERINGROUP",
+      "readable": "ProECO Meter In Group",
+      "resource": "meter",
+      "endpoint": "/oslc/os/ecometeringroup",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "econonb3",
+      "canonical": "ECONONB3",
+      "readable": "ProECO NONB3 Test",
+      "resource": "other",
+      "endpoint": "/oslc/os/econonb3",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ecouseint",
+      "canonical": "ECOUSEINT",
+      "readable": "ProECO Pemakaian Air, Kertas, PS",
+      "resource": "other",
+      "endpoint": "/oslc/os/ecouseint",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ecouselineint",
+      "canonical": "ECOUSELINEINT",
+      "readable": "ProECO Line Pemakaian Air, Kertas, PS",
+      "resource": "other",
+      "endpoint": "/oslc/os/ecouselineint",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "financialperiods",
+      "canonical": "FINANCIALPERIODS",
+      "readable": "FINANCIAL PERIODS",
+      "resource": "other",
+      "endpoint": "/oslc/os/financialperiods",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ip_dom_oh",
+      "canonical": "IP_DOM_OH",
+      "readable": "DOMINION - MASTER OH PLANNING & SCHEDULLING",
+      "resource": "other",
+      "endpoint": "/oslc/os/ip_dom_oh",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ip_dom_oh_scope_pm",
+      "canonical": "IP_DOM_OH_SCOPE_PM",
+      "readable": "DOMINION - SCOPE OH",
+      "resource": "preventivemaintenance",
+      "endpoint": "/oslc/os/ip_dom_oh_scope_pm",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipalndomain",
+      "canonical": "IPALNDOMAIN",
+      "readable": "IP MOBILE APPS ALNDOMAIN",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipalndomain",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipasset",
+      "canonical": "IPASSET",
+      "readable": "IP LOADER ASSET",
+      "resource": "asset",
+      "endpoint": "/oslc/os/ipasset",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipassetmeter",
+      "canonical": "IPASSETMETER",
+      "readable": "IP MOBILE APPS ASSET - ASSETMETER",
+      "resource": "asset",
+      "endpoint": "/oslc/os/ipassetmeter",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipassignment",
+      "canonical": "IPASSIGNMENT",
+      "readable": "IP MOBILE APPS ASSIGNMENT",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipassignment",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipbhm",
+      "canonical": "IPBHM",
+      "readable": "IP BHM",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipbhm",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipbhmline",
+      "canonical": "IPBHMLINE",
+      "readable": "IP BHM LINE",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipbhmline",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipbhmmeasurement",
+      "canonical": "IPBHMMEASUREMENT",
+      "readable": "IP BHM MEASUREMENT",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipbhmmeasurement",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipbhmworkshop",
+      "canonical": "IPBHMWORKSHOP",
+      "readable": "IP LOADER BHM WORKSHOP",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipbhmworkshop",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipcond",
+      "canonical": "IPCOND",
+      "readable": "IP LOADER MEASUREPOINT (CONDITION MONITORING)",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipcond",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipcondexp",
+      "canonical": "IPCONDEXP",
+      "readable": "IP Condition Expression",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipcondexp",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipcraft",
+      "canonical": "IPCRAFT",
+      "readable": "[IP] Craft Definition",
+      "resource": "labor",
+      "endpoint": "/oslc/os/ipcraft",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipdatamapping",
+      "canonical": "IPDATAMAPPING",
+      "readable": "IP DATAMAPPING",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipdatamapping",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipdetailserp",
+      "canonical": "IPDETAILSERP",
+      "readable": "IP DETAILSERP",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipdetailserp",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipdgcuser",
+      "canonical": "IPDGCUSER",
+      "readable": "IP MOBILE APPS CUSTOM USER",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipdgcuser",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipdgnotif",
+      "canonical": "IPDGNOTIF",
+      "readable": "IP MOBILE APPS DIGI NOTIF",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipdgnotif",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipdgrole",
+      "canonical": "IPDGROLE",
+      "readable": "IP MOBILE APPS DIGI ROLE",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipdgrole",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipdguser",
+      "canonical": "IPDGUSER",
+      "readable": "IP MOBILE APPS PERSON-ROLE DIGIMON",
+      "resource": "person",
+      "endpoint": "/oslc/os/ipdguser",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipdgvwomst",
+      "canonical": "IPDGVWOMST",
+      "readable": "IP MOBILE APPS DIGI WO MASTER (VIEW)",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipdgvwomst",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipdgwo",
+      "canonical": "IPDGWO",
+      "readable": "IP MOBILE APPS DIGI WO",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipdgwo",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipdgwohist",
+      "canonical": "IPDGWOHIST",
+      "readable": "IP MOBILE APPS DIGI WO HISTORY",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipdgwohist",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipdgwomst",
+      "canonical": "IPDGWOMST",
+      "readable": "IP MOBILE APPS DIGI WO MASTER",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipdgwomst",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipdomain",
+      "canonical": "IPDOMAIN",
+      "readable": "IP MOBILE APPS DOMAIN (SOA)",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipdomain",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipemfb",
+      "canonical": "IPEMFB",
+      "readable": "IP EM Formula Baseline",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipemfb",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipemfbdtl",
+      "canonical": "IPEMFBDTL",
+      "readable": "IP EM Formula Baseline Detail",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipemfbdtl",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipemideacharterrisk",
+      "canonical": "IPEMIDEACHARTERRISK",
+      "readable": "IP EM IDEACHARTERRISK",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipemideacharterrisk",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipemideachartersche",
+      "canonical": "IPEMIDEACHARTERSCHE",
+      "readable": "IP EM IDEACHARTERSCHEDULE",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipemideachartersche",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipemideacharterstat",
+      "canonical": "IPEMIDEACHARTERSTAT",
+      "readable": "IP EM IDEACHARTERSTATUS",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipemideacharterstat",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipemideatracker",
+      "canonical": "IPEMIDEATRACKER",
+      "readable": "IP EM IDEATRACKER",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipemideatracker",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipemlgwr",
+      "canonical": "IPEMLGWR",
+      "readable": "IP EM Logsheet War Room",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipemlgwr",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipemmp",
+      "canonical": "IPEMMP",
+      "readable": "IP EM Master Parameter",
+      "resource": "meter",
+      "endpoint": "/oslc/os/ipemmp",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipemmpdtl",
+      "canonical": "IPEMMPDTL",
+      "readable": "IP EM Master Parameter Detail",
+      "resource": "meter",
+      "endpoint": "/oslc/os/ipemmpdtl",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipengjudge",
+      "canonical": "IPENGJUDGE",
+      "readable": "IP LOADER ENGINEERING JUDGEMENT (LOADER)",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipengjudge",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "iperppo",
+      "canonical": "IPERPPO",
+      "readable": "Interface Integrasi PO ERP",
+      "resource": "other",
+      "endpoint": "/oslc/os/iperppo",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipfailurecode",
+      "canonical": "IPFAILURECODE",
+      "readable": "IP MOBILE APPS FAILURECODE",
+      "resource": "failurecode",
+      "endpoint": "/oslc/os/ipfailurecode",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipfailurelist",
+      "canonical": "IPFAILURELIST",
+      "readable": "IP MOBILE APPS FAILURELIST",
+      "resource": "failurecode",
+      "endpoint": "/oslc/os/ipfailurelist",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipfmea",
+      "canonical": "IPFMEA",
+      "readable": "IP LOADER FMEA",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipfmea",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipfmeaitem",
+      "canonical": "IPFMEAITEM",
+      "readable": "IP LOADER FMEA ITEM",
+      "resource": "materials",
+      "endpoint": "/oslc/os/ipfmeaitem",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipfmeaworkshop",
+      "canonical": "IPFMEAWORKSHOP",
+      "readable": "IP LOADER FMEA WORKSHOP",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipfmeaworkshop",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "iphazard",
+      "canonical": "IPHAZARD",
+      "readable": "LOADER HAZARD",
+      "resource": "other",
+      "endpoint": "/oslc/os/iphazard",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "iphazardprec",
+      "canonical": "IPHAZARDPREC",
+      "readable": "LOADER HAZARDPREC",
+      "resource": "other",
+      "endpoint": "/oslc/os/iphazardprec",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "iphazardprecaution",
+      "canonical": "IPHAZARDPRECAUTION",
+      "readable": "IP HAZARD PRECAUTION",
+      "resource": "other",
+      "endpoint": "/oslc/os/iphazardprecaution",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "iphiradc",
+      "canonical": "IPHIRADC",
+      "readable": "IP HIRADC HSE",
+      "resource": "other",
+      "endpoint": "/oslc/os/iphiradc",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipinventory",
+      "canonical": "IPINVENTORY",
+      "readable": "IP ProInventory Joint Inventory AMC",
+      "resource": "materials",
+      "endpoint": "/oslc/os/ipinventory",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipitem",
+      "canonical": "IPITEM",
+      "readable": "IP LOADER ITEM",
+      "resource": "materials",
+      "endpoint": "/oslc/os/ipitem",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipjinvstatus",
+      "canonical": "IPJINVSTATUS",
+      "readable": "IP ProInventory Joint Inventory AMC",
+      "resource": "materials",
+      "endpoint": "/oslc/os/ipjinvstatus",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipjobitem",
+      "canonical": "IPJOBITEM",
+      "readable": "IP LOADER JOB ITEM",
+      "resource": "materials",
+      "endpoint": "/oslc/os/ipjobitem",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipjoblabor",
+      "canonical": "IPJOBLABOR",
+      "readable": "IP LOADER JOB LABOR",
+      "resource": "labor",
+      "endpoint": "/oslc/os/ipjoblabor",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipjobplan",
+      "canonical": "IPJOBPLAN",
+      "readable": "IP LOADER JOB PLAN",
+      "resource": "jobplan",
+      "endpoint": "/oslc/os/ipjobplan",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipjobtask",
+      "canonical": "IPJOBTASK",
+      "readable": "IP LOADER JOB TASK",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipjobtask",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipjobtool",
+      "canonical": "IPJOBTOOL",
+      "readable": "IP LOADER JOB TOOL",
+      "resource": "materials",
+      "endpoint": "/oslc/os/ipjobtool",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipjpsafetyplanlink",
+      "canonical": "IPJPSAFETYPLANLINK",
+      "readable": "IP SAFETY PLAN LINK ASSET / LOCATION / ITEM",
+      "resource": "asset",
+      "endpoint": "/oslc/os/ipjpsafetyplanlink",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "iplabor",
+      "canonical": "IPLABOR",
+      "readable": "[IP] Labor Definition",
+      "resource": "labor",
+      "endpoint": "/oslc/os/iplabor",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "iplaborcraft",
+      "canonical": "IPLABORCRAFT",
+      "readable": "IP MOBILE APPS LABOR CRAFT (SOA)",
+      "resource": "labor",
+      "endpoint": "/oslc/os/iplaborcraft",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "iplabtrans",
+      "canonical": "IPLABTRANS",
+      "readable": "IP MOBILE APPS LABTRANS",
+      "resource": "other",
+      "endpoint": "/oslc/os/iplabtrans",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "iplcm",
+      "canonical": "IPLCM",
+      "readable": "IPLCM LOADER",
+      "resource": "other",
+      "endpoint": "/oslc/os/iplcm",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "iplcmaging",
+      "canonical": "IPLCMAGING",
+      "readable": "IPLCM AGING LOADER",
+      "resource": "other",
+      "endpoint": "/oslc/os/iplcmaging",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "iplcmeva",
+      "canonical": "IPLCMEVA",
+      "readable": "IP LOADER LCMEVA",
+      "resource": "other",
+      "endpoint": "/oslc/os/iplcmeva",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "iplocation",
+      "canonical": "IPLOCATION",
+      "readable": "IP LOADER LOCATION",
+      "resource": "location",
+      "endpoint": "/oslc/os/iplocation",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipmeasurement",
+      "canonical": "IPMEASUREMENT",
+      "readable": "IP MOBILE APPS MEASUREMENT",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipmeasurement",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipmeter",
+      "canonical": "IPMETER",
+      "readable": "IP LOADER METER",
+      "resource": "meter",
+      "endpoint": "/oslc/os/ipmeter",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipmetergroup",
+      "canonical": "IPMETERGROUP",
+      "readable": "IP LOADER METER GROUP (HEADER)",
+      "resource": "meter",
+      "endpoint": "/oslc/os/ipmetergroup",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipmeteringroup",
+      "canonical": "IPMETERINGROUP",
+      "readable": "IP LOADER METER IN GROUP (DETAIL)",
+      "resource": "meter",
+      "endpoint": "/oslc/os/ipmeteringroup",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipmobver",
+      "canonical": "IPMOBVER",
+      "readable": "IP Mobile Version History",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipmobver",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipmr",
+      "canonical": "IPMR",
+      "readable": "Material Requisition",
+      "resource": "materials",
+      "endpoint": "/oslc/os/ipmr",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipms",
+      "canonical": "IPMS",
+      "readable": "IP LOADER MS",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipms",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipmsassesmentprocess",
+      "canonical": "IPMSASSESMENTPROCESS",
+      "readable": "IP LOADER MS ASSESMENT PROCESS",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipmsassesmentprocess",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipmsdetail",
+      "canonical": "IPMSDETAIL",
+      "readable": "IP LOADER MS DETAIL",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipmsdetail",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipmsmonitorsystem",
+      "canonical": "IPMSMONITORSYSTEM",
+      "readable": "IP LOADER MS MONITOR SYSTEM",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipmsmonitorsystem",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipmsmsfailuremechani",
+      "canonical": "IPMSMSFAILUREMECHANI",
+      "readable": "IP LOADER MS FAILURE MECHANISM",
+      "resource": "failurecode",
+      "endpoint": "/oslc/os/ipmsmsfailuremechani",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipmsproteksi",
+      "canonical": "IPMSPROTEKSI",
+      "readable": "IP LOADER MS PROTEKSI",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipmsproteksi",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipmxmeasurement",
+      "canonical": "IPMXMEASUREMENT",
+      "readable": "IP LOADER MEASUREMENT",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipmxmeasurement",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipnearmiss",
+      "canonical": "IPNEARMISS",
+      "readable": "Interface Integrasi Nearmiss",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipnearmiss",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipnumdomain",
+      "canonical": "IPNUMDOMAIN",
+      "readable": "IP Numeric Domain",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipnumdomain",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ippersondevice",
+      "canonical": "IPPERSONDEVICE",
+      "readable": "IP MOBILE APPS PERSON DEVICE",
+      "resource": "person",
+      "endpoint": "/oslc/os/ippersondevice",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ippersondomoh",
+      "canonical": "IPPERSONDOMOH",
+      "readable": "DOMINION - MAN POWER OH",
+      "resource": "person",
+      "endpoint": "/oslc/os/ippersondomoh",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ippersongroupteam",
+      "canonical": "IPPERSONGROUPTEAM",
+      "readable": "IP PERSON GROUP TEAM",
+      "resource": "person",
+      "endpoint": "/oslc/os/ippersongroupteam",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ippersonseksi",
+      "canonical": "IPPERSONSEKSI",
+      "readable": "IP MOBILE APPS PERSON SEKSI",
+      "resource": "person",
+      "endpoint": "/oslc/os/ippersonseksi",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ippm",
+      "canonical": "IPPM",
+      "readable": "IP LOADER PM",
+      "resource": "preventivemaintenance",
+      "endpoint": "/oslc/os/ippm",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ippn_meter",
+      "canonical": "IPPN_METER",
+      "readable": "IPPN_METER",
+      "resource": "meter",
+      "endpoint": "/oslc/os/ippn_meter",
+      "methods": [
+        "GET"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ippn_plan_bbn",
+      "canonical": "IPPN_PLAN_BBN",
+      "readable": "IPPN_PLAN_BBN",
+      "resource": "other",
+      "endpoint": "/oslc/os/ippn_plan_bbn",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ippn_reali_bbn",
+      "canonical": "IPPN_REALI_BBN",
+      "readable": "IPPN_REALI_BBN",
+      "resource": "other",
+      "endpoint": "/oslc/os/ippn_reali_bbn",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ippn_reali_pmkn_sndr",
+      "canonical": "IPPN_REALI_PMKN_SNDR",
+      "readable": "IPPN_REALI_PMKN_SNDR",
+      "resource": "other",
+      "endpoint": "/oslc/os/ippn_reali_pmkn_sndr",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ippn_reali_pnjln",
+      "canonical": "IPPN_REALI_PNJLN",
+      "readable": "IPPN_REALI_PNJLN",
+      "resource": "other",
+      "endpoint": "/oslc/os/ippn_reali_pnjln",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ippn_reali_prdks_bru",
+      "canonical": "IPPN_REALI_PRDKS_BRU",
+      "readable": "IPPN_REALI_PRDKS_BRU",
+      "resource": "other",
+      "endpoint": "/oslc/os/ippn_reali_prdks_bru",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipprecaution",
+      "canonical": "IPPRECAUTION",
+      "readable": "LOADER MASTER PRECAUTION",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipprecaution",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipprojectoh",
+      "canonical": "IPPROJECTOH",
+      "readable": "IP MOBILE DOMINION APPS PROJECT OH",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipprojectoh",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipproniaiface",
+      "canonical": "IPPRONIAIFACE",
+      "readable": "Interface Integrasi ProNIA - RCFA",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipproniaiface",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "iprcfa",
+      "canonical": "IPRCFA",
+      "readable": "IP LOADER RCFA",
+      "resource": "other",
+      "endpoint": "/oslc/os/iprcfa",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "iprcfafdt",
+      "canonical": "IPRCFAFDT",
+      "readable": "IP LOADER RCFA FDT",
+      "resource": "other",
+      "endpoint": "/oslc/os/iprcfafdt",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "iprcfaworkshop",
+      "canonical": "IPRCFAWORKSHOP",
+      "readable": "IP LOADER RCFA WORKSHOP + PESERTA",
+      "resource": "other",
+      "endpoint": "/oslc/os/iprcfaworkshop",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipsafety",
+      "canonical": "IPSAFETY",
+      "readable": "IP Safety Plan",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipsafety",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipsafetylexicon",
+      "canonical": "IPSAFETYLEXICON",
+      "readable": "LOADER IPSAFETYLEXICON",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipsafetylexicon",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipsafetyplan",
+      "canonical": "IPSAFETYPLAN",
+      "readable": "IP SAFETY PLAN",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipsafetyplan",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipsisterasset",
+      "canonical": "IPSISTERASSET",
+      "readable": "SISTER ASSET",
+      "resource": "asset",
+      "endpoint": "/oslc/os/ipsisterasset",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "iptagout",
+      "canonical": "IPTAGOUT",
+      "readable": "IP LOADER LOTO",
+      "resource": "other",
+      "endpoint": "/oslc/os/iptagout",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "iptool",
+      "canonical": "IPTOOL",
+      "readable": "IP LOADER TOOL",
+      "resource": "materials",
+      "endpoint": "/oslc/os/iptool",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipvendor",
+      "canonical": "IPVENDOR",
+      "readable": "[IP] Companies Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipvendor",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipwoactivity",
+      "canonical": "IPWOACTIVITY",
+      "readable": "IP MOBILE APPS WOACTIVITY",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipwoactivity",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipwoattach",
+      "canonical": "IPWOATTACH",
+      "readable": "IP MOBILE APPS WO ATTACHMENT",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipwoattach",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipwopm",
+      "canonical": "IPWOPM",
+      "readable": "IP MOBILE APPS WO PM",
+      "resource": "preventivemaintenance",
+      "endpoint": "/oslc/os/ipwopm",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipworeoc",
+      "canonical": "IPWOREOC",
+      "readable": "IP MOBILE APPS WORKORDER (REOC Dispacth)",
+      "resource": "workorder",
+      "endpoint": "/oslc/os/ipworeoc",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipworklog",
+      "canonical": "IPWORKLOG",
+      "readable": "IP MOBILE APPS WORKLOG",
+      "resource": "workorder",
+      "endpoint": "/oslc/os/ipworklog",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipworkorder",
+      "canonical": "IPWORKORDER",
+      "readable": "IP MOBILE APPS WORKORDER",
+      "resource": "workorder",
+      "endpoint": "/oslc/os/ipworkorder",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipworkorder2",
+      "canonical": "IPWORKORDER2",
+      "readable": "IP MOBILE APPS WO STATUS (SOA)",
+      "resource": "workorder",
+      "endpoint": "/oslc/os/ipworkorder2",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipworkorder3",
+      "canonical": "IPWORKORDER3",
+      "readable": "IP MOBILE APPS WO DIGI STATUS (SOA)",
+      "resource": "workorder",
+      "endpoint": "/oslc/os/ipworkorder3",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipworkorderdgx",
+      "canonical": "IPWORKORDERDGX",
+      "readable": "IP MOBILE APPS WORKORDER DIGIMONX",
+      "resource": "workorder",
+      "endpoint": "/oslc/os/ipworkorderdgx",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipworkordernew",
+      "canonical": "IPWORKORDERNEW",
+      "readable": "IP MOBILE APPS WORKORDER NEW",
+      "resource": "workorder",
+      "endpoint": "/oslc/os/ipworkordernew",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipwosafety",
+      "canonical": "IPWOSAFETY",
+      "readable": "IP WO SAFETY",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipwosafety",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipwosafetymst",
+      "canonical": "IPWOSAFETYMST",
+      "readable": "IP WO SAFETY MASTER",
+      "resource": "other",
+      "endpoint": "/oslc/os/ipwosafetymst",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "ipwpmaterial",
+      "canonical": "IPWPMATERIAL",
+      "readable": "IP MOBILE APPS WPMATERIAL",
+      "resource": "materials",
+      "endpoint": "/oslc/os/ipwpmaterial",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "kpitemplate",
+      "canonical": "KPITEMPLATE",
+      "readable": "KPITEMPLATE Object Structure",
+      "resource": "materials",
+      "endpoint": "/oslc/os/kpitemplate",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "lcmeva_param",
+      "canonical": "LCMEVA_PARAM",
+      "readable": "LCM EValuasi Parameter",
+      "resource": "meter",
+      "endpoint": "/oslc/os/lcmeva_param",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "metertpcems",
+      "canonical": "METERTPCEMS",
+      "readable": "Import Pemantauan CEMS ( PRO - ECO )",
+      "resource": "meter",
+      "endpoint": "/oslc/os/metertpcems",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxaction",
+      "canonical": "MXACTION",
+      "readable": "Action Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxaction",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxamcrew",
+      "canonical": "MXAMCREW",
+      "readable": "Crews",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxamcrew",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxamcrewt",
+      "canonical": "MXAMCREWT",
+      "readable": "Crew Types",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxamcrewt",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiadmin",
+      "canonical": "MXAPIADMIN",
+      "readable": "Person User definition for Administrator upload of data",
+      "resource": "person",
+      "endpoint": "/oslc/os/mxapiadmin",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiahblthreshold",
+      "canonical": "MXAPIAHBLTHRESHOLD",
+      "readable": "Maximo API's Baseline Thresholds",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiahblthreshold",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiahdriverlib",
+      "canonical": "MXAPIAHDRIVERLIB",
+      "readable": "Maximo API's driver library",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiahdriverlib",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiahmethodology",
+      "canonical": "MXAPIAHMETHODOLOGY",
+      "readable": "Maximo API's methodology",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiahmethodology",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiallproducts",
+      "canonical": "MXAPIALLPRODUCTS",
+      "readable": "All Weather Products",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiallproducts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapianalyticdataset",
+      "canonical": "MXAPIANALYTICDATASET",
+      "readable": "MXAPIANALYTICDATASET",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapianalyticdataset",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiapppropcfg",
+      "canonical": "MXAPIAPPPROPCFG",
+      "readable": "API for configuring application properties",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiapppropcfg",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiasset",
+      "canonical": "MXAPIASSET",
+      "readable": "Maximo API's Asset Definition",
+      "resource": "asset",
+      "endpoint": "/oslc/os/mxapiasset",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiassetmeter",
+      "canonical": "MXAPIASSETMETER",
+      "readable": "Maximo Api's Asset Meter definition",
+      "resource": "asset",
+      "endpoint": "/oslc/os/mxapiassetmeter",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiassignment",
+      "canonical": "MXAPIASSIGNMENT",
+      "readable": "UI Assignment Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiassignment",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiattrformula",
+      "canonical": "MXAPIATTRFORMULA",
+      "readable": "Maximo API's formulas",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiattrformula",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiautoscript",
+      "canonical": "MXAPIAUTOSCRIPT",
+      "readable": "Maximo API's Automation Script.",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiautoscript",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapibookmark",
+      "canonical": "MXAPIBOOKMARK",
+      "readable": "Maximo API's Bookmark",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapibookmark",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapicontract",
+      "canonical": "MXAPICONTRACT",
+      "readable": "UI Definition for Contracts",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapicontract",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapicraft",
+      "canonical": "MXAPICRAFT",
+      "readable": "UI CRAFT Definition",
+      "resource": "labor",
+      "endpoint": "/oslc/os/mxapicraft",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapidoctype",
+      "canonical": "MXAPIDOCTYPE",
+      "readable": "Object Structure to retrieve doctypes data",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapidoctype",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapidomain",
+      "canonical": "MXAPIDOMAIN",
+      "readable": "API Domain Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapidomain",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiendpoint",
+      "canonical": "MXAPIENDPOINT",
+      "readable": "Endpoint Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiendpoint",
+      "methods": [
+        "GET"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapifailurecode",
+      "canonical": "MXAPIFAILURECODE",
+      "readable": "Maximo API's Failure Codes.",
+      "resource": "failurecode",
+      "endpoint": "/oslc/os/mxapifailurecode",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapifailurelist",
+      "canonical": "MXAPIFAILURELIST",
+      "readable": "Maximo API's Failure Lists.",
+      "resource": "failurecode",
+      "endpoint": "/oslc/os/mxapifailurelist",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapigroup",
+      "canonical": "MXAPIGROUP",
+      "readable": "UI PERSON GROUP Definition",
+      "resource": "person",
+      "endpoint": "/oslc/os/mxapigroup",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiinsight",
+      "canonical": "MXAPIINSIGHT",
+      "readable": "Maximo API's Insights",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiinsight",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiinsightfactor",
+      "canonical": "MXAPIINSIGHTFACTOR",
+      "readable": "Maximo API's Insight Factors",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiinsightfactor",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiinspform",
+      "canonical": "MXAPIINSPFORM",
+      "readable": "Object Structure to retrieve Inspection form",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiinspform",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiinspformstatus",
+      "canonical": "MXAPIINSPFORMSTATUS",
+      "readable": "Object structure to retrieve inspection form status history",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiinspformstatus",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiinspformusewith",
+      "canonical": "MXAPIINSPFORMUSEWITH",
+      "readable": "Inspection Form Use With table integration Endpoint",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiinspformusewith",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiinspresult",
+      "canonical": "MXAPIINSPRESULT",
+      "readable": "Object Structure to retrieve Inspection result",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiinspresult",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiiotcfg",
+      "canonical": "MXAPIIOTCFG",
+      "readable": "Maximo API's IoT Configuration",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiiotcfg",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiiotdevice",
+      "canonical": "MXAPIIOTDEVICE",
+      "readable": "Maximo API IoT Devices",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiiotdevice",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiiotserv",
+      "canonical": "MXAPIIOTSERV",
+      "readable": "Maximo API IoT Service Connection",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiiotserv",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapijobplan",
+      "canonical": "MXAPIJOBPLAN",
+      "readable": "Maximo API's  Job Plans Definition",
+      "resource": "jobplan",
+      "endpoint": "/oslc/os/mxapijobplan",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapikpimain",
+      "canonical": "MXAPIKPIMAIN",
+      "readable": "UI Definition of the KPIMAIN table",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapikpimain",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapilabor",
+      "canonical": "MXAPILABOR",
+      "readable": "UI Definition of the Labor table.",
+      "resource": "labor",
+      "endpoint": "/oslc/os/mxapilabor",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapilaborcraftrate",
+      "canonical": "MXAPILABORCRAFTRATE",
+      "readable": "UI Definition for LABORCRAFTRATE",
+      "resource": "labor",
+      "endpoint": "/oslc/os/mxapilaborcraftrate",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapilocancestor",
+      "canonical": "MXAPILOCANCESTOR",
+      "readable": "Maximo API's location ANCESTOR information",
+      "resource": "location",
+      "endpoint": "/oslc/os/mxapilocancestor",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapilocation",
+      "canonical": "MXAPILOCATION",
+      "readable": "Maximo API's LOCATION INFORMATION",
+      "resource": "location",
+      "endpoint": "/oslc/os/mxapilocation",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapilocationmeter",
+      "canonical": "MXAPILOCATIONMETER",
+      "readable": "Object Structure for Location Meters",
+      "resource": "location",
+      "endpoint": "/oslc/os/mxapilocationmeter",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapilocations",
+      "canonical": "MXAPILOCATIONS",
+      "readable": "UI Locations Definition",
+      "resource": "location",
+      "endpoint": "/oslc/os/mxapilocations",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapilocsystem",
+      "canonical": "MXAPILOCSYSTEM",
+      "readable": "Maximo API's Location Systems",
+      "resource": "location",
+      "endpoint": "/oslc/os/mxapilocsystem",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapimapmanager",
+      "canonical": "MXAPIMAPMANAGER",
+      "readable": "Maximo API's Map Manager Object Structure",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapimapmanager",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapimaxapp",
+      "canonical": "MXAPIMAXAPP",
+      "readable": "Maximo API's MaxApps Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapimaxapp",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapimeter",
+      "canonical": "MXAPIMETER",
+      "readable": "Object Structure to retrieve Meter data",
+      "resource": "meter",
+      "endpoint": "/oslc/os/mxapimeter",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapinotification",
+      "canonical": "MXAPINOTIFICATION",
+      "readable": "API Notification Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapinotification",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapioperloc",
+      "canonical": "MXAPIOPERLOC",
+      "readable": "Maximo API's Operation Location Definition",
+      "resource": "location",
+      "endpoint": "/oslc/os/mxapioperloc",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapipergroup",
+      "canonical": "MXAPIPERGROUP",
+      "readable": "UI PERSON GROUP Definition",
+      "resource": "person",
+      "endpoint": "/oslc/os/mxapipergroup",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapipersongroup",
+      "canonical": "MXAPIPERSONGROUP",
+      "readable": "UI MXAPIPERSONGROUP Definition",
+      "resource": "person",
+      "endpoint": "/oslc/os/mxapipersongroup",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiperuser",
+      "canonical": "MXAPIPERUSER",
+      "readable": "UI Person User Definition",
+      "resource": "person",
+      "endpoint": "/oslc/os/mxapiperuser",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapipm",
+      "canonical": "MXAPIPM",
+      "readable": "Maximo API's Preventive Maintenance.",
+      "resource": "preventivemaintenance",
+      "endpoint": "/oslc/os/mxapipm",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapipo",
+      "canonical": "MXAPIPO",
+      "readable": "UI Purchase Orders Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapipo",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiquerytemplate",
+      "canonical": "MXAPIQUERYTEMPLATE",
+      "readable": "Maximo API's Query Template Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiquerytemplate",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiscoringrange",
+      "canonical": "MXAPISCORINGRANGE",
+      "readable": "Maximo API's Baseline Thresholds Ranges",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiscoringrange",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiseraddress",
+      "canonical": "MXAPISERADDRESS",
+      "readable": "UI BOTC SERVICE ADDRESS",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiseraddress",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapishift",
+      "canonical": "MXAPISHIFT",
+      "readable": "UI SHIFT Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapishift",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapisolution",
+      "canonical": "MXAPISOLUTION",
+      "readable": "Solution object for UI",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapisolution",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapisr",
+      "canonical": "MXAPISR",
+      "readable": "Maximo API's Service request",
+      "resource": "sr",
+      "endpoint": "/oslc/os/mxapisr",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapitkclass",
+      "canonical": "MXAPITKCLASS",
+      "readable": "Maximo API's CLASSSTRUCTURE",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapitkclass",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapitktemplate",
+      "canonical": "MXAPITKTEMPLATE",
+      "readable": "Maximo API's TKTEMPLATE",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapitktemplate",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapivendor",
+      "canonical": "MXAPIVENDOR",
+      "readable": "UI Definition for Companies",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapivendor",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiweathergroup",
+      "canonical": "MXAPIWEATHERGROUP",
+      "readable": "Weather Group",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiweathergroup",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiweatherorg",
+      "canonical": "MXAPIWEATHERORG",
+      "readable": "Weather Organization",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiweatherorg",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiweatherproduct",
+      "canonical": "MXAPIWEATHERPRODUCT",
+      "readable": "API's for Weather products",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiweatherproduct",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiweatherzone",
+      "canonical": "MXAPIWEATHERZONE",
+      "readable": "Weather Zone API's",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiweatherzone",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiwfassignment",
+      "canonical": "MXAPIWFASSIGNMENT",
+      "readable": "MXAPIWFASSIGNMENT",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiwfassignment",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiwmassignment",
+      "canonical": "MXAPIWMASSIGNMENT",
+      "readable": "UI WMAssignbment Defintion",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiwmassignment",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiwo",
+      "canonical": "MXAPIWO",
+      "readable": "UI Work Order Definition",
+      "resource": "workorder",
+      "endpoint": "/oslc/os/mxapiwo",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiwodetail",
+      "canonical": "MXAPIWODETAIL",
+      "readable": "Maximo API's  Work Order with Plans and Reservations Definition",
+      "resource": "workorder",
+      "endpoint": "/oslc/os/mxapiwodetail",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiworklog",
+      "canonical": "MXAPIWORKLOG",
+      "readable": "Maximo API's worklog",
+      "resource": "workorder",
+      "endpoint": "/oslc/os/mxapiworklog",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiworkscapelayout",
+      "canonical": "MXAPIWORKSCAPELAYOUT",
+      "readable": "Maximo API's Work Center Layout",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiworkscapelayout",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiworkview",
+      "canonical": "MXAPIWORKVIEW",
+      "readable": "API's Work View definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiworkview",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiwosdataset",
+      "canonical": "MXAPIWOSDATASET",
+      "readable": "WOS Data Set List",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiwosdataset",
+      "methods": [
+        "GET"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxapiwpeditsetting",
+      "canonical": "MXAPIWPEDITSETTING",
+      "readable": "WPEditSetting",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxapiwpeditsetting",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxasset",
+      "canonical": "MXASSET",
+      "readable": "Asset Definition",
+      "resource": "asset",
+      "endpoint": "/oslc/os/mxasset",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxauthci",
+      "canonical": "MXAUTHCI",
+      "readable": "CI Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxauthci",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxbimassetwo",
+      "canonical": "MXBIMASSETWO",
+      "readable": "Active work orders for an asset",
+      "resource": "asset",
+      "endpoint": "/oslc/os/mxbimassetwo",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxbimfilter",
+      "canonical": "MXBIMFILTER",
+      "readable": "Filters for COBie import projects",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxbimfilter",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxbimproject",
+      "canonical": "MXBIMPROJECT",
+      "readable": "BIM Import/Export",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxbimproject",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxbudget",
+      "canonical": "MXBUDGET",
+      "readable": "Budget definition for excel export/import",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxbudget",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxclassification",
+      "canonical": "MXCLASSIFICATION",
+      "readable": "Classification Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxclassification",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxcoa",
+      "canonical": "MXCOA",
+      "readable": "GL Account Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxcoa",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxcollectauth",
+      "canonical": "MXCOLLECTAUTH",
+      "readable": "Collection Authorization Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxcollectauth",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxcollection",
+      "canonical": "MXCOLLECTION",
+      "readable": "Collection Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxcollection",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxcraft",
+      "canonical": "MXCRAFT",
+      "readable": "Craft Definition",
+      "resource": "labor",
+      "endpoint": "/oslc/os/mxcraft",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxctemplate",
+      "canonical": "MXCTEMPLATE",
+      "readable": "Comm Template Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxctemplate",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxdmdmeterpoint",
+      "canonical": "MXDMDMETERPOINT",
+      "readable": "DIAMOND - Meterpoint (Loader)",
+      "resource": "meter",
+      "endpoint": "/oslc/os/mxdmdmeterpoint",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxdmdrkops",
+      "canonical": "MXDMDRKOPS",
+      "readable": "DIAMOND - Rencana Kerja Operasi Rutin (Loader + App ExImp)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxdmdrkops",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxdmdtmpltlapdtl",
+      "canonical": "MXDMDTMPLTLAPDTL",
+      "readable": "DIAMOND - Template Laporan Detail (Loader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxdmdtmpltlapdtl",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxdmdtmpltlapdtlmtr",
+      "canonical": "MXDMDTMPLTLAPDTLMTR",
+      "readable": "DIAMOND - Template Laporan Detail Meterpoint (Loader)",
+      "resource": "meter",
+      "endpoint": "/oslc/os/mxdmdtmpltlapdtlmtr",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxdmdtmpltlaphdr",
+      "canonical": "MXDMDTMPLTLAPHDR",
+      "readable": "DIAMOND - Template Laporan Header (Loader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxdmdtmpltlaphdr",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxdmdtmpltlogsched",
+      "canonical": "MXDMDTMPLTLOGSCHED",
+      "readable": "DIAMOND - Template Schedule Logsheet (Loader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxdmdtmpltlogsched",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxdmdtrgkit",
+      "canonical": "MXDMDTRGKIT",
+      "readable": "DIAMOND - Target Pembangkitan  (Loader + App ExImp)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxdmdtrgkit",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxdomain",
+      "canonical": "MXDOMAIN",
+      "readable": "Domain Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxdomain",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxebsasset",
+      "canonical": "MXEBSASSET",
+      "readable": "#EBS Asset Depresiasi",
+      "resource": "asset",
+      "endpoint": "/oslc/os/mxebsasset",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxebseu",
+      "canonical": "MXEBSEU",
+      "readable": "#EBS End User",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxebseu",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxebsinventory",
+      "canonical": "MXEBSINVENTORY",
+      "readable": "#EBS Inventory Definition",
+      "resource": "materials",
+      "endpoint": "/oslc/os/mxebsinventory",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxebsinvissue",
+      "canonical": "MXEBSINVISSUE",
+      "readable": "#EBS Inventory Issue Definition",
+      "resource": "materials",
+      "endpoint": "/oslc/os/mxebsinvissue",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxebsinvreserve",
+      "canonical": "MXEBSINVRESERVE",
+      "readable": "#EBS WO\\MR Reserve",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxebsinvreserve",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxebsitem",
+      "canonical": "MXEBSITEM",
+      "readable": "#EBS Item Definition",
+      "resource": "materials",
+      "endpoint": "/oslc/os/mxebsitem",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxebslaborreqos",
+      "canonical": "MXEBSLABORREQOS",
+      "readable": "MXEBSLABORREQOS Definition for web service interaction",
+      "resource": "labor",
+      "endpoint": "/oslc/os/mxebslaborreqos",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxebslaborresos",
+      "canonical": "MXEBSLABORRESOS",
+      "readable": "MXEBSLABORRESOS Definition for web service interaction",
+      "resource": "labor",
+      "endpoint": "/oslc/os/mxebslaborresos",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxebsmeasureunit",
+      "canonical": "MXEBSMEASUREUNIT",
+      "readable": "#EBS Measureunit Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxebsmeasureunit",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxebsmr",
+      "canonical": "MXEBSMR",
+      "readable": "#EBS MR Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxebsmr",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxebspo",
+      "canonical": "MXEBSPO",
+      "readable": "#EBS PO Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxebspo",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxebsprojects",
+      "canonical": "MXEBSPROJECTS",
+      "readable": "#EBS Project Costing",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxebsprojects",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxebsreceipt",
+      "canonical": "MXEBSRECEIPT",
+      "readable": "#EBS Receipts Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxebsreceipt",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxebsstoreloc",
+      "canonical": "MXEBSSTORELOC",
+      "readable": "#EBS Storeroom Location Definition",
+      "resource": "location",
+      "endpoint": "/oslc/os/mxebsstoreloc",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxebstool",
+      "canonical": "MXEBSTOOL",
+      "readable": "MX EBS Tool Items Definition",
+      "resource": "materials",
+      "endpoint": "/oslc/os/mxebstool",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxebswo",
+      "canonical": "MXEBSWO",
+      "readable": "#EBS Work Order Definition",
+      "resource": "workorder",
+      "endpoint": "/oslc/os/mxebswo",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxebswos",
+      "canonical": "MXEBSWOS",
+      "readable": "Wo Status",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxebswos",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxempact",
+      "canonical": "MXEMPACT",
+      "readable": "Labor Pay Definition",
+      "resource": "labor",
+      "endpoint": "/oslc/os/mxempact",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxendpoint",
+      "canonical": "MXENDPOINT",
+      "readable": "Integration Endpoint Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxendpoint",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxentsrv",
+      "canonical": "MXENTSRV",
+      "readable": "Enterprise Service Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxentsrv",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxextsystem",
+      "canonical": "MXEXTSYSTEM",
+      "readable": "External System Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxextsystem",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxgbtemplate",
+      "canonical": "MXGBTEMPLATE",
+      "readable": "Group By Template DefinItion",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxgbtemplate",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxglcomp",
+      "canonical": "MXGLCOMP",
+      "readable": "GL Component Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxglcomp",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxgltxn",
+      "canonical": "MXGLTXN",
+      "readable": "Journals Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxgltxn",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxifacecontrol",
+      "canonical": "MXIFACECONTROL",
+      "readable": "Integration Control Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxifacecontrol",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxifaceinvoke",
+      "canonical": "MXIFACEINVOKE",
+      "readable": "Invocation Channel Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxifaceinvoke",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxifaceout",
+      "canonical": "MXIFACEOUT",
+      "readable": "Publish Channel Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxifaceout",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxim",
+      "canonical": "MXIM",
+      "readable": "Integration Module Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxim",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxincident",
+      "canonical": "MXINCIDENT",
+      "readable": "Incident Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxincident",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxintobject",
+      "canonical": "MXINTOBJECT",
+      "readable": "Object Structure Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxintobject",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxinvbal",
+      "canonical": "MXINVBAL",
+      "readable": "Inventory Balance Definition",
+      "resource": "materials",
+      "endpoint": "/oslc/os/mxinvbal",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxinventory",
+      "canonical": "MXINVENTORY",
+      "readable": "Inventory Definition",
+      "resource": "materials",
+      "endpoint": "/oslc/os/mxinventory",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxinvissue",
+      "canonical": "MXINVISSUE",
+      "readable": "Inventory Issue Definition",
+      "resource": "materials",
+      "endpoint": "/oslc/os/mxinvissue",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxinvoice",
+      "canonical": "MXINVOICE",
+      "readable": "Invoice Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxinvoice",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxinvres",
+      "canonical": "MXINVRES",
+      "readable": "Inventory Reservations Definition",
+      "resource": "materials",
+      "endpoint": "/oslc/os/mxinvres",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxinvuse",
+      "canonical": "MXINVUSE",
+      "readable": "Maximo Inventory Usage Object Structure",
+      "resource": "materials",
+      "endpoint": "/oslc/os/mxinvuse",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxinvvendor",
+      "canonical": "MXINVVENDOR",
+      "readable": "Item Vendor Definition",
+      "resource": "materials",
+      "endpoint": "/oslc/os/mxinvvendor",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxitem",
+      "canonical": "MXITEM",
+      "readable": "Item Definition",
+      "resource": "materials",
+      "endpoint": "/oslc/os/mxitem",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxjsonmapping",
+      "canonical": "MXJSONMAPPING",
+      "readable": "JSON Mapping object structute",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxjsonmapping",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxjsonresnp",
+      "canonical": "MXJSONRESNP",
+      "readable": "JSON Resource generation",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxjsonresnp",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl-assetattribute",
+      "canonical": "MXL-ASSETATTRIBUTE",
+      "readable": "Specification attributes (MxLoader) (MXL-ASSETATTRIBUTE)",
+      "resource": "asset",
+      "endpoint": "/oslc/os/mxl-assetattribute",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl-assetsp",
+      "canonical": "MXL-ASSETSP",
+      "readable": "Assets spare parts (MxLoader) (MXL-ASSETSP)",
+      "resource": "asset",
+      "endpoint": "/oslc/os/mxl-assetsp",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl-commodities",
+      "canonical": "MXL-COMMODITIES",
+      "readable": "Commodities (MxLoader) (MXL-COMMODITIES)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl-commodities",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl-companies",
+      "canonical": "MXL-COMPANIES",
+      "readable": "Companies (MxLoader) (MXL-COMPANIES)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl-companies",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl-conversion",
+      "canonical": "MXL-CONVERSION",
+      "readable": "Conversion factors (MxLoader) (MXL-CONVERSION)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl-conversion",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl-currency",
+      "canonical": "MXL-CURRENCY",
+      "readable": "Currencies (MxLoader) (MXL-CURRENCY)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl-currency",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl-excgrates",
+      "canonical": "MXL-EXCGRATES",
+      "readable": "Exchange rates (MxLoader) (MXL-EXCGRATES)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl-excgrates",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl-failurecode",
+      "canonical": "MXL-FAILURECODE",
+      "readable": "Failure codes (MxLoader) (MXL-FAILURECODE)",
+      "resource": "failurecode",
+      "endpoint": "/oslc/os/mxl-failurecode",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl-failurelist",
+      "canonical": "MXL-FAILURELIST",
+      "readable": "Failure hierarchy (MxLoader) (MXL-FAILURELIST)",
+      "resource": "failurecode",
+      "endpoint": "/oslc/os/mxl-failurelist",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl-jobplan",
+      "canonical": "MXL-JOBPLAN",
+      "readable": "Job Plans (MxLoader) (MXL-JOBPLAN)",
+      "resource": "jobplan",
+      "endpoint": "/oslc/os/mxl-jobplan",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl-location",
+      "canonical": "MXL-LOCATION",
+      "readable": "Location hierarchy (MxLoader) (MXL-LOCATION)",
+      "resource": "location",
+      "endpoint": "/oslc/os/mxl-location",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl-maxattributecfg",
+      "canonical": "MXL-MAXATTRIBUTECFG",
+      "readable": "Data dictionary (MxLoader) (MXL-MAXATTRIBUTECFG)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl-maxattributecfg",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl-measureunit",
+      "canonical": "MXL-MEASUREUNIT",
+      "readable": "Units of Measure (MxLoader) (MXL-MEASUREUNIT)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl-measureunit",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl-pergrp",
+      "canonical": "MXL-PERGRP",
+      "readable": "Person groups (MxLoader) (MXL-PERGRP)",
+      "resource": "person",
+      "endpoint": "/oslc/os/mxl-pergrp",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl-pm",
+      "canonical": "MXL-PM",
+      "readable": "Preventive maintenance (MxLoader) (MXL-PM)",
+      "resource": "preventivemaintenance",
+      "endpoint": "/oslc/os/mxl-pm",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl-routes",
+      "canonical": "MXL-ROUTES",
+      "readable": "Routes (MxLoader) (MXL-ROUTES)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl-routes",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl-usergrp",
+      "canonical": "MXL-USERGRP",
+      "readable": "Users Security (MxLoader) (MXL-USERGRP)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl-usergrp",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_apps",
+      "canonical": "MXL_APPS",
+      "readable": "Application definition (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_apps",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_assetattribute",
+      "canonical": "MXL_ASSETATTRIBUTE",
+      "readable": "Specification attributes (MxLoader)",
+      "resource": "asset",
+      "endpoint": "/oslc/os/mxl_assetattribute",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_assetsp",
+      "canonical": "MXL_ASSETSP",
+      "readable": "Assets spare parts (MxLoader)",
+      "resource": "asset",
+      "endpoint": "/oslc/os/mxl_assetsp",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_calwp",
+      "canonical": "MXL_CALWP",
+      "readable": "Calendars and Work Periods (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_calwp",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_cfgdb",
+      "canonical": "MXL_CFGDB",
+      "readable": "Database Configuration (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_cfgdb",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_cfgdblm",
+      "canonical": "MXL_CFGDBLM",
+      "readable": "Lookup Maps (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_cfgdblm",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_cfgdbrel",
+      "canonical": "MXL_CFGDBREL",
+      "readable": "Database Relationship (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_cfgdbrel",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_commodities",
+      "canonical": "MXL_COMMODITIES",
+      "readable": "Commodities (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_commodities",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_commtemplate",
+      "canonical": "MXL_COMMTEMPLATE",
+      "readable": "Communication template (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_commtemplate",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_companies",
+      "canonical": "MXL_COMPANIES",
+      "readable": "Companies (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_companies",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_condition",
+      "canonical": "MXL_CONDITION",
+      "readable": "Conditional Expressions (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_condition",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_conversion",
+      "canonical": "MXL_CONVERSION",
+      "readable": "Conversion factors (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_conversion",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_ctrlgroup",
+      "canonical": "MXL_CTRLGROUP",
+      "readable": "Conditional UI (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_ctrlgroup",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_currency",
+      "canonical": "MXL_CURRENCY",
+      "readable": "Currencies (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_currency",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_escalation",
+      "canonical": "MXL_ESCALATION",
+      "readable": "Escalations (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_escalation",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_excgrates",
+      "canonical": "MXL_EXCGRATES",
+      "readable": "Exchange rates (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_excgrates",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_failurecode",
+      "canonical": "MXL_FAILURECODE",
+      "readable": "Failure codes (MxLoader)",
+      "resource": "failurecode",
+      "endpoint": "/oslc/os/mxl_failurecode",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_failurelist",
+      "canonical": "MXL_FAILURELIST",
+      "readable": "Failure hierarchy (MxLoader)",
+      "resource": "failurecode",
+      "endpoint": "/oslc/os/mxl_failurelist",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_jobplan",
+      "canonical": "MXL_JOBPLAN",
+      "readable": "Job Plans (MxLoader)",
+      "resource": "jobplan",
+      "endpoint": "/oslc/os/mxl_jobplan",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_location",
+      "canonical": "MXL_LOCATION",
+      "readable": "Location hierarchy (MxLoader)",
+      "resource": "location",
+      "endpoint": "/oslc/os/mxl_location",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_maxattributecfg",
+      "canonical": "MXL_MAXATTRIBUTECFG",
+      "readable": "Data dictionary (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_maxattributecfg",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_maxgroup",
+      "canonical": "MXL_MAXGROUP",
+      "readable": "Security Groups (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_maxgroup",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_maxmenu",
+      "canonical": "MXL_MAXMENU",
+      "readable": "Application Menu (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_maxmenu",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_measureunit",
+      "canonical": "MXL_MEASUREUNIT",
+      "readable": "Units of Measure (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_measureunit",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_pergrp",
+      "canonical": "MXL_PERGRP",
+      "readable": "Person groups (MxLoader)",
+      "resource": "person",
+      "endpoint": "/oslc/os/mxl_pergrp",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_pm",
+      "canonical": "MXL_PM",
+      "readable": "Preventive maintenance (MxLoader)",
+      "resource": "preventivemaintenance",
+      "endpoint": "/oslc/os/mxl_pm",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_query",
+      "canonical": "MXL_QUERY",
+      "readable": "Application Queries (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_query",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_report",
+      "canonical": "MXL_REPORT",
+      "readable": "Reports (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_report",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_reportdesign",
+      "canonical": "MXL_REPORTDESIGN",
+      "readable": "Reports Design (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_reportdesign",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_role",
+      "canonical": "MXL_ROLE",
+      "readable": "Roles (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_role",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_routes",
+      "canonical": "MXL_ROUTES",
+      "readable": "Routes (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_routes",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_sctemplate",
+      "canonical": "MXL_SCTEMPLATE",
+      "readable": "Start Center Templates (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_sctemplate",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_secrestrict",
+      "canonical": "MXL_SECRESTRICT",
+      "readable": "Security Restrictions (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_secrestrict",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_srvaddr",
+      "canonical": "MXL_SRVADDR",
+      "readable": "Service Address (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_srvaddr",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_usergrp",
+      "canonical": "MXL_USERGRP",
+      "readable": "Users Security (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_usergrp",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_wf",
+      "canonical": "MXL_WF",
+      "readable": "Workflow process definition (MxLoader)",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxl_wf",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxl_workzone",
+      "canonical": "MXL_WORKZONE",
+      "readable": "Work Zones (MxLoader)",
+      "resource": "workorder",
+      "endpoint": "/oslc/os/mxl_workzone",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxlabor",
+      "canonical": "MXLABOR",
+      "readable": "Labor Definition",
+      "resource": "labor",
+      "endpoint": "/oslc/os/mxlabor",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxlasset",
+      "canonical": "MXLASSET",
+      "readable": "Asset Definition",
+      "resource": "asset",
+      "endpoint": "/oslc/os/mxlasset",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxlaunch",
+      "canonical": "MXLAUNCH",
+      "readable": "Launch-in-Context Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxlaunch",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxlaunchpoint",
+      "canonical": "MXLAUNCHPOINT",
+      "readable": "MXLAUNCHPOINT",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxlaunchpoint",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxlbslocation",
+      "canonical": "MXLBSLOCATION",
+      "readable": "LBS Location",
+      "resource": "location",
+      "endpoint": "/oslc/os/mxlbslocation",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxlmo2",
+      "canonical": "MXLMO2",
+      "readable": "LMO Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxlmo2",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxmapman",
+      "canonical": "MXMAPMAN",
+      "readable": "Map Manager",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxmapman",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxmessage",
+      "canonical": "MXMESSAGE",
+      "readable": "Message Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxmessage",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxmeterdata",
+      "canonical": "MXMETERDATA",
+      "readable": "Meter Reading Definition",
+      "resource": "meter",
+      "endpoint": "/oslc/os/mxmeterdata",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxnotification",
+      "canonical": "MXNOTIFICATION",
+      "readable": "Notification Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxnotification",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxobjectcfg",
+      "canonical": "MXOBJECTCFG",
+      "readable": "Object/Attribute Configuration Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxobjectcfg",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxomp",
+      "canonical": "MXOMP",
+      "readable": "OMP Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxomp",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxoperloc",
+      "canonical": "MXOPERLOC",
+      "readable": "Operation Location Definition",
+      "resource": "location",
+      "endpoint": "/oslc/os/mxoperloc",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxoperloc2",
+      "canonical": "MXOPERLOC2",
+      "readable": "Operation Location Definition",
+      "resource": "location",
+      "endpoint": "/oslc/os/mxoperloc2",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxorganization",
+      "canonical": "MXORGANIZATION",
+      "readable": "Organization and Site Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxorganization",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxoslccommonprops",
+      "canonical": "MXOSLCCOMMONPROPS",
+      "readable": "OSLC Common Properties Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxoslccommonprops",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxoslcdomain",
+      "canonical": "MXOSLCDOMAIN",
+      "readable": "OSLC Domain Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxoslcdomain",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxoslcerrormap",
+      "canonical": "MXOSLCERRORMAP",
+      "readable": "OSLC Error Map Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxoslcerrormap",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxoslcinteraction",
+      "canonical": "MXOSLCINTERACTION",
+      "readable": "OSLC Interaction Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxoslcinteraction",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxoslcnsprefix",
+      "canonical": "MXOSLCNSPREFIX",
+      "readable": "OSLC Namespace Prefix",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxoslcnsprefix",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxoslcprovider",
+      "canonical": "MXOSLCPROVIDER",
+      "readable": "OSLC Provider Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxoslcprovider",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxoslcresource",
+      "canonical": "MXOSLCRESOURCE",
+      "readable": "OSLC Resource Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxoslcresource",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxoslcrestype",
+      "canonical": "MXOSLCRESTYPE",
+      "readable": "OSLC Resource Types Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxoslcrestype",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxpc",
+      "canonical": "MXPC",
+      "readable": "Purchase Contract Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxpc",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxperson",
+      "canonical": "MXPERSON",
+      "readable": "Person Definition",
+      "resource": "person",
+      "endpoint": "/oslc/os/mxperson",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxperuser",
+      "canonical": "MXPERUSER",
+      "readable": "Person User Definition",
+      "resource": "person",
+      "endpoint": "/oslc/os/mxperuser",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxpm_asset",
+      "canonical": "MXPM_ASSET",
+      "readable": "MXPM_ASSET",
+      "resource": "asset",
+      "endpoint": "/oslc/os/mxpm_asset",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxpm_workorder",
+      "canonical": "MXPM_WORKORDER",
+      "readable": "PMQ MXPM_WORKORDER",
+      "resource": "workorder",
+      "endpoint": "/oslc/os/mxpm_workorder",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxpmcomsr",
+      "canonical": "MXPMCOMSR",
+      "readable": "MAXIMO Process Request Definition",
+      "resource": "sr",
+      "endpoint": "/oslc/os/mxpmcomsr",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxpmcomsr711",
+      "canonical": "MXPMCOMSR711",
+      "readable": "Process Request Definition, version 7.1.1",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxpmcomsr711",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxpo",
+      "canonical": "MXPO",
+      "readable": "Purchase Order Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxpo",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxpoline",
+      "canonical": "MXPOLINE",
+      "readable": "IP ProInventory Joint Inventory AMC",
+      "resource": "materials",
+      "endpoint": "/oslc/os/mxpoline",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxpr",
+      "canonical": "MXPR",
+      "readable": "Purchase Requisition Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxpr",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxproblem",
+      "canonical": "MXPROBLEM",
+      "readable": "Problem Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxproblem",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxproj",
+      "canonical": "MXPROJ",
+      "readable": "Financial Project Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxproj",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxprop",
+      "canonical": "MXPROP",
+      "readable": "Properties Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxprop",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxprorbalcmeva",
+      "canonical": "MXPRORBALCMEVA",
+      "readable": "#PRORBA QUERY LCM EVALUASI",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxprorbalcmeva",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxprorbalcmevaupdate",
+      "canonical": "MXPRORBALCMEVAUPDATE",
+      "readable": "#PRORBA UPDATE LCM EVALUASI",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxprorbalcmevaupdate",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxqueue",
+      "canonical": "MXQUEUE",
+      "readable": "Queue Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxqueue",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxrcvrotitm",
+      "canonical": "MXRCVROTITM",
+      "readable": "Receipt for Rotating Item Definition",
+      "resource": "materials",
+      "endpoint": "/oslc/os/mxrcvrotitm",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxreceipt",
+      "canonical": "MXRECEIPT",
+      "readable": "Receipts Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxreceipt",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxscript",
+      "canonical": "MXSCRIPT",
+      "readable": "MXSCRIPT",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxscript",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxservitem",
+      "canonical": "MXSERVITEM",
+      "readable": "Service Items Definition",
+      "resource": "materials",
+      "endpoint": "/oslc/os/mxservitem",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxshipment",
+      "canonical": "MXSHIPMENT",
+      "readable": "IP ProInventory Joint Inventory AMC",
+      "resource": "materials",
+      "endpoint": "/oslc/os/mxshipment",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxsr",
+      "canonical": "MXSR",
+      "readable": "Service Request Definition",
+      "resource": "sr",
+      "endpoint": "/oslc/os/mxsr",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxsrvad",
+      "canonical": "MXSRVAD",
+      "readable": "Service Address",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxsrvad",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxstoreloc",
+      "canonical": "MXSTORELOC",
+      "readable": "Storeroom Location Definition",
+      "resource": "location",
+      "endpoint": "/oslc/os/mxstoreloc",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxtksrvad",
+      "canonical": "MXTKSRVAD",
+      "readable": "TK Service Address",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxtksrvad",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxtoolitem",
+      "canonical": "MXTOOLITEM",
+      "readable": "Tool Items Definition",
+      "resource": "materials",
+      "endpoint": "/oslc/os/mxtoolitem",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxvendor",
+      "canonical": "MXVENDOR",
+      "readable": "Companies Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxvendor",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxvendormstr",
+      "canonical": "MXVENDORMSTR",
+      "readable": "Company Master Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxvendormstr",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxweatheralert",
+      "canonical": "MXWEATHERALERT",
+      "readable": "Weather Alerts",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxweatheralert",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxwfprocess",
+      "canonical": "MXWFPROCESS",
+      "readable": "WFProcess definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxwfprocess",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxwo",
+      "canonical": "MXWO",
+      "readable": "Work Order Definition",
+      "resource": "workorder",
+      "endpoint": "/oslc/os/mxwo",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxwodetail",
+      "canonical": "MXWODETAIL",
+      "readable": "Work Order with Plans and Reservations Definition",
+      "resource": "workorder",
+      "endpoint": "/oslc/os/mxwodetail",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxwodg",
+      "canonical": "MXWODG",
+      "readable": "IP MOBILE APPS WO WITH INTERNAL STATUS",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxwodg",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxwohier",
+      "canonical": "MXWOHIER",
+      "readable": "Work Order Hierarchy Definition",
+      "resource": "workorder",
+      "endpoint": "/oslc/os/mxwohier",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxwosrvad",
+      "canonical": "MXWOSRVAD",
+      "readable": "WO Service Address",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxwosrvad",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "mxwsregistry",
+      "canonical": "MXWSREGISTRY",
+      "readable": "Web Service Registry Definition",
+      "resource": "other",
+      "endpoint": "/oslc/os/mxwsregistry",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "oajasbor",
+      "canonical": "OAJASBOR",
+      "readable": "Jasbor table for ProTan Integration",
+      "resource": "other",
+      "endpoint": "/oslc/os/oajasbor",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "oavalidasi",
+      "canonical": "OAVALIDASI",
+      "readable": "Validasi Table for ProTan Integration",
+      "resource": "other",
+      "endpoint": "/oslc/os/oavalidasi",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "plusgasset",
+      "canonical": "PLUSGASSET",
+      "readable": "Oil and Gas' Asset Object Structure",
+      "resource": "asset",
+      "endpoint": "/oslc/os/plusgasset",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "plusgassetmeter",
+      "canonical": "PLUSGASSETMETER",
+      "readable": "Oil and Gas' Asset Meter Object Structure for Readings",
+      "resource": "asset",
+      "endpoint": "/oslc/os/plusgassetmeter",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "plusgassmeter",
+      "canonical": "PLUSGASSMETER",
+      "readable": "Oil and Gas' Asset Meter Object Structure",
+      "resource": "asset",
+      "endpoint": "/oslc/os/plusgassmeter",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "plusgconsq",
+      "canonical": "PLUSGCONSQ",
+      "readable": "Risk Matrix",
+      "resource": "other",
+      "endpoint": "/oslc/os/plusgconsq",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "plusgdefect",
+      "canonical": "PLUSGDEFECT",
+      "readable": "Oil and Gas' Defect Object Structure",
+      "resource": "other",
+      "endpoint": "/oslc/os/plusgdefect",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "plusgincident",
+      "canonical": "PLUSGINCIDENT",
+      "readable": "Oil and Gas' Incident Object Structure",
+      "resource": "other",
+      "endpoint": "/oslc/os/plusgincident",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "plusglocationmeter",
+      "canonical": "PLUSGLOCATIONMETER",
+      "readable": "Oil and Gas' Location Meter Object Structure for Readings",
+      "resource": "location",
+      "endpoint": "/oslc/os/plusglocationmeter",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "plusglocmeter",
+      "canonical": "PLUSGLOCMETER",
+      "readable": "Oil and Gas' Location Meter Object Structure",
+      "resource": "location",
+      "endpoint": "/oslc/os/plusglocmeter",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "plusgoperloc",
+      "canonical": "PLUSGOPERLOC",
+      "readable": "Oil and Gas' Operation Location Object Structure",
+      "resource": "location",
+      "endpoint": "/oslc/os/plusgoperloc",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "plusgorg",
+      "canonical": "PLUSGORG",
+      "readable": "Oil and Gas' Organization Object Structure",
+      "resource": "other",
+      "endpoint": "/oslc/os/plusgorg",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "plusgregulation",
+      "canonical": "PLUSGREGULATION",
+      "readable": "Regulatory Compliance",
+      "resource": "other",
+      "endpoint": "/oslc/os/plusgregulation",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "plusgsite",
+      "canonical": "PLUSGSITE",
+      "readable": "Oil and Gas' Site Object Structure",
+      "resource": "other",
+      "endpoint": "/oslc/os/plusgsite",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "plusgwo",
+      "canonical": "PLUSGWO",
+      "readable": "Oil and Gas' Work Order Object Structure",
+      "resource": "workorder",
+      "endpoint": "/oslc/os/plusgwo",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "pn_import_air",
+      "canonical": "PN_IMPORT_AIR",
+      "readable": "Pronia Import Pemakaian Air",
+      "resource": "other",
+      "endpoint": "/oslc/os/pn_import_air",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "pn_import_plms",
+      "canonical": "PN_IMPORT_PLMS",
+      "readable": "Pronia Import Pemakaian Pelumas",
+      "resource": "other",
+      "endpoint": "/oslc/os/pn_import_plms",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "pn_import_pmk",
+      "canonical": "PN_IMPORT_PMK",
+      "readable": "Pronia Import Pemakaian Kimia",
+      "resource": "other",
+      "endpoint": "/oslc/os/pn_import_pmk",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "pnbebanp3b",
+      "canonical": "PNBEBANP3B",
+      "readable": "Beban P3B",
+      "resource": "other",
+      "endpoint": "/oslc/os/pnbebanp3b",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "pncalc",
+      "canonical": "PNCALC",
+      "readable": "ProNIA Calculation Status BI",
+      "resource": "other",
+      "endpoint": "/oslc/os/pncalc",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "pnjurnal",
+      "canonical": "PNJURNAL",
+      "readable": "Pronia Jurnal",
+      "resource": "other",
+      "endpoint": "/oslc/os/pnjurnal",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "pnrealbebanp3b",
+      "canonical": "PNREALBEBANP3B",
+      "readable": "Realisasi Beban P3B",
+      "resource": "other",
+      "endpoint": "/oslc/os/pnrealbebanp3b",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "pnrealjl",
+      "canonical": "PNREALJL",
+      "readable": "Realisasi Penjualan",
+      "resource": "other",
+      "endpoint": "/oslc/os/pnrealjl",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "pnrealpb",
+      "canonical": "PNREALPB",
+      "readable": "Realisasi Produksi Bruto",
+      "resource": "other",
+      "endpoint": "/oslc/os/pnrealpb",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "pnrealps",
+      "canonical": "PNREALPS",
+      "readable": "Realisasi Pemakaian Sendiri",
+      "resource": "other",
+      "endpoint": "/oslc/os/pnrealps",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "pnrealpslain",
+      "canonical": "PNREALPSLAIN",
+      "readable": "Realisasi PS Lain",
+      "resource": "other",
+      "endpoint": "/oslc/os/pnrealpslain",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "rep_mxintobject",
+      "canonical": "REP_MXINTOBJECT",
+      "readable": "Object Structure Definition for Reports",
+      "resource": "other",
+      "endpoint": "/oslc/os/rep_mxintobject",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "sec_group",
+      "canonical": "SEC_GROUP",
+      "readable": "Security Group",
+      "resource": "other",
+      "endpoint": "/oslc/os/sec_group",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "splexiconlink",
+      "canonical": "SPLEXICONLINK",
+      "readable": "IP LOADER SPLEXICONLINK",
+      "resource": "other",
+      "endpoint": "/oslc/os/splexiconlink",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "tamitintmf",
+      "canonical": "TAMITINTMF",
+      "readable": "SwKBT - Manufacturers",
+      "resource": "other",
+      "endpoint": "/oslc/os/tamitintmf",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "tamitintsw",
+      "canonical": "TAMITINTSW",
+      "readable": "SwKBT - Software Catalog",
+      "resource": "other",
+      "endpoint": "/oslc/os/tamitintsw",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "tamitintswcat",
+      "canonical": "TAMITINTSWCAT",
+      "readable": "SwKBT - Software KB Identity",
+      "resource": "other",
+      "endpoint": "/oslc/os/tamitintswcat",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "tamitintswprtnum",
+      "canonical": "TAMITINTSWPRTNUM",
+      "readable": "SwKBT - Software Part Numbers",
+      "resource": "other",
+      "endpoint": "/oslc/os/tamitintswprtnum",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "tamitintswrel",
+      "canonical": "TAMITINTSWREL",
+      "readable": "SwKBT - Software Relationships",
+      "resource": "other",
+      "endpoint": "/oslc/os/tamitintswrel",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    },
+    {
+      "name": "tamitintswvar",
+      "canonical": "TAMITINTSWVAR",
+      "readable": "SwKBT - IdentityLinks to Variants",
+      "resource": "other",
+      "endpoint": "/oslc/os/tamitintswvar",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "status": "documented",
+      "supports": {
+        "filter": true,
+        "sort": true,
+        "paging": true,
+        "select": true
+      }
+    }
+  ]
+}

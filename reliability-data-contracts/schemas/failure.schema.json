@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reliability-data-contracts/schemas/failure.schema.json",
+  "title": "Failure",
+  "description": "Vendor-neutral failure event, derived from work order failure data. The Maximo FAILURECODE master object is currently forbidden (BMXAA0024E); failure events are inferred from work_order.failure_code until a read-enabled credential is available.",
+  "type": "object",
+  "required": ["id", "equipment_id", "occurred_at"],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "equipment_id": {
+      "type": "string"
+    },
+    "failure_code": {
+      "type": ["string", "null"]
+    },
+    "work_order_id": {
+      "type": ["string", "null"],
+      "description": "Originating work order"
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "downtime_hours": {
+      "type": ["number", "null"]
+    },
+    "description": {
+      "type": ["string", "null"]
+    },
+    "sources": {
+      "type": "object",
+      "properties": {
+        "maximo": {
+          "type": ["object", "null"],
+          "description": "Derived from mxwodetail (failurecode field) until MXFAILURECODE is accessible",
+          "properties": {
+            "origin": {
+              "type": ["string", "null"],
+              "enum": ["MXWODETAIL", "MXFAILURECODE", null]
+            },
+            "wonum": {
+              "type": ["string", "null"]
+            },
+            "assetnum": {
+              "type": ["string", "null"]
+            },
+            "failurecode": {
+              "type": ["string", "null"]
+            },
+            "reportdate": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            },
+            "downtime": {
+              "type": ["number", "null"]
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+# Cron alternative to systemd timers.
+#
+# Edit with: crontab -e
+# Paths assume install at /opt/pi-collector; adjust to your location.
+#
+# Notes:
+# - The collector enforces its own off-hours window (22:00-06:00 local +
+#   weekends) for backfill-recorded; cron just triggers it.
+# - All output goes to the log file; check it after the first run.
+# - Upserts are idempotent — safe to re-run after an abort; it resumes.
+
+SHELL=/bin/bash
+CRON_TZ=Asia/Jakarta
+PI_HOME=/opt/pi-collector
+PI_LOG=/var/log/pi-collector
+
+# Nightly recorded backfill, Mon-Fri at 22:15 (in-app gate blocks if run late)
+15 22 * * 1-5  cd $PI_HOME && .venv/bin/picollector backfill-recorded --start "2024-01-01T00:00:00Z" --end "*" >> $PI_LOG/backfill.log 2>&1
+
+# Weekend recorded backfill, Saturday 08:00 (off-hours = full weekend)
+0 8 * * 6      cd $PI_HOME && .venv/bin/picollector backfill-recorded --start "2024-01-01T00:00:00Z" --end "*" >> $PI_LOG/backfill.log 2>&1
+
+# Snapshot every 5 minutes (lightweight, safe during business hours)
+*/5 * * * *    cd $PI_HOME && .venv/bin/picollector collect-snapshots >> $PI_LOG/snapshot.log 2>&1

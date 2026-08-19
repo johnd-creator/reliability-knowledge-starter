@@ -1,0 +1,58 @@
+# Reliability Data Contracts
+
+Vendor-neutral semantic contracts used by reliability applications.
+
+The purpose is to prevent application code from becoming tightly coupled to
+Maximo or PI. Application domain models consume these contracts; vendor-specific
+field names live only in the `sources.maximo` / `sources.pi` blocks.
+
+## Source of truth
+
+Field mappings are verified against `maximo-knowledge` (site BSR, org IP).
+See [`mappings/maximo-to-contracts.md`](./mappings/maximo-to-contracts.md) for
+the field-by-field translation table.
+
+## Schemas
+
+### Verified against Maximo (site BSR)
+| Schema | Maximo source | Status |
+|---|---|---|
+| [`equipment.schema.json`](./schemas/equipment.schema.json) | MXASSET (69 fields) | ✅ verified |
+| [`work-order.schema.json`](./schemas/work-order.schema.json) | MXWODETAIL (166 fields) | ✅ verified |
+| [`service-request.schema.json`](./schemas/service-request.schema.json) | MXAPISR (96 fields) | ✅ verified |
+| [`person.schema.json`](./schemas/person.schema.json) | MXPERSON (34 fields) | ✅ verified |
+| [`item.schema.json`](./schemas/item.schema.json) | MXITEM (40 fields) | ✅ verified |
+| [`labor.schema.json`](./schemas/labor.schema.json) | MXAPILABOR (14 fields) | ✅ verified |
+
+### Vendor-neutral source
+| Schema | Source | Status |
+|---|---|---|
+| [`condition-parameter.schema.json`](./schemas/condition-parameter.schema.json) | PI Web API | template |
+
+### Computed reliability concepts (derived, not a direct source field)
+| Schema | Derived from |
+|---|---|
+| [`failure.schema.json`](./schemas/failure.schema.json) | work_order.failure_code (MXFAILURECODE ⛔ forbidden) |
+| [`downtime.schema.json`](./schemas/downtime.schema.json) | work_order.downtime / equipment.downtime_total |
+| [`location.schema.json`](./schemas/location.schema.json) | location_id on Equipment/WO/SR (MXAPILOCATION ⛔ forbidden) |
+| [`maintenance-event.schema.json`](./schemas/maintenance-event.schema.json) | work_order actuals — actstart/actfinish/actlabhrs (MXWODETAIL) |
+| [`reliability-kpi.schema.json`](./schemas/reliability-kpi.schema.json) | MTBF, MTTR, availability, PM compliance |
+
+## Catalog examples
+
+- [`catalog/equipment.example.yaml`](./catalog/equipment.example.yaml)
+- [`catalog/work-order.example.yaml`](./catalog/work-order.example.yaml)
+
+## Core concepts
+
+Equipment · Location · WorkOrder · MaintenanceEvent · Failure ·
+ConditionParameter · Alarm · Downtime · ReliabilityKPI
+
+## Rules (see AGENTS.md)
+
+1. Do not copy vendor-specific payloads into core contract fields.
+2. Preserve source-system identifiers under `sources`.
+3. Prefer stable organization-owned IDs where available.
+4. Document units explicitly. Use ISO-8601 timestamps.
+5. Mark nullable/unknown fields intentionally.
+6. Breaking schema changes require a version bump.

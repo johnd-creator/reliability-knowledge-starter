@@ -1,0 +1,28 @@
+id: WO-EXAMPLE
+equipment_id: CS10CVA02GA000-001
+location_id: BHAR
+status: COMP
+status_description: Complete
+work_type: CM
+description: Example work order (sanitized template, BSR scope)
+reported_at: "2026-01-01T00:00:00+07:00"
+source_changed_at: "2026-01-03T08:00:00+07:00"
+scheduled_finish: "<VERIFY>"
+estimated_duration_hours: 8
+downtime_hours: 0
+priority: "2"
+reported_by: "<VERIFY>"
+supervisor: "<VERIFY>"
+
+sources:
+  maximo:
+    object_structure: MXWODETAIL
+    wonum: WO-EXAMPLE
+    workorderid: 12345
+    assetnum: CS10CVA02GA000-001
+    siteid: BSR
+    orgid: IP
+    status: COMP
+    worktype: CM
+    reportdate: "2026-01-01T00:00:00+07:00"
+    changedate: "2026-01-03T08:00:00+07:00"

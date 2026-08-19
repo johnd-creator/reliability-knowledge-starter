@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reliability-data-contracts/schemas/downtime.schema.json",
+  "title": "Downtime",
+  "description": "Vendor-neutral downtime event. Derived from asset totdowntime and work order downtime until the Maximo Downtime Report object structure is verified.",
+  "type": "object",
+  "required": ["id", "equipment_id", "started_at"],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "equipment_id": {
+      "type": "string"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "ended_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "duration_hours": {
+      "type": ["number", "null"]
+    },
+    "work_order_id": {
+      "type": ["string", "null"]
+    },
+    "cause": {
+      "type": ["string", "null"]
+    },
+    "sources": {
+      "type": "object",
+      "properties": {
+        "maximo": {
+          "type": ["object", "null"],
+          "properties": {
+            "origin": {
+              "type": ["string", "null"],
+              "enum": ["MXWODETAIL", "MXASSET", "DOWNTIMEREPORT", null]
+            },
+            "assetnum": {
+              "type": ["string", "null"]
+            },
+            "wonum": {
+              "type": ["string", "null"]
+            },
+            "downtime": {
+              "type": ["number", "null"]
+            },
+            "totdowntime": {
+              "type": ["number", "null"]
+            }
+          }
+        }
+      }
+    }
+  }
+}

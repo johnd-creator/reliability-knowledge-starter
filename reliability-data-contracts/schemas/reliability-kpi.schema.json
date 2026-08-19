@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reliability-data-contracts/schemas/reliability-kpi.schema.json",
+  "title": "ReliabilityKPI",
+  "description": "Vendor-neutral computed reliability KPI snapshot (MTBF, MTTR, availability, PM compliance). Computed by the cockpit from Equipment, WorkOrder, Failure, and Downtime contracts — not a direct source-system field.",
+  "type": "object",
+  "required": ["id", "equipment_id", "metric", "period_start", "period_end"],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "equipment_id": {
+      "type": "string"
+    },
+    "metric": {
+      "type": "string",
+      "enum": ["MTBF", "MTTR", "AVAILABILITY", "PM_COMPLIANCE", "FAILURE_COUNT", "DOWNTIME_HOURS"]
+    },
+    "value": {
+      "type": ["number", "null"]
+    },
+    "unit": {
+      "type": ["string", "null"],
+      "description": "e.g. hours, percent, count"
+    },
+    "period_start": {
+      "type": "string",
+      "format": "date"
+    },
+    "period_end": {
+      "type": "string",
+      "format": "date"
+    },
+    "computed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "inputs": {
+      "type": "object",
+      "properties": {
+        "failure_count": {
+          "type": ["integer", "null"]
+        },
+        "total_downtime_hours": {
+          "type": ["number", "null"]
+        },
+        "total_operating_hours": {
+          "type": ["number", "null"]
+        },
+        "pm_scheduled": {
+          "type": ["integer", "null"]
+        },
+        "pm_completed": {
+          "type": ["integer", "null"]
+        }
+      }
+    }
+  }
+}

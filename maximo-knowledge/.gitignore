@@ -1,0 +1,18 @@
+.env
+.env.*
+!.env.example
+
+__pycache__/
+.pytest_cache/
+*.pyc
+.venv/
+
+graphify-out/
+.playwright-mcp/
+
+# transient discovery staging runs (timestamped, regenerated each run)
+discovery/runs/
+
+# large auto-fetched OAS document (regenerable via scripts/discover.py --fetch-oas);
+# may contain internal hostnames. Keep it local only.
+discovery/oslc/maximo_oas.json

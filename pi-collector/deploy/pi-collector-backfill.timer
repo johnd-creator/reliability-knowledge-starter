@@ -1,0 +1,18 @@
+[Unit]
+Description=PI Collector — nightly recorded backfill (off-hours only)
+# The collector itself enforces the off-hours window (22:00-06:00 + weekend);
+# this timer just triggers it nightly when the network is quiet.
+
+[Timer]
+# Run at 22:15 local time, Monday-Friday nights
+OnCalendar=*-*-* 22:15:00
+# Also run Saturday and Sunday mornings
+OnCalendar=Sat,Sun *-*-* 08:00:00
+# If the machine was off at trigger time, run at next boot (still gated by
+# the in-app off-hours check)
+Persistent=true
+# Spread start to avoid thundering-herd on PI
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,215 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reliability-data-contracts/schemas/service-request.schema.json",
+  "title": "ServiceRequest",
+  "description": "Vendor-neutral service request / ticket contract. Verified against mxapisr (96 fields, site BSR). Personal data (phone, affected person) is kept nullable; do not persist raw personal values.",
+  "type": "object",
+  "required": ["id", "status"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Ticket ID"
+    },
+    "description": {
+      "type": ["string", "null"]
+    },
+    "status": {
+      "type": "string"
+    },
+    "status_description": {
+      "type": ["string", "null"]
+    },
+    "work_type": {
+      "type": ["string", "null"]
+    },
+    "class": {
+      "type": ["string", "null"]
+    },
+    "equipment_id": {
+      "type": ["string", "null"]
+    },
+    "location_id": {
+      "type": ["string", "null"]
+    },
+    "reported_by": {
+      "type": ["string", "null"]
+    },
+    "reported_by_name": {
+      "type": ["string", "null"]
+    },
+    "reported_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "source_changed_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "status_changed_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "affected_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "actual_start": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "actual_finish": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "target_start": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "target_finish": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "internal_priority": {
+      "type": ["string", "null"]
+    },
+    "reported_priority": {
+      "type": ["string", "null"]
+    },
+    "actual_labor_hours": {
+      "type": ["number", "null"]
+    },
+    "actual_labor_cost": {
+      "type": ["number", "null"]
+    },
+    "has_activity": {
+      "type": ["boolean", "null"]
+    },
+    "has_solution": {
+      "type": ["boolean", "null"]
+    },
+    "is_known_error": {
+      "type": ["boolean", "null"]
+    },
+    "risk_area_environment": {
+      "type": ["string", "null"],
+      "description": "Custom IP risk classification (cxarlingkungan)"
+    },
+    "risk_area_process": {
+      "type": ["string", "null"],
+      "description": "Custom IP risk classification (cxarproses)"
+    },
+    "risk_area_human": {
+      "type": ["string", "null"],
+      "description": "Custom IP risk classification (cxarmanusia)"
+    },
+    "risk_area_reputation": {
+      "type": ["string", "null"],
+      "description": "Custom IP risk classification (cxarreputasi)"
+    },
+    "sources": {
+      "type": "object",
+      "properties": {
+        "maximo": {
+          "type": ["object", "null"],
+          "description": "Verified mapping to mxapisr (site BSR)",
+          "properties": {
+            "object_structure": {
+              "type": ["string", "null"],
+              "enum": ["MXAPISR", null]
+            },
+            "ticketid": {
+              "type": ["string", "null"],
+              "description": "Natural key"
+            },
+            "ticketuid": {
+              "type": ["integer", "null"]
+            },
+            "assetnum": {
+              "type": ["string", "null"]
+            },
+            "location": {
+              "type": ["string", "null"]
+            },
+            "siteid": {
+              "type": ["string", "null"]
+            },
+            "orgid": {
+              "type": ["string", "null"]
+            },
+            "status": {
+              "type": ["string", "null"]
+            },
+            "worktype": {
+              "type": ["string", "null"]
+            },
+            "class": {
+              "type": ["string", "null"]
+            },
+            "reportedby": {
+              "type": ["string", "null"]
+            },
+            "reportedbyname": {
+              "type": ["string", "null"]
+            },
+            "reportdate": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            },
+            "changedate": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            },
+            "statusdate": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            },
+            "affecteddate": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            },
+            "actualstart": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            },
+            "actualfinish": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            },
+            "targetstart": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            },
+            "targetfinish": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            },
+            "internalpriority": {
+              "type": ["string", "null"]
+            },
+            "reportedpriority": {
+              "type": ["string", "null"]
+            },
+            "actlabhrs": {
+              "type": ["number", "null"]
+            },
+            "actlabcost": {
+              "type": ["number", "null"]
+            },
+            "cxarlingkungan": {
+              "type": ["string", "null"]
+            },
+            "cxarproses": {
+              "type": ["string", "null"]
+            },
+            "cxarmanusia": {
+              "type": ["string", "null"]
+            },
+            "cxarreputasi": {
+              "type": ["string", "null"]
+            }
+          }
+        }
+      }
+    }
+  }
+}

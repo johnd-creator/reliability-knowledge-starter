@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reliability-data-contracts/schemas/item.schema.json",
+  "title": "Item",
+  "description": "Vendor-neutral spare-part / inventory item contract. Verified against mxitem (40 fields, site BSR).",
+  "type": "object",
+  "required": ["id"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Item number"
+    },
+    "description": {
+      "type": ["string", "null"]
+    },
+    "status": {
+      "type": ["string", "null"]
+    },
+    "status_description": {
+      "type": ["string", "null"]
+    },
+    "item_type": {
+      "type": ["string", "null"]
+    },
+    "lot_type": {
+      "type": ["string", "null"]
+    },
+    "issue_unit": {
+      "type": ["string", "null"]
+    },
+    "order_unit": {
+      "type": ["string", "null"]
+    },
+    "is_rotating": {
+      "type": ["boolean", "null"]
+    },
+    "is_kit": {
+      "type": ["boolean", "null"]
+    },
+    "is_crew": {
+      "type": ["boolean", "null"]
+    },
+    "inspection_required": {
+      "type": ["boolean", "null"]
+    },
+    "meter_name": {
+      "type": ["string", "null"]
+    },
+    "item_set_id": {
+      "type": ["string", "null"]
+    },
+    "status_changed_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "sources": {
+      "type": "object",
+      "properties": {
+        "maximo": {
+          "type": ["object", "null"],
+          "description": "Verified mapping to mxitem (site BSR)",
+          "properties": {
+            "object_structure": {
+              "type": ["string", "null"],
+              "enum": ["MXITEM", null]
+            },
+            "itemnum": {
+              "type": ["string", "null"],
+              "description": "Natural key"
+            },
+            "itemid": {
+              "type": ["integer", "null"]
+            },
+            "description": {
+              "type": ["string", "null"]
+            },
+            "status": {
+              "type": ["string", "null"]
+            },
+            "itemtype": {
+              "type": ["string", "null"]
+            },
+            "lottype": {
+              "type": ["string", "null"]
+            },
+            "issueunit": {
+              "type": ["string", "null"]
+            },
+            "orderunit": {
+              "type": ["string", "null"]
+            },
+            "rotating": {
+              "type": ["boolean", "null"]
+            },
+            "iskit": {
+              "type": ["boolean", "null"]
+            },
+            "iscrew": {
+              "type": ["boolean", "null"]
+            },
+            "inspectionrequired": {
+              "type": ["boolean", "null"]
+            },
+            "metername": {
+              "type": ["string", "null"]
+            },
+            "itemsetid": {
+              "type": ["string", "null"]
+            },
+            "statusdate": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            }
+          }
+        }
+      }
+    }
+  }
+}

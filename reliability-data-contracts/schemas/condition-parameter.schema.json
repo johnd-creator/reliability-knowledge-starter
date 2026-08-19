@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ConditionParameter",
+  "type": "object",
+  "required": [
+    "id",
+    "equipment_id",
+    "name",
+    "parameter_type"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "equipment_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "parameter_type": {
+      "type": "string"
+    },
+    "position": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "unit": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sources": {
+      "type": "object",
+      "properties": {
+        "pi": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "tag": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "web_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

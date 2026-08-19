@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+node_modules/
+.next/
+out/
+dist/
+*.log
+.pytest_cache/
+.pyright/
+*.egg-info/
+build/
+*.tsbuildinfo

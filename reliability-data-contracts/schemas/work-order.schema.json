@@ -1,0 +1,218 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reliability-data-contracts/schemas/work-order.schema.json",
+  "title": "WorkOrder",
+  "description": "Vendor-neutral work order contract. Verified against mxwodetail (166 fields, site BSR). Failure code is not directly on mxwodetail; it is nullable pending failure-reporting source.",
+  "type": "object",
+  "required": ["id", "status"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Work order number"
+    },
+    "equipment_id": {
+      "type": ["string", "null"],
+      "description": "Asset this work order is against"
+    },
+    "location_id": {
+      "type": ["string", "null"]
+    },
+    "status": {
+      "type": "string"
+    },
+    "status_description": {
+      "type": ["string", "null"]
+    },
+    "work_type": {
+      "type": ["string", "null"],
+      "description": "e.g. CM (corrective), PM (preventive)"
+    },
+    "work_class": {
+      "type": ["string", "null"]
+    },
+    "description": {
+      "type": ["string", "null"]
+    },
+    "reported_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "source_changed_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "changedate; delta-sync watermark"
+    },
+    "status_changed_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "scheduled_start": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "scheduled_finish": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "target_completion": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "estimated_duration_hours": {
+      "type": ["number", "null"]
+    },
+    "downtime_hours": {
+      "type": ["number", "null"]
+    },
+    "priority": {
+      "type": ["string", "null"]
+    },
+    "priority_description": {
+      "type": ["string", "null"]
+    },
+    "reported_by": {
+      "type": ["string", "null"]
+    },
+    "supervisor": {
+      "type": ["string", "null"]
+    },
+    "lead": {
+      "type": ["string", "null"]
+    },
+    "failure_code": {
+      "type": ["string", "null"],
+      "description": "Not directly on mxwodetail; populated from failure reporting if/when available"
+    },
+    "is_task": {
+      "type": ["boolean", "null"]
+    },
+    "parent_wo": {
+      "type": ["string", "null"],
+      "description": "Parent work order for task hierarchy"
+    },
+    "has_children": {
+      "type": ["boolean", "null"]
+    },
+    "estimated_labor_cost": {
+      "type": ["number", "null"]
+    },
+    "estimated_material_cost": {
+      "type": ["number", "null"]
+    },
+    "actual_labor_cost": {
+      "type": ["number", "null"]
+    },
+    "actual_material_cost": {
+      "type": ["number", "null"]
+    },
+    "actual_labor_hours": {
+      "type": ["number", "null"]
+    },
+    "sources": {
+      "type": "object",
+      "properties": {
+        "maximo": {
+          "type": ["object", "null"],
+          "description": "Verified mapping to mxwodetail (site BSR)",
+          "properties": {
+            "object_structure": {
+              "type": ["string", "null"],
+              "enum": ["MXWODETAIL", null]
+            },
+            "wonum": {
+              "type": ["string", "null"],
+              "description": "Natural key"
+            },
+            "workorderid": {
+              "type": ["integer", "null"]
+            },
+            "assetnum": {
+              "type": ["string", "null"]
+            },
+            "location": {
+              "type": ["string", "null"]
+            },
+            "siteid": {
+              "type": ["string", "null"]
+            },
+            "orgid": {
+              "type": ["string", "null"]
+            },
+            "status": {
+              "type": ["string", "null"]
+            },
+            "worktype": {
+              "type": ["string", "null"]
+            },
+            "woclass": {
+              "type": ["string", "null"]
+            },
+            "reportdate": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            },
+            "changedate": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            },
+            "statusdate": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            },
+            "schedstart": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            },
+            "schedfinish": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            },
+            "targcompdate": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            },
+            "estdur": {
+              "type": ["number", "null"]
+            },
+            "downtime": {
+              "type": ["number", "null"]
+            },
+            "wopriority": {
+              "type": ["string", "null"]
+            },
+            "reportedby": {
+              "type": ["string", "null"]
+            },
+            "supervisor": {
+              "type": ["string", "null"]
+            },
+            "lead": {
+              "type": ["string", "null"]
+            },
+            "istask": {
+              "type": ["boolean", "null"]
+            },
+            "haschildren": {
+              "type": ["boolean", "null"]
+            },
+            "estlabcost": {
+              "type": ["number", "null"]
+            },
+            "estmatcost": {
+              "type": ["number", "null"]
+            },
+            "actlabcost": {
+              "type": ["number", "null"]
+            },
+            "actmatcost": {
+              "type": ["number", "null"]
+            },
+            "actlabhrs": {
+              "type": ["number", "null"]
+            }
+          }
+        }
+      }
+    }
+  }
+}
