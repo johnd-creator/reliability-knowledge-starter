@@ -1,6 +1,6 @@
 # AGENTS.md — Reliability Knowledge Starter (workspace root)
 
-This is a **single mono repository containing six separate projects**, not one
+This is a **single mono repository containing seven separate projects**, not one
 combined application. There is **no top-level build, test, or run command** —
 each subproject has its own. Read this file first, then the `AGENTS.md` /
 `CONTEXT.md` inside the subproject you are working in.
@@ -18,7 +18,8 @@ reliability-knowledge-starter/        <- mono repo root
 ├── reliability-data-contracts/       <- vendor-neutral schemas
 ├── reliability-cockpit/              <- consumer app: transactional
 ├── pi-collector/                     <- consumer app: time-series
-└── maximo-collector/                 <- consumer app: Maximo read-only sync
+├── maximo-collector/                 <- consumer app: Maximo read-only sync
+└── cems-collector/                   <- consumer app: CEMS Modbus read-only polling
 ```
 
 - The root directory is the **only Git repository**. Subproject `.git`
@@ -138,6 +139,29 @@ The collector reads verified WebIds from `../pi-knowledge/mappings/bsr1-paramete
 values) and `backfill` (heavy, interpolated history for trending/ML). Time-series
 data stored in a TimescaleDB hypertable for efficient range queries.
 
+### cems-collector (Python app + Postgres + FastAPI)
+```bash
+cd cems-collector
+python3 -m venv .venv && .venv/bin/pip install -e .   # installs `cemscollector` CLI
+cp .env.example .env                                  # PLC host/port + DATABASE_URL
+docker compose up -d postgres                         # Postgres on port 5435
+.venv/bin/cemscollector init-db                       # create tables
+.venv/bin/cemscollector load-registry                 # load 14 parameters from registry/cems-parameters.yaml
+.venv/bin/cemscollector collect                       # continuous Modbus polling (read-only)
+.venv/bin/cemscollector aggregate                     # 5-minute window aggregation
+.venv/bin/cemscollector diagnose                      # read-only probe of every parameter
+.venv/bin/cemscollector serve                         # FastAPI on 127.0.0.1:8003
+.venv/bin/python -m unittest discover -s tests        # 81 tests (no DB/network needed)
+```
+Ported from the DAZ production collector (Beijer Box2Base Modbus TCP gateway,
+stack 1 PLTU Suralaya). Modbus access is **FC03/FC04 read function codes
+only** — the guard raises on any write/mask call. The registry YAML is the
+single source for register numbers; entries are `status: documented` until
+re-verified against the live PLC. Normalization (gas conversion, threshold
+clamp, maintenance overrides, O2-reference correction) runs inside the
+collector; the DAZ outbound KLHK/CEMS push was deliberately not ported.
+Optional Next.js dashboard under `web/` (proxy `CEMS_COLLECTOR_API_BASE`).
+
 ## 4. Hard safety boundary (enforced in code, not just convention)
 
 All access to production Maximo/PI is **READ ONLY**. This is not a guideline —
@@ -147,6 +171,10 @@ it is implemented as a guard:
   `reliability-cockpit/src/adapters/maximo/oslc_client.py` both define
   `READ_ONLY_METHODS = {"GET", "HEAD", "OPTIONS"}` and **raise** on any other
   method. Do not "relax" these checks.
+- `cems-collector/src/adapters/modbus/client.py` defines
+  `READ_ONLY_FUNCTIONS = {"read_holding_registers", "read_input_registers"}`;
+  any write/mask-shaped call raises `ModbusGuardError`. Same rule: do not
+  relax it.
 - Every Maximo sync query is scoped `oslc.where=siteid="BSR"` (org `IP`) by
   default. This site scope matches the read-only discovery account.
 - Rate limiting (default **1 request/second**) and a **1 MiB response size cap**
@@ -262,6 +290,10 @@ OslcClient (GET-only) ──▶ mappers ──▶ domain models ──▶ Cockpi
 - **Site scope is always BSR.** Omitting the `siteid="BSR"` filter returns data
   from other sites. The sync engine and client apply it by default — preserve
   that when adding queries.
+- **CEMS registry codes must be quoted in YAML.** YAML 1.1 parses bare
+  `NO`/`YES`/`ON`/`OFF` as booleans; the cems-collector registry loader
+  rejects non-string codes with a hint. Registry `status` is the knowledge
+  vocabulary; the operational on/off switch is `collect: true|false`.
 - **Tests use `unittest`, not `pytest`**, and do **not** require a database or
   network — `OslcClient` and `CockpitStore` are replaced with lightweight fakes
   (`FakeClient`/`FakeStore`) in `reliability-cockpit/tests/`. Keep new tests
@@ -271,7 +303,8 @@ OslcClient (GET-only) ──▶ mappers ──▶ domain models ──▶ Cockpi
 
 - **Contract field naming:** snake_case for core/vendor-neutral fields; vendor
   (Maximo) identifiers isolated under a `sources.maximo` object, PI under
-  `sources.pi`. Never copy vendor field names into core fields.
+  `sources.pi`, CEMS Modbus details under `sources.cems`. Never copy vendor
+  field names into core fields.
 - **Schema files:** `<entity>.schema.json`, JSON Schema Draft 2020-12, in
   `reliability-data-contracts/schemas/`. Breaking changes require a version bump;
   prefer backward-compatible additions.
@@ -292,4 +325,5 @@ OslcClient (GET-only) ──▶ mappers ──▶ domain models ──▶ Cockpi
 | PI discovery | `pi-knowledge/CONTEXT.md` → `AGENTS.md` |
 | Contracts / schemas | `reliability-data-contracts/README.md` → `AGENTS.md` |
 | The cockpit app | `reliability-cockpit/docs/adapter.md`, `docs/source-resolution.md` → `AGENTS.md` |
+| CEMS collection | `cems-collector/AGENTS.md` (registry → guard → normalization) |
 | End-to-end runbook | `USERGUIDE.md` (root) |

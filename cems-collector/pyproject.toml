@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cems-collector"
+version = "0.1.0"
+description = "CEMS Modbus TCP collector for stack BSR — read-only polling, legacy normalization, 5-minute aggregation, contract-shaped local store"
+requires-python = ">=3.11"
+dependencies = [
+    "pymodbus>=3.5,<4.0",
+    "SQLAlchemy>=2.0,<3.0",
+    "psycopg[binary]>=3.1,<4.0",
+    "fastapi>=0.111,<1.0",
+    "uvicorn[standard]>=0.30,<1.0",
+    "python-dotenv>=1.0,<2.0",
+    "PyYAML>=6.0,<7.0",
+]
+
+[project.scripts]
+cemscollector = "src.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["src*"]

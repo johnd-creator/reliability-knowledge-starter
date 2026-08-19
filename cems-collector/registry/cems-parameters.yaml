@@ -1,0 +1,285 @@
+# CEMS parameter registry — the single source for the cems-collector.
+#
+# Provenance: ported from the DAZ production collector
+# (docker/sensor-collector/config.yaml + database/seeders/ParameterSeeder.php,
+# PLTU Suralaya, Beijer Box2Base Modbus TCP gateway 172.16.201.132:502 unit 1).
+#
+# status vocabulary (identical to the workspace catalogs):
+#   unknown     — not tested, do not rely on it
+#   documented  — from the DAZ production config, not yet re-verified against
+#                 the live PLC from this workspace (current state)
+#   verified    — tested with authorized read-only access — trust this
+#
+# `status` is the knowledge-trust value. The operational switch is `collect`
+# (default true) — set `collect: false` to stop polling a parameter without
+# deleting its registry entry.
+#
+# Modbus details live under `modbus:` and are quarantined from the
+# contract-shaped core fields (they surface only under sources.cems).
+#
+# Legacy adjustment reference (1/sqldata.sql, kept here as documentation):
+#   gases NOx/SO2/PM/CO2/Hg carried correction=7 (O2 reference 7%) and
+#   constant=8.4; Laju_alir carried adjust=44.15625.
+#
+# VERIFIED against the production DAS (172.16.201.135/das, 2026-08-19):
+# simultaneous PLC vs production-UI sampling showed the live pipeline is
+#   value = raw x span x ((21-7)/(21-O2_measured))   [O2-corrected params]
+#   value = raw x adjust                              [Laju_alir only]
+#   value = raw                                      [O2, CO, Humidity, Pressure, Temp, Opacity]
+# with span (calibration factor): SO2 0.4, NOx 0.5, PM 0.6, Flow 0.6 and 1.0
+# otherwise. The DAZ Laravel gas conversion (x1.227) is NOT applied in
+# production — normalization.enabled stays false for every parameter so the
+# collector reproduces the production numbers (max deviation ~0.5%, from the
+# O2 value the production collector feeds its correction).
+
+stacks:
+  - stack_id: "1"
+    code: CB001
+    name: Cerobong Unit 1 - PLTU Suralaya
+    status: active
+    description: Cerobong untuk Unit 1 Pembangkit Listrik Tenaga Uap (BSR)
+
+parameters:
+  - code: SO2
+    name: Sulfur Dioxide
+    unit: mg/Nm3
+    status: documented
+    threshold: 550.0
+    modbus:
+      register: 3150
+      register_type: holding
+      data_type: float32
+      word_order: big
+      byte_order: big
+    normalization:
+      enabled: false
+    adjustment:
+      o2_reference: 7.0
+      adjust: 0.4
+      constant: 0.0
+
+  - code: NOx
+    name: Nitrogen Oxides
+    unit: mg/Nm3
+    status: documented
+    threshold: 700.0
+    modbus:
+      register: 3112
+      register_type: holding
+      data_type: float32
+    normalization:
+      enabled: false
+    adjustment:
+      o2_reference: 7.0
+      adjust: 0.5
+      constant: 0.0
+
+  - code: O2
+    name: Oxygen
+    unit: "%"
+    status: documented
+    threshold: 30.0
+    modbus:
+      register: 3114
+      register_type: holding
+      data_type: float32
+    normalization:
+      enabled: false
+    adjustment:
+      o2_reference: null
+      adjust: 1.0
+      constant: 0.0
+
+  - code: PM
+    name: Particulate Matter
+    unit: mg/Nm3
+    status: documented
+    threshold: 100.0
+    modbus:
+      register: 3100
+      register_type: holding
+      data_type: float32
+    normalization:
+      enabled: false
+    adjustment:
+      o2_reference: 7.0
+      adjust: 0.6
+      constant: 0.0
+
+  - code: Hg
+    name: Mercury
+    unit: mg/Nm3
+    status: documented
+    threshold: 0.03
+    modbus:
+      register: 3106
+      register_type: holding
+      data_type: float32
+    normalization:
+      enabled: false
+    adjustment:
+      o2_reference: 7.0
+      adjust: 1.0
+      constant: 0.0
+
+  - code: CO2
+    name: Carbon Dioxide
+    unit: "%"
+    status: documented
+    threshold: 25.0
+    modbus:
+      register: 3124
+      register_type: holding
+      data_type: float32
+    normalization:
+      enabled: false
+    adjustment:
+      o2_reference: 7.0
+      adjust: 1.0
+      constant: 0.0
+
+  - code: Laju_alir
+    name: Flow Rate
+    unit: m3/s
+    status: documented
+    threshold: 400.0
+    modbus:
+      register: 3102
+      register_type: holding
+      data_type: float32
+    normalization:
+      enabled: false
+    adjustment:
+      o2_reference: null
+      adjust: 44.15625
+      constant: 0.0
+
+  - code: "NO"  # quoted: bare NO parses as boolean False in YAML 1.1
+    name: Nitric Oxide
+    unit: mg/Nm3
+    status: documented
+    threshold: 550.0
+    modbus:
+      register: 3108
+      register_type: holding
+      data_type: float32
+    normalization:
+      enabled: false
+    adjustment:
+      o2_reference: 7.0
+      adjust: 1.0
+      constant: 0.0
+
+  - code: NO2
+    name: Nitrogen Dioxide
+    unit: mg/Nm3
+    status: documented
+    threshold: 550.0
+    modbus:
+      register: 3110
+      register_type: holding
+      data_type: float32
+    normalization:
+      enabled: false
+    adjustment:
+      o2_reference: 7.0
+      adjust: 1.0
+      constant: 0.0
+
+  - code: CO
+    name: Carbon Monoxide
+    unit: mg/Nm3
+    status: documented
+    threshold: 400.0
+    modbus:
+      register: 3126
+      register_type: holding
+      data_type: float32
+      word_order: big
+      byte_order: big
+    normalization:
+      enabled: false
+    adjustment:
+      o2_reference: null
+      adjust: 1.0
+      constant: 0.0
+
+  - code: Flow
+    name: Flow Velocity
+    unit: m/s
+    status: documented
+    threshold: 30.0
+    modbus:
+      register: 3102
+      register_type: holding
+      data_type: float32
+    normalization:
+      enabled: false
+    adjustment:
+      o2_reference: 7.0
+      adjust: 0.6
+      constant: 0.0
+
+  - code: Opacity
+    name: Opacity
+    unit: "%"
+    status: documented
+    threshold: 30.0
+    modbus:
+      register: 3116
+      register_type: holding
+      data_type: float32
+    normalization:
+      enabled: false
+    adjustment:
+      o2_reference: null
+      adjust: 1.0
+      constant: 0.0
+
+  - code: Temp
+    name: Temperature
+    unit: °C
+    status: documented
+    threshold: 400.0
+    modbus:
+      register: 3122
+      register_type: holding
+      data_type: float32
+    normalization:
+      enabled: false
+    adjustment:
+      o2_reference: null
+      adjust: 1.0
+      constant: 0.0
+
+  - code: Humidity
+    name: Humidity
+    unit: "%"
+    status: documented
+    threshold: 400.0
+    modbus:
+      register: 3104
+      register_type: holding
+      data_type: float32
+    normalization:
+      enabled: false
+    adjustment:
+      o2_reference: null
+      adjust: 1.0
+      constant: 0.0
+
+  - code: Pressure
+    name: Pressure
+    unit: kPa
+    status: documented
+    threshold: 400.0
+    modbus:
+      register: 3118
+      register_type: holding
+      data_type: float32
+    normalization:
+      enabled: false
+    adjustment:
+      o2_reference: null
+      adjust: 1.0
+      constant: 0.0
