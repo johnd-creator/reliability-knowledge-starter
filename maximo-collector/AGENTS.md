@@ -31,7 +31,9 @@ without ever mutating production Maximo.
    to `/oslc/os/*` or any business resource.
 4. BSR/IP scope is applied on every query: `siteid="BSR"` for site-scoped
    objects, `worksite="BSR"` for labor, `site="BSR"` for items, and the
-   verified org-level `locationorg="IP"` scope for persons.
+   verified org-level `locationorg="IP"` scope for persons. Equipment is
+   additionally restricted to Maximo `eq11="CS01"` (configurable only through
+   the validated `MAXIMO_EQUIPMENT_UNIT` setting).
 5. Rate limit 1 req/s and 1 MiB response cap on every request (including
    login).
 6. Credentials and session cookies live in memory only — never logged, never

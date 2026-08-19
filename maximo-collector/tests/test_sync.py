@@ -24,6 +24,7 @@ SAMPLE_ASSET = {
     "priority": "2",
     "changedate": "2026-08-17T09:00:00Z",
     "totdowntime": "12.5",
+    "eq11": "CS01",
 }
 
 SAMPLE_WO = {
@@ -38,6 +39,11 @@ SAMPLE_WO = {
     "bu": "Generation",
     "jumlahhidup": "1",
     "luasareatanam": "12.5",
+}
+
+SAMPLE_BSR_WO = {
+    **SAMPLE_WO,
+    "wonum": "BSR25/17466",
 }
 
 
@@ -192,6 +198,7 @@ class SyncEngineTest(unittest.TestCase):
         self.assertEqual(stats.rows_seen, 2)
         self.assertEqual(stats.upserted, 1)
         self.assertEqual(stats.skipped, 1)
+        self.assertEqual(stats.errors, 1)
 
     def test_no_watermark_object_always_full(self):
         cfg = ObjectSyncConfig(
@@ -225,6 +232,37 @@ class SyncEngineTest(unittest.TestCase):
         SyncService(client, store).sync(cfg)
         self.assertEqual(client.calls[0]["where"], 'worksite="BSR"')
         self.assertEqual(client.calls[0]["required_scope"], 'worksite="BSR"')
+
+    def test_work_order_prefix_is_applied_and_non_bsr_is_rejected(self):
+        cfg = ObjectSyncConfig(
+            object_structure="mxwodetail", entity_name="work_order",
+            mapper=lambda member: member,
+            prefix_field="wonum", allowed_prefixes=("BSR",),
+        )
+        store = FakeStore()
+        client = FakeClient([SAMPLE_BSR_WO, SAMPLE_WO])
+        stats = SyncService(client, store).sync(cfg)
+        self.assertIn('siteid="BSR" and (wonum like "BSR%")', client.calls[0]["where"])
+        self.assertEqual(stats.rows_seen, 2)
+        self.assertEqual(stats.upserted, 1)
+        self.assertEqual(stats.skipped, 1)
+
+    def test_equipment_unit_is_applied_and_non_cs01_is_rejected(self):
+        cfg = ObjectSyncConfig(
+            object_structure="mxapiasset", entity_name="equipment",
+            mapper=lambda member: member,
+            required_values=(("eq11", "CS01"),),
+        )
+        store = FakeStore()
+        client = FakeClient([
+            {**SAMPLE_ASSET, "eq11": "CS01"},
+            {**SAMPLE_ASSET, "assetnum": "CS02-ASSET", "eq11": "CS02"},
+        ])
+        stats = SyncService(client, store).sync(cfg)
+        self.assertIn('siteid="BSR" and eq11="CS01"', client.calls[0]["where"])
+        self.assertEqual(stats.rows_seen, 2)
+        self.assertEqual(stats.upserted, 1)
+        self.assertEqual(stats.skipped, 1)
 
     def test_run_logged(self):
         store, client = FakeStore(), FakeClient([SAMPLE_ASSET])

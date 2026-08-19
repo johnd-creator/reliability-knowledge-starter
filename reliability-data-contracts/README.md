@@ -8,9 +8,11 @@ field names live only in the `sources.maximo` / `sources.pi` blocks.
 
 ## Source of truth
 
-Field mappings are verified against `maximo-knowledge` (site BSR, org IP).
-See [`mappings/maximo-to-contracts.md`](./mappings/maximo-to-contracts.md) for
-the field-by-field translation table.
+Field mappings are verified against `maximo-knowledge` (site BSR, org IP) and
+`pi-knowledge` (site BSR, unit BSR1). See
+[`mappings/maximo-to-contracts.md`](./mappings/maximo-to-contracts.md) and
+[`mappings/pi-to-contracts.md`](./mappings/pi-to-contracts.md) for the
+field-by-field translation tables.
 
 ## Schemas
 
@@ -27,7 +29,8 @@ the field-by-field translation table.
 ### Vendor-neutral source
 | Schema | Source | Status |
 |---|---|---|
-| [`condition-parameter.schema.json`](./schemas/condition-parameter.schema.json) | PI Web API | template |
+| [`condition-parameter.schema.json`](./schemas/condition-parameter.schema.json) | pi-knowledge registry YAML via pi-collector | ✅ verified (v2, breaking rename 2026-08) |
+| [`condition-reading.schema.json`](./schemas/condition-reading.schema.json) | PI Web API streams via pi-collector | ✅ verified (snapshot + timeseries) |
 
 ### Computed reliability concepts (derived, not a direct source field)
 | Schema | Derived from |
@@ -42,6 +45,7 @@ the field-by-field translation table.
 
 - [`catalog/equipment.example.yaml`](./catalog/equipment.example.yaml)
 - [`catalog/work-order.example.yaml`](./catalog/work-order.example.yaml)
+- [`catalog/condition-parameter.example.yaml`](./catalog/condition-parameter.example.yaml)
 
 ## Core concepts
 

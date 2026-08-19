@@ -12,6 +12,7 @@ import {
   CollectRunView,
   timeAgo,
 } from "@/lib/api";
+import { CollectStatusBar } from "./CollectStatusBar";
 
 const resources = [
   { key: "equipment", label: "Equipment", object: "mxapiasset", desc: "Asset master & specifications" },
@@ -28,7 +29,7 @@ export default function HomePage() {
   const [stats, setStats] = useState<StatsView | null>(null);
   const [status, setStatus] = useState<Record<string, { watermark: string | null; rows: number }>>({});
   const [runs, setRuns] = useState<CollectRunView[]>([]);
-  
+
   // Datasets
   const [equipmentList, setEquipmentList] = useState<EquipmentView[]>([]);
   const [workOrdersList, setWorkOrdersList] = useState<WorkOrderView[]>([]);
@@ -40,9 +41,18 @@ export default function HomePage() {
   // Selected Resource Tab
   const [selectedResource, setSelectedResource] = useState<ResourceKey>("equipment");
 
-  // Filtering & Pagination State
+  // Multi-Filter State
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
+  const [typeFilter, setTypeFilter] = useState("ALL");
+  const [unitFilter, setUnitFilter] = useState("ALL");
+  const [classFilter, setClassFilter] = useState("ALL");
+  const [priorityFilter, setPriorityFilter] = useState("ALL");
+  const [quickFilter, setQuickFilter] = useState("ALL");
+  const [workSiteFilter, setWorkSiteFilter] = useState("ALL");
+  const [assignedFilter, setAssignedFilter] = useState("ALL");
+  const [orgFilter, setOrgFilter] = useState("ALL");
+
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(25);
   const [sortBy, setSortBy] = useState<string>("id");
@@ -74,6 +84,15 @@ export default function HomePage() {
     }
   }, []);
 
+  const refreshSelectedData = useCallback(async () => {
+    await load();
+    if (selectedResource === "work_order") setWorkOrdersList(await collectorApi.workOrders(5000));
+    if (selectedResource === "service_request") setServiceRequestsList(await collectorApi.serviceRequests(5000));
+    if (selectedResource === "person") setPersonsList(await collectorApi.persons(5000));
+    if (selectedResource === "item") setItemsList(await collectorApi.items(5000));
+    if (selectedResource === "labor") setLaborList(await collectorApi.labor(5000));
+  }, [load, selectedResource]);
+
   // Lazy load other datasets when selected
   useEffect(() => {
     if (selectedResource === "work_order" && workOrdersList.length === 0) {
@@ -93,10 +112,29 @@ export default function HomePage() {
     load();
   }, [load]);
 
-  // Reset pagination when filter/search/tab changes
+  // Reset pagination & filters on tab change
+  const handleSelectResource = (key: ResourceKey) => {
+    setSelectedResource(key);
+    setQuery("");
+    setStatusFilter("ALL");
+    setTypeFilter("ALL");
+    setUnitFilter("ALL");
+    setClassFilter("ALL");
+    setPriorityFilter("ALL");
+    setQuickFilter("ALL");
+    setWorkSiteFilter("ALL");
+    setAssignedFilter("ALL");
+    setOrgFilter("ALL");
+    setSortBy("id");
+    setSortOrder("asc");
+    if (dataSectionRef.current) {
+      dataSectionRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   useEffect(() => {
     setCurrentPage(1);
-  }, [query, statusFilter, selectedResource, pageSize]);
+  }, [query, statusFilter, typeFilter, unitFilter, classFilter, priorityFilter, quickFilter, workSiteFilter, assignedFilter, orgFilter, selectedResource, pageSize]);
 
   async function handleSync(object: string, e?: React.MouseEvent) {
     if (e) e.stopPropagation();
@@ -109,6 +147,12 @@ export default function HomePage() {
         setWorkOrdersList(await collectorApi.workOrders(5000));
       } else if (selectedResource === "service_request") {
         setServiceRequestsList(await collectorApi.serviceRequests(5000));
+      } else if (selectedResource === "person") {
+        setPersonsList(await collectorApi.persons(5000));
+      } else if (selectedResource === "item") {
+        setItemsList(await collectorApi.items(5000));
+      } else if (selectedResource === "labor") {
+        setLaborList(await collectorApi.labor(5000));
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
@@ -117,18 +161,7 @@ export default function HomePage() {
     }
   }
 
-  const handleSelectResource = (key: ResourceKey) => {
-    setSelectedResource(key);
-    setQuery("");
-    setStatusFilter("ALL");
-    setSortBy("id");
-    setSortOrder("asc");
-    if (dataSectionRef.current) {
-      dataSectionRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
-
-  // Status options for currently active resource
+  // Filter options
   const currentStatusOptions = useMemo(() => {
     let list: string[] = [];
     if (selectedResource === "equipment") {
@@ -137,57 +170,161 @@ export default function HomePage() {
       list = workOrdersList.map((w) => w.status).filter(Boolean) as string[];
     } else if (selectedResource === "service_request") {
       list = serviceRequestsList.map((s) => s.status).filter(Boolean) as string[];
+    } else if (selectedResource === "person") {
+      list = personsList.map((row) => row.status).filter(Boolean) as string[];
+    } else if (selectedResource === "item") {
+      list = itemsList.map((row) => row.status).filter(Boolean) as string[];
+    } else if (selectedResource === "labor") {
+      list = laborList.map((row) => row.status).filter(Boolean) as string[];
     }
     return Array.from(new Set(list)).sort();
+  }, [selectedResource, equipmentList, workOrdersList, serviceRequestsList, personsList, itemsList, laborList]);
+
+  const currentTypeOptions = useMemo(() => {
+    const list =
+      selectedResource === "work_order"
+        ? workOrdersList.map((row) => row.work_type)
+        : selectedResource === "service_request"
+          ? serviceRequestsList.map((row) => row.work_type)
+          : selectedResource === "item"
+            ? itemsList.map((row) => row.item_type)
+          : [];
+    return Array.from(new Set(list.filter(Boolean) as string[])).sort();
+  }, [selectedResource, workOrdersList, serviceRequestsList, itemsList]);
+
+  const currentUnitOptions = useMemo(() => {
+    if (selectedResource === "equipment") {
+      return Array.from(new Set(equipmentList.map((row) => row.unit).filter(Boolean) as string[])).sort();
+    }
+    if (selectedResource === "item") {
+      return Array.from(new Set(itemsList.map((row) => row.issue_unit).filter(Boolean) as string[])).sort();
+    }
+    return [];
+  }, [selectedResource, equipmentList, itemsList]);
+
+  const currentWorkSiteOptions = useMemo(() => (
+    selectedResource === "labor"
+      ? Array.from(new Set(laborList.map((row) => row.work_site).filter(Boolean) as string[])).sort()
+      : []
+  ), [selectedResource, laborList]);
+
+  const currentOrgOptions = useMemo(() => (
+    selectedResource === "person"
+      ? Array.from(new Set(personsList.map((row) => row.location_org).filter(Boolean) as string[])).sort()
+      : []
+  ), [selectedResource, personsList]);
+
+  const currentClassOptions = useMemo(() => {
+    if (selectedResource === "equipment") {
+      return Array.from(new Set(equipmentList.map((e) => e.equipment_class).filter(Boolean) as string[])).sort();
+    } else if (selectedResource === "work_order") {
+      return Array.from(new Set(workOrdersList.map((w) => w.work_class).filter(Boolean) as string[])).sort();
+    }
+    return [];
+  }, [selectedResource, equipmentList, workOrdersList]);
+
+  const currentPriorityOptions = useMemo(() => {
+    if (selectedResource === "equipment") {
+      const list = equipmentList.map((e) => e.priority).filter((p) => p != null) as number[];
+      return Array.from(new Set(list)).sort((a, b) => a - b).map(String);
+    } else if (selectedResource === "work_order") {
+      return Array.from(new Set(workOrdersList.map((w) => w.priority).filter(Boolean) as string[])).sort();
+    } else if (selectedResource === "service_request") {
+      return Array.from(new Set(serviceRequestsList.map((s) => s.reported_priority).filter(Boolean) as string[])).sort();
+    }
+    return [];
   }, [selectedResource, equipmentList, workOrdersList, serviceRequestsList]);
 
   // Filtered and Sorted Data
   const currentDataset = useMemo(() => {
     const q = query.trim().toLowerCase();
-
     let list: Array<Record<string, unknown>> = [];
 
     if (selectedResource === "equipment") {
       list = equipmentList.filter((row) => {
         const matchStatus = statusFilter === "ALL" || row.status === statusFilter;
+        const matchUnit = unitFilter === "ALL" || row.unit === unitFilter;
+        const matchClass = classFilter === "ALL" || row.equipment_class === classFilter;
+        const matchPriority = priorityFilter === "ALL" || (row.priority != null && String(row.priority) === priorityFilter);
+
+        let matchQuick = true;
+        if (quickFilter === "RUNNING") {
+          matchQuick = row.is_running === true || row.status?.toLowerCase() === "operating";
+        } else if (quickFilter === "HIGH_PRIORITY") {
+          matchQuick = row.priority != null && row.priority <= 2;
+        } else if (quickFilter === "WITH_VENDOR") {
+          matchQuick = Boolean(row.manufacturer || row.vendor);
+        }
+
         const matchSearch =
           !q ||
           [row.id, row.name, row.location_id, row.unit, row.equipment_class, row.status, row.manufacturer, row.vendor].some(
             (v) => v?.toLowerCase().includes(q)
           );
-        return matchStatus && matchSearch;
+        return matchStatus && matchUnit && matchClass && matchPriority && matchQuick && matchSearch;
       }) as unknown as Array<Record<string, unknown>>;
     } else if (selectedResource === "work_order") {
       list = workOrdersList.filter((row) => {
         const matchStatus = statusFilter === "ALL" || row.status === statusFilter;
+        const matchType = typeFilter === "ALL" || row.work_type === typeFilter;
+        const matchClass = classFilter === "ALL" || row.work_class === classFilter;
+        const matchPriority = priorityFilter === "ALL" || row.priority === priorityFilter;
+
+        let matchQuick = true;
+        if (quickFilter === "EMERGENCY") {
+          matchQuick = ["EM", "CM", "BD", "CORR"].includes((row.work_type || "").toUpperCase());
+        } else if (quickFilter === "PREVENTIVE") {
+          matchQuick = (row.work_type || "").toUpperCase() === "PM";
+        } else if (quickFilter === "DOWNTIME") {
+          matchQuick = row.downtime_hours != null && row.downtime_hours > 0;
+        }
+
         const matchSearch =
           !q ||
-          [row.id, row.equipment_id, row.location_id, row.status, row.work_type, row.description, row.reported_by].some(
+          [row.id, row.equipment_id, row.location_id, row.status, row.work_type, row.description, row.reported_by, row.supervisor].some(
             (v) => v?.toLowerCase().includes(q)
           );
-        return matchStatus && matchSearch;
+        return matchStatus && matchType && matchClass && matchPriority && matchQuick && matchSearch;
       }) as unknown as Array<Record<string, unknown>>;
     } else if (selectedResource === "service_request") {
       list = serviceRequestsList.filter((row) => {
         const matchStatus = statusFilter === "ALL" || row.status === statusFilter;
+        const matchType = typeFilter === "ALL" || row.work_type === typeFilter;
+        const matchPriority = priorityFilter === "ALL" || row.reported_priority === priorityFilter;
+
+        let matchQuick = true;
+        if (quickFilter === "HIGH_PRIORITY") {
+          matchQuick = ["1", "2", "P1", "P2", "HIGH"].includes((row.reported_priority || "").toUpperCase());
+        } else if (quickFilter === "HAS_RISK") {
+          matchQuick = Boolean(row.risk_area_process || row.risk_area_human || row.risk_area_environment);
+        }
+
         const matchSearch =
           !q ||
           [row.id, row.equipment_id, row.location_id, row.status, row.description, row.reported_by, row.reported_by_name].some(
             (v) => v?.toLowerCase().includes(q)
           );
-        return matchStatus && matchSearch;
+        return matchStatus && matchType && matchPriority && matchQuick && matchSearch;
       }) as unknown as Array<Record<string, unknown>>;
     } else if (selectedResource === "person") {
       list = personsList.filter(
-        (r) => !q || [r.id, r.display_name, r.description, r.status].some((v) => v?.toLowerCase().includes(q))
+        (r) => (statusFilter === "ALL" || r.status === statusFilter) &&
+          (orgFilter === "ALL" || r.location_org === orgFilter) &&
+          (!q || [r.id, r.display_name, r.first_name, r.status, r.location_org].some((v) => v?.toLowerCase().includes(q)))
       ) as unknown as Array<Record<string, unknown>>;
     } else if (selectedResource === "item") {
       list = itemsList.filter(
-        (r) => !q || [r.id, r.display_name, r.description, r.status].some((v) => v?.toLowerCase().includes(q))
+        (r) => (statusFilter === "ALL" || r.status === statusFilter) &&
+          (typeFilter === "ALL" || r.item_type === typeFilter) &&
+          (unitFilter === "ALL" || r.issue_unit === unitFilter) &&
+          (!q || [r.id, r.description, r.status, r.item_type, r.issue_unit, r.order_unit].some((v) => v?.toLowerCase().includes(q)))
       ) as unknown as Array<Record<string, unknown>>;
     } else if (selectedResource === "labor") {
       list = laborList.filter(
-        (r) => !q || [r.id, r.display_name, r.description, r.status].some((v) => v?.toLowerCase().includes(q))
+        (r) => (statusFilter === "ALL" || r.status === statusFilter) &&
+          (workSiteFilter === "ALL" || r.work_site === workSiteFilter) &&
+          (assignedFilter === "ALL" || String(Boolean(r.is_assigned)) === assignedFilter) &&
+          (!q || [r.id, r.person_id, r.status, r.status_description, r.work_site].some((v) => v?.toLowerCase().includes(q)))
       ) as unknown as Array<Record<string, unknown>>;
     }
 
@@ -216,6 +353,14 @@ export default function HomePage() {
     laborList,
     query,
     statusFilter,
+    typeFilter,
+    unitFilter,
+    classFilter,
+    priorityFilter,
+    quickFilter,
+    workSiteFilter,
+    assignedFilter,
+    orgFilter,
     sortBy,
     sortOrder,
   ]);
@@ -236,6 +381,31 @@ export default function HomePage() {
     }
   };
 
+  const isFiltered =
+    Boolean(query) ||
+    statusFilter !== "ALL" ||
+    typeFilter !== "ALL" ||
+    unitFilter !== "ALL" ||
+    classFilter !== "ALL" ||
+    priorityFilter !== "ALL" ||
+    quickFilter !== "ALL" ||
+    workSiteFilter !== "ALL" ||
+    assignedFilter !== "ALL" ||
+    orgFilter !== "ALL";
+
+  const handleResetFilters = () => {
+    setQuery("");
+    setStatusFilter("ALL");
+    setTypeFilter("ALL");
+    setUnitFilter("ALL");
+    setClassFilter("ALL");
+    setPriorityFilter("ALL");
+    setQuickFilter("ALL");
+    setWorkSiteFilter("ALL");
+    setAssignedFilter("ALL");
+    setOrgFilter("ALL");
+  };
+
   const activeResObj = resources.find((r) => r.key === selectedResource)!;
 
   return (
@@ -246,7 +416,7 @@ export default function HomePage() {
           <p className="eyebrow">SOURCE SYSTEM / MAXIMO OSLC</p>
           <h1>BSR Collection Room</h1>
           <p className="lede">
-            Pusat sinkronisasi dan penjelajah data transaksi Maximo lokal (Postgres) dengan paginasi dan detail terverifikasi.
+            Pusat sinkronisasi dan penjelajah data transaksi Maximo lokal (Postgres) dengan live state monitoring & filter kaya.
           </p>
         </div>
         <div className="hero-meta">
@@ -259,6 +429,9 @@ export default function HomePage() {
           <span className="verified">● verified source</span>
         </div>
       </section>
+
+      {/* Collector Status Bar & Sync Actions (like pi-collector) */}
+      <CollectStatusBar onRefresh={refreshSelectedData} />
 
       {error && (
         <div className="alert">
@@ -386,7 +559,7 @@ export default function HomePage() {
                   <div>
                     <strong>{run.object_structure}</strong>
                     <small>
-                      {run.mode} · {timeAgo(run.finished_at)}
+                      {run.mode} · {timeAgo(run.finished_at || run.started_at)}
                     </small>
                   </div>
                   <b>
@@ -400,7 +573,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Main Data Section (Selected Resource with Pagination & Detail Links) */}
+      {/* Main Data Section (Selected Resource with Multi-Dimensional Filters) */}
       <section className="panel data-panel" ref={dataSectionRef}>
         <div className="panel-head">
           <div>
@@ -416,11 +589,123 @@ export default function HomePage() {
           <div style={{ display: "flex", gap: 8 }}>
             {selectedResource === "equipment" && (
               <Link href="/equipment" className="btn btn-ghost" style={{ fontSize: "0.75rem" }}>
-                Buka Dedicated Explorer ↗
+                Buka Dedicated Equipment Explorer ↗
+              </Link>
+            )}
+            {selectedResource === "work_order" && (
+              <Link href="/work-orders" className="btn btn-ghost" style={{ fontSize: "0.75rem" }}>
+                Buka Dedicated Work Orders Explorer ↗
+              </Link>
+            )}
+            {selectedResource === "service_request" && (
+              <Link href="/service-requests" className="btn btn-ghost" style={{ fontSize: "0.75rem" }}>
+                Buka Dedicated Service Requests Explorer ↗
               </Link>
             )}
           </div>
         </div>
+
+        {/* Quick Filter Chips (for Equipment / WO / SR) */}
+        {selectedResource === "equipment" && (
+          <div className="quick-chips-wrapper">
+            <span style={{ fontSize: "11px", color: "var(--text-dim)", fontWeight: 700, textTransform: "uppercase", marginRight: 4 }}>
+              Quick Filter:
+            </span>
+            <button
+              type="button"
+              className={`quick-chip ${quickFilter === "ALL" ? "active" : ""}`}
+              onClick={() => setQuickFilter("ALL")}
+            >
+              Semua
+            </button>
+            <button
+              type="button"
+              className={`quick-chip ${quickFilter === "RUNNING" ? "active" : ""}`}
+              onClick={() => setQuickFilter(quickFilter === "RUNNING" ? "ALL" : "RUNNING")}
+            >
+              ⚡ Running (Operating)
+            </button>
+            <button
+              type="button"
+              className={`quick-chip ${quickFilter === "HIGH_PRIORITY" ? "active" : ""}`}
+              onClick={() => setQuickFilter(quickFilter === "HIGH_PRIORITY" ? "ALL" : "HIGH_PRIORITY")}
+            >
+              ★ Prioritas Tinggi (P1/P2)
+            </button>
+            <button
+              type="button"
+              className={`quick-chip ${quickFilter === "WITH_VENDOR" ? "active" : ""}`}
+              onClick={() => setQuickFilter(quickFilter === "WITH_VENDOR" ? "ALL" : "WITH_VENDOR")}
+            >
+              🏷️ Terdata Vendor
+            </button>
+          </div>
+        )}
+
+        {selectedResource === "work_order" && (
+          <div className="quick-chips-wrapper">
+            <span style={{ fontSize: "11px", color: "var(--text-dim)", fontWeight: 700, textTransform: "uppercase", marginRight: 4 }}>
+              Quick Filter:
+            </span>
+            <button
+              type="button"
+              className={`quick-chip ${quickFilter === "ALL" ? "active" : ""}`}
+              onClick={() => setQuickFilter("ALL")}
+            >
+              Semua
+            </button>
+            <button
+              type="button"
+              className={`quick-chip ${quickFilter === "EMERGENCY" ? "active" : ""}`}
+              onClick={() => setQuickFilter(quickFilter === "EMERGENCY" ? "ALL" : "EMERGENCY")}
+            >
+              🔴 Emergency / CM
+            </button>
+            <button
+              type="button"
+              className={`quick-chip ${quickFilter === "PREVENTIVE" ? "active" : ""}`}
+              onClick={() => setQuickFilter(quickFilter === "PREVENTIVE" ? "ALL" : "PREVENTIVE")}
+            >
+              🛠️ Preventive (PM)
+            </button>
+            <button
+              type="button"
+              className={`quick-chip ${quickFilter === "DOWNTIME" ? "active" : ""}`}
+              onClick={() => setQuickFilter(quickFilter === "DOWNTIME" ? "ALL" : "DOWNTIME")}
+            >
+              ⏱️ Ada Downtime
+            </button>
+          </div>
+        )}
+
+        {selectedResource === "service_request" && (
+          <div className="quick-chips-wrapper">
+            <span style={{ fontSize: "11px", color: "var(--text-dim)", fontWeight: 700, textTransform: "uppercase", marginRight: 4 }}>
+              Quick Filter:
+            </span>
+            <button
+              type="button"
+              className={`quick-chip ${quickFilter === "ALL" ? "active" : ""}`}
+              onClick={() => setQuickFilter("ALL")}
+            >
+              Semua
+            </button>
+            <button
+              type="button"
+              className={`quick-chip ${quickFilter === "HIGH_PRIORITY" ? "active" : ""}`}
+              onClick={() => setQuickFilter(quickFilter === "HIGH_PRIORITY" ? "ALL" : "HIGH_PRIORITY")}
+            >
+              🚨 Prioritas Tinggi (P1/P2)
+            </button>
+            <button
+              type="button"
+              className={`quick-chip ${quickFilter === "HAS_RISK" ? "active" : ""}`}
+              onClick={() => setQuickFilter(quickFilter === "HAS_RISK" ? "ALL" : "HAS_RISK")}
+            >
+              ⚠️ Area Risiko Teridentifikasi
+            </button>
+          </div>
+        )}
 
         {/* Toolbar & Filters */}
         <div className="table-tools-bar">
@@ -441,22 +726,69 @@ export default function HomePage() {
                 <option value="ALL">Semua Status ({currentStatusOptions.length})</option>
                 {currentStatusOptions.map((st) => (
                   <option key={st} value={st}>
-                    {st}
+                    Status: {st}
                   </option>
                 ))}
               </select>
             )}
 
-            {(query || statusFilter !== "ALL") && (
+            {currentTypeOptions.length > 0 && (
+              <select className="select-filter" value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
+                <option value="ALL">Semua Type ({currentTypeOptions.length})</option>
+                {currentTypeOptions.map((type) => <option key={type} value={type}>Type: {type}</option>)}
+              </select>
+            )}
+
+            {currentUnitOptions.length > 0 && (
+              <select className="select-filter" value={unitFilter} onChange={(e) => setUnitFilter(e.target.value)}>
+                <option value="ALL">Semua Unit ({currentUnitOptions.length})</option>
+                {currentUnitOptions.map((unit) => <option key={unit} value={unit}>Unit: {unit}</option>)}
+              </select>
+            )}
+
+            {currentClassOptions.length > 0 && (
+              <select className="select-filter" value={classFilter} onChange={(e) => setClassFilter(e.target.value)}>
+                <option value="ALL">Semua Class ({currentClassOptions.length})</option>
+                {currentClassOptions.map((c) => <option key={c} value={c}>Class: {c}</option>)}
+              </select>
+            )}
+
+            {currentPriorityOptions.length > 0 && (
+              <select className="select-filter" value={priorityFilter} onChange={(e) => setPriorityFilter(e.target.value)}>
+                <option value="ALL">Semua Prioritas</option>
+                {currentPriorityOptions.map((p) => <option key={p} value={p}>Pri: {p}</option>)}
+              </select>
+            )}
+
+            {currentOrgOptions.length > 0 && (
+              <select className="select-filter" value={orgFilter} onChange={(e) => setOrgFilter(e.target.value)}>
+                <option value="ALL">Semua Organisasi</option>
+                {currentOrgOptions.map((org) => <option key={org} value={org}>{org}</option>)}
+              </select>
+            )}
+
+            {currentWorkSiteOptions.length > 0 && (
+              <select className="select-filter" value={workSiteFilter} onChange={(e) => setWorkSiteFilter(e.target.value)}>
+                <option value="ALL">Semua Worksite</option>
+                {currentWorkSiteOptions.map((site) => <option key={site} value={site}>{site}</option>)}
+              </select>
+            )}
+
+            {selectedResource === "labor" && (
+              <select className="select-filter" value={assignedFilter} onChange={(e) => setAssignedFilter(e.target.value)}>
+                <option value="ALL">Assignment: Semua</option>
+                <option value="true">Assigned</option>
+                <option value="false">Unassigned</option>
+              </select>
+            )}
+
+            {isFiltered && (
               <button
                 type="button"
                 className="btn btn-ghost"
-                onClick={() => {
-                  setQuery("");
-                  setStatusFilter("ALL");
-                }}
+                onClick={handleResetFilters}
               >
-                ✕ Reset
+                ✕ Reset Filter
               </button>
             )}
           </div>
@@ -496,6 +828,9 @@ export default function HomePage() {
                     <th className="sortable" onClick={() => toggleSort("status")}>
                       Status {sortBy === "status" && (sortOrder === "asc" ? "↑" : "↓")}
                     </th>
+                    <th className="sortable" onClick={() => toggleSort("priority")}>
+                      Pri {sortBy === "priority" && (sortOrder === "asc" ? "↑" : "↓")}
+                    </th>
                     <th>Manufacturer / Vendor</th>
                     <th className="sortable" onClick={() => toggleSort("source_changed_at")}>
                       Changed {sortBy === "source_changed_at" && (sortOrder === "asc" ? "↑" : "↓")}
@@ -516,7 +851,11 @@ export default function HomePage() {
                       </td>
                       <td>
                         <span>{row.unit || "—"}</span>
-                        <small>{row.equipment_class || "—"}</small>
+                        {row.equipment_class && (
+                          <small style={{ display: "block", color: "var(--text-muted)", fontSize: "11px" }}>
+                            {row.equipment_class}
+                          </small>
+                        )}
                       </td>
                       <td className="mono">{row.location_id || "—"}</td>
                       <td>
@@ -524,6 +863,7 @@ export default function HomePage() {
                           {row.status || "—"}
                         </span>
                       </td>
+                      <td>{row.priority != null ? <span className="count-pill">P{row.priority}</span> : "—"}</td>
                       <td>{row.manufacturer || row.vendor || "—"}</td>
                       <td className="mono" style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
                         {timeAgo(row.source_changed_at)}
@@ -559,7 +899,13 @@ export default function HomePage() {
                     <th className="sortable" onClick={() => toggleSort("status")}>
                       Status {sortBy === "status" && (sortOrder === "asc" ? "↑" : "↓")}
                     </th>
+                    <th className="sortable" onClick={() => toggleSort("priority")}>
+                      Pri {sortBy === "priority" && (sortOrder === "asc" ? "↑" : "↓")}
+                    </th>
                     <th>Description</th>
+                    <th className="sortable" onClick={() => toggleSort("downtime_hours")}>
+                      Downtime {sortBy === "downtime_hours" && (sortOrder === "asc" ? "↑" : "↓")}
+                    </th>
                     <th className="sortable" onClick={() => toggleSort("source_changed_at")}>
                       Changed {sortBy === "source_changed_at" && (sortOrder === "asc" ? "↑" : "↓")}
                     </th>
@@ -589,8 +935,18 @@ export default function HomePage() {
                       <td>
                         <span className="status">{row.status || "—"}</span>
                       </td>
+                      <td>{row.priority ? <span className="count-pill">{row.priority}</span> : "—"}</td>
                       <td>
-                        <div style={{ maxWidth: 300 }}>{row.description || "—"}</div>
+                        <div style={{ maxWidth: 280 }}>{row.description || "—"}</div>
+                      </td>
+                      <td>
+                        {row.downtime_hours != null && row.downtime_hours > 0 ? (
+                          <span className="mono" style={{ color: "var(--amber)", fontWeight: 600 }}>
+                            {row.downtime_hours} jam
+                          </span>
+                        ) : (
+                          <span style={{ color: "var(--text-dim)" }}>0</span>
+                        )}
                       </td>
                       <td className="mono">{timeAgo(row.source_changed_at)}</td>
                       <td style={{ textAlign: "right" }}>
@@ -620,6 +976,9 @@ export default function HomePage() {
                     </th>
                     <th className="sortable" onClick={() => toggleSort("status")}>
                       Status {sortBy === "status" && (sortOrder === "asc" ? "↑" : "↓")}
+                    </th>
+                    <th className="sortable" onClick={() => toggleSort("reported_priority")}>
+                      Pri {sortBy === "reported_priority" && (sortOrder === "asc" ? "↑" : "↓")}
                     </th>
                     <th>Description</th>
                     <th className="sortable" onClick={() => toggleSort("reported_by")}>
@@ -652,10 +1011,17 @@ export default function HomePage() {
                         <span className="status">{row.status || "—"}</span>
                       </td>
                       <td>
+                        {row.reported_priority ? (
+                          <span className="count-pill">P{row.reported_priority}</span>
+                        ) : (
+                          "—"
+                        )}
+                      </td>
+                      <td>
                         <div style={{ maxWidth: 280 }}>{row.description || "—"}</div>
                       </td>
                       <td>
-                        <small style={{ color: "var(--text)" }}>{row.reported_by_name || row.reported_by || "—"}</small>
+                        <small style={{ color: "var(--text)", fontWeight: 600 }}>{row.reported_by_name || row.reported_by || "—"}</small>
                       </td>
                       <td className="mono">{timeAgo(row.source_changed_at)}</td>
                       <td style={{ textAlign: "right" }}>
@@ -678,9 +1044,10 @@ export default function HomePage() {
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Display Name</th>
-                    <th>Description</th>
+                    <th>{selectedResource === "person" ? "Display Name" : selectedResource === "item" ? "Item Description" : "Person ID"}</th>
+                    <th>{selectedResource === "person" ? "Organization" : selectedResource === "item" ? "Item Type / Unit" : "Worksite"}</th>
                     <th>Status</th>
+                    {selectedResource === "labor" && <th>Assigned</th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -689,11 +1056,16 @@ export default function HomePage() {
                       <td className="mono">
                         <b>{row.id}</b>
                       </td>
-                      <td>{row.display_name || "—"}</td>
-                      <td>{row.description || "—"}</td>
+                      <td>{selectedResource === "person" ? row.display_name || "—" : selectedResource === "item" ? row.description || "—" : row.person_id || "—"}</td>
+                      <td>
+                        {selectedResource === "person" && (row.location_org || "—")}
+                        {selectedResource === "item" && `${row.item_type || "—"} / ${row.issue_unit || "—"}`}
+                        {selectedResource === "labor" && (row.work_site || "—")}
+                      </td>
                       <td>
                         <span className="status">{row.status || "—"}</span>
                       </td>
+                      {selectedResource === "labor" && <td>{row.is_assigned ? "Yes" : "No"}</td>}
                     </tr>
                   ))}
                 </tbody>
@@ -701,7 +1073,12 @@ export default function HomePage() {
             )}
 
             {paginatedRows.length === 0 && (
-              <div className="empty">Tidak ada data yang cocok dengan filter.</div>
+              <div className="empty">
+                {(["person", "item", "labor"].includes(selectedResource) &&
+                  (selectedResource === "person" ? personsList.length : selectedResource === "item" ? itemsList.length : laborList.length) === 0)
+                  ? `Belum ada baseline data ${activeResObj.label}. Klik sync pada object ${activeResObj.object}; untuk Items, jalankan diagnose master-data bila hasil tetap 0.`
+                  : "Tidak ada data yang cocok dengan kriteria filter saat ini."}
+              </div>
             )}
           </div>
         )}

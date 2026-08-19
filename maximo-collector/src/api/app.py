@@ -34,16 +34,19 @@ OBJECTS: dict[str, dict[str, Any]] = {
         entity="equipment", mapper=equipment_from_payload,
         watermark="changedate", order_by="-changedate", changed_column="source_changed_at",
         orm=orm.EquipmentOrm, scope='siteid="BSR"', compare_column="source_changed_at",
+        required_field="eq11",
     ),
     "mxasset": dict(
         entity="equipment", mapper=equipment_from_payload,
         watermark="changedate", order_by="-changedate", changed_column="source_changed_at",
         orm=orm.EquipmentOrm, scope='siteid="BSR"', compare_column="source_changed_at",
+        required_field="eq11",
     ),
     "mxwodetail": dict(
         entity="work_order", mapper=work_order_from_payload,
         watermark="changedate", order_by="-changedate", changed_column="source_changed_at",
         orm=orm.WorkOrderOrm, scope='siteid="BSR"', compare_column="source_changed_at",
+        prefix_field="wonum",
     ),
     "mxapisr": dict(
         entity="service_request", mapper=service_request_from_payload,
@@ -53,17 +56,17 @@ OBJECTS: dict[str, dict[str, Any]] = {
     "mxperson": dict(
         entity="person", mapper=person_from_payload,
         watermark="statusdate", order_by="-statusdate", changed_column="status_changed_at",
-        orm=orm.PersonOrm, scope='locationorg="IP"', compare_column="status_changed_at",
+        orm=orm.PersonOrm, scope='locationorg="IP"', compare_column="status_changed_at", batch_size=100,
     ),
     "mxitem": dict(
         entity="item", mapper=item_from_payload,
         watermark="statusdate", order_by="-statusdate", changed_column="status_changed_at",
-        orm=orm.ItemOrm, scope='site="BSR"', compare_column="status_changed_at",
+        orm=orm.ItemOrm, scope='site="BSR"', compare_column="status_changed_at", batch_size=100,
     ),
     "mxapilabor": dict(
         entity="labor", mapper=labor_from_payload,
         watermark=None, order_by=None, changed_column=None,
-        orm=orm.LaborOrm, scope='worksite="BSR"', compare_column=None,
+        orm=orm.LaborOrm, scope='worksite="BSR"', compare_column=None, batch_size=100,
     ),
 }
 # alias: friendly names
@@ -85,6 +88,7 @@ def resolve_object(name: str) -> str:
 def sync_config_for(object_structure: str) -> ObjectSyncConfig:
     canonical = resolve_object(object_structure)
     spec = OBJECTS[canonical]
+    runtime_config = MaximoConfig.from_environment()
     return ObjectSyncConfig(
         object_structure=canonical,
         entity_name=spec["entity"],
@@ -93,6 +97,12 @@ def sync_config_for(object_structure: str) -> ObjectSyncConfig:
         order_by=spec["order_by"],
         scope_clause=spec["scope"],
         compare_column=spec["compare_column"],
+        prefix_field=spec.get("prefix_field"),
+        allowed_prefixes=runtime_config.wo_prefixes if spec.get("prefix_field") else (),
+        required_values=(
+            (spec["required_field"], runtime_config.equipment_unit),
+        ) if spec.get("required_field") else (),
+        batch_size=spec.get("batch_size", 1),
     )
 
 
@@ -102,6 +112,15 @@ def _store(db: Database = Depends(get_database)) -> CollectorStore:
 
 def _iso(value: datetime | None) -> str | None:
     return value.isoformat() if value else None
+
+
+def _parse_optional_datetime(value: str | None, name: str) -> datetime | None:
+    if not value:
+        return None
+    try:
+        return datetime.fromisoformat(value)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=f"{name} must be ISO-8601") from exc
 
 
 def _serialize(row: Any) -> dict:
@@ -117,25 +136,84 @@ def _serialize(row: Any) -> dict:
 
 def create_app() -> FastAPI:
     app = FastAPI(title="Maximo Collector API", version="0.1.0")
+    runtime_config = MaximoConfig.from_environment()
+    wo_prefixes = runtime_config.wo_prefixes
+    equipment_unit = runtime_config.equipment_unit
 
     @app.get("/health", tags=["system"])
     def health() -> dict:
         return {"status": "ok"}
 
-    def _list_endpoint(orm_cls, changed_column: str | None):
+    def _list_endpoint(
+        orm_cls,
+        changed_column: str | None,
+        *,
+        filter_columns: dict[str, str],
+        search_columns: tuple[str, ...],
+        fixed_filters: dict[str, str] | None = None,
+        prefix_column: str | None = None,
+        prefixes: tuple[str, ...] = (),
+    ):
         def endpoint(
+            q: str | None = Query(None, description="Case-insensitive search"),
+            status: str | None = Query(None),
+            work_type: str | None = Query(None),
+            equipment_id: str | None = Query(None),
+            location_id: str | None = Query(None),
+            unit: str | None = Query(None),
+            equipment_class: str | None = Query(None),
+            manufacturer: str | None = Query(None),
+            vendor: str | None = Query(None),
+            priority: str | None = Query(None),
+            item_type: str | None = Query(None),
+            issue_unit: str | None = Query(None),
+            order_unit: str | None = Query(None),
+            location_org: str | None = Query(None),
+            work_site: str | None = Query(None),
+            person_id: str | None = Query(None),
             changed_since: str | None = Query(None, help="ISO-8601; only rows changed after this"),
+            changed_until: str | None = Query(None, help="ISO-8601; only rows changed up to this"),
+            offset: int = Query(0, ge=0),
             limit: int = Query(1000, ge=1, le=10000),
             store: CollectorStore = Depends(_store),
         ) -> list[dict]:
-            since = datetime.fromisoformat(changed_since) if changed_since else None
+            since = _parse_optional_datetime(changed_since, "changed_since")
+            until = _parse_optional_datetime(changed_until, "changed_until")
+            requested = {
+                "status": status, "work_type": work_type, "equipment_id": equipment_id,
+                "location_id": location_id, "unit": unit, "equipment_class": equipment_class,
+                "manufacturer": manufacturer, "vendor": vendor, "priority": priority,
+                "item_type": item_type, "issue_unit": issue_unit, "order_unit": order_unit,
+                "location_org": location_org, "work_site": work_site, "person_id": person_id,
+            }
+            exact_filters = {
+                filter_columns[key]: value for key, value in requested.items()
+                if value and key in filter_columns
+            }
+            # Fixed source scope always wins over a client-provided filter.
+            exact_filters.update(fixed_filters or {})
             rows = store.list_rows(
-                orm_cls, changed_column=changed_column, changed_since=since, limit=limit
+                orm_cls,
+                changed_column=changed_column,
+                changed_since=since,
+                changed_until=until,
+                offset=offset,
+                limit=limit,
+                exact_filters=exact_filters,
+                search=q,
+                search_columns=search_columns,
+                prefix_column=prefix_column,
+                prefixes=prefixes,
             )
             return [_serialize(r) for r in rows]
         return endpoint
 
-    app.get("/equipment", tags=["equipment"])(_list_endpoint(orm.EquipmentOrm, "source_changed_at"))
+    app.get("/equipment", tags=["equipment"])(_list_endpoint(
+        orm.EquipmentOrm, "source_changed_at",
+        filter_columns={"status": "status", "unit": "unit", "equipment_class": "equipment_class", "location_id": "location_id", "manufacturer": "manufacturer", "vendor": "vendor"},
+        search_columns=("id", "name", "description", "location_id", "unit", "equipment_class", "status", "manufacturer", "vendor"),
+        fixed_filters={"unit": equipment_unit},
+    ))
 
     @app.get("/equipment/{asset_id}/status-history", tags=["equipment"])
     def equipment_status_history(
@@ -144,18 +222,45 @@ def create_app() -> FastAPI:
         store: CollectorStore = Depends(_store),
     ) -> list[dict]:
         return [_serialize(r) for r in store.list_equipment_status_history(asset_id, limit)]
-    app.get("/work-orders", tags=["work-orders"])(_list_endpoint(orm.WorkOrderOrm, "source_changed_at"))
-    app.get("/service-requests", tags=["service-requests"])(_list_endpoint(orm.ServiceRequestOrm, "source_changed_at"))
-    app.get("/persons", tags=["persons"])(_list_endpoint(orm.PersonOrm, "status_changed_at"))
-    app.get("/items", tags=["items"])(_list_endpoint(orm.ItemOrm, "status_changed_at"))
-    app.get("/labor", tags=["labor"])(_list_endpoint(orm.LaborOrm, None))
+    app.get("/work-orders", tags=["work-orders"])(_list_endpoint(
+        orm.WorkOrderOrm, "source_changed_at",
+        filter_columns={"status": "status", "work_type": "work_type", "equipment_id": "equipment_id", "location_id": "location_id", "priority": "priority"},
+        search_columns=("id", "equipment_id", "location_id", "status", "work_type", "description", "reported_by", "supervisor", "lead"),
+        prefix_column="id", prefixes=wo_prefixes,
+    ))
+    app.get("/service-requests", tags=["service-requests"])(_list_endpoint(
+        orm.ServiceRequestOrm, "source_changed_at",
+        filter_columns={"status": "status", "work_type": "work_type", "equipment_id": "equipment_id", "location_id": "location_id", "priority": "internal_priority"},
+        search_columns=("id", "equipment_id", "location_id", "status", "work_type", "description", "reported_by", "reported_by_name"),
+    ))
+    app.get("/persons", tags=["persons"])(_list_endpoint(
+        orm.PersonOrm, "status_changed_at",
+        filter_columns={"status": "status", "location_org": "location_org"},
+        search_columns=("id", "display_name", "first_name", "status", "location_org"),
+    ))
+    app.get("/items", tags=["items"])(_list_endpoint(
+        orm.ItemOrm, "status_changed_at",
+        filter_columns={"status": "status", "item_type": "item_type", "issue_unit": "issue_unit", "order_unit": "order_unit"},
+        search_columns=("id", "description", "status", "item_type", "issue_unit", "order_unit", "item_set_id"),
+    ))
+    app.get("/labor", tags=["labor"])(_list_endpoint(
+        orm.LaborOrm, None,
+        filter_columns={"status": "status", "work_site": "work_site", "person_id": "person_id"},
+        search_columns=("id", "person_id", "status", "status_description", "work_site"),
+    ))
 
     @app.get("/sync/status", tags=["sync"])
     def sync_status(store: CollectorStore = Depends(_store)) -> dict:
         return {
             obj: {
                 "watermark": _iso(store.get_cursor(obj)),
-                "rows": store.count(spec["orm"]),
+                "rows": store.count(
+                    spec["orm"],
+                    exact_filters={"unit": equipment_unit}
+                    if spec["entity"] == "equipment" else {},
+                    prefix_column="id" if spec["entity"] == "work_order" else None,
+                    prefixes=wo_prefixes if spec["entity"] == "work_order" else (),
+                ),
             }
             for obj, spec in OBJECTS.items()
         }
@@ -175,7 +280,13 @@ def create_app() -> FastAPI:
             "org": "IP",
             "read_only": True,
             "resources": {
-                spec["entity"]: store.count(spec["orm"])
+                spec["entity"]: store.count(
+                    spec["orm"],
+                    exact_filters={"unit": equipment_unit}
+                    if spec["entity"] == "equipment" else {},
+                    prefix_column="id" if spec["entity"] == "work_order" else None,
+                    prefixes=wo_prefixes if spec["entity"] == "work_order" else (),
+                )
                 for key, spec in OBJECTS.items()
                 if key != "mxasset"
             },
@@ -202,6 +313,7 @@ def create_app() -> FastAPI:
             "rows_seen": stats.rows_seen,
             "upserted": stats.upserted,
             "skipped": stats.skipped,
+            "errors": stats.errors,
             "watermark": _iso(stats.watermark),
         }
 

@@ -186,6 +186,10 @@
             },
             "vendor": {
               "type": ["string", "null"]
+            },
+            "extra": {
+              "type": "object",
+              "description": "Allowlisted vendor extension scalars (hierarchy paths, eq codes, cost fields, flags) quarantined verbatim; no hrefs or personal data"
             }
           }
         },

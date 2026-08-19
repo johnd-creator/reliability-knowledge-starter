@@ -6,7 +6,7 @@ import dataclasses
 from datetime import datetime, timezone
 from typing import Any
 
-from sqlalchemy import desc, select
+from sqlalchemy import desc, func, or_, select
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 
 from src.domain import models as domain
@@ -119,6 +119,34 @@ class CollectorStore:
         }
         mapping[entity_name](entity)
 
+    def upsert_many_for(self, entity_name: str, entities: list[object]) -> None:
+        """Batch upsert master rows in one local transaction.
+
+        This only writes the collector's own database. Maximo access has
+        already completed through the GET-only OSLC client.
+        """
+        if not entities:
+            return
+        mapping = {
+            "person": orm.PersonOrm,
+            "item": orm.ItemOrm,
+            "labor": orm.LaborOrm,
+        }
+        orm_cls = mapping.get(entity_name)
+        if orm_cls is None:
+            for entity in entities:
+                self.upsert_for(entity_name, entity)
+            return
+        rows = [_row(entity) for entity in entities]
+        with self._db.session() as session:
+            stmt = pg_insert(orm_cls).values(rows)
+            stmt = stmt.on_conflict_do_update(
+                index_elements=["id"],
+                set_={c: getattr(stmt.excluded, c) for c in _upsert_columns(orm_cls)},
+            )
+            session.execute(stmt)
+            session.commit()
+
     def is_unchanged(
         self,
         entity_name: str,
@@ -214,24 +242,66 @@ class CollectorStore:
         *,
         changed_column: str | None = None,
         changed_since=None,
+        changed_until=None,
+        offset: int = 0,
         limit: int = 1000,
+        exact_filters: dict[str, str] | None = None,
+        search: str | None = None,
+        search_columns: tuple[str, ...] = (),
+        prefix_column: str | None = None,
+        prefixes: tuple[str, ...] = (),
     ) -> list[Any]:
         with self._db.session() as session:
             stmt = select(orm_cls)
             if changed_column and changed_since is not None:
                 stmt = stmt.where(getattr(orm_cls, changed_column) > changed_since)
+            if changed_column and changed_until is not None:
+                stmt = stmt.where(getattr(orm_cls, changed_column) <= changed_until)
+            for column, value in (exact_filters or {}).items():
+                if value:
+                    stmt = stmt.where(getattr(orm_cls, column) == value)
+            if prefix_column and prefixes:
+                stmt = stmt.where(
+                    or_(*[
+                        getattr(orm_cls, prefix_column).ilike(f"{prefix}%")
+                        for prefix in prefixes
+                    ])
+                )
+            if search and search_columns:
+                needle = f"%{search.strip().lower()}%"
+                stmt = stmt.where(
+                    or_(*[func.lower(getattr(orm_cls, column)).like(needle) for column in search_columns])
+                )
             if changed_column:
                 stmt = stmt.order_by(getattr(orm_cls, changed_column).asc().nullsfirst())
             else:
                 stmt = stmt.order_by(getattr(orm_cls, "id"))
-            stmt = stmt.limit(limit)
+            stmt = stmt.offset(offset).limit(limit)
             return list(session.execute(stmt).scalars().all())
 
-    def count(self, orm_cls: type) -> int:
+    def count(
+        self,
+        orm_cls: type,
+        *,
+        exact_filters: dict[str, str] | None = None,
+        prefix_column: str | None = None,
+        prefixes: tuple[str, ...] = (),
+    ) -> int:
         from sqlalchemy import func
 
         with self._db.session() as session:
-            return session.execute(select(func.count()).select_from(orm_cls)).scalar() or 0
+            stmt = select(func.count()).select_from(orm_cls)
+            for column, value in (exact_filters or {}).items():
+                if value:
+                    stmt = stmt.where(getattr(orm_cls, column) == value)
+            if prefix_column and prefixes:
+                stmt = stmt.where(
+                    or_(*[
+                        getattr(orm_cls, prefix_column).ilike(f"{prefix}%")
+                        for prefix in prefixes
+                    ])
+                )
+            return session.execute(stmt).scalar() or 0
 
     def list_equipment_status_history(self, equipment_id: str, limit: int = 100) -> list[Any]:
         with self._db.session() as session:

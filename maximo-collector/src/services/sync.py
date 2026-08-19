@@ -28,6 +28,10 @@ class ObjectSyncConfig:
     order_by: str | None = "-changedate"
     scope_clause: str = 'siteid="BSR"'
     compare_column: str | None = "source_changed_at"
+    prefix_field: str | None = None
+    allowed_prefixes: tuple[str, ...] = ()
+    required_values: tuple[tuple[str, str], ...] = ()
+    batch_size: int = 1
 
 
 @dataclass
@@ -62,12 +66,33 @@ class SyncService:
                 stats.mode = "incremental"
 
         where = config.scope_clause
+        if config.prefix_field and config.allowed_prefixes:
+            prefix_clauses = " or ".join(
+                f'{config.prefix_field} like "{prefix}%"'
+                for prefix in config.allowed_prefixes
+            )
+            where = f"{where} and ({prefix_clauses})"
+        for field_name, expected_value in config.required_values:
+            where = f'{where} and {field_name}="{expected_value}"'
         if stats.mode == "incremental" and watermark is not None:
             iso = watermark.isoformat(timespec="seconds")
             where = f'{where} and {config.watermark_field} >= "{iso}"'
 
         seen = 0
         last_change: datetime | None = None
+        pending: list[object] = []
+
+        def flush_pending() -> None:
+            if not pending:
+                return
+            if config.batch_size > 1 and hasattr(self._store, "upsert_many_for"):
+                self._store.upsert_many_for(config.entity_name, pending)
+            else:
+                for queued in pending:
+                    self._store.upsert_for(config.entity_name, queued)
+            stats.upserted += len(pending)
+            pending.clear()
+
         for raw in self._client.iterate(
             config.object_structure,
             where=where,
@@ -75,6 +100,32 @@ class SyncService:
             order_by=config.order_by,
         ):
             seen += 1
+            if config.prefix_field and config.allowed_prefixes:
+                raw_value = str(raw.get(config.prefix_field) or "").strip().upper()
+                if not raw_value.startswith(config.allowed_prefixes):
+                    stats.skipped += 1
+                    LOG.warning(
+                        "skip %s row outside configured prefix scope: %s",
+                        config.object_structure,
+                        raw.get(config.prefix_field, "?"),
+                    )
+                    continue
+            invalid_required_value = next(
+                (
+                    (field_name, expected_value, raw.get(field_name))
+                    for field_name, expected_value in config.required_values
+                    if str(raw.get(field_name) or "").strip().upper() != expected_value.upper()
+                ),
+                None,
+            )
+            if invalid_required_value:
+                field_name, expected_value, actual_value = invalid_required_value
+                stats.skipped += 1
+                LOG.warning(
+                    "skip %s row outside required %s=%s scope: %s",
+                    config.object_structure, field_name, expected_value, actual_value,
+                )
+                continue
             change = None
             if config.watermark_field:
                 change = oslc_timestamp(raw.get(config.watermark_field))
@@ -94,15 +145,18 @@ class SyncService:
                 ):
                     stats.skipped += 1
                     continue
-                self._store.upsert_for(config.entity_name, entity)
+                pending.append(entity)
+                if len(pending) >= max(1, config.batch_size):
+                    flush_pending()
                 if config.entity_name == "equipment":
                     self._store.record_equipment_status(entity)
-                stats.upserted += 1
             except Exception as error:  # noqa: BLE001 — one bad row must not abort the sync
                 stats.skipped += 1
+                stats.errors += 1
                 LOG.warning(
                     "skip %s row in %s: %s", config.object_structure, raw.get("href", "?"), error
                 )
+        flush_pending()
         stats.rows_seen = seen
         stats.watermark = last_change or watermark
         stats.finished_at = datetime.now(timezone.utc)

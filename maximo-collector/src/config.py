@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -33,6 +34,8 @@ class MaximoConfig:
     rate_limit_seconds: float = 1.0
     page_size: int = 100
     max_response_bytes: int = 1_048_576
+    wo_prefixes: tuple[str, ...] = ("BSR",)
+    equipment_unit: str = "CS01"
 
     def validate_runtime_safety(self) -> "MaximoConfig":
         """Validate environment-loaded settings before any production request."""
@@ -44,10 +47,21 @@ class MaximoConfig:
             raise ValueError("maximo-collector requires MAXIMO_RATE_LIMIT_SECONDS >= 1.0")
         if self.max_response_bytes > 1_048_576:
             raise ValueError("maximo-collector response cap cannot exceed 1 MiB")
+        if not self.wo_prefixes or any(
+            not re.fullmatch(r"[A-Z0-9_-]+", prefix) for prefix in self.wo_prefixes
+        ):
+            raise ValueError("WO prefixes must contain only A-Z, 0-9, _ or -")
+        if not re.fullmatch(r"[A-Z0-9_-]+", self.equipment_unit):
+            raise ValueError("equipment unit must contain only A-Z, 0-9, _ or -")
         return self
 
     @classmethod
     def from_environment(cls) -> "MaximoConfig":
+        prefixes = tuple(
+            prefix.strip().upper()
+            for prefix in os.getenv("MAXIMO_WO_PREFIXES", "BSR").split(",")
+            if prefix.strip()
+        )
         return cls(
             base_url=os.getenv("MAXIMO_BASE_URL", cls.base_url).rstrip("/"),
             oslc_root=os.getenv("MAXIMO_OSLC_ROOT", "/oslc/os"),
@@ -62,6 +76,8 @@ class MaximoConfig:
             rate_limit_seconds=float(os.getenv("MAXIMO_RATE_LIMIT_SECONDS", "1.0")),
             page_size=int(os.getenv("MAXIMO_PAGE_SIZE", "100")),
             max_response_bytes=int(os.getenv("MAXIMO_MAX_RESPONSE_BYTES", str(1_048_576))),
+            wo_prefixes=prefixes,
+            equipment_unit=os.getenv("MAXIMO_EQUIPMENT_UNIT", "CS01").strip().upper(),
         ).validate_runtime_safety()
 
 

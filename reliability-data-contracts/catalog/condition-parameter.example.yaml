@@ -1,0 +1,14 @@
+attribute_id: bsr-bsr1-bsr1_turbine-bearing_temperature-bearing_1_left_temperature
+site: BSR
+unit: BSR1                              # plant unit, NOT engineering unit
+equipment: BSR1.Turbine
+parameter: bearing_temperature
+business_name: Bearing 1 Left Temperature
+position: BFPT1A
+unit_of_measure: degC
+is_active: true
+
+sources:
+  pi:
+    web_id: "<VERIFY>"                  # from pi-knowledge verified entry only
+    af_path: "BSR > BSR1 > BSR1.Turbine > Bearing 1 Left Temperature"   # synthesized locally

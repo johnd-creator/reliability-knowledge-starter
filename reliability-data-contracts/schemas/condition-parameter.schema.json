@@ -1,58 +1,73 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reliability-data-contracts/schemas/condition-parameter.schema.json",
   "title": "ConditionParameter",
+  "description": "Vendor-neutral condition-monitoring parameter contract, aligned with the pi-collector attribute registry. Breaking v2 (2026-08): renamed id->attribute_id, name->business_name, parameter_type->parameter; added site, unit (plant unit), unit_of_measure (engineering unit), equipment, is_active, registered_at. Pre-v2 had no consumers. Verified via pi-collector load-registry from pi-knowledge mappings (site BSR, unit BSR1).",
   "type": "object",
   "required": [
-    "id",
-    "equipment_id",
-    "name",
-    "parameter_type"
+    "attribute_id",
+    "site",
+    "unit",
+    "equipment",
+    "parameter",
+    "business_name"
   ],
   "properties": {
-    "id": {
-      "type": "string"
+    "attribute_id": {
+      "type": "string",
+      "description": "Deterministic slug: site-unit-slug(equipment)-parameter-slug(name)[-slug(position)]; max 200 chars"
     },
-    "equipment_id": {
-      "type": "string"
-    },
-    "name": {
-      "type": "string"
-    },
-    "parameter_type": {
-      "type": "string"
-    },
-    "position": {
-      "type": [
-        "string",
-        "null"
-      ]
+    "site": {
+      "type": ["string", "null"],
+      "description": "Plant site, e.g. BSR"
     },
     "unit": {
-      "type": [
-        "string",
-        "null"
-      ]
+      "type": ["string", "null"],
+      "description": "Plant / generating unit, e.g. BSR1. NOT the engineering unit (see unit_of_measure)"
+    },
+    "equipment": {
+      "type": ["string", "null"],
+      "description": "Equipment group name from pi-knowledge registry, e.g. BSR1.Turbine"
+    },
+    "parameter": {
+      "type": ["string", "null"],
+      "description": "Parameter category key, e.g. bearing_temperature"
+    },
+    "business_name": {
+      "type": "string",
+      "description": "Human-readable PI attribute name"
+    },
+    "position": {
+      "type": ["string", "null"],
+      "description": "Measurement point position, e.g. BFPT1A"
+    },
+    "unit_of_measure": {
+      "type": ["string", "null"],
+      "description": "Engineering unit abbreviation, e.g. degC, bar, RPM"
+    },
+    "is_active": {
+      "type": ["boolean", "null"],
+      "description": "Soft-active flag; set false on 410 Gone or upstream prune"
+    },
+    "registered_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Last registry upsert time"
     },
     "sources": {
       "type": "object",
       "properties": {
         "pi": {
-          "type": [
-            "object",
-            "null"
-          ],
+          "type": ["object", "null"],
+          "description": "PI identifiers; only web_id is read from PI, af_path is synthesized locally as 'site > unit > equipment > name'",
           "properties": {
-            "tag": {
-              "type": [
-                "string",
-                "null"
-              ]
-            },
             "web_id": {
-              "type": [
-                "string",
-                "null"
-              ]
+              "type": ["string", "null"],
+              "description": "PI Web API WebId, sourced from verified pi-knowledge entries only"
+            },
+            "af_path": {
+              "type": ["string", "null"],
+              "description": "Locally synthesized AF hierarchy path (not read from PI)"
             }
           }
         }

@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reliability-data-contracts/schemas/condition-reading.schema.json",
+  "title": "ConditionReading",
+  "description": "Vendor-neutral single measurement of a condition parameter (snapshot or historical timeseries point). Verified via pi-collector (pi_snapshot / pi_timeseries on TimescaleDB). Non-numeric PI values (digital states) are stored as value=null with value_good=false, never as text.",
+  "type": "object",
+  "required": ["attribute_id", "timestamp"],
+  "properties": {
+    "attribute_id": {
+      "type": "string",
+      "description": "Reference to ConditionParameter.attribute_id"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Event/measurement time from PI (snapshot source_timestamp maps here). Idempotency key with attribute_id"
+    },
+    "value": {
+      "type": ["number", "null"],
+      "description": "Numeric value; null for digital states / non-numeric values"
+    },
+    "value_good": {
+      "type": ["boolean", "null"],
+      "description": "PI Good quality flag"
+    },
+    "units": {
+      "type": ["string", "null"],
+      "description": "Engineering unit abbreviation (PI UnitsAbbreviation or registry unit_of_measure). Present on snapshots; historical points resolve units via the parameter registry"
+    },
+    "collected_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "When the collector wrote the row (UTC)"
+    },
+    "sources": {
+      "type": "object",
+      "properties": {
+        "pi": {
+          "type": ["object", "null"],
+          "properties": {
+            "web_id": {
+              "type": ["string", "null"],
+              "description": "PI WebId of the stream the reading came from, when carried alongside"
+            }
+          }
+        }
+      }
+    }
+  }
+}
