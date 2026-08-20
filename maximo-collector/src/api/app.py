@@ -25,6 +25,16 @@ from src.repositories.database import Database, get_database
 from src.repositories.store import CollectorStore
 from src.services.sync import ObjectSyncConfig, SyncService
 
+WORK_ORDER_SELECT = (
+    "wonum", "workorderid", "assetnum", "location", "status", "status_description",
+    "worktype", "woclass", "description", "reportdate", "changedate", "statusdate",
+    "schedstart", "schedfinish", "targcompdate", "estdur", "downtime", "wopriority",
+    "wopriority_description", "reportedby", "supervisor", "lead", "failurecode", "istask",
+    "pctaskid", "haschildren", "estlabcost", "estmatcost", "actlabcost", "actmatcost",
+    "actlabhrs", "siteid", "seksi", "bu", "jumlahhidup", "jumlahmati", "luasareatanam",
+)
+PERSON_SELECT = ("personid", "displayname", "firstname", "status", "statusdate", "locationorg")
+
 # object_structure -> (entity_name, mapper, watermark_field, order_by, changed_column)
 OBJECTS: dict[str, dict[str, Any]] = {
     # MXAPIASSET is the preferred verified asset structure. MXASSET remains
@@ -44,9 +54,9 @@ OBJECTS: dict[str, dict[str, Any]] = {
     ),
     "mxwodetail": dict(
         entity="work_order", mapper=work_order_from_payload,
-        watermark="changedate", order_by="-changedate", changed_column="source_changed_at",
+        watermark="changedate", order_by=None, changed_column="source_changed_at",
         orm=orm.WorkOrderOrm, scope='siteid="BSR"', compare_column="source_changed_at",
-        prefix_field="wonum",
+        prefix_field="wonum", select=WORK_ORDER_SELECT, batch_size=100, page_size=25,
     ),
     "mxapisr": dict(
         entity="service_request", mapper=service_request_from_payload,
@@ -57,6 +67,7 @@ OBJECTS: dict[str, dict[str, Any]] = {
         entity="person", mapper=person_from_payload,
         watermark="statusdate", order_by="-statusdate", changed_column="status_changed_at",
         orm=orm.PersonOrm, scope='locationorg="IP"', compare_column="status_changed_at", batch_size=100,
+        select=PERSON_SELECT,
     ),
     "mxitem": dict(
         entity="item", mapper=item_from_payload,
@@ -103,6 +114,8 @@ def sync_config_for(object_structure: str) -> ObjectSyncConfig:
             (spec["required_field"], runtime_config.equipment_unit),
         ) if spec.get("required_field") else (),
         batch_size=spec.get("batch_size", 1),
+        select=spec.get("select", ()),
+        page_size=spec.get("page_size"),
     )
 
 

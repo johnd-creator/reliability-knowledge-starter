@@ -15,10 +15,12 @@ from __future__ import annotations
 
 import argparse
 import logging
+import re
 import signal
 import sys
 import threading
 import time
+from datetime import datetime, timezone
 
 from src.config import MaximoConfig, load_env
 from src.repositories.database import get_database
@@ -30,6 +32,59 @@ LOG = logging.getLogger(__name__)
 
 AVAILABLE_OBJECTS = ["mxapiasset", "mxwodetail", "mxapisr", "mxperson", "mxitem", "mxapilabor"]
 DEFAULT_OBJECTS = ["mxwodetail", "mxapisr", "mxapilabor", "mxperson", "mxitem"]
+
+
+def _safe_error_text(value: object) -> str:
+    text = re.sub(r"https?://\S+", "<url>", str(value))
+    text = re.sub(r"'[^']*'", "'<redacted>'", text)
+    text = re.sub(r'"[^"]*"', '"<redacted>"', text)
+    return text[:300]
+
+
+def _safe_error_metadata(error: Exception) -> dict[str, object]:
+    response = getattr(error, "response", None)
+    error_class = type(error).__name__
+    metadata: dict[str, object] = {
+        "error_class": error_class,
+        "error_category": (
+            "READ_TIMEOUT" if error_class in {"ReadTimeout", "ConnectTimeout", "Timeout", "TimeoutError"}
+            else "UNKNOWN"
+        ),
+    }
+    if response is None:
+        return metadata
+    http_status = getattr(response, "status_code", None)
+    metadata.update({
+        "http_status": http_status,
+        "content_type": response.headers.get("Content-Type", "").split(";", 1)[0],
+        "response_bytes": len(response.content),
+    })
+    if http_status == 500:
+        metadata["error_category"] = "UPSTREAM_MAXIMO_500"
+    try:
+        payload = response.json()
+    except ValueError:
+        return metadata
+
+    def walk(value: object, prefix: str = "") -> dict[str, str]:
+        found: dict[str, str] = {}
+        if isinstance(value, dict):
+            for key, child in value.items():
+                name = f"{prefix}.{key}" if prefix else str(key)
+                if isinstance(child, (str, int, float, bool)) and any(
+                    marker in str(key).lower()
+                    for marker in ("error", "code", "message", "reason", "status")
+                ):
+                    found[name] = _safe_error_text(child)
+                else:
+                    found.update(walk(child, name))
+        elif isinstance(value, list):
+            for index, child in enumerate(value):
+                found.update(walk(child, f"{prefix}[{index}]"))
+        return found
+
+    metadata["sanitized_error_fields"] = walk(payload)
+    return metadata
 
 
 def _sync_service(store: CollectorStore):
@@ -68,9 +123,20 @@ def cmd_sync(args: argparse.Namespace) -> int:
             exit_code = 1
             continue
         try:
+            started_at = datetime.now(timezone.utc).isoformat()
             stats = service.sync(cfg)
         except Exception as error:  # noqa: BLE001 — report one object failure and continue
-            LOG.error("sync %s failed: %s", name, error)
+            metadata = _safe_error_metadata(error)
+            metadata.update({
+                "started_at": started_at,
+                "finished_at": datetime.now(timezone.utc).isoformat(),
+                "page": getattr(error, "page", None),
+            })
+            LOG.error(
+                "sync failure object_structure=%s outcome=failed metadata=%s",
+                name,
+                metadata,
+            )
             exit_code = 1
             continue
         print(
@@ -147,7 +213,7 @@ def cmd_diagnose(args: argparse.Namespace) -> int:
     config = MaximoConfig.from_environment()
     client = OslcClient(config, MaximoAuth(config))
     probes = (
-        ("mxperson", 'locationorg="IP"', "statusdate", ("personid", "displayname", "status", "locationorg")),
+        ("mxperson", 'locationorg="IP"', "statusdate", ("personid", "displayname", "firstname", "status", "statusdate", "locationorg")),
         ("mxitem", 'site="BSR"', "statusdate", ("itemnum", "description", "status", "site")),
         ("mxapilabor", 'worksite="BSR"', None, ("laborcode", "personid", "status", "worksite")),
     )
@@ -160,6 +226,7 @@ def cmd_diagnose(args: argparse.Namespace) -> int:
                 object_structure,
                 where=scope,
                 required_scope=scope,
+                select=list(fields),
                 order_by=f"-{order_by}" if order_by else None,
                 max_pages=1,
             ):

@@ -250,15 +250,34 @@ Status integrasi saat ini:
 - **PI → Cockpit projection: PENDING**
 - **CEMS → Cockpit projection: PENDING**
 
-### NET-001-FOLLOWUP — hasil pemulihan worker lokal
+### NET-002 — diagnosis dan stabilisasi Maximo
 
 Deployment lama dan database `maximo-collector-postgres` dipertahankan. Satu
 `mxcollector run` dijalankan kembali dengan operational interval 300 detik dan
-asset interval 21.600 detik. Login read-only berhasil, tetapi cycle operational
-belum menghasilkan `collect_run` sukses baru: `mxwodetail` mengembalikan HTTP
-500, sedangkan validasi bounded `mxperson` berhenti karena timeout pada
-rate-limit sleep. Maximo tetap berstatus stale sampai successful run baru dapat
-dibuktikan; tidak ada worker kedua yang dijalankan.
+asset interval 21.600 detik. Diagnosis GET-only membuktikan parser Maximo
+menolak filter `wonum like "BSR%"` (`BMXAA8744E`); bentuk parenthesized yang
+dipakai sebelumnya menghasilkan HTTP 500. `order_by=-changedate` juga timeout
+pada WO, sedangkan page size 25 tanpa ordering dan select allowlist stabil.
+Untuk person, diagnosis master-data kini benar-benar mengirim `oslc.select`
+minimal; batch upsert juga mendeduplikasi `personid` dalam satu halaman.
+
+Perbaikan runtime mempertahankan scope `siteid="BSR"`, prefix terkonfigurasi
+melalui `wonum in ["BSR%"]`, org `locationorg="IP"`, page-size override yang
+dibatasi safety cap, serta logging error terstruktur tanpa payload. Successful
+run baru terbukti pada 20 Agustus 2026: `mxwodetail` 25.000 row terlihat,
+5.849 upsert, 0 error; `mxperson` 16.939 row terlihat, 9.658 upsert, 0 error.
+Collector mencatat warning safety `max_pages=1000` pada WO; ini adalah batas
+pagination eksplisit, bukan HTTP failure. Tepat satu scheduler Maximo aktif
+kembali setelah one-shot selesai; PI dan CEMS tidak direstart.
+
+Status NET-002:
+
+- **MAXIMO COLLECTOR API: VERIFIED**
+- **MAXIMO CONTINUOUS COLLECTION: RUNNING**
+- **MXWODETAIL: VERIFIED**
+- **MXPERSON: VERIFIED**
+- **MAXIMO FRESHNESS: CURRENT**
+- **PI/CEMS projection ke Cockpit: PENDING**
 
 DASHBOARD PARAMETER SELECTION dan DOMAIN FORMULA APPROVAL tetap bukan bagian
 NET-001.

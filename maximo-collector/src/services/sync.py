@@ -32,6 +32,8 @@ class ObjectSyncConfig:
     allowed_prefixes: tuple[str, ...] = ()
     required_values: tuple[tuple[str, str], ...] = ()
     batch_size: int = 1
+    select: tuple[str, ...] = ()
+    page_size: int | None = None
 
 
 @dataclass
@@ -67,11 +69,10 @@ class SyncService:
 
         where = config.scope_clause
         if config.prefix_field and config.allowed_prefixes:
-            prefix_clauses = " or ".join(
-                f'{config.prefix_field} like "{prefix}%"'
-                for prefix in config.allowed_prefixes
-            )
-            where = f"{where} and ({prefix_clauses})"
+            # Maximo's OSLC parser on this instance rejects ``like``
+            # (BMXAA8744E). Its verified wildcard form is an ``in`` list.
+            prefix_values = ",".join(f'"{prefix}%"' for prefix in config.allowed_prefixes)
+            where = f"{where} and {config.prefix_field} in [{prefix_values}]"
         for field_name, expected_value in config.required_values:
             where = f'{where} and {field_name}="{expected_value}"'
         if stats.mode == "incremental" and watermark is not None:
@@ -86,18 +87,29 @@ class SyncService:
             if not pending:
                 return
             if config.batch_size > 1 and hasattr(self._store, "upsert_many_for"):
-                self._store.upsert_many_for(config.entity_name, pending)
+                unique: dict[object, object] = {}
+                for index, entity in enumerate(pending):
+                    entity_id = getattr(entity, "id", None)
+                    unique[entity_id if entity_id is not None else ("row", index)] = entity
+                duplicate_count = len(pending) - len(unique)
+                if duplicate_count:
+                    stats.skipped += duplicate_count
+                self._store.upsert_many_for(config.entity_name, list(unique.values()))
+                pending_count = len(unique)
             else:
                 for queued in pending:
                     self._store.upsert_for(config.entity_name, queued)
-            stats.upserted += len(pending)
+                pending_count = len(pending)
+            stats.upserted += pending_count
             pending.clear()
 
         for raw in self._client.iterate(
             config.object_structure,
             where=where,
             required_scope=config.scope_clause,
+            select=list(config.select) or None,
             order_by=config.order_by,
+            page_size=config.page_size,
         ):
             seen += 1
             if config.prefix_field and config.allowed_prefixes:
@@ -105,9 +117,8 @@ class SyncService:
                 if not raw_value.startswith(config.allowed_prefixes):
                     stats.skipped += 1
                     LOG.warning(
-                        "skip %s row outside configured prefix scope: %s",
+                        "skip %s row outside configured prefix scope",
                         config.object_structure,
-                        raw.get(config.prefix_field, "?"),
                     )
                     continue
             invalid_required_value = next(
@@ -122,8 +133,8 @@ class SyncService:
                 field_name, expected_value, actual_value = invalid_required_value
                 stats.skipped += 1
                 LOG.warning(
-                    "skip %s row outside required %s=%s scope: %s",
-                    config.object_structure, field_name, expected_value, actual_value,
+                    "skip %s row outside required %s=%s scope",
+                    config.object_structure, field_name, expected_value,
                 )
                 continue
             change = None
@@ -154,7 +165,9 @@ class SyncService:
                 stats.skipped += 1
                 stats.errors += 1
                 LOG.warning(
-                    "skip %s row in %s: %s", config.object_structure, raw.get("href", "?"), error
+                    "skip %s row outcome=skipped error_class=%s",
+                    config.object_structure,
+                    type(error).__name__,
                 )
         flush_pending()
         stats.rows_seen = seen

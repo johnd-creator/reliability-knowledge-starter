@@ -133,6 +133,7 @@ class OslcClient:
         required_scope: str | None = None,
         select: list[str] | None = None,
         order_by: str | None = None,
+        page_size: int | None = None,
         max_pages: int = 1000,
     ) -> Iterator[Mapping[str, Any]]:
         """Paginate through an OSLC object structure (GET only).
@@ -145,13 +146,18 @@ class OslcClient:
         )
         if required_scope not in _ALLOWED_SCOPE_CLAUSES:
             raise OslcError(f"unsupported Maximo scope clause: {required_scope}")
+        if page_size is not None and not 1 <= page_size <= self._config.page_size:
+            raise OslcError(
+                f"Maximo page_size must be between 1 and {self._config.page_size}"
+            )
+        effective_page_size = page_size or self._config.page_size
         if where is None:
             where = required_scope
         elif required_scope not in where:
             raise OslcError(f"every {object_structure} query must include {required_scope}")
         params: list[tuple[str, str]] = [
             ("oslc.paging", "true"),
-            ("oslc.pageSize", str(self._config.page_size)),
+            ("oslc.pageSize", str(effective_page_size)),
             ("oslc.where", where),
         ]
         if order_by:

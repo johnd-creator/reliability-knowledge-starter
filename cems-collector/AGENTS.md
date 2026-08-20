@@ -122,14 +122,24 @@ parameter and carries the verified spans under `adjustment:`
 |---|---|---|
 | SO2 | 0.4 | 7 % |
 | NOx | 0.5 | 7 % |
-| PM, Flow | 0.6 | 7 % |
-| NO, NO2, Hg, CO2 | 1.0 | 7 % |
+| PM | 0.6 | 7 % |
+| Hg | 1.0 | 7 % |
 | Laju_alir | 44.15625 | — |
 | O2, CO, Humidity, Pressure, Temp, Opacity | 1.0 | — (passthrough) |
 
 Verified end-to-end deviation vs the production UI: ≤ ~1.6 % mean per
 parameter (process noise). Opacity (register 3116) exists in production
 but was missing from the DAZ seed — added as `documented`.
+
+**Operator override (2026-08-20):** NO, NO2, CO2, and Flow are stored
+**raw** (`value_final = value_raw`) by explicit operator request — their
+O2-reference correction (and Flow's span 0.6) is disabled in the shipped
+registry even though production still applies it. Laju_alir keeps
+adjust 44.15625; its raw ≈ 36 is the genuine span-scaled register content
+(register 3102, shared with Flow), not a decode error — the engineering
+value is the corrected final (raw × 44.15625 ≈ 1590 m³/s). Do not
+"correct" `value_raw` and do not re-enable the disabled corrections
+without operator approval.
 
 **Documented divergences from DAZ:**
 - The Laravel formula-string engine (shunting-yard evaluation of

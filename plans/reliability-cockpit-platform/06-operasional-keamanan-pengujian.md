@@ -302,18 +302,22 @@ change pada release yang sama dengan feature cutover.
 | PARTIAL | Test Cockpit penuh | Dua smoke test perlu diperbaiki agar benar-benar memakai SQLite/in-memory seperti dokumennya; database integration dan Compose E2E belum dijalankan. |
 | BLOCKED | Metrics/alert, backup-restore, retention, security scan, soak/UAT, RBAC, dan rollback drill | Memerlukan staging, secret/route terotorisasi, storage policy/RPO-RTO, identity provider, dan pemilik on-call. Semua release checklist tetap belum dicentang agar tidak memberi kesan siap produksi. |
 
-### NET-001 — status operasional collector lokal
+### NET-002 — status operasional collector lokal
 
 - **COLLECTOR API VERIFIED:** Maximo, PI, dan CEMS health/stats endpoint HTTP 200
   dari shell agent di LAN; metadata response tidak memuat credential.
-- **DATA COLLECTION VERIFIED:** PI scheduler aktif pada 433 stream verified/ok;
-  CEMS run poll terakhir 0 error; Maximo memiliki data equipment/WO dan run sukses
-  historis.
-- **STALE_COLLECTOR:** baseline Maximo run terakhir stale. Follow-up telah
-  memulihkan tepat satu scheduler `mxcollector run` menggunakan deployment dan
-  database lama; login read-only berhasil, tetapi cycle operational belum
-  menghasilkan `collect_run` sukses baru karena `mxwodetail` HTTP 500 dan
-  validasi bounded `mxperson` timeout pada rate-limit sleep. Database baru tidak
-  dibuat dan worker tidak diduplikasi.
+- **DATA COLLECTION VERIFIED:** PI scheduler aktif pada 433 stream verified/ok
+  dengan cadence 300 detik; CEMS poll terbaru 15 row dan 0 error; Maximo
+  memiliki successful `mxwodetail` dan `mxperson` run baru.
+- **CURRENT_COLLECTOR:** tepat satu scheduler `mxcollector run` aktif kembali
+  menggunakan deployment dan database lama. Root cause WO adalah parser filter
+  `like`/ordering; root cause person adalah select minimal yang belum diteruskan
+  dan duplicate `personid` dalam batch. Perbaikan menjaga read-only, scope,
+  rate-limit, response cap, dan isolasi resource. Database baru tidak dibuat dan
+  worker tidak diduplikasi.
+- **SAFE OBSERVABILITY:** failed resource sekarang menghasilkan structured log
+  dengan object, timestamps, outcome, error category, status/content metadata,
+  dan sanitized error fields; credential, cookie, raw payload, serta personal
+  data tidak dicatat.
 - **REMAINING BLOCKERS UNCHANGED:** formula/risk, identity mapping, AuthZ, UAT,
   backup/restore, retention, dan release tetap di luar NET-001.

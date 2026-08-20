@@ -5,9 +5,11 @@ from __future__ import annotations
 import unittest
 import json
 from datetime import datetime, timezone
+from types import SimpleNamespace
 from typing import Any, Mapping
 
 from src.adapters.maximo.mappers import equipment_from_payload, work_order_from_payload
+from src.api.app import sync_config_for
 from src.adapters.maximo.oslc_client import oslc_boolean, oslc_number, oslc_timestamp
 from src.repositories.store import _row
 from src.services.sync import ObjectSyncConfig, SyncService
@@ -130,6 +132,9 @@ class FakeStore:
     def upsert_for(self, entity_name, entity):
         self.entities.append((entity_name, entity))
 
+    def upsert_many_for(self, entity_name, entities):
+        self.entities.extend((entity_name, entity) for entity in entities)
+
     def is_unchanged(self, entity_name, entity_id, compare_column, source_value):
         return (entity_name, entity_id, compare_column, source_value) in self.unchanged
 
@@ -147,8 +152,8 @@ class FakeClient:
         self.pages = pages
         self.calls: list[dict] = []
 
-    def iterate(self, object_structure, *, where=None, required_scope=None, select=None, order_by=None, max_pages=1000):
-        self.calls.append({"os": object_structure, "where": where, "required_scope": required_scope, "order_by": order_by})
+    def iterate(self, object_structure, *, where=None, required_scope=None, select=None, order_by=None, page_size=None, max_pages=1000):
+        self.calls.append({"os": object_structure, "where": where, "required_scope": required_scope, "select": select, "order_by": order_by, "page_size": page_size})
         yield from self.pages
 
 
@@ -242,10 +247,46 @@ class SyncEngineTest(unittest.TestCase):
         store = FakeStore()
         client = FakeClient([SAMPLE_BSR_WO, SAMPLE_WO])
         stats = SyncService(client, store).sync(cfg)
-        self.assertIn('siteid="BSR" and (wonum like "BSR%")', client.calls[0]["where"])
+        self.assertEqual(client.calls[0]["where"], 'siteid="BSR" and wonum in ["BSR%"]')
+        self.assertNotIn("like", client.calls[0]["where"])
         self.assertEqual(stats.rows_seen, 2)
         self.assertEqual(stats.upserted, 1)
         self.assertEqual(stats.skipped, 1)
+
+    def test_select_is_forwarded_to_oslc_client(self):
+        select = ("wonum", "changedate")
+        cfg = ObjectSyncConfig(
+            object_structure="mxwodetail", entity_name="work_order",
+            mapper=lambda member: member, watermark_field=None, order_by=None, select=select,
+        )
+        store, client = FakeStore(), FakeClient([])
+        SyncService(client, store).sync(cfg)
+        self.assertEqual(client.calls[0]["select"], list(select))
+
+    def test_batch_upsert_deduplicates_duplicate_entity_ids(self):
+        cfg = ObjectSyncConfig(
+            object_structure="mxperson", entity_name="person",
+            mapper=lambda member: SimpleNamespace(id=member["id"]),
+            watermark_field=None, order_by=None, batch_size=100,
+        )
+        store, client = FakeStore(), FakeClient([
+            {"id": "P-1"}, {"id": "P-1"}, {"id": "P-2"},
+        ])
+        stats = SyncService(client, store).sync(cfg)
+        self.assertEqual(stats.upserted, 2)
+        self.assertEqual(stats.skipped, 1)
+
+    def test_runtime_work_order_and_person_queries_are_bounded(self):
+        work_order = sync_config_for("mxwodetail")
+        person = sync_config_for("mxperson")
+        self.assertIsNone(work_order.order_by)
+        self.assertEqual(work_order.scope_clause, 'siteid="BSR"')
+        self.assertEqual(work_order.allowed_prefixes, ("BSR",))
+        self.assertIn("wonum", work_order.select)
+        self.assertEqual(work_order.batch_size, 100)
+        self.assertEqual(work_order.page_size, 25)
+        self.assertEqual(person.scope_clause, 'locationorg="IP"')
+        self.assertIn("personid", person.select)
 
     def test_equipment_unit_is_applied_and_non_cs01_is_rejected(self):
         cfg = ObjectSyncConfig(

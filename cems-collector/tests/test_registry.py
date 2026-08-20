@@ -126,21 +126,23 @@ class TestShippedRegistry(unittest.TestCase):
             self.assertIn(parameter.status, ("unknown", "documented", "verified", "forbidden", "deprecated"))
 
     def test_shipped_registry_matches_production_pipeline(self):
-        """The verified production spans/O2-correction must stay in the registry."""
+        """Verified spans stay; NO/NO2/CO2/Flow are raw passthrough (operator override)."""
         config = CemsConfig(
             parameter_registry_path=str(PROJECT_ROOT / "registry" / "cems-parameters.yaml")
         ).validate_runtime_safety()
         by_code = {p.code: p for p in load_registry(config).parameters}
 
-        expected_span = {"SO2": 0.4, "NOx": 0.5, "PM": 0.6, "Flow": 0.6, "Laju_alir": 44.15625}
-        o2_corrected = {"SO2", "NOx", "PM", "Flow", "Hg", "CO2", "NO", "NO2"}
-        passthrough = {"O2", "CO", "Humidity", "Pressure", "Temp", "Opacity"}
+        expected_span = {"SO2": 0.4, "NOx": 0.5, "PM": 0.6, "Laju_alir": 44.15625}
+        o2_corrected = {"SO2", "NOx", "PM", "Hg"}
+        passthrough = {
+            "O2", "CO", "Humidity", "Pressure", "Temp", "Opacity",
+            "NO", "NO2", "CO2", "Flow",  # operator override 2026-08-20: raw
+        }
 
         for code, span in expected_span.items():
             self.assertAlmostEqual(by_code[code].adjust_factor, span, msg=code)
         for code in o2_corrected:
-            if code != "Laju_alir":
-                self.assertEqual(by_code[code].o2_reference, 7.0, msg=code)
+            self.assertEqual(by_code[code].o2_reference, 7.0, msg=code)
         self.assertIsNone(by_code["Laju_alir"].o2_reference)
         for code in passthrough:
             self.assertFalse(by_code[code].has_adjustment(), msg=code)

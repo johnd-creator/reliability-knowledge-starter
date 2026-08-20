@@ -59,6 +59,12 @@ class ReadOnlyGuardTest(unittest.TestCase):
         with self.assertRaises(OslcError):
             list(self.client.iterate("mxperson", where='orgid="IP"', required_scope='orgid="IP"'))
 
+    def test_page_size_override_is_bounded(self):
+        with self.assertRaises(OslcError):
+            list(self.client.iterate("mxasset", page_size=0))
+        with self.assertRaises(OslcError):
+            list(self.client.iterate("mxasset", page_size=self.config.page_size + 1))
+
     def test_oslc_requests_negotiate_json(self):
         calls = []
 
