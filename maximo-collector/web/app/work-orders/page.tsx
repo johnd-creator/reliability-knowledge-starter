@@ -12,6 +12,7 @@ export default function WorkOrdersPage() {
   // Filters & Pagination
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
+  const [excludeClosedCancelled, setExcludeClosedCancelled] = useState(true);
   const [typeFilter, setTypeFilter] = useState("ALL");
   const [classFilter, setClassFilter] = useState("ALL");
   const [priorityFilter, setPriorityFilter] = useState("ALL");
@@ -46,6 +47,7 @@ export default function WorkOrdersPage() {
   }, [
     search,
     statusFilter,
+    excludeClosedCancelled,
     typeFilter,
     classFilter,
     priorityFilter,
@@ -57,8 +59,11 @@ export default function WorkOrdersPage() {
 
   // Derived Options
   const statusOptions = useMemo(() => {
-    return Array.from(new Set(list.map((e) => e.status).filter(Boolean) as string[])).sort();
-  }, [list]);
+    const excluded = new Set(["CLOSE", "CAN"]);
+    return Array.from(new Set(list.map((e) => e.status).filter(Boolean) as string[]))
+      .filter((status) => !excludeClosedCancelled || !excluded.has(status.toUpperCase()))
+      .sort();
+  }, [list, excludeClosedCancelled]);
 
   const typeOptions = useMemo(() => {
     return Array.from(new Set(list.map((e) => e.work_type).filter(Boolean) as string[])).sort();
@@ -79,6 +84,8 @@ export default function WorkOrdersPage() {
 
     const result = list.filter((item) => {
       const matchStatus = statusFilter === "ALL" || item.status === statusFilter;
+      const matchExcluded =
+        !excludeClosedCancelled || !["CLOSE", "CAN"].includes((item.status || "").toUpperCase());
       const matchType = typeFilter === "ALL" || item.work_type === typeFilter;
       const matchClass = classFilter === "ALL" || item.work_class === classFilter;
       const matchPriority = priorityFilter === "ALL" || item.priority === priorityFilter;
@@ -134,6 +141,7 @@ export default function WorkOrdersPage() {
 
       return (
         matchStatus &&
+        matchExcluded &&
         matchType &&
         matchClass &&
         matchPriority &&
@@ -160,6 +168,7 @@ export default function WorkOrdersPage() {
     list,
     search,
     statusFilter,
+    excludeClosedCancelled,
     typeFilter,
     classFilter,
     priorityFilter,
@@ -189,6 +198,7 @@ export default function WorkOrdersPage() {
   const isFiltered =
     Boolean(search) ||
     statusFilter !== "ALL" ||
+    !excludeClosedCancelled ||
     typeFilter !== "ALL" ||
     classFilter !== "ALL" ||
     priorityFilter !== "ALL" ||
@@ -199,6 +209,7 @@ export default function WorkOrdersPage() {
   const handleResetFilters = () => {
     setSearch("");
     setStatusFilter("ALL");
+    setExcludeClosedCancelled(true);
     setTypeFilter("ALL");
     setClassFilter("ALL");
     setPriorityFilter("ALL");
@@ -308,6 +319,15 @@ export default function WorkOrdersPage() {
                 </option>
               ))}
             </select>
+
+            <label className="select-filter" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+              <input
+                type="checkbox"
+                checked={excludeClosedCancelled}
+                onChange={(event) => setExcludeClosedCancelled(event.target.checked)}
+              />
+              Exclude CLOSE/CAN
+            </label>
 
             <select
               className="select-filter"

@@ -55,6 +55,18 @@ derived data until a read-enabled credential is verified.
   `oslc.where=siteid="BSR" and changedate >= "<watermark>"`.
 - A row with a failure to map is logged and skipped; the sync continues.
 
+## Work Orders API pagination
+
+`GET /work-orders` returns a bounded envelope rather than an unbounded array:
+
+```json
+{"items": [], "total": 19250, "offset": 0, "limit": 50, "has_more": true}
+```
+
+The default page size is 50 and the maximum is 200. `equipment_id` applies to
+both `total` and `items`; ordering is stable by `reported_at DESC NULLS LAST,
+id ASC`. The web UI requests one page at a time.
+
 ## Run
 
 ```bash

@@ -8,6 +8,8 @@ mechanical (parse ISO datetimes, rebuild the quarantined sources block).
 
 from __future__ import annotations
 
+import hashlib
+from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Callable, Mapping
 
@@ -23,6 +25,27 @@ from src.domain.work_order import WorkOrder
 
 class CollectorClientError(RuntimeError):
     """Collector API unreachable or returned an unexpected payload."""
+
+
+@dataclass(frozen=True)
+class PullResult:
+    """Normalized collector rows plus explicit traversal completion metadata."""
+
+    items: list
+    complete: bool
+    pages: int
+    rows_seen: int
+    duplicate_ids: int = 0
+    invalid_ids: int = 0
+    overlap_ids: int = 0
+    stop_reason: str | None = None
+    conversion_errors: int = 0
+
+    def __iter__(self):
+        return iter(self.items)
+
+    def __len__(self) -> int:
+        return len(self.items)
 
 
 def _dt(value: Any) -> datetime | None:
@@ -128,16 +151,46 @@ class CollectorClient:
         self._base_url = base_url.rstrip("/")
         self._timeout = timeout_seconds
 
-    def pull(self, resource: str, *, changed_since: datetime | None = None, limit: int = 1000) -> list:
-        """Pull all pages for one resource as cockpit domain models."""
+    def pull(
+        self,
+        resource: str,
+        *,
+        changed_since: datetime | None = None,
+        limit: int = 1000,
+        max_pages: int = 1000,
+    ) -> PullResult:
+        """Pull pages as normalized models and report whether traversal completed."""
         if resource not in RESOURCES:
             raise CollectorClientError(f"unknown resource: {resource}")
+        if limit < 1 or max_pages < 1:
+            raise CollectorClientError("collector pagination limits must be positive")
         endpoint, builder, has_watermark = RESOURCES[resource]
         params: dict[str, Any] = {"limit": limit, "offset": 0}
         if has_watermark and changed_since is not None:
             params["changed_since"] = changed_since.isoformat()
-        views: list[Mapping[str, Any]] = []
+        items: list[Any] = []
+        seen_ids: set[str] = set()
+        seen_page_fingerprints: set[str] = set()
+        previous_page_ids: set[str] = set()
+        pages = 0
+        rows_seen = 0
+        duplicate_ids = 0
+        invalid_ids = 0
+        overlap_ids = 0
+        conversion_errors = 0
         while True:
+            request_fingerprint = _pagination_fingerprint(endpoint, params)
+            if request_fingerprint in seen_page_fingerprints:
+                return PullResult(
+                    items, False, pages, rows_seen, duplicate_ids, invalid_ids,
+                    overlap_ids, "repeated_request_page", conversion_errors,
+                )
+            if pages >= max_pages:
+                return PullResult(
+                    items, False, pages, rows_seen, duplicate_ids, invalid_ids,
+                    overlap_ids, "max_pages", conversion_errors,
+                )
+            seen_page_fingerprints.add(request_fingerprint)
             try:
                 resp = requests.get(self._base_url + endpoint, params=params, timeout=self._timeout)
                 resp.raise_for_status()
@@ -151,11 +204,42 @@ class CollectorClient:
                 raise CollectorClientError(f"collector API {endpoint} returned non-JSON: {error}") from error
             if not isinstance(payload, list):
                 raise CollectorClientError(f"collector API {endpoint} returned {type(payload).__name__}, expected list")
-            views.extend(payload)
+            pages += 1
+            rows_seen += len(payload)
+            page_ids: set[str] = set()
+            for view in payload:
+                try:
+                    item = builder(view)
+                except Exception:  # noqa: BLE001 — one bad row must not abort a pull
+                    conversion_errors += 1
+                    continue
+                item_id = str(getattr(item, "id", "") or "").strip()
+                if resource == "workorder" and not item_id.upper().startswith("BSR"):
+                    invalid_ids += 1
+                    continue
+                if item_id:
+                    page_ids.add(item_id)
+                    if item_id in seen_ids:
+                        duplicate_ids += 1
+                        continue
+                    seen_ids.add(item_id)
+                items.append(item)
+            overlap_ids += len(page_ids & previous_page_ids)
+            page_fingerprint = _content_fingerprint(page_ids)
+            if page_fingerprint in seen_page_fingerprints:
+                return PullResult(
+                    items, False, pages, rows_seen, duplicate_ids, invalid_ids,
+                    overlap_ids, "repeated_content_page", conversion_errors,
+                )
+            seen_page_fingerprints.add(page_fingerprint)
+            previous_page_ids = page_ids
             if len(payload) < limit:
                 break
             params["offset"] += limit
-        return [builder(view) for view in views]
+        return PullResult(
+            items, True, pages, rows_seen, duplicate_ids, invalid_ids, overlap_ids,
+            None, conversion_errors,
+        )
 
     def health(self) -> bool:
         try:
@@ -163,3 +247,13 @@ class CollectorClient:
             return resp.status_code == 200
         except requests.RequestException:
             return False
+
+
+def _pagination_fingerprint(endpoint: str, params: Mapping[str, Any]) -> str:
+    safe = "&".join(f"{key}={params[key]}" for key in sorted(params))
+    return hashlib.sha256(f"{endpoint}?{safe}".encode("utf-8")).hexdigest()[:16]
+
+
+def _content_fingerprint(ids: set[str]) -> str:
+    safe = "\0".join(sorted(ids))
+    return hashlib.sha256(safe.encode("utf-8")).hexdigest()[:16]

@@ -27,6 +27,14 @@ export interface WorkOrderView {
   failure_code: string | null;
 }
 
+export interface WorkOrderPage {
+  items: WorkOrderView[];
+  total: number;
+  offset: number;
+  limit: number;
+  has_more: boolean;
+}
+
 export interface ReliabilityKpiView {
   id: string;
   equipment_id: string | null;
@@ -49,11 +57,12 @@ export const cockpitApi = {
   listEquipment: (limit = 200) => get<EquipmentView[]>(`/equipment?limit=${limit}`),
   getEquipment: (equipmentId: string) =>
     get<EquipmentView>(`/equipment/${encodeURIComponent(equipmentId)}`),
-  listWorkOrders: (equipmentId?: string, limit = 200) => {
+  listWorkOrders: (equipmentId?: string, offset = 0, limit = 50) => {
     const params = new URLSearchParams();
     if (equipmentId) params.set("equipment_id", equipmentId);
+    params.set("offset", String(offset));
     params.set("limit", String(limit));
-    return get<WorkOrderView[]>(`/work-orders?${params.toString()}`);
+    return get<WorkOrderPage>(`/work-orders?${params.toString()}`);
   },
   getKpi: (equipmentId: string, metric: string) =>
     get<ReliabilityKpiView>(`/kpis/${encodeURIComponent(equipmentId)}/${encodeURIComponent(metric)}`),

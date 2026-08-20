@@ -139,11 +139,15 @@ def cmd_sync(args: argparse.Namespace) -> int:
             )
             exit_code = 1
             continue
+        complete = getattr(stats, "complete", True)
         print(
             f"{stats.mode} sync {stats.object_structure}: "
             f"{stats.rows_seen} seen, {stats.upserted} upserted, "
-            f"{stats.skipped} skipped, {stats.errors} errors, watermark={stats.watermark}"
+            f"{stats.skipped} skipped, {stats.errors} errors, "
+            f"complete={complete}, watermark={stats.watermark}"
         )
+        if not complete:
+            exit_code = 1
     return exit_code
 
 

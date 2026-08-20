@@ -9,6 +9,8 @@ from src.adapters.maximo.auth import MaximoAuth
 from src.adapters.maximo.oslc_client import (
     OslcClient,
     OslcError,
+    OslcPaginationLimitError,
+    OslcPaginationLoopError,
     _next_page_url,
     _normalize_next_page_url,
     _normalize_member,
@@ -108,6 +110,78 @@ class ReadOnlyGuardTest(unittest.TestCase):
                 "http://mx761app1.example/maximo/oslc/os/mxapiasset?pageno=2",
                 "http://maximo.example/maximo",
             )
+
+
+class PaginationCompletionTest(unittest.TestCase):
+    class Response:
+        status_code = 200
+        content = b"{}"
+        headers = {"Content-Type": "application/json"}
+        text = ""
+
+        def __init__(self, payload):
+            self._payload = payload
+
+        def json(self):
+            return self._payload
+
+        def raise_for_status(self):
+            return None
+
+    class Auth:
+        session = object()
+        last_request_at = 0.0
+
+        def ensure_logged_in(self):
+            return None
+
+    def _client(self, responses):
+        config = MaximoConfig(rate_limit_seconds=0, base_url="http://maximo.example/maximo")
+        client = OslcClient.__new__(OslcClient)
+        client._config = config
+        client._auth = self.Auth()
+        client._session = client._auth.session
+        client._last_request = 0.0
+        queue = iter(responses)
+        client.get = lambda _url: next(queue)
+        return client
+
+    def test_natural_final_page_is_complete_at_cap_boundary(self):
+        client = self._client([
+            self.Response({"_member": [{"wonum": "BSR-1"}]}),
+        ])
+        rows = list(client.iterate("mxwodetail", page_size=1, max_pages=1, identity_field="wonum"))
+        self.assertEqual(len(rows), 1)
+
+    def test_cap_with_next_page_raises_typed_error(self):
+        client = self._client([
+            self.Response({
+                "_member": [{"wonum": "BSR-1"}],
+                "oslc:responseInfo": {"oslc:nextPage": "?p=2"},
+            }),
+            self.Response({
+                "_member": [{"wonum": "BSR-2"}],
+                "oslc:responseInfo": {"oslc:nextPage": "?p=3"},
+            }),
+        ])
+        with self.assertRaises(OslcPaginationLimitError) as raised:
+            list(client.iterate("mxwodetail", page_size=1, max_pages=2, identity_field="wonum"))
+        self.assertEqual(raised.exception.pages, 2)
+        self.assertTrue(raised.exception.next_page_fingerprint)
+
+    def test_repeated_next_page_raises_loop_error(self):
+        client = self._client([
+            self.Response({
+                "_member": [{"wonum": "BSR-1"}],
+                "oslc:responseInfo": {"oslc:nextPage": "?p=2"},
+            }),
+            self.Response({
+                "_member": [{"wonum": "BSR-2"}],
+                "oslc:responseInfo": {"oslc:nextPage": "?p=2"},
+            }),
+        ])
+        with self.assertRaises(OslcPaginationLoopError):
+            list(client.iterate("mxwodetail", page_size=1, max_pages=10, identity_field="wonum"))
 
 
 if __name__ == "__main__":

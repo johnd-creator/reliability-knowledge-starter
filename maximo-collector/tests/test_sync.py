@@ -10,7 +10,7 @@ from typing import Any, Mapping
 
 from src.adapters.maximo.mappers import equipment_from_payload, work_order_from_payload
 from src.api.app import sync_config_for
-from src.adapters.maximo.oslc_client import oslc_boolean, oslc_number, oslc_timestamp
+from src.adapters.maximo.oslc_client import OslcPaginationLimitError, oslc_boolean, oslc_number, oslc_timestamp
 from src.repositories.store import _row
 from src.services.sync import ObjectSyncConfig, SyncService
 
@@ -152,7 +152,7 @@ class FakeClient:
         self.pages = pages
         self.calls: list[dict] = []
 
-    def iterate(self, object_structure, *, where=None, required_scope=None, select=None, order_by=None, page_size=None, max_pages=1000):
+    def iterate(self, object_structure, *, where=None, required_scope=None, select=None, order_by=None, page_size=None, max_pages=1000, identity_field=None):
         self.calls.append({"os": object_structure, "where": where, "required_scope": required_scope, "select": select, "order_by": order_by, "page_size": page_size})
         yield from self.pages
 
@@ -310,6 +310,31 @@ class SyncEngineTest(unittest.TestCase):
         SyncService(client, store).sync(self.CFG)
         self.assertEqual(len(store.runs), 1)
         self.assertIsNotNone(store.runs[0].finished_at)
+
+    def test_pagination_cap_keeps_progress_but_does_not_advance_cursor(self):
+        cfg = ObjectSyncConfig(
+            object_structure="mxwodetail",
+            entity_name="work_order",
+            mapper=work_order_from_payload,
+            prefix_field="wonum",
+            allowed_prefixes=("BSR",),
+        )
+
+        class CappedClient(FakeClient):
+            def iterate(self, *args, **kwargs):
+                yield SAMPLE_BSR_WO
+                raise OslcPaginationLimitError(
+                    "mxwodetail", pages=1000, max_pages=1000,
+                    next_page_fingerprint="safe-fingerprint",
+                )
+
+        store, client = FakeStore(), CappedClient([])
+        stats = SyncService(client, store).sync(cfg)
+        self.assertFalse(stats.complete)
+        self.assertEqual(stats.mode, "partial")
+        self.assertEqual(stats.pagination_error, "OslcPaginationLimitError")
+        self.assertEqual(stats.upserted, 1)
+        self.assertNotIn("mxwodetail", store.cursors)
 
 
 if __name__ == "__main__":

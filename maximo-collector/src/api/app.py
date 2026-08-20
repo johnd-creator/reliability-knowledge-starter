@@ -328,6 +328,9 @@ def create_app() -> FastAPI:
             "skipped": stats.skipped,
             "errors": stats.errors,
             "watermark": _iso(stats.watermark),
+            "complete": stats.complete,
+            "pagination_error": stats.pagination_error,
+            "duplicate_ids": stats.duplicate_ids,
         }
 
     return app

@@ -5,10 +5,12 @@ from __future__ import annotations
 import unittest
 from datetime import datetime, timezone
 from typing import Any, Mapping
+from unittest.mock import patch
 
 from src.adapters.collector_client import (
     CollectorClient,
     CollectorClientError,
+    PullResult,
     equipment_from_view,
     work_order_from_view,
 )
@@ -183,6 +185,71 @@ class SyncServiceTest(unittest.TestCase):
     def test_run_logged(self):
         self.service.sync("equipment")
         # FakeStore has no runs list; just verify no crash
+
+    def test_incomplete_pull_upserts_progress_but_keeps_cursor(self):
+        class PartialClient(FakeCollectorClient):
+            def pull(self, resource, **kwargs):
+                return PullResult(
+                    items=[work_order_from_view({"id": "BSR-1", "status": "WAPPR"})],
+                    complete=False,
+                    pages=1,
+                    rows_seen=2,
+                    stop_reason="max_pages",
+                )
+
+        client = PartialClient({})
+        store = FakeStore()
+        stats = SyncService(client, store).sync("workorder")
+        self.assertFalse(stats.complete)
+        self.assertEqual(stats.mode, "partial")
+        self.assertEqual(stats.rows_seen, 2)
+        self.assertEqual(stats.upserted, 1)
+        self.assertIsNone(store.get_cursor("workorder"))
+
+
+class CollectorPaginationTest(unittest.TestCase):
+    class Response:
+        status_code = 200
+
+        def __init__(self, payload):
+            self._payload = payload
+
+        def raise_for_status(self):
+            return None
+
+        def json(self):
+            return self._payload
+
+    def test_pull_reads_all_pages_and_deduplicates_ids(self):
+        responses = [
+            self.Response([{"id": "BSR-1"}, {"id": "BSR-2"}]),
+            self.Response([{"id": "BSR-2"}]),
+        ]
+        with patch("src.adapters.collector_client.requests.get", side_effect=responses):
+            result = CollectorClient("http://collector").pull("workorder", limit=2)
+        self.assertTrue(result.complete)
+        self.assertEqual(result.pages, 2)
+        self.assertEqual(result.rows_seen, 3)
+        self.assertEqual(len(result.items), 2)
+        self.assertEqual(result.duplicate_ids, 1)
+
+    def test_pull_marks_max_pages_partial(self):
+        responses = [self.Response([{"id": "BSR-1"}, {"id": "BSR-2"}])]
+        with patch("src.adapters.collector_client.requests.get", side_effect=responses):
+            result = CollectorClient("http://collector").pull("workorder", limit=2, max_pages=1)
+        self.assertFalse(result.complete)
+        self.assertEqual(result.stop_reason, "max_pages")
+
+    def test_pull_detects_repeated_content_page(self):
+        responses = [
+            self.Response([{"id": "BSR-1"}, {"id": "BSR-2"}]),
+            self.Response([{"id": "BSR-1"}, {"id": "BSR-2"}]),
+        ]
+        with patch("src.adapters.collector_client.requests.get", side_effect=responses):
+            result = CollectorClient("http://collector").pull("workorder", limit=2)
+        self.assertFalse(result.complete)
+        self.assertEqual(result.stop_reason, "repeated_content_page")
+        self.assertEqual(result.duplicate_ids, 2)
 
 
 class DomainConversionTest(unittest.TestCase):

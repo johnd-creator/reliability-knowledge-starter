@@ -43,6 +43,16 @@ class WorkOrderView(BaseModel):
     failure_code: str | None = None
 
 
+class WorkOrderPage(BaseModel):
+    """Bounded work-order page; the browser never receives the whole table."""
+
+    items: list[WorkOrderView]
+    total: int
+    offset: int
+    limit: int
+    has_more: bool
+
+
 class ReliabilityKpiView(BaseModel):
     id: str
     equipment_id: str | None = None
@@ -116,14 +126,20 @@ def create_app() -> FastAPI:
             downtime_total_hours=i.downtime_total_hours,
         )
 
-    @app.get("/work-orders", response_model=list[WorkOrderView], tags=["work-orders"])
+    @app.get("/work-orders", response_model=WorkOrderPage, tags=["work-orders"])
     def list_work_orders(
         equipment_id: str | None = None,
-        limit: int = Query(100, ge=1, le=1000),
+        offset: int = Query(0, ge=0),
+        limit: int = Query(50, ge=1, le=200),
         store: CockpitStore = Depends(_store),
-    ) -> list[WorkOrderView]:
-        items = store.list_work_orders(equipment_id=equipment_id, limit=limit)
-        return [
+    ) -> WorkOrderPage:
+        total = store.count_work_orders(equipment_id=equipment_id)
+        items = store.list_work_orders(
+            equipment_id=equipment_id,
+            offset=offset,
+            limit=limit,
+        )
+        views = [
             WorkOrderView(
                 id=i.id,
                 equipment_id=i.equipment_id,
@@ -136,6 +152,13 @@ def create_app() -> FastAPI:
             )
             for i in items
         ]
+        return WorkOrderPage(
+            items=views,
+            total=total,
+            offset=offset,
+            limit=limit,
+            has_more=offset + len(views) < total,
+        )
 
     @app.get("/kpis/{equipment_id}/{metric}", response_model=ReliabilityKpiView, tags=["kpis"])
     def get_kpi(equipment_id: str, metric: str, store: CockpitStore = Depends(_store)) -> ReliabilityKpiView:
