@@ -273,7 +273,13 @@ class CollectorStore:
                     or_(*[func.lower(getattr(orm_cls, column)).like(needle) for column in search_columns])
                 )
             if changed_column:
-                stmt = stmt.order_by(getattr(orm_cls, changed_column).asc().nullsfirst())
+                # Offset pagination must have a deterministic tie-breaker.
+                # Changed timestamps are not unique, so ordering only by the
+                # watermark column can repeat/skip rows between pages.
+                stmt = stmt.order_by(
+                    getattr(orm_cls, changed_column).asc().nullsfirst(),
+                    getattr(orm_cls, "id").asc(),
+                )
             else:
                 stmt = stmt.order_by(getattr(orm_cls, "id"))
             stmt = stmt.offset(offset).limit(limit)
