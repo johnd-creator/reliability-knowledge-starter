@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { CollectStatusBar } from "./CollectStatusBar";
-import { collectorApi, ReadingView, ParameterView, StatsView, timeAgo, fmt } from "@/lib/api";
+import { collectorApi, ReadingView, ParameterView, StatsView, timeAgo, fmt, compareParameterCodes } from "@/lib/api";
 
 function statusColor(reading: ReadingView, parameter: ParameterView | undefined): string {
   if (reading.transformation_status !== "ok") return "var(--danger, #ea5455)";
@@ -97,13 +97,13 @@ export default function DashboardPage() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(210px, 1fr))",
+            gridTemplateColumns: "repeat(5, minmax(0, 1fr))",
             gap: 12,
           }}
         >
           {latest
             .slice()
-            .sort((a, b) => a.parameter_code.localeCompare(b.parameter_code))
+            .sort((a, b) => compareParameterCodes(a.parameter_code, b.parameter_code))
             .map((reading) => {
               const parameter = paramByCode.get(reading.parameter_code);
               const color = statusColor(reading, parameter);

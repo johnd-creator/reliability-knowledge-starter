@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { collectorApi, Reading5MinView, ParameterView, fmt } from "@/lib/api";
+import { collectorApi, Reading5MinView, ParameterView, fmt, compareParameterCodes } from "@/lib/api";
 
 function Sparkline({ values }: { values: number[] }) {
   if (values.length < 2) return <span style={{ color: "var(--text-muted)" }}>—</span>;
@@ -47,7 +47,7 @@ export default function TrendingPage() {
   }, [refresh]);
 
   const codes = useMemo(
-    () => Array.from(new Set(rows.map((r) => r.parameter_code))).sort(),
+    () => Array.from(new Set(rows.map((r) => r.parameter_code))).sort(compareParameterCodes),
     [rows]
   );
 
@@ -100,7 +100,9 @@ export default function TrendingPage() {
           Belum ada agregat. Jalankan <code>cemscollector aggregate</code> (atau tombol di dashboard).
         </p>
       ) : (
-        Array.from(seriesByCode.entries()).map(([code, series]) => (
+        Array.from(seriesByCode.entries())
+          .sort(([a], [b]) => compareParameterCodes(a, b))
+          .map(([code, series]) => (
           <div key={code} style={{ marginBottom: 24 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
               <h3 style={{ fontSize: "0.95rem" }}>

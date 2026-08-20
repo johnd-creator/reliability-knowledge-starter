@@ -1,5 +1,26 @@
 /** Typed client for the cems-collector FastAPI (read-only + local triggers). */
 
+/** Canonical display order (mirrors the production DAS layout, 5 per row). */
+export const PARAMETER_ORDER: readonly string[] = [
+  "SO2", "NOx", "NO", "NO2", "CO",
+  "CO2", "O2", "PM", "Hg", "Flow",
+  "Laju_alir", "Temp", "Humidity", "Pressure", "Opacity",
+];
+
+const _ORDER_INDEX: Record<string, number> = Object.fromEntries(
+  PARAMETER_ORDER.map((code, i) => [code, i])
+);
+
+/** Sort comparator: canonical order first, unknown codes alphabetically at the end. */
+export function compareParameterCodes(a: string, b: string): number {
+  const ia = _ORDER_INDEX[a];
+  const ib = _ORDER_INDEX[b];
+  if (ia !== undefined && ib !== undefined) return ia - ib;
+  if (ia !== undefined) return -1;
+  if (ib !== undefined) return 1;
+  return a.localeCompare(b);
+}
+
 export type SourceMap = Record<string, unknown>;
 
 export interface ReadingView {

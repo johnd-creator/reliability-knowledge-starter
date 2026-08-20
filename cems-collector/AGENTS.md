@@ -111,12 +111,35 @@ maintenance; raw O2 > 18 → maintenance on all parameters) → rounding
 
 Maintenance values: Hg → 0.0001, everything else → 1.0.
 
+**Production verification (2026-08-19, live DAS at 172.16.201.135):**
+simultaneous PLC-vs-production sampling showed the live pipeline applies
+**span × O2-reference correction only** — the gas conversion and the
+maintenance/threshold logic are NOT active in production. The shipped
+registry therefore sets `normalization.enabled: false` for every
+parameter and carries the verified spans under `adjustment:`
+
+| parameter | span (adjust) | O2-reference |
+|---|---|---|
+| SO2 | 0.4 | 7 % |
+| NOx | 0.5 | 7 % |
+| PM, Flow | 0.6 | 7 % |
+| NO, NO2, Hg, CO2 | 1.0 | 7 % |
+| Laju_alir | 44.15625 | — |
+| O2, CO, Humidity, Pressure, Temp, Opacity | 1.0 | — (passthrough) |
+
+Verified end-to-end deviation vs the production UI: ≤ ~1.6 % mean per
+parameter (process noise). Opacity (register 3116) exists in production
+but was missing from the DAZ seed — added as `documented`.
+
 **Documented divergences from DAZ:**
 - The Laravel formula-string engine (shunting-yard evaluation of
   `normalize`/`formula` fields) is replaced by explicit numeric registry
   fields (`o2_reference` / `adjust` / `constant`) — same pipeline
   semantics for everything seeded in production, no formula interpreter
   in the collector.
+- The DAZ Laravel gas conversion stays implemented (pipeline stage above)
+  but is disabled in the shipped registry because production does not
+  apply it.
 - SO2 probe plausibility lower bound is 1.0 (aligned with the probe
   trigger `value ≤ 1.0`); DAZ used 0.0 which let probes immediately
   re-accept the same implausible reading.

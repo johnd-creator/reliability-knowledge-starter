@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { collectorApi, ParameterView, StackView, fmt } from "@/lib/api";
+import { collectorApi, ParameterView, StackView, fmt, compareParameterCodes } from "@/lib/api";
 
 export default function ParametersPage() {
   const [parameters, setParameters] = useState<ParameterView[]>([]);
@@ -53,7 +53,10 @@ export default function ParametersPage() {
           </tr>
         </thead>
         <tbody>
-          {parameters.map((p) => {
+          {parameters
+            .slice()
+            .sort((a, b) => compareParameterCodes(a.code, b.code))
+            .map((p) => {
             const modbus = p.sources?.cems?.modbus as
               | { register?: number; register_type?: string; data_type?: string }
               | undefined;

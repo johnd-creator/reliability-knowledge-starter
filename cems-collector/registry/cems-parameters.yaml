@@ -91,7 +91,7 @@ parameters:
       constant: 0.0
 
   - code: PM
-    name: Particulate Matter
+    name: Dust (Particulate Matter)
     unit: mg/Nm3
     status: documented
     threshold: 100.0
