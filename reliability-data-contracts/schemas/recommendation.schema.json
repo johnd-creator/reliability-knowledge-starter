@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reliability-data-contracts/schemas/recommendation.schema.json",
+  "title": "Recommendation",
+  "description": "Proposed reliability action. Workflow transitions must be recorded separately in RecommendationEvent and authorized by the application.",
+  "type": "object",
+  "required": ["id", "equipment_id", "status", "created_at"],
+  "properties": {
+    "id": {"type": "string"}, "equipment_id": {"type": "string"}, "finding_id": {"type": ["string", "null"]},
+    "title": {"type": ["string", "null"]}, "description": {"type": ["string", "null"]},
+    "risk_impact": {"type": ["string", "null"], "enum": ["low", "medium", "high", "critical", null]},
+    "status": {"type": "string", "enum": ["open", "in_progress", "deferred", "closed", "rejected"]},
+    "target_completion": {"type": ["string", "null"], "format": "date-time"}, "created_at": {"type": "string", "format": "date-time"},
+    "sources": {"type": "object", "properties": {"maximo": {"type": ["object", "null"]}, "pi": {"type": ["object", "null"]}, "cems": {"type": ["object", "null"]}}}
+  }
+}

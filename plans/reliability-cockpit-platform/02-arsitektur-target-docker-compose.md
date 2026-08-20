@@ -241,3 +241,13 @@ docker compose down
 Tidak ada default command yang menghapus volume. Penghapusan data harus menjadi
 prosedur terpisah dengan backup dan konfirmasi eksplisit.
 
+## Status eksekusi — 20 Agustus 2026
+
+| Status | Butir | Bukti |
+|---|---|---|
+| DONE | Satu Compose project, multi-container, DB terisolasi | Root `compose.yaml` menjalankan Maximo/Postgres, PI/TimescaleDB, CEMS/Postgres, Cockpit/Postgres; API dan worker dipisah. |
+| DONE | Image dan hygiene build | Dockerfile non-root serta `.dockerignore` dibuat untuk semua collector, backend Cockpit, dan web multi-stage. |
+| DONE | Startup dependency | One-shot `*-init`, healthcheck DB, volume persisten, network internal, `.env.platform.example`, `compose.dev.yaml`, dan runbook dibuat. `docker compose config` sudah tervalidasi. |
+| DONE | Scheduling baseline | `mxcollector run`, `cemscollector run-aggregator`, dan `cockpit run` ditambahkan; Cockpit hanya memanggil API collector. |
+| PARTIAL | PI runtime | API/DB tersedia dalam Compose, namun load registry dan worker tier tidak diaktifkan otomatis sampai PI WebId serta P0/P1 disetujui. |
+| BLOCKED | Staging/cold-start terhadap sumber nyata | Butuh secret runtime, route jaringan source, image pull, dan akses read-only. DB sengaja tidak dipublikasikan. |

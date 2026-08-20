@@ -1,28 +1,28 @@
 #!/usr/bin/env python3
-"""CLI for the reliability cockpit sidecar.
+"""CLI for the Reliability Cockpit.
 
-Read-only against Maximo. Commands:
+The Cockpit reads only from local collector APIs. Commands:
   init-db         - create cockpit local tables
-  sync [objects]  - delta-sync verified Maximo objects into the cockpit store
+  sync [objects]  - delta-sync contract-shaped Maximo collector objects
   kpi             - compute + persist reliability KPIs from synced work orders
+  run             - continuously sync the collector and refresh KPIs
   serve           - start the FastAPI app
-
-Credentials are never stored; use MAXIMO_READ_ONLY_TOKEN or an out-of-band
-session cookie (MAXIMO_SESSION_COOKIE).
 """
 
 from __future__ import annotations
 
 import argparse
 import logging
+import signal
 import sys
+import threading
 from datetime import date, timedelta
 
-from src.config import MaximoConfig, load_env
+from src.config import CollectorConfig, load_env
 from src.repositories.database import get_database
 from src.repositories.store import CockpitStore
 from src.services.kpi import KpiPeriod, KpiService
-from src.services.sync import ObjectSyncConfig, SyncService
+from src.services.sync import SyncService
 
 LOG = logging.getLogger(__name__)
 
@@ -36,26 +36,6 @@ AVAILABLE_SOURCES = {
 }
 
 
-def _mapper_for(resource: str):
-    from src.adapters.maximo import (
-        equipment_from_payload,
-        item_from_payload,
-        labor_from_payload,
-        person_from_payload,
-        service_request_from_payload,
-        work_order_from_payload,
-    )
-
-    return {
-        "equipment": equipment_from_payload,
-        "workorder": work_order_from_payload,
-        "servicerequest": service_request_from_payload,
-        "person": person_from_payload,
-        "item": item_from_payload,
-        "labor": labor_from_payload,
-    }[resource]
-
-
 def cmd_init_db(args: argparse.Namespace) -> int:
     db = get_database()
     db.create_all()
@@ -64,24 +44,48 @@ def cmd_init_db(args: argparse.Namespace) -> int:
 
 
 def cmd_sync(args: argparse.Namespace) -> int:
-    from src.adapters.maximo import OslcClient
+    from src.adapters.collector_client import CollectorClient
 
-    config = MaximoConfig.from_environment()
-    client = OslcClient(config)
+    config = CollectorConfig.from_environment()
+    client = CollectorClient(config.maximo_api_base, timeout_seconds=config.timeout_seconds)
     store = CockpitStore(get_database())
-    service = SyncService(client, store, site_id=config.site_id)
+    service = SyncService(client, store)
 
     selected = args.objects or [name for name, _ in AVAILABLE_SOURCES.values()]
     results = []
     for object_structure, resource in AVAILABLE_SOURCES.values():
         if object_structure not in selected and resource not in selected:
             continue
-        results.append(service.sync(ObjectSyncConfig(object_structure=object_structure, mapper=_mapper_for(resource))))
+        results.append(service.sync(resource))
     for stats in results:
         print(
             f"{stats.object_structure:<14} mode={stats.mode:<11} seen={stats.rows_seen:<6} "
             f"upserted={stats.upserted}"
         )
+    return 0
+
+
+def cmd_run(args: argparse.Namespace) -> int:
+    """Run Cockpit-only refresh loops without reaching any source system."""
+    stop = threading.Event()
+
+    def _stop(signum, frame):
+        LOG.info("received signal %s, stopping Cockpit worker", signum)
+        stop.set()
+
+    signal.signal(signal.SIGINT, _stop)
+    signal.signal(signal.SIGTERM, _stop)
+    LOG.info("starting Cockpit refresh worker every %ss", args.interval_seconds)
+    while not stop.is_set():
+        try:
+            sync_exit = cmd_sync(argparse.Namespace(objects=[]))
+            if sync_exit == 0:
+                cmd_kpi(argparse.Namespace(equipment=None, period_end=None, period_start=None))
+            else:
+                LOG.warning("collector sync failed; KPI refresh skipped for this cycle")
+        except Exception as error:  # noqa: BLE001 - worker must survive a transient collector outage
+            LOG.exception("Cockpit refresh cycle failed: %s", error)
+        stop.wait(args.interval_seconds)
     return 0
 
 
@@ -136,6 +140,10 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="period end YYYY-MM-DD (default: today)",
     )
     kpi.set_defaults(func=cmd_kpi)
+
+    run = sub.add_parser("run", help="continuously sync collector data and refresh KPIs")
+    run.add_argument("--interval-seconds", type=int, default=300)
+    run.set_defaults(func=cmd_run)
 
     serve = sub.add_parser("serve", help="start FastAPI app")
     serve.add_argument("--host", default="127.0.0.1")

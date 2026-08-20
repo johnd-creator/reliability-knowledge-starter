@@ -15,7 +15,10 @@ from __future__ import annotations
 
 import argparse
 import logging
+import signal
 import sys
+import threading
+import time
 
 from src.config import MaximoConfig, load_env
 from src.repositories.database import get_database
@@ -76,6 +79,55 @@ def cmd_sync(args: argparse.Namespace) -> int:
             f"{stats.skipped} skipped, {stats.errors} errors, watermark={stats.watermark}"
         )
     return exit_code
+
+
+def cmd_run(args: argparse.Namespace) -> int:
+    """Run independent read-only sync loops for operational and asset data.
+
+    Assets intentionally have a slower cadence: Maximo operational changes are
+    normally work-order driven, while an asset refresh is a master-data task.
+    A failure in one cycle is logged; the next scheduled cycle still runs.
+    """
+    stop = threading.Event()
+
+    def _stop(signum, frame):
+        LOG.info("received signal %s, shutting down scheduler", signum)
+        stop.set()
+
+    signal.signal(signal.SIGINT, _stop)
+    signal.signal(signal.SIGTERM, _stop)
+
+    def _loop(name: str, objects: list[str], interval: int) -> None:
+        while not stop.is_set():
+            result = cmd_sync(argparse.Namespace(objects=objects))
+            if result:
+                LOG.warning("%s sync cycle finished with exit code %s", name, result)
+            stop.wait(interval)
+
+    LOG.info(
+        "starting read-only Maximo scheduler: operational every %ss; assets every %ss",
+        args.operational_interval_seconds,
+        args.asset_interval_seconds,
+    )
+    workers = [
+        threading.Thread(
+            target=_loop,
+            args=("operational", DEFAULT_OBJECTS, args.operational_interval_seconds),
+            daemon=True,
+        ),
+        threading.Thread(
+            target=_loop,
+            args=("asset", ["mxapiasset"], args.asset_interval_seconds),
+            daemon=True,
+        ),
+    ]
+    for worker in workers:
+        worker.start()
+    while not stop.wait(1):
+        pass
+    for worker in workers:
+        worker.join(timeout=5)
+    return 0
 
 
 def cmd_serve(args: argparse.Namespace) -> int:
@@ -140,6 +192,10 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     sync.add_argument("objects", nargs="*", help=f"any of: {', '.join(AVAILABLE_OBJECTS)} (or aliases)")
 
+    run = sub.add_parser("run", help="run scheduled, read-only operational and asset sync loops")
+    run.add_argument("--operational-interval-seconds", type=int, default=300)
+    run.add_argument("--asset-interval-seconds", type=int, default=21600)
+
     serve = sub.add_parser("serve", help="start the FastAPI app")
     serve.add_argument("--host", default="127.0.0.1")
     serve.add_argument("--port", type=int, default=8002)
@@ -158,6 +214,8 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_init_db(args)
     if args.command == "sync":
         return cmd_sync(args)
+    if args.command == "run":
+        return cmd_run(args)
     if args.command == "serve":
         return cmd_serve(args)
     if args.command == "diagnose" and args.diagnose_target == "master-data":

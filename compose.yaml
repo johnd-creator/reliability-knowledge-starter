@@ -1,0 +1,198 @@
+name: reliability-cockpit-platform
+
+x-python-common: &python-common
+  restart: unless-stopped
+  networks: [platform]
+
+services:
+  maximo-db:
+    image: postgres:16.4-alpine
+    environment:
+      POSTGRES_DB: maximo_collector
+      POSTGRES_USER: maximo_collector
+      POSTGRES_PASSWORD: ${MAXIMO_DB_PASSWORD:?set in .env.platform}
+    volumes: [maximo-db:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U maximo_collector -d maximo_collector"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks: [platform]
+
+  pi-db:
+    image: timescale/timescaledb:2.16.1-pg16
+    environment:
+      POSTGRES_DB: pi_collector
+      POSTGRES_USER: pi_collector
+      POSTGRES_PASSWORD: ${PI_DB_PASSWORD:?set in .env.platform}
+    volumes: [pi-db:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pi_collector -d pi_collector"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks: [platform]
+
+  cems-db:
+    image: postgres:16.4-alpine
+    environment:
+      POSTGRES_DB: cems_collector
+      POSTGRES_USER: cems_collector
+      POSTGRES_PASSWORD: ${CEMS_DB_PASSWORD:?set in .env.platform}
+    volumes: [cems-db:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cems_collector -d cems_collector"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks: [platform]
+
+  cockpit-db:
+    image: postgres:16.4-alpine
+    environment:
+      POSTGRES_DB: cockpit
+      POSTGRES_USER: cockpit
+      POSTGRES_PASSWORD: ${COCKPIT_DB_PASSWORD:?set in .env.platform}
+    volumes: [cockpit-db:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cockpit -d cockpit"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks: [platform]
+
+  maximo-init:
+    <<: *python-common
+    build: ./maximo-collector
+    restart: "no"
+    command: ["mxcollector", "init-db"]
+    environment:
+      DATABASE_URL: postgresql://maximo_collector:${MAXIMO_DB_PASSWORD}@maximo-db/maximo_collector
+    depends_on:
+      maximo-db: {condition: service_healthy}
+
+  maximo-worker:
+    <<: *python-common
+    build: ./maximo-collector
+    command: ["mxcollector", "run", "--operational-interval-seconds", "${MAXIMO_OPERATIONAL_INTERVAL_SECONDS:-300}", "--asset-interval-seconds", "${MAXIMO_ASSET_INTERVAL_SECONDS:-21600}"]
+    environment:
+      DATABASE_URL: postgresql://maximo_collector:${MAXIMO_DB_PASSWORD}@maximo-db/maximo_collector
+      MAXIMO_BASE_URL: ${MAXIMO_BASE_URL}
+      MAXIMO_READ_ONLY_TOKEN: ${MAXIMO_READ_ONLY_TOKEN:-}
+    depends_on:
+      maximo-init: {condition: service_completed_successfully}
+
+  maximo-api:
+    <<: *python-common
+    build: ./maximo-collector
+    environment:
+      DATABASE_URL: postgresql://maximo_collector:${MAXIMO_DB_PASSWORD}@maximo-db/maximo_collector
+    depends_on:
+      maximo-init: {condition: service_completed_successfully}
+
+  pi-init:
+    <<: *python-common
+    build: ./pi-collector
+    restart: "no"
+    command: ["picollector", "init-db"]
+    environment:
+      DATABASE_URL: postgresql://pi_collector:${PI_DB_PASSWORD}@pi-db/pi_collector
+    depends_on:
+      pi-db: {condition: service_healthy}
+
+  pi-api:
+    <<: *python-common
+    build: ./pi-collector
+    environment:
+      DATABASE_URL: postgresql://pi_collector:${PI_DB_PASSWORD}@pi-db/pi_collector
+    depends_on:
+      pi-init: {condition: service_completed_successfully}
+
+  cems-init:
+    <<: *python-common
+    build: ./cems-collector
+    restart: "no"
+    command: ["sh", "-c", "cemscollector init-db && cemscollector load-registry"]
+    environment:
+      DATABASE_URL: postgresql://cems_collector:${CEMS_DB_PASSWORD}@cems-db/cems_collector
+    depends_on:
+      cems-db: {condition: service_healthy}
+
+  cems-worker:
+    <<: *python-common
+    build: ./cems-collector
+    command: ["cemscollector", "collect"]
+    environment:
+      DATABASE_URL: postgresql://cems_collector:${CEMS_DB_PASSWORD}@cems-db/cems_collector
+      CEMS_HOST: ${CEMS_HOST}
+      CEMS_PORT: ${CEMS_PORT:-502}
+    depends_on:
+      cems-init: {condition: service_completed_successfully}
+
+  cems-aggregator:
+    <<: *python-common
+    build: ./cems-collector
+    command: ["cemscollector", "run-aggregator", "--interval-seconds", "${CEMS_AGGREGATION_INTERVAL_SECONDS:-300}"]
+    environment:
+      DATABASE_URL: postgresql://cems_collector:${CEMS_DB_PASSWORD}@cems-db/cems_collector
+    depends_on:
+      cems-init: {condition: service_completed_successfully}
+
+  cems-api:
+    <<: *python-common
+    build: ./cems-collector
+    environment:
+      DATABASE_URL: postgresql://cems_collector:${CEMS_DB_PASSWORD}@cems-db/cems_collector
+    depends_on:
+      cems-init: {condition: service_completed_successfully}
+
+  cockpit-init:
+    <<: *python-common
+    build: ./reliability-cockpit
+    restart: "no"
+    command: ["cockpit", "init-db"]
+    environment:
+      DATABASE_URL: postgresql://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
+    depends_on:
+      cockpit-db: {condition: service_healthy}
+
+  cockpit-worker:
+    <<: *python-common
+    build: ./reliability-cockpit
+    command: ["cockpit", "run", "--interval-seconds", "${COCKPIT_SYNC_INTERVAL_SECONDS:-300}"]
+    environment:
+      DATABASE_URL: postgresql://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
+      MAXIMO_COLLECTOR_API_BASE: http://maximo-api:8002
+      PI_COLLECTOR_API_BASE: http://pi-api:8001
+      CEMS_COLLECTOR_API_BASE: http://cems-api:8003
+    depends_on:
+      cockpit-init: {condition: service_completed_successfully}
+      maximo-api: {condition: service_started}
+
+  cockpit-api:
+    <<: *python-common
+    build: ./reliability-cockpit
+    environment:
+      DATABASE_URL: postgresql://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
+    depends_on:
+      cockpit-init: {condition: service_completed_successfully}
+
+  cockpit-web:
+    build: ./reliability-cockpit/web
+    restart: unless-stopped
+    environment:
+      COCKPIT_API_BASE: http://cockpit-api:8000
+    depends_on:
+      cockpit-api: {condition: service_started}
+    networks: [platform]
+    ports: ["${COCKPIT_WEB_PORT:-3000}:3000"]
+
+networks:
+  platform:
+    driver: bridge
+
+volumes:
+  maximo-db:
+  pi-db:
+  cems-db:
+  cockpit-db:

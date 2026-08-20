@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reliability-data-contracts/schemas/asset-source-link.schema.json",
+  "title": "AssetSourceLink",
+  "description": "Approved, evidence-backed relationship between a canonical equipment ID and one source-system identity. Do not publish a link until evidence is verified.",
+  "type": "object",
+  "required": ["equipment_id", "source_system", "source_id", "verification_status"],
+  "properties": {
+    "equipment_id": {"type": "string"},
+    "source_system": {"type": "string", "enum": ["maximo", "pi", "cems"]},
+    "source_id": {"type": "string"},
+    "verification_status": {"type": "string", "enum": ["unknown", "documented", "verified", "forbidden", "deprecated"]},
+    "evidence_ref": {"type": ["string", "null"], "description": "Internal discovery/catalog record supporting the link"},
+    "effective_from": {"type": ["string", "null"], "format": "date-time"},
+    "effective_to": {"type": ["string", "null"], "format": "date-time"},
+    "sources": {"type": "object", "properties": {"maximo": {"type": ["object", "null"]}, "pi": {"type": ["object", "null"]}, "cems": {"type": ["object", "null"]}}}
+  }
+}

@@ -289,3 +289,10 @@ Acuan: [konsep1.png](../../konsep1.png).
 Urutan ini mencegah halaman terlihat lengkap secara visual tetapi sebenarnya berisi
 angka dummy tanpa provenance.
 
+## Status eksekusi — 20 Agustus 2026
+
+| Status | Butir | Keterangan |
+|---|---|---|
+| DONE | Urutan dan guard produk | Rencana mengunci bahwa layar konsep hanya boleh memakai source/derived/workflow/not-configured state; tidak ada metric bisnis hardcoded yang ditambahkan. |
+| PARTIAL | Landasan UI | API Cockpit saat ini masih menyediakan equipment, work order, KPI, dan sync status; konsep visual belum dapat dipetakan penuh tanpa read model/API domain yang direncanakan. |
+| BLOCKED | UI-001 s.d. UI-107 | Tidak dieksekusi sebelum endpoint agregat, identity verified, formula/rule version, AuthZ, serta data freshness tersedia. Mengimplementasikan lima layar sekarang akan menghasilkan data contoh yang menyesatkan. |

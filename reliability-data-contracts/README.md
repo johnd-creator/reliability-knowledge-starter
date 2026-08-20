@@ -31,6 +31,16 @@ field-by-field translation tables.
 |---|---|---|
 | [`condition-parameter.schema.json`](./schemas/condition-parameter.schema.json) | pi-knowledge registry YAML via pi-collector | ✅ verified (v2, breaking rename 2026-08) |
 | [`condition-reading.schema.json`](./schemas/condition-reading.schema.json) | PI Web API streams via pi-collector | ✅ verified (snapshot + timeseries) |
+| [`emission-reading.schema.json`](./schemas/emission-reading.schema.json) | CEMS collector | documented; live registry verification required |
+| [`collector-run.schema.json`](./schemas/collector-run.schema.json) | collector runtime audit | implemented contract |
+
+### Cockpit decisions and computed presentation
+| Schema | Purpose | Status |
+|---|---|---|
+| [`asset-source-link.schema.json`](./schemas/asset-source-link.schema.json) | verified cross-source asset identity | contract ready; no unverified links seeded |
+| [`condition-finding.schema.json`](./schemas/condition-finding.schema.json) | explainable finding | contract ready |
+| [`recommendation.schema.json`](./schemas/recommendation.schema.json) | proposed action and workflow state | contract ready |
+| [`asset-health-snapshot.schema.json`](./schemas/asset-health-snapshot.schema.json) | versioned calculated score/presentation | contract ready; formulas pending approval |
 
 ### Computed reliability concepts (derived, not a direct source field)
 | Schema | Derived from |

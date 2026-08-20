@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reliability-data-contracts/schemas/condition-finding.schema.json",
+  "title": "ConditionFinding",
+  "description": "Traceable condition finding derived from one or more source readings. Its rule/version makes the result explainable.",
+  "type": "object",
+  "required": ["id", "equipment_id", "severity", "status", "detected_at"],
+  "properties": {
+    "id": {"type": "string"}, "equipment_id": {"type": "string"}, "parameter_id": {"type": ["string", "null"]},
+    "severity": {"type": "string", "enum": ["normal", "low", "medium", "high", "critical"]},
+    "status": {"type": "string", "enum": ["open", "acknowledged", "resolved", "suppressed"]},
+    "summary": {"type": ["string", "null"]}, "detected_at": {"type": "string", "format": "date-time"},
+    "rule_id": {"type": ["string", "null"]}, "rule_version": {"type": ["string", "null"]},
+    "evidence": {"type": "array", "items": {"type": "object", "properties": {"reading_id": {"type": ["string", "null"]}, "source_ref": {"type": ["string", "null"]}}}}
+  }
+}

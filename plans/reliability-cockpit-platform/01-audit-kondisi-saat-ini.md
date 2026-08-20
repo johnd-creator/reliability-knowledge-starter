@@ -225,3 +225,11 @@ Legenda: **Ada** = dapat dipakai sekarang; **Derived** = perlu rule/formula;
 11. Retention dan storage lifecycle CEMS/PI belum dinyatakan.
 12. Auth/RBAC/audit untuk workflow management belum ada.
 
+## Status eksekusi — 20 Agustus 2026
+
+| Status | Bukti / tindak lanjut |
+|---|---|
+| DONE | Audit statis dikonfirmasi lagi terhadap source, CLI, API, schema, dan Compose yang baru ditambahkan. Gap 1 dan gap 4 tidak lagi berlaku sebagai gap fondasi: root Compose tersedia dan CLI Cockpit memakai `CollectorClient`. |
+| DONE | Baseline hermetic lulus: Maximo **41** test, CEMS **82** test, serta Cockpit **37** unit test non-DB. Draft 2020-12 memvalidasi **19** schema. |
+| PARTIAL | Audit Cockpit penuh menemukan dua smoke test lama yang menyatakan SQLite tetapi masih membuat koneksi PostgreSQL default; keduanya gagal tanpa database. Ini dicatat sebagai test-fixture defect, bukan bukti runtime production gagal. |
+| BLOCKED | Audit dinamis PI, CEMS PLC, Maximo, cardinality aktual, dan perubahan status WO memerlukan akses read-only serta owner engineering. Tidak ada identifier/tag/status yang ditebak. |

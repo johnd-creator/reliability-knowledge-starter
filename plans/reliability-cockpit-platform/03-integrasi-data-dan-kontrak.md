@@ -294,3 +294,12 @@ Tidak ada endpoint untuk menulis Maximo, PI, atau PLC.
 - recommendation target/WO reference/approval yang belum pernah dibuat pengguna atau
   workflow.
 
+## Status eksekusi — 20 Agustus 2026
+
+| Status | Butir | Bukti |
+|---|---|---|
+| DONE | Contract foundation | Ditambahkan schema `asset-source-link`, `collector-run`, `emission-reading`, `condition-finding`, `recommendation`, dan `asset-health-snapshot`; README kontrak diperbarui dan 19 schema valid Draft 2020-12. |
+| DONE | Seam Maximo → Cockpit | CLI Cockpit kini membangun `CollectorClient`, mem-paginate response collector, dan tidak memakai adapter Maximo pada jalur normal. |
+| PARTIAL | CEMS/decision domain | Kontrak dasar siap, tetapi `emission-parameter`, `emission-aggregate`, `data-source-status`, event/risk/decision workflow, tabel Cockpit, dan API belum dibuat. |
+| BLOCKED | Identity lintas sumber | Tidak ada seed Maximo↔PI/CEMS dibuat karena belum ada mapping/evidence `verified`. Cockpit tidak boleh fuzzy-join untuk scoring. |
+| BLOCKED | Finding/health/risk/recommendation runtime | Memerlukan owner formula, threshold, quality/freshness policy, dan AuthZ/audit sebelum boleh menjadi data aplikasi. |

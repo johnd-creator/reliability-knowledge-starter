@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reliability-data-contracts/schemas/asset-health-snapshot.schema.json",
+  "title": "AssetHealthSnapshot",
+  "description": "Time-stamped computed health/risk presentation. Score method and policy version are mandatory so the Cockpit never presents an unexplained score as source data.",
+  "type": "object",
+  "required": ["equipment_id", "observed_at", "method_version"],
+  "properties": {
+    "equipment_id": {"type": "string"}, "observed_at": {"type": "string", "format": "date-time"},
+    "health_score": {"type": ["number", "null"], "minimum": 0, "maximum": 100}, "risk_score": {"type": ["number", "null"], "minimum": 0, "maximum": 100},
+    "health_band": {"type": ["string", "null"], "enum": ["healthy", "warning", "critical", "unknown", null]},
+    "method_version": {"type": "string"}, "policy_version": {"type": ["string", "null"]},
+    "evidence_finding_ids": {"type": "array", "items": {"type": "string"}}
+  }
+}

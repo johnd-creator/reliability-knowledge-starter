@@ -129,27 +129,33 @@ class CollectorClient:
         self._timeout = timeout_seconds
 
     def pull(self, resource: str, *, changed_since: datetime | None = None, limit: int = 1000) -> list:
-        """Pull one resource's rows as cockpit domain models."""
+        """Pull all pages for one resource as cockpit domain models."""
         if resource not in RESOURCES:
             raise CollectorClientError(f"unknown resource: {resource}")
         endpoint, builder, has_watermark = RESOURCES[resource]
-        params: dict[str, Any] = {"limit": limit}
+        params: dict[str, Any] = {"limit": limit, "offset": 0}
         if has_watermark and changed_since is not None:
             params["changed_since"] = changed_since.isoformat()
-        try:
-            resp = requests.get(self._base_url + endpoint, params=params, timeout=self._timeout)
-            resp.raise_for_status()
-            payload = resp.json()
-        except requests.RequestException as error:
-            raise CollectorClientError(
-                f"collector API {endpoint} failed (is mxcollector serve running on "
-                f"{self._base_url}?): {error}"
-            ) from error
-        except ValueError as error:
-            raise CollectorClientError(f"collector API {endpoint} returned non-JSON: {error}") from error
-        if not isinstance(payload, list):
-            raise CollectorClientError(f"collector API {endpoint} returned {type(payload).__name__}, expected list")
-        return [builder(view) for view in payload]
+        views: list[Mapping[str, Any]] = []
+        while True:
+            try:
+                resp = requests.get(self._base_url + endpoint, params=params, timeout=self._timeout)
+                resp.raise_for_status()
+                payload = resp.json()
+            except requests.RequestException as error:
+                raise CollectorClientError(
+                    f"collector API {endpoint} failed (is mxcollector serve running on "
+                    f"{self._base_url}?): {error}"
+                ) from error
+            except ValueError as error:
+                raise CollectorClientError(f"collector API {endpoint} returned non-JSON: {error}") from error
+            if not isinstance(payload, list):
+                raise CollectorClientError(f"collector API {endpoint} returned {type(payload).__name__}, expected list")
+            views.extend(payload)
+            if len(payload) < limit:
+                break
+            params["offset"] += limit
+        return [builder(view) for view in views]
 
     def health(self) -> bool:
         try:

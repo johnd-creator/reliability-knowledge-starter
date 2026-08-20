@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reliability-data-contracts/schemas/emission-reading.schema.json",
+  "title": "EmissionReading",
+  "description": "Vendor-neutral raw or normalized CEMS measurement. Modbus addresses and PLC-specific values stay inside sources.cems.",
+  "type": "object",
+  "required": ["parameter_code", "stack_id", "timestamp", "value"],
+  "properties": {
+    "parameter_code": {"type": "string"}, "stack_id": {"type": "string"},
+    "timestamp": {"type": "string", "format": "date-time"}, "value": {"type": ["number", "null"]},
+    "unit": {"type": ["string", "null"]}, "quality": {"type": ["string", "null"], "enum": ["good", "suspect", "bad", "maintenance", null]},
+    "collected_at": {"type": ["string", "null"], "format": "date-time"},
+    "sources": {"type": "object", "properties": {"cems": {"type": ["object", "null"], "properties": {"register": {"type": ["integer", "null"]}, "function_code": {"type": ["integer", "null"], "enum": [3, 4, null]}, "registry_status": {"type": ["string", "null"]}}}}}
+  }
+}

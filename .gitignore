@@ -1,6 +1,7 @@
 .env
 .env.*
 !.env.example
+!.env.platform.example
 
 # Local runtimes, package outputs and generated metadata
 .venv/

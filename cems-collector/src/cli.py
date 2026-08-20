@@ -19,6 +19,7 @@ import logging
 import signal
 import sys
 import threading
+import time
 from datetime import datetime
 
 from src.config import CemsConfig, load_env
@@ -117,6 +118,34 @@ def cmd_aggregate(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_run_aggregator(args: argparse.Namespace) -> int:
+    """Continuously aggregate completed windows; this never accesses the PLC."""
+    from src.services.aggregate import AggregationService
+
+    config = CemsConfig.from_environment()
+    service = AggregationService(CollectorStore(get_database()), config)
+    interval = args.interval_seconds or config.aggregation_interval_minutes * 60
+    if interval <= 0:
+        raise SystemExit("--interval-seconds must be positive")
+    stop = threading.Event()
+
+    def _stop(signum, frame):
+        LOG.info("received signal %s, stopping aggregation loop", signum)
+        stop.set()
+
+    signal.signal(signal.SIGINT, _stop)
+    signal.signal(signal.SIGTERM, _stop)
+    LOG.info("aggregating completed CEMS windows every %ss", interval)
+    while not stop.is_set():
+        try:
+            stats = service.aggregate()
+            LOG.info("aggregation: %s series, %s rows, skipped=%s", stats.rows_seen, stats.upserted, stats.skipped)
+        except Exception as error:  # noqa: BLE001 - keep the operational loop available
+            LOG.exception("aggregation cycle failed: %s", error)
+        stop.wait(interval)
+    return 0
+
+
 def cmd_diagnose(args: argparse.Namespace) -> int:
     """Probe every registry parameter read-only; report values + plausibility."""
     from src.adapters.modbus.client import ModbusClient
@@ -176,6 +205,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     aggregate.add_argument("--end", help="ISO-8601 backfill end (needs --start)")
     aggregate.add_argument("--force", action="store_true", help="recompute even if cursor says done")
 
+    aggregate_loop = sub.add_parser("run-aggregator", help="continuously aggregate completed windows")
+    aggregate_loop.add_argument("--interval-seconds", type=int, help="default: configured aggregation window")
+
     sub.add_parser("diagnose", help="read-only probe of every registry parameter")
 
     serve = sub.add_parser("serve", help="start the FastAPI app")
@@ -196,6 +228,8 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_collect(args)
     if args.command == "aggregate":
         return cmd_aggregate(args)
+    if args.command == "run-aggregator":
+        return cmd_run_aggregator(args)
     if args.command == "diagnose":
         return cmd_diagnose(args)
     if args.command == "serve":

@@ -281,3 +281,12 @@ change pada release yang sama dengan feature cutover.
 - [ ] Monitoring/alert/runbook/on-call owner tersedia.
 - [ ] Rollback drill selesai.
 
+## Status eksekusi — 20 Agustus 2026
+
+| Status | Butir | Bukti / batasan |
+|---|---|---|
+| DONE | Safety boundary dipertahankan | Scheduler baru memanggil service read-only yang sudah ada; tidak ada method Maximo mutasi atau Modbus write ditambahkan. Cockpit worker hanya mengakses API collector. |
+| DONE | Container hygiene dasar | Semua image aplikasi menggunakan user non-root; `.dockerignore` mengecualikan `.env`, venv, log, dan output web. DB tidak dipublish pada baseline Compose. |
+| DONE | Test baseline | Maximo 41, CEMS 82, Cockpit 37 test non-DB, serta 19 JSON Schema lulus. Compose config tervalidasi tanpa menjalankan source. |
+| PARTIAL | Test Cockpit penuh | Dua smoke test perlu diperbaiki agar benar-benar memakai SQLite/in-memory seperti dokumennya; database integration dan Compose E2E belum dijalankan. |
+| BLOCKED | Metrics/alert, backup-restore, retention, security scan, soak/UAT, RBAC, dan rollback drill | Memerlukan staging, secret/route terotorisasi, storage policy/RPO-RTO, identity provider, dan pemilik on-call. Semua release checklist tetap belum dicentang agar tidak memberi kesan siap produksi. |

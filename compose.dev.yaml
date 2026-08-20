@@ -1,0 +1,9 @@
+services:
+  maximo-api:
+    ports: ["8002:8002"]
+  pi-api:
+    ports: ["8001:8001"]
+  cems-api:
+    ports: ["8003:8003"]
+  cockpit-api:
+    ports: ["8000:8000"]

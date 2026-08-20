@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Shared configuration for the reliability cockpit sidecar.
+"""Shared configuration for the Reliability Cockpit.
 
 All secrets come from the environment (or a local .env) — never from source
 control. The sidecar never stores production credentials.
@@ -31,9 +31,14 @@ def load_env() -> None:
 
 @dataclass(frozen=True)
 class MaximoConfig:
+    """Legacy read-only adapter configuration retained for isolated adapter tests.
+
+    Normal Cockpit runtime uses :class:`CollectorConfig` and never constructs
+    this adapter. Source credentials are therefore scoped to maximo-collector.
+    """
+
     base_url: str
     oas_path: str = "/oslc/oas"
-    """OSLC object-structures under /oslc/os/<object_structure>."""
     oslc_root: str = "/oslc/os"
     site_id: str = "BSR"
     org_id: str = "IP"
@@ -41,16 +46,14 @@ class MaximoConfig:
     rate_limit_seconds: float = 1.0
     page_size: int = 100
     max_response_bytes: int = 1_048_576
-    auth_mode: str = "bearer"  # "bearer" | "none" (read-only token)
+    auth_mode: str = "bearer"
     token: str | None = None
-    """Read-only bearer token. Credentials are never stored by this repo."""
     session_cookie: str | None = None
-    """Optional Maximo session cookie provided out-of-band at runtime."""
 
     @classmethod
     def from_environment(cls) -> "MaximoConfig":
         return cls(
-            base_url=os.getenv("MAXIMO_BASE_URL", "http://maximo.plnindonesiapower.co.id/maximo").rstrip("/"),
+            base_url=os.getenv("MAXIMO_BASE_URL", "http://maximo.invalid/maximo").rstrip("/"),
             oas_path=os.getenv("MAXIMO_OAS_PATH", "/oslc/oas"),
             oslc_root=os.getenv("MAXIMO_OSLC_ROOT", "/oslc/os"),
             site_id=os.getenv("MAXIMO_SITE_ID", "BSR"),
@@ -62,6 +65,25 @@ class MaximoConfig:
             auth_mode=os.getenv("MAXIMO_AUTH_MODE", "bearer"),
             token=os.getenv("MAXIMO_READ_ONLY_TOKEN") or None,
             session_cookie=os.getenv("MAXIMO_SESSION_COOKIE") or None,
+        )
+
+
+@dataclass(frozen=True)
+class CollectorConfig:
+    """Addresses of local collector APIs; no source-system credential lives here."""
+
+    maximo_api_base: str = "http://127.0.0.1:8002"
+    pi_api_base: str = "http://127.0.0.1:8001"
+    cems_api_base: str = "http://127.0.0.1:8003"
+    timeout_seconds: int = 60
+
+    @classmethod
+    def from_environment(cls) -> "CollectorConfig":
+        return cls(
+            maximo_api_base=os.getenv("MAXIMO_COLLECTOR_API_BASE", cls.maximo_api_base).rstrip("/"),
+            pi_api_base=os.getenv("PI_COLLECTOR_API_BASE", cls.pi_api_base).rstrip("/"),
+            cems_api_base=os.getenv("CEMS_COLLECTOR_API_BASE", cls.cems_api_base).rstrip("/"),
+            timeout_seconds=int(os.getenv("COLLECTOR_TIMEOUT_SECONDS", "60")),
         )
 
 
@@ -79,16 +101,6 @@ class DbtConfig:
 
 
 @dataclass(frozen=True)
-class PiConfig:
-    base_url: str = "https://pi.plnindonesiapower.co.id/piwebapi"
-
-    @classmethod
-    def from_environment(cls) -> "PiConfig":
-        return cls(base_url=os.getenv("PI_BASE_URL", "https://pi.plnindonesiapower.co.id/piwebapi").rstrip("/"))
-
-
-@dataclass(frozen=True)
 class AppConfig:
-    maximo: MaximoConfig = field(default_factory=MaximoConfig.from_environment)
     db: DbtConfig = field(default_factory=DbtConfig.from_environment)
-    pi: PiConfig = field(default_factory=PiConfig.from_environment)
+    collectors: CollectorConfig = field(default_factory=CollectorConfig.from_environment)

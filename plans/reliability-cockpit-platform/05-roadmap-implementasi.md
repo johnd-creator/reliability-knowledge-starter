@@ -293,3 +293,19 @@ tidak boleh masuk production sebelum diputuskan:
 
 Jawaban disimpan sebagai ADR/configuration approval, bukan hanya percakapan.
 
+## Status eksekusi — 20 Agustus 2026
+
+Legenda: **DONE** berarti artefak dan validasi lokal ada; **PARTIAL** berarti fondasi ada tetapi exit criterion belum terbukti; **BLOCKED** menunggu data/keputusan yang tidak boleh diasumsikan.
+
+| Milestone | DONE | PARTIAL | BLOCKED |
+|---|---|---|---|
+| M0 | ARCH-001, ARCH-002, UX-001 (dokumentasi traceability) | ARCH-003, DATA-001, DATA-003 | DATA-002 (tier PI dan benchmark owner engineering) |
+| M1 | PLAT-001..008: Dockerfile non-root, Compose, init, env/runbook, dev port override | cold-start/restart dengan Docker image dan source nyata | — |
+| M2 | MXR-001 (dua cadence + SIGTERM), CER-001 (aggregation daemon + SIGTERM) | MXR-002..004, CER-002..005; scheduler Cockpit berjalan tetapi tanpa distributed lock/run audit | PIR-001..006 serta MXR-005/CER manual-trigger auth: perlu policy, lease, dan PI verified |
+| M3 | CON-001 (schema workflow), bagian CON-003/CON-004, validasi 19 schema | CON-002, CON-003..005 karena schema/mapping/fixture belum lengkap | IDN-001..003 tanpa evidence mapping verified |
+| M4 | ING-001, ING-002 (collector paging), ING-007 | ING-005 | ING-003/004/006/008: read model PI/CEMS/status belum dibangun |
+| M5 | — | DOM-007 memakai KPI yang telah ada | DOM-001..006/008: formula, threshold, mapping, dan workflow approval belum ada |
+| M6–M7 | — | — | API-001..004, UI-001..107; mengikuti dependency M3–M5 dan AuthZ |
+| M8 | source guard regression suite Maximo/CEMS tercatat | OPS-005 static non-root/hygiene | OPS-001..004, OPS-006..008: perlu staging, security scan, backup/restore, dan owner operasional |
+
+Validasi pada eksekusi ini: `docker compose config` berhasil dengan env dummy; Maximo 41 test dan CEMS 82 test lulus; Cockpit 37 test hermetic lulus; 19 schema valid. Dua smoke test Cockpit yang mengharapkan SQLite masih mencoba PostgreSQL default dan dicatat pada plan 01.

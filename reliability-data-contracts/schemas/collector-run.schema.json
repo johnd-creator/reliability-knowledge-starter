@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reliability-data-contracts/schemas/collector-run.schema.json",
+  "title": "CollectorRun",
+  "description": "Auditable outcome of one local collector or Cockpit ingestion cycle; contains no source credentials or raw payload.",
+  "type": "object",
+  "required": ["id", "collector", "started_at", "status"],
+  "properties": {
+    "id": {"type": "string"}, "collector": {"type": "string", "enum": ["maximo", "pi", "cems", "cockpit"]},
+    "started_at": {"type": "string", "format": "date-time"}, "finished_at": {"type": ["string", "null"], "format": "date-time"},
+    "status": {"type": "string", "enum": ["running", "success", "partial", "failed", "skipped"]},
+    "rows_seen": {"type": ["integer", "null"], "minimum": 0}, "rows_written": {"type": ["integer", "null"], "minimum": 0},
+    "error_count": {"type": ["integer", "null"], "minimum": 0}, "watermark": {"type": ["string", "null"]},
+    "error_summary": {"type": ["string", "null"]}
+  }
+}
