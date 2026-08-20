@@ -88,7 +88,15 @@ def equipment_from_view(view: Mapping[str, Any]) -> Equipment:
         for key in ("installdate", "changedate"):
             if key in maximo:
                 maximo[key] = _dt(maximo[key])
-        equipment.maximo_source = MaximoEquipmentSource(**maximo)
+        known = set(MaximoEquipmentSource.__dataclass_fields__)
+        unknown = {k: v for k, v in maximo.items() if k not in known}
+        if unknown:
+            merged = dict(maximo.get("extra") or {})
+            merged.update(unknown)
+            maximo["extra"] = merged
+        equipment.maximo_source = MaximoEquipmentSource(
+            **{k: v for k, v in maximo.items() if k in known}
+        )
     return equipment
 
 

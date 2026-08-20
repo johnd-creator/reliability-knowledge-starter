@@ -270,6 +270,22 @@ class DomainConversionTest(unittest.TestCase):
         self.assertEqual(eq.maximo_source.assetnum, "A1")
         self.assertIsNotNone(eq.installed_at)
 
+    def test_equipment_from_view_preserves_quarantined_source_extra(self):
+        view = {
+            "assetnum": "A1",
+            "sources": {
+                "maximo": {
+                    "assetnum": "A1",
+                    "extra": {"plant_description": "Unit"},
+                    "future_verified_scalar": "kept-under-extra",
+                }
+            },
+        }
+        eq = equipment_from_view(view)
+        self.assertIsNotNone(eq.maximo_source)
+        self.assertEqual(eq.maximo_source.extra["plant_description"], "Unit")
+        self.assertEqual(eq.maximo_source.extra["future_verified_scalar"], "kept-under-extra")
+
     def test_work_order_from_view_builds_domain(self):
         view = {
             "wonum": "WO-001",

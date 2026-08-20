@@ -59,7 +59,7 @@ def cmd_sync(args: argparse.Namespace) -> int:
         results.append(service.sync(resource))
     for stats in results:
         print(
-            f"{stats.object_structure:<14} mode={stats.mode:<11} seen={stats.rows_seen:<6} "
+            f"{stats.resource:<14} mode={stats.mode:<11} seen={stats.rows_seen:<6} "
             f"upserted={stats.upserted}"
         )
     return 0

@@ -29,6 +29,7 @@ class MaximoEquipmentSource:
     installdate: OptionalDatetime = None
     changedate: OptionalDatetime = None
     totdowntime: Numeric = None
+    extra: dict | None = None  # overflow vendor keys from the collector view
 
 
 @dataclass(slots=True)
