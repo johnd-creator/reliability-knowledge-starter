@@ -12,7 +12,7 @@ Run with: .venv/bin/python -m unittest tests.test_pipeline_smoke
 from __future__ import annotations
 
 import unittest
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from typing import Any, Mapping
 
 from src.adapters.collector_client import (
@@ -106,8 +106,7 @@ class PipelineSmokeTest(unittest.TestCase):
         db.create_all()
         store = CockpitStore(db)
         service = kpi_compute_all(
-            KpiPeriod(start=datetime(2026, 5, 1, tzinfo=timezone.utc),
-                      end=datetime(2026, 8, 18, tzinfo=timezone.utc)),
+            KpiPeriod(start=date(2026, 5, 1), end=date(2026, 8, 18)),
             equipment_id=None,
         )
         # At minimum the compute function runs; verify it doesn't crash
