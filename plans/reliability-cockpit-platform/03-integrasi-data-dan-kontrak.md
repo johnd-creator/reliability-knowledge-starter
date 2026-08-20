@@ -8,9 +8,10 @@ anti-corruption layer terhadap vendor/protocol.
 ```text
 source systems
   │
-  ├─ Maximo OSLC ─▶ maximo collector ─▶ contract API ─┐
-  ├─ PI Web API ──▶ PI collector ─────▶ contract API ├─▶ cockpit ingestion
-  └─ CEMS Modbus ─▶ CEMS collector ───▶ contract API ┘        │
+  ├─ Maximo OSLC ─▶ maximo collector ─▶ contract API ─▶ implemented cockpit ingestion
+  ├─ PI Web API ──▶ PI collector ─────▶ contract API ─┐
+  └─ CEMS Modbus ─▶ CEMS collector ───▶ contract API ─┴▶ PI/CEMS projection pending
+                                                              │
                                                               ▼
                                                 identity + derived services
                                                               │
@@ -21,13 +22,17 @@ source systems
                                     └──────────── Cockpit API/BFF ─────────┘
 ```
 
+Pada runtime saat ini hanya jalur Maximo → Cockpit ingestion yang implemented.
+PI dan CEMS contract API sudah verified, tetapi PI → Cockpit dan CEMS → Cockpit
+projection masih pending.
+
 ## Aturan ownership
 
 | Data | System of record lokal | Consumer |
 |---|---|---|
-| Maximo contract copy | Maximo collector DB | Cockpit ingestion/API |
-| PI registry, snapshot, raw/interpolated series | PI collector DB | Cockpit feature/query service |
-| CEMS realtime dan 5-minute aggregates | CEMS collector DB | Cockpit environment/integration view |
+| Maximo contract copy | Maximo collector DB | Cockpit ingestion/API — implemented |
+| PI registry, snapshot, raw/interpolated series | PI collector DB | PI Collector API verified; Cockpit projection pending |
+| CEMS realtime dan 5-minute aggregates | CEMS collector DB | CEMS Collector API verified; Cockpit projection pending |
 | Equipment projection, KPI, health/risk snapshot | Cockpit DB | Cockpit API/web |
 | Finding/recommendation/action workflow | Cockpit DB | Cockpit API/web |
 | Vendor identifiers | `sources.*` block | adapter/lineage only |
@@ -35,21 +40,21 @@ source systems
 Tidak ada cross-database foreign key dan tidak ada collector yang menulis database
 collector lain.
 
-## Fase pertama: selesaikan seam Maximo collector
+## Fase pertama: Maximo collector seam — implemented
 
-1. Ubah CLI/runtime cockpit agar membuat `CollectorClient`, bukan `OslcClient`.
-2. Gunakan satu `SyncService` pull dari Maximo collector API.
-3. Tambahkan config `MAXIMO_COLLECTOR_API_BASE` dan timeout/retry bounded.
-4. Implementasikan pagination sampai page kosong/total selesai:
+1. CLI/runtime Cockpit membuat `CollectorClient`, bukan `OslcClient` pada jalur normal.
+2. Satu `SyncService` pull dari Maximo collector API digunakan untuk resource Maximo.
+3. Config `MAXIMO_COLLECTOR_API_BASE` dan timeout/retry bounded tersedia.
+4. Pagination sampai page kosong/total selesai tersedia:
    - deterministic sort oleh change timestamp + primary key;
    - `limit` bounded dan `offset`/cursor;
    - overlap kecil pada watermark;
    - dedup berdasarkan contract ID dan source change time;
    - cursor hanya maju setelah seluruh page sukses.
-5. Tambahkan contract test yang menjalankan serializer Maximo collector → parser
+5. Contract test menjalankan serializer Maximo collector → parser
    cockpit terhadap semua resource.
-6. Hapus credential Maximo dari baseline cockpit Compose.
-7. Perbarui README/adapter docs agar hanya satu production path yang dinyatakan.
+6. Credential Maximo tidak diperlukan pada baseline Cockpit external Compose.
+7. README/adapter docs menyatakan hanya satu production path Maximo.
 8. Setelah parity dan rollback window selesai, hapus atau arsipkan direct source
    adapter cockpit agar arah data tidak kembali bercabang.
 
@@ -310,5 +315,5 @@ Tidak ada endpoint untuk menulis Maximo, PI, atau PLC.
 |---|---|
 | DONE | `MAXIMO_COLLECTOR_API_BASE`, `PI_COLLECTOR_API_BASE`, dan `CEMS_COLLECTOR_API_BASE` tersedia pada konfigurasi Cockpit serta external Compose; host-local Docker memakai `host.docker.internal:host-gateway`. |
 | DONE | Maximo collector API dapat dijangkau dan resource Cockpit yang ada telah tervalidasi melalui API lokal. |
-| PENDING | Cockpit belum membuat projection PI/CEMS; ini **COCKPIT INGESTION PENDING**, bukan source-access blocker. |
+| PENDING | Cockpit belum membuat projection PI/CEMS; PI/CEMS API sudah verified, tetapi **PI → Cockpit** dan **CEMS → Cockpit** projection tetap pending, bukan source-access blocker. |
 | PENDING | DASHBOARD PARAMETER SELECTION dan DOMAIN FORMULA APPROVAL tetap terpisah dari baseline collection. |

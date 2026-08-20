@@ -51,9 +51,11 @@ pi-knowledge       ─┘     (vendor-neutral contracts)       (transactional ap
   Schemas (Draft 2020-12) plus field-mapping tables. Core fields are
   snake_case; **vendor fields are quarantined under `sources.maximo` /
   `sources.pi`** and must never leak into core contract fields.
-- **`reliability-cockpit`** is the only application. It **syncs** verified
-  Maximo objects into its own local Postgres, **computes** reliability KPIs, and
-  **serves** a FastAPI + Next.js UI.
+- **`reliability-cockpit`** is the only application. Its current production path
+  **syncs** verified Maximo collector resources into its own local Postgres,
+  **computes** reliability KPIs, and **serves** a FastAPI + Next.js UI. The PI
+  and CEMS collector APIs are verified and configurable, but PI → Cockpit and
+  CEMS → Cockpit projections remain pending.
 
 **Non-negotiable rule:** the cockpit **never rediscovers** Maximo/PI. Before
 introducing any source field, tag, endpoint, or WebId into the cockpit, look it
@@ -87,8 +89,9 @@ PI registry access is verified for BSR1 as of 2026-08-14: the registry contains
 541 discovered attributes, of which **433** are `status: verified` with
 `stream_status: ok` (98 gone, 10 error). The PI collector may collect the 433
 active streams with its read-only safety controls. The Cockpit's direct PI
-adapter remains a placeholder; normal Cockpit operation consumes collector APIs
-instead of PI credentials.
+adapter remains a placeholder; current Cockpit operation consumes Maximo
+collector resources only. PI/CEMS collector API bases do not imply an active
+Cockpit projection, and source credentials remain outside Cockpit.
 
 ### reliability-data-contracts (JSON Schemas, no own venv)
 This project has **no virtual environment of its own** — it is pure data.
@@ -214,12 +217,15 @@ against the live instance before depending on it."
 
 ### Data flow within the app
 ```text
-OslcClient (GET-only) ──▶ mappers ──▶ domain models ──▶ CockpitStore ──▶ Postgres
+Maximo CollectorClient ──▶ mappers ──▶ domain models ──▶ CockpitStore ──▶ Postgres
                                                           ▲
                                 KpiService (reads store, writes KPIs back)
                                                           ▲
                                 FastAPI (read-only views) ──▶ Next.js UI
 ```
+- Maximo Collector → Cockpit is implemented. PI Collector API and CEMS Collector
+  API access are verified/configurable, while their Cockpit projections remain
+  pending.
 - `src/adapters/maximo/oslc_client.py` — paginates OSLC collections, enforces
   read-only + rate-limit + size cap. OSLC records live under the **`_member`**
   key (with `member`/`oslc:member`/`rdfs:member` fallbacks) — not `data`/`items`.

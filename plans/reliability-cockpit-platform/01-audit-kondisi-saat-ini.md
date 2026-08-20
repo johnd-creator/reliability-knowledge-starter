@@ -18,7 +18,7 @@ Sumber utama:
 
 | Komponen | Cara berjalan saat ini | Database | Cadence aktual | API lokal |
 |---|---|---|---|---|
-| Maximo collector | `mxcollector sync` one-shot dan `serve` terpisah | PostgreSQL `:5434` | Belum ada daemon/scheduler | `:8002` |
+| Maximo collector | `mxcollector run` scheduler read-only dan `serve` terpisah | PostgreSQL `:5434` | Operasional 300 detik; asset 21.600 detik | `:8002` |
 | PI collector | `run` daemon, `serve` terpisah, backfill manual | TimescaleDB `:5433` | Default sleep 300 detik setelah cycle | `:8001` |
 | CEMS collector | `collect` daemon; `aggregate` one-shot; `serve` terpisah | PostgreSQL `:5435` | Poll default 5 detik; agregasi harus dipicu | `:8003` |
 | Reliability Cockpit | `sync`, `kpi`, dan `serve` masih dijalankan manual | PostgreSQL `:5432` | Belum ada projection/KPI worker | `:8000` |
@@ -170,14 +170,13 @@ Belum ada application shell, chart, server-side filtering, finding, recommendati
 risk, action board, integration monitoring, report, administration, auth, atau audit
 trail seperti konsep.
 
-### Integrasi Maximo yang masih transisional
+### Integrasi Maximo yang sudah implemented
 
 Kode sudah mempunyai `CollectorClient` dan `SyncService` pull dari API Maximo
-collector. Namun CLI cockpit dan beberapa dokumen masih membangun `OslcClient`
-langsung dan memakai kontrak service lama. Sebelum fitur baru, satu jalur produksi
-harus dipilih dan diuji: **cockpit → maximo-collector API**. Direct Maximo adapter di
-cockpit kemudian hanya dipertahankan sementara untuk migrasi/test atau dihapus
-setelah parity tercapai.
+collector. Jalur normal Cockpit adalah **cockpit → maximo-collector API**;
+`CollectorClient` saat ini hanya membangun resource Maximo. Direct Maximo adapter
+di Cockpit bukan jalur runtime default. PI dan CEMS API base tersedia sebagai
+konfigurasi, tetapi projection ke Cockpit belum dibuat.
 
 Pull client saat ini juga mengambil satu page. Full data di atas limit harus memakai
 pagination sampai habis, deterministic ordering, overlap watermark, dan dedup agar
@@ -209,10 +208,11 @@ Legenda: **Ada** = dapat dipakai sekarang; **Derived** = perlu rule/formula;
 ## Gap prioritas
 
 1. Belum ada root Compose dan image aplikasi.
-2. Maximo dan CEMS belum mempunyai scheduler lengkap; PI scheduling belum sesuai
-   throughput seluruh registry.
+2. Maximo scheduler sudah tersedia; PI scheduling tetap harus mengikuti throughput
+   seluruh registry dan CEMS aggregation tetap perlu operasionalisasi terpisah.
 3. Tidak ada lock lintas API/worker; tombol trigger dapat menabrak daemon aktif.
-4. Jalur cockpit ke Maximo collector belum selesai dan dokumentasi masih bercabang.
+4. Jalur Maximo Collector → Cockpit sudah implemented. PI/CEMS collector API
+   sudah verified, tetapi projection PI/CEMS ke Cockpit masih pending.
 5. Tidak ada identity mapping yang tervalidasi dari Maximo `assetnum` ke PI equipment/
    attribute; CEMS bersifat stack-level dan tidak boleh otomatis dianggap asset-level.
 6. Tidak ada kontrak CEMS pada `reliability-data-contracts`.
@@ -234,7 +234,7 @@ Legenda: **Ada** = dapat dipakai sekarang; **Derived** = perlu rule/formula;
 | PARTIAL | Audit Cockpit penuh menemukan dua smoke test lama yang menyatakan SQLite tetapi masih membuat koneksi PostgreSQL default; keduanya gagal tanpa database. Ini dicatat sebagai test-fixture defect, bukan bukti runtime production gagal. |
 | DONE | NET-001 audit dinamis collector lokal membuktikan environment berada pada LAN dan API host-local `127.0.0.1:8002` (Maximo), `:8001` (PI), dan `:8003` (CEMS) dapat dibaca tanpa kredensial di shell agent. Tidak ada source endpoint/tag/WebId/register yang dicoba langsung atau ditebak. |
 
-### NET-001 — status akses berdasarkan bukti runtime lokal
+### NET-001 — status akses berdasarkan bukti runtime lokal (baseline historis)
 
 | Service | Status | Bukti teredaksi | Freshness/result |
 |---|---|---|---|
@@ -242,5 +242,23 @@ Legenda: **Ada** = dapat dipakai sekarang; **Derived** = perlu rule/formula;
 | PI | SOURCE ACCESS VERIFIED; COLLECTOR API VERIFIED; DATA COLLECTION VERIFIED | Semua endpoint wajib HTTP 200. Registry YAML: 541 discovered, **433** `verified`+`ok`, 98 `gone`, 10 `error`; `/attributes` juga 433. Snapshot memiliki source timestamp dan quality; 133.570 time-series point tercatat. | Scheduler `running`, cadence 300 s, last run 20 Aug 2026 03:44 UTC. DASHBOARD PARAMETER SELECTION PENDING, bukan blocker collection. |
 | CEMS | SOURCE ACCESS VERIFIED; COLLECTOR API VERIFIED; DATA COLLECTION VERIFIED | Semua endpoint wajib HTTP 200; 15 parameter dan 15 latest reading tersedia. Latest mencatat stack dan observed time; run poll terakhir 15 row/upsert, 0 error. | Fresh pada 20 Aug 2026 03:44 UTC. Guard Modbus tetap FC03/FC04; tidak ada write. |
 
-COCKPIT INGESTION PENDING untuk PI/CEMS, sedangkan DASHBOARD PARAMETER SELECTION
-PENDING dan DOMAIN FORMULA APPROVAL PENDING tetap bukan bagian NET-001.
+Status integrasi saat ini:
+
+- **Maximo Collector → Cockpit: IMPLEMENTED**
+- **PI Collector API: VERIFIED**
+- **CEMS Collector API: VERIFIED**
+- **PI → Cockpit projection: PENDING**
+- **CEMS → Cockpit projection: PENDING**
+
+### NET-001-FOLLOWUP — hasil pemulihan worker lokal
+
+Deployment lama dan database `maximo-collector-postgres` dipertahankan. Satu
+`mxcollector run` dijalankan kembali dengan operational interval 300 detik dan
+asset interval 21.600 detik. Login read-only berhasil, tetapi cycle operational
+belum menghasilkan `collect_run` sukses baru: `mxwodetail` mengembalikan HTTP
+500, sedangkan validasi bounded `mxperson` berhenti karena timeout pada
+rate-limit sleep. Maximo tetap berstatus stale sampai successful run baru dapat
+dibuktikan; tidak ada worker kedua yang dijalankan.
+
+DASHBOARD PARAMETER SELECTION dan DOMAIN FORMULA APPROVAL tetap bukan bagian
+NET-001.

@@ -13,14 +13,14 @@ proses.
                                         │ internal HTTP
                          ┌──────────────▼───────────────┐
                          │ reliability-cockpit-api      │ :8000
-                         │ + projection/KPI worker      │
+                         │ + Maximo projection/KPI worker│
                          └───────┬────────┬────────┬─────┘
                                  │        │        │
                  ┌───────────────┘        │        └───────────────┐
                  ▼                        ▼                        ▼
           maximo-api :8002          pi-api :8001             cems-api :8003
                  ▲                        ▲                        ▲
-          maximo-worker              pi-worker          cems-poller/aggregator
+          maximo-worker       external PI worker*       cems-poller/aggregator
                  │                        │                        │
           maximo PostgreSQL          PI TimescaleDB          CEMS PostgreSQL
                  └──────────────── cockpit PostgreSQL ────────────┘
@@ -28,6 +28,11 @@ proses.
 
 Garis terakhir hanya menunjukkan bahwa semuanya berada dalam satu deployment;
 database **tidak** saling membaca atau menulis. Cockpit berkomunikasi dengan API.
+
+`*` Managed `compose.yaml` saat ini menyediakan `pi-db`, `pi-init`, dan `pi-api`,
+tetapi **belum menyediakan `pi-worker`**. PI collection tetap berasal dari worker
+external yang sudah berjalan; jangan menyalakan managed PI worker sebagai bagian
+dari task ini.
 
 ## Image dan role
 
@@ -41,7 +46,7 @@ container dengan command berbeda.
 | sama | `maximo-worker` | scheduler delta sync | long-running, singleton |
 | `reliability/pi-collector` | `pi-init` | init DB + load registry | one-shot |
 | sama | `pi-api` | `picollector serve --host 0.0.0.0` | long-running |
-| sama | `pi-worker` | orchestrated snapshot/history schedule | long-running, singleton |
+| — | `pi-worker` | belum ada pada managed Compose; external PI worker tetap di luar stack | deployment terpisah |
 | sama | `pi-backfill` | manual recorded backfill | Compose profile `backfill` |
 | `reliability/cems-collector` | `cems-init` | init DB + load registry | one-shot |
 | sama | `cems-api` | `cemscollector serve --host 0.0.0.0` | long-running |
@@ -49,7 +54,7 @@ container dengan command berbeda.
 | sama | `cems-aggregator` | aggregation daemon | long-running, singleton |
 | `reliability/cockpit-api` | `cockpit-init` | migration/init DB | one-shot |
 | sama | `cockpit-api` | `cockpit serve --host 0.0.0.0` | long-running |
-| sama | `cockpit-worker` | pull projections + derive KPI/finding | long-running, singleton |
+| sama | `cockpit-worker` | saat ini pull Maximo projection + derive KPI; PI/CEMS projection pending | long-running, singleton |
 | `reliability/cockpit-web` | `cockpit-web` | `next start` | long-running |
 
 `*-init` harus idempotent. Untuk release awal, command dapat membungkus `create_all`
@@ -106,7 +111,8 @@ Urutan boot:
 1. database mencapai health `pg_isready`;
 2. init/migration service selesai sukses;
 3. registry PI/CEMS dimuat idempotent;
-4. worker dan API collector dimulai;
+4. Maximo/CEMS worker dan API collector dimulai; PI hanya memulai `pi-api` tanpa
+   `pi-worker` pada managed Compose;
 5. cockpit DB/init dimulai;
 6. cockpit projection worker menunggu collector API ready;
 7. cockpit API dan web ready.
@@ -172,7 +178,7 @@ upsert idempotent dan mengurangi risiko row pada timestamp boundary.
 | Job | Proposal cadence/trigger |
 |---|---|
 | Maximo projection pull | 1–5 menit setelah maximo cycle; cursor + pagination |
-| PI/CEMS metadata/freshness pull | 1 menit |
+| PI/CEMS metadata/freshness pull | future projection; belum diaktifkan pada Cockpit worker saat ini |
 | Condition feature/finding evaluation | setelah time window lengkap atau periodik |
 | Health/risk projection | setelah perubahan input; fallback periodik |
 | KPI 90 hari | incremental/harian dan on-demand rebuild terbatas |
@@ -248,6 +254,7 @@ prosedur terpisah dengan backup dan konfirmasi eksplisit.
 | DONE | Dua mode Compose tanpa duplicate polling | `compose.yaml` adalah **managed collectors** (DB/worker/API baru); `compose.external.yaml` adalah **external collectors** dan hanya menjalankan Cockpit terhadap API collector lama. |
 | DONE | Image dan hygiene build | Dockerfile non-root serta `.dockerignore` dibuat untuk semua collector, backend Cockpit, dan web multi-stage. |
 | DONE | Startup dependency/config wiring | One-shot `*-init`, healthcheck DB, volume persisten, network internal, `.env.platform.example`, `compose.dev.yaml`, external host gateway, dan runbook dibuat. CEMS memakai `CEMS_MODBUS_*`, PI memakai `PI_WEB_API_BASE_URL`, dan Maximo meneruskan login/token/cookie config. |
-| DONE | Scheduling baseline | `mxcollector run`, `cemscollector run-aggregator`, dan `cockpit run` ditambahkan; Cockpit hanya memanggil API collector. |
+| DONE | Scheduling baseline | `mxcollector run`, `cemscollector run-aggregator`, dan `cockpit run` tersedia; Cockpit worker saat ini hanya mengonsumsi resource Maximo melalui API collector. |
+| DONE | Current integration boundary | Maximo Collector → Cockpit implemented; PI/CEMS Collector API verified; PI → Cockpit dan CEMS → Cockpit projection pending. |
 | DONE | External collector discovery | NET-001 membuktikan API collector lama aktif di host `127.0.0.1:8001/8002/8003`; PI memiliki satu API + satu worker, CEMS satu API + satu worker. Tidak ada worker tambahan yang dinyalakan. |
 | PARTIAL | Managed cold start | `docker compose config` tervalidasi dengan dummy env; cold start managed tidak dijalankan karena akan membuat worker baru terhadap source yang sudah dipoll. |

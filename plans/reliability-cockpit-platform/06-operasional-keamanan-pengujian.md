@@ -18,6 +18,17 @@ Perubahan arsitektur tidak boleh mengubah batas berikut:
 Compose worker/API tidak boleh mem-bypass class guard dengan memanggil underlying
 library secara langsung.
 
+Current integration status:
+
+- **Maximo Collector → Cockpit: IMPLEMENTED**
+- **PI Collector API: VERIFIED**
+- **CEMS Collector API: VERIFIED**
+- **PI → Cockpit projection: PENDING**
+- **CEMS → Cockpit projection: PENDING**
+
+`cockpit-worker` currently ingests Maximo collector resources only. Configurable
+PI/CEMS API bases do not mean those projections are active.
+
 ## Security architecture
 
 ### Trust boundaries
@@ -298,9 +309,11 @@ change pada release yang sama dengan feature cutover.
 - **DATA COLLECTION VERIFIED:** PI scheduler aktif pada 433 stream verified/ok;
   CEMS run poll terakhir 0 error; Maximo memiliki data equipment/WO dan run sukses
   historis.
-- **STALE_COLLECTOR:** Maximo tidak memiliki worker yang terdeteksi dan run
-  terakhir stale. Tidak ada worker baru dijalankan oleh task ini agar source
-  polling tidak terduplikasi; tindak lanjut harus memakai worker existing/owner
-  credential, bukan inisialisasi database baru.
+- **STALE_COLLECTOR:** baseline Maximo run terakhir stale. Follow-up telah
+  memulihkan tepat satu scheduler `mxcollector run` menggunakan deployment dan
+  database lama; login read-only berhasil, tetapi cycle operational belum
+  menghasilkan `collect_run` sukses baru karena `mxwodetail` HTTP 500 dan
+  validasi bounded `mxperson` timeout pada rate-limit sleep. Database baru tidak
+  dibuat dan worker tidak diduplikasi.
 - **REMAINING BLOCKERS UNCHANGED:** formula/risk, identity mapping, AuthZ, UAT,
   backup/restore, retention, dan release tetap di luar NET-001.

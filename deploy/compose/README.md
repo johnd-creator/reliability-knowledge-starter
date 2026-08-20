@@ -7,7 +7,9 @@ reads collector APIs only; it has no Maximo, PI, or PLC credential.
 
 Use this mode when Maximo, PI, and CEMS collectors already run on the host or
 elsewhere. It creates **only** Cockpit's local database/API/worker/web and
-never starts a source collector, preventing duplicate source polling.
+never starts a source collector, preventing duplicate source polling. The
+current Cockpit worker ingests Maximo collector resources only; PI and CEMS API
+bases are configurable, but their Cockpit projections remain pending.
 
 1. Copy `.env.platform.example` to `.env.platform`.
 2. Set `COCKPIT_DB_PASSWORD` and the three `*_COLLECTOR_API_BASE` values.
@@ -23,8 +25,10 @@ never starts a source collector, preventing duplicate source polling.
 ## Mode 2 — managed collectors
 
 Use this only when no existing worker polls the same source. `compose.yaml`
-starts isolated Maximo/CEMS Postgres and PI TimescaleDB plus collector workers
-and APIs. It requires the source-only environment names exactly as implemented:
+starts isolated Maximo/CEMS Postgres and their collector workers/APIs plus the
+PI TimescaleDB, init, and API services. It does **not** define a `pi-worker`;
+managed mode must not be described as running PI collection. It requires the
+source-only environment names exactly as implemented:
 `CEMS_MODBUS_HOST`, `CEMS_MODBUS_PORT`, `PI_WEB_API_BASE_URL`, and one valid
 Maximo authentication mode (`login`, `token`, or `cookie`).
 
@@ -43,9 +47,9 @@ not put a production Maximo, PI, or PLC endpoint on a public Docker network.
 | Service | Responsibility |
 | --- | --- |
 | `maximo-worker` | scheduled GET-only delta sync; operational data is frequent, asset master data is slow |
-| `pi-api` | serves the existing PI collector store; interval/tier worker remains an explicit deployment decision |
+| `pi-api` | serves the existing PI collector store; `pi-init`/`pi-api` are present in managed Compose, but `pi-worker` is not |
 | `cems-worker` / `cems-aggregator` | FC03/FC04 polling and separate completed-window aggregation |
-| `cockpit-worker` | pulls configurable collector APIs, then derives KPIs; never accesses source systems |
+| `cockpit-worker` | currently ingests Maximo collector resources and derives KPIs; PI/CEMS API bases are configurable, but their projections are pending |
 
 PI baseline collection uses every registry record with `status: verified` and
 `stream_status: ok`; P0/P1 selects priority/cadence/dashboard use only and is

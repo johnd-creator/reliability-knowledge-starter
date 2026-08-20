@@ -121,6 +121,11 @@ Exit criteria:
 
 ## Milestone 4 — Cockpit ingestion dan observability
 
+Current boundary: **Maximo Collector → Cockpit: IMPLEMENTED**. PI Collector API
+and CEMS Collector API are **VERIFIED**, while **PI → Cockpit projection** and
+**CEMS → Cockpit projection** remain **PENDING**. The current Cockpit worker does
+not ingest all configurable collector APIs.
+
 | ID | Pri | Size | Task |
 |---|---|---:|---|
 | ING-001 | P0 | M | Selaraskan cockpit CLI dengan `CollectorClient` Maximo |
