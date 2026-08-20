@@ -238,16 +238,16 @@ class SyncEngineTest(unittest.TestCase):
         self.assertEqual(client.calls[0]["where"], 'worksite="BSR"')
         self.assertEqual(client.calls[0]["required_scope"], 'worksite="BSR"')
 
-    def test_work_order_prefix_is_applied_and_non_bsr_is_rejected(self):
+    def test_work_order_prefix_is_validated_without_legacy_query_predicate(self):
         cfg = ObjectSyncConfig(
             object_structure="mxwodetail", entity_name="work_order",
             mapper=lambda member: member,
-            prefix_field="wonum", allowed_prefixes=("BSR",),
+            prefix_field="wonum", allowed_prefixes=("BSR",), prefix_query=False,
         )
         store = FakeStore()
         client = FakeClient([SAMPLE_BSR_WO, SAMPLE_WO])
         stats = SyncService(client, store).sync(cfg)
-        self.assertEqual(client.calls[0]["where"], 'siteid="BSR" and wonum in ["BSR%"]')
+        self.assertEqual(client.calls[0]["where"], 'siteid="BSR"')
         self.assertNotIn("like", client.calls[0]["where"])
         self.assertEqual(stats.rows_seen, 2)
         self.assertEqual(stats.upserted, 1)
@@ -285,6 +285,8 @@ class SyncEngineTest(unittest.TestCase):
         self.assertIn("wonum", work_order.select)
         self.assertEqual(work_order.batch_size, 100)
         self.assertEqual(work_order.page_size, 25)
+        self.assertFalse(work_order.prefix_query)
+        self.assertFalse(work_order.watermark_query)
         self.assertEqual(person.scope_clause, 'locationorg="IP"')
         self.assertIn("personid", person.select)
 

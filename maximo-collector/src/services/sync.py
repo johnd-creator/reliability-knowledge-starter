@@ -34,6 +34,12 @@ class ObjectSyncConfig:
     batch_size: int = 1
     select: tuple[str, ...] = ()
     page_size: int | None = None
+    max_pages: int = 1000
+    watermark_query: bool = True
+    # The verified BSR site scope is sufficient for work orders. Prefix
+    # validation remains client-side because this Maximo rejects the legacy
+    # wildcard prefix predicate.
+    prefix_query: bool = True
 
 
 @dataclass
@@ -71,14 +77,14 @@ class SyncService:
                 stats.mode = "incremental"
 
         where = config.scope_clause
-        if config.prefix_field and config.allowed_prefixes:
+        if config.prefix_query and config.prefix_field and config.allowed_prefixes:
             # Maximo's OSLC parser on this instance rejects ``like``
             # (BMXAA8744E). Its verified wildcard form is an ``in`` list.
             prefix_values = ",".join(f'"{prefix}%"' for prefix in config.allowed_prefixes)
             where = f"{where} and {config.prefix_field} in [{prefix_values}]"
         for field_name, expected_value in config.required_values:
             where = f'{where} and {field_name}="{expected_value}"'
-        if stats.mode == "incremental" and watermark is not None:
+        if stats.mode == "incremental" and watermark is not None and config.watermark_query:
             iso = watermark.isoformat(timespec="seconds")
             where = f'{where} and {config.watermark_field} >= "{iso}"'
 
@@ -115,6 +121,7 @@ class SyncService:
                 select=list(config.select) or None,
                 order_by=config.order_by,
                 page_size=config.page_size,
+                max_pages=config.max_pages,
                 identity_field=config.prefix_field,
             ):
                 seen += 1

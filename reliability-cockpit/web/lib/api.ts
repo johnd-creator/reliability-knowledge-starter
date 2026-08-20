@@ -57,13 +57,15 @@ export const cockpitApi = {
   listEquipment: (limit = 200) => get<EquipmentView[]>(`/equipment?limit=${limit}`),
   getEquipment: (equipmentId: string) =>
     get<EquipmentView>(`/equipment/${encodeURIComponent(equipmentId)}`),
-  listWorkOrders: (equipmentId?: string, offset = 0, limit = 50) => {
+  listWorkOrders: (equipmentId?: string, offset = 0, limit = 50, status?: string) => {
     const params = new URLSearchParams();
     if (equipmentId) params.set("equipment_id", equipmentId);
+    if (status) params.set("status", status);
     params.set("offset", String(offset));
     params.set("limit", String(limit));
     return get<WorkOrderPage>(`/work-orders?${params.toString()}`);
   },
+  listWorkOrderStatuses: () => get<string[]>("/work-orders/statuses"),
   getKpi: (equipmentId: string, metric: string) =>
     get<ReliabilityKpiView>(`/kpis/${encodeURIComponent(equipmentId)}/${encodeURIComponent(metric)}`),
   health: () => get<{ status: string }>("/health"),

@@ -269,11 +269,13 @@ class CockpitStore:
             rows = session.query(models.EquipmentOrm).order_by(models.EquipmentOrm.id).limit(limit).all()
             return [_equipment_from_row(r) for r in rows]
 
-    def count_work_orders(self, equipment_id: str | None = None) -> int:
+    def count_work_orders(self, equipment_id: str | None = None, status: str | None = None) -> int:
         with self._db.session() as session:
             query = session.query(models.WorkOrderOrm)
             if equipment_id:
                 query = query.filter(models.WorkOrderOrm.equipment_id == equipment_id)
+            if status:
+                query = query.filter(models.WorkOrderOrm.status == status)
             return query.count()
 
     def list_work_orders(
@@ -281,11 +283,14 @@ class CockpitStore:
         equipment_id: str | None = None,
         offset: int = 0,
         limit: int = 50,
+        status: str | None = None,
     ) -> list[WorkOrder]:
         with self._db.session() as session:
             q = session.query(models.WorkOrderOrm)
             if equipment_id:
                 q = q.filter(models.WorkOrderOrm.equipment_id == equipment_id)
+            if status:
+                q = q.filter(models.WorkOrderOrm.status == status)
             rows = (
                 q.order_by(
                     models.WorkOrderOrm.reported_at.desc().nulls_last(),
@@ -296,6 +301,17 @@ class CockpitStore:
                 .all()
             )
             return [_work_order_from_row(r) for r in rows]
+
+    def list_work_order_statuses(self) -> list[str]:
+        with self._db.session() as session:
+            rows = (
+                session.query(models.WorkOrderOrm.status)
+                .filter(models.WorkOrderOrm.status.is_not(None))
+                .distinct()
+                .order_by(models.WorkOrderOrm.status)
+                .all()
+            )
+            return [status for (status,) in rows if status]
 
 
 def _equipment_from_row(r: models.EquipmentOrm) -> Equipment:

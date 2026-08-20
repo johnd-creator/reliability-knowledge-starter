@@ -8,17 +8,36 @@ export default function WorkOrdersPage() {
   const [page, setPage] = useState<WorkOrderPage | null>(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(50);
+  const [statuses, setStatuses] = useState<string[]>([]);
+  const [statusFilter, setStatusFilter] = useState("ALL");
+  const [allStatusTotal, setAllStatusTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    cockpitApi.listWorkOrderStatuses().then(setStatuses).catch(() => undefined);
+  }, []);
 
   useEffect(() => {
     let active = true;
     setLoading(true);
     setError(null);
-    cockpitApi
-      .listWorkOrders(undefined, (pageNumber - 1) * pageSize, pageSize)
-      .then((result) => {
-        if (active) setPage(result);
+    const offset = (pageNumber - 1) * pageSize;
+    const filtered = cockpitApi.listWorkOrders(
+      undefined,
+      offset,
+      pageSize,
+      statusFilter === "ALL" ? undefined : statusFilter,
+    );
+    const all = statusFilter === "ALL"
+      ? filtered
+      : cockpitApi.listWorkOrders(undefined, 0, 1);
+    Promise.all([filtered, all])
+      .then(([result, allResult]) => {
+        if (active) {
+          setPage(result);
+          setAllStatusTotal(allResult.total);
+        }
       })
       .catch((err) => {
         if (active) setError(String(err));
@@ -29,7 +48,7 @@ export default function WorkOrdersPage() {
     return () => {
       active = false;
     };
-  }, [pageNumber, pageSize]);
+  }, [pageNumber, pageSize, statusFilter]);
 
   const total = page?.total ?? 0;
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
@@ -42,10 +61,28 @@ export default function WorkOrdersPage() {
     setPageNumber(1);
   };
 
+  const changeStatus = (value: string) => {
+    setStatusFilter(value);
+    setPageNumber(1);
+  };
+
   return (
     <main>
       <section className="card">
         <h2>Work Orders (all equipment)</h2>
+        <div className="filters" aria-label="Work order filters">
+          <label>
+            Status{" "}
+            <select value={statusFilter} onChange={(event) => changeStatus(event.target.value)}>
+              <option value="ALL">All statuses</option>
+              {statuses.map((status) => <option key={status} value={status}>{status}</option>)}
+            </select>
+          </label>
+        </div>
+        <p className="muted">
+          All-status total: <strong>{allStatusTotal.toLocaleString()}</strong>
+          {statusFilter !== "ALL" && <> · Filtered ({statusFilter}): <strong>{total.toLocaleString()}</strong></>}
+        </p>
         {error && <div className="error">{error}</div>}
         {loading && <div className="empty">Loading…</div>}
         {!loading && !error && total === 0 && (

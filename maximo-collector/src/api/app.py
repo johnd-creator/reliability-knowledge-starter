@@ -57,6 +57,8 @@ OBJECTS: dict[str, dict[str, Any]] = {
         watermark="changedate", order_by=None, changed_column="source_changed_at",
         orm=orm.WorkOrderOrm, scope='siteid="BSR"', compare_column="source_changed_at",
         prefix_field="wonum", select=WORK_ORDER_SELECT, batch_size=100, page_size=25,
+        prefix_query=False,
+        watermark_query=False,
     ),
     "mxapisr": dict(
         entity="service_request", mapper=service_request_from_payload,
@@ -116,6 +118,9 @@ def sync_config_for(object_structure: str) -> ObjectSyncConfig:
         batch_size=spec.get("batch_size", 1),
         select=spec.get("select", ()),
         page_size=spec.get("page_size"),
+        max_pages=spec.get("max_pages", 1000),
+        prefix_query=spec.get("prefix_query", True),
+        watermark_query=spec.get("watermark_query", True),
     )
 
 

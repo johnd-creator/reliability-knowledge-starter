@@ -19,12 +19,23 @@ class FakeStore:
             for index in range(5)
         ]
 
-    def count_work_orders(self, equipment_id=None):
-        return sum(1 for row in self.rows if not equipment_id or row.equipment_id == equipment_id)
+    def count_work_orders(self, equipment_id=None, status=None):
+        return sum(
+            1 for row in self.rows
+            if (not equipment_id or row.equipment_id == equipment_id)
+            and (not status or row.status == status)
+        )
 
-    def list_work_orders(self, equipment_id=None, offset=0, limit=50):
-        rows = [row for row in self.rows if not equipment_id or row.equipment_id == equipment_id]
+    def list_work_orders(self, equipment_id=None, offset=0, limit=50, status=None):
+        rows = [
+            row for row in self.rows
+            if (not equipment_id or row.equipment_id == equipment_id)
+            and (not status or row.status == status)
+        ]
         return rows[offset:offset + limit]
+
+    def list_work_order_statuses(self):
+        return sorted({row.status for row in self.rows if row.status})
 
 
 def work_order_endpoint():
@@ -57,6 +68,16 @@ class WorkOrderApiPaginationTest(unittest.TestCase):
         self.assertEqual(len(page.items), 3)
         self.assertTrue(all(item.equipment_id == "EQ-1" for item in page.items))
 
+    def test_default_includes_all_statuses_and_explicit_filter_is_local(self):
+        store = FakeStore()
+        store.rows[0].status = "CLOSE"
+        store.rows[1].status = "CAN"
+        all_page = work_order_endpoint()(None, 0, 50, store)
+        close_page = work_order_endpoint()(None, 0, 50, store, "CLOSE")
+        self.assertEqual(all_page.total, 5)
+        self.assertEqual(close_page.total, 1)
+        self.assertEqual(close_page.items[0].status, "CLOSE")
+
     def test_route_declares_safe_default_and_maximum_limit(self):
         route = next(route for route in create_app().routes if route.path == "/work-orders")
         limit = next(param for param in route.dependant.query_params if param.name == "limit")
@@ -73,13 +94,15 @@ class WorkOrderStorePaginationTest(unittest.TestCase):
         same_time = datetime(2026, 8, 20, tzinfo=timezone.utc)
         store.upsert_work_order(WorkOrder(id="BSR-2", equipment_id="EQ-1", reported_at=same_time))
         store.upsert_work_order(WorkOrder(id="BSR-1", equipment_id="EQ-1", reported_at=same_time))
-        store.upsert_work_order(WorkOrder(id="BSR-3", equipment_id="EQ-2", reported_at=None))
+        store.upsert_work_order(WorkOrder(id="BSR-3", equipment_id="EQ-2", status="CLOSE", reported_at=None))
 
         self.assertEqual(store.count_work_orders(), 3)
         self.assertEqual(store.count_work_orders("EQ-1"), 2)
         page = store.list_work_orders(offset=0, limit=2)
         self.assertEqual([item.id for item in page], ["BSR-1", "BSR-2"])
         self.assertEqual([item.id for item in store.list_work_orders(offset=2, limit=2)], ["BSR-3"])
+        self.assertEqual(store.count_work_orders(status="CLOSE"), 1)
+        self.assertEqual([item.id for item in store.list_work_orders(status="CLOSE")], ["BSR-3"])
 
 
 if __name__ == "__main__":

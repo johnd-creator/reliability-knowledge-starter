@@ -51,21 +51,28 @@ derived data until a read-enabled credential is verified.
 ## Delta sync
 
 - Watermark persisted per object in `sync_cursor`.
-- First run = full (no watermark). Later runs filter
-  `oslc.where=siteid="BSR" and changedate >= "<watermark>"`.
+- First run = full (no watermark). The BSR `mxwodetail` instance rejects the
+  range comparator used by the legacy delta query, so work-order collection
+  uses the verified site scope and local changedate comparison/upsert
+  idempotency; its cursor remains metadata and is never advanced on a partial
+  traversal.
 - A row with a failure to map is logged and skipped; the sync continues.
 
 ## Work Orders API pagination
 
-`GET /work-orders` returns a bounded envelope rather than an unbounded array:
+`GET /work-orders` returns a bounded envelope rather than an unbounded array.
+The example below is illustrative only; live totals come from the database:
 
 ```json
-{"items": [], "total": 19250, "offset": 0, "limit": 50, "has_more": true}
+{"items": [], "total": 0, "offset": 0, "limit": 50, "has_more": false}
 ```
 
-The default page size is 50 and the maximum is 200. `equipment_id` applies to
-both `total` and `items`; ordering is stable by `reported_at DESC NULLS LAST,
-id ASC`. The web UI requests one page at a time.
+The default page size is 50 and the maximum is 200. Omitted `status` means all
+statuses, including `CLOSE` and `CAN`; `status=CLOSE` (or another explicit
+value) filters both `total` and `items`. `equipment_id` applies to both
+`total` and `items`; ordering is stable by `reported_at DESC NULLS LAST, id
+ASC`. The web UI requests one page at a time and displays all-status and
+filtered totals separately.
 
 ## Run
 

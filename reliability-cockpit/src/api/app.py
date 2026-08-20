@@ -132,13 +132,15 @@ def create_app() -> FastAPI:
         offset: int = Query(0, ge=0),
         limit: int = Query(50, ge=1, le=200),
         store: CockpitStore = Depends(_store),
+        status: str | None = None,
     ) -> WorkOrderPage:
-        total = store.count_work_orders(equipment_id=equipment_id)
-        items = store.list_work_orders(
-            equipment_id=equipment_id,
-            offset=offset,
-            limit=limit,
-        )
+        count_kwargs = {"equipment_id": equipment_id}
+        list_kwargs = {"equipment_id": equipment_id, "offset": offset, "limit": limit}
+        if status:
+            count_kwargs["status"] = status
+            list_kwargs["status"] = status
+        total = store.count_work_orders(**count_kwargs)
+        items = store.list_work_orders(**list_kwargs)
         views = [
             WorkOrderView(
                 id=i.id,
@@ -159,6 +161,10 @@ def create_app() -> FastAPI:
             limit=limit,
             has_more=offset + len(views) < total,
         )
+
+    @app.get("/work-orders/statuses", response_model=list[str], tags=["work-orders"])
+    def list_work_order_statuses(store: CockpitStore = Depends(_store)) -> list[str]:
+        return store.list_work_order_statuses()
 
     @app.get("/kpis/{equipment_id}/{metric}", response_model=ReliabilityKpiView, tags=["kpis"])
     def get_kpi(equipment_id: str, metric: str, store: CockpitStore = Depends(_store)) -> ReliabilityKpiView:

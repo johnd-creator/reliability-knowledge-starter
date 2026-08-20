@@ -20,6 +20,7 @@ import signal
 import sys
 import threading
 import time
+from dataclasses import replace
 from datetime import datetime, timezone
 
 from src.config import MaximoConfig, load_env
@@ -151,6 +152,31 @@ def cmd_sync(args: argparse.Namespace) -> int:
     return exit_code
 
 
+def cmd_backfill(args: argparse.Namespace) -> int:
+    """Run an idempotent, cursor-independent BSR work-order traversal."""
+    from src.api.app import sync_config_for
+
+    store = CollectorStore(get_database())
+    service, _config = _sync_service(store)
+    config = replace(
+        sync_config_for("mxwodetail"),
+        watermark_field=None,
+        # The verified site scope is authoritative; the prefix remains a
+        # client-side guard for unexpected non-BSR payloads.
+        prefix_query=False,
+        page_size=args.page_size,
+        max_pages=args.max_pages,
+    )
+    stats = service.sync(config)
+    print(
+        f"backfill {stats.object_structure}: {stats.rows_seen} seen, "
+        f"{stats.upserted} upserted, {stats.skipped} skipped, "
+        f"{stats.errors} errors, complete={stats.complete}, "
+        f"pagination_error={stats.pagination_error}"
+    )
+    return 0 if stats.complete else 2
+
+
 def cmd_run(args: argparse.Namespace) -> int:
     """Run independent read-only sync loops for operational and asset data.
 
@@ -263,6 +289,13 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     sync.add_argument("objects", nargs="*", help=f"any of: {', '.join(AVAILABLE_OBJECTS)} (or aliases)")
 
+    backfill = sub.add_parser(
+        "backfill",
+        help="complete a cursor-independent, read-only BSR work-order traversal",
+    )
+    backfill.add_argument("--page-size", type=int, default=100)
+    backfill.add_argument("--max-pages", type=int, default=1000)
+
     run = sub.add_parser("run", help="run scheduled, read-only operational and asset sync loops")
     run.add_argument("--operational-interval-seconds", type=int, default=300)
     run.add_argument("--asset-interval-seconds", type=int, default=21600)
@@ -285,6 +318,8 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_init_db(args)
     if args.command == "sync":
         return cmd_sync(args)
+    if args.command == "backfill":
+        return cmd_backfill(args)
     if args.command == "run":
         return cmd_run(args)
     if args.command == "serve":
