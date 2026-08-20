@@ -338,6 +338,23 @@ class SyncEngineTest(unittest.TestCase):
         self.assertEqual(stats.upserted, 1)
         self.assertNotIn("mxwodetail", store.cursors)
 
+    def test_cursor_independent_backfill_does_not_create_cursor(self):
+        cfg = ObjectSyncConfig(
+            object_structure="mxwodetail",
+            entity_name="work_order",
+            mapper=work_order_from_payload,
+            watermark_field=None,
+            prefix_field="wonum",
+            allowed_prefixes=("BSR",),
+            prefix_query=True,
+            max_pages=2,
+        )
+        store, client = FakeStore(), FakeClient([SAMPLE_BSR_WO])
+        stats = SyncService(client, store).sync(cfg)
+        self.assertTrue(stats.complete)
+        self.assertEqual(stats.upserted, 1)
+        self.assertNotIn("mxwodetail", store.cursors)
+
 
 if __name__ == "__main__":
     unittest.main()

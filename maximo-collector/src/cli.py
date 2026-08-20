@@ -161,9 +161,10 @@ def cmd_backfill(args: argparse.Namespace) -> int:
     config = replace(
         sync_config_for("mxwodetail"),
         watermark_field=None,
-        # The verified site scope is authoritative; the prefix remains a
-        # client-side guard for unexpected non-BSR payloads.
-        prefix_query=False,
+        # The verified site scope plus the accepted Maximo IN-prefix filter
+        # bounds the historical traversal to BSR work-order keys. The prefix
+        # is still validated client-side as a second safety boundary.
+        prefix_query=True,
         page_size=args.page_size,
         max_pages=args.max_pages,
     )
