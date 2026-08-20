@@ -303,3 +303,12 @@ Tidak ada endpoint untuk menulis Maximo, PI, atau PLC.
 | PARTIAL | CEMS/decision domain | Kontrak dasar siap, tetapi `emission-parameter`, `emission-aggregate`, `data-source-status`, event/risk/decision workflow, tabel Cockpit, dan API belum dibuat. |
 | BLOCKED | Identity lintas sumber | Tidak ada seed Maximo↔PI/CEMS dibuat karena belum ada mapping/evidence `verified`. Cockpit tidak boleh fuzzy-join untuk scoring. |
 | BLOCKED | Finding/health/risk/recommendation runtime | Memerlukan owner formula, threshold, quality/freshness policy, dan AuthZ/audit sebelum boleh menjadi data aplikasi. |
+
+### NET-001 — status integration source
+
+| Status | Keterangan |
+|---|---|
+| DONE | `MAXIMO_COLLECTOR_API_BASE`, `PI_COLLECTOR_API_BASE`, dan `CEMS_COLLECTOR_API_BASE` tersedia pada konfigurasi Cockpit serta external Compose; host-local Docker memakai `host.docker.internal:host-gateway`. |
+| DONE | Maximo collector API dapat dijangkau dan resource Cockpit yang ada telah tervalidasi melalui API lokal. |
+| PENDING | Cockpit belum membuat projection PI/CEMS; ini **COCKPIT INGESTION PENDING**, bukan source-access blocker. |
+| PENDING | DASHBOARD PARAMETER SELECTION dan DOMAIN FORMULA APPROVAL tetap terpisah dari baseline collection. |

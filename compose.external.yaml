@@ -1,0 +1,69 @@
+name: reliability-cockpit-external
+
+# External-collector mode: this file deliberately creates no Maximo, PI, or
+# CEMS worker/database. It projects from existing collector APIs only.
+services:
+  cockpit-db:
+    image: postgres:16.4-alpine
+    environment:
+      POSTGRES_DB: cockpit
+      POSTGRES_USER: cockpit
+      POSTGRES_PASSWORD: ${COCKPIT_DB_PASSWORD:?set in .env.platform}
+    volumes: [cockpit-external-db:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cockpit -d cockpit"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks: [platform]
+
+  cockpit-init:
+    build: ./reliability-cockpit
+    restart: "no"
+    command: ["cockpit", "init-db"]
+    environment:
+      DATABASE_URL: postgresql://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
+    depends_on:
+      cockpit-db: {condition: service_healthy}
+    networks: [platform]
+
+  cockpit-worker:
+    build: ./reliability-cockpit
+    restart: unless-stopped
+    command: ["cockpit", "run", "--interval-seconds", "${COCKPIT_SYNC_INTERVAL_SECONDS:-300}"]
+    environment:
+      DATABASE_URL: postgresql://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
+      MAXIMO_COLLECTOR_API_BASE: ${MAXIMO_COLLECTOR_API_BASE:-http://host.docker.internal:8002}
+      PI_COLLECTOR_API_BASE: ${PI_COLLECTOR_API_BASE:-http://host.docker.internal:8001}
+      CEMS_COLLECTOR_API_BASE: ${CEMS_COLLECTOR_API_BASE:-http://host.docker.internal:8003}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      cockpit-init: {condition: service_completed_successfully}
+    networks: [platform]
+
+  cockpit-api:
+    build: ./reliability-cockpit
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
+    depends_on:
+      cockpit-init: {condition: service_completed_successfully}
+    networks: [platform]
+
+  cockpit-web:
+    build: ./reliability-cockpit/web
+    restart: unless-stopped
+    environment:
+      COCKPIT_API_BASE: http://cockpit-api:8000
+    depends_on:
+      cockpit-api: {condition: service_started}
+    networks: [platform]
+    ports: ["${COCKPIT_WEB_PORT:-3000}:3000"]
+
+networks:
+  platform:
+    driver: bridge
+
+volumes:
+  cockpit-external-db:

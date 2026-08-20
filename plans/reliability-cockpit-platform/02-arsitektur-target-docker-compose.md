@@ -245,9 +245,9 @@ prosedur terpisah dengan backup dan konfirmasi eksplisit.
 
 | Status | Butir | Bukti |
 |---|---|---|
-| DONE | Satu Compose project, multi-container, DB terisolasi | Root `compose.yaml` menjalankan Maximo/Postgres, PI/TimescaleDB, CEMS/Postgres, Cockpit/Postgres; API dan worker dipisah. |
+| DONE | Dua mode Compose tanpa duplicate polling | `compose.yaml` adalah **managed collectors** (DB/worker/API baru); `compose.external.yaml` adalah **external collectors** dan hanya menjalankan Cockpit terhadap API collector lama. |
 | DONE | Image dan hygiene build | Dockerfile non-root serta `.dockerignore` dibuat untuk semua collector, backend Cockpit, dan web multi-stage. |
-| DONE | Startup dependency | One-shot `*-init`, healthcheck DB, volume persisten, network internal, `.env.platform.example`, `compose.dev.yaml`, dan runbook dibuat. `docker compose config` sudah tervalidasi. |
+| DONE | Startup dependency/config wiring | One-shot `*-init`, healthcheck DB, volume persisten, network internal, `.env.platform.example`, `compose.dev.yaml`, external host gateway, dan runbook dibuat. CEMS memakai `CEMS_MODBUS_*`, PI memakai `PI_WEB_API_BASE_URL`, dan Maximo meneruskan login/token/cookie config. |
 | DONE | Scheduling baseline | `mxcollector run`, `cemscollector run-aggregator`, dan `cockpit run` ditambahkan; Cockpit hanya memanggil API collector. |
-| PARTIAL | PI runtime | API/DB tersedia dalam Compose, namun load registry dan worker tier tidak diaktifkan otomatis sampai PI WebId serta P0/P1 disetujui. |
-| BLOCKED | Staging/cold-start terhadap sumber nyata | Butuh secret runtime, route jaringan source, image pull, dan akses read-only. DB sengaja tidak dipublikasikan. |
+| DONE | External collector discovery | NET-001 membuktikan API collector lama aktif di host `127.0.0.1:8001/8002/8003`; PI memiliki satu API + satu worker, CEMS satu API + satu worker. Tidak ada worker tambahan yang dinyalakan. |
+| PARTIAL | Managed cold start | `docker compose config` tervalidasi dengan dummy env; cold start managed tidak dijalankan karena akan membuat worker baru terhadap source yang sudah dipoll. |

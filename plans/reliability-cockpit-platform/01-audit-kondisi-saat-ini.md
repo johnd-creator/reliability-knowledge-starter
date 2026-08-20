@@ -232,4 +232,15 @@ Legenda: **Ada** = dapat dipakai sekarang; **Derived** = perlu rule/formula;
 | DONE | Audit statis dikonfirmasi lagi terhadap source, CLI, API, schema, dan Compose yang baru ditambahkan. Gap 1 dan gap 4 tidak lagi berlaku sebagai gap fondasi: root Compose tersedia dan CLI Cockpit memakai `CollectorClient`. |
 | DONE | Baseline hermetic lulus: Maximo **41** test, CEMS **82** test, serta Cockpit **37** unit test non-DB. Draft 2020-12 memvalidasi **19** schema. |
 | PARTIAL | Audit Cockpit penuh menemukan dua smoke test lama yang menyatakan SQLite tetapi masih membuat koneksi PostgreSQL default; keduanya gagal tanpa database. Ini dicatat sebagai test-fixture defect, bukan bukti runtime production gagal. |
-| BLOCKED | Audit dinamis PI, CEMS PLC, Maximo, cardinality aktual, dan perubahan status WO memerlukan akses read-only serta owner engineering. Tidak ada identifier/tag/status yang ditebak. |
+| DONE | NET-001 audit dinamis collector lokal membuktikan environment berada pada LAN dan API host-local `127.0.0.1:8002` (Maximo), `:8001` (PI), dan `:8003` (CEMS) dapat dibaca tanpa kredensial di shell agent. Tidak ada source endpoint/tag/WebId/register yang dicoba langsung atau ditebak. |
+
+### NET-001 — status akses berdasarkan bukti runtime lokal
+
+| Service | Status | Bukti teredaksi | Freshness/result |
+|---|---|---|---|
+| Maximo | SOURCE ACCESS VERIFIED (historical); COLLECTOR API VERIFIED; DATA COLLECTION VERIFIED | `/health`, `/stats`, `/sync/status`, `/collect-runs`, equipment, dan work-orders semua HTTP 200. Stats: 4.987 equipment dan 150 WO; run terakhir 97 upsert, 0 error. | Run terakhir 19 Aug 2026 07:52 UTC, sehingga **STALE_COLLECTOR** pada audit ini. API tidak gagal dan data bukan database baru kosong. |
+| PI | SOURCE ACCESS VERIFIED; COLLECTOR API VERIFIED; DATA COLLECTION VERIFIED | Semua endpoint wajib HTTP 200. Registry YAML: 541 discovered, **433** `verified`+`ok`, 98 `gone`, 10 `error`; `/attributes` juga 433. Snapshot memiliki source timestamp dan quality; 133.570 time-series point tercatat. | Scheduler `running`, cadence 300 s, last run 20 Aug 2026 03:44 UTC. DASHBOARD PARAMETER SELECTION PENDING, bukan blocker collection. |
+| CEMS | SOURCE ACCESS VERIFIED; COLLECTOR API VERIFIED; DATA COLLECTION VERIFIED | Semua endpoint wajib HTTP 200; 15 parameter dan 15 latest reading tersedia. Latest mencatat stack dan observed time; run poll terakhir 15 row/upsert, 0 error. | Fresh pada 20 Aug 2026 03:44 UTC. Guard Modbus tetap FC03/FC04; tidak ada write. |
+
+COCKPIT INGESTION PENDING untuk PI/CEMS, sedangkan DASHBOARD PARAMETER SELECTION
+PENDING dan DOMAIN FORMULA APPROVAL PENDING tetap bukan bagian NET-001.

@@ -78,7 +78,11 @@ services:
     environment:
       DATABASE_URL: postgresql://maximo_collector:${MAXIMO_DB_PASSWORD}@maximo-db/maximo_collector
       MAXIMO_BASE_URL: ${MAXIMO_BASE_URL}
+      MAXIMO_AUTH_MODE: ${MAXIMO_AUTH_MODE:-login}
+      MAXIMO_USERNAME: ${MAXIMO_USERNAME:-}
+      MAXIMO_PASSWORD: ${MAXIMO_PASSWORD:-}
       MAXIMO_READ_ONLY_TOKEN: ${MAXIMO_READ_ONLY_TOKEN:-}
+      MAXIMO_SESSION_COOKIE: ${MAXIMO_SESSION_COOKIE:-}
     depends_on:
       maximo-init: {condition: service_completed_successfully}
 
@@ -124,8 +128,8 @@ services:
     command: ["cemscollector", "collect"]
     environment:
       DATABASE_URL: postgresql://cems_collector:${CEMS_DB_PASSWORD}@cems-db/cems_collector
-      CEMS_HOST: ${CEMS_HOST}
-      CEMS_PORT: ${CEMS_PORT:-502}
+      CEMS_MODBUS_HOST: ${CEMS_MODBUS_HOST}
+      CEMS_MODBUS_PORT: ${CEMS_MODBUS_PORT:-502}
     depends_on:
       cems-init: {condition: service_completed_successfully}
 
@@ -162,9 +166,9 @@ services:
     command: ["cockpit", "run", "--interval-seconds", "${COCKPIT_SYNC_INTERVAL_SECONDS:-300}"]
     environment:
       DATABASE_URL: postgresql://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
-      MAXIMO_COLLECTOR_API_BASE: http://maximo-api:8002
-      PI_COLLECTOR_API_BASE: http://pi-api:8001
-      CEMS_COLLECTOR_API_BASE: http://cems-api:8003
+      MAXIMO_COLLECTOR_API_BASE: ${MAXIMO_COLLECTOR_API_BASE:-http://maximo-api:8002}
+      PI_COLLECTOR_API_BASE: ${PI_COLLECTOR_API_BASE:-http://pi-api:8001}
+      CEMS_COLLECTOR_API_BASE: ${CEMS_COLLECTOR_API_BASE:-http://cems-api:8003}
     depends_on:
       cockpit-init: {condition: service_completed_successfully}
       maximo-api: {condition: service_started}

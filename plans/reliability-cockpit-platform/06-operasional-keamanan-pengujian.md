@@ -290,3 +290,17 @@ change pada release yang sama dengan feature cutover.
 | DONE | Test baseline | Maximo 41, CEMS 82, Cockpit 37 test non-DB, serta 19 JSON Schema lulus. Compose config tervalidasi tanpa menjalankan source. |
 | PARTIAL | Test Cockpit penuh | Dua smoke test perlu diperbaiki agar benar-benar memakai SQLite/in-memory seperti dokumennya; database integration dan Compose E2E belum dijalankan. |
 | BLOCKED | Metrics/alert, backup-restore, retention, security scan, soak/UAT, RBAC, dan rollback drill | Memerlukan staging, secret/route terotorisasi, storage policy/RPO-RTO, identity provider, dan pemilik on-call. Semua release checklist tetap belum dicentang agar tidak memberi kesan siap produksi. |
+
+### NET-001 — status operasional collector lokal
+
+- **COLLECTOR API VERIFIED:** Maximo, PI, dan CEMS health/stats endpoint HTTP 200
+  dari shell agent di LAN; metadata response tidak memuat credential.
+- **DATA COLLECTION VERIFIED:** PI scheduler aktif pada 433 stream verified/ok;
+  CEMS run poll terakhir 0 error; Maximo memiliki data equipment/WO dan run sukses
+  historis.
+- **STALE_COLLECTOR:** Maximo tidak memiliki worker yang terdeteksi dan run
+  terakhir stale. Tidak ada worker baru dijalankan oleh task ini agar source
+  polling tidak terduplikasi; tindak lanjut harus memakai worker existing/owner
+  credential, bukan inisialisasi database baru.
+- **REMAINING BLOCKERS UNCHANGED:** formula/risk, identity mapping, AuthZ, UAT,
+  backup/restore, retention, dan release tetap di luar NET-001.
