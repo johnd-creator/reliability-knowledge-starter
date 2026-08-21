@@ -23,6 +23,7 @@ from scripts.discover import (
     parse_document,
     parse_object_structure_catalog,
     response_structure,
+    resolve_same_origin_url,
     sanitize,
     select_entries,
     validate_endpoint_record,
@@ -130,9 +131,10 @@ class DiscoverTests(unittest.TestCase):
 class FakeClient:
     """A no-network stand-in for ReadOnlyClient used by OSLC discovery."""
 
-    def __init__(self, routes):
+    def __init__(self, routes, base_url="http://example.invalid/maximo"):
         self.routes = routes
         self.calls = []
+        self.config = Config(base_url, "/oslc/oas", "none", "", "", "", 1, 0, 10000)
 
     def request(self, method, path):
         method = method.upper()
@@ -145,6 +147,84 @@ class FakeClient:
 
 
 class OslcDiscoveryTests(unittest.TestCase):
+    def test_same_origin_absolute_detail_url_is_allowed(self):
+        resolved = resolve_same_origin_url(
+            "https://maximo.example/maximo",
+            "https://maximo.example/maximo/oslc/os/ipfmea/123",
+        )
+        self.assertEqual(resolved, "https://maximo.example/maximo/oslc/os/ipfmea/123")
+
+    def test_cross_origin_detail_url_is_rejected_before_network(self):
+        collection = minimal_object_query("IPFMEA", 'siteid="BSR"', "href")
+        client = FakeClient(
+            {("GET", collection): (200, {}, b'{"_member":[{"rdf:resource":"https://evil.example/record/1"}]}')},
+            base_url="https://maximo.example/maximo",
+        )
+        record = describe_object_structure(client, "IPFMEA", "ipfmea", verify_detail=True)
+        self.assertEqual(record["detail_dereference"]["status"], "BLOCKED")
+        self.assertEqual(client.calls, [("GET", collection)])
+
+    def test_relative_detail_url_is_resolved_against_configured_origin(self):
+        collection = minimal_object_query("IPFMEA", 'siteid="BSR"', "href")
+        detail = "http://maximo.example/maximo/oslc/os/ipfmea/123"
+        client = FakeClient(
+            {
+                ("GET", collection): (200, {}, b'{"_member":[{"href":"/oslc/os/ipfmea/123"}]}'),
+                ("GET", detail): (200, {}, b'{"spi:fmeanum":"F-1","spi:siteid":"BSR"}'),
+            },
+            base_url="http://maximo.example/maximo",
+        )
+        record = describe_object_structure(client, "IPFMEA", "ipfmea", verify_detail=True)
+        self.assertEqual(record["detail_dereference"]["detail_records"], 1)
+        self.assertEqual(client.calls, [("GET", collection), ("GET", detail)])
+
+    def test_pure_resource_link_triggers_one_detail_get_and_normalizes_fields(self):
+        collection = minimal_object_query("IPBHM", 'siteid="BSR"', "href")
+        detail = "http://example.invalid/maximo/oslc/os/ipbhm/1"
+        client = FakeClient(
+            {
+                ("GET", collection): (200, {}, b'{"_member":[{"rdf:resource":"/oslc/os/ipbhm/1"}]}'),
+                ("GET", detail): (
+                    200,
+                    {},
+                    b'{"spi:assetnum":"A-1","spi:measurementvalue":12.5,"spi:measuredate":"2026-08-21T01:02:03Z","rdf:type":"x","oslc:nextPage":"/never"}',
+                ),
+            }
+        )
+        record = describe_object_structure(client, "IPBHM", "ipbhm", verify_detail=True)
+        self.assertEqual(record["detail_dereference"]["detail_records"], 1)
+        self.assertEqual(record["important_fields"], ["assetnum", "measurementvalue", "measuredate"])
+        self.assertEqual(record["field_types"], {"assetnum": "string", "measurementvalue": "number", "measuredate": "datetime"})
+        self.assertIn("asset: assetnum", record["relationships"][0])
+        self.assertNotIn("rdf:type", record["important_fields"])
+        self.assertFalse(record["detail_dereference"]["pagination_followed"])
+        self.assertEqual(len(client.calls), 2)
+
+    def test_inline_business_member_does_not_trigger_detail_get(self):
+        collection = minimal_object_query("IPFMEA", 'siteid="BSR"', "href")
+        client = FakeClient({("GET", collection): (200, {}, b'{"_member":[{"spi:fmeanum":"F-1","spi:status":"DRAFT"}]}')})
+        record = describe_object_structure(client, "IPFMEA", "ipfmea", verify_detail=True)
+        self.assertEqual(record["detail_dereference"]["status"], "INLINE_BUSINESS_RECORD")
+        self.assertEqual(len(client.calls), 1)
+        self.assertEqual(record["important_fields"], ["fmeanum", "status"])
+
+    def test_detail_dereference_is_read_only_and_never_recursive(self):
+        collection = minimal_object_query("IPFMEAITEM", 'siteid="BSR"', "href")
+        detail = "http://example.invalid/maximo/oslc/os/ipfmeaitem/1"
+        client = FakeClient(
+            {
+                ("GET", collection): (200, {}, b'{"_member":[{"@id":"oslc/os/ipfmeaitem/1"}]}'),
+                ("GET", detail): (
+                    200,
+                    {},
+                    b'{"spi:fmeaitemid":1,"spi:parent_collectionref":{"rdf:resource":"/child"},"_member":[{"href":"/child/2"}]}',
+                ),
+            }
+        )
+        record = describe_object_structure(client, "IPFMEAITEM", "ipfmeaitem", verify_detail=True)
+        self.assertEqual([method for method, _path in client.calls], ["GET", "GET"])
+        self.assertEqual(record["detail_dereference"]["detail_records"], 1)
+        self.assertEqual(record["detail_dereference"]["maximum_dereference_depth"], 1)
     def test_member_extraction_supports_common_shapes(self):
         self.assertEqual(len(oslc_members({"_member": [{"a": 1}]})), 1)
         self.assertEqual(len(oslc_members({"member": [{"b": 2}]})), 1)
