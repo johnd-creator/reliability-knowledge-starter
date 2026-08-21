@@ -14,6 +14,7 @@ from pydantic import BaseModel
 from src.repositories import get_database
 from src.repositories.database import Database
 from src.repositories.store import CockpitStore
+from src.api.reliability import router as reliability_router
 
 LOG = logging.getLogger(__name__)
 
@@ -196,4 +197,9 @@ def create_app() -> FastAPI:
                 rows_seen=row.rows_seen,
             )
 
+    # FastAPI's installed version inserts an internal ``_IncludedRouter``
+    # sentinel when ``include_router`` is called.  The legacy test/helpers
+    # iterate ``app.routes`` and expect concrete routes, so extend the app
+    # router with the already-prefixed, read-only routes directly.
+    app.router.routes.extend(reliability_router.routes)
     return app

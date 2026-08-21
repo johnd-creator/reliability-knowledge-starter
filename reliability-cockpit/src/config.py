@@ -101,6 +101,30 @@ class DbtConfig:
 
 
 @dataclass(frozen=True)
+class MartDbConfig:
+    """Dedicated Reliability Mart connection configuration.
+
+    No fallback to ``DATABASE_URL`` is intentional: the legacy Cockpit store
+    and the canonical Mart are separate persistence boundaries.
+    """
+
+    dsn: str | None = None
+    echo: bool = False
+    statement_timeout_ms: int = 5000
+
+    @classmethod
+    def from_environment(cls) -> "MartDbConfig":
+        timeout = int(os.getenv("RELIABILITY_MART_STATEMENT_TIMEOUT_MS", "5000"))
+        if timeout < 1:
+            raise ValueError("RELIABILITY_MART_STATEMENT_TIMEOUT_MS must be positive")
+        return cls(
+            dsn=os.getenv("RELIABILITY_MART_DATABASE_URL") or None,
+            echo=os.getenv("RELIABILITY_MART_DATABASE_ECHO", "0") == "1",
+            statement_timeout_ms=timeout,
+        )
+
+
+@dataclass(frozen=True)
 class AppConfig:
     db: DbtConfig = field(default_factory=DbtConfig.from_environment)
     collectors: CollectorConfig = field(default_factory=CollectorConfig.from_environment)
