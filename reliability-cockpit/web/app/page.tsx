@@ -51,12 +51,12 @@ export default function HomePage() {
       {!loading && error && <ErrorState message={error} />}
       {!loading && !error && data && <>
         <section className="stat-grid overview-stat-grid">
-          <StatCard label="Assets" value={formatNumber(data.assets)} detail="asset_master" tone="accent" />
-          <StatCard label="Maintenance events" value={formatNumber(data.maintenance)} detail="maintenance_event" />
-          <StatCard label="FMEA assessments" value={formatNumber(data.fmea)} detail="fmea_assessment" />
-          <StatCard label="RCFA analyses" value={formatNumber(data.rcfa)} detail="rcfa_analysis" />
-          <StatCard label="Asset health" value={formatNumber(data.health)} detail="asset_health_assessment" />
-          <StatCard label="Overhauls" value={formatNumber(data.overhauls)} detail="overhaul_event" tone="muted" />
+          <StatCard label="Assets" value={formatNumber(data.assets)} detail="Available in Reliability Mart" tone="accent" />
+          <StatCard label="Maintenance events" value={formatNumber(data.maintenance)} detail="Current controlled dataset" />
+          <StatCard label="FMEA assessments" value={formatNumber(data.fmea)} detail="Canonical reliability records" />
+          <StatCard label="RCFA analyses" value={formatNumber(data.rcfa)} detail="Canonical reliability records" />
+          <StatCard label="Asset health" value={formatNumber(data.health)} detail="Current controlled dataset" />
+          <StatCard label="Overhauls" value={formatNumber(data.overhauls)} detail="Available in Reliability Mart" tone="muted" />
         </section>
 
         <div className="overview-grid">
@@ -66,11 +66,11 @@ export default function HomePage() {
               <div><span>Asset references</span><strong>{data.integrity.asset_refs_resolved} <small>/ {data.integrity.asset_refs_total} resolved</small></strong><em>{data.integrity.asset_refs_unresolved} unresolved</em></div>
               <div><span>Work Order references</span><strong>{data.integrity.workorder_refs_resolved} <small>/ {data.integrity.workorder_refs_total} resolved</small></strong><em>{data.integrity.workorder_refs_unresolved} unresolved</em></div>
             </div>
-            <p className="section-note">Unresolved references can point outside the bounded MX-011R sample; they are not automatically source-data errors.</p>
+            <p className="section-note">Unresolved references can point outside the current controlled initial dataset; they are not automatically source-data errors.</p>
           </SectionCard>
           <SectionCard className="controlled-card">
             <p className="eyebrow">How to read this view</p><h2>Controlled dataset</h2>
-            <p>MX-011R is an initial controlled load. Most source collections were capped, so these counts describe what is currently in the Mart—not complete plant history.</p>
+            <p>This is an initial controlled dataset. Most source collections were capped, so these counts describe what is currently in the Mart—not complete plant history.</p>
             <div className="controlled-line"><span className="pulse-dot" /><strong>Factual Mart information first</strong></div>
             <p className="section-note">Reliability analytics such as MTBF, MTTR, and health scores are intentionally not presented here yet.</p>
           </SectionCard>
@@ -78,7 +78,7 @@ export default function HomePage() {
 
         <div className="overview-grid recent-grid">
           <SectionCard><div className="section-heading"><div><p className="eyebrow">Latest records</p><h2>Maintenance</h2></div><a href="/maintenance" className="text-link">View all →</a></div><TableFrame minWidth={680}><table><thead><tr><th>Work order</th><th>Event</th><th>Status</th><th>Start</th></tr></thead><tbody>{data.recentMaintenance.items.map((row) => <tr key={row.canonical_id}><td><Identifier value={row.work_order_id ?? row.id} /></td><td>{row.event_type ?? "—"}</td><td><StatusBadge value={row.status} /></td><td>{formatDate(row.actual_start)}</td></tr>)}</tbody></table></TableFrame>{data.recentMaintenance.items.length === 0 && <EmptyState />}</SectionCard>
-          <SectionCard><div className="section-heading"><div><p className="eyebrow">Latest records</p><h2>FMEA & asset health</h2></div><span className="muted-label">Canonical views</span></div><div className="mini-record-list">{data.recentFmea.items.slice(0, 3).map((row) => <div className="mini-record" key={row.canonical_id}><span className="record-type">FMEA</span><div><strong>{row.source_number ?? row.source_record_id ?? "Assessment"}</strong><small>{row.description ?? "No description"}</small></div><StatusBadge value={row.lifecycle_status} /></div>)}{data.recentHealth.items.slice(0, 2).map((row) => <div className="mini-record" key={row.canonical_id}><span className="record-type health">BHM</span><div><strong>{row.source_record_id ?? "Health assessment"}</strong><small>{row.function_description ?? row.description ?? "No description"}</small></div><StatusBadge value={row.lifecycle_status} /></div>)}{data.recentFmea.items.length === 0 && data.recentHealth.items.length === 0 && <EmptyState />}</div></SectionCard>
+          <SectionCard><div className="section-heading"><div><p className="eyebrow">Latest records</p><h2>FMEA & asset health</h2></div><span className="muted-label">Canonical views</span></div><div className="mini-record-list">{data.recentFmea.items.slice(0, 3).map((row) => <div className="mini-record" key={row.canonical_id}><span className="record-type">FMEA</span><div><strong>{row.source_number ?? row.source_record_id ?? "Assessment"}</strong><small>{row.description ?? "No description"}</small></div><StatusBadge value={row.lifecycle_status} /></div>)}{data.recentHealth.items.slice(0, 2).map((row) => <div className="mini-record" key={row.canonical_id}><span className="record-type health">Asset Health</span><div><strong>{row.source_record_id ?? "Assessment"}</strong><small>{row.function_description ?? row.description ?? "No description"}</small></div><StatusBadge value={row.lifecycle_status} /></div>)}{data.recentFmea.items.length === 0 && data.recentHealth.items.length === 0 && <EmptyState />}</div></SectionCard>
         </div>
       </>}
     </>
