@@ -108,6 +108,12 @@ class ProfilerSafetyCliTest(unittest.TestCase):
         args = parse_args(["reconcile-asset-registry", "--registry-file", "synthetic.xls"])
         self.assertEqual(args.registry_file, "synthetic.xls")
 
+    def test_asset_baseline_continuation_budget_is_bounded(self):
+        args = parse_args(["repair-asset-coverage", "--request-budget", "210"])
+        self.assertEqual(args.request_budget, 210)
+        with self.assertRaises(SystemExit):
+            parse_args(["repair-asset-coverage", "--request-budget", "221"])
+
 
 if __name__ == "__main__":
     unittest.main()

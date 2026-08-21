@@ -174,3 +174,66 @@ repair and do not delete the safely collected Equipment rows.
 - Production report and row-level production data: not committed.
 - Credentials, cookies, identifiers, descriptions, and person fields: not
   emitted in evidence.
+
+## MX-011C continuation
+
+The continuation restarted from page 1 with the same external registry input
+and the verified page-size-50 projection. The CLI upper bound was extended
+only to permit an explicit continuation budget of 210; its default remains
+150 and no unbounded option was added.
+
+| Setting | Continuation result |
+| --- | ---: |
+| Object Structure | `MXAPIASSET` |
+| Scope | `siteid="BSR"` and `eq11="CS01"` |
+| Order | `-changedate` |
+| Page size | 50 |
+| Max pages | 200 |
+| Request budget | 210 |
+| Projection probe | 50 rows, mapping-safe, zero detail GETs |
+| Business requests | 201 (one probe plus 200 source pages) |
+| HTTP 200 | 201 |
+| HTTP 429 / 5xx / timeout | 0 / 0 / 0 |
+| Response-cap violations | 0 |
+| Source rows seen | 10,000 |
+| Equipment inserted | 2,529 |
+| Equipment updated | 4 |
+| Equipment skipped | 7,467 |
+| Equipment deleted | 0 |
+
+At page 200 the source still advertised another page. The existing bounded
+pagination guard therefore recorded `OslcPaginationLimitError` and marked the
+run `partial`. This is not natural source exhaustion. No residual per-Asset
+verification was attempted, no cursor was created, and the prior partial runs
+remain preserved.
+
+Post-continuation local reconciliation:
+
+- Equipment: 8,109 → 10,638.
+- Registry matches: 823 / 845.
+- Registry missing: 22.
+- Registry coverage: 97.4%.
+- Registry Parents: 79 / 352; 273 remain absent.
+- Recent direct registry Work Order targets missing locally: 61.
+- Recent non-registry target missing: 1.
+- Recent strict Equipment target gaps: 62.
+- Historical direct registry targets missing locally: 620.
+- Historical non-registry gaps remain out of scope.
+
+The 2,529 new rows did not recover the remaining 22 registry rows; they are
+additional Equipment discovered within the bounded source traversal. The
+current registry baseline is therefore still not complete or trustworthy, and
+MX-012R remains blocked. A future continuation must explicitly address the
+source population beyond the 10,000-row ceiling or use a separately verified
+bounded date-window strategy. No additional live attempt was made in this
+task.
+
+Continuation safety audit:
+
+- Cursor before and after: absent.
+- Complete traversal: no.
+- Latest `mxapiasset` CollectRun: `partial`, 10,000 rows, 2,533 upserted,
+  7,467 skipped, one pagination-boundary error.
+- Maximo business writes: 0; all business requests were GET-only.
+- Reliability Mart, NADI, Contract, and `mxasset` cursor: unchanged.
+- The production registry report remained external and untracked.

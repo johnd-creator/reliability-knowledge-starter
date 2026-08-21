@@ -473,7 +473,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     repair.add_argument("--page-size", type=int, default=50, choices=range(1, 101))
     repair.add_argument("--max-pages", type=int, default=200, choices=range(1, 201))
-    repair.add_argument("--request-budget", type=int, default=150, choices=range(1, 151))
+    # Keep the conservative default; the small explicit upper bound supports
+    # the MX-011C continuation without introducing an unbounded mode.
+    repair.add_argument("--request-budget", type=int, default=150, choices=range(1, 221))
     repair.add_argument("--dry-run", action="store_true", help="probe and report without Collector writes or cursor changes")
 
     run = sub.add_parser("run", help="run scheduled, read-only operational and asset sync loops")
