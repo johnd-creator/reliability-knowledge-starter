@@ -24,6 +24,7 @@ from src.repositories import models as orm
 from src.repositories.database import Database, get_database
 from src.repositories.store import CollectorStore
 from src.services.sync import ObjectSyncConfig, SyncService
+from src.api.data_explorer import router as data_explorer_router
 
 WORK_ORDER_SELECT = (
     "wonum", "workorderid", "assetnum", "location", "status", "status_description",
@@ -154,6 +155,7 @@ def _serialize(row: Any) -> dict:
 
 def create_app() -> FastAPI:
     app = FastAPI(title="Maximo Collector API", version="0.1.0")
+    app.include_router(data_explorer_router)
     runtime_config = MaximoConfig.from_environment()
     wo_prefixes = runtime_config.wo_prefixes
     equipment_unit = runtime_config.equipment_unit

@@ -250,6 +250,8 @@ class CollectorStore:
         search_columns: tuple[str, ...] = (),
         prefix_column: str | None = None,
         prefixes: tuple[str, ...] = (),
+        order_column: str | None = None,
+        order_desc: bool = False,
     ) -> list[Any]:
         with self._db.session() as session:
             stmt = select(orm_cls)
@@ -272,16 +274,20 @@ class CollectorStore:
                 stmt = stmt.where(
                     or_(*[func.lower(getattr(orm_cls, column)).like(needle) for column in search_columns])
                 )
-            if changed_column:
+            sort_column = order_column or changed_column
+            if sort_column:
                 # Offset pagination must have a deterministic tie-breaker.
                 # Changed timestamps are not unique, so ordering only by the
                 # watermark column can repeat/skip rows between pages.
+                column = getattr(orm_cls, sort_column)
+                identity_column = getattr(orm_cls, "id", None) or getattr(orm_cls, "canonical_id")
                 stmt = stmt.order_by(
-                    getattr(orm_cls, changed_column).asc().nullsfirst(),
-                    getattr(orm_cls, "id").asc(),
+                    (column.desc().nullslast() if order_desc else column.asc().nullsfirst()),
+                    identity_column.asc(),
                 )
             else:
-                stmt = stmt.order_by(getattr(orm_cls, "id"))
+                identity_column = getattr(orm_cls, "id", None) or getattr(orm_cls, "canonical_id")
+                stmt = stmt.order_by(identity_column)
             stmt = stmt.offset(offset).limit(limit)
             return list(session.execute(stmt).scalars().all())
 
@@ -292,6 +298,8 @@ class CollectorStore:
         exact_filters: dict[str, str] | None = None,
         prefix_column: str | None = None,
         prefixes: tuple[str, ...] = (),
+        search: str | None = None,
+        search_columns: tuple[str, ...] = (),
     ) -> int:
         from sqlalchemy import func
 
@@ -306,6 +314,11 @@ class CollectorStore:
                         getattr(orm_cls, prefix_column).ilike(f"{prefix}%")
                         for prefix in prefixes
                     ])
+                )
+            if search and search_columns:
+                needle = f"%{search.strip().lower()}%"
+                stmt = stmt.where(
+                    or_(*[func.lower(getattr(orm_cls, column)).like(needle) for column in search_columns])
                 )
             return session.execute(stmt).scalar() or 0
 
