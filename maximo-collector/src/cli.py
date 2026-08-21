@@ -287,7 +287,7 @@ def cmd_profile_workorders(args: argparse.Namespace) -> int:
 
     try:
         config = MaximoConfig.from_environment()
-        client = OslcClient(config, MaximoAuth(config), request_budget=60)
+        client = OslcClient(config, MaximoAuth(config), request_budget=args.request_budget)
         profiler = WorkOrderPopulationProfiler(
             client,
             source_cap=args.source_cap,
@@ -421,6 +421,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     profile.add_argument("--source-cap", type=int, default=500, choices=range(1, 501))
     profile.add_argument("--page-size", type=int, default=25, choices=range(1, 26))
     profile.add_argument("--max-pages", type=int, default=20, choices=range(1, 21))
+    profile.add_argument("--request-budget", type=int, default=30, choices=range(1, 31))
 
     mart_load = sub.add_parser(
         "mart-load",

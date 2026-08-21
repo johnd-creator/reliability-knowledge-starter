@@ -93,5 +93,17 @@ class ControlledLoadCliTest(unittest.TestCase):
         self.assertNotIn("hidden", str(metadata))
 
 
+class ProfilerSafetyCliTest(unittest.TestCase):
+    def test_profiler_defaults_to_mx011w2_request_ceiling(self):
+        args = parse_args(["profile-workorders"])
+        self.assertEqual(args.request_budget, 30)
+        self.assertEqual(args.source_cap, 500)
+
+    def test_profile_timeout_override_does_not_change_production_default(self):
+        from src.config import MaximoConfig
+
+        self.assertEqual(MaximoConfig().timeout_seconds, 30)
+
+
 if __name__ == "__main__":
     unittest.main()

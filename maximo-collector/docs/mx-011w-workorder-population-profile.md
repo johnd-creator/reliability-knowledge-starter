@@ -199,3 +199,130 @@ must retain source history and must not be changed to hide `CAN`.
 
 The two timeouts are the reason the final task status is PARTIAL. No retry was
 made after the recent probe timeout, preserving the hard request budget.
+
+## MX-011W2 Recent-First Verification
+
+MX-011W2 repeated one bounded recent-order probe with a temporary timeout
+override. The committed production default remains 30 seconds.
+
+### Targeted probe
+
+- Attempt A: timeout 60 seconds, `-changedate`, page size 25, maximum one page,
+  source cap 25
+- Result: **success**; 25 source rows returned
+- Attempt B: not required and not executed
+- Business requests used by the probe plus its bounded sample: 2
+- Recent order: operationally verified
+
+Attempt A aggregate result:
+
+| Metric | Result |
+|---|---:|
+| Source rows | 25 |
+| Prefix matched | 4 |
+| Prefix skipped | 21 |
+| Canonical eligible | 4 |
+| Missing `assetnum` | 0 |
+| Status before prefix | WDONE 25 (100.0%) |
+| Status after prefix | WDONE 4 (100.0%) |
+| Work Type after prefix | CD 1, CM 1, PM 1, RTF 1 |
+| `changedate` after prefix | 2026-08-21 17:03:23–17:04:30 +07:00 |
+| Actual start present | 4 |
+| Actual finish present | 0 |
+| Asset present | 4 |
+| Downtime > 0 | 0 |
+| Labor hours > 0 | 0 |
+| Missing `changedate` | 0 |
+| Order violations | 0 |
+| Duplicate identities | 0 |
+| Adjacent timestamp ties | 20 |
+
+### Comparable 200-row slices
+
+Both slices used page size 25, maximum 8 pages, source cap 200, and timeout 60
+seconds. Date and presence metrics below are calculated after the configured
+BSR prefix filter; status-before-prefix is reported separately.
+
+#### Default order (`order_by=NONE`)
+
+| Metric | Result |
+|---|---:|
+| Source rows | 200 |
+| Prefix matched / skipped | 68 / 132 |
+| Canonical eligible | 38 |
+| Missing `assetnum` | 30 |
+| Status before prefix | CAN 177 (88.5%), APPR 23 (11.5%) |
+| Status after prefix | CAN 64 (94.1%), APPR 4 (5.9%) |
+| Work Type after prefix | PM 45 (66.2%), CD 10 (14.7%), CM 6 (8.8%), PRO 2 (2.9%), S 2 (2.9%), EM/PDM/RTF 1 each (1.5%) |
+| `changedate` after prefix | 2014-07-08 09:51:53–2026-08-21 10:56:54 +07:00 |
+| Actual start / finish present | 2 / 0 |
+| Asset present | 38 |
+| Downtime > 0 / Labor > 0 | 0 / 0 |
+| Order violations | 34 |
+| Missing `changedate` | 0 |
+| Duplicate identities | 0 |
+| Adjacent timestamp ties | 150 |
+
+#### Recent-first (`order_by=-changedate`)
+
+| Metric | Result |
+|---|---:|
+| Source rows | 200 |
+| Prefix matched / skipped | 19 / 181 |
+| Canonical eligible | 19 |
+| Missing `assetnum` | 0 |
+| Status before prefix | INPRG 103 (51.5%), WDONE 97 (48.5%) |
+| Status after prefix | INPRG 8 (42.1%), WDONE 11 (57.9%) |
+| Work Type after prefix | PM 8 (42.1%), PDM 6 (31.6%), CD 3 (15.8%), CM 1 (5.3%), RTF 1 (5.3%) |
+| `changedate` after prefix | 2026-08-21 16:05:21–17:04:30 +07:00 |
+| Actual start / finish present | 19 / 0 |
+| Asset present | 19 |
+| Downtime > 0 / Labor > 0 | 0 / 0 |
+| Order violations | 0 |
+| Missing `changedate` | 0 |
+| Duplicate identities | 4 |
+| Adjacent timestamp ties | 161 |
+
+The recent-first result is strictly non-increasing by `changedate` across the
+returned source rows. The duplicate and tie counts are aggregate observability
+only; no source identities are emitted. The high tie count means an incremental
+implementation must use an overlap window and canonical-ID idempotency rather
+than treating a timestamp boundary as a unique cursor position.
+
+### MX-011W2 classification
+
+Primary classification: **DEFAULT_ORDER_SAMPLING_BIAS**.
+
+The comparable post-prefix CAN percentage changes from 94.1% in the default
+slice to 0.0% in the recent-first slice. The recent slice instead contains
+current operational statuses `INPRG` and `WDONE`, while the default slice is
+dominated by `CAN`. Prefix interaction remains measurable, but it is not the
+primary explanation: the default pre-prefix slice is already 88.5% CAN, and
+recent-first has no CAN before or after prefix filtering.
+
+### Watermark decision
+
+`changedate` is **SUITABLE** as a candidate future Work Order incremental
+watermark, subject to implementation controls:
+
+- it was present on all eligible rows observed in both bounded profiles;
+- descending ordering returned successfully within the bounded timeout;
+- the recent sample was monotonic with zero order violations;
+- eight-page bounded pagination completed;
+- ties and four duplicate source identities were observed and are measurable;
+- future sync must use overlap, tie-safe reconciliation, and canonical-ID
+  idempotency.
+
+No watermark synchronization was implemented in MX-011W2.
+
+### MX-012R recommendation
+
+1. Use a recent operational bootstrap ordered by `-changedate`, retaining all
+   source statuses including `CAN`.
+2. Run historical backfill separately, bounded by explicit operational policy
+   or verified date windows; do not exclude status values.
+3. Use a `changedate` incremental tail with overlap and canonical-ID
+   reconciliation after the production strategy is reviewed.
+
+This supports a representative recent bootstrap plus historical coverage and
+does not turn NADI into a status-filtered view of incomplete ingestion.

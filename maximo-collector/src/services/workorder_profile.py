@@ -88,6 +88,10 @@ class WorkOrderProfile:
     asset_present: int
     downtime_gt_zero: int
     labor_gt_zero: int
+    changedate_order_violations: int
+    missing_changedate: int
+    duplicate_source_identities: int
+    changedate_ties: int
 
     @property
     def can_percentage(self) -> float:
@@ -122,6 +126,10 @@ class WorkOrderProfile:
             "asset_percentage": _percentage(self.asset_present, self.prefix_matched),
             "downtime_gt_zero": self.downtime_gt_zero,
             "labor_gt_zero": self.labor_gt_zero,
+            "changedate_order_violations": self.changedate_order_violations,
+            "missing_changedate": self.missing_changedate,
+            "duplicate_source_identities": self.duplicate_source_identities,
+            "changedate_ties": self.changedate_ties,
         }
 
 
@@ -154,6 +162,36 @@ def _date_range(rows: list[Mapping[str, Any]], field: str) -> DateRange:
         maximum=max(values).isoformat() if values else None,
         present=len(values),
     )
+
+
+def _ordering_observability(rows: list[Mapping[str, Any]]) -> tuple[int, int, int, int]:
+    previous: datetime | None = None
+    violations = 0
+    missing = 0
+    identities: set[str] = set()
+    duplicate_count = 0
+    ties = 0
+    for row in rows:
+        identity = _value(row, "wonum")
+        if identity:
+            if identity in identities:
+                duplicate_count += 1
+            identities.add(identity)
+        raw_changed = row.get("changedate")
+        if raw_changed in (None, ""):
+            missing += 1
+            continue
+        changed = oslc_timestamp(raw_changed)
+        if changed is None:
+            missing += 1
+            continue
+        if previous is not None:
+            if changed > previous:
+                violations += 1
+            if changed == previous:
+                ties += 1
+        previous = changed
+    return violations, missing, duplicate_count, ties
 
 
 def summarize_rows(
@@ -189,6 +227,7 @@ def summarize_rows(
         and _value(row, "orgid") == "IP"
         for row in prefix_rows
     )
+    order_violations, missing_changedate, duplicate_identities, changedate_ties = _ordering_observability(bounded)
     return WorkOrderProfile(
         order_by=order_by,
         source_cap=source_cap,
@@ -212,6 +251,10 @@ def summarize_rows(
         asset_present=sum(_value(row, "assetnum") is not None for row in prefix_rows),
         downtime_gt_zero=sum((oslc_number(row.get("downtime")) or 0) > 0 for row in prefix_rows),
         labor_gt_zero=sum((oslc_number(row.get("actlabhrs")) or 0) > 0 for row in prefix_rows),
+        changedate_order_violations=order_violations,
+        missing_changedate=missing_changedate,
+        duplicate_source_identities=duplicate_identities,
+        changedate_ties=changedate_ties,
     )
 
 

@@ -71,6 +71,20 @@ class ProfileAggregationTest(unittest.TestCase):
         self.assertNotIn("TEST-WO-001", rendered)
         self.assertNotIn("TEST-ASSET-001", rendered)
 
+    def test_ordering_and_duplicate_observability_is_aggregate_only(self):
+        rows = [
+            row("BSR-1", changedate="2026-08-03T00:00:00Z"),
+            row("BSR-1", changedate="2026-08-03T00:00:00Z"),
+            row("BSR-2", changedate="2026-08-04T00:00:00Z"),
+            row("BSR-3", changedate="not-a-date"),
+        ]
+        profile = summarize_rows(rows, order_by="-changedate", source_cap=4, page_size=25)
+        self.assertEqual(profile.changedate_order_violations, 1)
+        self.assertEqual(profile.missing_changedate, 1)
+        self.assertEqual(profile.duplicate_source_identities, 1)
+        self.assertEqual(profile.changedate_ties, 1)
+        self.assertNotIn("BSR-1", str(profile.as_dict()))
+
 
 class ClassificationTest(unittest.TestCase):
     def test_default_order_bias(self):
