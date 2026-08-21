@@ -88,10 +88,10 @@ class DiscoverTests(unittest.TestCase):
             self.assertEqual(catalog["resources"][0]["status"], "documented")
             self.assertTrue((Path(directory) / "discovery/capabilities.json").exists())
 
-    def test_client_blocks_mutating_method(self):
+    def test_client_blocks_business_mutating_method(self):
         config = Config("http://example.invalid/maximo", "/oslc/oas", "none", "", "", "", 1, 0, 100)
         with self.assertRaises(DiscoveryError):
-            ReadOnlyClient(config).request("POST", "/j_security_check")
+            ReadOnlyClient(config).request("POST", "/oslc/os/mxasset")
 
     def test_client_uses_get_against_local_mock_only(self):
         requests_seen = []

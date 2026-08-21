@@ -1,17 +1,20 @@
 #!/usr/bin/env python3
 """Read-only Maximo OAS discovery and minimal sample mapper.
 
-The production safety boundary is deliberate: this module only sends
-GET/HEAD/OPTIONS. Maximo's form login is not automated because the repository
-policy forbids POST requests against production. Use a read-only bearer token
-or parse an OAS fixture locally.
+The production safety boundary is deliberate: business resources only receive
+GET/HEAD/OPTIONS. Form authentication has one narrow exception: a controlled
+POST to the exact ``/j_security_check`` endpoint, with credentials from the
+environment and cookies retained in memory only. No other POST, PUT, PATCH,
+DELETE, or MERGE is permitted.
 """
 
 from __future__ import annotations
 
 import argparse
 import base64
+import http.cookiejar
 import json
+import logging
 import os
 import re
 import sys
@@ -22,7 +25,9 @@ from pathlib import Path
 from typing import Any, Iterable, Mapping
 from urllib.error import HTTPError, URLError
 from urllib.parse import parse_qsl, urlencode, urljoin, urlparse, urlunparse
-from urllib.request import HTTPRedirectHandler, Request, build_opener
+from urllib.request import HTTPRedirectHandler, HTTPCookieProcessor, Request, build_opener
+
+LOG = logging.getLogger(__name__)
 
 try:
     import yaml  # type: ignore
@@ -32,6 +37,8 @@ except ImportError:  # pragma: no cover - optional dependency
 
 READ_ONLY_METHODS = frozenset({"GET", "HEAD", "OPTIONS"})
 MUTATING_METHODS = frozenset({"POST", "PUT", "PATCH", "DELETE", "MERGE"})
+LOGIN_PATH = "/j_security_check"
+LOGIN_MODES = frozenset({"form", "login"})
 DEFAULT_SCOPE = {
     "asset",
     "location",
@@ -78,7 +85,7 @@ class Config:
             base_url=base_url,
             oas_path=os.getenv("MAXIMO_OAS_PATH", "/oslc/oas").strip(),
             auth_mode=os.getenv("MAXIMO_AUTH_MODE", "none").strip().lower(),
-            token=os.getenv("MAXIMO_TOKEN", ""),
+            token=os.getenv("MAXIMO_TOKEN", "") or os.getenv("MAXIMO_READ_ONLY_TOKEN", ""),
             username=os.getenv("MAXIMO_USERNAME", ""),
             password=os.getenv("MAXIMO_PASSWORD", ""),
             timeout_seconds=float(os.getenv("MAXIMO_TIMEOUT_SECONDS", "30")),
@@ -328,8 +335,22 @@ def capability_record(oas: Mapping[str, Any], entries: list[Mapping[str, Any]]) 
 class ReadOnlyClient:
     def __init__(self, config: Config):
         self.config = config
-        self.opener = build_opener(NoRedirectHandler())
+        self.cookie_jar = http.cookiejar.CookieJar()
+        self.opener = build_opener(NoRedirectHandler(), HTTPCookieProcessor(self.cookie_jar))
         self._last_request = 0.0
+        self._logged_in = False
+        self._login_attempts = 0
+        self._reauth_attempts = 0
+
+    @property
+    def logged_in(self) -> bool:
+        """Whether the in-memory client currently has an authenticated mode."""
+        return self._logged_in
+
+    def _effective_rate_limit(self) -> float:
+        # Live knowledge probes are deliberately slower than the collector.
+        # A zero value remains useful for hermetic unit tests.
+        return 0.0 if self.config.rate_limit_seconds <= 0 else max(self.config.rate_limit_seconds, 5.0)
 
     def _headers(self) -> dict[str, str]:
         headers = {
@@ -345,29 +366,133 @@ class ReadOnlyClient:
                 raise DiscoveryError("MAXIMO_USERNAME and MAXIMO_PASSWORD are required for basic auth")
             raw = f"{self.config.username}:{self.config.password}".encode()
             headers["Authorization"] = "Basic " + base64.b64encode(raw).decode()
-        elif self.config.auth_mode == "form":
-            raise DiscoveryError("form auth is manual/browser-assisted only; CLI will not POST to production")
+        elif self.config.auth_mode in LOGIN_MODES:
+            # Form credentials belong only in the one-time login body, never
+            # in headers on business requests.
+            pass
         elif self.config.auth_mode != "none":
             raise DiscoveryError(f"unsupported MAXIMO_AUTH_MODE: {self.config.auth_mode}")
         return headers
 
-    def request(self, method: str, path: str) -> tuple[int, Mapping[str, str], bytes]:
-        method = method.upper()
-        if method not in READ_ONLY_METHODS or method in MUTATING_METHODS:
-            raise DiscoveryError(f"blocked non-read-only method: {method}")
-        delay = self.config.rate_limit_seconds - (time.monotonic() - self._last_request)
+    def _resolve_url(self, path: str) -> str:
+        if path.startswith(("http://", "https://")):
+            return path
+        return urljoin(self.config.base_url + "/", path.lstrip("/"))
+
+    def _login_url(self) -> str:
+        # LOGIN_PATH is a constant; it is never accepted from CLI arguments.
+        return urljoin(self.config.base_url + "/", LOGIN_PATH.lstrip("/"))
+
+    def _is_approved_login_url(self, url: str) -> bool:
+        actual = urlparse(url)
+        expected = urlparse(self._login_url())
+        return (
+            actual.scheme == expected.scheme
+            and actual.netloc == expected.netloc
+            and actual.path == expected.path
+            and not actual.query
+            and not actual.fragment
+        )
+
+    def _rate_limit(self) -> None:
+        delay = self._effective_rate_limit() - (time.monotonic() - self._last_request)
         if delay > 0:
             time.sleep(delay)
-        url = path if path.startswith(("http://", "https://")) else urljoin(self.config.base_url + "/", path.lstrip("/"))
-        request = Request(url, headers=self._headers(), method=method)
-        self._last_request = time.monotonic()
+
+    @staticmethod
+    def _has_session_cookie(cookie_jar: http.cookiejar.CookieJar) -> bool:
+        return any(cookie.name in {"JSESSIONID", "LtpaToken2"} for cookie in cookie_jar)
+
+    @staticmethod
+    def _looks_like_login_response(status: int, headers: Mapping[str, str], body: bytes, response_url: str = "") -> bool:
+        if status in (401, 403):
+            return True
+        location = str(headers.get("Location", "")).lower()
+        if "login" in location or "j_security_check" in location:
+            return True
+        content_type = str(headers.get("Content-Type", "")).lower()
+        if "html" not in content_type:
+            return False
+        text = body[:4096].decode("utf-8", errors="ignore").lower()
+        return any(marker in text or marker in response_url.lower() for marker in ("login.jsp", "loginerror.jsp", "j_security_check"))
+
+    def _raw_request(self, request: Request) -> tuple[int, Mapping[str, str], bytes, str]:
         try:
             with self.opener.open(request, timeout=self.config.timeout_seconds) as response:
-                return response.status, response.headers, read_limited(response, self.config.max_response_bytes)
+                return response.status, response.headers, read_limited(response, self.config.max_response_bytes), str(getattr(response, "url", ""))
         except HTTPError as error:
-            return error.code, error.headers, read_limited(error, self.config.max_response_bytes)
+            return error.code, error.headers, read_limited(error, self.config.max_response_bytes), str(getattr(error, "url", ""))
         except URLError as error:
-            raise DiscoveryError(f"network error for {method} {redact_url(url)}: {error.reason}") from error
+            raise DiscoveryError(f"network error for {request.get_method()} {redact_url(request.full_url)}: {error.reason}") from error
+
+    def authenticate(self, *, reauthentication: bool = False) -> tuple[int, Mapping[str, str], bytes]:
+        """Perform at most one initial login and one expiry re-login."""
+        if self.config.auth_mode not in LOGIN_MODES:
+            self._logged_in = True
+            return 200, {}, b""
+        if reauthentication:
+            if self._reauth_attempts >= 1:
+                raise DiscoveryError("AUTHENTICATION FAILED: re-login limit reached")
+            self._reauth_attempts += 1
+        else:
+            if self._login_attempts >= 1:
+                raise DiscoveryError("AUTHENTICATION FAILED: login limit reached")
+            self._login_attempts += 1
+        if not self.config.username or not self.config.password:
+            raise DiscoveryError("form/login auth requires MAXIMO_USERNAME and MAXIMO_PASSWORD")
+        LOG.info("Maximo authentication attempt started")
+        self._rate_limit()
+        url = self._login_url()
+        body = urlencode({"j_username": self.config.username, "j_password": self.config.password}).encode("utf-8")
+        request = Request(
+            url,
+            data=body,
+            headers={"Accept": "text/html", "Content-Type": "application/x-www-form-urlencoded"},
+            method="POST",
+        )
+        status, headers, response_body, response_url = self._raw_request(request)
+        self._last_request = time.monotonic()
+        if not self._has_session_cookie(self.cookie_jar) or self._looks_like_login_response(status, headers, response_body, response_url):
+            self._logged_in = False
+            raise DiscoveryError("AUTHENTICATION FAILED: Maximo login did not establish a valid read-only session")
+        self._logged_in = True
+        LOG.info("Maximo authentication successful; session remains in memory")
+        return status, headers, response_body
+
+    def _ensure_authenticated(self) -> None:
+        if self.config.auth_mode in LOGIN_MODES and not self._logged_in:
+            self.authenticate()
+        elif self.config.auth_mode in {"bearer", "token", "basic"}:
+            # Header validation happens here, before the business GET.
+            self._headers()
+            self._logged_in = True
+
+    def request(self, method: str, path: str) -> tuple[int, Mapping[str, str], bytes]:
+        method = method.upper()
+        url = self._resolve_url(path)
+        if method == "POST" and self._is_approved_login_url(url):
+            return self.authenticate()
+        if method not in READ_ONLY_METHODS or method in MUTATING_METHODS:
+            raise DiscoveryError(f"blocked business method: {method}")
+        self._ensure_authenticated()
+        self._rate_limit()
+        request = Request(url, headers=self._headers(), method=method)
+        self._last_request = time.monotonic()
+        status, headers, body, response_url = self._raw_request(request)
+        if self.config.auth_mode in LOGIN_MODES and self._looks_like_login_response(status, headers, body, response_url):
+            if self._reauth_attempts >= 1:
+                raise DiscoveryError("AUTHENTICATION FAILED: session expired after controlled re-login")
+            self._logged_in = False
+            self.cookie_jar.clear()
+            LOG.warning("Maximo session expired; one controlled re-authentication")
+            self.authenticate(reauthentication=True)
+            self._rate_limit()
+            retry = Request(url, headers=self._headers(), method=method)
+            self._last_request = time.monotonic()
+            status, headers, body, _ = self._raw_request(retry)
+            if self._looks_like_login_response(status, headers, body):
+                raise DiscoveryError("AUTHENTICATION FAILED: session expired after controlled re-login")
+        return status, headers, body
 
 
 class NoRedirectHandler(HTTPRedirectHandler):
@@ -435,8 +560,8 @@ def object_structures(entries: Iterable[Mapping[str, Any]]) -> dict[str, Any]:
 # --- OSLC object-structure discovery ----------------------------------------
 # Maximo exposes its real resource surface through OSLC Object Structures at
 # /oslc/os rather than through a fully populated OAS `paths` object. The helpers
-# below enumerate and describe those structures using GET/HEAD/OPTIONS only and
-# degrade gracefully to a documented seed when the catalog cannot be parsed.
+# below enumerate and describe those structures using business GET/HEAD/OPTIONS
+# only and degrade gracefully to a documented seed when the catalog cannot be parsed.
 
 OSLC_MEMBER_KEYS = (
     "_member",
@@ -890,7 +1015,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="enumerate OSLC object structures via GET /oslc/os and describe each (requires --execute)",
     )
     parser.add_argument("--oslc-root", default=OSLC_CATALOG_ROOT, help="OSLC service-provider catalog path")
-    parser.add_argument("--execute", action="store_true", help="allow network GET/HEAD/OPTIONS requests")
+    parser.add_argument(
+        "--execute",
+        action="store_true",
+        help="allow read-only business requests; form/login may authenticate only at /j_security_check",
+    )
     parser.add_argument("--verify-samples", action="store_true", help="GET one minimal sample for selected operations")
     parser.add_argument("--scope", choices=["reliability-core"], help="limit discovery to reliability domains")
     parser.add_argument("--resource", action="append", default=[], help="select a resource; repeatable")
