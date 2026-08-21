@@ -67,6 +67,7 @@ only in memory and writes discovery results to a timestamped staging run.
 - `CONTEXT.md` — **entry point** for AI tools and new contributors
 - `docs/` — human-readable knowledge (incl. `etl-playbook.md` for building fetchers)
 - `docs/extended-application-inventory.md` — metadata inventory for Reliability, DIAMOND, DOMINION, and Efficiency Management
+- `docs/mx-006r-live-verification.md` — bounded live-verification gate and matrix
 - `discovery/` — machine-readable catalogs (`object-structures.json`, `objects/`, `capabilities.json`, `endpoints.json`)
 - `schemas/` — JSON Schema definitions (`object.schema.json`, `endpoint.schema.json`)
 - `samples/` — sanitized response examples

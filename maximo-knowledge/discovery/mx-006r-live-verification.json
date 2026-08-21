@@ -1,0 +1,61 @@
+{
+  "task": "MX-006R",
+  "status": "PARTIAL",
+  "evidence_classification": "UNKNOWN",
+  "authentication": {
+    "knowledge_repository_auth_mode": "form",
+    "approved_session_available": false,
+    "live_verification_started": false,
+    "reason": "The approved discovery CLI is GET/HEAD/OPTIONS-only and does not automate POST /j_security_check. No authenticated browser session was available for manual-session discovery."
+  },
+  "scope": {
+    "site": "BSR",
+    "organization": "IP",
+    "cross_site_samples": 0
+  },
+  "credential_delta": [
+    {"resource": "mxapifailurecode", "previous_status": "FORBIDDEN", "mx006r_status": "UNKNOWN", "changed": "UNKNOWN", "reason": "AUTHENTICATION REQUIRED"},
+    {"resource": "mxapilocation", "previous_status": "FORBIDDEN", "mx006r_status": "UNKNOWN", "changed": "UNKNOWN", "reason": "AUTHENTICATION REQUIRED"},
+    {"resource": "mxapipm", "previous_status": "FORBIDDEN", "mx006r_status": "UNKNOWN", "changed": "UNKNOWN", "reason": "AUTHENTICATION REQUIRED"},
+    {"resource": "mxapimeter", "previous_status": "FORBIDDEN", "mx006r_status": "UNKNOWN", "changed": "UNKNOWN", "reason": "AUTHENTICATION REQUIRED"},
+    {"resource": "mxapijobplan", "previous_status": "FORBIDDEN", "mx006r_status": "UNKNOWN", "changed": "UNKNOWN", "reason": "AUTHENTICATION REQUIRED"}
+  ],
+  "verification_matrix": [
+    {"resource": "IPFMEA", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "MX-005R catalog only; no live GET"},
+    {"resource": "IPFMEAITEM", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "MX-005R catalog only; no live GET"},
+    {"resource": "IPRCFA", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "MX-005R catalog only; no live GET"},
+    {"resource": "IPRCFAFDT", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "UNRESOLVED", "evidence": "MX-005R catalog only; no live GET"},
+    {"resource": "IPBHM", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "MX-005R catalog only; no live GET"},
+    {"resource": "IPBHMMEASUREMENT", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "MX-005R catalog only; no live GET"},
+    {"resource": "IPMSMSFAILUREMECHANI", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "MX-005R catalog only; no live GET"},
+    {"resource": "DMD_OPLOGABN", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI SUPPORTING CANDIDATE", "evidence": "MX-005R catalog only; no live GET"},
+    {"resource": "DMDLOGSHEETHDR/DMDLOGSHEETDTL", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI SUPPORTING CANDIDATE", "evidence": "MX-005R catalog only; no live GET"},
+    {"resource": "IP_DOM_OH", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "MX-005R catalog only; no live GET"},
+    {"resource": "DOM_INSPEKSIMESIN", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "MX-005R catalog only; no live GET"},
+    {"resource": "IP_DOM_OH_SCOPE_PM", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "MX-005R catalog only; no live GET"},
+    {"resource": "IPEMLGWR", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "UNRESOLVED", "evidence": "MX-005R catalog only; no live GET"},
+    {"resource": "IPEMMP/IPEMMPDTL", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "UNRESOLVED", "evidence": "MX-005R catalog only; no live GET"},
+    {"resource": "IPEMFB/IPEMFBDTL", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "UNRESOLVED", "evidence": "MX-005R catalog only; no live GET"}
+  ],
+  "other_targets": {
+    "maintenance_strategy": "UNKNOWN",
+    "oee": "UNKNOWN",
+    "pareto_loss_output": "UNKNOWN",
+    "engineering_service_sheet": "UNKNOWN",
+    "performance_test": "UNKNOWN"
+  },
+  "request_audit": {
+    "total_maximo_requests": 0,
+    "successful": 0,
+    "http_401": 0,
+    "http_403": 0,
+    "http_404": 0,
+    "http_429": 0,
+    "http_5xx": 0,
+    "other": 0,
+    "maximum_concurrency": 0,
+    "minimum_interval_seconds": null,
+    "largest_sample_size": 0,
+    "request_budget_exceeded": false
+  }
+}
