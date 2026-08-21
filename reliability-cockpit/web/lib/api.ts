@@ -64,6 +64,23 @@ export interface OverhaulView {
   planned_finish_at: string | null; actual_start_at: string | null; actual_finish_at: string | null; progress: unknown | null;
   unresolved_attributes_present: boolean;
 }
+export interface TimelineView {
+  event_id: string;
+  event_type: "MAINTENANCE" | "FMEA" | "ASSET_HEALTH" | "OVERHAUL";
+  event_at: string | null;
+  summary: string | null;
+  status: string | null;
+  canonical_ref: string;
+}
+export interface ContextView {
+  asset: AssetView;
+  maintenance: MaintenanceEventView[];
+  fmea: FmeaView[];
+  health: AssetHealthView[];
+  overhauls: OverhaulView[];
+  rcfa_relationship_status: "UNRESOLVED";
+  relationship_health: IntegrityView;
+}
 export interface IntegrityView { asset_refs_total: number; asset_refs_resolved: number; asset_refs_unresolved: number; workorder_refs_total: number; workorder_refs_resolved: number; workorder_refs_unresolved: number; }
 
 export interface AssetFilters { status?: string; unit?: string; asset_type?: string; offset?: number; limit?: number; sort?: "updated_desc" | "updated_asc" | "status"; }
@@ -72,6 +89,7 @@ export interface FmeaFilters { asset_ref?: string; lifecycle_status?: string; so
 export interface RcfaFilters { lifecycle_status?: string; category?: string; source_number?: string; created_from?: string; created_to?: string; offset?: number; limit?: number; sort?: "created_desc" | "created_asc" | "status"; }
 export interface HealthFilters { asset_ref?: string; lifecycle_status?: string; updated_from?: string; updated_to?: string; offset?: number; limit?: number; sort?: "updated_desc" | "updated_asc" | "status"; }
 export interface OverhaulFilters { asset_ref?: string; workorder_ref?: string; lifecycle_status?: string; planned_from?: string; planned_to?: string; actual_from?: string; actual_to?: string; offset?: number; limit?: number; sort?: "date_desc" | "date_asc" | "status"; }
+export interface AssetDetailPageFilters { offset?: number; limit?: number; }
 
 export class ApiError extends Error {
   constructor(message: string, public readonly status: number) { super(message); this.name = "ApiError"; }
@@ -108,6 +126,11 @@ export const cockpitApi = {
 export const reliabilityApi = {
   assets: (filters: AssetFilters = {}) => get<Page<AssetView>>(`/v1/reliability/assets${query(filters)}`),
   asset: (canonicalId: string) => get<AssetView>(`/v1/reliability/assets/${encodeURIComponent(canonicalId)}`),
+  assetContext: (canonicalId: string) => get<ContextView>(`/v1/reliability/assets/${encodeURIComponent(canonicalId)}/context`),
+  assetTimeline: (canonicalId: string, filters: AssetDetailPageFilters = {}) => get<Page<TimelineView>>(`/v1/reliability/assets/${encodeURIComponent(canonicalId)}/timeline${query(filters)}`),
+  assetFmea: (canonicalId: string, filters: AssetDetailPageFilters = {}) => get<Page<FmeaView>>(`/v1/reliability/assets/${encodeURIComponent(canonicalId)}/fmea${query(filters)}`),
+  assetHealthAssessments: (canonicalId: string, filters: AssetDetailPageFilters = {}) => get<Page<AssetHealthView>>(`/v1/reliability/assets/${encodeURIComponent(canonicalId)}/health-assessments${query(filters)}`),
+  latestAssetHealth: (canonicalId: string) => get<AssetHealthView>(`/v1/reliability/assets/${encodeURIComponent(canonicalId)}/health/latest`),
   maintenance: (filters: MaintenanceFilters = {}) => get<Page<MaintenanceEventView>>(`/v1/reliability/maintenance-events${query(filters)}`),
   fmea: (filters: FmeaFilters = {}) => get<Page<FmeaView>>(`/v1/reliability/fmea${query(filters)}`),
   rcfa: (filters: RcfaFilters = {}) => get<Page<RcfaView>>(`/v1/reliability/rcfa${query(filters)}`),
