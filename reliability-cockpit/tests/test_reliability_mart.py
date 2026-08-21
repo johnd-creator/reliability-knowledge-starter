@@ -228,7 +228,7 @@ class ReliabilityMartApiTest(unittest.TestCase):
                 return NOW
 
         with patch("src.repositories.mart_reader.datetime", FixedDateTime):
-            response = reliability_api.decision_overview(service=self.service)
+            response = reliability_api.decision_overview(window_days=30, service=self.service)
         self.assertEqual(response.window_days, 30)
         self.assertEqual(response.summary.registered_assets.evidence_class, "VERIFIED")
         parameter = self.app.openapi()["paths"]["/v1/reliability/decision-overview"]["get"]["parameters"][0]

@@ -307,7 +307,7 @@ def _evidence(value: int, evidence_class: EvidenceClass) -> EvidenceValue:
     return EvidenceValue(value=value, evidence_class=evidence_class)
 
 
-def _decision_overview(raw: dict[str, object], window_days: Literal[7, 30, 90]) -> DecisionOverviewView:
+def _decision_overview(raw: dict[str, object], window_days: int) -> DecisionOverviewView:
     summary = raw["summary"]
     records = raw["records"]
     assert isinstance(summary, dict)
@@ -398,9 +398,11 @@ def registry(service: ReliabilityQueryService = Depends(_service)) -> RegistryVi
 
 @router.get("/decision-overview", response_model=DecisionOverviewView, summary="Bounded factual Reliability decision overview")
 def decision_overview(
-    window_days: Literal[7, 30, 90] = 30,
+    window_days: int = Query(30, enum=[7, 30, 90]),
     service: ReliabilityQueryService = Depends(_service),
 ) -> DecisionOverviewView:
+    if window_days not in {7, 30, 90}:
+        raise HTTPException(status_code=422, detail="window_days must be one of 7, 30, or 90")
     return _decision_overview(service.repository.decision_overview(window_days=window_days), window_days)
 
 
