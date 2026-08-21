@@ -14,6 +14,7 @@ Credentials come from the environment (.env): MAXIMO_USERNAME/MAXIMO_PASSWORD
 from __future__ import annotations
 
 import argparse
+import json
 import logging
 import re
 import signal
@@ -278,6 +279,39 @@ def cmd_diagnose(args: argparse.Namespace) -> int:
     return exit_code
 
 
+def cmd_profile_workorders(args: argparse.Namespace) -> int:
+    """Profile bounded MXWODETAIL slices without local-store or Mart writes."""
+    from src.adapters.maximo.auth import MaximoAuth
+    from src.adapters.maximo.oslc_client import OslcClient
+    from src.services.workorder_profile import WorkOrderPopulationProfiler
+
+    try:
+        config = MaximoConfig.from_environment()
+        client = OslcClient(config, MaximoAuth(config), request_budget=60)
+        profiler = WorkOrderPopulationProfiler(
+            client,
+            source_cap=args.source_cap,
+            page_size=args.page_size,
+            max_pages=args.max_pages,
+            prefixes=config.wo_prefixes,
+        )
+        if args.mode == "default-source":
+            result = {"default": profiler.profile_source(None).as_dict()}
+        elif args.mode == "recent-source":
+            probe = profiler.probe_recent_order()
+            result = {"recent_order_probe": probe.as_dict()}
+            if probe.supported:
+                result["recent"] = profiler.profile_source("-changedate").as_dict()
+        else:
+            result = profiler.compare()
+        result["request_telemetry"] = client.request_telemetry
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    except Exception as error:  # sanitized aggregate profiler failure
+        print(json.dumps({"error": _safe_error_metadata(error)}, sort_keys=True))
+        return 2
+
+
 def cmd_mart_load(args: argparse.Namespace) -> int:
     """Run the explicit, bounded initial Reliability Mart profile."""
     from src.adapters.maximo.auth import MaximoAuth
@@ -375,6 +409,19 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     diagnose_sub = diagnose.add_subparsers(dest="diagnose_target", required=True)
     diagnose_sub.add_parser("master-data", help="probe Persons, Items, and Labor scopes")
 
+    profile = sub.add_parser(
+        "profile-workorders",
+        help="profile bounded, read-only MXWODETAIL population slices",
+    )
+    profile.add_argument(
+        "--mode",
+        choices=("default-source", "recent-source", "compare"),
+        default="compare",
+    )
+    profile.add_argument("--source-cap", type=int, default=500, choices=range(1, 501))
+    profile.add_argument("--page-size", type=int, default=25, choices=range(1, 26))
+    profile.add_argument("--max-pages", type=int, default=20, choices=range(1, 21))
+
     mart_load = sub.add_parser(
         "mart-load",
         help="run the bounded initial-controlled Reliability Mart load",
@@ -402,6 +449,8 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_serve(args)
     if args.command == "diagnose" and args.diagnose_target == "master-data":
         return cmd_diagnose(args)
+    if args.command == "profile-workorders":
+        return cmd_profile_workorders(args)
     if args.command == "mart-load":
         return cmd_mart_load(args)
     return 1
