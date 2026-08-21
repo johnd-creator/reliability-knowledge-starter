@@ -26,6 +26,37 @@
     "organization": "IP",
     "cross_site_samples": 0
   },
+  "mx006b_follow_up": {
+    "status": "PARTIAL",
+    "tooling": {
+      "detail_dereference": true,
+      "same_origin_guard": true,
+      "relative_links": true,
+      "maximum_depth": 1,
+      "pagination_followed": false,
+      "collection_records_per_resource": 1,
+      "detail_records_per_resource": 1,
+      "raw_production_samples_persisted": false
+    },
+    "scope": {
+      "site": "BSR",
+      "organization": "IP",
+      "scope_clause": "siteid=\"BSR\"",
+      "scope_evidence": "PRIOR_LIVE_QUERY; detail field evidence recorded per resource",
+      "alternate_scope_queries": 0
+    },
+    "verified_contracts": [
+      {"resource": "IPFMEA", "collection_http": 200, "detail_http": 200, "fields": ["fmeanum", "fmeaid", "revision", "status", "description", "assetnum", "siteid", "orgid", "lastmodifieddate", "statusdate"], "primary_key": {"field": "orgid", "confidence": "CANDIDATE"}, "nadi": "NADI CORE CANDIDATE"},
+      {"resource": "IPRCFA", "collection_http": 200, "detail_http": 200, "fields": ["norcfa", "rcfaid", "revisi", "status", "kategori", "siteid", "orgid", "createddate", "req_date"], "primary_key": {"field": "orgid", "confidence": "CANDIDATE"}, "nadi": "NADI CORE CANDIDATE"},
+      {"resource": "IPBHM", "collection_http": 200, "detail_http": 200, "fields": ["bhmid", "eid", "status", "description", "fungsi", "assetnum", "siteid", "orgid", "createddate", "lastmodifieddate", "statusdate"], "primary_key": {"field": "bhmid", "confidence": "CANDIDATE"}, "nadi": "NADI CORE CANDIDATE"},
+      {"resource": "IP_DOM_OH", "collection_http": 200, "detail_http": 200, "fields": ["domohnum", "domid", "status", "wonum", "inspeksinum", "siteid", "orgid", "tgl_mulai", "tgl_selesai", "tgl_actual_mulai", "tgl_actual_selesai", "changedate", "createdate"], "primary_key": {"field": "wonum", "confidence": "CANDIDATE"}, "nadi": "NADI CORE CANDIDATE"},
+      {"resource": "DOM_INSPEKSIMESIN", "collection_http": 200, "detail_http": 200, "fields": ["dom_inspeksinum", "dom_inspeksiid", "status", "siteid", "description", "mesin", "scopenum", "p1", "p2", "p3", "r1", "r2", "r3"], "primary_key": {"field": "dom_inspeksinum", "confidence": "CANDIDATE"}, "nadi": "NADI SUPPORTING CANDIDATE"},
+      {"resource": "IP_DOM_OH_SCOPE_PM", "collection_http": 200, "detail_http": null, "fields": ["workorder_collectionref"], "primary_key": {"field": "UNKNOWN", "confidence": "UNKNOWN"}, "nadi": "NADI SUPPORTING CANDIDATE"}
+    ],
+    "unresolved_due_to_response_cap": ["IPFMEAITEM", "IPBHMMEASUREMENT", "DMD_OPLOGABN", "IPMSMSFAILUREMECHANI"],
+    "http_400_follow_up": {"resources": ["MXAPIFAILURECODE", "MXAPILOCATION", "MXAPIPM", "MXAPIMETER", "MXAPIJOBPLAN", "IPRCFAFDT"], "alternate_scope_queries": 0, "permission_conclusion": "UNKNOWN"},
+    "request_audit": {"authentication_posts": 7, "business_gets": 40, "collection_gets": 35, "detail_gets": 5, "maximum_concurrency": 1, "minimum_interval_seconds": 5, "http_429": 0, "http_5xx": 0, "cross_origin_requests_sent": 0, "request_budget_exceeded": false}
+  },
   "credential_delta": [
     {"resource": "mxapifailurecode", "previous_status": "FORBIDDEN", "mx006r_status": "UNKNOWN", "changed": "NO CONCLUSION", "evidence": "BSR-scoped GET returned HTTP 400; permission was not tested independently."},
     {"resource": "mxapilocation", "previous_status": "FORBIDDEN", "mx006r_status": "UNKNOWN", "changed": "NO CONCLUSION", "evidence": "BSR-scoped GET returned HTTP 400; permission was not tested independently."},

@@ -45,7 +45,12 @@ python scripts/discover.py --oas-file openapi.json --scope reliability-core
 # Enumerate OSLC object structures (read-only business GETs, requires --execute).
 # Maximo exposes its real surface via /oslc/os, not the OAS paths object.
 python scripts/discover.py --enumerate-oslc --execute --scope reliability-core
-python scripts/discover.py --enumerate-oslc --execute --resource asset workorder
+python scripts/discover.py --enumerate-oslc --execute --resource asset --resource workorder
+
+# One BSR-scoped collection record plus at most one same-origin detail GET.
+# Pagination and child collection references are never followed.
+python scripts/discover.py --enumerate-oslc --verify-detail --execute \
+  --resource IPFMEA --resource IPRCFA
 
 # Fetch from an authorized read-only environment
 python scripts/discover.py --fetch-oas --execute --scope reliability-core

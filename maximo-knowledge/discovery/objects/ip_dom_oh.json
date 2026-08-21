@@ -1,0 +1,22 @@
+{
+  "system": "maximo",
+  "object_structure": "IP_DOM_OH",
+  "resource": "ipdomoh",
+  "status": "verified",
+  "access": "http_200",
+  "endpoint": "/oslc/os/IP_DOM_OH?_maxitems=1&oslc.where=siteid%3D%22BSR%22",
+  "primary_key": {"field": "wonum", "confidence": "CANDIDATE"},
+  "field_candidates": ["wonum", "domohnum", "domid", "siteid", "inspeksinum"],
+  "important_fields": ["attach_notulen", "status", "berita_acara_serahterima", "dur_actual_oh", "changeby", "siklus", "wonum", "domohnum", "orgid", "absensi", "laporan_evaluasi", "domid", "pic", "dur_oh", "otg_leader", "tgl_actual_mulai", "laporan_teknik", "createby", "dokumen_rekomendasi", "rencana_beban", "siteid", "inspeksinum", "pic_description", "description", "tgl_selesai", "realisasi_scope", "jumlahworekom", "mesin", "jumlah_mitra", "perfomance_test", "progress", "tgl_mulai", "berita_acara_syncron", "notulensi", "siklus_description", "prefixes", "attach_absensi", "tgl_actual_selesai", "rencana_scope", "changedate", "status_description", "createdate", "realisasi_cost"],
+  "field_types": {"status": "string", "wonum": "string", "domohnum": "string", "orgid": "string", "domid": "integer", "tgl_actual_mulai": "datetime", "siteid": "string", "inspeksinum": "string", "description": "string", "tgl_selesai": "datetime", "progress": "number", "tgl_mulai": "datetime", "tgl_actual_selesai": "datetime", "changedate": "datetime", "createdate": "datetime", "realisasi_cost": "number"},
+  "metadata_fields": ["rdf:about", "_rowstamp"],
+  "pagination": {"single_record_via": "same-origin resource href; no next page followed"},
+  "sample": {"status": "<string>", "wonum": "<string>", "domohnum": "<string>", "orgid": "<string>", "domid": "<integer>", "tgl_actual_mulai": "<datetime>", "siteid": "<string>", "inspeksinum": "<string>", "tgl_selesai": "<datetime>", "progress": "<number>", "tgl_mulai": "<datetime>", "changedate": "<datetime>", "createdate": "<datetime>", "realisasi_cost": "<number>"},
+  "use_cases": [],
+  "relationships": ["site: siteid (VERIFIED field evidence)", "organization: orgid (VERIFIED field evidence)", "workorder: wonum (VERIFIED field evidence)", "status: status (VERIFIED field evidence)", "timestamp: changedate, createdate (VERIFIED field evidence)"],
+  "notes": ["MX-006B first bounded detail run: collection HTTP 200 plus one same-origin detail HTTP 200; no raw values persisted.", "OH to Work Order is a VERIFIED field correlation candidate; OH to asset is UNKNOWN because no assetnum field was exposed."],
+  "verified_at": "2026-08-21T03:20:29.915365+00:00",
+  "scope": {"field": "siteid", "value": "BSR", "status": "PRIOR_LIVE_QUERY", "evidence": "MX-006R bounded BSR query plus detail field evidence"},
+  "detail_dereference": {"attempted": true, "collection_records": 1, "detail_records": 1, "maximum_dereference_depth": 1, "pagination_followed": false, "resource_path": "/maximo/oslc/os/ip_dom_oh/<resource-id>", "http_status": 200, "status": "VERIFIED", "fields": ["attach_notulen", "status", "berita_acara_serahterima", "dur_actual_oh", "changeby", "siklus", "wonum", "domohnum", "orgid", "absensi", "laporan_evaluasi", "domid", "pic", "dur_oh", "otg_leader", "tgl_actual_mulai", "laporan_teknik", "createby", "dokumen_rekomendasi", "rencana_beban", "siteid", "inspeksinum", "pic_description", "description", "tgl_selesai", "realisasi_scope", "jumlahworekom", "mesin", "jumlah_mitra", "perfomance_test", "progress", "tgl_mulai", "berita_acara_syncron", "notulensi", "siklus_description", "prefixes", "attach_absensi", "tgl_actual_selesai", "rencana_scope", "changedate", "status_description", "createdate", "realisasi_cost"], "field_types": {"status": "string", "wonum": "string", "domohnum": "string", "orgid": "string", "domid": "integer", "tgl_actual_mulai": "datetime", "siteid": "string", "inspeksinum": "string", "description": "string", "tgl_selesai": "datetime", "progress": "number", "tgl_mulai": "datetime", "tgl_actual_selesai": "datetime", "changedate": "datetime", "createdate": "datetime", "realisasi_cost": "number"}, "metadata_fields": ["_rowstamp", "rdf:about"]},
+  "http_diagnostics": {}
+}

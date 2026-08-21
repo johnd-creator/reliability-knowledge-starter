@@ -24,6 +24,10 @@ Examples:
 python scripts/discover.py --oas-file /path/to/openapi.json --scope reliability-core
 python scripts/discover.py --fetch-oas --execute --scope reliability-core
 python scripts/discover.py --fetch-oas --execute --resource workorder
+# Bounded one-level detail verification: one BSR-scoped collection record and
+# at most one same-origin detail GET per selected resource.
+python scripts/discover.py --enumerate-oslc --verify-detail --execute \
+  --resource IPFMEA --resource IPRCFA
 ```
 
 The production Maximo login form uses `POST /j_security_check`. In form/login

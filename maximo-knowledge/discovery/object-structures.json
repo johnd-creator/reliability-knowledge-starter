@@ -1,10 +1,10 @@
 {
   "system": "maximo",
-  "catalog_version": 2,
-  "source": "live-oslc+authenticated-oas",
+  "catalog_version": 3,
+  "source": "live-oslc+authenticated-oas+mx-006b-bounded-detail",
   "base_url": "http://maximo.plnindonesiapower.co.id/maximo",
-  "last_updated": "2026-08-12T11:26:12Z",
-  "note": "462 object structures cataloged from authenticated OAS. 7 verified via live OSLC query; 5 forbidden (account lacks READ). Capabilities confirmed.",
+  "last_updated": "2026-08-21T03:40:00+00:00",
+  "note": "462 object structures cataloged from authenticated OAS. MX-006B adds bounded structural evidence for selected extended resources; no raw production values are persisted.",
   "object_structures": [
     {
       "name": "mxasset",
@@ -90,7 +90,7 @@
       "name": "mxapifailurecode",
       "resource": "failurecode",
       "readable": "Maximo API Failure Codes",
-      "status": "forbidden",
+      "status": "documented",
       "access": "http_400",
       "field_count": 0,
       "primary_key": "failurecode",
@@ -100,7 +100,7 @@
       "name": "mxapilocation",
       "resource": "location",
       "readable": "Maximo API Location",
-      "status": "forbidden",
+      "status": "documented",
       "access": "http_400",
       "field_count": 0,
       "primary_key": "location",
@@ -110,7 +110,7 @@
       "name": "mxapipm",
       "resource": "preventivemaintenance",
       "readable": "Maximo API Preventive Maintenance",
-      "status": "forbidden",
+      "status": "documented",
       "access": "http_400",
       "field_count": 0,
       "primary_key": "pmnum",
@@ -120,7 +120,7 @@
       "name": "mxapimeter",
       "resource": "meter",
       "readable": "Maximo API Meter",
-      "status": "forbidden",
+      "status": "documented",
       "access": "http_400",
       "field_count": 0,
       "primary_key": "metername",
@@ -130,11 +130,141 @@
       "name": "mxapijobplan",
       "resource": "jobplan",
       "readable": "Maximo API Job Plan",
-      "status": "forbidden",
+      "status": "documented",
       "access": "http_400",
       "field_count": 0,
       "primary_key": "jpnum",
       "verified_at": null
+    },
+    {
+      "name": "IPFMEA",
+      "resource": "ipfmea",
+      "endpoint": "/oslc/os/IPFMEA",
+      "status": "verified",
+      "access": "http_200",
+      "field_count": 17,
+      "detail_status": "VERIFIED",
+      "primary_key": {
+        "field": "orgid",
+        "confidence": "CANDIDATE"
+      },
+      "verified_at": "2026-08-21T03:19:18.117827+00:00"
+    },
+    {
+      "name": "IPFMEAITEM",
+      "resource": "ipfmeaitem",
+      "endpoint": "/oslc/os/IPFMEAITEM",
+      "status": "documented",
+      "access": "error",
+      "field_count": 0,
+      "detail_status": "UNKNOWN_RESPONSE_CAP",
+      "verified_at": null
+    },
+    {
+      "name": "IPRCFA",
+      "resource": "iprcfa",
+      "endpoint": "/oslc/os/IPRCFA",
+      "status": "verified",
+      "access": "http_200",
+      "field_count": 15,
+      "detail_status": "VERIFIED",
+      "primary_key": {
+        "field": "orgid",
+        "confidence": "CANDIDATE"
+      },
+      "verified_at": "2026-08-21T03:19:41.384430+00:00"
+    },
+    {
+      "name": "IPRCFAFDT",
+      "resource": "iprcfafdt",
+      "endpoint": "/oslc/os/IPRCFAFDT",
+      "status": "documented",
+      "access": "http_400",
+      "field_count": 0,
+      "detail_status": null,
+      "verified_at": null
+    },
+    {
+      "name": "IPBHM",
+      "resource": "ipbhm",
+      "endpoint": "/oslc/os/IPBHM",
+      "status": "verified",
+      "access": "http_200",
+      "field_count": 16,
+      "detail_status": "VERIFIED",
+      "primary_key": {
+        "field": "bhmid",
+        "confidence": "CANDIDATE"
+      },
+      "verified_at": "2026-08-21T03:19:50.827228+00:00"
+    },
+    {
+      "name": "IPBHMMEASUREMENT",
+      "resource": "ipbhmmeasurement",
+      "endpoint": "/oslc/os/IPBHMMEASUREMENT",
+      "status": "documented",
+      "access": "error",
+      "field_count": 0,
+      "detail_status": "UNKNOWN_RESPONSE_CAP",
+      "verified_at": null
+    },
+    {
+      "name": "IPMSMSFAILUREMECHANI",
+      "resource": "ipmsmsfailuremechani",
+      "endpoint": "/oslc/os/IPMSMSFAILUREMECHANI",
+      "status": "documented",
+      "access": "error",
+      "field_count": 0,
+      "detail_status": "UNKNOWN_RESPONSE_CAP",
+      "verified_at": null
+    },
+    {
+      "name": "DMD_OPLOGABN",
+      "resource": "dmdoplogabn",
+      "endpoint": "/oslc/os/DMD_OPLOGABN",
+      "status": "documented",
+      "access": "error",
+      "field_count": 0,
+      "detail_status": "UNKNOWN_RESPONSE_CAP",
+      "verified_at": null
+    },
+    {
+      "name": "IP_DOM_OH",
+      "resource": "ipdomoh",
+      "endpoint": "/oslc/os/IP_DOM_OH",
+      "status": "verified",
+      "access": "http_200",
+      "field_count": 43,
+      "detail_status": "VERIFIED",
+      "primary_key": {
+        "field": "wonum",
+        "confidence": "CANDIDATE"
+      },
+      "verified_at": "2026-08-21T03:20:29.915365+00:00"
+    },
+    {
+      "name": "DOM_INSPEKSIMESIN",
+      "resource": "dominspeksimesin",
+      "endpoint": "/oslc/os/DOM_INSPEKSIMESIN",
+      "status": "verified",
+      "access": "http_200",
+      "field_count": 40,
+      "detail_status": "VERIFIED",
+      "primary_key": {
+        "field": "dom_inspeksinum",
+        "confidence": "CANDIDATE"
+      },
+      "verified_at": "2026-08-21T03:20:40.006056+00:00"
+    },
+    {
+      "name": "IP_DOM_OH_SCOPE_PM",
+      "resource": "ipdomohscopepm",
+      "endpoint": "/oslc/os/IP_DOM_OH_SCOPE_PM",
+      "status": "verified",
+      "access": "http_200",
+      "field_count": 1,
+      "detail_status": "INLINE_BUSINESS_RECORD",
+      "verified_at": "2026-08-21T03:40:00+00:00"
     }
   ],
   "full_catalog_ref": "discovery/oslc/catalog.json",

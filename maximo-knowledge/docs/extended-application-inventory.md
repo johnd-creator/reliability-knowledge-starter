@@ -12,10 +12,11 @@ support for filter, sort, paging, and select. It does not provide field-level
 schemas or relationship definitions for these extensions.
 
 The configured `maximo-knowledge/.env` uses form authentication. The
-knowledge-repository discovery CLI is intentionally GET/HEAD/OPTIONS-only and
-does not automate `POST /j_security_check`. Therefore MX-005R made zero live
-Maximo requests. Catalog-derived statements below are `PARTIAL`/`DOCUMENTED`,
-never `VERIFIED`; all fields and joins not present locally remain `UNKNOWN`.
+knowledge-repository discovery CLI is intentionally GET/HEAD/OPTIONS-only for
+business data; one in-memory `POST /j_security_check` is permitted for the
+bounded MX-006B follow-up. MX-005R itself made zero live Maximo requests.
+The MX-006B detail records below promote only directly observed field names;
+all fields and joins not present in those records remain `UNKNOWN`.
 The machine-readable records are in
 [`discovery/extended-applications.json`](../discovery/extended-applications.json).
 
@@ -124,6 +125,25 @@ sanitized sample and establish:
 
 Until then, these resources are Maximo knowledge only and must not be added to
 the Cockpit or another ingestion contract.
+
+## MX-006B verified detail contracts
+
+The bounded follow-up used one collection record and at most one same-origin
+detail record per explicit target. Five resources yielded structural contracts:
+
+| Resource | Key candidate | Verified joins/fields | NADI classification |
+|---|---|---|---|
+| `IPFMEA` | `orgid` (CANDIDATE) | `assetnum`, `siteid`, `orgid`, `status`, revision, timestamps | CORE CANDIDATE |
+| `IPRCFA` | `orgid` (CANDIDATE) | `siteid`, `orgid`, `status`, timestamps; asset/WO UNKNOWN | CORE CANDIDATE |
+| `IPBHM` | `bhmid` (CANDIDATE) | `assetnum`, `siteid`, `orgid`, `status`, timestamps | CORE CANDIDATE |
+| `IP_DOM_OH` | `wonum` (CANDIDATE) | `wonum`, `siteid`, `orgid`, status, start/finish/change dates | CORE CANDIDATE |
+| `DOM_INSPEKSIMESIN` | `dom_inspeksinum` (CANDIDATE) | inspection identifier, `siteid`, status, description and measurement fields | SUPPORTING CANDIDATE |
+
+`IPFMEAITEM`, `IPBHMMEASUREMENT`, and `DMD_OPLOGABN` exceeded the 1 MiB
+response cap before a safe member could be obtained. They remain unresolved;
+the tool did not broaden the query or try alternative scope names. The full
+sanitized records are in `discovery/objects/`, and the six HTTP-400 follow-ups
+are recorded as diagnostics without a permission conclusion.
 
 ## MX-005R request audit
 

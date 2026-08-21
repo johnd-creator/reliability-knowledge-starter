@@ -1,25 +1,25 @@
 {
   "system": "maximo",
   "catalog_source": "discovery/oslc/catalog.json",
-  "catalog_status": "documented",
-  "evidence_note": "MX-005R used the existing authenticated-OAS catalog. No live samples were requested because the configured knowledge-repository authentication is form-login and the GET-only discovery CLI must not POST to production.",
+  "catalog_status": "partial",
+  "evidence_note": "MX-005R catalog evidence was extended by the bounded MX-006B read-only detail follow-up. Detail fields are structural evidence only; no raw production values are persisted.",
   "scope": {
-    "organization": "UNKNOWN",
-    "site": "UNKNOWN"
+    "organization": "IP (scope clause evidence)",
+    "site": "BSR (scope clause evidence)"
   },
   "resources": [
     {
       "application": "Reliability",
       "object_structure": "IPFMEA",
       "api_resource": "/oslc/os/ipfmea",
-      "object": "UNKNOWN",
-      "primary_key": "UNKNOWN",
-      "status_field": "UNKNOWN",
-      "relationships": {"asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "organization": "UNKNOWN", "workorder": "UNKNOWN", "fmea_rcfa": "probable"},
-      "important_fields": [],
+      "object": "PARTIAL — detail schema verified",
+      "primary_key": {"field": "orgid", "confidence": "CANDIDATE"},
+      "status_field": "status",
+      "relationships": {"asset": "assetnum (VERIFIED)", "location": "UNKNOWN", "site": "siteid (VERIFIED)", "organization": "orgid (VERIFIED)", "workorder": "UNKNOWN", "fmea_rcfa": "UNKNOWN"},
+      "important_fields": ["fmeanum", "fmeaid", "revision", "status", "description", "assetnum", "siteid", "orgid", "lastmodifieddate", "statusdate"],
       "nadi_relevance": "HIGH",
       "confidence": "PARTIAL",
-      "notes": ["Catalog label is IP LOADER FMEA; field schema and joins require a live minimal GET."]
+      "notes": ["MX-006B one collection + one same-origin detail GET verified field names/types. FMEA parent/RCFA relation remains UNKNOWN."]
     },
     {
       "application": "Reliability",
@@ -32,7 +32,7 @@
       "important_fields": [],
       "nadi_relevance": "HIGH",
       "confidence": "PARTIAL",
-      "notes": ["Catalog label is IP LOADER FMEA ITEM; treat as a child/detail candidate, not a verified relationship."]
+      "notes": ["Collection response exceeded the 1 MiB safety cap even with the observed href projection; fields and parent relation remain UNKNOWN. No brute-force alternate query was attempted."]
     },
     {
       "application": "Reliability",
@@ -51,14 +51,14 @@
       "application": "Reliability",
       "object_structure": "IPRCFA",
       "api_resource": "/oslc/os/iprcfa",
-      "object": "UNKNOWN",
-      "primary_key": "UNKNOWN",
-      "status_field": "UNKNOWN",
-      "relationships": {"asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "organization": "UNKNOWN", "workorder": "UNKNOWN", "fmea_rcfa": "probable"},
-      "important_fields": [],
+      "object": "PARTIAL — detail schema verified",
+      "primary_key": {"field": "orgid", "confidence": "CANDIDATE"},
+      "status_field": "status",
+      "relationships": {"asset": "UNKNOWN", "location": "UNKNOWN", "site": "siteid (VERIFIED)", "organization": "orgid (VERIFIED)", "workorder": "UNKNOWN", "fmea_rcfa": "UNKNOWN"},
+      "important_fields": ["norcfa", "rcfaid", "revisi", "status", "kategori", "siteid", "orgid", "createddate", "req_date"],
       "nadi_relevance": "HIGH",
       "confidence": "PARTIAL",
-      "notes": ["Catalog label is IP LOADER RCFA; root-cause and work-order joins remain UNKNOWN."]
+      "notes": ["MX-006B one collection + one same-origin detail GET verified RCFA fields. Asset, location, Work Order, and failure/event joins remain UNKNOWN."]
     },
     {
       "application": "Reliability",
@@ -71,7 +71,7 @@
       "important_fields": [],
       "nadi_relevance": "HIGH",
       "confidence": "PARTIAL",
-      "notes": ["Catalog label contains RCFA FDT; exact finding/detail semantics require schema sampling."]
+      "notes": ["Controlled BSR-scoped GET returned HTTP 400 with sanitized metadata only; FDT grain remains UNKNOWN and was not classified FORBIDDEN."]
     },
     {
       "application": "Reliability",
@@ -90,14 +90,14 @@
       "application": "Reliability",
       "object_structure": "IPBHM",
       "api_resource": "/oslc/os/ipbhm",
-      "object": "UNKNOWN",
-      "primary_key": "UNKNOWN",
-      "status_field": "UNKNOWN",
-      "relationships": {"asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "organization": "UNKNOWN", "workorder": "UNKNOWN", "fmea_rcfa": "UNKNOWN"},
-      "important_fields": [],
+      "object": "PARTIAL — detail schema verified",
+      "primary_key": {"field": "bhmid", "confidence": "CANDIDATE"},
+      "status_field": "status",
+      "relationships": {"asset": "assetnum (VERIFIED)", "location": "UNKNOWN", "site": "siteid (VERIFIED)", "organization": "orgid (VERIFIED)", "workorder": "UNKNOWN", "fmea_rcfa": "UNKNOWN"},
+      "important_fields": ["bhmid", "eid", "status", "description", "fungsi", "assetnum", "siteid", "orgid", "createddate", "lastmodifieddate", "statusdate"],
       "nadi_relevance": "HIGH",
       "confidence": "PARTIAL",
-      "notes": ["Catalog label is IP BHM; BHM meaning and record grain require live schema evidence."]
+      "notes": ["MX-006B one collection + one same-origin detail GET verified a BHM header-like record with asset/site/org/status/timestamps. Expansion remains UNKNOWN."]
     },
     {
       "application": "Reliability",
@@ -123,7 +123,7 @@
       "important_fields": [],
       "nadi_relevance": "HIGH",
       "confidence": "PARTIAL",
-      "notes": ["Measurement semantics and timestamp/value fields are UNKNOWN until sampled."]
+      "notes": ["Collection response exceeded the 1 MiB safety cap even with the observed href projection; measurement parent/value/unit/timestamp fields remain UNKNOWN."]
     },
     {
       "application": "Reliability",
@@ -149,7 +149,7 @@
       "important_fields": [],
       "nadi_relevance": "HIGH",
       "confidence": "PARTIAL",
-      "notes": ["Catalog label is MS FAILURE MECHANISM; do not equate it with the verified Maximo failure-code object without sampling."]
+      "notes": ["Collection response exceeded the 1 MiB safety cap even with the observed href projection; failure-mechanism fields remain UNKNOWN and were not equated with Maximo failure codes."]
     },
     {
       "application": "Reliability",
@@ -214,7 +214,7 @@
       "important_fields": [],
       "nadi_relevance": "HIGH",
       "confidence": "PARTIAL",
-      "notes": ["Abnormal-operator-log candidate; the asset/event correlation is not verified."]
+      "notes": ["Collection response exceeded the 1 MiB safety cap even with the observed href projection; operator personal data was not retrieved or persisted. Asset/time correlation remains UNKNOWN."]
     },
     {
       "application": "DIAMOND",
@@ -246,25 +246,27 @@
       "application": "DOMINION",
       "object_structure": "IP_DOM_OH",
       "api_resource": "/oslc/os/ip_dom_oh",
-      "object": "UNKNOWN",
-      "primary_key": "UNKNOWN",
-      "status_field": "UNKNOWN",
-      "relationships": {"asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "organization": "UNKNOWN", "workorder": "UNKNOWN", "fmea_rcfa": "UNKNOWN"},
+      "object": "PARTIAL — detail schema verified",
+      "primary_key": {"field": "wonum", "confidence": "CANDIDATE"},
+      "status_field": "status",
+      "relationships": {"asset": "UNKNOWN", "location": "UNKNOWN", "site": "siteid (VERIFIED)", "organization": "orgid (VERIFIED)", "workorder": "wonum (VERIFIED)", "fmea_rcfa": "UNKNOWN"},
+      "important_fields": ["domohnum", "domid", "status", "wonum", "inspeksinum", "siteid", "orgid", "tgl_mulai", "tgl_selesai", "tgl_actual_mulai", "tgl_actual_selesai", "changedate", "createdate"],
       "nadi_relevance": "HIGH",
       "confidence": "PARTIAL",
-      "notes": ["Catalog label is DOMINION master OH planning and scheduling; relationship to standard WORKORDER is not verified."]
+      "notes": ["MX-006B one collection + one same-origin detail GET verified OH/status/workorder/site/org/date fields. OH-to-workorder is a verified field correlation; OH-to-asset remains UNKNOWN."]
     },
     {
       "application": "DOMINION",
       "object_structure": "IP_DOM_OH_SCOPE_PM",
       "api_resource": "/oslc/os/ip_dom_oh_scope_pm",
-      "object": "UNKNOWN",
+      "object": "PARTIAL — one inline field observed",
       "primary_key": "UNKNOWN",
       "status_field": "UNKNOWN",
-      "relationships": {"asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "organization": "UNKNOWN", "workorder": "UNKNOWN", "fmea_rcfa": "UNKNOWN"},
+      "relationships": {"asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "organization": "UNKNOWN", "workorder": "workorder_collectionref (VERIFIED collection reference)", "fmea_rcfa": "UNKNOWN"},
+      "important_fields": ["workorder_collectionref"],
       "nadi_relevance": "HIGH",
       "confidence": "PARTIAL",
-      "notes": ["Catalog label is DOMINION SCOPE OH; PM and asset keys require schema sampling."]
+      "notes": ["MX-006B collection HTTP 200 exposed workorder_collectionref inline; no detail GET was needed. PM, asset, and OH parent keys remain UNKNOWN."]
     },
     {
       "application": "DOMINION",
@@ -294,13 +296,14 @@
       "application": "DOMINION",
       "object_structure": "DOM_INSPEKSIMESIN",
       "api_resource": "/oslc/os/dom_inspeksimesin",
-      "object": "UNKNOWN",
-      "primary_key": "UNKNOWN",
-      "status_field": "UNKNOWN",
-      "relationships": {"asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "organization": "UNKNOWN", "workorder": "UNKNOWN", "fmea_rcfa": "UNKNOWN"},
+      "object": "PARTIAL — detail schema verified",
+      "primary_key": {"field": "dom_inspeksinum", "confidence": "CANDIDATE"},
+      "status_field": "status",
+      "relationships": {"asset": "UNKNOWN", "location": "UNKNOWN", "site": "siteid (VERIFIED)", "organization": "UNKNOWN", "workorder": "UNKNOWN", "fmea_rcfa": "UNKNOWN"},
+      "important_fields": ["dom_inspeksinum", "dom_inspeksiid", "status", "siteid", "description", "mesin", "scopenum", "p1", "p2", "p3", "r1", "r2", "r3", "siklus"],
       "nadi_relevance": "HIGH",
       "confidence": "PARTIAL",
-      "notes": ["Catalog label is master machine inspection and PM details; finding fields and asset key are UNKNOWN."]
+      "notes": ["MX-006B one collection + one same-origin detail GET verified inspection identifier/status/site/description/measurement fields. Finding/recommendation, OH, asset, and Work Order joins remain UNKNOWN."]
     },
     {
       "application": "Efficiency Management",

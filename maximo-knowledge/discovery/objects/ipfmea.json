@@ -1,0 +1,22 @@
+{
+  "system": "maximo",
+  "object_structure": "IPFMEA",
+  "resource": "ipfmea",
+  "status": "verified",
+  "access": "http_200",
+  "endpoint": "/oslc/os/IPFMEA?_maxitems=1&oslc.where=siteid%3D%22BSR%22",
+  "primary_key": {"field": "orgid", "confidence": "CANDIDATE"},
+  "field_candidates": ["orgid", "assetnum", "fmeanum", "fmeaid", "siteid"],
+  "important_fields": ["lastmodifieddate", "status", "description", "fmea_asset", "lastmodifiedby", "orgid", "failurecode", "referensi", "prefixes", "fmea_asset_collectionref", "assetnum", "fmeanum", "revision", "status_description", "fmeaid", "siteid", "statusdate"],
+  "field_types": {"lastmodifieddate": "datetime", "status": "string", "description": "string", "fmea_asset": "unknown", "orgid": "string", "failurecode": "string", "prefixes": "object/reference", "assetnum": "string", "fmeanum": "string", "revision": "integer", "fmeaid": "integer", "siteid": "string", "statusdate": "datetime"},
+  "metadata_fields": ["rdf:about", "_rowstamp"],
+  "pagination": {"single_record_via": "same-origin resource href; no next page followed"},
+  "sample": {"lastmodifieddate": "<datetime>", "status": "<string>", "description": "<string>", "orgid": "<string>", "assetnum": "<string>", "fmeanum": "<string>", "revision": "<integer>", "fmeaid": "<integer>", "siteid": "<string>", "statusdate": "<datetime>"},
+  "use_cases": [],
+  "relationships": ["asset: assetnum (VERIFIED field evidence)", "site: siteid (VERIFIED field evidence)", "organization: orgid (VERIFIED field evidence)", "status: status (VERIFIED field evidence)", "timestamp: lastmodifieddate, statusdate (VERIFIED field evidence)"],
+  "notes": ["MX-006B first bounded detail run: collection HTTP 200 plus one same-origin detail HTTP 200; no raw values persisted.", "FMEA parent/RCFA relation remains UNKNOWN."],
+  "verified_at": "2026-08-21T03:19:18.117827+00:00",
+  "scope": {"field": "siteid", "value": "BSR", "status": "PRIOR_LIVE_QUERY", "evidence": "MX-006R bounded BSR query plus detail field evidence"},
+  "detail_dereference": {"attempted": true, "collection_records": 1, "detail_records": 1, "maximum_dereference_depth": 1, "pagination_followed": false, "resource_path": "/maximo/oslc/os/ipfmea/<resource-id>", "http_status": 200, "status": "VERIFIED", "fields": ["lastmodifieddate", "status", "description", "fmea_asset", "lastmodifiedby", "orgid", "failurecode", "referensi", "prefixes", "fmea_asset_collectionref", "assetnum", "fmeanum", "revision", "status_description", "fmeaid", "siteid", "statusdate"], "field_types": {"lastmodifieddate": "datetime", "status": "string", "description": "string", "orgid": "string", "assetnum": "string", "fmeanum": "string", "revision": "integer", "fmeaid": "integer", "siteid": "string", "statusdate": "datetime"}, "metadata_fields": ["rdf:about", "_rowstamp"]},
+  "http_diagnostics": {}
+}

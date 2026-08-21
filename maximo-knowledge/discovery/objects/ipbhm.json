@@ -1,0 +1,22 @@
+{
+  "system": "maximo",
+  "object_structure": "IPBHM",
+  "resource": "ipbhm",
+  "status": "verified",
+  "access": "http_200",
+  "endpoint": "/oslc/os/IPBHM?_maxitems=1&oslc.where=siteid%3D%22BSR%22",
+  "primary_key": {"field": "bhmid", "confidence": "CANDIDATE"},
+  "field_candidates": ["bhmid", "assetnum", "orgid", "siteid"],
+  "important_fields": ["lastmodifieddate", "createddate", "status", "description", "lastmodifiedby", "fungsi", "bhmid", "orgid", "prefixes", "assetnum", "revision", "status_description", "eid", "createdby", "siteid", "statusdate"],
+  "field_types": {"lastmodifieddate": "datetime", "createddate": "datetime", "status": "string", "description": "string", "fungsi": "string", "bhmid": "integer", "orgid": "string", "prefixes": "object/reference", "assetnum": "string", "revision": "integer", "eid": "string", "siteid": "string", "statusdate": "datetime"},
+  "metadata_fields": ["rdf:about", "_rowstamp"],
+  "pagination": {"single_record_via": "same-origin resource href; no next page followed"},
+  "sample": {"lastmodifieddate": "<datetime>", "createddate": "<datetime>", "status": "<string>", "description": "<string>", "bhmid": "<integer>", "orgid": "<string>", "assetnum": "<string>", "revision": "<integer>", "eid": "<string>", "siteid": "<string>", "statusdate": "<datetime>"},
+  "use_cases": [],
+  "relationships": ["asset: assetnum (VERIFIED field evidence)", "site: siteid (VERIFIED field evidence)", "organization: orgid (VERIFIED field evidence)", "status: status (VERIFIED field evidence)", "timestamp: lastmodifieddate, createddate, statusdate (VERIFIED field evidence)"],
+  "notes": ["MX-006B first bounded detail run: collection HTTP 200 plus one same-origin detail HTTP 200; no raw values persisted.", "BHM is recorded as a header-like grain; expansion and measurement parent relation remain UNKNOWN."],
+  "verified_at": "2026-08-21T03:19:50.827228+00:00",
+  "scope": {"field": "siteid", "value": "BSR", "status": "PRIOR_LIVE_QUERY", "evidence": "MX-006R bounded BSR query plus detail field evidence"},
+  "detail_dereference": {"attempted": true, "collection_records": 1, "detail_records": 1, "maximum_dereference_depth": 1, "pagination_followed": false, "resource_path": "/maximo/oslc/os/ipbhm/<resource-id>", "http_status": 200, "status": "VERIFIED", "fields": ["lastmodifieddate", "createddate", "status", "description", "lastmodifiedby", "fungsi", "bhmid", "orgid", "prefixes", "assetnum", "revision", "status_description", "eid", "createdby", "siteid", "statusdate"], "field_types": {"lastmodifieddate": "datetime", "createddate": "datetime", "status": "string", "description": "string", "bhmid": "integer", "orgid": "string", "assetnum": "string", "revision": "integer", "eid": "string", "siteid": "string", "statusdate": "datetime"}, "metadata_fields": ["rdf:about", "_rowstamp"]},
+  "http_diagnostics": {}
+}

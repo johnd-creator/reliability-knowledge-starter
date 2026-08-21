@@ -1,0 +1,22 @@
+{
+  "system": "maximo",
+  "object_structure": "DOM_INSPEKSIMESIN",
+  "resource": "dominspeksimesin",
+  "status": "verified",
+  "access": "http_200",
+  "endpoint": "/oslc/os/DOM_INSPEKSIMESIN?_maxitems=1&oslc.where=siteid%3D%22BSR%22",
+  "primary_key": {"field": "dom_inspeksinum", "confidence": "CANDIDATE"},
+  "field_candidates": ["dom_inspeksinum", "dom_inspeksiid", "scopenum", "siteid"],
+  "important_fields": ["status", "dom_merktype_collectionref", "dom_scopeline", "dom_inspeksinum", "p2", "p3", "siklus", "dom_merktype", "pic", "r1", "r2", "p1", "r3", "durasi", "merktipe", "siteid", "pic_description", "description", "interval", "mesin", "satuanr1_description", "scopenum", "jenis_pembangkit_description", "prefixes", "jenis_pembangkit", "dom_scopeline_collectionref", "dom_inspeksiid", "satuanr2_description", "satuanp1_description", "satuanr1", "satuanr2", "satuanp1", "satuanr3_description", "satuanr3", "status_description", "satuanint", "satuanp2", "satuanp2_description", "satuanp3_description", "satuanp3"],
+  "field_types": {"status": "string", "dom_inspeksinum": "string", "p2": "integer", "p3": "integer", "siklus": "string", "r1": "integer", "r2": "integer", "p1": "integer", "r3": "integer", "durasi": "integer", "siteid": "string", "description": "string", "interval": "string", "mesin": "string", "scopenum": "string", "jenis_pembangkit": "string", "dom_inspeksiid": "integer", "satuanr1": "string", "satuanr2": "string", "satuanp1": "string", "satuanr3": "string", "satuanint": "string", "satuanp2": "string", "satuanp3": "string"},
+  "metadata_fields": ["_rowstamp", "rdf:about"],
+  "pagination": {"single_record_via": "same-origin resource href; no next page followed"},
+  "sample": {"status": "<string>", "dom_inspeksinum": "<string>", "p2": "<integer>", "p3": "<integer>", "siklus": "<string>", "r1": "<integer>", "r2": "<integer>", "p1": "<integer>", "r3": "<integer>", "siteid": "<string>", "description": "<string>", "scopenum": "<string>", "dom_inspeksiid": "<integer>"},
+  "use_cases": [],
+  "relationships": ["site: siteid (VERIFIED field evidence)", "status: status (VERIFIED field evidence)"],
+  "notes": ["MX-006B first bounded detail run: collection HTTP 200 plus one same-origin detail HTTP 200; no raw values persisted.", "Inspection finding/recommendation and OH/workorder joins are UNKNOWN; machine condition meaning is not inferred from the name."],
+  "verified_at": "2026-08-21T03:20:40.006056+00:00",
+  "scope": {"field": "siteid", "value": "BSR", "status": "PRIOR_LIVE_QUERY", "evidence": "MX-006R bounded BSR query plus detail field evidence"},
+  "detail_dereference": {"attempted": true, "collection_records": 1, "detail_records": 1, "maximum_dereference_depth": 1, "pagination_followed": false, "resource_path": "/maximo/oslc/os/dom_inspeksimesin/<resource-id>", "http_status": 200, "status": "VERIFIED", "fields": ["status", "dom_merktype_collectionref", "dom_scopeline", "dom_inspeksinum", "p2", "p3", "siklus", "dom_merktype", "pic", "r1", "r2", "p1", "r3", "durasi", "merktipe", "siteid", "pic_description", "description", "interval", "mesin", "satuanr1_description", "scopenum", "jenis_pembangkit_description", "prefixes", "jenis_pembangkit", "dom_scopeline_collectionref", "dom_inspeksiid", "satuanr2_description", "satuanp1_description", "satuanr1", "satuanr2", "satuanp1", "satuanr3_description", "satuanr3", "status_description", "satuanint", "satuanp2", "satuanp2_description", "satuanp3_description", "satuanp3"], "field_types": {"status": "string", "dom_inspeksinum": "string", "siteid": "string", "description": "string", "scopenum": "string", "dom_inspeksiid": "integer"}, "metadata_fields": ["_rowstamp", "rdf:about"]},
+  "http_diagnostics": {}
+}

@@ -1,10 +1,10 @@
 {
   "system": "maximo",
-  "object_structure": "MXAPIMETER",
-  "resource": "mxapimeter",
+  "object_structure": "IPRCFAFDT",
+  "resource": "iprcfafdt",
   "status": "documented",
   "access": "http_400",
-  "endpoint": "/oslc/os/MXAPIMETER?_maxitems=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+  "endpoint": "/oslc/os/IPRCFAFDT?_maxitems=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
   "primary_key": null,
   "field_candidates": [],
   "important_fields": [],

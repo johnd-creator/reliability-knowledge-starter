@@ -1,10 +1,10 @@
 {
   "system": "maximo",
-  "object_structure": "MXAPIMETER",
-  "resource": "mxapimeter",
+  "object_structure": "DMD_OPLOGABN",
+  "resource": "dmdoplogabn",
   "status": "documented",
-  "access": "http_400",
-  "endpoint": "/oslc/os/MXAPIMETER?_maxitems=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+  "access": "error",
+  "endpoint": "/oslc/os/DMD_OPLOGABN?_maxitems=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
   "primary_key": null,
   "field_candidates": [],
   "important_fields": [],
@@ -15,7 +15,7 @@
   "use_cases": [],
   "relationships": [],
   "notes": [
-    "describe GET returned HTTP 400",
+    "describe GET failed: response exceeded MAXIMO_MAX_RESPONSE_BYTES (1048576)",
     "catalog GET returned HTTP 400; using documented seed",
     "catalog selection used explicit MX-006B allowlisted targets"
   ],
@@ -33,11 +33,6 @@
     "maximum_dereference_depth": 1,
     "pagination_followed": false
   },
-  "http_diagnostics": {
-    "http_status": 400,
-    "maximo_error_code": null,
-    "reason": "HTTP 400; sanitized error detail unavailable",
-    "raw_response_saved": false
-  },
+  "http_diagnostics": {},
   "catalog_source": "seed-fallback"
 }
