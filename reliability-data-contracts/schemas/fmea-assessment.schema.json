@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reliability-data-contracts/schemas/fmea-assessment.schema.json",
+  "title": "NADI FMEA Assessment v1",
+  "type": "object",
+  "required": ["canonical_id", "contract_version", "provenance", "relationship_evidence"],
+  "properties": {
+    "canonical_id": {"type": "string"}, "contract_version": {"const": "1.0"},
+    "source_record_id": {"type": ["string", "null"]}, "source_number": {"type": ["string", "null"]}, "revision": {"type": ["string", "integer", "null"]},
+    "lifecycle_status": {"type": ["string", "null"]}, "description": {"type": ["string", "null"]}, "asset_ref": {"type": ["string", "null"]},
+    "failure_code_ref": {"type": ["string", "null"]}, "site_code": {"type": ["string", "null"]}, "organization_code": {"type": ["string", "null"]},
+    "source_updated_at": {"type": ["string", "null"], "format": "date-time"}, "status_changed_at": {"type": ["string", "null"], "format": "date-time"},
+    "provenance": {"$ref": "#/$defs/provenance"}, "relationship_evidence": {"$ref": "#/$defs/relationshipEvidence"}, "sources": {"$ref": "#/$defs/sources"}
+  },
+  "$defs": {
+    "provenance": {"type": "object", "required": ["source_system", "source_object", "source_record_id"], "properties": {"source_system": {"const": "MAXIMO"}, "source_application": {"type": ["string", "null"]}, "source_object": {"type": "string"}, "source_record_id": {"type": "string"}, "source_number": {"type": ["string", "null"]}, "source_site": {"type": ["string", "null"]}, "source_organization": {"type": ["string", "null"]}, "source_created_at": {"type": ["string", "null"]}, "source_updated_at": {"type": ["string", "null"]}, "ingested_at": {"type": ["string", "null"]}}, "additionalProperties": false},
+    "relationshipEvidence": {"type": "object", "additionalProperties": {"type": "object", "required": ["status"], "properties": {"status": {"enum": ["DIRECT_VERIFIED", "DERIVED_VERIFIED_PATH", "UNRESOLVED", "DEFERRED"]}, "path": {"type": "array", "items": {"type": "string"}}, "notes": {"type": "string"}}, "additionalProperties": false}},
+    "sources": {"type": "object", "properties": {"maximo": {"type": ["object", "null"], "properties": {"object_structure": {"const": "IPFMEA"}, "fmeaid": {"type": ["string", "integer", "null"]}, "fmeanum": {"type": ["string", "null"]}, "revision": {"type": ["string", "integer", "null"]}, "status": {"type": ["string", "null"]}, "description": {"type": ["string", "null"]}, "assetnum": {"type": ["string", "null"]}, "siteid": {"type": ["string", "null"]}, "orgid": {"type": ["string", "null"]}, "failurecode": {"type": ["string", "null"]}, "lastmodifieddate": {"type": ["string", "null"]}, "statusdate": {"type": ["string", "null"]}}, "additionalProperties": false}}, "additionalProperties": false}
+  }
+}
