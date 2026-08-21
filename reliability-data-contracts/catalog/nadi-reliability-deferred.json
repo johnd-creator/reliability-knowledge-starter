@@ -1,0 +1,9 @@
+{
+  "contract_version": "1.0",
+  "deferred_contracts": [
+    {"source_resource":"IPFMEAITEM","intended_domain":"FMEA failure-mode detail","blocker":"Business schema unresolved after bounded response-cap query shaping","known_evidence":"Resource reachable; no verified business fields committed","required_future_discovery":"One bounded detail contract read","expected_extension":"fmea_assessment failure-mode child records"},
+    {"source_resource":"IPBHMMEASUREMENT","intended_domain":"health / condition measurement","blocker":"Business schema unresolved after bounded response-cap query shaping","known_evidence":"Resource reachable; no verified measurement fields committed","required_future_discovery":"One bounded detail contract read","expected_extension":"condition_measurement linked to asset_health_assessment"},
+    {"source_resource":"DMD_OPLOGABN","intended_domain":"operator abnormal finding","blocker":"Bounded response exposed collection references only","known_evidence":"No sanitized asset/time business contract proven","required_future_discovery":"Safe structural projection or detail contract read","expected_extension":"condition_event or operational_finding linked to asset_master"},
+    {"source_resource":"IPMSMSFAILUREMECHANI","intended_domain":"failure mechanism taxonomy","blocker":"Business schema unresolved after bounded response-cap query shaping","known_evidence":"Resource reachable; distinction from FAILURECODE not proven","required_future_discovery":"One bounded taxonomy contract read","expected_extension":"failure mechanism reference for fmea_assessment/rcfa_analysis"}
+  ]
+}

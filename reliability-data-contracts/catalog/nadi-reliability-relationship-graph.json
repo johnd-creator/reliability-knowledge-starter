@@ -1,0 +1,13 @@
+{
+  "contract_version": "1.0",
+  "nodes": ["asset_master", "maintenance_event", "fmea_assessment", "rcfa_analysis", "asset_health_assessment", "overhaul_event"],
+  "edges": [
+    {"from":"fmea_assessment","to":"asset_master","field":"asset_ref","evidence":"DIRECT_VERIFIED"},
+    {"from":"asset_health_assessment","to":"asset_master","field":"asset_ref","evidence":"DIRECT_VERIFIED"},
+    {"from":"maintenance_event","to":"asset_master","field":"equipment_id","evidence":"DIRECT_VERIFIED"},
+    {"from":"overhaul_event","to":"maintenance_event","field":"workorder_ref","evidence":"DIRECT_VERIFIED","path":["IP_DOM_OH.wonum","MXWODETAIL.wonum"]},
+    {"from":"overhaul_event","to":"asset_master","field":"asset_ref","evidence":"DERIVED_VERIFIED_PATH","path":["IP_DOM_OH.wonum","MXWODETAIL.wonum","MXWODETAIL.assetnum","asset_master"]},
+    {"from":"rcfa_analysis","to":"asset_master","field":"asset_ref","evidence":"UNRESOLVED"},
+    {"from":"rcfa_analysis","to":"maintenance_event","field":"workorder_ref","evidence":"UNRESOLVED"}
+  ]
+}
