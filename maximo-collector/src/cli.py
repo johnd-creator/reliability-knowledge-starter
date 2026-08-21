@@ -471,6 +471,76 @@ def cmd_mart_load(args: argparse.Namespace) -> int:
     return 2 if result.stopped or failed else 0
 
 
+def _local_mart_database():
+    """Build the downstream writer DB without constructing a Maximo client."""
+    from src.services.local_mart_projector import mart_write_database
+
+    return mart_write_database()
+
+
+def cmd_mart_import_asset_registry(args: argparse.Namespace) -> int:
+    """Activate a validated local List of Assets snapshot in the Mart."""
+    from src.services.asset_registry_reconciliation import parse_registry_file
+    from src.services.local_mart_projector import import_registry_snapshot
+
+    registry_file = args.registry_file or os.environ.get("MAXIMO_ASSET_REGISTRY_FILE")
+    if not registry_file:
+        print(json.dumps({"status": "BLOCKED", "reason": "REGISTRY_FILE_REQUIRED"}, sort_keys=True))
+        return 2
+    try:
+        snapshot = parse_registry_file(registry_file)
+        result = import_registry_snapshot(
+            snapshot,
+            get_database(),
+            _local_mart_database(),
+            expected_sha256=args.expected_sha256,
+            dry_run=args.dry_run,
+        )
+    except Exception as error:
+        print(json.dumps({"status": "FAILED", "error": type(error).__name__}, sort_keys=True))
+        return 2
+    print(json.dumps({"status": "DRY_RUN" if args.dry_run else "COMPLETE", **result}, indent=2, sort_keys=True))
+    return 0
+
+
+def cmd_mart_project(args: argparse.Namespace) -> int:
+    """Project local Collector rows into the Mart; this command is LOCAL ONLY."""
+    from src.services.local_mart_projector import CollectorMartProjector
+
+    try:
+        projector = CollectorMartProjector(get_database(), _local_mart_database(), batch_size=args.batch_size)
+        result = projector.project_all(incremental=args.incremental)
+    except Exception as error:
+        print(json.dumps({"status": "FAILED", "error": type(error).__name__}, sort_keys=True))
+        return 2
+    print(json.dumps({"status": "COMPLETE", "mode": "incremental" if args.incremental else "full", **result}, indent=2, sort_keys=True))
+    return 0
+
+
+def cmd_mart_bootstrap(args: argparse.Namespace) -> int:
+    """Run one controlled zero-Maximo local Mart bootstrap."""
+    from src.services.local_mart_projector import bootstrap_local_mart
+
+    registry_file = args.registry_file or os.environ.get("MAXIMO_ASSET_REGISTRY_FILE")
+    if not registry_file:
+        print(json.dumps({"status": "BLOCKED", "reason": "REGISTRY_FILE_REQUIRED"}, sort_keys=True))
+        return 2
+    try:
+        result = bootstrap_local_mart(
+            registry_file,
+            get_database(),
+            _local_mart_database(),
+            expected_sha256=args.expected_sha256,
+            batch_size=args.batch_size,
+            dry_run=args.dry_run,
+        )
+    except Exception as error:
+        print(json.dumps({"status": "FAILED", "error": type(error).__name__}, sort_keys=True))
+        return 2
+    print(json.dumps({"status": "DRY_RUN" if args.dry_run else "COMPLETE", **result}, indent=2, sort_keys=True))
+    return 0
+
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p = argparse.ArgumentParser(prog="mxcollector", description=__doc__)
     sub = p.add_subparsers(dest="command", required=True)
@@ -569,6 +639,32 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     mart_load.add_argument("--entity", help="one allowlisted source alias for a controlled retry")
     mart_load.add_argument("--record-cap", type=int, help="bounded source-record override for --entity")
 
+    registry_import = sub.add_parser(
+        "mart-import-asset-registry",
+        help="LOCAL ONLY: activate a validated List of Assets registry snapshot",
+    )
+    registry_import.add_argument("--registry-file", help="external HTML-export .xls path")
+    registry_import.add_argument("--expected-sha256", help="optional one-time migration fingerprint check")
+    registry_import.add_argument("--dry-run", action="store_true")
+
+    mart_project = sub.add_parser(
+        "mart-project",
+        help="LOCAL ONLY: project Collector Equipment and Work Orders into the Mart",
+    )
+    mode = mart_project.add_mutually_exclusive_group()
+    mode.add_argument("--full", action="store_true", help="scan all local rows (default)")
+    mode.add_argument("--incremental", action="store_true", help="use local projection watermark with overlap")
+    mart_project.add_argument("--batch-size", type=int, default=500, choices=range(1, 5001))
+
+    bootstrap = sub.add_parser(
+        "mart-bootstrap",
+        help="LOCAL ONLY: project Collector data and activate the current registry",
+    )
+    bootstrap.add_argument("--registry-file", help="external HTML-export .xls path")
+    bootstrap.add_argument("--expected-sha256", required=True, help="one-time current snapshot fingerprint")
+    bootstrap.add_argument("--batch-size", type=int, default=500, choices=range(1, 5001))
+    bootstrap.add_argument("--dry-run", action="store_true")
+
     return p.parse_args(argv)
 
 
@@ -597,6 +693,12 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_reconcile_asset_registry(args)
     if args.command == "mart-load":
         return cmd_mart_load(args)
+    if args.command == "mart-import-asset-registry":
+        return cmd_mart_import_asset_registry(args)
+    if args.command == "mart-project":
+        return cmd_mart_project(args)
+    if args.command == "mart-bootstrap":
+        return cmd_mart_bootstrap(args)
     return 1
 
 

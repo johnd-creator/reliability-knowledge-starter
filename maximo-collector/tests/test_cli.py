@@ -108,6 +108,13 @@ class ProfilerSafetyCliTest(unittest.TestCase):
         args = parse_args(["reconcile-asset-registry", "--registry-file", "synthetic.xls"])
         self.assertEqual(args.registry_file, "synthetic.xls")
 
+    def test_local_mart_commands_are_explicit_and_bounded(self):
+        args = parse_args(["mart-project", "--incremental", "--batch-size", "500"])
+        self.assertTrue(args.incremental)
+        self.assertEqual(args.batch_size, 500)
+        args = parse_args(["mart-bootstrap", "--registry-file", "synthetic.xls", "--expected-sha256", "a" * 64])
+        self.assertEqual(args.expected_sha256, "a" * 64)
+
     def test_asset_baseline_continuation_budget_is_bounded(self):
         args = parse_args(["repair-asset-coverage", "--request-budget", "210"])
         self.assertEqual(args.request_budget, 210)

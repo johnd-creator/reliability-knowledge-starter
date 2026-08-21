@@ -81,7 +81,13 @@ export interface ContextView {
   rcfa_relationship_status: "UNRESOLVED";
   relationship_health: IntegrityView;
 }
-export interface IntegrityView { asset_refs_total: number; asset_refs_resolved: number; asset_refs_unresolved: number; workorder_refs_total: number; workorder_refs_resolved: number; workorder_refs_unresolved: number; }
+export interface IntegrityView {
+  asset_refs_total: number; asset_refs_resolved: number; asset_refs_unresolved: number;
+  workorder_refs_total: number; workorder_refs_resolved: number; workorder_refs_unresolved: number;
+  technical_asset_context_total: number; registered_assets_total: number; registered_assets_resolved: number;
+  registered_assets_unresolved: number; maintenance_registered_total: number;
+}
+export interface RegistryView { registered_asset_count: number; snapshot_sha256: string | null; snapshot_row_count: number | null; snapshot_imported_at: string | null; source: string; }
 
 export interface AssetFilters { status?: string; unit?: string; asset_type?: string; offset?: number; limit?: number; sort?: "updated_desc" | "updated_asc" | "status"; }
 export interface MaintenanceFilters { asset_ref?: string; work_order_id?: string; status?: string; event_type?: string; date_from?: string; date_to?: string; offset?: number; limit?: number; sort?: "date_desc" | "date_asc" | "status"; }
@@ -125,6 +131,7 @@ export const cockpitApi = {
 
 export const reliabilityApi = {
   assets: (filters: AssetFilters = {}) => get<Page<AssetView>>(`/v1/reliability/assets${query(filters)}`),
+  registry: () => get<RegistryView>("/v1/reliability/registry"),
   asset: (canonicalId: string) => get<AssetView>(`/v1/reliability/assets/${encodeURIComponent(canonicalId)}`),
   assetContext: (canonicalId: string) => get<ContextView>(`/v1/reliability/assets/${encodeURIComponent(canonicalId)}/context`),
   assetTimeline: (canonicalId: string, filters: AssetDetailPageFilters = {}) => get<Page<TimelineView>>(`/v1/reliability/assets/${encodeURIComponent(canonicalId)}/timeline${query(filters)}`),

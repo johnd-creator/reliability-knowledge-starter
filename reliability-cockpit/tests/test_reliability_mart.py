@@ -21,6 +21,7 @@ from src.repositories.mart_models import (
     MartBase,
     OverhaulEventMart,
     RcfaAnalysisMart,
+    ReliabilityAssetRegistryMart,
 )
 from src.repositories.mart_reader import MartQueryRepository
 from src.services.reliability import ReliabilityQueryService
@@ -29,6 +30,7 @@ from src.services.reliability import ReliabilityQueryService
 NOW = datetime(2026, 1, 15, 12, 0, tzinfo=timezone.utc)
 ASSET_A = "asset:MAXIMO:MXASSET:BSR:IP:ASSET-A"
 ASSET_B = "asset:MAXIMO:MXASSET:BSR:IP:ASSET-B"
+TECHNICAL_ASSET = "asset:MAXIMO:MXASSET:BSR:IP:TECHNICAL"
 
 
 def _common(canonical_id: str, entity: str) -> dict:
@@ -61,8 +63,12 @@ class ReliabilityMartReadTest(unittest.TestCase):
             session.add_all([
                 AssetMasterMart(**_common(ASSET_A, "MXASSET"), source_asset_number="ASSET-A", description="Synthetic asset A", status="OPERATING", asset_type="PUMP", unit="UNIT-A", source_updated_at=NOW),
                 AssetMasterMart(**_common(ASSET_B, "MXASSET"), source_asset_number="ASSET-B", description="Synthetic asset B", status="IDLE", asset_type="MOTOR", unit="UNIT-B", source_updated_at=NOW),
+                AssetMasterMart(**_common(TECHNICAL_ASSET, "MXASSET"), source_asset_number="TECHNICAL", description="Technical context", status="OPERATING", asset_type="COMPONENT", unit="UNIT-A", source_updated_at=NOW),
+                ReliabilityAssetRegistryMart(asset_ref=ASSET_A, source_asset_number="ASSET-A", site_code="BSR", organization_code="IP", registry_source="MAXIMO_LIST_OF_ASSETS", snapshot_sha256="a" * 64, snapshot_row_count=2, snapshot_imported_at=NOW),
+                ReliabilityAssetRegistryMart(asset_ref=ASSET_B, source_asset_number="ASSET-B", site_code="BSR", organization_code="IP", registry_source="MAXIMO_LIST_OF_ASSETS", snapshot_sha256="a" * 64, snapshot_row_count=2, snapshot_imported_at=NOW),
                 AssetMasterMart(**_common("asset:OTHER:OTHER", "MXASSET") | {"site_code": "OTHER", "organization_code": "OTHER", "source_asset_number": "OUTSIDE"}),
                 MaintenanceEventMart(**_common("maintenance:EVENT-A", "MXWODETAIL"), id="EVENT-A", equipment_id=ASSET_A, work_order_id="WO-REF-A", event_type="CORRECTIVE", status="COMPLETE", actual_start=NOW, actual_finish=NOW, source_changed_at=NOW),
+                MaintenanceEventMart(**_common("maintenance:EVENT-B", "MXWODETAIL"), id="EVENT-B", equipment_id=ASSET_B, work_order_id="WO-REF-B", event_type="PM", status="CAN", actual_start=None, actual_finish=None, source_changed_at=NOW),
                 FmeaAssessmentMart(**_common("fmea:FMEA-A", "IPFMEA"), source_record_id="FMEA-A", source_number="FMEA-N-A", revision="1", lifecycle_status="ACTIVE", description="Synthetic FMEA", asset_ref=ASSET_A, failure_code_ref="FC-A", source_updated_at=NOW, status_changed_at=NOW),
                 AssetHealthAssessmentMart(**_common("bhm:BHM-A", "IPBHM"), source_record_id="BHM-A", revision="1", lifecycle_status="ACTIVE", description="Synthetic health", function_description="Synthetic function", asset_ref=ASSET_A, source_created_at=NOW, source_updated_at=NOW, status_changed_at=NOW),
                 OverhaulEventMart(**_common("oh:OH-A", "IP_DOM_OH"), source_record_id="OH-A", source_number="OH-N-A", lifecycle_status="COMPLETE", workorder_ref="WO-REF-A", asset_ref=ASSET_A, planned_start_at=NOW, actual_start_at=NOW, progress=100, source_created_at=NOW, source_updated_at=NOW, unresolved_source_attributes={"performance_test": None}),
@@ -79,6 +85,7 @@ class ReliabilityMartReadTest(unittest.TestCase):
         self.assertEqual(len(page.items), 1)
         self.assertTrue(page.has_more)
         self.assertIsNone(self.repository.get_asset("asset:OTHER:OTHER"))
+        self.assertIsNone(self.repository.get_asset(TECHNICAL_ASSET))
 
     def test_entity_filters_and_latest_health(self):
         self.assertEqual(self.repository.list_maintenance(asset_ref=ASSET_A).total, 1)
@@ -104,12 +111,24 @@ class ReliabilityMartReadTest(unittest.TestCase):
 
     def test_integrity_counts_resolved_and_unresolved_logical_refs(self):
         result = self.repository.integrity_summary()
-        self.assertEqual(result["asset_refs_total"], 4)
-        self.assertEqual(result["asset_refs_resolved"], 4)
+        self.assertEqual(result["asset_refs_total"], 5)
+        self.assertEqual(result["asset_refs_resolved"], 5)
         self.assertEqual(result["asset_refs_unresolved"], 0)
         self.assertEqual(result["workorder_refs_total"], 2)
         self.assertEqual(result["workorder_refs_resolved"], 1)
         self.assertEqual(result["workorder_refs_unresolved"], 1)
+        self.assertEqual(result["registered_assets_total"], 2)
+        self.assertEqual(result["registered_assets_resolved"], 2)
+        self.assertEqual(result["maintenance_registered_total"], 2)
+
+    def test_maintenance_date_filter_falls_back_to_source_changed_at(self):
+        self.assertEqual(self.repository.list_maintenance(date_from=NOW).total, 2)
+
+    def test_registry_summary_is_aggregate_only(self):
+        result = self.repository.registry_summary()
+        self.assertEqual(result["registered_asset_count"], 2)
+        self.assertEqual(result["snapshot_row_count"], 2)
+        self.assertNotIn("asset_ref", result)
 
     def test_work_order_reference_uses_scoped_work_order_field(self):
         rows = self.repository.list_maintenance(work_order_id="WO-REF-A").items
@@ -172,6 +191,13 @@ class ReliabilityMartApiTest(unittest.TestCase):
         body = reliability_api.integrity(service=self.service).model_dump()
         self.assertEqual(body["workorder_refs_unresolved"], 1)
         self.assertNotIn("canonical_id", body)
+        with self.assertRaises(HTTPException) as technical_error:
+            reliability_api.get_asset(TECHNICAL_ASSET, service=self.service)
+        self.assertEqual(technical_error.exception.status_code, 404)
+
+    def test_registry_endpoint_is_available(self):
+        body = reliability_api.registry(service=self.service)
+        self.assertEqual(body.registered_asset_count, 2)
 
 
 if __name__ == "__main__":

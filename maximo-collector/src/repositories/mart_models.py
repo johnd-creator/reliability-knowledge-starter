@@ -198,6 +198,39 @@ class OverhaulEventMartOrm(Base):
     mart_updated_at: Mapped[datetime] = mapped_column(MartDateTime(), nullable=False, default=_utc_now)
 
 
+class ReliabilityAssetRegistryMartOrm(Base):
+    """Current business Asset registry projection.
+
+    This is deliberately a soft logical relation to ``asset_master``.  The
+    registry is a business projection, not another Contract v1 source entity.
+    """
+
+    __tablename__ = "reliability_asset_registry"
+
+    asset_ref: Mapped[str] = mapped_column(String(200), primary_key=True)
+    source_asset_number: Mapped[str] = mapped_column(String(160), nullable=False, index=True)
+    site_code: Mapped[str] = mapped_column(String(40), nullable=False, index=True)
+    organization_code: Mapped[str] = mapped_column(String(40), nullable=False, index=True)
+    registry_source: Mapped[str] = mapped_column(String(120), nullable=False)
+    snapshot_sha256: Mapped[str] = mapped_column(String(64), nullable=False)
+    snapshot_row_count: Mapped[int] = mapped_column(Integer, nullable=False)
+    snapshot_imported_at: Mapped[datetime] = mapped_column(MartDateTime(), nullable=False)
+
+
+class MartProjectionStateOrm(Base):
+    """Downstream local projection state, distinct from Maximo SyncCursor."""
+
+    __tablename__ = "mart_projection_state"
+
+    projection_key: Mapped[str] = mapped_column(String(80), primary_key=True)
+    watermark: Mapped[datetime | None] = mapped_column(MartDateTime())
+    last_status: Mapped[str] = mapped_column(String(30), nullable=False)
+    last_success_at: Mapped[datetime | None] = mapped_column(MartDateTime())
+    rows_seen: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    rows_written: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    updated_at: Mapped[datetime] = mapped_column(MartDateTime(), nullable=False, default=_utc_now)
+
+
 # Explicit composite indexes make the main logical join paths obvious in the
 # schema, while the single-column indexes above support entity-local filters.
 Index("ix_asset_master_scope_asset", AssetMasterMartOrm.site_code, AssetMasterMartOrm.organization_code, AssetMasterMartOrm.source_asset_number)

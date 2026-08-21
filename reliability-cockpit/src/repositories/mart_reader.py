@@ -15,6 +15,7 @@ from src.repositories.mart_models import (
     MaintenanceEventMart,
     OverhaulEventMart,
     RcfaAnalysisMart,
+    ReliabilityAssetRegistryMart,
 )
 from src.repositories.mart_database import MartDatabase
 
@@ -74,7 +75,15 @@ class MartQueryRepository:
         limit: int = 50,
         sort: str = "updated_desc",
     ) -> QueryPage:
-        statement = self._scope(select(AssetMasterMart), AssetMasterMart)
+        statement = self._scope(
+            select(AssetMasterMart)
+            .join(ReliabilityAssetRegistryMart, ReliabilityAssetRegistryMart.asset_ref == AssetMasterMart.canonical_id)
+            .where(
+                ReliabilityAssetRegistryMart.site_code == SITE_CODE,
+                ReliabilityAssetRegistryMart.organization_code == ORGANIZATION_CODE,
+            ),
+            AssetMasterMart,
+        )
         if status:
             statement = statement.where(AssetMasterMart.status == status)
         if unit:
@@ -90,7 +99,13 @@ class MartQueryRepository:
 
     def get_asset(self, canonical_id: str) -> AssetMasterMart | None:
         statement = self._scope(
-            select(AssetMasterMart).where(AssetMasterMart.canonical_id == canonical_id),
+            select(AssetMasterMart)
+            .join(ReliabilityAssetRegistryMart, ReliabilityAssetRegistryMart.asset_ref == AssetMasterMart.canonical_id)
+            .where(
+                AssetMasterMart.canonical_id == canonical_id,
+                ReliabilityAssetRegistryMart.site_code == SITE_CODE,
+                ReliabilityAssetRegistryMart.organization_code == ORGANIZATION_CODE,
+            ),
             AssetMasterMart,
         )
         with self.database.read_session() as session:
@@ -109,7 +124,15 @@ class MartQueryRepository:
         limit: int = 50,
         sort: str = "date_desc",
     ) -> QueryPage:
-        statement = self._scope(select(MaintenanceEventMart), MaintenanceEventMart)
+        statement = self._scope(
+            select(MaintenanceEventMart)
+            .join(ReliabilityAssetRegistryMart, ReliabilityAssetRegistryMart.asset_ref == MaintenanceEventMart.equipment_id)
+            .where(
+                ReliabilityAssetRegistryMart.site_code == SITE_CODE,
+                ReliabilityAssetRegistryMart.organization_code == ORGANIZATION_CODE,
+            ),
+            MaintenanceEventMart,
+        )
         if asset_ref:
             statement = statement.where(MaintenanceEventMart.equipment_id == asset_ref)
         if work_order_id:
@@ -118,11 +141,12 @@ class MartQueryRepository:
             statement = statement.where(MaintenanceEventMart.status == status)
         if event_type:
             statement = statement.where(MaintenanceEventMart.event_type == event_type)
+        date_column = func.coalesce(MaintenanceEventMart.actual_start, MaintenanceEventMart.source_changed_at)
         if date_from:
-            statement = statement.where(MaintenanceEventMart.actual_start >= date_from)
+            statement = statement.where(date_column >= date_from)
         if date_to:
-            statement = statement.where(MaintenanceEventMart.actual_start <= date_to)
-        column = MaintenanceEventMart.status if sort == "status" else MaintenanceEventMart.actual_start
+            statement = statement.where(date_column <= date_to)
+        column = MaintenanceEventMart.status if sort == "status" else date_column
         statement = self._sort(statement, column, sort not in {"date_asc"})
         with self.database.read_session() as session:
             return _page(session, statement, offset, limit)
@@ -256,6 +280,26 @@ class MartQueryRepository:
 
     def integrity_summary(self) -> dict[str, int]:
         with self.database.read_session() as session:
+            technical_asset_total = session.scalar(select(func.count(AssetMasterMart.canonical_id)).where(
+                AssetMasterMart.site_code == SITE_CODE,
+                AssetMasterMart.organization_code == ORGANIZATION_CODE,
+            )) or 0
+            registered_total = session.scalar(select(func.count(ReliabilityAssetRegistryMart.asset_ref)).where(
+                ReliabilityAssetRegistryMart.site_code == SITE_CODE,
+                ReliabilityAssetRegistryMart.organization_code == ORGANIZATION_CODE,
+            )) or 0
+            registered_resolved = session.scalar(select(func.count(ReliabilityAssetRegistryMart.asset_ref)).join(
+                AssetMasterMart, ReliabilityAssetRegistryMart.asset_ref == AssetMasterMart.canonical_id
+            ).where(
+                ReliabilityAssetRegistryMart.site_code == SITE_CODE,
+                ReliabilityAssetRegistryMart.organization_code == ORGANIZATION_CODE,
+            )) or 0
+            maintenance_registered_total = session.scalar(select(func.count(MaintenanceEventMart.canonical_id)).join(
+                ReliabilityAssetRegistryMart, ReliabilityAssetRegistryMart.asset_ref == MaintenanceEventMart.equipment_id
+            ).where(
+                MaintenanceEventMart.site_code == SITE_CODE,
+                MaintenanceEventMart.organization_code == ORGANIZATION_CODE,
+            )) or 0
             asset_total = session.scalar(select(func.count(FmeaAssessmentMart.canonical_id)).where(
                 FmeaAssessmentMart.site_code == SITE_CODE,
                 FmeaAssessmentMart.organization_code == ORGANIZATION_CODE,
@@ -323,4 +367,30 @@ class MartQueryRepository:
             "workorder_refs_total": int(work_total),
             "workorder_refs_resolved": int(work_resolved),
             "workorder_refs_unresolved": int(work_total - work_resolved),
+            "technical_asset_context_total": int(technical_asset_total),
+            "registered_assets_total": int(registered_total),
+            "registered_assets_resolved": int(registered_resolved),
+            "registered_assets_unresolved": int(registered_total - registered_resolved),
+            "maintenance_registered_total": int(maintenance_registered_total),
+        }
+
+    def registry_summary(self) -> dict[str, object]:
+        with self.database.read_session() as session:
+            row = session.execute(
+                select(
+                    func.count(ReliabilityAssetRegistryMart.asset_ref),
+                    func.max(ReliabilityAssetRegistryMart.snapshot_sha256),
+                    func.max(ReliabilityAssetRegistryMart.snapshot_row_count),
+                    func.max(ReliabilityAssetRegistryMart.snapshot_imported_at),
+                ).where(
+                    ReliabilityAssetRegistryMart.site_code == SITE_CODE,
+                    ReliabilityAssetRegistryMart.organization_code == ORGANIZATION_CODE,
+                )
+            ).one()
+        return {
+            "registered_asset_count": int(row[0] or 0),
+            "snapshot_sha256": row[1],
+            "snapshot_row_count": row[2],
+            "snapshot_imported_at": row[3],
+            "source": "MAXIMO_LIST_OF_ASSETS",
         }

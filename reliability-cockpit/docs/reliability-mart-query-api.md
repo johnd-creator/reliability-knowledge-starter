@@ -1,9 +1,10 @@
 # NADI Reliability Mart Query API v1
 
 MX-010R adds a read-only, vendor-neutral query surface to the existing
-Reliability Cockpit FastAPI application. It reads the six canonical Mart
-tables created by MX-009R; it does not call Maximo, start a collector, or copy
-Mart data into the legacy Cockpit store.
+Reliability Cockpit FastAPI application. MX-012R keeps the six canonical Mart
+tables and adds the current `reliability_asset_registry` projection; it does
+not call Maximo, start a collector, or copy Mart data into the legacy Cockpit
+store.
 
 ## Architecture and database boundary
 
@@ -34,6 +35,7 @@ All routes are GET-only and use canonical reliability concepts:
 | Route | Purpose |
 | --- | --- |
 | `GET /v1/reliability/assets` | Bounded asset list with status, unit, and type filters |
+| `GET /v1/reliability/registry` | Aggregate current Registry snapshot metadata |
 | `GET /v1/reliability/assets/{canonical_id}` | Asset detail |
 | `GET /v1/reliability/assets/{canonical_id}/context` | Bounded asset context: maintenance, FMEA, health, and overhaul |
 | `GET /v1/reliability/assets/{canonical_id}/fmea` | Paginated FMEA assessments for an asset |
@@ -57,6 +59,12 @@ The reader applies `site_code = BSR` and `organization_code = IP` in every
 query. Public site and organization parameters, where present, are literal
 validated values and cannot be used to request another site. This is defense
 in depth after the Collector and Mart writer scope guards.
+
+Normal `/assets` and global Maintenance views join the current Registry
+relation. Technical `asset_master` rows outside that relation remain Mart
+context and are not normal NADI Assets. Maintenance date filters and sorting
+use `COALESCE(actual_start, source_changed_at)` because local Collector history
+may not retain actual start timestamps.
 
 Normal product DTOs expose canonical fields, scope, contract version, and
 selected source timestamps. They do not expose `sources.maximo`, full

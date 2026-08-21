@@ -146,12 +146,25 @@ class TimelineView(BaseModel):
 
 
 class IntegrityView(BaseModel):
-    asset_refs_total: int
-    asset_refs_resolved: int
-    asset_refs_unresolved: int
-    workorder_refs_total: int
-    workorder_refs_resolved: int
-    workorder_refs_unresolved: int
+    asset_refs_total: int = 0
+    asset_refs_resolved: int = 0
+    asset_refs_unresolved: int = 0
+    workorder_refs_total: int = 0
+    workorder_refs_resolved: int = 0
+    workorder_refs_unresolved: int = 0
+    technical_asset_context_total: int = 0
+    registered_assets_total: int = 0
+    registered_assets_resolved: int = 0
+    registered_assets_unresolved: int = 0
+    maintenance_registered_total: int = 0
+
+
+class RegistryView(BaseModel):
+    registered_asset_count: int
+    snapshot_sha256: str | None = None
+    snapshot_row_count: int | None = None
+    snapshot_imported_at: datetime | None = None
+    source: str
 
 
 class ContextView(BaseModel):
@@ -229,6 +242,11 @@ def list_assets(
 ):
     page = service.repository.list_assets(status=status, unit=unit, asset_type=asset_type, offset=offset, limit=limit, sort=sort)
     return _page(page, _asset)
+
+
+@router.get("/registry", response_model=RegistryView, summary="Current registered Reliability Asset snapshot")
+def registry(service: ReliabilityQueryService = Depends(_service)) -> RegistryView:
+    return RegistryView(**service.repository.registry_summary())
 
 
 @router.get("/assets/{canonical_id}", response_model=AssetView)

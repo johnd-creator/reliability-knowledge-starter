@@ -26,16 +26,16 @@ export default function HomePage() {
   useEffect(() => {
     let cancelled = false;
     Promise.all([
-      reliabilityApi.assets({ limit: 1 }),
+      reliabilityApi.registry(),
       reliabilityApi.maintenance({ limit: 5 }),
       reliabilityApi.fmea({ limit: 5 }),
       reliabilityApi.rcfa({ limit: 1 }),
       reliabilityApi.assetHealth({ limit: 5 }),
       reliabilityApi.overhauls({ limit: 1 }),
       reliabilityApi.integrity(),
-    ]).then(([assets, maintenance, fmea, rcfa, health, overhauls, integrity]) => {
+    ]).then(([registry, maintenance, fmea, rcfa, health, overhauls, integrity]) => {
       if (cancelled) return;
-      setData({ assets: assets.meta.total, maintenance: maintenance.meta.total, fmea: fmea.meta.total, rcfa: rcfa.meta.total, health: health.meta.total, overhauls: overhauls.meta.total, integrity, recentMaintenance: maintenance, recentFmea: fmea, recentHealth: health });
+      setData({ assets: registry.registered_asset_count, maintenance: maintenance.meta.total, fmea: fmea.meta.total, rcfa: rcfa.meta.total, health: health.meta.total, overhauls: overhauls.meta.total, integrity, recentMaintenance: maintenance, recentFmea: fmea, recentHealth: health });
       setError(null);
     }).catch((reason: unknown) => {
       if (!cancelled) setError(reason instanceof Error ? reason.message : "Reliability Mart unavailable");
@@ -51,8 +51,8 @@ export default function HomePage() {
       {!loading && error && <ErrorState message={error} />}
       {!loading && !error && data && <>
         <section className="stat-grid overview-stat-grid">
-          <StatCard label="Assets" value={formatNumber(data.assets)} detail="Available in Reliability Mart" tone="accent" />
-          <StatCard label="Maintenance events" value={formatNumber(data.maintenance)} detail="Current controlled dataset" />
+          <StatCard label="Registered Reliability Assets" value={formatNumber(data.assets)} detail="Current List of Assets projection" tone="accent" />
+          <StatCard label="Maintenance events" value={formatNumber(data.maintenance)} detail="Local Collector projection; registry-scoped" />
           <StatCard label="FMEA assessments" value={formatNumber(data.fmea)} detail="Canonical reliability records" />
           <StatCard label="RCFA analyses" value={formatNumber(data.rcfa)} detail="Canonical reliability records" />
           <StatCard label="Asset health" value={formatNumber(data.health)} detail="Current controlled dataset" />
@@ -70,14 +70,14 @@ export default function HomePage() {
           </SectionCard>
           <SectionCard className="controlled-card">
             <p className="eyebrow">How to read this view</p><h2>Controlled dataset</h2>
-            <p>This is an initial controlled dataset. Most source collections were capped, so these counts describe what is currently in the Mart—not complete plant history.</p>
+            <p>Asset and Maintenance views are projected from the local Maximo Collector. FMEA, RCFA, Asset Health, and Overhaul remain within their current controlled Mart population.</p>
             <div className="controlled-line"><span className="pulse-dot" /><strong>Factual Mart information first</strong></div>
             <p className="section-note">Reliability analytics such as MTBF, MTTR, and health scores are intentionally not presented here yet.</p>
           </SectionCard>
         </div>
 
         <div className="overview-grid recent-grid">
-          <SectionCard><div className="section-heading"><div><p className="eyebrow">Latest records</p><h2>Maintenance</h2></div><a href="/maintenance" className="text-link">View all →</a></div><TableFrame minWidth={680}><table><thead><tr><th>Work order</th><th>Event</th><th>Status</th><th>Start</th></tr></thead><tbody>{data.recentMaintenance.items.map((row) => <tr key={row.canonical_id}><td><Identifier value={row.work_order_id ?? row.id} /></td><td>{row.event_type ?? "—"}</td><td><StatusBadge value={row.status} /></td><td>{formatDate(row.actual_start)}</td></tr>)}</tbody></table></TableFrame>{data.recentMaintenance.items.length === 0 && <EmptyState />}</SectionCard>
+          <SectionCard><div className="section-heading"><div><p className="eyebrow">Latest records</p><h2>Maintenance</h2></div><a href="/maintenance" className="text-link">View all →</a></div><TableFrame minWidth={680}><table><thead><tr><th>Work order</th><th>Event</th><th>Status</th><th>Start / changed</th></tr></thead><tbody>{data.recentMaintenance.items.map((row) => <tr key={row.canonical_id}><td><Identifier value={row.work_order_id ?? row.id} /></td><td>{row.event_type ?? "—"}</td><td><StatusBadge value={row.status} /></td><td>{formatDate(row.actual_start ?? row.source_changed_at)}</td></tr>)}</tbody></table></TableFrame>{data.recentMaintenance.items.length === 0 && <EmptyState />}</SectionCard>
           <SectionCard><div className="section-heading"><div><p className="eyebrow">Latest records</p><h2>FMEA & asset health</h2></div><span className="muted-label">Canonical views</span></div><div className="mini-record-list">{data.recentFmea.items.slice(0, 3).map((row) => <div className="mini-record" key={row.canonical_id}><span className="record-type">FMEA</span><div><strong>{row.source_number ?? row.source_record_id ?? "Assessment"}</strong><small>{row.description ?? "No description"}</small></div><StatusBadge value={row.lifecycle_status} /></div>)}{data.recentHealth.items.slice(0, 2).map((row) => <div className="mini-record" key={row.canonical_id}><span className="record-type health">Asset Health</span><div><strong>{row.source_record_id ?? "Assessment"}</strong><small>{row.function_description ?? row.description ?? "No description"}</small></div><StatusBadge value={row.lifecycle_status} /></div>)}{data.recentFmea.items.length === 0 && data.recentHealth.items.length === 0 && <EmptyState />}</div></SectionCard>
         </div>
       </>}

@@ -51,6 +51,27 @@ tabs show only relationships resolved to the selected Asset in the current
 Mart. Empty Maintenance, FMEA, Asset Health, or Overhaul states are factual
 and do not imply that the source system has no corresponding history.
 
+## MX-012R local projection
+
+NADI Asset Reliability is scoped to the current `reliability_asset_registry`
+projection. The technical `asset_master` table remains available to the Mart
+as relationship context, but its larger count is not presented as the NADI
+business Asset population.
+
+Maintenance is likewise Registry-scoped in normal NADI views. Its date query
+uses the actual start when available and falls back to `source_changed_at` for
+local Collector history whose optional actual timestamps were not retained.
+
+MX-012R does not alter FMEA, RCFA, Asset Health, or Overhaul source semantics.
+RCFA remains independent because its Asset relationship is unresolved. An
+Overhaul with no resolved Asset remains visible globally but is not attached to
+an Asset workspace.
+
+The current Mart is mixed maturity: Asset and Maintenance are local Collector
+projections, while other reliability domains remain within their controlled
+Mart population. This is disclosed in the Overview and is not a claim of
+complete plant history.
+
 ## Future extension points
 
 The workspace can later add verified PI/DCS condition trends and other

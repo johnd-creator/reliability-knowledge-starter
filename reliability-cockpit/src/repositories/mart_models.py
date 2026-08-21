@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from sqlalchemy import DateTime, Float, JSON, String, Text
+from sqlalchemy import DateTime, Float, Integer, JSON, String, Text
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
@@ -169,3 +169,18 @@ class OverhaulEventMart(MartBase):
     sources: Mapped[dict | None] = mapped_column(_json)
     mart_created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     mart_updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+
+class ReliabilityAssetRegistryMart(MartBase):
+    """Read-only mapping of the current business Asset registry projection."""
+
+    __tablename__ = "reliability_asset_registry"
+
+    asset_ref: Mapped[str] = mapped_column(String(200), primary_key=True)
+    source_asset_number: Mapped[str] = mapped_column(String(160), nullable=False)
+    site_code: Mapped[str] = mapped_column(String(40), nullable=False)
+    organization_code: Mapped[str] = mapped_column(String(40), nullable=False)
+    registry_source: Mapped[str] = mapped_column(String(120), nullable=False)
+    snapshot_sha256: Mapped[str] = mapped_column(String(64), nullable=False)
+    snapshot_row_count: Mapped[int] = mapped_column(Integer, nullable=False)
+    snapshot_imported_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
