@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import tempfile
 import unittest
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from src.services.asset_registry_reconciliation import (
@@ -16,6 +16,7 @@ from src.services.asset_registry_reconciliation import (
     WorkOrderSnapshot,
     parse_registry_file,
     reconcile_registry,
+    verify_missing_registry_sample,
 )
 
 
@@ -117,6 +118,46 @@ class ReconciliationTest(unittest.TestCase):
         self.assertNotIn("REG-A", rendered)
         self.assertNotIn("CHILD-1", rendered)
         self.assertNotIn("MISSING", rendered)
+
+    def test_bounded_source_verification_is_deterministic_and_aggregate_only(self):
+        class FakeClient:
+            request_telemetry = {"business_requests": 2, "status_counts": {"200": 1, "404": 1}}
+
+            def iterate(self, object_structure, **kwargs):
+                if object_structure == "mxapiasset":
+                    yield {"assetnum": "SYNTHETIC-ONLY"}
+
+        result = verify_missing_registry_sample(
+            self.registry.records,
+            {"REG-A"},
+            FakeClient(),
+            sample_size=1,
+        )
+        self.assertTrue(result["executed"])
+        self.assertEqual(result["sample_size"], 1)
+        self.assertEqual(result["found_in_mxapiasset"], 1)
+        self.assertEqual(result["found_in_mxasset"], 0)
+        self.assertNotIn("REG-A", str(result))
+
+    def test_work_order_age_buckets_are_aggregate(self):
+        latest = datetime(2026, 8, 20, tzinfo=timezone.utc)
+        dated = tuple(
+            WorkOrderSnapshot("REG-A", latest - timedelta(days=days))
+            for days in (0, 30, 31, 45, 180, 700, 1500)
+        )
+        local = LocalReconciliationInput(
+            equipment=self.equipment,
+            work_orders=dated,
+            mart_assets=self.local.mart_assets,
+            mart_maintenance=self.local.mart_maintenance,
+        )
+        report = reconcile_registry(self.registry, local)
+        buckets = report["work_order_relationships"]["age_buckets"]["buckets"]
+        self.assertEqual(buckets["0-30_days"]["total"], 2)
+        self.assertEqual(buckets["31-90_days"]["total"], 2)
+        self.assertEqual(buckets["91-365_days"]["total"], 1)
+        self.assertEqual(buckets["1-3_years"]["total"], 1)
+        self.assertEqual(buckets["over_3_years"]["total"], 1)
 
 
 if __name__ == "__main__":

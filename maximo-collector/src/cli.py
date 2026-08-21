@@ -315,14 +315,35 @@ def cmd_profile_workorders(args: argparse.Namespace) -> int:
 
 def cmd_reconcile_asset_registry(args: argparse.Namespace) -> int:
     """Reconcile a local List of Assets export with local Collector/Mart data."""
-    from src.services.asset_registry_reconciliation import reconcile_registry_file
+    from src.services.asset_registry_reconciliation import (
+        load_local_reconciliation_input,
+        parse_registry_file,
+        reconcile_registry,
+        verify_missing_registry_sample,
+    )
 
     registry_file = args.registry_file or os.environ.get("MAXIMO_ASSET_REGISTRY_FILE")
     if not registry_file:
         print(json.dumps({"error": "REGISTRY_FILE_REQUIRED"}, sort_keys=True))
         return 2
     try:
-        result = reconcile_registry_file(registry_file, get_database())
+        registry = parse_registry_file(registry_file)
+        local = load_local_reconciliation_input(get_database())
+        result = reconcile_registry(registry, local)
+        if getattr(args, "verify_missing", False):
+            from src.adapters.maximo.auth import MaximoAuth
+            from src.adapters.maximo.oslc_client import OslcClient
+
+            config = MaximoConfig.from_environment()
+            client = OslcClient(config, MaximoAuth(config), request_budget=20)
+            result["optional_maximo_verification"] = verify_missing_registry_sample(
+                registry.records,
+                {row.id for row in local.equipment},
+                client,
+                sample_size=args.sample_size,
+            )
+        else:
+            result["optional_maximo_verification"] = {"executed": False}
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0
     except Exception as error:  # aggregate-only command; never echo file/row values
@@ -449,6 +470,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--registry-file",
         help="local HTML-export .xls path; defaults to MAXIMO_ASSET_REGISTRY_FILE",
     )
+    reconcile.add_argument(
+        "--verify-missing",
+        action="store_true",
+        help="perform one bounded GET-only sample against MXAPIASSET and MXASSET",
+    )
+    reconcile.add_argument("--sample-size", type=int, default=10, choices=range(1, 11))
 
     mart_load = sub.add_parser(
         "mart-load",
