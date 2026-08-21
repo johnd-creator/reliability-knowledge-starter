@@ -131,6 +131,13 @@ class CanonicalCollectorTest(unittest.TestCase):
         self.assertEqual(client.calls[0][1]["where"], 'siteid="BSR"')
         self.assertEqual(client.calls[0][1]["required_scope"], 'siteid="BSR"')
 
+    def test_smoke_limit_bounds_records_and_pages(self):
+        client = FakeCanonicalClient({"iprcfa": [RCFA, RCFA]})
+        result = CanonicalCollector(client).collect_rcfa(max_records=1)
+        self.assertEqual(result.stats.source_records_read, 1)
+        self.assertEqual(result.stats.canonical_records_emitted, 1)
+        self.assertEqual(client.calls[0][1]["max_pages"], 1)
+
     def test_overhaul_resolution_uses_existing_records_without_extra_client_call(self):
         client = FakeCanonicalClient({"ip_dom_oh": [OVERHAUL]})
         workorder = maintenance_event_from_payload(WORK_ORDER)

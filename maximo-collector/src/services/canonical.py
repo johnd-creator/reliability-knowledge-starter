@@ -111,7 +111,15 @@ class CanonicalCollector:
         # implementation's required identity/relationship semantics.
         assert_mapping_contract()
 
-    def collect(self, name: str, *, workorder_index: Mapping[str, Mapping[str, Any]] | None = None) -> CanonicalCollection:
+    def collect(
+        self,
+        name: str,
+        *,
+        workorder_index: Mapping[str, Mapping[str, Any]] | None = None,
+        max_records: int | None = None,
+    ) -> CanonicalCollection:
+        if max_records is not None and max_records < 1:
+            raise ValueError("canonical max_records must be at least 1")
         config = canonical_config_for(name, self._runtime_config)
         result = CanonicalCollection(config.canonical_entity)
         for raw in self._client.iterate(
@@ -121,9 +129,11 @@ class CanonicalCollector:
             select=list(config.select),
             order_by=config.order_by,
             page_size=config.page_size,
-            max_pages=config.max_pages,
+            max_pages=1 if max_records is not None else config.max_pages,
             identity_field=config.prefix_field,
         ):
+            if max_records is not None and result.stats.source_records_read >= max_records:
+                break
             result.stats.source_records_read += 1
             if config.required_values and any(
                 str(raw.get(key) or "").strip().upper() != value.upper()
@@ -155,30 +165,37 @@ class CanonicalCollector:
                 continue
             result.records.append(record)
             result.stats.canonical_records_emitted += 1
+            if max_records is not None and result.stats.canonical_records_emitted >= max_records:
+                break
         return result
 
-    def collect_assets(self) -> CanonicalCollection:
-        return self.collect("mxasset")
+    def collect_assets(self, *, max_records: int | None = None) -> CanonicalCollection:
+        return self.collect("mxasset", max_records=max_records)
 
-    def collect_workorders(self) -> CanonicalCollection:
-        return self.collect("mxwodetail")
+    def collect_workorders(self, *, max_records: int | None = None) -> CanonicalCollection:
+        return self.collect("mxwodetail", max_records=max_records)
 
-    def collect_fmea(self) -> CanonicalCollection:
-        return self.collect("ipfmea")
+    def collect_fmea(self, *, max_records: int | None = None) -> CanonicalCollection:
+        return self.collect("ipfmea", max_records=max_records)
 
-    def collect_rcfa(self) -> CanonicalCollection:
-        return self.collect("iprcfa")
+    def collect_rcfa(self, *, max_records: int | None = None) -> CanonicalCollection:
+        return self.collect("iprcfa", max_records=max_records)
 
-    def collect_bhm(self) -> CanonicalCollection:
-        return self.collect("ipbhm")
+    def collect_bhm(self, *, max_records: int | None = None) -> CanonicalCollection:
+        return self.collect("ipbhm", max_records=max_records)
 
-    def collect_overhauls(self, workorder_records: list[Mapping[str, Any]] | None = None) -> CanonicalCollection:
+    def collect_overhauls(
+        self,
+        workorder_records: list[Mapping[str, Any]] | None = None,
+        *,
+        max_records: int | None = None,
+    ) -> CanonicalCollection:
         index = {
             str(record.get("provenance", {}).get("source_record_id")): record
             for record in (workorder_records or [])
             if record.get("provenance", {}).get("source_record_id")
         }
-        return self.collect("ip_dom_oh", workorder_index=index)
+        return self.collect("ip_dom_oh", workorder_index=index, max_records=max_records)
 
     def collect_all(self) -> dict[str, CanonicalCollection]:
         workorders = self.collect_workorders()
