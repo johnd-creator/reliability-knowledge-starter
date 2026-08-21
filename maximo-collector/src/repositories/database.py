@@ -29,6 +29,7 @@ class Database:
 
     def create_all(self) -> None:
         from src.repositories import models  # noqa: F401  (register tables)
+        from src.repositories import mart_models  # noqa: F401  (register Mart tables)
 
         Base.metadata.create_all(self._engine)
         LOG.info("maximo-collector local tables created (Postgres)")
