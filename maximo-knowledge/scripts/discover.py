@@ -58,6 +58,58 @@ PERSONAL_KEY = re.compile(
     re.IGNORECASE,
 )
 
+RESOURCE_LINK_KEYS = ("rdf:resource", "href", "resource", "@id")
+MAXIMO_BUSINESS_NAMESPACES = frozenset({"spi"})
+NAMESPACE_METADATA_NAMESPACES = frozenset({"rdf", "oslc", "dcterms", "rdfs"})
+DEFAULT_SITE_ID = "BSR"
+DEFAULT_ORG_ID = "IP"
+
+# These clauses are not inferred from the object names. They are the exact
+# BSR-scoped query shape used by MX-006R for the listed resources. Keeping the
+# allowlist explicit prevents this discovery tool from trying arbitrary scope
+# fields against production. A detail contract records this provenance as
+# PRIOR_LIVE_QUERY until a field itself is exposed by the detail response.
+PRIOR_LIVE_BSR_SCOPE_RESOURCES = frozenset(
+    {
+        "IPFMEA",
+        "IPFMEAITEM",
+        "IPRCFA",
+        "IPRCFAFDT",
+        "IPBHM",
+        "IPBHMMEASUREMENT",
+        "IPMSMSFAILUREMECHANI",
+        "DMD_OPLOGABN",
+        "IP_DOM_OH",
+        "DOM_INSPEKSIMESIN",
+        "IP_DOM_OH_SCOPE_PM",
+        "MXAPIFAILURECODE",
+        "MXAPILOCATION",
+        "MXAPIPM",
+        "MXAPIMETER",
+        "MXAPIJOBPLAN",
+    }
+)
+MX006B_EXPLICIT_TARGETS = frozenset(
+    {
+        "IPFMEA",
+        "IPFMEAITEM",
+        "IPRCFA",
+        "IPBHM",
+        "IPBHMMEASUREMENT",
+        "IPMSMSFAILUREMECHANI",
+        "DMD_OPLOGABN",
+        "IP_DOM_OH",
+        "DOM_INSPEKSIMESIN",
+        "IP_DOM_OH_SCOPE_PM",
+        "IPRCFAFDT",
+        "MXAPIFAILURECODE",
+        "MXAPILOCATION",
+        "MXAPIPM",
+        "MXAPIMETER",
+        "MXAPIJOBPLAN",
+    }
+)
+
 
 class DiscoveryError(RuntimeError):
     """A safe, user-facing discovery failure."""
@@ -109,6 +161,63 @@ def load_dotenv(path: Path | str = ".env") -> None:
         value = value.strip().strip("\"'")
         if key and key not in os.environ:
             os.environ[key] = value
+
+
+def _origin_parts(url: str) -> tuple[str, str, int | None]:
+    parsed = urlparse(url)
+    if parsed.scheme not in {"http", "https"} or not parsed.hostname:
+        raise DiscoveryError("Maximo URL must use HTTP(S) with a hostname")
+    if parsed.username or parsed.password:
+        raise DiscoveryError("Maximo URL must not contain embedded credentials")
+    try:
+        port = parsed.port
+    except ValueError as error:
+        raise DiscoveryError("Maximo URL contains an invalid port") from error
+    if port is None:
+        port = 443 if parsed.scheme == "https" else 80
+    return parsed.scheme.lower(), parsed.hostname.lower(), port
+
+
+def resolve_same_origin_url(base_url: str, candidate: str) -> str:
+    """Resolve one Maximo link and enforce the configured HTTP origin.
+
+    The origin check intentionally compares scheme, hostname, and effective
+    port only. The application path may differ (for example, a returned
+    detail link may be rooted at ``/maximo/oslc``), but credentials are never
+    sent to another origin.
+    """
+
+    if not base_url:
+        raise DiscoveryError("MAXIMO_BASE_URL is required to validate a resource link")
+    base = base_url.rstrip("/")
+    base_origin = _origin_parts(base)
+    parsed_candidate = urlparse(candidate)
+    if parsed_candidate.scheme or parsed_candidate.netloc:
+        resolved = candidate
+    else:
+        # Maximo commonly returns both /oslc/... and oslc/... links. Resolve
+        # both beneath the configured application base, while rejecting
+        # network-path references (//other-host/...) as absolute URLs.
+        resolved = urljoin(base + "/", candidate.lstrip("/"))
+    candidate_origin = _origin_parts(resolved)
+    if candidate_origin != base_origin:
+        raise DiscoveryError(
+            "Maximo resource link returned a different origin; refusing to "
+            "send the authenticated session outside MAXIMO_BASE_URL"
+        )
+    return resolved
+
+
+def safe_resource_path(url: str) -> str:
+    """Return structural URL evidence without persisting hostnames or IDs."""
+
+    parsed = urlparse(url)
+    path = parsed.path or "/"
+    parts = [part for part in path.split("/") if part]
+    if parts:
+        parts[-1] = "<resource-id>"
+        path = "/" + "/".join(parts)
+    return path
 
 
 def now_utc() -> str:
@@ -375,9 +484,7 @@ class ReadOnlyClient:
         return headers
 
     def _resolve_url(self, path: str) -> str:
-        if path.startswith(("http://", "https://")):
-            return path
-        return urljoin(self.config.base_url + "/", path.lstrip("/"))
+        return resolve_same_origin_url(self.config.base_url, path)
 
     def _login_url(self) -> str:
         # LOGIN_PATH is a constant; it is never accepted from CLI arguments.
@@ -584,6 +691,7 @@ OSLC_CATALOG_NAME_KEYS = (
 OSLC_OBJECT_ROOT = "/oslc/os"
 OSLC_CATALOG_ROOT = "/oslc/"
 OSLC_MINIMAL_PARAM = "_maxitems=1"
+DETAIL_COLLECTION_SELECT = "href"
 
 # Well-documented public Maximo integration object structures. Marked
 # `documented` (from public Maximo knowledge) until verified against this
@@ -614,13 +722,39 @@ def is_internal_field(key: str) -> bool:
     key = str(key)
     if not key:
         return True
-    return key.startswith("_") or ":" in key
+    namespace, separator, local_name = key.partition(":")
+    if separator and namespace.lower() in MAXIMO_BUSINESS_NAMESPACES:
+        return is_internal_field(local_name)
+    return key.startswith("_") or bool(separator)
+
+
+def normalized_business_key(key: str) -> str | None:
+    """Normalize only the known Maximo business namespace.
+
+    OSLC/RDF metadata remains metadata. In particular, this function does not
+    strip arbitrary prefixes because doing so would turn protocol fields into
+    false business contracts.
+    """
+
+    text = str(key)
+    namespace, separator, local_name = text.partition(":")
+    if separator and namespace.lower() in MAXIMO_BUSINESS_NAMESPACES:
+        text = local_name
+    if is_internal_field(text) or text in RESOURCE_LINK_KEYS:
+        return None
+    if SENSITIVE_KEY.search(text) or PERSONAL_KEY.search(text):
+        return None
+    return text
 
 
 def business_fields(value: Any) -> list[str]:
     """Top-level business field names from a record or collection (non-internal)."""
     if isinstance(value, Mapping):
-        return [str(k) for k in value if not is_internal_field(k)]
+        return dedupe(
+            normalized
+            for key in value
+            if (normalized := normalized_business_key(str(key))) is not None
+        )
     if isinstance(value, list):
         for item in value:
             if isinstance(item, Mapping):
@@ -640,6 +774,130 @@ def oslc_members(payload: Any) -> list[Mapping[str, Any]]:
             if isinstance(value, Mapping):
                 return [value]
     return []
+
+
+def resource_link(member: Mapping[str, Any]) -> str | None:
+    """Return one explicitly supported OSLC detail link, if present."""
+
+    for key in RESOURCE_LINK_KEYS:
+        value = member.get(key)
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+    return None
+
+
+def is_pure_resource_link_member(member: Mapping[str, Any]) -> bool:
+    """A link-only member has no normalized business fields of its own."""
+
+    return resource_link(member) is not None and not business_fields(member)
+
+
+def normalize_detail_record(value: Mapping[str, Any]) -> tuple[dict[str, Any], list[str]]:
+    """Split one detail object into business fields and protocol metadata names."""
+
+    business: dict[str, Any] = {}
+    metadata: list[str] = []
+    for key, raw_value in value.items():
+        normalized = normalized_business_key(str(key))
+        if normalized is None:
+            metadata.append(str(key))
+            continue
+        business[normalized] = raw_value
+    return business, dedupe(metadata)
+
+
+def inferred_value_type(value: Any, field: str = "") -> str:
+    """Infer a small, contract-oriented primitive type without coercion."""
+
+    if isinstance(value, bool):
+        return "boolean"
+    if isinstance(value, int) and not isinstance(value, bool):
+        return "integer"
+    if isinstance(value, float):
+        return "number"
+    if isinstance(value, Mapping):
+        return "object/reference"
+    if isinstance(value, list):
+        return "collection-reference" if "collectionref" in field.lower() else "unknown"
+    if isinstance(value, str):
+        text = value.strip()
+        if re.match(r"^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:", text):
+            return "datetime"
+        return "string"
+    return "unknown"
+
+
+def detail_field_types(business: Mapping[str, Any]) -> dict[str, str]:
+    return {str(field): inferred_value_type(value, str(field)) for field, value in business.items()}
+
+
+def structural_example(business: Mapping[str, Any]) -> dict[str, str]:
+    """Save types, not live values, as a detail sample."""
+
+    return {field: f"<{value_type}>" for field, value_type in detail_field_types(business).items()}
+
+
+RELATIONSHIP_FIELD_PATTERNS: dict[str, tuple[str, ...]] = {
+    "asset": ("assetnum", "assetid", "asset", "equipment", "equipmentid"),
+    "location": ("location", "locationid", "locnum"),
+    "site": ("siteid", "site"),
+    "organization": ("orgid", "organization", "organizationid"),
+    "workorder": ("wonum", "workorder", "workorderid"),
+    "status": ("status",),
+    "timestamp": ("date", "datetime", "timestamp", "time"),
+}
+
+
+def relationship_evidence(fields: Iterable[str]) -> list[str]:
+    lowered = {field.lower(): field for field in fields}
+    relationships: list[str] = []
+    for relationship, patterns in RELATIONSHIP_FIELD_PATTERNS.items():
+        matches = [lowered[name] for name in lowered if name in patterns]
+        if relationship == "timestamp":
+            matches = [
+                field
+                for field in fields
+                if any(pattern in field.lower() for pattern in patterns)
+            ]
+        if matches:
+            label = "timestamp" if relationship == "timestamp" else relationship
+            relationships.append(f"{label}: {', '.join(dedupe(matches))} (VERIFIED field evidence)")
+    return relationships
+
+
+def primary_key_evidence(fields: Iterable[str]) -> dict[str, str] | None:
+    candidates = [field for field in fields if _looks_like_identifier(field)]
+    if not candidates:
+        return None
+    return {"field": candidates[0], "confidence": "CANDIDATE"}
+
+
+def error_diagnostics(status: int, body: bytes) -> dict[str, Any]:
+    """Keep only bounded, sanitized Maximo error metadata."""
+
+    code: str | None = None
+    reason = f"HTTP {status}; sanitized error detail unavailable"
+    try:
+        payload = parse_payload(body)
+    except DiscoveryError:
+        payload = None
+    if isinstance(payload, Mapping):
+        for key in ("errorcode", "errorCode", "code", "BMXAA"):
+            value = payload.get(key)
+            if value:
+                match = re.search(r"BMX[A-Z0-9]+", str(value), re.IGNORECASE)
+                code = match.group(0).upper() if match else "<sanitized>"
+                break
+        for key in ("message", "errorMessage", "description", "reason", "error"):
+            value = payload.get(key)
+            if isinstance(value, str) and value.strip():
+                reason = sanitize(value.strip()[:240], key)
+                break
+    elif body:
+        match = re.search(rb"BMX[A-Z0-9]+", body[:4096], re.IGNORECASE)
+        if match:
+            code = match.group(0).decode("ascii", errors="ignore").upper()
+    return {"http_status": status, "maximo_error_code": code, "reason": reason, "raw_response_saved": False}
 
 
 def oslc_pagination_info(payload: Any) -> dict[str, Any]:
@@ -700,26 +958,41 @@ def object_structure_record(
     access: str = "unknown",
     verified_at: str | None = None,
     notes: list[str] | None = None,
+    scope: Mapping[str, Any] | None = None,
+    detail_dereference: Mapping[str, Any] | None = None,
+    field_types: Mapping[str, str] | None = None,
+    metadata_fields: Iterable[str] | None = None,
+    primary_key: str | Mapping[str, str] | None = None,
+    http_diagnostics: Mapping[str, Any] | None = None,
+    endpoint: str | None = None,
 ) -> dict[str, Any]:
     members = members or []
     fields = dedupe(sum((business_fields(m) for m in members), []))
-    sample = sanitize(members[0]) if members else None
+    sample = None
+    if members:
+        business, _metadata = normalize_detail_record(members[0])
+        sample = sanitize(business)
     return {
         "system": "maximo",
         "object_structure": name,
         "resource": resource,
         "status": status,
         "access": access,
-        "endpoint": minimal_object_query(name),
-        "primary_key": None,
+        "endpoint": endpoint or minimal_object_query(name),
+        "primary_key": primary_key,
         "field_candidates": [f for f in fields if _looks_like_identifier(f)][:50],
         "important_fields": fields[:100],
+        "field_types": dict(field_types or {}),
+        "metadata_fields": list(metadata_fields or []),
         "pagination": dict(pagination) if pagination else {},
         "sample": sample,
         "use_cases": use_cases_for(resource),
         "relationships": [],
         "notes": list(notes or []),
         "verified_at": verified_at,
+        "scope": dict(scope or {}),
+        "detail_dereference": dict(detail_dereference or {}),
+        "http_diagnostics": dict(http_diagnostics or {}),
     }
 
 
@@ -727,8 +1000,33 @@ def seed_object_structures() -> list[dict[str, Any]]:
     return [dict(item) for item in SEED_OBJECT_STRUCTURES]
 
 
-def minimal_object_query(name: str) -> str:
-    return f"{OSLC_OBJECT_ROOT}/{name}?{OSLC_MINIMAL_PARAM}"
+def scope_clause_for(name: str) -> str | None:
+    """Return only a previously evidenced BSR scope clause."""
+
+    if str(name).upper() in PRIOR_LIVE_BSR_SCOPE_RESOURCES:
+        return f'siteid="{DEFAULT_SITE_ID}"'
+    return None
+
+
+def minimal_object_query(
+    name: str,
+    scope_clause: str | None = None,
+    select: str | None = None,
+) -> str:
+    return minimal_object_query_with_select(name, scope_clause, select)
+
+
+def minimal_object_query_with_select(
+    name: str,
+    scope_clause: str | None = None,
+    select: str | None = None,
+) -> str:
+    query = [("_maxitems", "1")]
+    if scope_clause:
+        query.append(("oslc.where", scope_clause))
+    if select:
+        query.append(("oslc.select", select))
+    return f"{OSLC_OBJECT_ROOT}/{name}?{urlencode(query)}"
 
 
 def validate_object_structure_record(record: Mapping[str, Any]) -> None:
@@ -799,21 +1097,66 @@ def enumerate_object_structures(client: Any, oslc_root: str = OSLC_CATALOG_ROOT)
 
 
 def describe_object_structure(
-    client: Any, name: str, resource: str, *, base_status: str = "documented"
+    client: Any,
+    name: str,
+    resource: str,
+    *,
+    base_status: str = "documented",
+    verify_detail: bool = False,
 ) -> dict[str, Any]:
-    """GET one minimal record for an object structure to map its shape."""
-    path = minimal_object_query(name)
+    """GET one collection record and optionally one same-origin detail record.
+
+    The detail mode is intentionally one-level and one-record only. It never
+    follows ``oslc:nextPage`` or any collection reference found in the detail
+    payload.
+    """
+    scope_clause = scope_clause_for(name) if verify_detail else None
+    path = minimal_object_query_with_select(
+        name,
+        scope_clause,
+        DETAIL_COLLECTION_SELECT if verify_detail else None,
+    )
     notes: list[str] = []
     pagination: dict[str, Any] = {}
     members: list[Mapping[str, Any]] = []
     status = base_status
     access = "unknown"
     verified_at: str | None = None
+    scope: dict[str, Any] = {}
+    if scope_clause:
+        scope = {
+            "field": "siteid",
+            "value": DEFAULT_SITE_ID,
+            "status": "PRIOR_LIVE_QUERY",
+            "evidence": "MX-006R used this BSR-scoped clause and received a bounded response; detail field evidence remains required.",
+        }
+    detail: dict[str, Any] = {
+        "attempted": False,
+        "collection_records": 0,
+        "detail_records": 0,
+        "maximum_dereference_depth": 1,
+        "pagination_followed": False,
+    }
+    detail_fields: list[str] = []
+    detail_types: dict[str, str] = {}
+    detail_metadata: list[str] = []
+    detail_primary_key: str | Mapping[str, str] | None = None
+    detail_relationships: list[str] = []
+    diagnostics: dict[str, Any] = {}
     try:
         http_status, _headers, body = client.request("GET", path)
     except DiscoveryError as error:
         notes.append(f"describe GET failed: {error}")
-        record = object_structure_record(name, resource, status=base_status, access="error", notes=notes)
+        record = object_structure_record(
+            name,
+            resource,
+            status=base_status,
+            access="error",
+            notes=notes,
+            scope=scope,
+            detail_dereference=detail,
+            endpoint=path,
+        )
         validate_object_structure_record(record)
         return record
     access = f"http_{http_status}"
@@ -826,24 +1169,80 @@ def describe_object_structure(
             notes.append(f"describe body unparseable: {error}")
             payload = None
         if payload is not None:
-            members = oslc_members(payload)
+            members = oslc_members(payload)[:1]
+            detail["collection_records"] = len(members)
             pagination = oslc_pagination_info(payload)
             if not members:
                 notes.append("response had no OSLC members; structure not sampled")
+            elif verify_detail:
+                member = members[0]
+                if is_pure_resource_link_member(member):
+                    detail["attempted"] = True
+                    link = resource_link(member)
+                    try:
+                        base_url = getattr(getattr(client, "config", None), "base_url", "")
+                        resolved = resolve_same_origin_url(str(base_url), str(link))
+                        detail["resource_path"] = safe_resource_path(resolved)
+                        detail_status, _detail_headers, detail_body = client.request("GET", resolved)
+                        detail["http_status"] = detail_status
+                        if 200 <= detail_status < 300:
+                            detail["detail_records"] = 1
+                            detail["status"] = "VERIFIED"
+                            detail_payload = parse_payload(detail_body)
+                            if not isinstance(detail_payload, Mapping):
+                                notes.append("detail GET returned a non-object JSON payload")
+                            else:
+                                business, detail_metadata = normalize_detail_record(detail_payload)
+                                detail_fields = list(business)
+                                detail_types = detail_field_types(business)
+                                detail_primary_key = primary_key_evidence(detail_fields)
+                                detail_relationships = relationship_evidence(detail_fields)
+                        else:
+                            detail["status"] = "UNKNOWN"
+                            detail["error"] = error_diagnostics(detail_status, detail_body)
+                            notes.append(f"detail GET returned HTTP {detail_status}")
+                    except DiscoveryError as error:
+                        detail["status"] = "BLOCKED"
+                        notes.append(f"detail dereference blocked: {error}")
+                else:
+                    detail["status"] = "INLINE_BUSINESS_RECORD"
+                    business, detail_metadata = normalize_detail_record(member)
+                    detail_fields = list(business)
+                    detail_types = detail_field_types(business)
+                    detail_primary_key = primary_key_evidence(detail_fields)
+                    detail_relationships = relationship_evidence(detail_fields)
+                    notes.append("inline business member used; no detail GET was necessary")
     elif http_status == 403:
         status = "forbidden"
     else:
         notes.append(f"describe GET returned HTTP {http_status}")
+        diagnostics = error_diagnostics(http_status, body)
+    if verify_detail and detail_fields:
+        detail["fields"] = detail_fields[:100]
+        detail["field_types"] = detail_types
+        detail["metadata_fields"] = detail_metadata[:100]
     record = object_structure_record(
         name,
         resource,
-        members=members,
+        members=[] if verify_detail and detail_fields else members,
         pagination=pagination,
         status=status,
         access=access,
         verified_at=verified_at,
         notes=notes,
+        scope=scope,
+        detail_dereference=detail,
+        field_types=detail_types,
+        metadata_fields=detail_metadata,
+        primary_key=detail_primary_key,
+        http_diagnostics=diagnostics,
+        endpoint=path,
     )
+    if verify_detail and detail_fields:
+        record["important_fields"] = detail_fields[:100]
+        record["field_candidates"] = [f for f in detail_fields if _looks_like_identifier(f)][:50]
+        record["sample"] = {field: f"<{detail_types[field]}>" for field in detail_fields}
+        record["relationships"] = detail_relationships
     validate_object_structure_record(record)
     return record
 
@@ -865,19 +1264,53 @@ def discover_oslc(
     scope: str | None,
     resources: list[str],
     oslc_root: str = OSLC_CATALOG_ROOT,
+    *,
+    verify_detail: bool = False,
 ) -> list[dict[str, Any]]:
     """Enumerate and describe OSLC object structures; write per-object catalogs."""
     enumeration = enumerate_object_structures(client, oslc_root)
     selected = filter_object_structures(enumeration["object_structures"], scope, resources)
+    if not selected and resources:
+        # The authenticated catalog endpoint may reject a catalog query while
+        # an explicitly catalogued resource remains safely reachable. This is
+        # an allowlisted target handoff, not name/path brute force.
+        explicit: list[dict[str, str]] = []
+        for requested in resources:
+            candidate = str(requested).upper()
+            if candidate in MX006B_EXPLICIT_TARGETS:
+                explicit.append({"name": candidate, "resource": normalize_resource(candidate), "status": "documented"})
+        selected = explicit
+        if selected:
+            enumeration["notes"].append("catalog selection used explicit MX-006B allowlisted targets")
     objects_dir = output_dir / "discovery" / "objects"
     summary: list[dict[str, Any]] = []
     discovered: list[dict[str, Any]] = []
+    server_error_count = 0
     for item in selected:
         record = describe_object_structure(
-            client, str(item["name"]), str(item["resource"]), base_status=str(item["status"])
+            client,
+            str(item["name"]),
+            str(item["resource"]),
+            base_status=str(item["status"]),
+            verify_detail=verify_detail,
         )
         record["catalog_source"] = enumeration["source"]
         record["notes"] = [*record["notes"], *enumeration["notes"]]
+        observed_statuses: list[int] = []
+        access = record.get("access")
+        if isinstance(access, str) and access.startswith("http_"):
+            try:
+                observed_statuses.append(int(access.removeprefix("http_")))
+            except ValueError:
+                pass
+        detail_status = record.get("detail_dereference", {}).get("http_status")
+        if isinstance(detail_status, int):
+            observed_statuses.append(detail_status)
+        if 429 in observed_statuses:
+            raise DiscoveryError("HTTP 429 encountered during bounded Maximo verification; stopping without retry")
+        server_error_count += sum(1 for observed in observed_statuses if isinstance(observed, int) and 500 <= observed < 600)
+        if server_error_count >= 2:
+            raise DiscoveryError("repeated HTTP 5xx responses during bounded Maximo verification; stopping live run")
         write_json(objects_dir / f"{safe_filename(str(item['name']))}.json", record)
         discovered.append(record)
         summary.append(
@@ -888,12 +1321,13 @@ def discover_oslc(
                 "status": record["status"],
                 "access": record["access"],
                 "field_count": len(record["important_fields"]),
+                "detail_status": record.get("detail_dereference", {}).get("status"),
                 "verified_at": record["verified_at"],
             }
         )
     catalog = {
         "system": "maximo",
-        "catalog_version": 2,
+        "catalog_version": 3 if verify_detail else 2,
         "source": enumeration["source"],
         "last_updated": now_utc(),
         "notes": enumeration["notes"],
@@ -1014,6 +1448,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         action="store_true",
         help="enumerate OSLC object structures via GET /oslc/os and describe each (requires --execute)",
     )
+    parser.add_argument(
+        "--verify-detail",
+        action="store_true",
+        help="follow at most one same-origin resource link for each selected OSLC record (requires --enumerate-oslc and --execute)",
+    )
     parser.add_argument("--oslc-root", default=OSLC_CATALOG_ROOT, help="OSLC service-provider catalog path")
     parser.add_argument(
         "--execute",
@@ -1033,16 +1472,25 @@ def main(argv: list[str] | None = None) -> int:
     config = Config.from_environment(require_base_url=not bool(args.oas_file))
     if args.dry_run:
         source = str(args.oas_file) if args.oas_file else redact_url(urljoin(config.base_url + "/", config.oas_path.lstrip("/")))
-        print(json.dumps({"source": source, "execute": False, "verify_samples": args.verify_samples, "scope": args.scope, "resources": args.resource}, indent=2))
+        print(json.dumps({"source": source, "execute": False, "verify_samples": args.verify_samples, "verify_detail": args.verify_detail, "scope": args.scope, "resources": args.resource}, indent=2))
         return 0
     if args.enumerate_oslc:
         if not args.execute:
             raise DiscoveryError("OSLC enumeration requires explicit --execute")
         client = ReadOnlyClient(config)
-        discovered = discover_oslc(client, args.output_dir, args.scope, args.resource, args.oslc_root)
+        discovered = discover_oslc(
+            client,
+            args.output_dir,
+            args.scope,
+            args.resource,
+            args.oslc_root,
+            verify_detail=args.verify_detail,
+        )
         verified = sum(1 for item in discovered if item["status"] == "verified")
         print(f"Discovered {len(discovered)} OSLC object structures ({verified} verified)")
         return 0
+    if args.verify_detail:
+        raise DiscoveryError("--verify-detail requires --enumerate-oslc")
     if args.oas_file:
         raw = args.oas_file.read_bytes()
     else:
