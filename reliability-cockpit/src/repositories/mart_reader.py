@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from typing import Any, TypeVar
 
 from sqlalchemy import Select, asc, desc, func, select
@@ -393,4 +393,173 @@ class MartQueryRepository:
             "snapshot_row_count": row[2],
             "snapshot_imported_at": row[3],
             "source": "MAXIMO_LIST_OF_ASSETS",
+        }
+
+    def decision_overview(
+        self,
+        *,
+        window_days: int = 30,
+        as_of: datetime | None = None,
+    ) -> dict[str, object]:
+        """Return bounded, read-only aggregates for the NADI decision surface.
+
+        The method deliberately keeps all maintenance metrics on the Registry
+        join.  It never selects maintenance rows into Python; only grouped and
+        scalar aggregate results cross the Mart boundary.
+        """
+        if window_days not in {7, 30, 90}:
+            raise ValueError("window_days must be one of 7, 30, or 90")
+        current = as_of or datetime.now(timezone.utc)
+        if current.tzinfo is None:
+            current = current.replace(tzinfo=timezone.utc)
+        window_start = current - timedelta(days=window_days)
+        date_column = func.coalesce(MaintenanceEventMart.actual_start, MaintenanceEventMart.source_changed_at)
+        maintenance_scope = (
+            select(MaintenanceEventMart)
+            .join(ReliabilityAssetRegistryMart, ReliabilityAssetRegistryMart.asset_ref == MaintenanceEventMart.equipment_id)
+            .where(
+                MaintenanceEventMart.site_code == SITE_CODE,
+                MaintenanceEventMart.organization_code == ORGANIZATION_CODE,
+                ReliabilityAssetRegistryMart.site_code == SITE_CODE,
+                ReliabilityAssetRegistryMart.organization_code == ORGANIZATION_CODE,
+            )
+        ).subquery()
+        scoped_date = func.coalesce(maintenance_scope.c.actual_start, maintenance_scope.c.source_changed_at)
+
+        week_start = datetime(current.year, current.month, current.day, tzinfo=current.tzinfo) - timedelta(days=current.weekday())
+        trend_starts = [week_start - timedelta(weeks=offset) for offset in range(11, -1, -1)]
+        trend_counts = [
+            func.count(maintenance_scope.c.canonical_id).filter(
+                scoped_date >= start,
+                scoped_date < start + timedelta(weeks=1),
+            ).label(f"week_{index}")
+            for index, start in enumerate(trend_starts)
+        ]
+
+        summary_statement = select(
+            func.count(maintenance_scope.c.canonical_id).filter(scoped_date >= current - timedelta(days=7), scoped_date <= current).label("maintenance_7d"),
+            func.count(maintenance_scope.c.canonical_id).filter(scoped_date >= current - timedelta(days=30), scoped_date <= current).label("maintenance_30d"),
+            func.count(maintenance_scope.c.canonical_id).filter(scoped_date >= current - timedelta(days=90), scoped_date <= current).label("maintenance_90d"),
+            func.count(func.distinct(maintenance_scope.c.equipment_id)).filter(scoped_date >= current - timedelta(days=30), scoped_date <= current).label("assets_active_30d"),
+            func.count(func.distinct(maintenance_scope.c.equipment_id)).filter(scoped_date >= current - timedelta(days=90), scoped_date <= current).label("assets_active_90d"),
+        )
+        window_statement = select(
+            func.coalesce(maintenance_scope.c.status, "UNKNOWN").label("value"),
+            func.count(maintenance_scope.c.canonical_id).label("count"),
+        ).where(scoped_date >= window_start, scoped_date <= current).group_by(
+            func.coalesce(maintenance_scope.c.status, "UNKNOWN")
+        ).order_by(func.coalesce(maintenance_scope.c.status, "UNKNOWN"))
+        work_type_statement = select(
+            func.coalesce(maintenance_scope.c.event_type, "UNKNOWN").label("value"),
+            func.count(maintenance_scope.c.canonical_id).label("count"),
+        ).where(scoped_date >= window_start, scoped_date <= current).group_by(
+            func.coalesce(maintenance_scope.c.event_type, "UNKNOWN")
+        ).order_by(func.coalesce(maintenance_scope.c.event_type, "UNKNOWN"))
+        concentration_count = func.count(maintenance_scope.c.canonical_id).label("event_count")
+        concentration_latest = func.max(scoped_date).label("latest_activity")
+        concentration_statement = (
+            select(
+                ReliabilityAssetRegistryMart.asset_ref,
+                ReliabilityAssetRegistryMart.source_asset_number,
+                AssetMasterMart.description,
+                concentration_count,
+                concentration_latest,
+            )
+            .select_from(maintenance_scope)
+            .join(ReliabilityAssetRegistryMart, ReliabilityAssetRegistryMart.asset_ref == maintenance_scope.c.equipment_id)
+            .outerjoin(AssetMasterMart, AssetMasterMart.canonical_id == maintenance_scope.c.equipment_id)
+            .where(scoped_date >= window_start, scoped_date <= current)
+            .group_by(
+                ReliabilityAssetRegistryMart.asset_ref,
+                ReliabilityAssetRegistryMart.source_asset_number,
+                AssetMasterMart.description,
+            )
+            .order_by(desc(concentration_count), desc(concentration_latest), asc(ReliabilityAssetRegistryMart.source_asset_number), asc(ReliabilityAssetRegistryMart.asset_ref))
+            .limit(10)
+        )
+        trend_statement = select(*trend_counts)
+
+        records_statement = select(
+            select(func.count(FmeaAssessmentMart.canonical_id)).where(
+                FmeaAssessmentMart.site_code == SITE_CODE,
+                FmeaAssessmentMart.organization_code == ORGANIZATION_CODE,
+            ).scalar_subquery().label("fmea_records"),
+            select(func.count(func.distinct(FmeaAssessmentMart.asset_ref))).select_from(FmeaAssessmentMart).join(
+                ReliabilityAssetRegistryMart, ReliabilityAssetRegistryMart.asset_ref == FmeaAssessmentMart.asset_ref
+            ).where(
+                FmeaAssessmentMart.site_code == SITE_CODE,
+                FmeaAssessmentMart.organization_code == ORGANIZATION_CODE,
+                FmeaAssessmentMart.asset_ref.is_not(None),
+                ReliabilityAssetRegistryMart.site_code == SITE_CODE,
+                ReliabilityAssetRegistryMart.organization_code == ORGANIZATION_CODE,
+            ).scalar_subquery().label("fmea_assets_represented"),
+            select(func.count(AssetHealthAssessmentMart.canonical_id)).where(
+                AssetHealthAssessmentMart.site_code == SITE_CODE,
+                AssetHealthAssessmentMart.organization_code == ORGANIZATION_CODE,
+            ).scalar_subquery().label("asset_health_records"),
+            select(func.count(func.distinct(AssetHealthAssessmentMart.asset_ref))).select_from(AssetHealthAssessmentMart).join(
+                ReliabilityAssetRegistryMart, ReliabilityAssetRegistryMart.asset_ref == AssetHealthAssessmentMart.asset_ref
+            ).where(
+                AssetHealthAssessmentMart.site_code == SITE_CODE,
+                AssetHealthAssessmentMart.organization_code == ORGANIZATION_CODE,
+                AssetHealthAssessmentMart.asset_ref.is_not(None),
+                ReliabilityAssetRegistryMart.site_code == SITE_CODE,
+                ReliabilityAssetRegistryMart.organization_code == ORGANIZATION_CODE,
+            ).scalar_subquery().label("asset_health_assets_represented"),
+            select(func.count(RcfaAnalysisMart.canonical_id)).where(
+                RcfaAnalysisMart.site_code == SITE_CODE,
+                RcfaAnalysisMart.organization_code == ORGANIZATION_CODE,
+            ).scalar_subquery().label("rcfa_records"),
+            select(func.count(OverhaulEventMart.canonical_id)).where(
+                OverhaulEventMart.site_code == SITE_CODE,
+                OverhaulEventMart.organization_code == ORGANIZATION_CODE,
+            ).scalar_subquery().label("overhaul_records"),
+        )
+        registry_statement = select(func.count(ReliabilityAssetRegistryMart.asset_ref)).where(
+            ReliabilityAssetRegistryMart.site_code == SITE_CODE,
+            ReliabilityAssetRegistryMart.organization_code == ORGANIZATION_CODE,
+        )
+
+        with self.database.read_session() as session:
+            summary = session.execute(summary_statement).one()
+            trend = session.execute(trend_statement).one()
+            statuses = session.execute(window_statement).all()
+            work_types = session.execute(work_type_statement).all()
+            concentration = session.execute(concentration_statement).all()
+            records = session.execute(records_statement).one()
+            registered_assets = int(session.scalar(registry_statement) or 0)
+
+        integrity = self.integrity_summary()
+        summary_values = summary._mapping
+        trend_values = trend._mapping
+        record_values = records._mapping
+        return {
+            "registered_assets": registered_assets,
+            "summary": {
+                "maintenance_activity_7d": int(summary_values["maintenance_7d"] or 0),
+                "maintenance_activity_30d": int(summary_values["maintenance_30d"] or 0),
+                "maintenance_activity_90d": int(summary_values["maintenance_90d"] or 0),
+                "assets_active_30d": int(summary_values["assets_active_30d"] or 0),
+                "assets_active_90d": int(summary_values["assets_active_90d"] or 0),
+            },
+            "trend": [
+                {"period_start": start, "period_end": start + timedelta(weeks=1), "event_count": int(trend_values[f"week_{index}"] or 0)}
+                for index, start in enumerate(trend_starts)
+            ],
+            "status_distribution": [{"value": row.value, "count": int(row.count)} for row in statuses],
+            "work_type_distribution": [{"value": row.value, "count": int(row.count)} for row in work_types],
+            "activity_concentration": [
+                {
+                    "asset_ref": row.asset_ref,
+                    "source_asset_number": row.source_asset_number,
+                    "description": row.description,
+                    "event_count": int(row.event_count),
+                    "latest_activity": row.latest_activity,
+                }
+                for row in concentration
+            ],
+            "records": {key: int(record_values[key] or 0) for key in record_values.keys()},
+            "integrity": integrity,
+            "window_start": window_start,
+            "as_of": current,
         }

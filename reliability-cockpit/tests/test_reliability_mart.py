@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import unittest
 from datetime import datetime, timezone
+from unittest.mock import patch
 
 from fastapi import HTTPException
 from sqlalchemy import insert
@@ -130,6 +131,27 @@ class ReliabilityMartReadTest(unittest.TestCase):
         self.assertEqual(result["snapshot_row_count"], 2)
         self.assertNotIn("asset_ref", result)
 
+    def test_decision_overview_is_registry_scoped_and_backend_aggregated(self):
+        result = self.repository.decision_overview(window_days=30, as_of=NOW)
+        self.assertEqual(result["registered_assets"], 2)
+        self.assertEqual(result["summary"]["maintenance_activity_7d"], 2)
+        self.assertEqual(result["summary"]["maintenance_activity_30d"], 2)
+        self.assertEqual(result["summary"]["assets_active_30d"], 2)
+        self.assertEqual(len(result["trend"]), 12)
+        self.assertEqual({row["value"] for row in result["status_distribution"]}, {"CAN", "COMPLETE"})
+        self.assertEqual({row["value"] for row in result["work_type_distribution"]}, {"CORRECTIVE", "PM"})
+        self.assertEqual([row["source_asset_number"] for row in result["activity_concentration"]], ["ASSET-A", "ASSET-B"])
+        self.assertEqual(result["records"]["fmea_records"], 1)
+        self.assertEqual(result["records"]["fmea_assets_represented"], 1)
+        self.assertNotIn("rcfa_assets_represented", result["records"])
+        with Session(self.database.engine) as session:
+            session.add(MaintenanceEventMart(**_common("maintenance:EVENT-UNKNOWN", "MXWODETAIL"), id="EVENT-UNKNOWN", equipment_id=ASSET_A, actual_start=NOW, source_changed_at=NOW))
+            session.flush()
+            unknown_result = self.repository.decision_overview(window_days=30, as_of=NOW)
+            session.rollback()
+        self.assertIn({"value": "UNKNOWN", "count": 1}, unknown_result["status_distribution"])
+        self.assertIn({"value": "UNKNOWN", "count": 1}, unknown_result["work_type_distribution"])
+
     def test_work_order_reference_uses_scoped_work_order_field(self):
         rows = self.repository.list_maintenance(work_order_id="WO-REF-A").items
         self.assertEqual(rows[0].canonical_id, "maintenance:EVENT-A")
@@ -198,6 +220,25 @@ class ReliabilityMartApiTest(unittest.TestCase):
     def test_registry_endpoint_is_available(self):
         body = reliability_api.registry(service=self.service)
         self.assertEqual(body.registered_asset_count, 2)
+
+    def test_decision_overview_endpoint_defaults_to_30d_and_rejects_unbounded_window(self):
+        class FixedDateTime(datetime):
+            @classmethod
+            def now(cls, tz=None):
+                return NOW
+
+        with patch("src.repositories.mart_reader.datetime", FixedDateTime):
+            response = reliability_api.decision_overview(service=self.service)
+        self.assertEqual(response.window_days, 30)
+        self.assertEqual(response.summary.registered_assets.evidence_class, "VERIFIED")
+        parameter = self.app.openapi()["paths"]["/v1/reliability/decision-overview"]["get"]["parameters"][0]
+        self.assertEqual(parameter["schema"]["enum"], [7, 30, 90])
+
+    def test_decision_overview_returns_503_when_mart_is_unavailable(self):
+        with patch("src.api.reliability.get_mart_database", side_effect=reliability_api.MartDatabaseConfigError("offline")):
+            with self.assertRaises(HTTPException) as error:
+                reliability_api._db()
+        self.assertEqual(error.exception.status_code, 503)
 
 
 if __name__ == "__main__":

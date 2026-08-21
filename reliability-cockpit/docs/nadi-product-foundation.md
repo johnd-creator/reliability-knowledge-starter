@@ -41,13 +41,14 @@ switcher; the backend contract authorizes this scope only.
 
 ## Data and controlled-load language
 
-MX-011R is a **Controlled Initial Dataset**. Most source collections were
-capped, so NADI presents current Mart counts as the records available in the
-controlled load. It does not call them complete history or full plant
-population.
+NADI has **mixed data maturity**. Asset and Maintenance data are the current
+local Collector projection, while FMEA, RCFA, Asset Health, and Overhaul are
+current controlled Mart populations. NADI presents factual counts as records
+available in those populations; it does not call them complete history or full
+plant population.
 
-The Overview shows counts from bounded `limit=1` requests and the existing
-`meta.total` values. It intentionally does not fabricate MTBF, MTTR,
+The Executive Overview uses one bounded aggregate endpoint and explicitly
+labels metric evidence. It intentionally does not fabricate MTBF, MTTR,
 availability, risk, health, or reliability scores.
 
 ## Relationship semantics

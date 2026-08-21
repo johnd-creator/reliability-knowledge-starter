@@ -167,6 +167,81 @@ class RegistryView(BaseModel):
     source: str
 
 
+EvidenceClass = Literal["VERIFIED", "DERIVED_SAFE", "BUSINESS_SEMANTICS_REQUIRED", "DATA_NOT_AVAILABLE", "DEFERRED"]
+
+
+class EvidenceValue(BaseModel):
+    value: int
+    evidence_class: EvidenceClass
+
+
+class DecisionScopeView(BaseModel):
+    site_code: Literal["BSR"]
+    organization_code: Literal["IP"]
+    registry_scope: str
+    maintenance_source: str
+    date_basis: str
+
+
+class DataMaturityView(BaseModel):
+    asset_maintenance: str
+    controlled_domains: str
+    rcfa_relationship: str
+    technical_context: str
+
+
+class DecisionSummaryView(BaseModel):
+    registered_assets: EvidenceValue
+    maintenance_activity_7d: EvidenceValue
+    maintenance_activity_30d: EvidenceValue
+    maintenance_activity_90d: EvidenceValue
+    assets_active_30d: EvidenceValue
+    assets_active_90d: EvidenceValue
+
+
+class ActivityTrendView(BaseModel):
+    period_start: datetime
+    period_end: datetime
+    event_count: EvidenceValue
+
+
+class DistributionView(BaseModel):
+    value: str
+    count: EvidenceValue
+
+
+class ActivityConcentrationView(BaseModel):
+    asset_ref: str
+    source_asset_number: str
+    description: str | None = None
+    event_count: EvidenceValue
+    latest_activity: datetime | None = None
+
+
+class RecordAvailabilityView(BaseModel):
+    fmea_records: EvidenceValue
+    fmea_assets_represented: EvidenceValue
+    asset_health_records: EvidenceValue
+    asset_health_assets_represented: EvidenceValue
+    rcfa_records: EvidenceValue
+    overhaul_records: EvidenceValue
+
+
+class DecisionOverviewView(BaseModel):
+    scope: DecisionScopeView
+    data_maturity: DataMaturityView
+    window_days: Literal[7, 30, 90]
+    window_start: datetime
+    as_of: datetime
+    summary: DecisionSummaryView
+    maintenance_activity: list[ActivityTrendView]
+    status_distribution: list[DistributionView]
+    work_type_distribution: list[DistributionView]
+    activity_concentration: list[ActivityConcentrationView]
+    record_availability: RecordAvailabilityView
+    integrity: IntegrityView
+
+
 class ContextView(BaseModel):
     asset: AssetView
     maintenance: list[MaintenanceView]
@@ -228,6 +303,78 @@ def _validate_range(start: datetime | None, end: datetime | None) -> None:
         raise HTTPException(status_code=422, detail="date range start must not be after end")
 
 
+def _evidence(value: int, evidence_class: EvidenceClass) -> EvidenceValue:
+    return EvidenceValue(value=value, evidence_class=evidence_class)
+
+
+def _decision_overview(raw: dict[str, object], window_days: Literal[7, 30, 90]) -> DecisionOverviewView:
+    summary = raw["summary"]
+    records = raw["records"]
+    assert isinstance(summary, dict)
+    assert isinstance(records, dict)
+    return DecisionOverviewView(
+        scope=DecisionScopeView(
+            site_code="BSR",
+            organization_code="IP",
+            registry_scope="reliability_asset_registry",
+            maintenance_source="Local Collector → Reliability Mart",
+            date_basis="COALESCE(actual_start, source_changed_at)",
+        ),
+        data_maturity=DataMaturityView(
+            asset_maintenance="CURRENT LOCAL PROJECTION",
+            controlled_domains="CONTROLLED MART POPULATION",
+            rcfa_relationship="RELATIONSHIP UNRESOLVED",
+            technical_context="TECHNICAL CONTEXT",
+        ),
+        window_days=window_days,
+        window_start=raw["window_start"],
+        as_of=raw["as_of"],
+        summary=DecisionSummaryView(
+            registered_assets=_evidence(int(raw["registered_assets"]), "VERIFIED"),
+            maintenance_activity_7d=_evidence(int(summary["maintenance_activity_7d"]), "DERIVED_SAFE"),
+            maintenance_activity_30d=_evidence(int(summary["maintenance_activity_30d"]), "DERIVED_SAFE"),
+            maintenance_activity_90d=_evidence(int(summary["maintenance_activity_90d"]), "DERIVED_SAFE"),
+            assets_active_30d=_evidence(int(summary["assets_active_30d"]), "DERIVED_SAFE"),
+            assets_active_90d=_evidence(int(summary["assets_active_90d"]), "DERIVED_SAFE"),
+        ),
+        maintenance_activity=[
+            ActivityTrendView(
+                period_start=row["period_start"],
+                period_end=row["period_end"],
+                event_count=_evidence(int(row["event_count"]), "DERIVED_SAFE"),
+            )
+            for row in raw["trend"]
+        ],
+        status_distribution=[
+            DistributionView(value=row["value"], count=_evidence(int(row["count"]), "DERIVED_SAFE"))
+            for row in raw["status_distribution"]
+        ],
+        work_type_distribution=[
+            DistributionView(value=row["value"], count=_evidence(int(row["count"]), "DERIVED_SAFE"))
+            for row in raw["work_type_distribution"]
+        ],
+        activity_concentration=[
+            ActivityConcentrationView(
+                asset_ref=row["asset_ref"],
+                source_asset_number=row["source_asset_number"],
+                description=row["description"],
+                event_count=_evidence(int(row["event_count"]), "DERIVED_SAFE"),
+                latest_activity=row["latest_activity"],
+            )
+            for row in raw["activity_concentration"]
+        ],
+        record_availability=RecordAvailabilityView(
+            fmea_records=_evidence(int(records["fmea_records"]), "VERIFIED"),
+            fmea_assets_represented=_evidence(int(records["fmea_assets_represented"]), "DERIVED_SAFE"),
+            asset_health_records=_evidence(int(records["asset_health_records"]), "VERIFIED"),
+            asset_health_assets_represented=_evidence(int(records["asset_health_assets_represented"]), "DERIVED_SAFE"),
+            rcfa_records=_evidence(int(records["rcfa_records"]), "VERIFIED"),
+            overhaul_records=_evidence(int(records["overhaul_records"]), "VERIFIED"),
+        ),
+        integrity=IntegrityView(**raw["integrity"]),
+    )
+
+
 @router.get("/assets", response_model=Page[AssetView], summary="List Reliability Mart assets")
 def list_assets(
     status: str | None = None,
@@ -247,6 +394,14 @@ def list_assets(
 @router.get("/registry", response_model=RegistryView, summary="Current registered Reliability Asset snapshot")
 def registry(service: ReliabilityQueryService = Depends(_service)) -> RegistryView:
     return RegistryView(**service.repository.registry_summary())
+
+
+@router.get("/decision-overview", response_model=DecisionOverviewView, summary="Bounded factual Reliability decision overview")
+def decision_overview(
+    window_days: Literal[7, 30, 90] = 30,
+    service: ReliabilityQueryService = Depends(_service),
+) -> DecisionOverviewView:
+    return _decision_overview(service.repository.decision_overview(window_days=window_days), window_days)
 
 
 @router.get("/assets/{canonical_id}", response_model=AssetView)

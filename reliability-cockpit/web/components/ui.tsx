@@ -70,6 +70,10 @@ export function StatCard({ label, value, detail, tone = "default" }: { label: st
   return <article className={`stat-card ${tone}`}><span>{label}</span><strong>{value}</strong><small>{detail}</small></article>;
 }
 
+export function DataMaturity({ state, detail }: { state: string; detail?: string }) {
+  return <span className="maturity-badge" title={detail}>{state}</span>;
+}
+
 export function StatusBadge({ value }: { value: string | null | undefined }) {
   const normalized = value?.toUpperCase() ?? "UNKNOWN";
   const tone = normalized.includes("CLOSE") || normalized.includes("COMPLETE") || normalized === "ACTIVE" || normalized === "OPERATING" ? "positive" : normalized === "UNRESOLVED" ? "neutral" : "default";

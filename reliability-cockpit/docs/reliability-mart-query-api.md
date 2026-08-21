@@ -36,6 +36,7 @@ All routes are GET-only and use canonical reliability concepts:
 | --- | --- |
 | `GET /v1/reliability/assets` | Bounded asset list with status, unit, and type filters |
 | `GET /v1/reliability/registry` | Aggregate current Registry snapshot metadata |
+| `GET /v1/reliability/decision-overview?window_days=30` | Bounded Executive Overview aggregates; `window_days` is 7, 30, or 90 |
 | `GET /v1/reliability/assets/{canonical_id}` | Asset detail |
 | `GET /v1/reliability/assets/{canonical_id}/context` | Bounded asset context: maintenance, FMEA, health, and overhaul |
 | `GET /v1/reliability/assets/{canonical_id}/fmea` | Paginated FMEA assessments for an asset |

@@ -44,12 +44,12 @@ The context endpoint's relationship health is a **Dataset Reference Health**
 aggregate. It is never presented as an Asset health, reliability, risk, or
 criticality score.
 
-## Controlled dataset limitation
+## Mixed data maturity limitation
 
-The current Reliability Mart is a controlled initial dataset. Asset-specific
-tabs show only relationships resolved to the selected Asset in the current
-Mart. Empty Maintenance, FMEA, Asset Health, or Overhaul states are factual
-and do not imply that the source system has no corresponding history.
+The current Reliability Mart has mixed data maturity. Asset-specific tabs show
+only relationships resolved to the selected Asset in the current Mart. Empty
+Maintenance, FMEA, Asset Health, or Overhaul states are factual and do not
+imply that the source system has no corresponding history.
 
 ## MX-012R local projection
 
