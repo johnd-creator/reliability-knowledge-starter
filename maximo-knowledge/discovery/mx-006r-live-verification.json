@@ -1,12 +1,25 @@
 {
   "task": "MX-006R",
   "status": "PARTIAL",
-  "evidence_classification": "UNKNOWN",
+  "evidence_classification": "PARTIAL",
   "authentication": {
     "knowledge_repository_auth_mode": "form",
-    "approved_session_available": false,
-    "live_verification_started": false,
-    "reason": "The approved discovery CLI is GET/HEAD/OPTIONS-only and does not automate POST /j_security_check. No authenticated browser session was available for manual-session discovery."
+    "approved_session_available": true,
+    "live_verification_started": true,
+    "authentication_smoke": {
+      "resource": "MXASSET",
+      "scope": "BSR",
+      "business_method": "GET",
+      "http_status": 200,
+      "json_confirmed": true,
+      "records_returned": 1,
+      "session_memory_only": true
+    },
+    "notes": [
+      "Authentication uses the exact /j_security_check endpoint; no credentials or cookies were persisted.",
+      "The smoke process and the bounded verification process each established one in-memory session.",
+      "No session expiry or re-login occurred."
+    ]
   },
   "scope": {
     "site": "BSR",
@@ -14,30 +27,33 @@
     "cross_site_samples": 0
   },
   "credential_delta": [
-    {"resource": "mxapifailurecode", "previous_status": "FORBIDDEN", "mx006r_status": "UNKNOWN", "changed": "UNKNOWN", "reason": "AUTHENTICATION REQUIRED"},
-    {"resource": "mxapilocation", "previous_status": "FORBIDDEN", "mx006r_status": "UNKNOWN", "changed": "UNKNOWN", "reason": "AUTHENTICATION REQUIRED"},
-    {"resource": "mxapipm", "previous_status": "FORBIDDEN", "mx006r_status": "UNKNOWN", "changed": "UNKNOWN", "reason": "AUTHENTICATION REQUIRED"},
-    {"resource": "mxapimeter", "previous_status": "FORBIDDEN", "mx006r_status": "UNKNOWN", "changed": "UNKNOWN", "reason": "AUTHENTICATION REQUIRED"},
-    {"resource": "mxapijobplan", "previous_status": "FORBIDDEN", "mx006r_status": "UNKNOWN", "changed": "UNKNOWN", "reason": "AUTHENTICATION REQUIRED"}
+    {"resource": "mxapifailurecode", "previous_status": "FORBIDDEN", "mx006r_status": "UNKNOWN", "changed": "NO CONCLUSION", "evidence": "BSR-scoped GET returned HTTP 400; permission was not tested independently."},
+    {"resource": "mxapilocation", "previous_status": "FORBIDDEN", "mx006r_status": "UNKNOWN", "changed": "NO CONCLUSION", "evidence": "BSR-scoped GET returned HTTP 400; permission was not tested independently."},
+    {"resource": "mxapipm", "previous_status": "FORBIDDEN", "mx006r_status": "UNKNOWN", "changed": "NO CONCLUSION", "evidence": "BSR-scoped GET returned HTTP 400; permission was not tested independently."},
+    {"resource": "mxapimeter", "previous_status": "FORBIDDEN", "mx006r_status": "UNKNOWN", "changed": "NO CONCLUSION", "evidence": "BSR-scoped GET returned HTTP 400; permission was not tested independently."},
+    {"resource": "mxapijobplan", "previous_status": "FORBIDDEN", "mx006r_status": "UNKNOWN", "changed": "NO CONCLUSION", "evidence": "BSR-scoped GET returned HTTP 400; permission was not tested independently."}
   ],
   "verification_matrix": [
-    {"resource": "IPFMEA", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "MX-005R catalog only; no live GET"},
-    {"resource": "IPFMEAITEM", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "MX-005R catalog only; no live GET"},
-    {"resource": "IPRCFA", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "MX-005R catalog only; no live GET"},
-    {"resource": "IPRCFAFDT", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "UNRESOLVED", "evidence": "MX-005R catalog only; no live GET"},
-    {"resource": "IPBHM", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "MX-005R catalog only; no live GET"},
-    {"resource": "IPBHMMEASUREMENT", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "MX-005R catalog only; no live GET"},
-    {"resource": "IPMSMSFAILUREMECHANI", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "MX-005R catalog only; no live GET"},
-    {"resource": "DMD_OPLOGABN", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI SUPPORTING CANDIDATE", "evidence": "MX-005R catalog only; no live GET"},
-    {"resource": "DMDLOGSHEETHDR/DMDLOGSHEETDTL", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI SUPPORTING CANDIDATE", "evidence": "MX-005R catalog only; no live GET"},
-    {"resource": "IP_DOM_OH", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "MX-005R catalog only; no live GET"},
-    {"resource": "DOM_INSPEKSIMESIN", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "MX-005R catalog only; no live GET"},
-    {"resource": "IP_DOM_OH_SCOPE_PM", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "MX-005R catalog only; no live GET"},
-    {"resource": "IPEMLGWR", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "UNRESOLVED", "evidence": "MX-005R catalog only; no live GET"},
-    {"resource": "IPEMMP/IPEMMPDTL", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "UNRESOLVED", "evidence": "MX-005R catalog only; no live GET"},
-    {"resource": "IPEMFB/IPEMFBDTL", "live_status": "UNKNOWN", "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "UNRESOLVED", "evidence": "MX-005R catalog only; no live GET"}
+    {"resource": "MXAPIFAILURECODE", "live_status": "UNKNOWN", "http_status": 400, "sample_records": 0, "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "Controlled BSR-scoped GET returned HTTP 400; no permission or field conclusion."},
+    {"resource": "MXAPILOCATION", "live_status": "UNKNOWN", "http_status": 400, "sample_records": 0, "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI SUPPORTING CANDIDATE", "evidence": "Controlled BSR-scoped GET returned HTTP 400; no permission or field conclusion."},
+    {"resource": "MXAPIPM", "live_status": "UNKNOWN", "http_status": 400, "sample_records": 0, "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI SUPPORTING CANDIDATE", "evidence": "Controlled BSR-scoped GET returned HTTP 400; no permission or field conclusion."},
+    {"resource": "MXAPIMETER", "live_status": "UNKNOWN", "http_status": 400, "sample_records": 0, "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI SUPPORTING CANDIDATE", "evidence": "Controlled BSR-scoped GET returned HTTP 400; no permission or field conclusion."},
+    {"resource": "MXAPIJOBPLAN", "live_status": "UNKNOWN", "http_status": 400, "sample_records": 0, "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI SUPPORTING CANDIDATE", "evidence": "Controlled BSR-scoped GET returned HTTP 400; no permission or field conclusion."},
+    {"resource": "IPFMEA", "live_status": "PARTIAL", "http_status": 200, "sample_records": 1, "response_shape": ["href"], "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "Live BSR-scoped GET returned JSON with one collection member, but lean response exposed only href."},
+    {"resource": "IPFMEAITEM", "live_status": "PARTIAL", "http_status": 200, "sample_records": 1, "response_shape": ["href"], "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "Live BSR-scoped GET returned JSON with one collection member, but lean response exposed only href."},
+    {"resource": "IPRCFA", "live_status": "PARTIAL", "http_status": 200, "sample_records": 1, "response_shape": ["href"], "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "Live BSR-scoped GET returned JSON with one collection member, but lean response exposed only href."},
+    {"resource": "IPRCFAFDT", "live_status": "UNKNOWN", "http_status": 400, "sample_records": 0, "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "UNRESOLVED", "evidence": "Controlled BSR-scoped GET returned HTTP 400; FDT grain remains unresolved."},
+    {"resource": "IPBHM", "live_status": "PARTIAL", "http_status": 200, "sample_records": 1, "response_shape": ["href"], "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "Live BSR-scoped GET returned JSON with one collection member, but lean response exposed only href."},
+    {"resource": "IPBHMMEASUREMENT", "live_status": "PARTIAL", "http_status": 200, "sample_records": 1, "response_shape": ["href"], "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "Live BSR-scoped GET returned JSON with one collection member, but measurement fields were not exposed by the lean response."},
+    {"resource": "IPMSMSFAILUREMECHANI", "live_status": "PARTIAL", "http_status": 200, "sample_records": 1, "response_shape": ["href"], "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "Live BSR-scoped GET returned JSON with one collection member, but taxonomy fields were not exposed by the lean response."},
+    {"resource": "DMD_OPLOGABN", "live_status": "PARTIAL", "http_status": 200, "sample_records": 1, "response_shape": ["href"], "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI SUPPORTING CANDIDATE", "evidence": "Live BSR-scoped GET returned JSON with one collection member, but observation fields were not exposed by the lean response."},
+    {"resource": "IP_DOM_OH", "live_status": "PARTIAL", "http_status": 200, "sample_records": 1, "response_shape": ["href"], "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "Live BSR-scoped GET returned JSON with one collection member, but overhaul fields were not exposed by the lean response."},
+    {"resource": "DOM_INSPEKSIMESIN", "live_status": "PARTIAL", "http_status": 200, "sample_records": 1, "response_shape": ["href"], "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "Live BSR-scoped GET returned JSON with one collection member, but inspection fields were not exposed by the lean response."},
+    {"resource": "IP_DOM_OH_SCOPE_PM", "live_status": "PARTIAL", "http_status": 200, "sample_records": 1, "response_shape": ["href"], "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI SUPPORTING CANDIDATE", "evidence": "Live BSR-scoped GET returned JSON with one collection member, but PM/scope linkage fields were not exposed by the lean response."}
   ],
-  "other_targets": {
+  "unprobed_targets": {
+    "diamond_header_detail": "UNKNOWN — no additional live request after P0 budget was used",
+    "efficiency_management": "UNKNOWN — lower priority and not probed",
     "maintenance_strategy": "UNKNOWN",
     "oee": "UNKNOWN",
     "pareto_loss_output": "UNKNOWN",
@@ -45,17 +61,25 @@
     "performance_test": "UNKNOWN"
   },
   "request_audit": {
-    "total_maximo_requests": 0,
-    "successful": 0,
+    "total_maximo_requests": 19,
+    "authentication_posts": 2,
+    "business_gets": 17,
+    "successful": 13,
+    "http_400": 6,
     "http_401": 0,
     "http_403": 0,
     "http_404": 0,
     "http_429": 0,
     "http_5xx": 0,
     "other": 0,
-    "maximum_concurrency": 0,
-    "minimum_interval_seconds": null,
-    "largest_sample_size": 0,
-    "request_budget_exceeded": false
+    "maximum_concurrency": 1,
+    "minimum_interval_seconds": 5,
+    "largest_sample_size": 1,
+    "cross_site_samples": 0,
+    "request_budget_exceeded": false,
+    "notes": [
+      "The two authentication POSTs were the explicit smoke-test login and the separate bounded verification-process login; neither was a retry after expiry.",
+      "The six HTTP 400 responses were not classified as forbidden because the controlled query was rejected before a permission conclusion could be made."
+    ]
   }
 }

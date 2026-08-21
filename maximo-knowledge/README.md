@@ -21,9 +21,10 @@ records:
 
 The first executable component is the read-only discovery CLI in
 `scripts/discover.py`. It parses local OAS fixtures and, only with explicit
-`--execute`, fetches an OAS document or minimal endpoint samples using
-GET/HEAD/OPTIONS. It never submits the Maximo login form or performs data
-mutation requests.
+`--execute`, fetches an OAS document or minimal endpoint samples. Form/login
+mode performs one controlled authentication POST to the exact
+`/j_security_check` path, then uses GET/HEAD/OPTIONS for business resources.
+It never performs business-data mutation requests.
 
 ## Suggested Discovery Seed
 
@@ -41,7 +42,7 @@ Do not assume every documented endpoint is authorized for the current account.
 # Parse without network access
 python scripts/discover.py --oas-file openapi.json --scope reliability-core
 
-# Enumerate OSLC object structures (GET-only, requires --execute).
+# Enumerate OSLC object structures (read-only business GETs, requires --execute).
 # Maximo exposes its real surface via /oslc/os, not the OAS paths object.
 python scripts/discover.py --enumerate-oslc --execute --scope reliability-core
 python scripts/discover.py --enumerate-oslc --execute --resource asset workorder
@@ -55,12 +56,13 @@ python scripts/session_discover.py run --scope reliability-core --verify-samples
 ```
 
 Credential values belong only in local `.env`; `.env.example` contains
-placeholders. Automated discovery uses an approved bearer token. The observed
-form login flow is documented in `docs/authentication.md` but is not submitted
-by the CLI because production POST requests are prohibited by `AGENTS.md`.
-For Maximo form authentication, the session CLI opens a browser and waits for
-the operator to log in manually. It keeps the authenticated browser context
-only in memory and writes discovery results to a timestamped staging run.
+placeholders. Automated discovery may use an approved bearer token or the
+controlled form/login mode documented in `docs/authentication.md`. Only the
+authentication handshake may POST, and only to `/j_security_check`; all
+business discovery remains read-only. The session CLI opens a browser and
+waits for the operator to log in manually when that workflow is preferred. It
+keeps the authenticated browser context only in memory and writes discovery
+results to a timestamped staging run.
 
 ## Folder Guide
 

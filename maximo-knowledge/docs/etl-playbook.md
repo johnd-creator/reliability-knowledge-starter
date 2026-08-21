@@ -4,7 +4,9 @@
 > application that fetches/copies Maximo data into its own database.
 >
 > **Hard constraint:** read-only. This playbook describes *fetch and copy* only.
-> No POST / PUT / PATCH / DELETE / MERGE.
+> The sole POST exception is the authentication handshake at the exact
+> `/j_security_check` endpoint; no POST / PUT / PATCH / DELETE / MERGE is
+> allowed against business resources.
 
 Read [`CONTEXT.md`](../CONTEXT.md) and [`authentication.md`](./authentication.md)
 first.

@@ -16,14 +16,17 @@ can **fetch/copy Maximo data into its own database** without ever mutating
 production.
 
 ### Hard rules (non-negotiable)
-- **READ ONLY.** No POST / PUT / PATCH / DELETE / MERGE against production. Ever.
+- **READ ONLY for business data.** The sole POST exception is one controlled
+  authentication handshake to the exact `/j_security_check` endpoint. No POST /
+  PUT / PATCH / DELETE / MERGE is allowed against OSLC or business resources.
 - No brute forcing paths, IDs, or credentials.
 - No storing credentials, tokens, cookies, or Authorization headers anywhere.
 - All saved samples are sanitized.
 - If access behavior is uncertain, record it as `unknown` and stop.
 
 These rules live in [`AGENTS.md`](./AGENTS.md) and are enforced in code by
-`scripts/discover.py` (GET / HEAD / OPTIONS only).
+`scripts/discover.py` (business GET / HEAD / OPTIONS only, with the exact
+authentication exception).
 
 ## 2. How Maximo exposes data (the key mental model)
 
@@ -106,10 +109,11 @@ update, or delete any Maximo business data, so it is compatible with the
 read-only intent. API key / Basic Auth are cleaner alternatives if the
 administrator can enable them.
 
-> **Important boundary:** this repository's own discovery
+> **Important boundary:** this repository's own business discovery
 > (`scripts/discover.py`, `scripts/session_discover.py`) stays GET/HEAD/OPTIONS
-> only per AGENTS.md. Programmatic login applies to the **separate downstream
-> app**, not to this knowledge base's tooling.
+> only per AGENTS.md. `scripts/discover.py` may perform the exact
+> authentication-only POST to `/j_security_check`; it may not POST anywhere
+> else. Programmatic login in the downstream app follows the same boundary.
 
 See [`docs/authentication.md`](./docs/authentication.md) for the full recipe,
 session-expiry handling, and what never to store.

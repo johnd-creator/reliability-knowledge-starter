@@ -6,18 +6,19 @@ Discover, verify, document, and maintain the Maximo API knowledge available to t
 
 ## Mandatory Safety Rules
 
-1. READ ONLY.
-2. Never execute POST, PUT, PATCH, DELETE, MERGE, or any state-changing request against production.
-3. Never brute-force paths, IDs, object names, or credentials.
-4. Prefer OpenAPI/OAS metadata and documented resources before probing.
-5. Respect server-side rate limits and add delays when enumerating large collections.
-6. Never store credentials, passwords, tokens, cookies, API keys, session identifiers, or Authorization headers.
-7. Sanitize all saved response examples.
-8. Do not commit personal data unless explicitly approved and required.
-9. Do not infer business meaning without evidence.
-10. If access behavior is uncertain, stop and record the endpoint as `unknown`.
-11. Never change remote Git history.
-12. Never push directly to `main` unless explicitly instructed.
+1. READ ONLY for Maximo business data.
+2. The sole POST exception is one controlled authentication handshake to the exact configured base URL plus `/j_security_check`, using a dedicated read-only account, runtime environment credentials, and an in-memory cookie jar.
+3. Never execute POST, PUT, PATCH, DELETE, or MERGE against OSLC or other business resources, and never issue any state-changing request against production.
+4. Never brute-force paths, IDs, object names, or credentials.
+5. Prefer OpenAPI/OAS metadata and documented resources before probing.
+6. Respect server-side rate limits and add delays when enumerating large collections.
+7. Never store credentials, passwords, tokens, cookies, API keys, session identifiers, or Authorization headers.
+8. Sanitize all saved response examples.
+9. Do not commit personal data unless explicitly approved and required.
+10. Do not infer business meaning without evidence.
+11. If access behavior is uncertain, stop and record the endpoint as `unknown`.
+12. Never change remote Git history.
+13. Never push directly to `main` unless explicitly instructed.
 
 ## Discovery Procedure
 
