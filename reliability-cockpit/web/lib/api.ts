@@ -1,6 +1,6 @@
 "use client";
 
-/** Minimal client for the Reliability Cockpit API (server-side proxy via rewrite). */
+/** Typed clients for the legacy Cockpit store and canonical Reliability Mart. */
 
 export interface EquipmentView {
   id: string;
@@ -27,46 +27,91 @@ export interface WorkOrderView {
   failure_code: string | null;
 }
 
-export interface WorkOrderPage {
-  items: WorkOrderView[];
-  total: number;
-  offset: number;
-  limit: number;
-  has_more: boolean;
+export interface WorkOrderPage { items: WorkOrderView[]; total: number; offset: number; limit: number; has_more: boolean; }
+export interface ReliabilityKpiView { id: string; equipment_id: string | null; metric: string | null; value: number | null; unit: string | null; period_start: string | null; period_end: string | null; }
+export interface PageMeta { total: number; offset: number; limit: number; has_more: boolean; }
+export interface Page<T> { items: T[]; meta: PageMeta; }
+
+export interface AssetView {
+  canonical_id: string; contract_version: string; source_asset_number: string | null; description: string | null; status: string | null;
+  location_ref: string | null; parent_asset_ref: string | null; site_code: string; organization_code: string; asset_type: string | null;
+  plant: string | null; unit: string | null; source_updated_at: string | null;
+}
+export interface MaintenanceEventView {
+  canonical_id: string; contract_version: string; id: string; equipment_id: string; work_order_id: string | null; event_type: string | null;
+  status: string | null; actual_start: string | null; actual_finish: string | null; duration_hours: number | null; labor_hours: number | null;
+  downtime_hours: number | null; failure_code: string | null; source_changed_at: string | null; site_code: string; organization_code: string;
+}
+export interface FmeaView {
+  canonical_id: string; contract_version: string; source_record_id: string | null; source_number: string | null; revision: string | null;
+  lifecycle_status: string | null; description: string | null; asset_ref: string | null; failure_code_ref: string | null;
+  site_code: string; organization_code: string; source_updated_at: string | null; status_changed_at: string | null;
+}
+export interface RcfaView {
+  canonical_id: string; contract_version: string; source_record_id: string | null; source_number: string | null; revision: string | null;
+  lifecycle_status: string | null; category: string | null; asset_ref: string | null; location_ref: string | null; workorder_ref: string | null;
+  failure_event_ref: string | null; site_code: string; organization_code: string; source_created_at: string | null; requested_at: string | null;
+  relationship_status: "UNRESOLVED";
+}
+export interface AssetHealthView {
+  canonical_id: string; contract_version: string; source_record_id: string | null; revision: string | null; lifecycle_status: string | null;
+  description: string | null; function_description: string | null; asset_ref: string | null; site_code: string; organization_code: string;
+  source_created_at: string | null; source_updated_at: string | null; status_changed_at: string | null;
+}
+export interface OverhaulView {
+  canonical_id: string; contract_version: string; source_record_id: string | null; source_number: string | null; lifecycle_status: string | null;
+  workorder_ref: string | null; asset_ref: string | null; site_code: string; organization_code: string; planned_start_at: string | null;
+  planned_finish_at: string | null; actual_start_at: string | null; actual_finish_at: string | null; progress: unknown | null;
+  unresolved_attributes_present: boolean;
+}
+export interface IntegrityView { asset_refs_total: number; asset_refs_resolved: number; asset_refs_unresolved: number; workorder_refs_total: number; workorder_refs_resolved: number; workorder_refs_unresolved: number; }
+
+export interface AssetFilters { status?: string; unit?: string; asset_type?: string; offset?: number; limit?: number; sort?: "updated_desc" | "updated_asc" | "status"; }
+export interface MaintenanceFilters { asset_ref?: string; work_order_id?: string; status?: string; event_type?: string; date_from?: string; date_to?: string; offset?: number; limit?: number; sort?: "date_desc" | "date_asc" | "status"; }
+export interface FmeaFilters { asset_ref?: string; lifecycle_status?: string; source_number?: string; updated_from?: string; updated_to?: string; offset?: number; limit?: number; sort?: "updated_desc" | "updated_asc" | "status"; }
+export interface RcfaFilters { lifecycle_status?: string; category?: string; source_number?: string; created_from?: string; created_to?: string; offset?: number; limit?: number; sort?: "created_desc" | "created_asc" | "status"; }
+export interface HealthFilters { asset_ref?: string; lifecycle_status?: string; updated_from?: string; updated_to?: string; offset?: number; limit?: number; sort?: "updated_desc" | "updated_asc" | "status"; }
+export interface OverhaulFilters { asset_ref?: string; workorder_ref?: string; lifecycle_status?: string; planned_from?: string; planned_to?: string; actual_from?: string; actual_to?: string; offset?: number; limit?: number; sort?: "date_desc" | "date_asc" | "status"; }
+
+export class ApiError extends Error {
+  constructor(message: string, public readonly status: number) { super(message); this.name = "ApiError"; }
 }
 
-export interface ReliabilityKpiView {
-  id: string;
-  equipment_id: string | null;
-  metric: string | null;
-  value: number | null;
-  unit: string | null;
-  period_start: string | null;
-  period_end: string | null;
+function query(filters: object): string {
+  const params = new URLSearchParams();
+  for (const [key, value] of Object.entries(filters)) {
+    if ((typeof value === "string" && value !== "") || typeof value === "number") params.set(key, String(value));
+  }
+  const encoded = params.toString();
+  return encoded ? `?${encoded}` : "";
 }
 
 async function get<T>(path: string): Promise<T> {
-  const res = await fetch(`/api/cockpit${path}`, { cache: "no-store" });
-  if (!res.ok) throw new Error(`cockpit API ${path}: HTTP ${res.status}`);
-  return res.json() as Promise<T>;
+  const response = await fetch(`/api/cockpit${path}`, { cache: "no-store" });
+  if (!response.ok) {
+    if (response.status === 503) throw new ApiError("Reliability Mart unavailable", response.status);
+    throw new ApiError(`Reliability API ${path}: HTTP ${response.status}`, response.status);
+  }
+  return response.json() as Promise<T>;
 }
 
 export const KPI_METRICS = ["MTBF", "MTTR", "AVAILABILITY", "PM_COMPLIANCE"] as const;
-
 export const cockpitApi = {
   listEquipment: (limit = 200) => get<EquipmentView[]>(`/equipment?limit=${limit}`),
-  getEquipment: (equipmentId: string) =>
-    get<EquipmentView>(`/equipment/${encodeURIComponent(equipmentId)}`),
-  listWorkOrders: (equipmentId?: string, offset = 0, limit = 50, status?: string) => {
-    const params = new URLSearchParams();
-    if (equipmentId) params.set("equipment_id", equipmentId);
-    if (status) params.set("status", status);
-    params.set("offset", String(offset));
-    params.set("limit", String(limit));
-    return get<WorkOrderPage>(`/work-orders?${params.toString()}`);
-  },
+  getEquipment: (equipmentId: string) => get<EquipmentView>(`/equipment/${encodeURIComponent(equipmentId)}`),
+  listWorkOrders: (equipmentId?: string, offset = 0, limit = 50, status?: string) => get<WorkOrderPage>(`/work-orders${query({ equipment_id: equipmentId, status, offset, limit })}`),
   listWorkOrderStatuses: () => get<string[]>("/work-orders/statuses"),
-  getKpi: (equipmentId: string, metric: string) =>
-    get<ReliabilityKpiView>(`/kpis/${encodeURIComponent(equipmentId)}/${encodeURIComponent(metric)}`),
+  getKpi: (equipmentId: string, metric: string) => get<ReliabilityKpiView>(`/kpis/${encodeURIComponent(equipmentId)}/${encodeURIComponent(metric)}`),
   health: () => get<{ status: string }>("/health"),
+};
+
+export const reliabilityApi = {
+  assets: (filters: AssetFilters = {}) => get<Page<AssetView>>(`/v1/reliability/assets${query(filters)}`),
+  asset: (canonicalId: string) => get<AssetView>(`/v1/reliability/assets/${encodeURIComponent(canonicalId)}`),
+  maintenance: (filters: MaintenanceFilters = {}) => get<Page<MaintenanceEventView>>(`/v1/reliability/maintenance-events${query(filters)}`),
+  fmea: (filters: FmeaFilters = {}) => get<Page<FmeaView>>(`/v1/reliability/fmea${query(filters)}`),
+  rcfa: (filters: RcfaFilters = {}) => get<Page<RcfaView>>(`/v1/reliability/rcfa${query(filters)}`),
+  assetHealth: (filters: HealthFilters = {}) => get<Page<AssetHealthView>>(`/v1/reliability/asset-health${query(filters)}`),
+  overhauls: (filters: OverhaulFilters = {}) => get<Page<OverhaulView>>(`/v1/reliability/overhauls${query(filters)}`),
+  integrity: () => get<IntegrityView>("/v1/reliability/integrity"),
 };
