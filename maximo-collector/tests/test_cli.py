@@ -104,6 +104,10 @@ class ProfilerSafetyCliTest(unittest.TestCase):
 
         self.assertEqual(MaximoConfig().timeout_seconds, 30)
 
+    def test_asset_registry_reconciliation_accepts_local_file_argument(self):
+        args = parse_args(["reconcile-asset-registry", "--registry-file", "synthetic.xls"])
+        self.assertEqual(args.registry_file, "synthetic.xls")
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -16,6 +16,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import os
 import re
 import signal
 import sys
@@ -312,6 +313,23 @@ def cmd_profile_workorders(args: argparse.Namespace) -> int:
         return 2
 
 
+def cmd_reconcile_asset_registry(args: argparse.Namespace) -> int:
+    """Reconcile a local List of Assets export with local Collector/Mart data."""
+    from src.services.asset_registry_reconciliation import reconcile_registry_file
+
+    registry_file = args.registry_file or os.environ.get("MAXIMO_ASSET_REGISTRY_FILE")
+    if not registry_file:
+        print(json.dumps({"error": "REGISTRY_FILE_REQUIRED"}, sort_keys=True))
+        return 2
+    try:
+        result = reconcile_registry_file(registry_file, get_database())
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    except Exception as error:  # aggregate-only command; never echo file/row values
+        print(json.dumps({"error": type(error).__name__}, sort_keys=True))
+        return 2
+
+
 def cmd_mart_load(args: argparse.Namespace) -> int:
     """Run the explicit, bounded initial Reliability Mart profile."""
     from src.adapters.maximo.auth import MaximoAuth
@@ -423,6 +441,15 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     profile.add_argument("--max-pages", type=int, default=20, choices=range(1, 21))
     profile.add_argument("--request-budget", type=int, default=30, choices=range(1, 31))
 
+    reconcile = sub.add_parser(
+        "reconcile-asset-registry",
+        help="reconcile a local HTML List of Assets export with Collector hierarchy",
+    )
+    reconcile.add_argument(
+        "--registry-file",
+        help="local HTML-export .xls path; defaults to MAXIMO_ASSET_REGISTRY_FILE",
+    )
+
     mart_load = sub.add_parser(
         "mart-load",
         help="run the bounded initial-controlled Reliability Mart load",
@@ -452,6 +479,8 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_diagnose(args)
     if args.command == "profile-workorders":
         return cmd_profile_workorders(args)
+    if args.command == "reconcile-asset-registry":
+        return cmd_reconcile_asset_registry(args)
     if args.command == "mart-load":
         return cmd_mart_load(args)
     return 1
