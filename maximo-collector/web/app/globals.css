@@ -1031,6 +1031,46 @@ tbody tr:last-child td {
   }
 }
 
+/* NADI-001: keep Collector Store and Mart visibility explicit. */
+.mart-summary { margin: 1rem 0 1.25rem; }
+.mart-summary .panel-note { margin: -4px 0 14px; }
+.mart-summary-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+.mart-summary-card { min-width: 0; padding: 11px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel2); }
+.mart-summary-card span, .mart-summary-card small { display: block; color: var(--text-muted); font-size: .68rem; }
+.mart-summary-card strong { display: block; margin: 4px 0; color: var(--cyan); font-size: 1.2rem; }
+.mart-summary-card small { overflow: hidden; color: var(--text-dim); text-overflow: ellipsis; white-space: nowrap; }
+.mart-summary-loading { padding: 10px; color: var(--text-muted); font-size: .75rem; }
+.explorer-grid { grid-template-columns: minmax(235px, .34fr) minmax(0, 1.4fr); align-items: start; }
+.explorer-resource-panel { position: sticky; top: 18px; }
+.explorer-data-panel { min-width: 0; margin-top: 0; }
+.explorer-meta-panel { grid-column: 1 / -1; padding: 16px 20px; }
+.explorer-meta-panel > h2 { margin-bottom: 3px; }
+.explorer-record-cta { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin: 15px 0 12px; padding: 12px; border: 1px solid rgba(104,213,210,.22); border-radius: 8px; background: rgba(104,213,210,.06); }
+.explorer-record-cta strong, .explorer-record-cta small { display: block; }
+.explorer-record-cta strong { color: var(--cyan); font-size: 1.05rem; }
+.explorer-record-cta small { margin-top: 3px; color: var(--text-muted); font-size: .7rem; }
+.explorer-details { margin-top: 9px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 7px; background: rgba(255,255,255,.018); }
+.explorer-details summary { cursor: pointer; color: var(--text); font-size: .74rem; font-weight: 700; }
+.explorer-details[open] summary { margin-bottom: 10px; color: var(--cyan); }
+.explorer-meta-panel .explorer-facts { margin: 0; }
+.explorer-meta-panel .explorer-integrity-grid { margin: 0; }
+@media (max-width: 980px) {
+  .mart-summary-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .explorer-grid { grid-template-columns: 1fr; }
+  .explorer-resource-panel { position: static; }
+  .explorer-meta-panel { grid-column: auto; }
+}
+@media (max-width: 640px) {
+  .mart-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .explorer-record-cta { align-items: flex-start; flex-direction: column; }
+}
+
+.explorer-resource-panel { min-width: 0; overflow: hidden; }
+.explorer-resource-panel .resource-row { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 9px; min-width: 0; max-width: 100%; overflow: hidden; }
+.explorer-resource-panel .resource-name { min-width: 0; overflow: hidden; }
+.explorer-resource-panel .resource-name code { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.explorer-resource-panel .resource-count { min-width: 0; white-space: nowrap; }
+
 /* Data Explorer */
 .explorer-switcher {
   display: grid;
@@ -1330,4 +1370,29 @@ tbody tr:last-child td {
   .explorer-integrity-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Final layout overrides: records first, metadata secondary. */
+.explorer-grid { grid-template-columns: minmax(235px, .34fr) minmax(0, 1.4fr); align-items: start; }
+.explorer-resource-panel { position: sticky; top: 18px; }
+.explorer-data-panel { min-width: 0; margin-top: 0; }
+.explorer-meta-panel { grid-column: 1 / -1; padding: 16px 20px; }
+.explorer-record-cta { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin: 15px 0 12px; padding: 12px; border: 1px solid rgba(104,213,210,.22); border-radius: 8px; background: rgba(104,213,210,.06); }
+.explorer-record-cta strong, .explorer-record-cta small { display: block; }
+.explorer-record-cta strong { color: var(--cyan); font-size: 1.05rem; }
+.explorer-record-cta small { margin-top: 3px; color: var(--text-muted); font-size: .7rem; }
+.explorer-details { margin-top: 9px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 7px; background: rgba(255,255,255,.018); }
+.explorer-details summary { cursor: pointer; color: var(--text); font-size: .74rem; font-weight: 700; }
+.explorer-details[open] summary { margin-bottom: 10px; color: var(--cyan); }
+.explorer-meta-panel .explorer-facts { margin: 0; }
+.explorer-meta-panel .explorer-integrity-grid { margin: 0; }
+@media (max-width: 980px) {
+  .mart-summary-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .explorer-grid { grid-template-columns: 1fr; }
+  .explorer-resource-panel { position: static; }
+  .explorer-meta-panel { grid-column: auto; }
+}
+@media (max-width: 640px) {
+  .mart-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .explorer-record-cta { align-items: flex-start; flex-direction: column; }
 }

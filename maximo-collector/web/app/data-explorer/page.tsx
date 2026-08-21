@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   collectorApi,
   ExplorerCatalogView,
@@ -184,6 +184,7 @@ export default function DataExplorerPage() {
   const [hasMore, setHasMore] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const dataSectionRef = useRef<HTMLElement | null>(null);
 
   const selected = useMemo(
     () => catalog?.resources.find((resource) => resource.resource_key === selectedObject) ?? null,
@@ -228,6 +229,10 @@ export default function DataExplorerPage() {
     setTab(nextTab);
     setOffset(0);
     setDetail(null);
+  }
+
+  function browseRecords() {
+    dataSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   async function openDetail(canonicalId: string) {
@@ -280,38 +285,25 @@ export default function DataExplorerPage() {
           <div className="explorer-deferred"><strong>Deferred / not available</strong>{(catalog?.deferred ?? []).map((item) => <span key={item.source_object}><code>{item.source_object}</code>{item.label}</span>)}</div>
         </section>
 
+        <section ref={dataSectionRef} className="panel data-panel explorer-data-panel">
+          <div className="panel-head"><div><div className="eyebrow">{tab === "source" ? "Source projection / Records" : "Reliability Mart / Records"}</div><h2>{tab === "source" ? "Downloaded fields" : selected?.canonical_target ?? "Reliability Mart"}</h2></div><span className="count-pill">{total.toLocaleString()} total</span></div>
+          <div className="table-tools-bar"><div className="table-filters"><input className="search-input" value={draftQuery} onChange={(event) => setDraftQuery(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") { setOffset(0); setQuery(draftQuery); } }} placeholder="Search approved fields…" /><button className="btn btn-primary" onClick={() => { setOffset(0); setQuery(draftQuery); }}>Search</button>{query && <button className="ghost-button" onClick={() => { setDraftQuery(""); setQuery(""); setOffset(0); }}>Clear</button>}</div><label className="page-size-selector">Rows <select value={limit} onChange={(event) => { setLimit(Number(event.target.value)); setOffset(0); }}><option value={25}>25</option><option value={50}>50</option><option value={100}>100</option><option value={200}>200</option></select></label></div>
+          {loading ? <div className="empty">Loading local Collector storage…</div> : rowsEmpty ? <div className="empty"><strong>No records in this view.</strong><br />The current resource has no records in the selected Source/Mart projection.</div> : selected && tab === "source" ? <SourceTable rows={sourceRows} fields={fields} onSelect={openDetail} /> : selected ? <MartTable rows={martRows} fields={fields} onSelect={openDetail} /> : <div className="empty">Select a resource.</div>}
+          <div className="pagination-bar"><span className="pagination-info">{total === 0 ? "0 records" : `${offset + 1}–${Math.min(offset + limit, total)} of ${total}`}</span><div className="pagination-controls"><button className="page-btn" disabled={offset === 0} onClick={() => setOffset(Math.max(0, offset - limit))}>←</button><span className="page-btn active">{Math.floor(offset / limit) + 1}</span><button className="page-btn" disabled={!hasMore} onClick={() => setOffset(offset + limit)}>→</button></div></div>
+        </section>
+
         <section className="panel explorer-meta-panel">
           {selected ? <>
             <div className="eyebrow">{tab === "source" ? "Source resource" : "Canonical entity"}</div>
             <h2>{selected.label}</h2>
             <p className="explorer-subtitle"><code>{selected.source_object}</code> → <code>{selected.canonical_target}</code></p>
-            <div className="facts explorer-facts">
-              <div><dt>System</dt><dd>{selected.source_system}</dd></div>
-              <div><dt>Module</dt><dd>{selected.module}</dd></div>
-              <div><dt>Scope</dt><dd>{selected.scope.site} / {selected.scope.organization}</dd></div>
-              <div><dt>Contract</dt><dd>{selected.contract_version}</dd></div>
-              <div><dt>Records</dt><dd>{selected.records}</dd></div>
-              <div><dt>Last sync</dt><dd>{selected.last_sync ? new Date(selected.last_sync).toLocaleString() : "—"}</dd></div>
-            </div>
-            {catalog?.integrity && <div className="explorer-integrity-summary">
-              <h3 className="explorer-section-title">Reference integrity</h3>
-              <div className="explorer-integrity-grid">
-                <span>Asset refs <b>{catalog.integrity.asset_reference_resolved}/{catalog.integrity.asset_reference_total}</b> resolved</span>
-                <span>Work Order refs <b>{catalog.integrity.workorder_reference_resolved}/{catalog.integrity.workorder_reference_total}</b> resolved</span>
-              </div>
-            </div>}
-            <h3 className="explorer-section-title">Selected fields ({selected.selected_fields.length})</h3>
-            <div className="explorer-field-chips">{selected.selected_fields.map((field) => <code key={field}>{field}</code>)}</div>
+            <div className="explorer-record-cta"><div><strong>{selected.records.toLocaleString()} records</strong><small>Available in this {tab === "source" ? "approved source projection" : "canonical Mart entity"}</small></div><button className="btn btn-primary" onClick={browseRecords}>Browse records ↓</button></div>
+            <details className="explorer-details" open><summary>Resource details</summary><div className="facts explorer-facts"><div><dt>System</dt><dd>{selected.source_system}</dd></div><div><dt>Module</dt><dd>{selected.module}</dd></div><div><dt>Scope</dt><dd>{selected.scope.site} / {selected.scope.organization}</dd></div><div><dt>Contract</dt><dd>{selected.contract_version}</dd></div><div><dt>Last sync</dt><dd>{selected.last_sync ? new Date(selected.last_sync).toLocaleString() : "—"}</dd></div></div></details>
+            {catalog?.integrity && <details className="explorer-details"><summary>Reference integrity</summary><div className="explorer-integrity-grid"><span>Asset refs <b>{catalog.integrity.asset_reference_resolved}/{catalog.integrity.asset_reference_total}</b> resolved</span><span>Work Order refs <b>{catalog.integrity.workorder_reference_resolved}/{catalog.integrity.workorder_reference_total}</b> resolved</span></div></details>}
+            <details className="explorer-details"><summary>Selected fields ({selected.selected_fields.length})</summary><div className="explorer-field-chips">{selected.selected_fields.map((field) => <code key={field}>{field}</code>)}</div></details>
           </> : <div className="empty">Loading resource catalog…</div>}
         </section>
       </div>
-
-      <section className="panel data-panel explorer-data-panel">
-        <div className="panel-head"><div><div className="eyebrow">{tab === "source" ? "Source projection" : "Canonical preview"}</div><h2>{tab === "source" ? "Downloaded fields" : selected?.canonical_target ?? "Reliability Mart"}</h2></div><span className="count-pill">{total} total</span></div>
-        <div className="table-tools-bar"><div className="table-filters"><input className="search-input" value={draftQuery} onChange={(event) => setDraftQuery(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") { setOffset(0); setQuery(draftQuery); } }} placeholder="Search approved fields…" /><button className="btn btn-primary" onClick={() => { setOffset(0); setQuery(draftQuery); }}>Search</button>{query && <button className="ghost-button" onClick={() => { setDraftQuery(""); setQuery(""); setOffset(0); }}>Clear</button>}</div><label className="page-size-selector">Rows <select value={limit} onChange={(event) => { setLimit(Number(event.target.value)); setOffset(0); }}><option value={25}>25</option><option value={50}>50</option><option value={100}>100</option><option value={200}>200</option></select></label></div>
-        {loading ? <div className="empty">Loading local Collector storage…</div> : rowsEmpty ? <div className="empty"><strong>No records loaded into Reliability Mart yet.</strong><br />The Collector/Contract is configured, but the production initial load has not been executed.</div> : selected && tab === "source" ? <SourceTable rows={sourceRows} fields={fields} onSelect={openDetail} /> : selected ? <MartTable rows={martRows} fields={fields} onSelect={openDetail} /> : <div className="empty">Select a resource.</div>}
-        <div className="pagination-bar"><span className="pagination-info">{total === 0 ? "0 records" : `${offset + 1}–${Math.min(offset + limit, total)} of ${total}`}</span><div className="pagination-controls"><button className="page-btn" disabled={offset === 0} onClick={() => setOffset(Math.max(0, offset - limit))}>←</button><span className="page-btn active">{Math.floor(offset / limit) + 1}</span><button className="page-btn" disabled={!hasMore} onClick={() => setOffset(offset + limit)}>→</button></div></div>
-      </section>
 
       {detail && <DetailPanel detail={detail} tab={detailTab} setTab={setDetailTab} />}
     </div>

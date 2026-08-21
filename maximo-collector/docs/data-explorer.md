@@ -12,6 +12,17 @@ The page has two deliberately separate views:
   canonical record's approved `sources.maximo` block.
 * **Reliability Mart** — the six canonical Contract v1 records after mapping.
 
+The selected resource now puts its paginated Records table beside the resource
+list in the first desktop viewport. Resource metadata, reference integrity,
+and selected fields remain available in compact expandable panels below the
+table. The **Browse records** action only scrolls to that existing table; it
+does not issue a Maximo query.
+
+The main Collector dashboard labels its legacy totals as **Collector Store**.
+That store is intentionally separate from the small **Reliability Mart**
+summary, which links to this Explorer. A zero Collector Store total therefore
+must not be read as proof that the Reliability Mart is empty.
+
 Source Data is not a complete OSLC response. The Explorer never stores or
 returns raw OSLC payloads, hrefs, collection references, credentials, cookies,
 or arbitrary JSON keys. A source preview is constructed by an explicit
