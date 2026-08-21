@@ -443,18 +443,16 @@ class MartQueryRepository:
             func.count(func.distinct(maintenance_scope.c.equipment_id)).filter(scoped_date >= current - timedelta(days=30), scoped_date <= current).label("assets_active_30d"),
             func.count(func.distinct(maintenance_scope.c.equipment_id)).filter(scoped_date >= current - timedelta(days=90), scoped_date <= current).label("assets_active_90d"),
         )
+        status_value = func.coalesce(maintenance_scope.c.status, "UNKNOWN")
+        work_type_value = func.coalesce(maintenance_scope.c.event_type, "UNKNOWN")
         window_statement = select(
-            func.coalesce(maintenance_scope.c.status, "UNKNOWN").label("value"),
+            status_value.label("value"),
             func.count(maintenance_scope.c.canonical_id).label("count"),
-        ).where(scoped_date >= window_start, scoped_date <= current).group_by(
-            func.coalesce(maintenance_scope.c.status, "UNKNOWN")
-        ).order_by(func.coalesce(maintenance_scope.c.status, "UNKNOWN"))
+        ).where(scoped_date >= window_start, scoped_date <= current).group_by(status_value).order_by(status_value)
         work_type_statement = select(
-            func.coalesce(maintenance_scope.c.event_type, "UNKNOWN").label("value"),
+            work_type_value.label("value"),
             func.count(maintenance_scope.c.canonical_id).label("count"),
-        ).where(scoped_date >= window_start, scoped_date <= current).group_by(
-            func.coalesce(maintenance_scope.c.event_type, "UNKNOWN")
-        ).order_by(func.coalesce(maintenance_scope.c.event_type, "UNKNOWN"))
+        ).where(scoped_date >= window_start, scoped_date <= current).group_by(work_type_value).order_by(work_type_value)
         concentration_count = func.count(maintenance_scope.c.canonical_id).label("event_count")
         concentration_latest = func.max(scoped_date).label("latest_activity")
         concentration_statement = (
