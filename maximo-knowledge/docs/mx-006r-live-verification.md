@@ -133,3 +133,29 @@ sanitized diagnostics only; HTTP 400 was not reclassified as `FORBIDDEN`.
 Detail artifacts use field names, lightweight types, metadata names, candidate
 keys, relationship evidence, and type placeholders. They contain no raw
 production values, cookies, credentials, personal data, or resource IDs.
+
+## MX-006C contract integrity and bounded query shaping
+
+MX-006C corrected the MX-006B identity candidates. The preferred candidates are
+`IPFMEA.fmeaid`/`fmeanum`, `IPRCFA.rcfaid`/`norcfa`, `IPBHM.bhmid`, and
+`IP_DOM_OH.domid`/`domohnum`; `orgid`, `siteid`, `assetnum`, and `wonum` are
+excluded from identity where their observed roles are scope or relationship
+fields. `IP_DOM_OH.wonum` remains a verified Work Order relationship.
+
+The four response-cap resources were each given at most two collection query
+shapes:
+
+1. the existing `_maxitems=1`, BSR-scoped, `oslc.select=href` shape;
+2. the collector-evidenced `oslc.paging=true&oslc.pageSize=1` equivalent.
+
+The 1 MiB cap was unchanged, no next page was followed, and no detail request
+was made when the bounded result exposed only metadata or collection references.
+The alternate shape returned HTTP 200 for all four resources, but it did not
+expose a business detail link for `IPFMEAITEM`, `IPBHMMEASUREMENT`, or
+`IPMSMSFAILUREMECHANI`; `DMD_OPLOGABN` exposed only collection references.
+Their business contracts therefore remain UNKNOWN rather than being inferred.
+
+MX-006C adds structured field roles, ranked identity candidates, excluded
+identity fields, query-shape evidence, and a stricter MX-007R readiness gate.
+The gate is now `READY: YES` for contract mapping, while unresolved child
+schemas and joins remain explicitly marked UNKNOWN.

@@ -46,41 +46,679 @@
       "alternate_scope_queries": 0
     },
     "verified_contracts": [
-      {"resource": "IPFMEA", "collection_http": 200, "detail_http": 200, "fields": ["fmeanum", "fmeaid", "revision", "status", "description", "assetnum", "siteid", "orgid", "lastmodifieddate", "statusdate"], "primary_key": {"field": "orgid", "confidence": "CANDIDATE"}, "nadi": "NADI CORE CANDIDATE"},
-      {"resource": "IPRCFA", "collection_http": 200, "detail_http": 200, "fields": ["norcfa", "rcfaid", "revisi", "status", "kategori", "siteid", "orgid", "createddate", "req_date"], "primary_key": {"field": "orgid", "confidence": "CANDIDATE"}, "nadi": "NADI CORE CANDIDATE"},
-      {"resource": "IPBHM", "collection_http": 200, "detail_http": 200, "fields": ["bhmid", "eid", "status", "description", "fungsi", "assetnum", "siteid", "orgid", "createddate", "lastmodifieddate", "statusdate"], "primary_key": {"field": "bhmid", "confidence": "CANDIDATE"}, "nadi": "NADI CORE CANDIDATE"},
-      {"resource": "IP_DOM_OH", "collection_http": 200, "detail_http": 200, "fields": ["domohnum", "domid", "status", "wonum", "inspeksinum", "siteid", "orgid", "tgl_mulai", "tgl_selesai", "tgl_actual_mulai", "tgl_actual_selesai", "changedate", "createdate"], "primary_key": {"field": "wonum", "confidence": "CANDIDATE"}, "nadi": "NADI CORE CANDIDATE"},
-      {"resource": "DOM_INSPEKSIMESIN", "collection_http": 200, "detail_http": 200, "fields": ["dom_inspeksinum", "dom_inspeksiid", "status", "siteid", "description", "mesin", "scopenum", "p1", "p2", "p3", "r1", "r2", "r3"], "primary_key": {"field": "dom_inspeksinum", "confidence": "CANDIDATE"}, "nadi": "NADI SUPPORTING CANDIDATE"},
-      {"resource": "IP_DOM_OH_SCOPE_PM", "collection_http": 200, "detail_http": null, "fields": ["workorder_collectionref"], "primary_key": {"field": "UNKNOWN", "confidence": "UNKNOWN"}, "nadi": "NADI SUPPORTING CANDIDATE"}
+      {
+        "resource": "IPFMEA",
+        "collection_http": 200,
+        "detail_http": 200,
+        "fields": [
+          "fmeanum",
+          "fmeaid",
+          "revision",
+          "status",
+          "description",
+          "assetnum",
+          "siteid",
+          "orgid",
+          "lastmodifieddate",
+          "statusdate"
+        ],
+        "primary_key": {
+          "preferred": {
+            "field": "fmeaid",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          },
+          "candidates": [
+            {
+              "field": "fmeaid",
+              "confidence": "CANDIDATE",
+              "reason": "resource-specific identity preference"
+            },
+            {
+              "field": "fmeanum",
+              "confidence": "CANDIDATE",
+              "reason": "resource-specific identity preference"
+            }
+          ],
+          "excluded": [
+            {
+              "field": "lastmodifieddate",
+              "role": "TIMESTAMP",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "orgid",
+              "role": "SCOPE_ORGANIZATION",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "failurecode",
+              "role": "FAILURE_REFERENCE",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "fmea_asset_collectionref",
+              "role": "COLLECTION_REFERENCE",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "assetnum",
+              "role": "ASSET_REFERENCE",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "siteid",
+              "role": "SCOPE_SITE",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "statusdate",
+              "role": "TIMESTAMP",
+              "reason": "scope or relationship field is not record identity"
+            }
+          ]
+        },
+        "nadi": "NADI CORE CANDIDATE"
+      },
+      {
+        "resource": "IPRCFA",
+        "collection_http": 200,
+        "detail_http": 200,
+        "fields": [
+          "norcfa",
+          "rcfaid",
+          "revisi",
+          "status",
+          "kategori",
+          "siteid",
+          "orgid",
+          "createddate",
+          "req_date"
+        ],
+        "primary_key": {
+          "preferred": {
+            "field": "rcfaid",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          },
+          "candidates": [
+            {
+              "field": "rcfaid",
+              "confidence": "CANDIDATE",
+              "reason": "resource-specific identity preference"
+            },
+            {
+              "field": "norcfa",
+              "confidence": "CANDIDATE",
+              "reason": "resource-specific identity preference"
+            }
+          ],
+          "excluded": [
+            {
+              "field": "createddate",
+              "role": "TIMESTAMP",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "req_date",
+              "role": "TIMESTAMP",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "orgid",
+              "role": "SCOPE_ORGANIZATION",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "siteid",
+              "role": "SCOPE_SITE",
+              "reason": "scope or relationship field is not record identity"
+            }
+          ]
+        },
+        "nadi": "NADI CORE CANDIDATE"
+      },
+      {
+        "resource": "IPBHM",
+        "collection_http": 200,
+        "detail_http": 200,
+        "fields": [
+          "bhmid",
+          "eid",
+          "status",
+          "description",
+          "fungsi",
+          "assetnum",
+          "siteid",
+          "orgid",
+          "createddate",
+          "lastmodifieddate",
+          "statusdate"
+        ],
+        "primary_key": {
+          "preferred": {
+            "field": "bhmid",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          },
+          "candidates": [
+            {
+              "field": "bhmid",
+              "confidence": "CANDIDATE",
+              "reason": "resource-specific identity preference"
+            },
+            {
+              "field": "eid",
+              "confidence": "CANDIDATE",
+              "reason": "resource-specific identity preference"
+            }
+          ],
+          "excluded": [
+            {
+              "field": "lastmodifieddate",
+              "role": "TIMESTAMP",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "createddate",
+              "role": "TIMESTAMP",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "orgid",
+              "role": "SCOPE_ORGANIZATION",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "assetnum",
+              "role": "ASSET_REFERENCE",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "siteid",
+              "role": "SCOPE_SITE",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "statusdate",
+              "role": "TIMESTAMP",
+              "reason": "scope or relationship field is not record identity"
+            }
+          ]
+        },
+        "nadi": "NADI CORE CANDIDATE"
+      },
+      {
+        "resource": "IP_DOM_OH",
+        "collection_http": 200,
+        "detail_http": 200,
+        "fields": [
+          "domohnum",
+          "domid",
+          "status",
+          "wonum",
+          "inspeksinum",
+          "siteid",
+          "orgid",
+          "tgl_mulai",
+          "tgl_selesai",
+          "tgl_actual_mulai",
+          "tgl_actual_selesai",
+          "changedate",
+          "createdate"
+        ],
+        "primary_key": {
+          "preferred": {
+            "field": "domid",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          },
+          "candidates": [
+            {
+              "field": "domid",
+              "confidence": "CANDIDATE",
+              "reason": "resource-specific identity preference"
+            },
+            {
+              "field": "domohnum",
+              "confidence": "CANDIDATE",
+              "reason": "resource-specific identity preference"
+            }
+          ],
+          "excluded": [
+            {
+              "field": "wonum",
+              "role": "WORKORDER_REFERENCE",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "orgid",
+              "role": "SCOPE_ORGANIZATION",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "siteid",
+              "role": "SCOPE_SITE",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "inspeksinum",
+              "role": "INSPECTION_REFERENCE",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "changedate",
+              "role": "TIMESTAMP",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "createdate",
+              "role": "TIMESTAMP",
+              "reason": "scope or relationship field is not record identity"
+            }
+          ]
+        },
+        "nadi": "NADI CORE CANDIDATE"
+      },
+      {
+        "resource": "DOM_INSPEKSIMESIN",
+        "collection_http": 200,
+        "detail_http": 200,
+        "fields": [
+          "dom_inspeksinum",
+          "dom_inspeksiid",
+          "status",
+          "siteid",
+          "description",
+          "mesin",
+          "scopenum",
+          "p1",
+          "p2",
+          "p3",
+          "r1",
+          "r2",
+          "r3"
+        ],
+        "primary_key": {
+          "preferred": {
+            "field": "dom_inspeksiid",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          },
+          "candidates": [
+            {
+              "field": "dom_inspeksiid",
+              "confidence": "CANDIDATE",
+              "reason": "resource-specific identity preference"
+            },
+            {
+              "field": "dom_inspeksinum",
+              "confidence": "CANDIDATE",
+              "reason": "resource-specific identity preference"
+            },
+            {
+              "field": "scopenum",
+              "confidence": "CANDIDATE",
+              "reason": "identifier-like field; uniqueness not proven"
+            }
+          ],
+          "excluded": [
+            {
+              "field": "dom_merktype_collectionref",
+              "role": "COLLECTION_REFERENCE",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "siteid",
+              "role": "SCOPE_SITE",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "dom_scopeline_collectionref",
+              "role": "COLLECTION_REFERENCE",
+              "reason": "scope or relationship field is not record identity"
+            }
+          ]
+        },
+        "nadi": "NADI SUPPORTING CANDIDATE"
+      },
+      {
+        "resource": "IP_DOM_OH_SCOPE_PM",
+        "collection_http": 200,
+        "detail_http": null,
+        "fields": [
+          "workorder_collectionref"
+        ],
+        "primary_key": null,
+        "nadi": "NADI SUPPORTING CANDIDATE"
+      }
     ],
-    "unresolved_due_to_response_cap": ["IPFMEAITEM", "IPBHMMEASUREMENT", "DMD_OPLOGABN", "IPMSMSFAILUREMECHANI"],
-    "http_400_follow_up": {"resources": ["MXAPIFAILURECODE", "MXAPILOCATION", "MXAPIPM", "MXAPIMETER", "MXAPIJOBPLAN", "IPRCFAFDT"], "alternate_scope_queries": 0, "permission_conclusion": "UNKNOWN"},
-    "request_audit": {"authentication_posts": 7, "business_gets": 40, "collection_gets": 35, "detail_gets": 5, "maximum_concurrency": 1, "minimum_interval_seconds": 5, "http_429": 0, "http_5xx": 0, "cross_origin_requests_sent": 0, "request_budget_exceeded": false}
+    "unresolved_due_to_response_cap": [
+      "IPFMEAITEM",
+      "IPBHMMEASUREMENT",
+      "DMD_OPLOGABN",
+      "IPMSMSFAILUREMECHANI"
+    ],
+    "http_400_follow_up": {
+      "resources": [
+        "MXAPIFAILURECODE",
+        "MXAPILOCATION",
+        "MXAPIPM",
+        "MXAPIMETER",
+        "MXAPIJOBPLAN",
+        "IPRCFAFDT"
+      ],
+      "alternate_scope_queries": 0,
+      "permission_conclusion": "UNKNOWN"
+    },
+    "request_audit": {
+      "authentication_posts": 7,
+      "business_gets": 40,
+      "collection_gets": 35,
+      "detail_gets": 5,
+      "maximum_concurrency": 1,
+      "minimum_interval_seconds": 5,
+      "http_429": 0,
+      "http_5xx": 0,
+      "cross_origin_requests_sent": 0,
+      "request_budget_exceeded": false
+    },
+    "notes": [
+      "MX-006C supersedes the earlier heuristic identity candidates with role-aware ranked candidates; historical request counts above remain MX-006B-only."
+    ]
   },
   "credential_delta": [
-    {"resource": "mxapifailurecode", "previous_status": "FORBIDDEN", "mx006r_status": "UNKNOWN", "changed": "NO CONCLUSION", "evidence": "BSR-scoped GET returned HTTP 400; permission was not tested independently."},
-    {"resource": "mxapilocation", "previous_status": "FORBIDDEN", "mx006r_status": "UNKNOWN", "changed": "NO CONCLUSION", "evidence": "BSR-scoped GET returned HTTP 400; permission was not tested independently."},
-    {"resource": "mxapipm", "previous_status": "FORBIDDEN", "mx006r_status": "UNKNOWN", "changed": "NO CONCLUSION", "evidence": "BSR-scoped GET returned HTTP 400; permission was not tested independently."},
-    {"resource": "mxapimeter", "previous_status": "FORBIDDEN", "mx006r_status": "UNKNOWN", "changed": "NO CONCLUSION", "evidence": "BSR-scoped GET returned HTTP 400; permission was not tested independently."},
-    {"resource": "mxapijobplan", "previous_status": "FORBIDDEN", "mx006r_status": "UNKNOWN", "changed": "NO CONCLUSION", "evidence": "BSR-scoped GET returned HTTP 400; permission was not tested independently."}
+    {
+      "resource": "mxapifailurecode",
+      "previous_status": "FORBIDDEN",
+      "mx006r_status": "UNKNOWN",
+      "changed": "NO CONCLUSION",
+      "evidence": "BSR-scoped GET returned HTTP 400; permission was not tested independently."
+    },
+    {
+      "resource": "mxapilocation",
+      "previous_status": "FORBIDDEN",
+      "mx006r_status": "UNKNOWN",
+      "changed": "NO CONCLUSION",
+      "evidence": "BSR-scoped GET returned HTTP 400; permission was not tested independently."
+    },
+    {
+      "resource": "mxapipm",
+      "previous_status": "FORBIDDEN",
+      "mx006r_status": "UNKNOWN",
+      "changed": "NO CONCLUSION",
+      "evidence": "BSR-scoped GET returned HTTP 400; permission was not tested independently."
+    },
+    {
+      "resource": "mxapimeter",
+      "previous_status": "FORBIDDEN",
+      "mx006r_status": "UNKNOWN",
+      "changed": "NO CONCLUSION",
+      "evidence": "BSR-scoped GET returned HTTP 400; permission was not tested independently."
+    },
+    {
+      "resource": "mxapijobplan",
+      "previous_status": "FORBIDDEN",
+      "mx006r_status": "UNKNOWN",
+      "changed": "NO CONCLUSION",
+      "evidence": "BSR-scoped GET returned HTTP 400; permission was not tested independently."
+    }
   ],
   "verification_matrix": [
-    {"resource": "MXAPIFAILURECODE", "live_status": "UNKNOWN", "http_status": 400, "sample_records": 0, "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "Controlled BSR-scoped GET returned HTTP 400; no permission or field conclusion."},
-    {"resource": "MXAPILOCATION", "live_status": "UNKNOWN", "http_status": 400, "sample_records": 0, "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI SUPPORTING CANDIDATE", "evidence": "Controlled BSR-scoped GET returned HTTP 400; no permission or field conclusion."},
-    {"resource": "MXAPIPM", "live_status": "UNKNOWN", "http_status": 400, "sample_records": 0, "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI SUPPORTING CANDIDATE", "evidence": "Controlled BSR-scoped GET returned HTTP 400; no permission or field conclusion."},
-    {"resource": "MXAPIMETER", "live_status": "UNKNOWN", "http_status": 400, "sample_records": 0, "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI SUPPORTING CANDIDATE", "evidence": "Controlled BSR-scoped GET returned HTTP 400; no permission or field conclusion."},
-    {"resource": "MXAPIJOBPLAN", "live_status": "UNKNOWN", "http_status": 400, "sample_records": 0, "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI SUPPORTING CANDIDATE", "evidence": "Controlled BSR-scoped GET returned HTTP 400; no permission or field conclusion."},
-    {"resource": "IPFMEA", "live_status": "PARTIAL", "http_status": 200, "sample_records": 1, "response_shape": ["href"], "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "Live BSR-scoped GET returned JSON with one collection member, but lean response exposed only href."},
-    {"resource": "IPFMEAITEM", "live_status": "PARTIAL", "http_status": 200, "sample_records": 1, "response_shape": ["href"], "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "Live BSR-scoped GET returned JSON with one collection member, but lean response exposed only href."},
-    {"resource": "IPRCFA", "live_status": "PARTIAL", "http_status": 200, "sample_records": 1, "response_shape": ["href"], "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "Live BSR-scoped GET returned JSON with one collection member, but lean response exposed only href."},
-    {"resource": "IPRCFAFDT", "live_status": "UNKNOWN", "http_status": 400, "sample_records": 0, "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "UNRESOLVED", "evidence": "Controlled BSR-scoped GET returned HTTP 400; FDT grain remains unresolved."},
-    {"resource": "IPBHM", "live_status": "PARTIAL", "http_status": 200, "sample_records": 1, "response_shape": ["href"], "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "Live BSR-scoped GET returned JSON with one collection member, but lean response exposed only href."},
-    {"resource": "IPBHMMEASUREMENT", "live_status": "PARTIAL", "http_status": 200, "sample_records": 1, "response_shape": ["href"], "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "Live BSR-scoped GET returned JSON with one collection member, but measurement fields were not exposed by the lean response."},
-    {"resource": "IPMSMSFAILUREMECHANI", "live_status": "PARTIAL", "http_status": 200, "sample_records": 1, "response_shape": ["href"], "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "Live BSR-scoped GET returned JSON with one collection member, but taxonomy fields were not exposed by the lean response."},
-    {"resource": "DMD_OPLOGABN", "live_status": "PARTIAL", "http_status": 200, "sample_records": 1, "response_shape": ["href"], "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI SUPPORTING CANDIDATE", "evidence": "Live BSR-scoped GET returned JSON with one collection member, but observation fields were not exposed by the lean response."},
-    {"resource": "IP_DOM_OH", "live_status": "PARTIAL", "http_status": 200, "sample_records": 1, "response_shape": ["href"], "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "Live BSR-scoped GET returned JSON with one collection member, but overhaul fields were not exposed by the lean response."},
-    {"resource": "DOM_INSPEKSIMESIN", "live_status": "PARTIAL", "http_status": 200, "sample_records": 1, "response_shape": ["href"], "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI CORE CANDIDATE", "evidence": "Live BSR-scoped GET returned JSON with one collection member, but inspection fields were not exposed by the lean response."},
-    {"resource": "IP_DOM_OH_SCOPE_PM", "live_status": "PARTIAL", "http_status": 200, "sample_records": 1, "response_shape": ["href"], "primary_key": "UNKNOWN", "asset": "UNKNOWN", "location": "UNKNOWN", "site": "UNKNOWN", "workorder": "UNKNOWN", "timestamp": "UNKNOWN", "nadi_relevance": "NADI SUPPORTING CANDIDATE", "evidence": "Live BSR-scoped GET returned JSON with one collection member, but PM/scope linkage fields were not exposed by the lean response."}
+    {
+      "resource": "MXAPIFAILURECODE",
+      "live_status": "UNKNOWN",
+      "http_status": 400,
+      "sample_records": 0,
+      "primary_key": "UNKNOWN",
+      "asset": "UNKNOWN",
+      "location": "UNKNOWN",
+      "site": "UNKNOWN",
+      "workorder": "UNKNOWN",
+      "timestamp": "UNKNOWN",
+      "nadi_relevance": "NADI CORE CANDIDATE",
+      "evidence": "Controlled BSR-scoped GET returned HTTP 400; no permission or field conclusion."
+    },
+    {
+      "resource": "MXAPILOCATION",
+      "live_status": "UNKNOWN",
+      "http_status": 400,
+      "sample_records": 0,
+      "primary_key": "UNKNOWN",
+      "asset": "UNKNOWN",
+      "location": "UNKNOWN",
+      "site": "UNKNOWN",
+      "workorder": "UNKNOWN",
+      "timestamp": "UNKNOWN",
+      "nadi_relevance": "NADI SUPPORTING CANDIDATE",
+      "evidence": "Controlled BSR-scoped GET returned HTTP 400; no permission or field conclusion."
+    },
+    {
+      "resource": "MXAPIPM",
+      "live_status": "UNKNOWN",
+      "http_status": 400,
+      "sample_records": 0,
+      "primary_key": "UNKNOWN",
+      "asset": "UNKNOWN",
+      "location": "UNKNOWN",
+      "site": "UNKNOWN",
+      "workorder": "UNKNOWN",
+      "timestamp": "UNKNOWN",
+      "nadi_relevance": "NADI SUPPORTING CANDIDATE",
+      "evidence": "Controlled BSR-scoped GET returned HTTP 400; no permission or field conclusion."
+    },
+    {
+      "resource": "MXAPIMETER",
+      "live_status": "UNKNOWN",
+      "http_status": 400,
+      "sample_records": 0,
+      "primary_key": "UNKNOWN",
+      "asset": "UNKNOWN",
+      "location": "UNKNOWN",
+      "site": "UNKNOWN",
+      "workorder": "UNKNOWN",
+      "timestamp": "UNKNOWN",
+      "nadi_relevance": "NADI SUPPORTING CANDIDATE",
+      "evidence": "Controlled BSR-scoped GET returned HTTP 400; no permission or field conclusion."
+    },
+    {
+      "resource": "MXAPIJOBPLAN",
+      "live_status": "UNKNOWN",
+      "http_status": 400,
+      "sample_records": 0,
+      "primary_key": "UNKNOWN",
+      "asset": "UNKNOWN",
+      "location": "UNKNOWN",
+      "site": "UNKNOWN",
+      "workorder": "UNKNOWN",
+      "timestamp": "UNKNOWN",
+      "nadi_relevance": "NADI SUPPORTING CANDIDATE",
+      "evidence": "Controlled BSR-scoped GET returned HTTP 400; no permission or field conclusion."
+    },
+    {
+      "resource": "IPFMEA",
+      "live_status": "PARTIAL",
+      "http_status": 200,
+      "sample_records": 1,
+      "response_shape": [
+        "href"
+      ],
+      "primary_key": "UNKNOWN",
+      "asset": "UNKNOWN",
+      "location": "UNKNOWN",
+      "site": "UNKNOWN",
+      "workorder": "UNKNOWN",
+      "timestamp": "UNKNOWN",
+      "nadi_relevance": "NADI CORE CANDIDATE",
+      "evidence": "Live BSR-scoped GET returned JSON with one collection member, but lean response exposed only href."
+    },
+    {
+      "resource": "IPFMEAITEM",
+      "live_status": "PARTIAL",
+      "http_status": 200,
+      "sample_records": 1,
+      "response_shape": [
+        "href"
+      ],
+      "primary_key": "UNKNOWN",
+      "asset": "UNKNOWN",
+      "location": "UNKNOWN",
+      "site": "UNKNOWN",
+      "workorder": "UNKNOWN",
+      "timestamp": "UNKNOWN",
+      "nadi_relevance": "NADI CORE CANDIDATE",
+      "evidence": "Live BSR-scoped GET returned JSON with one collection member, but lean response exposed only href."
+    },
+    {
+      "resource": "IPRCFA",
+      "live_status": "PARTIAL",
+      "http_status": 200,
+      "sample_records": 1,
+      "response_shape": [
+        "href"
+      ],
+      "primary_key": "UNKNOWN",
+      "asset": "UNKNOWN",
+      "location": "UNKNOWN",
+      "site": "UNKNOWN",
+      "workorder": "UNKNOWN",
+      "timestamp": "UNKNOWN",
+      "nadi_relevance": "NADI CORE CANDIDATE",
+      "evidence": "Live BSR-scoped GET returned JSON with one collection member, but lean response exposed only href."
+    },
+    {
+      "resource": "IPRCFAFDT",
+      "live_status": "UNKNOWN",
+      "http_status": 400,
+      "sample_records": 0,
+      "primary_key": "UNKNOWN",
+      "asset": "UNKNOWN",
+      "location": "UNKNOWN",
+      "site": "UNKNOWN",
+      "workorder": "UNKNOWN",
+      "timestamp": "UNKNOWN",
+      "nadi_relevance": "UNRESOLVED",
+      "evidence": "Controlled BSR-scoped GET returned HTTP 400; FDT grain remains unresolved."
+    },
+    {
+      "resource": "IPBHM",
+      "live_status": "PARTIAL",
+      "http_status": 200,
+      "sample_records": 1,
+      "response_shape": [
+        "href"
+      ],
+      "primary_key": "UNKNOWN",
+      "asset": "UNKNOWN",
+      "location": "UNKNOWN",
+      "site": "UNKNOWN",
+      "workorder": "UNKNOWN",
+      "timestamp": "UNKNOWN",
+      "nadi_relevance": "NADI CORE CANDIDATE",
+      "evidence": "Live BSR-scoped GET returned JSON with one collection member, but lean response exposed only href."
+    },
+    {
+      "resource": "IPBHMMEASUREMENT",
+      "live_status": "PARTIAL",
+      "http_status": 200,
+      "sample_records": 1,
+      "response_shape": [
+        "href"
+      ],
+      "primary_key": "UNKNOWN",
+      "asset": "UNKNOWN",
+      "location": "UNKNOWN",
+      "site": "UNKNOWN",
+      "workorder": "UNKNOWN",
+      "timestamp": "UNKNOWN",
+      "nadi_relevance": "NADI CORE CANDIDATE",
+      "evidence": "Live BSR-scoped GET returned JSON with one collection member, but measurement fields were not exposed by the lean response."
+    },
+    {
+      "resource": "IPMSMSFAILUREMECHANI",
+      "live_status": "PARTIAL",
+      "http_status": 200,
+      "sample_records": 1,
+      "response_shape": [
+        "href"
+      ],
+      "primary_key": "UNKNOWN",
+      "asset": "UNKNOWN",
+      "location": "UNKNOWN",
+      "site": "UNKNOWN",
+      "workorder": "UNKNOWN",
+      "timestamp": "UNKNOWN",
+      "nadi_relevance": "NADI CORE CANDIDATE",
+      "evidence": "Live BSR-scoped GET returned JSON with one collection member, but taxonomy fields were not exposed by the lean response."
+    },
+    {
+      "resource": "DMD_OPLOGABN",
+      "live_status": "PARTIAL",
+      "http_status": 200,
+      "sample_records": 1,
+      "response_shape": [
+        "href"
+      ],
+      "primary_key": "UNKNOWN",
+      "asset": "UNKNOWN",
+      "location": "UNKNOWN",
+      "site": "UNKNOWN",
+      "workorder": "UNKNOWN",
+      "timestamp": "UNKNOWN",
+      "nadi_relevance": "NADI SUPPORTING CANDIDATE",
+      "evidence": "Live BSR-scoped GET returned JSON with one collection member, but observation fields were not exposed by the lean response."
+    },
+    {
+      "resource": "IP_DOM_OH",
+      "live_status": "PARTIAL",
+      "http_status": 200,
+      "sample_records": 1,
+      "response_shape": [
+        "href"
+      ],
+      "primary_key": "UNKNOWN",
+      "asset": "UNKNOWN",
+      "location": "UNKNOWN",
+      "site": "UNKNOWN",
+      "workorder": "UNKNOWN",
+      "timestamp": "UNKNOWN",
+      "nadi_relevance": "NADI CORE CANDIDATE",
+      "evidence": "Live BSR-scoped GET returned JSON with one collection member, but overhaul fields were not exposed by the lean response."
+    },
+    {
+      "resource": "DOM_INSPEKSIMESIN",
+      "live_status": "PARTIAL",
+      "http_status": 200,
+      "sample_records": 1,
+      "response_shape": [
+        "href"
+      ],
+      "primary_key": "UNKNOWN",
+      "asset": "UNKNOWN",
+      "location": "UNKNOWN",
+      "site": "UNKNOWN",
+      "workorder": "UNKNOWN",
+      "timestamp": "UNKNOWN",
+      "nadi_relevance": "NADI CORE CANDIDATE",
+      "evidence": "Live BSR-scoped GET returned JSON with one collection member, but inspection fields were not exposed by the lean response."
+    },
+    {
+      "resource": "IP_DOM_OH_SCOPE_PM",
+      "live_status": "PARTIAL",
+      "http_status": 200,
+      "sample_records": 1,
+      "response_shape": [
+        "href"
+      ],
+      "primary_key": "UNKNOWN",
+      "asset": "UNKNOWN",
+      "location": "UNKNOWN",
+      "site": "UNKNOWN",
+      "workorder": "UNKNOWN",
+      "timestamp": "UNKNOWN",
+      "nadi_relevance": "NADI SUPPORTING CANDIDATE",
+      "evidence": "Live BSR-scoped GET returned JSON with one collection member, but PM/scope linkage fields were not exposed by the lean response."
+    }
   ],
   "unprobed_targets": {
     "diamond_header_detail": "UNKNOWN — no additional live request after P0 budget was used",
@@ -112,5 +750,936 @@
       "The two authentication POSTs were the explicit smoke-test login and the separate bounded verification-process login; neither was a retry after expiry.",
       "The six HTTP 400 responses were not classified as forbidden because the controlled query was rejected before a permission conclusion could be made."
     ]
+  },
+  "mx006c_follow_up": {
+    "status": "PARTIAL",
+    "contract_integrity": {
+      "primary_key_inference": "resource-specific ranked candidates; uniqueness remains unproven",
+      "field_roles": true,
+      "scope_relationship_exclusion": true,
+      "readiness_gate": {
+        "ready": true,
+        "checks": {
+          "IPFMEA": {
+            "usable": true,
+            "preferred_identifier": "fmeaid",
+            "required_roles": [
+              "ASSET_REFERENCE",
+              "SCOPE_SITE",
+              "STATUS",
+              "TIMESTAMP"
+            ],
+            "observed_roles": [
+              "ASSET_REFERENCE",
+              "BUSINESS_ATTRIBUTE",
+              "COLLECTION_REFERENCE",
+              "FAILURE_REFERENCE",
+              "IDENTIFIER_CANDIDATE",
+              "SCOPE_ORGANIZATION",
+              "SCOPE_SITE",
+              "STATUS",
+              "TIMESTAMP"
+            ]
+          },
+          "IPRCFA": {
+            "usable": true,
+            "preferred_identifier": "rcfaid",
+            "required_roles": [
+              "SCOPE_SITE",
+              "STATUS",
+              "TIMESTAMP"
+            ],
+            "observed_roles": [
+              "BUSINESS_ATTRIBUTE",
+              "IDENTIFIER_CANDIDATE",
+              "SCOPE_ORGANIZATION",
+              "SCOPE_SITE",
+              "STATUS",
+              "TIMESTAMP"
+            ]
+          },
+          "IPBHM": {
+            "usable": true,
+            "preferred_identifier": "bhmid",
+            "required_roles": [
+              "ASSET_REFERENCE",
+              "SCOPE_SITE",
+              "STATUS",
+              "TIMESTAMP"
+            ],
+            "observed_roles": [
+              "ASSET_REFERENCE",
+              "BUSINESS_ATTRIBUTE",
+              "IDENTIFIER_CANDIDATE",
+              "SCOPE_ORGANIZATION",
+              "SCOPE_SITE",
+              "STATUS",
+              "TIMESTAMP"
+            ]
+          },
+          "IP_DOM_OH": {
+            "usable": true,
+            "preferred_identifier": "domid",
+            "required_roles": [
+              "SCOPE_SITE",
+              "STATUS",
+              "TIMESTAMP",
+              "WORKORDER_REFERENCE"
+            ],
+            "observed_roles": [
+              "BUSINESS_ATTRIBUTE",
+              "IDENTIFIER_CANDIDATE",
+              "INSPECTION_REFERENCE",
+              "SCOPE_ORGANIZATION",
+              "SCOPE_SITE",
+              "STATUS",
+              "TIMESTAMP",
+              "WORKORDER_REFERENCE"
+            ]
+          }
+        },
+        "blockers": []
+      },
+      "contracts": {
+        "IPFMEA": {
+          "preferred_identifier": {
+            "field": "fmeaid",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          },
+          "candidates": [
+            {
+              "field": "fmeaid",
+              "confidence": "CANDIDATE",
+              "reason": "resource-specific identity preference"
+            },
+            {
+              "field": "fmeanum",
+              "confidence": "CANDIDATE",
+              "reason": "resource-specific identity preference"
+            }
+          ],
+          "excluded": [
+            {
+              "field": "lastmodifieddate",
+              "role": "TIMESTAMP",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "orgid",
+              "role": "SCOPE_ORGANIZATION",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "failurecode",
+              "role": "FAILURE_REFERENCE",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "fmea_asset_collectionref",
+              "role": "COLLECTION_REFERENCE",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "assetnum",
+              "role": "ASSET_REFERENCE",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "siteid",
+              "role": "SCOPE_SITE",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "statusdate",
+              "role": "TIMESTAMP",
+              "reason": "scope or relationship field is not record identity"
+            }
+          ],
+          "field_roles": {
+            "lastmodifieddate": [
+              "TIMESTAMP"
+            ],
+            "status": [
+              "STATUS"
+            ],
+            "description": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "fmea_asset": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "lastmodifiedby": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "orgid": [
+              "SCOPE_ORGANIZATION"
+            ],
+            "failurecode": [
+              "FAILURE_REFERENCE"
+            ],
+            "referensi": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "prefixes": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "fmea_asset_collectionref": [
+              "COLLECTION_REFERENCE"
+            ],
+            "assetnum": [
+              "ASSET_REFERENCE"
+            ],
+            "fmeanum": [
+              "IDENTIFIER_CANDIDATE"
+            ],
+            "revision": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "status_description": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "fmeaid": [
+              "IDENTIFIER_CANDIDATE"
+            ],
+            "siteid": [
+              "SCOPE_SITE"
+            ],
+            "statusdate": [
+              "TIMESTAMP"
+            ]
+          },
+          "detail_status": "VERIFIED",
+          "response_cap": false
+        },
+        "IPRCFA": {
+          "preferred_identifier": {
+            "field": "rcfaid",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          },
+          "candidates": [
+            {
+              "field": "rcfaid",
+              "confidence": "CANDIDATE",
+              "reason": "resource-specific identity preference"
+            },
+            {
+              "field": "norcfa",
+              "confidence": "CANDIDATE",
+              "reason": "resource-specific identity preference"
+            }
+          ],
+          "excluded": [
+            {
+              "field": "createddate",
+              "role": "TIMESTAMP",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "req_date",
+              "role": "TIMESTAMP",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "orgid",
+              "role": "SCOPE_ORGANIZATION",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "siteid",
+              "role": "SCOPE_SITE",
+              "reason": "scope or relationship field is not record identity"
+            }
+          ],
+          "field_roles": {
+            "createddate": [
+              "TIMESTAMP"
+            ],
+            "kategori_description": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "status": [
+              "STATUS"
+            ],
+            "norcfa": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "revisi": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "req_date": [
+              "TIMESTAMP"
+            ],
+            "orgid": [
+              "SCOPE_ORGANIZATION"
+            ],
+            "rcfaid": [
+              "IDENTIFIER_CANDIDATE"
+            ],
+            "ispronia": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "prefixes": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "originator": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "status_description": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "kategori": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "createdby": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "siteid": [
+              "SCOPE_SITE"
+            ]
+          },
+          "detail_status": "VERIFIED",
+          "response_cap": false
+        },
+        "IPBHM": {
+          "preferred_identifier": {
+            "field": "bhmid",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          },
+          "candidates": [
+            {
+              "field": "bhmid",
+              "confidence": "CANDIDATE",
+              "reason": "resource-specific identity preference"
+            },
+            {
+              "field": "eid",
+              "confidence": "CANDIDATE",
+              "reason": "resource-specific identity preference"
+            }
+          ],
+          "excluded": [
+            {
+              "field": "lastmodifieddate",
+              "role": "TIMESTAMP",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "createddate",
+              "role": "TIMESTAMP",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "orgid",
+              "role": "SCOPE_ORGANIZATION",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "assetnum",
+              "role": "ASSET_REFERENCE",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "siteid",
+              "role": "SCOPE_SITE",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "statusdate",
+              "role": "TIMESTAMP",
+              "reason": "scope or relationship field is not record identity"
+            }
+          ],
+          "field_roles": {
+            "lastmodifieddate": [
+              "TIMESTAMP"
+            ],
+            "createddate": [
+              "TIMESTAMP"
+            ],
+            "status": [
+              "STATUS"
+            ],
+            "description": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "lastmodifiedby": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "fungsi": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "bhmid": [
+              "IDENTIFIER_CANDIDATE"
+            ],
+            "orgid": [
+              "SCOPE_ORGANIZATION"
+            ],
+            "prefixes": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "assetnum": [
+              "ASSET_REFERENCE"
+            ],
+            "revision": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "status_description": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "eid": [
+              "IDENTIFIER_CANDIDATE"
+            ],
+            "createdby": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "siteid": [
+              "SCOPE_SITE"
+            ],
+            "statusdate": [
+              "TIMESTAMP"
+            ]
+          },
+          "detail_status": "VERIFIED",
+          "response_cap": false
+        },
+        "IP_DOM_OH": {
+          "preferred_identifier": {
+            "field": "domid",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          },
+          "candidates": [
+            {
+              "field": "domid",
+              "confidence": "CANDIDATE",
+              "reason": "resource-specific identity preference"
+            },
+            {
+              "field": "domohnum",
+              "confidence": "CANDIDATE",
+              "reason": "resource-specific identity preference"
+            }
+          ],
+          "excluded": [
+            {
+              "field": "wonum",
+              "role": "WORKORDER_REFERENCE",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "orgid",
+              "role": "SCOPE_ORGANIZATION",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "siteid",
+              "role": "SCOPE_SITE",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "inspeksinum",
+              "role": "INSPECTION_REFERENCE",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "changedate",
+              "role": "TIMESTAMP",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "createdate",
+              "role": "TIMESTAMP",
+              "reason": "scope or relationship field is not record identity"
+            }
+          ],
+          "field_roles": {
+            "attach_notulen": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "status": [
+              "STATUS"
+            ],
+            "berita_acara_serahterima": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "dur_actual_oh": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "changeby": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "siklus": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "wonum": [
+              "WORKORDER_REFERENCE"
+            ],
+            "domohnum": [
+              "IDENTIFIER_CANDIDATE"
+            ],
+            "orgid": [
+              "SCOPE_ORGANIZATION"
+            ],
+            "absensi": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "laporan_evaluasi": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "domid": [
+              "IDENTIFIER_CANDIDATE"
+            ],
+            "pic": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "dur_oh": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "otg_leader": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "tgl_actual_mulai": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "laporan_teknik": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "createby": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "dokumen_rekomendasi": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "rencana_beban": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "siteid": [
+              "SCOPE_SITE"
+            ],
+            "inspeksinum": [
+              "INSPECTION_REFERENCE"
+            ],
+            "pic_description": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "description": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "tgl_selesai": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "realisasi_scope": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "jumlahworekom": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "mesin": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "jumlah_mitra": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "perfomance_test": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "progress": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "tgl_mulai": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "berita_acara_syncron": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "notulensi": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "siklus_description": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "prefixes": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "attach_absensi": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "tgl_actual_selesai": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "rencana_scope": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "changedate": [
+              "TIMESTAMP"
+            ],
+            "status_description": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "createdate": [
+              "TIMESTAMP"
+            ],
+            "realisasi_cost": [
+              "BUSINESS_ATTRIBUTE"
+            ]
+          },
+          "detail_status": "VERIFIED",
+          "response_cap": false
+        },
+        "DOM_INSPEKSIMESIN": {
+          "preferred_identifier": {
+            "field": "dom_inspeksiid",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          },
+          "candidates": [
+            {
+              "field": "dom_inspeksiid",
+              "confidence": "CANDIDATE",
+              "reason": "resource-specific identity preference"
+            },
+            {
+              "field": "dom_inspeksinum",
+              "confidence": "CANDIDATE",
+              "reason": "resource-specific identity preference"
+            },
+            {
+              "field": "scopenum",
+              "confidence": "CANDIDATE",
+              "reason": "identifier-like field; uniqueness not proven"
+            }
+          ],
+          "excluded": [
+            {
+              "field": "dom_merktype_collectionref",
+              "role": "COLLECTION_REFERENCE",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "siteid",
+              "role": "SCOPE_SITE",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "dom_scopeline_collectionref",
+              "role": "COLLECTION_REFERENCE",
+              "reason": "scope or relationship field is not record identity"
+            }
+          ],
+          "field_roles": {
+            "status": [
+              "STATUS"
+            ],
+            "dom_merktype_collectionref": [
+              "COLLECTION_REFERENCE"
+            ],
+            "dom_scopeline": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "dom_inspeksinum": [
+              "IDENTIFIER_CANDIDATE"
+            ],
+            "p2": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "p3": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "siklus": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "dom_merktype": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "pic": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "r1": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "r2": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "p1": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "r3": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "durasi": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "merktipe": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "siteid": [
+              "SCOPE_SITE"
+            ],
+            "pic_description": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "description": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "interval": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "mesin": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "satuanr1_description": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "scopenum": [
+              "IDENTIFIER_CANDIDATE"
+            ],
+            "jenis_pembangkit_description": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "prefixes": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "jenis_pembangkit": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "dom_scopeline_collectionref": [
+              "COLLECTION_REFERENCE"
+            ],
+            "dom_inspeksiid": [
+              "IDENTIFIER_CANDIDATE"
+            ],
+            "satuanr2_description": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "satuanp1_description": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "satuanr1": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "satuanr2": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "satuanp1": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "satuanr3_description": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "satuanr3": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "status_description": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "satuanint": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "satuanp2": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "satuanp2_description": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "satuanp3_description": [
+              "BUSINESS_ATTRIBUTE"
+            ],
+            "satuanp3": [
+              "BUSINESS_ATTRIBUTE"
+            ]
+          },
+          "detail_status": "VERIFIED",
+          "response_cap": false
+        },
+        "IPFMEAITEM": {
+          "preferred_identifier": null,
+          "candidates": [],
+          "excluded": [],
+          "field_roles": {},
+          "detail_status": "UNKNOWN",
+          "response_cap": true
+        },
+        "IPBHMMEASUREMENT": {
+          "preferred_identifier": null,
+          "candidates": [],
+          "excluded": [],
+          "field_roles": {},
+          "detail_status": "UNKNOWN",
+          "response_cap": true
+        },
+        "DMD_OPLOGABN": {
+          "preferred_identifier": null,
+          "candidates": [],
+          "excluded": [
+            {
+              "field": "dmd_logsheet_collectionref",
+              "role": "COLLECTION_REFERENCE",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "dmd_lap_counter_collectionref",
+              "role": "COLLECTION_REFERENCE",
+              "reason": "scope or relationship field is not record identity"
+            },
+            {
+              "field": "dmd_oplogbook_entry_collectionref",
+              "role": "COLLECTION_REFERENCE",
+              "reason": "scope or relationship field is not record identity"
+            }
+          ],
+          "field_roles": {
+            "dmd_logsheet_collectionref": [
+              "COLLECTION_REFERENCE"
+            ],
+            "dmd_lap_counter_collectionref": [
+              "COLLECTION_REFERENCE"
+            ],
+            "dmd_oplogbook_entry_collectionref": [
+              "COLLECTION_REFERENCE"
+            ]
+          },
+          "detail_status": "INLINE_BUSINESS_RECORD",
+          "response_cap": true
+        },
+        "IPMSMSFAILUREMECHANI": {
+          "preferred_identifier": null,
+          "candidates": [],
+          "excluded": [],
+          "field_roles": {},
+          "detail_status": "UNKNOWN",
+          "response_cap": true
+        }
+      }
+    },
+    "response_cap_follow_up": {
+      "IPFMEAITEM": {
+        "query_shape": "/oslc/os/IPFMEAITEM?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+        "collection_http": 200,
+        "detail_http": null,
+        "response_cap": true,
+        "fields": [],
+        "relationships": [],
+        "query_shape_attempts": [
+          {
+            "name": "maxitems_select_href",
+            "endpoint": "/oslc/os/IPFMEAITEM?_maxitems=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+            "evidence": "MX-006B bounded collection shape",
+            "result": "RESPONSE_CAP"
+          },
+          {
+            "name": "paged_select_href",
+            "endpoint": "/oslc/os/IPFMEAITEM?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+            "evidence": "maximo-collector verified oslc.paging/oslc.pageSize shape",
+            "result": "HTTP 200"
+          }
+        ]
+      },
+      "IPBHMMEASUREMENT": {
+        "query_shape": "/oslc/os/IPBHMMEASUREMENT?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+        "collection_http": 200,
+        "detail_http": null,
+        "response_cap": true,
+        "fields": [],
+        "relationships": [],
+        "query_shape_attempts": [
+          {
+            "name": "maxitems_select_href",
+            "endpoint": "/oslc/os/IPBHMMEASUREMENT?_maxitems=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+            "evidence": "MX-006B bounded collection shape",
+            "result": "RESPONSE_CAP"
+          },
+          {
+            "name": "paged_select_href",
+            "endpoint": "/oslc/os/IPBHMMEASUREMENT?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+            "evidence": "maximo-collector verified oslc.paging/oslc.pageSize shape",
+            "result": "HTTP 200"
+          }
+        ]
+      },
+      "DMD_OPLOGABN": {
+        "query_shape": "/oslc/os/DMD_OPLOGABN?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+        "collection_http": 200,
+        "detail_http": null,
+        "response_cap": true,
+        "fields": [
+          "dmd_logsheet_collectionref",
+          "dmd_lap_counter_collectionref",
+          "dmd_oplogbook_entry_collectionref"
+        ],
+        "relationships": [],
+        "query_shape_attempts": [
+          {
+            "name": "maxitems_select_href",
+            "endpoint": "/oslc/os/DMD_OPLOGABN?_maxitems=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+            "evidence": "MX-006B bounded collection shape",
+            "result": "RESPONSE_CAP"
+          },
+          {
+            "name": "paged_select_href",
+            "endpoint": "/oslc/os/DMD_OPLOGABN?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+            "evidence": "maximo-collector verified oslc.paging/oslc.pageSize shape",
+            "result": "HTTP 200"
+          }
+        ]
+      },
+      "IPMSMSFAILUREMECHANI": {
+        "query_shape": "/oslc/os/IPMSMSFAILUREMECHANI?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+        "collection_http": 200,
+        "detail_http": null,
+        "response_cap": true,
+        "fields": [],
+        "relationships": [],
+        "query_shape_attempts": [
+          {
+            "name": "maxitems_select_href",
+            "endpoint": "/oslc/os/IPMSMSFAILUREMECHANI?_maxitems=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+            "evidence": "MX-006B bounded collection shape",
+            "result": "RESPONSE_CAP"
+          },
+          {
+            "name": "paged_select_href",
+            "endpoint": "/oslc/os/IPMSMSFAILUREMECHANI?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+            "evidence": "maximo-collector verified oslc.paging/oslc.pageSize shape",
+            "result": "HTTP 200"
+          }
+        ]
+      }
+    },
+    "query_shaping": {
+      "max_response_bytes_unchanged": 1048576,
+      "maximum_pages": 1,
+      "maximum_records": 1,
+      "maximum_shapes_per_resource": 2,
+      "first_shape": "_maxitems=1 + siteid=BSR + oslc.select=href",
+      "alternate_shape": "oslc.paging=true + oslc.pageSize=1 + siteid=BSR + oslc.select=href",
+      "alternate_evidence": "maximo-collector verified paging parameters; no nextPage followed"
+    },
+    "request_audit": {
+      "authentication_posts": 4,
+      "business_requests": 12,
+      "collection_gets": 12,
+      "detail_gets": 0,
+      "http_200": 8,
+      "http_400": 4,
+      "http_429": 0,
+      "http_5xx": 0,
+      "response_cap_interruptions": 8,
+      "maximum_concurrency": 1,
+      "minimum_interval": 5,
+      "cross_site_samples": 0,
+      "pagination_followed": false,
+      "response_cap_increased": false,
+      "request_budget_exceeded": false
+    },
+    "performance_test_clue": {
+      "resource": "IP_DOM_OH",
+      "field": "perfomance_test",
+      "status": "FIELD EXISTS; SEMANTIC MAPPING UNKNOWN",
+      "efficiency_management_performance_test_relation": "UNKNOWN"
+    },
+    "raw_production_samples_persisted": false
   }
 }

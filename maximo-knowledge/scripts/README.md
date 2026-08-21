@@ -30,6 +30,14 @@ python scripts/discover.py --enumerate-oslc --verify-detail --execute \
   --resource IPFMEA --resource IPRCFA
 ```
 
+For the four MX-006C response-cap resources, the executable knowledge permits
+only one evidence-backed alternate collection shape: `oslc.paging=true` with
+`oslc.pageSize=1`, still scoped to BSR and selecting only `href`. It never
+raises the 1 MiB response cap, follows `nextPage`, or retries arbitrary query
+permutations. Detail records also receive explicit field roles and ranked
+identity candidates; scope and relationship fields are excluded from the
+preferred identity.
+
 The production Maximo login form uses `POST /j_security_check`. In form/login
 mode the CLI submits that authentication handshake once using environment-only
 credentials and keeps cookies in memory. It never POSTs to OSLC or another

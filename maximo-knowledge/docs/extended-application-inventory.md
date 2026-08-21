@@ -133,11 +133,11 @@ detail record per explicit target. Five resources yielded structural contracts:
 
 | Resource | Key candidate | Verified joins/fields | NADI classification |
 |---|---|---|---|
-| `IPFMEA` | `orgid` (CANDIDATE) | `assetnum`, `siteid`, `orgid`, `status`, revision, timestamps | CORE CANDIDATE |
-| `IPRCFA` | `orgid` (CANDIDATE) | `siteid`, `orgid`, `status`, timestamps; asset/WO UNKNOWN | CORE CANDIDATE |
+| `IPFMEA` | `fmeaid` preferred; `fmeanum` secondary (CANDIDATE) | `assetnum`, `siteid`, `orgid`, `failurecode`, `status`, revision, timestamps | CORE CANDIDATE |
+| `IPRCFA` | `rcfaid` preferred; `norcfa` secondary (CANDIDATE) | `siteid`, `orgid`, `status`, timestamps; asset/WO UNKNOWN | CORE CANDIDATE |
 | `IPBHM` | `bhmid` (CANDIDATE) | `assetnum`, `siteid`, `orgid`, `status`, timestamps | CORE CANDIDATE |
-| `IP_DOM_OH` | `wonum` (CANDIDATE) | `wonum`, `siteid`, `orgid`, status, start/finish/change dates | CORE CANDIDATE |
-| `DOM_INSPEKSIMESIN` | `dom_inspeksinum` (CANDIDATE) | inspection identifier, `siteid`, status, description and measurement fields | SUPPORTING CANDIDATE |
+| `IP_DOM_OH` | `domid` preferred; `domohnum` secondary (CANDIDATE) | `wonum` WORKORDER_REFERENCE, `siteid`, `orgid`, status, start/finish/change dates | CORE CANDIDATE |
+| `DOM_INSPEKSIMESIN` | `dom_inspeksiid` preferred; `dom_inspeksinum` secondary (CANDIDATE) | inspection identifiers, `siteid`, status, description and measurement fields | SUPPORTING CANDIDATE |
 
 `IPFMEAITEM`, `IPBHMMEASUREMENT`, and `DMD_OPLOGABN` exceeded the 1 MiB
 response cap before a safe member could be obtained. They remain unresolved;
@@ -163,3 +163,24 @@ are recorded as diagnostics without a permission conclusion.
 The zero-request result is intentional: form-login credentials were present,
 but this repository's discovery boundary does not permit automating the login
 POST. No production data, credentials, cookies, or raw responses were saved.
+
+## MX-006C contract integrity
+
+MX-006C replaces the earlier first-field identifier heuristic with explicit
+field roles and resource-specific candidate ranking. Scope fields and
+relationships are retained as evidence but excluded from preferred identity:
+
+- `orgid` / `siteid` → scope roles;
+- `assetnum` → `ASSET_REFERENCE`;
+- `wonum` → `WORKORDER_REFERENCE`;
+- `*_collectionref` → `COLLECTION_REFERENCE`;
+- status and date/time fields → status/timestamp roles.
+
+All identity conclusions remain `CANDIDATE`; one bounded record cannot prove
+uniqueness. `IP_DOM_OH.perfomance_test` is recorded only as a performance-test
+clue; its relationship to Efficiency Management Performance Test is UNKNOWN.
+
+The stricter readiness gate now reports `READY: YES` for MX-007R because the
+FMEA, RCFA, BHM, and OH contracts have role-consistent candidate identities and
+required asset/site/status/time or Work Order evidence. Location and unresolved
+high-value child resources remain explicitly UNKNOWN.

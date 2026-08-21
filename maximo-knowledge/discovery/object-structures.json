@@ -1,10 +1,10 @@
 {
   "system": "maximo",
   "catalog_version": 3,
-  "source": "live-oslc+authenticated-oas+mx-006b-bounded-detail",
+  "source": "live-oslc+authenticated-oas+mx-006b-bounded-detail+mx-006c-query-shaping",
   "base_url": "http://maximo.plnindonesiapower.co.id/maximo",
-  "last_updated": "2026-08-21T03:40:00+00:00",
-  "note": "462 object structures cataloged from authenticated OAS. MX-006B adds bounded structural evidence for selected extended resources; no raw production values are persisted.",
+  "last_updated": "2026-08-21T04:03:00+00:00",
+  "note": "MX-006B detail evidence plus MX-006C bounded query-shape and contract-integrity evidence; no raw production values are persisted.",
   "object_structures": [
     {
       "name": "mxasset",
@@ -139,132 +139,378 @@
     {
       "name": "IPFMEA",
       "resource": "ipfmea",
-      "endpoint": "/oslc/os/IPFMEA",
+      "endpoint": "/oslc/os/IPFMEA?_maxitems=1&oslc.where=siteid%3D%22BSR%22",
       "status": "verified",
       "access": "http_200",
       "field_count": 17,
       "detail_status": "VERIFIED",
       "primary_key": {
-        "field": "orgid",
-        "confidence": "CANDIDATE"
+        "preferred": {
+          "field": "fmeaid",
+          "confidence": "CANDIDATE",
+          "reason": "resource-specific identity preference"
+        },
+        "candidates": [
+          {
+            "field": "fmeaid",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          },
+          {
+            "field": "fmeanum",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          }
+        ],
+        "excluded": [
+          {
+            "field": "lastmodifieddate",
+            "role": "TIMESTAMP",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "orgid",
+            "role": "SCOPE_ORGANIZATION",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "failurecode",
+            "role": "FAILURE_REFERENCE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "fmea_asset_collectionref",
+            "role": "COLLECTION_REFERENCE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "assetnum",
+            "role": "ASSET_REFERENCE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "siteid",
+            "role": "SCOPE_SITE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "statusdate",
+            "role": "TIMESTAMP",
+            "reason": "scope or relationship field is not record identity"
+          }
+        ]
       },
       "verified_at": "2026-08-21T03:19:18.117827+00:00"
     },
     {
       "name": "IPFMEAITEM",
       "resource": "ipfmeaitem",
-      "endpoint": "/oslc/os/IPFMEAITEM",
-      "status": "documented",
-      "access": "error",
+      "endpoint": "/oslc/os/IPFMEAITEM?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+      "status": "verified",
+      "access": "http_200",
       "field_count": 0,
-      "detail_status": "UNKNOWN_RESPONSE_CAP",
-      "verified_at": null
+      "detail_status": "UNKNOWN",
+      "verified_at": "2026-08-21T04:02:44.590227+00:00",
+      "primary_key": null
     },
     {
       "name": "IPRCFA",
       "resource": "iprcfa",
-      "endpoint": "/oslc/os/IPRCFA",
+      "endpoint": "/oslc/os/IPRCFA?_maxitems=1&oslc.where=siteid%3D%22BSR%22",
       "status": "verified",
       "access": "http_200",
       "field_count": 15,
       "detail_status": "VERIFIED",
       "primary_key": {
-        "field": "orgid",
-        "confidence": "CANDIDATE"
+        "preferred": {
+          "field": "rcfaid",
+          "confidence": "CANDIDATE",
+          "reason": "resource-specific identity preference"
+        },
+        "candidates": [
+          {
+            "field": "rcfaid",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          },
+          {
+            "field": "norcfa",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          }
+        ],
+        "excluded": [
+          {
+            "field": "createddate",
+            "role": "TIMESTAMP",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "req_date",
+            "role": "TIMESTAMP",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "orgid",
+            "role": "SCOPE_ORGANIZATION",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "siteid",
+            "role": "SCOPE_SITE",
+            "reason": "scope or relationship field is not record identity"
+          }
+        ]
       },
       "verified_at": "2026-08-21T03:19:41.384430+00:00"
     },
     {
       "name": "IPRCFAFDT",
       "resource": "iprcfafdt",
-      "endpoint": "/oslc/os/IPRCFAFDT",
+      "endpoint": "/oslc/os/IPRCFAFDT?_maxitems=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
       "status": "documented",
       "access": "http_400",
       "field_count": 0,
       "detail_status": null,
-      "verified_at": null
+      "verified_at": null,
+      "primary_key": null
     },
     {
       "name": "IPBHM",
       "resource": "ipbhm",
-      "endpoint": "/oslc/os/IPBHM",
+      "endpoint": "/oslc/os/IPBHM?_maxitems=1&oslc.where=siteid%3D%22BSR%22",
       "status": "verified",
       "access": "http_200",
       "field_count": 16,
       "detail_status": "VERIFIED",
       "primary_key": {
-        "field": "bhmid",
-        "confidence": "CANDIDATE"
+        "preferred": {
+          "field": "bhmid",
+          "confidence": "CANDIDATE",
+          "reason": "resource-specific identity preference"
+        },
+        "candidates": [
+          {
+            "field": "bhmid",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          },
+          {
+            "field": "eid",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          }
+        ],
+        "excluded": [
+          {
+            "field": "lastmodifieddate",
+            "role": "TIMESTAMP",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "createddate",
+            "role": "TIMESTAMP",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "orgid",
+            "role": "SCOPE_ORGANIZATION",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "assetnum",
+            "role": "ASSET_REFERENCE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "siteid",
+            "role": "SCOPE_SITE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "statusdate",
+            "role": "TIMESTAMP",
+            "reason": "scope or relationship field is not record identity"
+          }
+        ]
       },
       "verified_at": "2026-08-21T03:19:50.827228+00:00"
     },
     {
       "name": "IPBHMMEASUREMENT",
       "resource": "ipbhmmeasurement",
-      "endpoint": "/oslc/os/IPBHMMEASUREMENT",
-      "status": "documented",
-      "access": "error",
+      "endpoint": "/oslc/os/IPBHMMEASUREMENT?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+      "status": "verified",
+      "access": "http_200",
       "field_count": 0,
-      "detail_status": "UNKNOWN_RESPONSE_CAP",
-      "verified_at": null
+      "detail_status": "UNKNOWN",
+      "verified_at": "2026-08-21T04:02:55.990078+00:00",
+      "primary_key": null
     },
     {
       "name": "IPMSMSFAILUREMECHANI",
       "resource": "ipmsmsfailuremechani",
-      "endpoint": "/oslc/os/IPMSMSFAILUREMECHANI",
-      "status": "documented",
-      "access": "error",
+      "endpoint": "/oslc/os/IPMSMSFAILUREMECHANI?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+      "status": "verified",
+      "access": "http_200",
       "field_count": 0,
-      "detail_status": "UNKNOWN_RESPONSE_CAP",
-      "verified_at": null
+      "detail_status": "UNKNOWN",
+      "verified_at": "2026-08-21T04:02:07.976385+00:00",
+      "primary_key": null
     },
     {
       "name": "DMD_OPLOGABN",
       "resource": "dmdoplogabn",
-      "endpoint": "/oslc/os/DMD_OPLOGABN",
-      "status": "documented",
-      "access": "error",
-      "field_count": 0,
-      "detail_status": "UNKNOWN_RESPONSE_CAP",
-      "verified_at": null
+      "endpoint": "/oslc/os/DMD_OPLOGABN?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+      "status": "verified",
+      "access": "http_200",
+      "field_count": 3,
+      "detail_status": "INLINE_BUSINESS_RECORD",
+      "verified_at": "2026-08-21T04:01:37.102280+00:00",
+      "primary_key": {
+        "preferred": null,
+        "candidates": [],
+        "excluded": [
+          {
+            "field": "dmd_logsheet_collectionref",
+            "role": "COLLECTION_REFERENCE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "dmd_lap_counter_collectionref",
+            "role": "COLLECTION_REFERENCE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "dmd_oplogbook_entry_collectionref",
+            "role": "COLLECTION_REFERENCE",
+            "reason": "scope or relationship field is not record identity"
+          }
+        ]
+      }
     },
     {
       "name": "IP_DOM_OH",
       "resource": "ipdomoh",
-      "endpoint": "/oslc/os/IP_DOM_OH",
+      "endpoint": "/oslc/os/IP_DOM_OH?_maxitems=1&oslc.where=siteid%3D%22BSR%22",
       "status": "verified",
       "access": "http_200",
       "field_count": 43,
       "detail_status": "VERIFIED",
       "primary_key": {
-        "field": "wonum",
-        "confidence": "CANDIDATE"
+        "preferred": {
+          "field": "domid",
+          "confidence": "CANDIDATE",
+          "reason": "resource-specific identity preference"
+        },
+        "candidates": [
+          {
+            "field": "domid",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          },
+          {
+            "field": "domohnum",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          }
+        ],
+        "excluded": [
+          {
+            "field": "wonum",
+            "role": "WORKORDER_REFERENCE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "orgid",
+            "role": "SCOPE_ORGANIZATION",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "siteid",
+            "role": "SCOPE_SITE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "inspeksinum",
+            "role": "INSPECTION_REFERENCE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "changedate",
+            "role": "TIMESTAMP",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "createdate",
+            "role": "TIMESTAMP",
+            "reason": "scope or relationship field is not record identity"
+          }
+        ]
       },
       "verified_at": "2026-08-21T03:20:29.915365+00:00"
     },
     {
       "name": "DOM_INSPEKSIMESIN",
       "resource": "dominspeksimesin",
-      "endpoint": "/oslc/os/DOM_INSPEKSIMESIN",
+      "endpoint": "/oslc/os/DOM_INSPEKSIMESIN?_maxitems=1&oslc.where=siteid%3D%22BSR%22",
       "status": "verified",
       "access": "http_200",
       "field_count": 40,
       "detail_status": "VERIFIED",
       "primary_key": {
-        "field": "dom_inspeksinum",
-        "confidence": "CANDIDATE"
+        "preferred": {
+          "field": "dom_inspeksiid",
+          "confidence": "CANDIDATE",
+          "reason": "resource-specific identity preference"
+        },
+        "candidates": [
+          {
+            "field": "dom_inspeksiid",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          },
+          {
+            "field": "dom_inspeksinum",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          },
+          {
+            "field": "scopenum",
+            "confidence": "CANDIDATE",
+            "reason": "identifier-like field; uniqueness not proven"
+          }
+        ],
+        "excluded": [
+          {
+            "field": "dom_merktype_collectionref",
+            "role": "COLLECTION_REFERENCE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "siteid",
+            "role": "SCOPE_SITE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "dom_scopeline_collectionref",
+            "role": "COLLECTION_REFERENCE",
+            "reason": "scope or relationship field is not record identity"
+          }
+        ]
       },
       "verified_at": "2026-08-21T03:20:40.006056+00:00"
     },
     {
       "name": "IP_DOM_OH_SCOPE_PM",
       "resource": "ipdomohscopepm",
-      "endpoint": "/oslc/os/IP_DOM_OH_SCOPE_PM",
+      "endpoint": "/oslc/os/IP_DOM_OH_SCOPE_PM?_maxitems=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
       "status": "verified",
       "access": "http_200",
       "field_count": 1,
       "detail_status": "INLINE_BUSINESS_RECORD",
-      "verified_at": "2026-08-21T03:40:00+00:00"
+      "verified_at": "2026-08-21T03:33:25.412295+00:00",
+      "primary_key": null
     }
   ],
   "full_catalog_ref": "discovery/oslc/catalog.json",

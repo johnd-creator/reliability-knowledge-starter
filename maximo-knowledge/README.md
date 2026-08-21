@@ -52,6 +52,9 @@ python scripts/discover.py --enumerate-oslc --execute --resource asset --resourc
 python scripts/discover.py --enumerate-oslc --verify-detail --execute \
   --resource IPFMEA --resource IPRCFA
 
+# MX-006C adds resource-specific identity ranking and bounded query shaping.
+# Scope/relationship fields are recorded as roles, not promoted to identity.
+
 # Fetch from an authorized read-only environment
 python scripts/discover.py --fetch-oas --execute --scope reliability-core
 python scripts/discover.py --fetch-oas --execute --resource workorder

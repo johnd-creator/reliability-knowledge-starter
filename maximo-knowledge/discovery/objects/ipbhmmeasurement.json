@@ -2,24 +2,34 @@
   "system": "maximo",
   "object_structure": "IPBHMMEASUREMENT",
   "resource": "ipbhmmeasurement",
-  "status": "documented",
-  "access": "error",
-  "endpoint": "/oslc/os/IPBHMMEASUREMENT?_maxitems=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+  "status": "verified",
+  "access": "http_200",
+  "endpoint": "/oslc/os/IPBHMMEASUREMENT?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
   "primary_key": null,
   "field_candidates": [],
   "important_fields": [],
   "field_types": {},
-  "metadata_fields": [],
-  "pagination": {},
-  "sample": null,
+  "field_roles": {},
+  "role_evidence": [],
+  "metadata_fields": [
+    "_rowstamp",
+    "rdf:about"
+  ],
+  "pagination": {
+    "total_count": null,
+    "next_page": true,
+    "prev_page": false
+  },
+  "sample": {},
   "use_cases": [],
   "relationships": [],
   "notes": [
-    "describe GET failed: response exceeded MAXIMO_MAX_RESPONSE_BYTES (1048576)",
-    "catalog GET returned HTTP 400; using documented seed",
+    "query shape maxitems_select_href hit the response cap",
+    "bounded response exposed no business fields or detail link",
+    "catalog returned no member names; using documented seed",
     "catalog selection used explicit MX-006B allowlisted targets"
   ],
-  "verified_at": null,
+  "verified_at": "2026-08-21T04:02:55.990078+00:00",
   "scope": {
     "field": "siteid",
     "value": "BSR",
@@ -28,10 +38,26 @@
   },
   "detail_dereference": {
     "attempted": false,
-    "collection_records": 0,
+    "collection_records": 1,
     "detail_records": 0,
     "maximum_dereference_depth": 1,
-    "pagination_followed": false
+    "pagination_followed": false,
+    "query_shape_attempts": [
+      {
+        "name": "maxitems_select_href",
+        "endpoint": "/oslc/os/IPBHMMEASUREMENT?_maxitems=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+        "evidence": "MX-006B bounded collection shape",
+        "result": "RESPONSE_CAP"
+      },
+      {
+        "name": "paged_select_href",
+        "endpoint": "/oslc/os/IPBHMMEASUREMENT?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+        "evidence": "maximo-collector verified oslc.paging/oslc.pageSize shape",
+        "result": "HTTP 200"
+      }
+    ],
+    "response_cap": true,
+    "status": "UNKNOWN"
   },
   "http_diagnostics": {},
   "catalog_source": "seed-fallback"

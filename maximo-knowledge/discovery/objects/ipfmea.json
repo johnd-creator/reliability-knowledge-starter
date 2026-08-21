@@ -5,18 +5,356 @@
   "status": "verified",
   "access": "http_200",
   "endpoint": "/oslc/os/IPFMEA?_maxitems=1&oslc.where=siteid%3D%22BSR%22",
-  "primary_key": {"field": "orgid", "confidence": "CANDIDATE"},
-  "field_candidates": ["orgid", "assetnum", "fmeanum", "fmeaid", "siteid"],
-  "important_fields": ["lastmodifieddate", "status", "description", "fmea_asset", "lastmodifiedby", "orgid", "failurecode", "referensi", "prefixes", "fmea_asset_collectionref", "assetnum", "fmeanum", "revision", "status_description", "fmeaid", "siteid", "statusdate"],
-  "field_types": {"lastmodifieddate": "datetime", "status": "string", "description": "string", "fmea_asset": "unknown", "orgid": "string", "failurecode": "string", "prefixes": "object/reference", "assetnum": "string", "fmeanum": "string", "revision": "integer", "fmeaid": "integer", "siteid": "string", "statusdate": "datetime"},
-  "metadata_fields": ["rdf:about", "_rowstamp"],
-  "pagination": {"single_record_via": "same-origin resource href; no next page followed"},
-  "sample": {"lastmodifieddate": "<datetime>", "status": "<string>", "description": "<string>", "orgid": "<string>", "assetnum": "<string>", "fmeanum": "<string>", "revision": "<integer>", "fmeaid": "<integer>", "siteid": "<string>", "statusdate": "<datetime>"},
+  "primary_key": {
+    "preferred": {
+      "field": "fmeaid",
+      "confidence": "CANDIDATE",
+      "reason": "resource-specific identity preference"
+    },
+    "candidates": [
+      {
+        "field": "fmeaid",
+        "confidence": "CANDIDATE",
+        "reason": "resource-specific identity preference"
+      },
+      {
+        "field": "fmeanum",
+        "confidence": "CANDIDATE",
+        "reason": "resource-specific identity preference"
+      }
+    ],
+    "excluded": [
+      {
+        "field": "lastmodifieddate",
+        "role": "TIMESTAMP",
+        "reason": "scope or relationship field is not record identity"
+      },
+      {
+        "field": "orgid",
+        "role": "SCOPE_ORGANIZATION",
+        "reason": "scope or relationship field is not record identity"
+      },
+      {
+        "field": "failurecode",
+        "role": "FAILURE_REFERENCE",
+        "reason": "scope or relationship field is not record identity"
+      },
+      {
+        "field": "fmea_asset_collectionref",
+        "role": "COLLECTION_REFERENCE",
+        "reason": "scope or relationship field is not record identity"
+      },
+      {
+        "field": "assetnum",
+        "role": "ASSET_REFERENCE",
+        "reason": "scope or relationship field is not record identity"
+      },
+      {
+        "field": "siteid",
+        "role": "SCOPE_SITE",
+        "reason": "scope or relationship field is not record identity"
+      },
+      {
+        "field": "statusdate",
+        "role": "TIMESTAMP",
+        "reason": "scope or relationship field is not record identity"
+      }
+    ]
+  },
+  "field_candidates": [
+    "fmeaid",
+    "fmeanum"
+  ],
+  "important_fields": [
+    "lastmodifieddate",
+    "status",
+    "description",
+    "fmea_asset",
+    "lastmodifiedby",
+    "orgid",
+    "failurecode",
+    "referensi",
+    "prefixes",
+    "fmea_asset_collectionref",
+    "assetnum",
+    "fmeanum",
+    "revision",
+    "status_description",
+    "fmeaid",
+    "siteid",
+    "statusdate"
+  ],
+  "field_types": {
+    "lastmodifieddate": "datetime",
+    "status": "string",
+    "description": "string",
+    "fmea_asset": "unknown",
+    "orgid": "string",
+    "failurecode": "string",
+    "prefixes": "object/reference",
+    "assetnum": "string",
+    "fmeanum": "string",
+    "revision": "integer",
+    "fmeaid": "integer",
+    "siteid": "string",
+    "statusdate": "datetime"
+  },
+  "metadata_fields": [
+    "rdf:about",
+    "_rowstamp"
+  ],
+  "pagination": {
+    "single_record_via": "same-origin resource href; no next page followed"
+  },
+  "sample": {
+    "lastmodifieddate": "<datetime>",
+    "status": "<string>",
+    "description": "<string>",
+    "orgid": "<string>",
+    "assetnum": "<string>",
+    "fmeanum": "<string>",
+    "revision": "<integer>",
+    "fmeaid": "<integer>",
+    "siteid": "<string>",
+    "statusdate": "<datetime>"
+  },
   "use_cases": [],
-  "relationships": ["asset: assetnum (VERIFIED field evidence)", "site: siteid (VERIFIED field evidence)", "organization: orgid (VERIFIED field evidence)", "status: status (VERIFIED field evidence)", "timestamp: lastmodifieddate, statusdate (VERIFIED field evidence)"],
-  "notes": ["MX-006B first bounded detail run: collection HTTP 200 plus one same-origin detail HTTP 200; no raw values persisted.", "FMEA parent/RCFA relation remains UNKNOWN."],
+  "relationships": [
+    "asset: assetnum (VERIFIED field evidence)",
+    "site: siteid (VERIFIED field evidence)",
+    "organization: orgid (VERIFIED field evidence)",
+    "status: status (VERIFIED field evidence)",
+    "timestamp: lastmodifieddate, statusdate (VERIFIED field evidence)"
+  ],
+  "notes": [
+    "MX-006B first bounded detail run: collection HTTP 200 plus one same-origin detail HTTP 200; no raw values persisted.",
+    "FMEA parent/RCFA relation remains UNKNOWN."
+  ],
   "verified_at": "2026-08-21T03:19:18.117827+00:00",
-  "scope": {"field": "siteid", "value": "BSR", "status": "PRIOR_LIVE_QUERY", "evidence": "MX-006R bounded BSR query plus detail field evidence"},
-  "detail_dereference": {"attempted": true, "collection_records": 1, "detail_records": 1, "maximum_dereference_depth": 1, "pagination_followed": false, "resource_path": "/maximo/oslc/os/ipfmea/<resource-id>", "http_status": 200, "status": "VERIFIED", "fields": ["lastmodifieddate", "status", "description", "fmea_asset", "lastmodifiedby", "orgid", "failurecode", "referensi", "prefixes", "fmea_asset_collectionref", "assetnum", "fmeanum", "revision", "status_description", "fmeaid", "siteid", "statusdate"], "field_types": {"lastmodifieddate": "datetime", "status": "string", "description": "string", "orgid": "string", "assetnum": "string", "fmeanum": "string", "revision": "integer", "fmeaid": "integer", "siteid": "string", "statusdate": "datetime"}, "metadata_fields": ["rdf:about", "_rowstamp"]},
-  "http_diagnostics": {}
+  "scope": {
+    "field": "siteid",
+    "value": "BSR",
+    "status": "PRIOR_LIVE_QUERY",
+    "evidence": "MX-006R bounded BSR query plus detail field evidence"
+  },
+  "detail_dereference": {
+    "attempted": true,
+    "collection_records": 1,
+    "detail_records": 1,
+    "maximum_dereference_depth": 1,
+    "pagination_followed": false,
+    "resource_path": "/maximo/oslc/os/ipfmea/<resource-id>",
+    "http_status": 200,
+    "status": "VERIFIED",
+    "fields": [
+      "lastmodifieddate",
+      "status",
+      "description",
+      "fmea_asset",
+      "lastmodifiedby",
+      "orgid",
+      "failurecode",
+      "referensi",
+      "prefixes",
+      "fmea_asset_collectionref",
+      "assetnum",
+      "fmeanum",
+      "revision",
+      "status_description",
+      "fmeaid",
+      "siteid",
+      "statusdate"
+    ],
+    "field_types": {
+      "lastmodifieddate": "datetime",
+      "status": "string",
+      "description": "string",
+      "orgid": "string",
+      "assetnum": "string",
+      "fmeanum": "string",
+      "revision": "integer",
+      "fmeaid": "integer",
+      "siteid": "string",
+      "statusdate": "datetime"
+    },
+    "metadata_fields": [
+      "rdf:about",
+      "_rowstamp"
+    ]
+  },
+  "http_diagnostics": {},
+  "field_roles": {
+    "lastmodifieddate": [
+      "TIMESTAMP"
+    ],
+    "status": [
+      "STATUS"
+    ],
+    "description": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "fmea_asset": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "lastmodifiedby": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "orgid": [
+      "SCOPE_ORGANIZATION"
+    ],
+    "failurecode": [
+      "FAILURE_REFERENCE"
+    ],
+    "referensi": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "prefixes": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "fmea_asset_collectionref": [
+      "COLLECTION_REFERENCE"
+    ],
+    "assetnum": [
+      "ASSET_REFERENCE"
+    ],
+    "fmeanum": [
+      "IDENTIFIER_CANDIDATE"
+    ],
+    "revision": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "status_description": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "fmeaid": [
+      "IDENTIFIER_CANDIDATE"
+    ],
+    "siteid": [
+      "SCOPE_SITE"
+    ],
+    "statusdate": [
+      "TIMESTAMP"
+    ]
+  },
+  "role_evidence": [
+    {
+      "field": "lastmodifieddate",
+      "roles": [
+        "TIMESTAMP"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "status",
+      "roles": [
+        "STATUS"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "description",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "fmea_asset",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "lastmodifiedby",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "orgid",
+      "roles": [
+        "SCOPE_ORGANIZATION"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "failurecode",
+      "roles": [
+        "FAILURE_REFERENCE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "referensi",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "prefixes",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "fmea_asset_collectionref",
+      "roles": [
+        "COLLECTION_REFERENCE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "assetnum",
+      "roles": [
+        "ASSET_REFERENCE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "fmeanum",
+      "roles": [
+        "IDENTIFIER_CANDIDATE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "revision",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "status_description",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "fmeaid",
+      "roles": [
+        "IDENTIFIER_CANDIDATE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "siteid",
+      "roles": [
+        "SCOPE_SITE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "statusdate",
+      "roles": [
+        "TIMESTAMP"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    }
+  ]
 }
