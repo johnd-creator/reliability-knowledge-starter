@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import type { PageMeta } from "../lib/api";
 import { shortIdentifier } from "../lib/format";
 
@@ -19,12 +19,27 @@ const navigation = [
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem("nadi-theme");
+    const nextTheme = saved === "dark" ? "dark" : "light";
+    setTheme(nextTheme);
+    document.documentElement.dataset.theme = nextTheme;
+  }, []);
+
+  function toggleTheme() {
+    const nextTheme = theme === "light" ? "dark" : "light";
+    setTheme(nextTheme);
+    document.documentElement.dataset.theme = nextTheme;
+    window.localStorage.setItem("nadi-theme", nextTheme);
+  }
+
   return (
     <div className="nadi-shell">
       <aside className="nadi-sidebar">
         <Link href="/" className="nadi-brand" aria-label="NADI Overview">
-          <span className="brand-mark" aria-hidden="true"><span /></span>
-          <span><strong>NADI</strong><small>Navigasi Analitik Data dan Informasi</small></span>
+          <img className="nadi-logo" src="/logo_nadi.png" alt="NADI — Platform Analitik Keandalan Aset Pembangkit" />
         </Link>
         <div className="sidebar-context"><span className="pulse-dot" /> Platform Analitik Keandalan Aset Pembangkit</div>
         <nav className="nadi-nav" aria-label="NADI navigation">
@@ -39,7 +54,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div className="nadi-content">
         <header className="nadi-topbar">
           <div><span className="topbar-kicker">NADI / RELIABILITY INFORMATION</span><span className="topbar-title">Asset reliability workspace</span></div>
-          <div className="topbar-status"><span className="pulse-dot" /> Mart read-only <span className="scope-chip">BSR / IP</span></div>
+          <div className="topbar-actions"><div className="topbar-status"><span className="pulse-dot" /> Mart read-only <span className="scope-chip">BSR / IP</span></div><button className="theme-toggle" type="button" onClick={toggleTheme} aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`} aria-pressed={theme === "dark"}>{theme === "light" ? "☾" : "☀"}<span>{theme === "light" ? "Dark" : "Light"}</span></button></div>
         </header>
         <main className="nadi-main">{children}</main>
       </div>

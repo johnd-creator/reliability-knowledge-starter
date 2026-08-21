@@ -19,6 +19,10 @@ FMEA, RCFA, asset health, overhaul, and relationship integrity.
 NADI does not start collection, call Maximo, expose raw OSLC, or expose raw
 Mart SQL. Its frontend uses the existing read-only `/v1/reliability` API.
 
+The supplied NADI logo is used by the application shell. Light theme is the
+default presentation; users can switch to the dark technical theme from the
+top bar, and the preference is retained locally in the browser.
+
 ## Navigation architecture
 
 | Route | Purpose |
