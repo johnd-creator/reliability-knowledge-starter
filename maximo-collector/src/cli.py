@@ -180,6 +180,33 @@ def cmd_backfill(args: argparse.Namespace) -> int:
     return 0 if stats.complete else 2
 
 
+def cmd_repair_asset_coverage(args: argparse.Namespace) -> int:
+    """Run one bounded, cursor-safe current MXAPIASSET baseline."""
+    from src.services.asset_baseline import AssetBaselineBlocked, run_asset_baseline
+
+    registry_file = args.registry_file or os.environ.get("MAXIMO_ASSET_REGISTRY_FILE")
+    if not registry_file:
+        print(json.dumps({"status": "BLOCKED", "reason": "REGISTRY_FILE_REQUIRED"}, sort_keys=True))
+        return 2
+    try:
+        result = run_asset_baseline(
+            registry_file,
+            get_database(),
+            dry_run=args.dry_run,
+            page_size=args.page_size,
+            max_pages=args.max_pages,
+            request_budget=args.request_budget,
+        )
+    except AssetBaselineBlocked as error:
+        print(json.dumps({"status": "BLOCKED", "reason": error.reason}, sort_keys=True))
+        return 2
+    except Exception as error:  # sanitized operator output; never echo source values
+        print(json.dumps({"status": "FAILED", "error": type(error).__name__}, sort_keys=True))
+        return 2
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0 if result["status"] in {"COMPLETE", "DRY_RUN"} else 2
+
+
 def cmd_run(args: argparse.Namespace) -> int:
     """Run independent read-only sync loops for operational and asset data.
 
@@ -436,6 +463,19 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     backfill.add_argument("--page-size", type=int, default=100)
     backfill.add_argument("--max-pages", type=int, default=1000)
 
+    repair = sub.add_parser(
+        "repair-asset-coverage",
+        help="run one bounded current MXAPIASSET baseline and reconcile the registry",
+    )
+    repair.add_argument(
+        "--registry-file",
+        help="local HTML-export .xls path; defaults to MAXIMO_ASSET_REGISTRY_FILE",
+    )
+    repair.add_argument("--page-size", type=int, default=50, choices=range(1, 101))
+    repair.add_argument("--max-pages", type=int, default=200, choices=range(1, 201))
+    repair.add_argument("--request-budget", type=int, default=150, choices=range(1, 151))
+    repair.add_argument("--dry-run", action="store_true", help="probe and report without Collector writes or cursor changes")
+
     run = sub.add_parser("run", help="run scheduled, read-only operational and asset sync loops")
     run.add_argument("--operational-interval-seconds", type=int, default=300)
     run.add_argument("--asset-interval-seconds", type=int, default=21600)
@@ -498,6 +538,8 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_sync(args)
     if args.command == "backfill":
         return cmd_backfill(args)
+    if args.command == "repair-asset-coverage":
+        return cmd_repair_asset_coverage(args)
     if args.command == "run":
         return cmd_run(args)
     if args.command == "serve":

@@ -68,12 +68,13 @@ class CollectorStore:
             session.commit()
 
     # -- entities ------------------------------------------------------------
-    def upsert_equipment(self, e: domain.Equipment) -> None:
+    def upsert_equipment(self, e: domain.Equipment) -> str:
         row = _row(e)
         with self._db.session() as session:
             existing = session.get(orm.EquipmentOrm, e.id)
             if existing is None:
                 session.add(orm.EquipmentOrm(**row))
+                outcome = "inserted"
             else:
                 # Asset master data is a baseline. Routine syncs only update
                 # volatile operational fields and never overwrite the stored
@@ -91,7 +92,9 @@ class CollectorStore:
                         old_maximo[key] = new_maximo[key]
                 old_sources["maximo"] = old_maximo
                 existing.sources = old_sources
+                outcome = "updated"
             session.commit()
+        return outcome
 
     def upsert_work_order(self, w: domain.WorkOrder) -> None:
         self._upsert(orm.WorkOrderOrm, _row(w))
@@ -108,7 +111,7 @@ class CollectorStore:
     def upsert_labor(self, l: domain.Labor) -> None:
         self._upsert(orm.LaborOrm, _row(l))
 
-    def upsert_for(self, entity_name: str, entity: object) -> None:
+    def upsert_for(self, entity_name: str, entity: object) -> object | None:
         mapping = {
             "equipment": self.upsert_equipment,
             "work_order": self.upsert_work_order,
@@ -117,7 +120,7 @@ class CollectorStore:
             "item": self.upsert_item,
             "labor": self.upsert_labor,
         }
-        mapping[entity_name](entity)
+        return mapping[entity_name](entity)
 
     def upsert_many_for(self, entity_name: str, entities: list[object]) -> None:
         """Batch upsert master rows in one local transaction.

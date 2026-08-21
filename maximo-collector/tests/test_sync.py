@@ -10,7 +10,7 @@ from typing import Any, Mapping
 
 from src.adapters.maximo.mappers import equipment_from_payload, work_order_from_payload
 from src.api.app import sync_config_for
-from src.adapters.maximo.oslc_client import OslcPaginationLimitError, oslc_boolean, oslc_number, oslc_timestamp
+from src.adapters.maximo.oslc_client import OslcError, OslcPaginationLimitError, oslc_boolean, oslc_number, oslc_timestamp
 from src.repositories.store import _row
 from src.services.sync import ObjectSyncConfig, SyncService
 
@@ -277,6 +277,7 @@ class SyncEngineTest(unittest.TestCase):
         self.assertEqual(stats.skipped, 1)
 
     def test_runtime_work_order_and_person_queries_are_bounded(self):
+        asset = sync_config_for("mxapiasset")
         work_order = sync_config_for("mxwodetail")
         person = sync_config_for("mxperson")
         self.assertIsNone(work_order.order_by)
@@ -289,6 +290,10 @@ class SyncEngineTest(unittest.TestCase):
         self.assertFalse(work_order.watermark_query)
         self.assertEqual(person.scope_clause, 'locationorg="IP"')
         self.assertIn("personid", person.select)
+        self.assertIn("assetnum", asset.select)
+        self.assertIn("failurecode", asset.select)
+        self.assertIsNone(asset.page_size)  # runtime default is 100; repair pins it explicitly
+        self.assertEqual(asset.max_pages, 1000)
 
     def test_equipment_unit_is_applied_and_non_cs01_is_rejected(self):
         cfg = ObjectSyncConfig(
@@ -354,6 +359,42 @@ class SyncEngineTest(unittest.TestCase):
         self.assertTrue(stats.complete)
         self.assertEqual(stats.upserted, 1)
         self.assertNotIn("mxwodetail", store.cursors)
+
+    def test_transport_failure_is_partial_and_does_not_advance_cursor(self):
+        class FailingClient(FakeClient):
+            def iterate(self, *args, **kwargs):
+                yield SAMPLE_ASSET
+                raise OslcError("synthetic transport interruption")
+
+        cfg = ObjectSyncConfig(
+            object_structure="mxapiasset",
+            entity_name="equipment",
+            mapper=equipment_from_payload,
+            cursor_requires_zero_errors=True,
+        )
+        store = FakeStore()
+        stats = SyncService(FailingClient([]), store).sync(cfg)
+        self.assertFalse(stats.complete)
+        self.assertEqual(stats.mode, "partial")
+        self.assertEqual(stats.pagination_error, "OslcError")
+        self.assertEqual(stats.upserted, 1)
+        self.assertNotIn("mxapiasset", store.cursors)
+        self.assertEqual(store.runs[0].mode, "partial")
+
+    def test_baseline_mapping_error_is_partial_and_does_not_advance_cursor(self):
+        cfg = ObjectSyncConfig(
+            object_structure="mxapiasset",
+            entity_name="equipment",
+            mapper=equipment_from_payload,
+            cursor_requires_zero_errors=True,
+        )
+        store = FakeStore()
+        stats = SyncService(FakeClient([{"eq11": "CS01", "changedate": SAMPLE_ASSET["changedate"]}]), store).sync(cfg)
+        self.assertFalse(stats.complete)
+        self.assertEqual(stats.mode, "partial")
+        self.assertEqual(stats.pagination_error, "MAPPING_ERRORS")
+        self.assertEqual(stats.errors, 1)
+        self.assertNotIn("mxapiasset", store.cursors)
 
 
 if __name__ == "__main__":

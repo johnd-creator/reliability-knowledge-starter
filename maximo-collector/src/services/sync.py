@@ -12,7 +12,9 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Callable
 
-from src.adapters.maximo.oslc_client import OslcClient, OslcPaginationError, oslc_timestamp
+import requests
+
+from src.adapters.maximo.oslc_client import OslcClient, OslcError, OslcPaginationError, oslc_timestamp
 from src.domain import models as domain
 from src.repositories.store import CollectorStore
 
@@ -40,6 +42,9 @@ class ObjectSyncConfig:
     # validation remains client-side because this Maximo rejects the legacy
     # wildcard prefix predicate.
     prefix_query: bool = True
+    # A current baseline must not advance its cursor when a source row could
+    # not be mapped. Existing callers retain the historical permissive default.
+    cursor_requires_zero_errors: bool = False
 
 
 @dataclass
@@ -48,6 +53,9 @@ class SyncStats:
     mode: str = "full"  # full | incremental | partial
     rows_seen: int = 0
     upserted: int = 0
+    inserted: int = 0
+    updated: int = 0
+    unchanged: int = 0
     skipped: int = 0
     errors: int = 0
     duplicate_ids: int = 0
@@ -108,7 +116,13 @@ class SyncService:
                 pending_count = len(unique)
             else:
                 for queued in pending:
-                    self._store.upsert_for(config.entity_name, queued)
+                    outcome = self._store.upsert_for(config.entity_name, queued)
+                    if outcome == "inserted":
+                        stats.inserted += 1
+                    elif outcome == "updated":
+                        stats.updated += 1
+                    elif outcome == "unchanged":
+                        stats.unchanged += 1
                 pending_count = len(pending)
             stats.upserted += pending_count
             pending.clear()
@@ -217,12 +231,33 @@ class SyncService:
                 type(error).__name__,
                 error.pages,
             )
+        except (OslcError, requests.RequestException) as error:
+            # Transport, authentication, response-cap, and request-budget
+            # failures may happen after valid rows have been committed. Keep
+            # that progress, record a partial run, and never advance a cursor.
+            flush_pending()
+            stats.complete = False
+            stats.mode = "partial"
+            stats.pagination_error = type(error).__name__
+            stats.errors += 1
+            LOG.warning(
+                "partial %s sync reason=%s pages=%d",
+                config.object_structure,
+                type(error).__name__,
+                getattr(self._client, "last_iteration_pages", 0),
+            )
         flush_pending()
         stats.rows_seen = seen
         stats.watermark = last_change or watermark
         stats.finished_at = datetime.now(timezone.utc)
-        if config.watermark_field and stats.complete:
+        if config.watermark_field and stats.complete and not (
+            config.cursor_requires_zero_errors and stats.errors
+        ):
             self._store.set_cursor(config.object_structure, stats.watermark, seen)
+        elif config.watermark_field and stats.complete and stats.errors:
+            stats.complete = False
+            stats.mode = "partial"
+            stats.pagination_error = "MAPPING_ERRORS"
         self._store.record_run(stats)
         LOG.info(
             "%s sync %s: %d seen, %d upserted, %d skipped, watermark=%s",

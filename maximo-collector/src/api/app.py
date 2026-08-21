@@ -19,6 +19,7 @@ from src.adapters.maximo.mappers import (
     service_request_from_payload,
     work_order_from_payload,
 )
+from src.adapters.maximo.oslc_client import ASSET_DETAIL_FIELDS
 from src.config import MaximoConfig
 from src.repositories import models as orm
 from src.repositories.database import Database, get_database
@@ -35,6 +36,7 @@ WORK_ORDER_SELECT = (
     "actlabhrs", "siteid", "seksi", "bu", "jumlahhidup", "jumlahmati", "luasareatanam",
 )
 PERSON_SELECT = ("personid", "displayname", "firstname", "status", "statusdate", "locationorg")
+ASSET_SELECT = ASSET_DETAIL_FIELDS
 
 # object_structure -> (entity_name, mapper, watermark_field, order_by, changed_column)
 OBJECTS: dict[str, dict[str, Any]] = {
@@ -45,7 +47,7 @@ OBJECTS: dict[str, dict[str, Any]] = {
         entity="equipment", mapper=equipment_from_payload,
         watermark="changedate", order_by="-changedate", changed_column="source_changed_at",
         orm=orm.EquipmentOrm, scope='siteid="BSR"', compare_column="source_changed_at",
-        required_field="eq11",
+        required_field="eq11", select=ASSET_SELECT,
     ),
     "mxasset": dict(
         entity="equipment", mapper=equipment_from_payload,

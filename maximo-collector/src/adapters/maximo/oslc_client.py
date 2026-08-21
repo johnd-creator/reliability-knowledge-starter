@@ -47,7 +47,7 @@ OSLC_MEMBER_KEYS = ("_member", "member", "oslc:member", "rdfs:member")
 ASSET_DETAIL_FIELDS = (
     "assetnum", "assetid", "location", "siteid", "orgid", "status", "status_description",
     "assettype", "plant", "eq11", "parent", "ancestor", "children", "isrunning",
-    "installdate", "changedate", "totdowntime", "description", "priority", "issafety",
+    "installdate", "changedate", "totdowntime", "description", "priority", "failurecode", "issafety",
     "iscalibration", "statusdate", "purchaseprice", "replacecost", "totalcost", "manufacturer",
     "vendor", "ytdcost", "assettype_description", "plant_description", "mainstr",
     "mainstr_description", "hierarchypath", "eq5", "eq9", "eq8", "eq10", "eq11_description",
@@ -134,6 +134,7 @@ class OslcClient:
         self._request_budget = request_budget
         self._business_request_count = 0
         self._status_counts: dict[str, int] = {}
+        self._detail_request_count = 0
         self._last_iteration_pages = 0
 
     @property
@@ -146,6 +147,7 @@ class OslcClient:
         return {
             "business_requests": self._business_request_count,
             "status_counts": dict(self._status_counts),
+            "detail_requests": self._detail_request_count,
             "budget": self._request_budget,
         }
 
@@ -282,6 +284,7 @@ class OslcClient:
                     if not resource_url:
                         continue
                     resource_url = _add_detail_select(resource_url)
+                    self._detail_request_count += 1
                     detail = self.get(resource_url)
                     if MaximoAuth.looks_expired(detail):
                         if retried_auth:
@@ -290,6 +293,7 @@ class OslcClient:
                             )
                         retried_auth = True
                         self._auth.handle_expiry()
+                        self._detail_request_count += 1
                         detail = self.get(resource_url)
                     detail.raise_for_status()
                     detail_payload = detail.json()
