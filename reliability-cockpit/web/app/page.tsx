@@ -44,9 +44,6 @@ export default function HomePage() {
     return () => { cancelled = true; };
   }, [windowDays]);
 
-  const selectedActivity = data ? data.summary[`maintenance_activity_${windowDays}d` as "maintenance_activity_7d" | "maintenance_activity_30d" | "maintenance_activity_90d"] : null;
-  const selectedAssets = data ? data.summary[`assets_active_${windowDays}d` as "assets_active_30d" | "assets_active_90d"] : null;
-
   return <>
     <PageHeader eyebrow="NADI / Decision layer" title="NADI Executive Overview" description="Factual view of current Reliability data for the BSR / IP operating scope." actions={<div className="overview-actions"><span className="dataset-badge"><span className="pulse-dot" /> MIXED DATA MATURITY</span><label className="window-select">Current data window<select value={windowDays} onChange={(event) => setWindowDays(Number(event.target.value) as WindowDays)} aria-label="Maintenance activity window">{WINDOWS.map((days) => <option key={days} value={days}>{days} days</option>)}</select></label></div>} />
     <div className="scope-banner trust-strip"><span className="scope-chip">BSR / IP</span><span>845 Registered Reliability Assets</span><DataMaturity state="CURRENT LOCAL PROJECTION" detail="Asset and maintenance data are projected locally from Collector into the Mart." /><DataMaturity state="CONTROLLED MART POPULATION" detail="FMEA, Asset Health, RCFA, and Overhaul remain current controlled populations." /></div>
@@ -55,9 +52,9 @@ export default function HomePage() {
     {!loading && !error && data && <>
       <section className="stat-grid overview-stat-grid">
         <StatCard label="Registered Reliability Assets" value={metric(data.summary.registered_assets)} detail="Registry count · VERIFIED" tone="accent" />
-        <StatCard label={`Maintenance Activity ${windowDays}d`} value={metric(selectedActivity!)} detail="Registry-scoped · DERIVED_SAFE" />
-        <StatCard label={`Assets with Activity ${windowDays}d`} value={metric(selectedAssets!)} detail="Distinct registered Asset refs · DERIVED_SAFE" />
+        <StatCard label="Maintenance Activity 7d" value={metric(data.summary.maintenance_activity_7d)} detail="Registry-scoped · DERIVED_SAFE" />
         <StatCard label="Maintenance Activity 30d" value={metric(data.summary.maintenance_activity_30d)} detail="Registry-scoped · DERIVED_SAFE" />
+        <StatCard label="Assets with Activity 30d" value={metric(data.summary.assets_active_30d)} detail="Distinct registered Asset refs · DERIVED_SAFE" />
         <StatCard label="Maintenance Activity 90d" value={metric(data.summary.maintenance_activity_90d)} detail="Registry-scoped · DERIVED_SAFE" />
       </section>
 

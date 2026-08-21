@@ -102,6 +102,7 @@ export interface DecisionOverviewView {
     maintenance_activity_7d: EvidenceValue;
     maintenance_activity_30d: EvidenceValue;
     maintenance_activity_90d: EvidenceValue;
+    assets_active_7d: EvidenceValue;
     assets_active_30d: EvidenceValue;
     assets_active_90d: EvidenceValue;
   };

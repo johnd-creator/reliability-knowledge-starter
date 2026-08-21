@@ -440,6 +440,7 @@ class MartQueryRepository:
             func.count(maintenance_scope.c.canonical_id).filter(scoped_date >= current - timedelta(days=7), scoped_date <= current).label("maintenance_7d"),
             func.count(maintenance_scope.c.canonical_id).filter(scoped_date >= current - timedelta(days=30), scoped_date <= current).label("maintenance_30d"),
             func.count(maintenance_scope.c.canonical_id).filter(scoped_date >= current - timedelta(days=90), scoped_date <= current).label("maintenance_90d"),
+            func.count(func.distinct(maintenance_scope.c.equipment_id)).filter(scoped_date >= current - timedelta(days=7), scoped_date <= current).label("assets_active_7d"),
             func.count(func.distinct(maintenance_scope.c.equipment_id)).filter(scoped_date >= current - timedelta(days=30), scoped_date <= current).label("assets_active_30d"),
             func.count(func.distinct(maintenance_scope.c.equipment_id)).filter(scoped_date >= current - timedelta(days=90), scoped_date <= current).label("assets_active_90d"),
         )
@@ -537,6 +538,7 @@ class MartQueryRepository:
                 "maintenance_activity_7d": int(summary_values["maintenance_7d"] or 0),
                 "maintenance_activity_30d": int(summary_values["maintenance_30d"] or 0),
                 "maintenance_activity_90d": int(summary_values["maintenance_90d"] or 0),
+                "assets_active_7d": int(summary_values["assets_active_7d"] or 0),
                 "assets_active_30d": int(summary_values["assets_active_30d"] or 0),
                 "assets_active_90d": int(summary_values["assets_active_90d"] or 0),
             },

@@ -195,6 +195,7 @@ class DecisionSummaryView(BaseModel):
     maintenance_activity_7d: EvidenceValue
     maintenance_activity_30d: EvidenceValue
     maintenance_activity_90d: EvidenceValue
+    assets_active_7d: EvidenceValue
     assets_active_30d: EvidenceValue
     assets_active_90d: EvidenceValue
 
@@ -334,6 +335,7 @@ def _decision_overview(raw: dict[str, object], window_days: int) -> DecisionOver
             maintenance_activity_7d=_evidence(int(summary["maintenance_activity_7d"]), "DERIVED_SAFE"),
             maintenance_activity_30d=_evidence(int(summary["maintenance_activity_30d"]), "DERIVED_SAFE"),
             maintenance_activity_90d=_evidence(int(summary["maintenance_activity_90d"]), "DERIVED_SAFE"),
+            assets_active_7d=_evidence(int(summary["assets_active_7d"]), "DERIVED_SAFE"),
             assets_active_30d=_evidence(int(summary["assets_active_30d"]), "DERIVED_SAFE"),
             assets_active_90d=_evidence(int(summary["assets_active_90d"]), "DERIVED_SAFE"),
         ),

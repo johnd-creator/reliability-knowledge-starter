@@ -136,6 +136,7 @@ class ReliabilityMartReadTest(unittest.TestCase):
         self.assertEqual(result["registered_assets"], 2)
         self.assertEqual(result["summary"]["maintenance_activity_7d"], 2)
         self.assertEqual(result["summary"]["maintenance_activity_30d"], 2)
+        self.assertEqual(result["summary"]["assets_active_7d"], 2)
         self.assertEqual(result["summary"]["assets_active_30d"], 2)
         self.assertEqual(len(result["trend"]), 12)
         self.assertEqual({row["value"] for row in result["status_distribution"]}, {"CAN", "COMPLETE"})
@@ -231,6 +232,7 @@ class ReliabilityMartApiTest(unittest.TestCase):
             response = reliability_api.decision_overview(window_days=30, service=self.service)
         self.assertEqual(response.window_days, 30)
         self.assertEqual(response.summary.registered_assets.evidence_class, "VERIFIED")
+        self.assertEqual(response.summary.assets_active_7d.value, 2)
         parameter = self.app.openapi()["paths"]["/v1/reliability/decision-overview"]["get"]["parameters"][0]
         self.assertEqual(parameter["schema"]["enum"], [7, 30, 90])
 
