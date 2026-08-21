@@ -34,6 +34,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/service-requests" className="nav-link">
                 Service Requests
               </Link>
+              <Link href="/data-explorer" className="nav-link">
+                Data Explorer
+              </Link>
             </div>
           </div>
 
