@@ -115,6 +115,10 @@ class DiscoveryError(RuntimeError):
     """A safe, user-facing discovery failure."""
 
 
+class ResponseCapError(DiscoveryError):
+    """A response was stopped at the configured safety limit."""
+
+
 @dataclass(frozen=True)
 class Config:
     base_url: str
@@ -612,7 +616,7 @@ class NoRedirectHandler(HTTPRedirectHandler):
 def read_limited(response: Any, limit: int) -> bytes:
     body = response.read(limit + 1)
     if len(body) > limit:
-        raise DiscoveryError(f"response exceeded MAXIMO_MAX_RESPONSE_BYTES ({limit})")
+        raise ResponseCapError(f"response exceeded MAXIMO_MAX_RESPONSE_BYTES ({limit})")
     return body
 
 
@@ -847,8 +851,127 @@ RELATIONSHIP_FIELD_PATTERNS: dict[str, tuple[str, ...]] = {
     "timestamp": ("date", "datetime", "timestamp", "time"),
 }
 
+FIELD_ROLE_NAMES = (
+    "IDENTIFIER_CANDIDATE",
+    "SCOPE_SITE",
+    "SCOPE_ORGANIZATION",
+    "ASSET_REFERENCE",
+    "LOCATION_REFERENCE",
+    "WORKORDER_REFERENCE",
+    "PARENT_REFERENCE",
+    "STATUS",
+    "TIMESTAMP",
+    "COLLECTION_REFERENCE",
+    "FAILURE_REFERENCE",
+    "INSPECTION_REFERENCE",
+    "BUSINESS_ATTRIBUTE",
+    "UNKNOWN",
+)
+
+ROLE_EXCLUDED_FROM_IDENTITY = frozenset(
+    {
+        "SCOPE_SITE",
+        "SCOPE_ORGANIZATION",
+        "ASSET_REFERENCE",
+        "LOCATION_REFERENCE",
+        "WORKORDER_REFERENCE",
+        "PARENT_REFERENCE",
+        "COLLECTION_REFERENCE",
+        "FAILURE_REFERENCE",
+        "INSPECTION_REFERENCE",
+        "STATUS",
+        "TIMESTAMP",
+    }
+)
+
+RESOURCE_KEY_PREFERENCES: dict[str, tuple[str, ...]] = {
+    "IPFMEA": ("fmeaid", "fmeanum"),
+    "IPFMEAITEM": ("ipfmeaitemid", "fmeaitemid", "fmeaitemnum"),
+    "IPRCFA": ("rcfaid", "norcfa"),
+    "IPBHM": ("bhmid", "eid"),
+    "IPBHMMEASUREMENT": ("ipbhmmeasurementid", "bhmmeasurementid", "measurementid"),
+    "DMD_OPLOGABN": ("dmd_oplogabnid", "oplogabnid", "oplogabnnum"),
+    "IPMSMSFAILUREMECHANI": ("failuremechanismid", "failuremechanismnum"),
+    "IP_DOM_OH": ("domid", "domohnum"),
+    "DOM_INSPEKSIMESIN": ("dom_inspeksiid", "dom_inspeksinum"),
+}
+
+# The first shape preserves MX-006B behavior. The second is explicitly
+# justified by the collector's verified OSLC paging parameters, but still
+# requests one page of one record. These are the only automatic alternatives
+# for the four resources that previously hit the 1 MiB cap.
+SAFE_RESOURCE_QUERY_SHAPES: dict[str, tuple[dict[str, Any], ...]] = {
+    resource: (
+        {
+            "name": "maxitems_select_href",
+            "select": "href",
+            "paging": False,
+            "evidence": "MX-006B bounded collection shape",
+        },
+        {
+            "name": "paged_select_href",
+            "select": "href",
+            "paging": True,
+            "page_size": 1,
+            "evidence": "maximo-collector verified oslc.paging/oslc.pageSize shape",
+        },
+    )
+    for resource in (
+        "IPFMEAITEM",
+        "IPBHMMEASUREMENT",
+        "DMD_OPLOGABN",
+        "IPMSMSFAILUREMECHANI",
+    )
+}
+
+
+def field_roles(field: str) -> list[str]:
+    """Classify one normalized field without promoting identity semantics."""
+
+    name = str(field)
+    lowered = name.lower()
+    if lowered.endswith("_collectionref") or lowered.endswith("collectionref"):
+        return ["COLLECTION_REFERENCE"]
+    if lowered in {"siteid", "site"}:
+        return ["SCOPE_SITE"]
+    if lowered in {"orgid", "organization", "organizationid"}:
+        return ["SCOPE_ORGANIZATION"]
+    if lowered in {"assetnum", "assetid", "asset", "equipment", "equipmentid"}:
+        return ["ASSET_REFERENCE"]
+    if lowered in {"location", "locationid", "locnum"}:
+        return ["LOCATION_REFERENCE"]
+    if lowered in {"wonum", "workorder", "workorderid"}:
+        return ["WORKORDER_REFERENCE"]
+    if lowered in {"inspeksinum", "inspectionid", "inspectionnum"}:
+        return ["INSPECTION_REFERENCE"]
+    if lowered in {"failurecode", "failurecodeid"}:
+        return ["FAILURE_REFERENCE"]
+    if lowered == "status":
+        return ["STATUS"]
+    if any(pattern in lowered for pattern in ("date", "datetime", "timestamp", "time")):
+        return ["TIMESTAMP"]
+    if _looks_like_identifier(name):
+        return ["IDENTIFIER_CANDIDATE"]
+    return ["BUSINESS_ATTRIBUTE"]
+
+
+def field_role_map(fields: Iterable[str]) -> dict[str, list[str]]:
+    return {str(field): field_roles(str(field)) for field in fields}
+
+
+def role_evidence(fields: Iterable[str]) -> list[dict[str, Any]]:
+    return [
+        {
+            "field": field,
+            "roles": roles,
+            "evidence": "observed field name on one bounded Maximo record",
+        }
+        for field, roles in field_role_map(fields).items()
+    ]
+
 
 def relationship_evidence(fields: Iterable[str]) -> list[str]:
+    fields = list(fields)
     lowered = {field.lower(): field for field in fields}
     relationships: list[str] = []
     for relationship, patterns in RELATIONSHIP_FIELD_PATTERNS.items():
@@ -865,11 +988,71 @@ def relationship_evidence(fields: Iterable[str]) -> list[str]:
     return relationships
 
 
-def primary_key_evidence(fields: Iterable[str]) -> dict[str, str] | None:
-    candidates = [field for field in fields if _looks_like_identifier(field)]
-    if not candidates:
-        return None
-    return {"field": candidates[0], "confidence": "CANDIDATE"}
+def _identity_score(resource: str, field: str) -> tuple[int, int]:
+    preferred = RESOURCE_KEY_PREFERENCES.get(str(resource).upper(), ())
+    lowered = field.lower()
+    if lowered in preferred:
+        return (100 - preferred.index(lowered), 0)
+    if lowered.endswith("id"):
+        return (70, 0)
+    if lowered.endswith("num"):
+        return (60, 0)
+    if lowered.endswith("key"):
+        return (50, 0)
+    if lowered.endswith("code"):
+        return (40, 0)
+    return (0, 0)
+
+
+def primary_key_evidence(fields: Iterable[str], resource: str = "") -> dict[str, Any] | None:
+    """Rank identity candidates while explicitly excluding relationships/scopes."""
+
+    field_list = dedupe(str(field) for field in fields)
+    roles = field_role_map(field_list)
+    excluded: list[dict[str, str]] = []
+    candidates: list[str] = []
+    resource_preferences = RESOURCE_KEY_PREFERENCES.get(str(resource).upper(), ())
+    for field in field_list:
+        field_roles_value = roles[field]
+        excluded_roles = [role for role in field_roles_value if role in ROLE_EXCLUDED_FROM_IDENTITY]
+        preferred_for_resource = field.lower() in resource_preferences
+        resource_identity_exception = preferred_for_resource and excluded_roles == ["INSPECTION_REFERENCE"]
+        if excluded_roles and not resource_identity_exception and (_looks_like_identifier(field) or excluded_roles[0] != "STATUS"):
+            excluded.append(
+                {
+                    "field": field,
+                    "role": excluded_roles[0],
+                    "reason": "scope or relationship field is not record identity",
+                }
+            )
+            continue
+        if _looks_like_identifier(field) or preferred_for_resource:
+            candidates.append(field)
+    candidates.sort(key=lambda field: (-_identity_score(resource, field)[0], field.lower()))
+    ranked = [
+        {
+            "field": field,
+            "confidence": "CANDIDATE",
+            "reason": (
+                "resource-specific identity preference"
+                if field.lower() in RESOURCE_KEY_PREFERENCES.get(str(resource).upper(), ())
+                else "identifier-like field; uniqueness not proven"
+            ),
+        }
+        for field in candidates
+    ]
+    return {
+        "preferred": ranked[0] if ranked else None,
+        "candidates": ranked,
+        "excluded": excluded,
+    }
+
+
+def identity_candidate_fields(fields: Iterable[str], resource: str = "") -> list[str]:
+    evidence = primary_key_evidence(fields, resource)
+    if not evidence:
+        return []
+    return [candidate["field"] for candidate in evidence["candidates"]]
 
 
 def error_diagnostics(status: int, body: bytes) -> dict[str, Any]:
@@ -962,7 +1145,7 @@ def object_structure_record(
     detail_dereference: Mapping[str, Any] | None = None,
     field_types: Mapping[str, str] | None = None,
     metadata_fields: Iterable[str] | None = None,
-    primary_key: str | Mapping[str, str] | None = None,
+    primary_key: str | Mapping[str, Any] | None = None,
     http_diagnostics: Mapping[str, Any] | None = None,
     endpoint: str | None = None,
 ) -> dict[str, Any]:
@@ -983,6 +1166,8 @@ def object_structure_record(
         "field_candidates": [f for f in fields if _looks_like_identifier(f)][:50],
         "important_fields": fields[:100],
         "field_types": dict(field_types or {}),
+        "field_roles": field_role_map(fields),
+        "role_evidence": role_evidence(fields),
         "metadata_fields": list(metadata_fields or []),
         "pagination": dict(pagination) if pagination else {},
         "sample": sample,
@@ -1020,13 +1205,39 @@ def minimal_object_query_with_select(
     name: str,
     scope_clause: str | None = None,
     select: str | None = None,
+    *,
+    paging: bool = False,
+    page_size: int = 1,
 ) -> str:
-    query = [("_maxitems", "1")]
+    query = []
+    if paging:
+        query.extend([("oslc.paging", "true"), ("oslc.pageSize", str(page_size))])
+    else:
+        query.append(("_maxitems", "1"))
     if scope_clause:
         query.append(("oslc.where", scope_clause))
     if select:
         query.append(("oslc.select", select))
     return f"{OSLC_OBJECT_ROOT}/{name}?{urlencode(query)}"
+
+
+def bounded_query_shapes(name: str, scope_clause: str | None, select: str | None) -> list[dict[str, Any]]:
+    """Return one normal shape plus at most one evidence-backed alternative."""
+
+    shapes = list(SAFE_RESOURCE_QUERY_SHAPES.get(str(name).upper(), ()))
+    if not shapes:
+        shapes = ({"name": "maxitems", "select": select, "paging": False, "evidence": "default bounded query"},)
+    queries: list[dict[str, Any]] = []
+    for shape in shapes[:2]:
+        query = minimal_object_query_with_select(
+            name,
+            scope_clause,
+            shape.get("select", select),
+            paging=bool(shape.get("paging", False)),
+            page_size=int(shape.get("page_size", 1)),
+        )
+        queries.append({**shape, "endpoint": query})
+    return queries
 
 
 def validate_object_structure_record(record: Mapping[str, Any]) -> None:
@@ -1040,6 +1251,50 @@ def validate_object_structure_record(record: Mapping[str, Any]) -> None:
         raise DiscoveryError("verified object record must have verified_at")
     if contains_sensitive_key(record):
         raise DiscoveryError("object record contains a sensitive field name")
+
+
+MX007R_REQUIRED_ROLES: dict[str, frozenset[str]] = {
+    "IPFMEA": frozenset({"ASSET_REFERENCE", "SCOPE_SITE", "STATUS", "TIMESTAMP"}),
+    "IPRCFA": frozenset({"SCOPE_SITE", "STATUS", "TIMESTAMP"}),
+    "IPBHM": frozenset({"ASSET_REFERENCE", "SCOPE_SITE", "STATUS", "TIMESTAMP"}),
+    "IP_DOM_OH": frozenset({"WORKORDER_REFERENCE", "SCOPE_SITE", "STATUS", "TIMESTAMP"}),
+}
+
+
+def evaluate_mx007r_readiness(records: Iterable[Mapping[str, Any]]) -> dict[str, Any]:
+    """Gate NADI mapping on internally consistent, role-aware contracts."""
+
+    by_name = {str(record.get("object_structure", "")).upper(): record for record in records}
+    checks: dict[str, dict[str, Any]] = {}
+    blockers: list[str] = []
+    for name, required_roles in MX007R_REQUIRED_ROLES.items():
+        record = by_name.get(name)
+        roles = record.get("field_roles", {}) if record else {}
+        observed_roles = {role for values in roles.values() for role in values}
+        primary = record.get("primary_key") if record else None
+        preferred = None
+        if isinstance(primary, Mapping):
+            if "preferred" in primary:
+                preferred = primary.get("preferred")
+            else:
+                preferred = primary
+        identity_field = preferred.get("field") if isinstance(preferred, Mapping) else None
+        excluded_fields = {
+            item.get("field")
+            for item in (primary.get("excluded", []) if isinstance(primary, Mapping) else [])
+            if isinstance(item, Mapping)
+        }
+        consistent_identity = bool(identity_field) and identity_field not in excluded_fields
+        usable = bool(record and record.get("status") == "verified" and consistent_identity and required_roles <= observed_roles)
+        checks[name] = {
+            "usable": usable,
+            "preferred_identifier": identity_field,
+            "required_roles": sorted(required_roles),
+            "observed_roles": sorted(observed_roles),
+        }
+        if not usable:
+            blockers.append(f"{name} lacks a verified, role-consistent identity and required evidence")
+    return {"ready": not blockers, "checks": checks, "blockers": blockers}
 
 
 def enumerate_object_structures(client: Any, oslc_root: str = OSLC_CATALOG_ROOT) -> dict[str, Any]:
@@ -1111,11 +1366,12 @@ def describe_object_structure(
     payload.
     """
     scope_clause = scope_clause_for(name) if verify_detail else None
-    path = minimal_object_query_with_select(
+    query_shapes = bounded_query_shapes(
         name,
         scope_clause,
         DETAIL_COLLECTION_SELECT if verify_detail else None,
     )
+    path = str(query_shapes[0]["endpoint"])
     notes: list[str] = []
     pagination: dict[str, Any] = {}
     members: list[Mapping[str, Any]] = []
@@ -1136,16 +1392,44 @@ def describe_object_structure(
         "detail_records": 0,
         "maximum_dereference_depth": 1,
         "pagination_followed": False,
+        "query_shape_attempts": [],
+        "response_cap": False,
     }
     detail_fields: list[str] = []
     detail_types: dict[str, str] = {}
     detail_metadata: list[str] = []
-    detail_primary_key: str | Mapping[str, str] | None = None
+    detail_primary_key: str | Mapping[str, Any] | None = None
     detail_relationships: list[str] = []
     diagnostics: dict[str, Any] = {}
-    try:
-        http_status, _headers, body = client.request("GET", path)
-    except DiscoveryError as error:
+    request_error: DiscoveryError | None = None
+    request_succeeded = False
+    for shape in query_shapes[:2]:
+        path = str(shape["endpoint"])
+        attempt = {
+            "name": shape["name"],
+            "endpoint": path,
+            "evidence": shape["evidence"],
+        }
+        try:
+            http_status, _headers, body = client.request("GET", path)
+            attempt["result"] = f"HTTP {http_status}"
+            detail["query_shape_attempts"].append(attempt)
+            request_succeeded = True
+            break
+        except ResponseCapError as error:
+            attempt["result"] = "RESPONSE_CAP"
+            detail["response_cap"] = True
+            detail["query_shape_attempts"].append(attempt)
+            request_error = error
+            notes.append(f"query shape {shape['name']} hit the response cap")
+            continue
+        except DiscoveryError as error:
+            attempt["result"] = "ERROR"
+            detail["query_shape_attempts"].append(attempt)
+            request_error = error
+            break
+    if not request_succeeded:
+        error = request_error or DiscoveryError("bounded collection request failed")
         notes.append(f"describe GET failed: {error}")
         record = object_structure_record(
             name,
@@ -1195,7 +1479,7 @@ def describe_object_structure(
                                 business, detail_metadata = normalize_detail_record(detail_payload)
                                 detail_fields = list(business)
                                 detail_types = detail_field_types(business)
-                                detail_primary_key = primary_key_evidence(detail_fields)
+                                detail_primary_key = primary_key_evidence(detail_fields, resource)
                                 detail_relationships = relationship_evidence(detail_fields)
                         else:
                             detail["status"] = "UNKNOWN"
@@ -1205,13 +1489,17 @@ def describe_object_structure(
                         detail["status"] = "BLOCKED"
                         notes.append(f"detail dereference blocked: {error}")
                 else:
-                    detail["status"] = "INLINE_BUSINESS_RECORD"
                     business, detail_metadata = normalize_detail_record(member)
-                    detail_fields = list(business)
-                    detail_types = detail_field_types(business)
-                    detail_primary_key = primary_key_evidence(detail_fields)
-                    detail_relationships = relationship_evidence(detail_fields)
-                    notes.append("inline business member used; no detail GET was necessary")
+                    if business:
+                        detail["status"] = "INLINE_BUSINESS_RECORD"
+                        detail_fields = list(business)
+                        detail_types = detail_field_types(business)
+                        detail_primary_key = primary_key_evidence(detail_fields, resource)
+                        detail_relationships = relationship_evidence(detail_fields)
+                        notes.append("inline business member used; no detail GET was necessary")
+                    else:
+                        detail["status"] = "UNKNOWN"
+                        notes.append("bounded response exposed no business fields or detail link")
     elif http_status == 403:
         status = "forbidden"
     else:
@@ -1240,7 +1528,9 @@ def describe_object_structure(
     )
     if verify_detail and detail_fields:
         record["important_fields"] = detail_fields[:100]
-        record["field_candidates"] = [f for f in detail_fields if _looks_like_identifier(f)][:50]
+        record["field_candidates"] = identity_candidate_fields(detail_fields, resource)[:50]
+        record["field_roles"] = field_role_map(detail_fields)
+        record["role_evidence"] = role_evidence(detail_fields)
         record["sample"] = {field: f"<{detail_types[field]}>" for field in detail_fields}
         record["relationships"] = detail_relationships
     validate_object_structure_record(record)

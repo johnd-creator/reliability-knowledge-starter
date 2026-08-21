@@ -42,6 +42,36 @@
             "field": {"type": "string"},
             "confidence": {"enum": ["VERIFIED", "CANDIDATE", "UNKNOWN"]}
           }
+        },
+        {
+          "type": "object",
+          "required": ["preferred", "candidates", "excluded"],
+          "additionalProperties": false,
+          "properties": {
+            "preferred": {
+              "oneOf": [
+                {"type": "null"},
+                {"$ref": "#/$defs/keyCandidate"}
+              ]
+            },
+            "candidates": {
+              "type": "array",
+              "items": {"$ref": "#/$defs/keyCandidate"}
+            },
+            "excluded": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["field", "role", "reason"],
+                "additionalProperties": false,
+                "properties": {
+                  "field": {"type": "string"},
+                  "role": {"type": "string"},
+                  "reason": {"type": "string"}
+                }
+              }
+            }
+          }
         }
       ]
     },
@@ -64,6 +94,27 @@
       "type": "array",
       "items": {"type": "string"},
       "description": "OSLC/RDF/internal field names retained as structure only"
+    },
+    "field_roles": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {"enum": ["IDENTIFIER_CANDIDATE", "SCOPE_SITE", "SCOPE_ORGANIZATION", "ASSET_REFERENCE", "LOCATION_REFERENCE", "WORKORDER_REFERENCE", "PARENT_REFERENCE", "STATUS", "TIMESTAMP", "COLLECTION_REFERENCE", "FAILURE_REFERENCE", "INSPECTION_REFERENCE", "BUSINESS_ATTRIBUTE", "UNKNOWN"]}
+      },
+      "description": "Bounded semantic roles inferred from observed field names"
+    },
+    "role_evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["field", "roles", "evidence"],
+        "additionalProperties": false,
+        "properties": {
+          "field": {"type": "string"},
+          "roles": {"type": "array", "items": {"type": "string"}},
+          "evidence": {"type": "string"}
+        }
+      }
     },
     "pagination": {
       "type": "object",
@@ -113,6 +164,8 @@
         "fields": {"type": "array", "items": {"type": "string"}},
         "field_types": {"$ref": "#/$defs/fieldTypes"},
         "metadata_fields": {"type": "array", "items": {"type": "string"}},
+        "query_shape_attempts": {"type": "array", "items": {"type": "object", "additionalProperties": false, "properties": {"name": {"type": "string"}, "endpoint": {"type": "string"}, "evidence": {"type": "string"}, "result": {"type": "string"}}}},
+        "response_cap": {"type": "boolean"},
         "error": {"type": "object", "additionalProperties": true}
       }
     },
@@ -147,6 +200,16 @@
     "fieldTypes": {
       "type": "object",
       "additionalProperties": {"enum": ["string", "integer", "number", "boolean", "datetime", "object/reference", "collection-reference", "unknown"]}
+    },
+    "keyCandidate": {
+      "type": "object",
+      "required": ["field", "confidence", "reason"],
+      "additionalProperties": false,
+      "properties": {
+        "field": {"type": "string"},
+        "confidence": {"enum": ["VERIFIED", "CANDIDATE", "UNKNOWN"]},
+        "reason": {"type": "string"}
+      }
     }
   }
 }

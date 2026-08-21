@@ -1,3 +1,4 @@
+import io
 import json
 import os
 import tempfile
@@ -9,11 +10,15 @@ from scripts.discover import (
     DiscoveryError,
     ReadOnlyClient,
     READ_ONLY_METHODS,
+    ResponseCapError,
     business_fields,
+    bounded_query_shapes,
     describe_object_structure,
     discover_oslc,
     discover_oas,
     enumerate_object_structures,
+    evaluate_mx007r_readiness,
+    field_roles,
     is_internal_field,
     minimal_object_query,
     object_structure_record,
@@ -22,6 +27,8 @@ from scripts.discover import (
     oslc_pagination_info,
     parse_document,
     parse_object_structure_catalog,
+    primary_key_evidence,
+    read_limited,
     response_structure,
     resolve_same_origin_url,
     sanitize,
@@ -147,6 +154,77 @@ class FakeClient:
 
 
 class OslcDiscoveryTests(unittest.TestCase):
+    def test_primary_key_roles_exclude_scope_and_relationship_fields_for_fmea(self):
+        evidence = primary_key_evidence(
+            ["orgid", "assetnum", "fmeanum", "fmeaid", "siteid"], "IPFMEA"
+        )
+        self.assertEqual(evidence["preferred"]["field"], "fmeaid")
+        self.assertEqual([item["field"] for item in evidence["candidates"]], ["fmeaid", "fmeanum"])
+        self.assertEqual(
+            {item["field"] for item in evidence["excluded"]},
+            {"orgid", "assetnum", "siteid"},
+        )
+
+    def test_primary_key_roles_keep_rcfa_identity_out_of_scope_fields(self):
+        evidence = primary_key_evidence(["orgid", "norcfa", "rcfaid", "siteid"], "IPRCFA")
+        self.assertEqual(evidence["preferred"]["field"], "rcfaid")
+        self.assertEqual([item["field"] for item in evidence["candidates"]], ["rcfaid", "norcfa"])
+
+    def test_dominion_workorder_is_reference_not_identity(self):
+        evidence = primary_key_evidence(["domid", "domohnum", "wonum", "siteid", "orgid"], "IP_DOM_OH")
+        self.assertEqual(evidence["preferred"]["field"], "domid")
+        self.assertNotIn("wonum", [item["field"] for item in evidence["candidates"]])
+        self.assertIn("wonum", {item["field"] for item in evidence["excluded"]})
+
+    def test_relationship_roles_are_explicit(self):
+        self.assertEqual(field_roles("assetnum"), ["ASSET_REFERENCE"])
+        self.assertEqual(field_roles("siteid"), ["SCOPE_SITE"])
+        self.assertEqual(field_roles("orgid"), ["SCOPE_ORGANIZATION"])
+        self.assertEqual(field_roles("wonum"), ["WORKORDER_REFERENCE"])
+        self.assertEqual(field_roles("status"), ["STATUS"])
+        self.assertEqual(field_roles("workorder_collectionref"), ["COLLECTION_REFERENCE"])
+        self.assertEqual(field_roles("createddate"), ["TIMESTAMP"])
+
+    def test_blocked_resource_has_at_most_two_allowlisted_query_shapes(self):
+        shapes = bounded_query_shapes("IPBHMMEASUREMENT", 'siteid="BSR"', "href")
+        self.assertEqual(len(shapes), 2)
+        self.assertIn("oslc.select=href", shapes[0]["endpoint"])
+        self.assertIn("oslc.paging=true", shapes[1]["endpoint"])
+        self.assertIn("oslc.pageSize=1", shapes[1]["endpoint"])
+
+    def test_response_cap_uses_one_controlled_alternative_only(self):
+        class CappedClient:
+            def __init__(self):
+                self.config = Config("http://example.invalid/maximo", "/oslc/oas", "none", "", "", "", 1, 0, 100)
+                self.calls = []
+
+            def request(self, method, path):
+                self.calls.append((method, path))
+                if len(self.calls) == 1:
+                    raise ResponseCapError("cap")
+                return 200, {}, b'{"_member":[{"spi:bhmmeasurementid":1}]}'
+
+        client = CappedClient()
+        record = describe_object_structure(client, "IPBHMMEASUREMENT", "ipbhmmeasurement", verify_detail=True)
+        self.assertEqual(len(client.calls), 2)
+        self.assertEqual(record["detail_dereference"]["query_shape_attempts"][0]["result"], "RESPONSE_CAP")
+        self.assertEqual(record["detail_dereference"]["query_shape_attempts"][1]["result"], "HTTP 200")
+
+    def test_response_cap_remains_a_hard_read_limit(self):
+        with self.assertRaises(ResponseCapError):
+            read_limited(io.BytesIO(b"1234"), 3)
+
+    def test_readiness_requires_role_consistent_contracts(self):
+        def record(name, primary, roles):
+            return {"object_structure": name, "status": "verified", "primary_key": primary, "field_roles": roles}
+
+        records = [
+            record("IPFMEA", {"preferred": {"field": "fmeaid"}, "excluded": []}, {"fmeaid": ["IDENTIFIER_CANDIDATE"], "assetnum": ["ASSET_REFERENCE"], "siteid": ["SCOPE_SITE"], "status": ["STATUS"], "createddate": ["TIMESTAMP"]}),
+            record("IPRCFA", {"preferred": {"field": "rcfaid"}, "excluded": []}, {"rcfaid": ["IDENTIFIER_CANDIDATE"], "siteid": ["SCOPE_SITE"], "status": ["STATUS"], "createddate": ["TIMESTAMP"]}),
+            record("IPBHM", {"preferred": {"field": "bhmid"}, "excluded": []}, {"bhmid": ["IDENTIFIER_CANDIDATE"], "assetnum": ["ASSET_REFERENCE"], "siteid": ["SCOPE_SITE"], "status": ["STATUS"], "createddate": ["TIMESTAMP"]}),
+            record("IP_DOM_OH", {"preferred": {"field": "domid"}, "excluded": [{"field": "wonum"}]}, {"domid": ["IDENTIFIER_CANDIDATE"], "wonum": ["WORKORDER_REFERENCE"], "siteid": ["SCOPE_SITE"], "status": ["STATUS"], "createddate": ["TIMESTAMP"]}),
+        ]
+        self.assertTrue(evaluate_mx007r_readiness(records)["ready"])
     def test_same_origin_absolute_detail_url_is_allowed(self):
         resolved = resolve_same_origin_url(
             "https://maximo.example/maximo",
