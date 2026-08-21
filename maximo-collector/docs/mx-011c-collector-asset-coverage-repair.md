@@ -1,6 +1,7 @@
 # MX-011C — Collector Asset Coverage Repair & Complete Current Baseline
 
-Status: `PARTIAL`
+Status: `COMPLETE` for the Registered Reliability Asset projection; the broad
+technical MXAPIASSET population remains intentionally non-exhaustive.
 
 The repair code and safety path are complete, but the current Maximo
 `MXAPIASSET` population did not finish within the bounded live request budget.
@@ -237,3 +238,69 @@ Continuation safety audit:
 - Maximo business writes: 0; all business requests were GET-only.
 - Reliability Mart, NADI, Contract, and `mxasset` cursor: unchanged.
 - The production registry report remained external and untracked.
+
+## MX-011C Final — Registry Residual Completion
+
+The broad technical MXAPIASSET traversal was not repeated. The remaining
+business residuals were derived locally as the registry membership minus local
+Equipment membership, then verified by exact identity lookups.
+
+| Metric | Result |
+| --- | ---: |
+| Residuals derived | 22 |
+| Primary source | `MXAPIASSET` |
+| Exact MXAPIASSET requests | 22 |
+| MXAPIASSET rows found | 22 |
+| MXAPIASSET rows not found | 0 |
+| Identity ambiguities | 0 |
+| Scope mismatches | 0 |
+| Mapping failures | 0 |
+| MXASSET fallback requests | 0 |
+| Detail GETs | 0 |
+| Business methods | GET only |
+| Request ceiling | 30 primary / 50 combined |
+
+All 22 exact MXAPIASSET rows passed the requested identity, `siteid="BSR"`,
+and `eq11="CS01"` checks and were mapped through `equipment_from_payload`.
+The Collector inserted 22 Equipment rows; no existing row was deleted or
+updated.
+
+Post-repair business reconciliation:
+
+- Collector Equipment: 10,638 → 10,660.
+- Registered Reliability Assets: 845 / 845.
+- Registry missing: 0.
+- Registry coverage: 100.0%.
+- Registry Parents: 79 / 352; parent coverage remains technical context.
+- Recent direct-registry Work Order targets missing locally: 0.
+- Recent non-registry target missing: 1.
+- Historical direct-registry targets missing locally: 0.
+- Historical non-registry target gaps remain technical debt and were not
+  repaired.
+
+This completes the current business Registry projection without claiming that
+the broad `MXAPIASSET` technical population is exhausted. The page-200
+technical baseline remains partial by design: the source advertised another
+page, and no general cursor was created.
+
+The final targeted operation did not record a `CollectRun`: existing run modes
+are intended for broad full/incremental/partial traversals, and a targeted
+registry repair must not masquerade as a successful technical baseline. Both
+`mxapiasset` and `mxasset` cursors remain absent.
+
+The resulting architecture remains `MODEL_C_SEPARATE_REGISTRY_RELATION`:
+
+- Equipment is broad technical identity and hierarchy context.
+- Registered Reliability Asset is membership in the current List of Assets
+  registry.
+- NADI's current Asset scope can use the complete 845-row business Registry
+  projection while technical Equipment collection continues independently.
+
+Final safety audit:
+
+- Maximo business writes: 0.
+- Targeted business requests: 22 GETs; HTTP 200: 22; detail GETs: 0.
+- Collector Equipment inserts: 22; updates: 0; deletes: 0.
+- SyncCursor writes: 0.
+- Reliability Mart, NADI, Contract, and registry schema: unchanged.
+- Production report remained external and untracked.
