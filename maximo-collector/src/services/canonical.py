@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from itertools import islice
 from dataclasses import dataclass, field
 from typing import Any, Callable, Mapping
 
@@ -51,6 +52,9 @@ class CanonicalCollection:
     canonical_entity: str
     records: list[dict[str, Any]] = field(default_factory=list)
     stats: CanonicalStats = field(default_factory=CanonicalStats)
+    completeness: str = "UNKNOWN"  # EXHAUSTED | CAPPED | FAILED
+    pages: int = 0
+    failure_class: str | None = None
 
 
 CANONICAL_CONFIGS: dict[str, CanonicalSourceConfig] = {
@@ -117,85 +121,111 @@ class CanonicalCollector:
         *,
         workorder_index: Mapping[str, Mapping[str, Any]] | None = None,
         max_records: int | None = None,
+        max_pages: int | None = None,
     ) -> CanonicalCollection:
         if max_records is not None and max_records < 1:
             raise ValueError("canonical max_records must be at least 1")
+        if max_pages is not None and max_pages < 1:
+            raise ValueError("canonical max_pages must be at least 1")
         config = canonical_config_for(name, self._runtime_config)
         result = CanonicalCollection(config.canonical_entity)
-        for raw in self._client.iterate(
-            config.object_structure,
-            where=config.scope_clause,
-            required_scope=config.scope_clause,
-            select=list(config.select),
-            order_by=config.order_by,
-            page_size=config.page_size,
-            max_pages=1 if max_records is not None else config.max_pages,
-            identity_field=config.prefix_field,
-        ):
-            if max_records is not None and result.stats.source_records_read >= max_records:
-                break
-            result.stats.source_records_read += 1
-            if config.required_values and any(
-                str(raw.get(key) or "").strip().upper() != value.upper()
-                for key, value in config.required_values
-            ):
-                result.stats.records_skipped += 1
-                continue
-            if config.prefix_field and config.allowed_prefixes:
-                value = str(raw.get(config.prefix_field) or "").strip().upper()
-                if not value.startswith(tuple(prefix.upper() for prefix in config.allowed_prefixes)):
+        # MX-008S intentionally means one page when only max_records is given.
+        # A caller must opt into multi-page traversal explicitly.
+        effective_max_pages = (
+            max_pages
+            if max_pages is not None
+            else (1 if max_records is not None else config.max_pages)
+        )
+        requested_page_size = config.page_size or self._runtime_config.page_size
+        # Keep the response itself bounded by the source cap. islice alone
+        # would stop yielding at the cap but could still download a larger
+        # page from Maximo.
+        effective_page_size = min(requested_page_size, max_records) if max_records is not None else config.page_size
+        try:
+            iterator = self._client.iterate(
+                config.object_structure,
+                where=config.scope_clause,
+                required_scope=config.scope_clause,
+                select=list(config.select),
+                order_by=config.order_by,
+                page_size=effective_page_size,
+                max_pages=effective_max_pages,
+                identity_field=config.prefix_field,
+            )
+            bounded_iterator = islice(iterator, max_records) if max_records is not None else iterator
+            for raw in bounded_iterator:
+                result.stats.source_records_read += 1
+                if config.required_values and any(
+                    str(raw.get(key) or "").strip().upper() != value.upper()
+                    for key, value in config.required_values
+                ):
                     result.stats.records_skipped += 1
                     continue
-            try:
-                if config.canonical_entity == "overhaul_event":
-                    record = config.mapper(raw, workorder_index=workorder_index)
-                else:
-                    record = config.mapper(raw)
-                if self._validate:
-                    record = validate_record(config.canonical_entity, record)
-            except ContractValidationError as error:
-                result.stats.records_skipped += 1
-                result.stats.validation_errors += 1
-                LOG.warning("skip canonical row resource=%s error_class=%s", config.object_structure, type(error).__name__)
-                continue
-            except Exception as error:  # noqa: BLE001 — row-level isolation
-                result.stats.records_skipped += 1
-                result.stats.mapping_errors += 1
-                LOG.warning("skip canonical row resource=%s error_class=%s", config.object_structure, type(error).__name__)
-                continue
-            result.records.append(record)
-            result.stats.canonical_records_emitted += 1
-            if max_records is not None and result.stats.canonical_records_emitted >= max_records:
-                break
+                if config.prefix_field and config.allowed_prefixes:
+                    value = str(raw.get(config.prefix_field) or "").strip().upper()
+                    if not value.startswith(tuple(prefix.upper() for prefix in config.allowed_prefixes)):
+                        result.stats.records_skipped += 1
+                        continue
+                try:
+                    if config.canonical_entity == "overhaul_event":
+                        record = config.mapper(raw, workorder_index=workorder_index)
+                    else:
+                        record = config.mapper(raw)
+                    if self._validate:
+                        record = validate_record(config.canonical_entity, record)
+                except ContractValidationError as error:
+                    result.stats.records_skipped += 1
+                    result.stats.validation_errors += 1
+                    LOG.warning("skip canonical row resource=%s error_class=%s", config.object_structure, type(error).__name__)
+                    continue
+                except Exception as error:  # noqa: BLE001 — row-level isolation
+                    result.stats.records_skipped += 1
+                    result.stats.mapping_errors += 1
+                    LOG.warning("skip canonical row resource=%s error_class=%s", config.object_structure, type(error).__name__)
+                    continue
+                result.records.append(record)
+                result.stats.canonical_records_emitted += 1
+            result.completeness = (
+                "CAPPED"
+                if max_records is not None and result.stats.source_records_read >= max_records
+                else "EXHAUSTED"
+            )
+        except Exception as error:  # transport/auth/pagination failures are not row-level skips
+            result.completeness = "FAILED"
+            result.failure_class = type(error).__name__
+            raise
+        finally:
+            result.pages = int(getattr(self._client, "last_iteration_pages", 0) or 0)
         return result
 
-    def collect_assets(self, *, max_records: int | None = None) -> CanonicalCollection:
-        return self.collect("mxasset", max_records=max_records)
+    def collect_assets(self, *, max_records: int | None = None, max_pages: int | None = None) -> CanonicalCollection:
+        return self.collect("mxasset", max_records=max_records, max_pages=max_pages)
 
-    def collect_workorders(self, *, max_records: int | None = None) -> CanonicalCollection:
-        return self.collect("mxwodetail", max_records=max_records)
+    def collect_workorders(self, *, max_records: int | None = None, max_pages: int | None = None) -> CanonicalCollection:
+        return self.collect("mxwodetail", max_records=max_records, max_pages=max_pages)
 
-    def collect_fmea(self, *, max_records: int | None = None) -> CanonicalCollection:
-        return self.collect("ipfmea", max_records=max_records)
+    def collect_fmea(self, *, max_records: int | None = None, max_pages: int | None = None) -> CanonicalCollection:
+        return self.collect("ipfmea", max_records=max_records, max_pages=max_pages)
 
-    def collect_rcfa(self, *, max_records: int | None = None) -> CanonicalCollection:
-        return self.collect("iprcfa", max_records=max_records)
+    def collect_rcfa(self, *, max_records: int | None = None, max_pages: int | None = None) -> CanonicalCollection:
+        return self.collect("iprcfa", max_records=max_records, max_pages=max_pages)
 
-    def collect_bhm(self, *, max_records: int | None = None) -> CanonicalCollection:
-        return self.collect("ipbhm", max_records=max_records)
+    def collect_bhm(self, *, max_records: int | None = None, max_pages: int | None = None) -> CanonicalCollection:
+        return self.collect("ipbhm", max_records=max_records, max_pages=max_pages)
 
     def collect_overhauls(
         self,
         workorder_records: list[Mapping[str, Any]] | None = None,
         *,
         max_records: int | None = None,
+        max_pages: int | None = None,
     ) -> CanonicalCollection:
         index = {
             str(record.get("provenance", {}).get("source_record_id")): record
             for record in (workorder_records or [])
             if record.get("provenance", {}).get("source_record_id")
         }
-        return self.collect("ip_dom_oh", workorder_index=index, max_records=max_records)
+        return self.collect("ip_dom_oh", workorder_index=index, max_records=max_records, max_pages=max_pages)
 
     def collect_all(self) -> dict[str, CanonicalCollection]:
         workorders = self.collect_workorders()

@@ -278,6 +278,72 @@ def cmd_diagnose(args: argparse.Namespace) -> int:
     return exit_code
 
 
+def cmd_mart_load(args: argparse.Namespace) -> int:
+    """Run the explicit, bounded initial Reliability Mart profile."""
+    from src.adapters.maximo.auth import MaximoAuth
+    from src.adapters.maximo.oslc_client import OslcClient
+    from src.services.canonical import CanonicalCollector
+    from src.services.controlled_mart_load import (
+        CONTROLLED_REQUEST_BUDGET,
+        ControlledMartLoader,
+        resolve_profile,
+        resolve_source,
+        verify_mart_database,
+    )
+    from src.services.mart import MartWriter
+
+    try:
+        profile = resolve_profile(args.profile)
+        source = resolve_source(args.entity) if args.entity else None
+        config = MaximoConfig.from_environment()
+        db = get_database()
+        verify_mart_database(db, config)
+    except Exception as error:  # sanitized preflight failure
+        print(f"mart-load blocked: {type(error).__name__}")
+        return 2
+
+    auth = MaximoAuth(config)
+    client = OslcClient(config, auth, request_budget=CONTROLLED_REQUEST_BUDGET)
+    collector = CanonicalCollector(client, runtime_config=config)
+    loader = ControlledMartLoader(
+        collector,
+        MartWriter(db),
+        CollectorStore(db),
+        config,
+        profile=profile,
+    )
+    try:
+        result = loader.run(
+            dry_run=args.dry_run,
+            source=source,
+            source_cap_override=args.record_cap,
+        )
+    except Exception as error:  # sanitized argument/preflight failure
+        print(f"mart-load blocked: {type(error).__name__}")
+        return 2
+    for report in result.reports:
+        print(
+            f"{report.source}: read={report.source_records_read} "
+            f"emitted={report.canonical_records_emitted} "
+            f"skipped={report.records_skipped} "
+            f"inserted={report.inserted} updated={report.updated} "
+            f"unchanged={report.unchanged} pages={report.pages} "
+            f"completeness={report.completeness}"
+            + (f" failure={report.failure_class}" if report.failure_class else "")
+        )
+    telemetry = client.request_telemetry
+    print(
+        f"mart-load profile={profile.name} dry_run={args.dry_run} "
+        f"business_requests={telemetry['business_requests']} "
+        f"status_counts={telemetry['status_counts']} "
+        f"stopped={result.stopped}"
+    )
+    if result.stop_reason:
+        print(f"stop_reason={result.stop_reason}")
+    failed = any(report.completeness == "FAILED" for report in result.reports)
+    return 2 if result.stopped or failed else 0
+
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p = argparse.ArgumentParser(prog="mxcollector", description=__doc__)
     sub = p.add_subparsers(dest="command", required=True)
@@ -309,6 +375,15 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     diagnose_sub = diagnose.add_subparsers(dest="diagnose_target", required=True)
     diagnose_sub.add_parser("master-data", help="probe Persons, Items, and Labor scopes")
 
+    mart_load = sub.add_parser(
+        "mart-load",
+        help="run the bounded initial-controlled Reliability Mart load",
+    )
+    mart_load.add_argument("--profile", choices=("initial-controlled",), default="initial-controlled")
+    mart_load.add_argument("--dry-run", action="store_true", help="map and validate without Mart writes")
+    mart_load.add_argument("--entity", help="one allowlisted source alias for a controlled retry")
+    mart_load.add_argument("--record-cap", type=int, help="bounded source-record override for --entity")
+
     return p.parse_args(argv)
 
 
@@ -327,6 +402,8 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_serve(args)
     if args.command == "diagnose" and args.diagnose_target == "master-data":
         return cmd_diagnose(args)
+    if args.command == "mart-load":
+        return cmd_mart_load(args)
     return 1
 
 

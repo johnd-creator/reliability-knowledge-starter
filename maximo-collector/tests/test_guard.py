@@ -84,6 +84,24 @@ class ReadOnlyGuardTest(unittest.TestCase):
         client.get("/oslc/os/mxasset")
         self.assertEqual(calls[0][2]["headers"], {"Accept": "application/json"})
 
+    def test_business_request_budget_blocks_request_101(self):
+        class Session:
+            def request(self, method, url, **kwargs):
+                return SimpleNamespace(status_code=200, content=b"{}")
+
+        session = Session()
+        client = OslcClient(
+            self.config,
+            MaximoAuth(self.config, session=session),
+            session=session,
+            request_budget=1,
+        )
+        client.get("/oslc/os/mxasset")
+        with self.assertRaises(OslcError):
+            client.get("/oslc/os/mxasset")
+        self.assertEqual(client.request_telemetry["business_requests"], 1)
+        self.assertEqual(client.request_telemetry["status_counts"], {"200": 1})
+
     def test_auth_and_oslc_share_session(self):
         auth = MaximoAuth(self.config)
         client = OslcClient(self.config, auth)

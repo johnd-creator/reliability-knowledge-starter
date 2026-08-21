@@ -67,6 +67,10 @@ class OslcAuthExpiredError(OslcError):
     """Raised when the session expired mid-request (caller may re-login once)."""
 
 
+class OslcRequestBudgetExceeded(OslcError):
+    """Raised before sending a business request past the configured ceiling."""
+
+
 class OslcPaginationError(OslcError):
     """Base class for a traversal that cannot be proven complete."""
 
@@ -110,6 +114,7 @@ class OslcClient:
         config: MaximoConfig,
         auth: MaximoAuth | None = None,
         session: requests.Session | None = None,
+        request_budget: int | None = None,
     ):
         self._config = config
         if config.site_id != "BSR" or config.org_id != "IP":
@@ -124,6 +129,25 @@ class OslcClient:
         if self._auth.session is not self._session:
             raise OslcError("Maximo auth and OSLC client must share one HTTP session")
         self._last_request = 0.0
+        if request_budget is not None and request_budget < 1:
+            raise ValueError("request_budget must be at least 1")
+        self._request_budget = request_budget
+        self._business_request_count = 0
+        self._status_counts: dict[str, int] = {}
+        self._last_iteration_pages = 0
+
+    @property
+    def last_iteration_pages(self) -> int:
+        return self._last_iteration_pages
+
+    @property
+    def request_telemetry(self) -> dict[str, Any]:
+        """Return sanitized request metrics without URLs or response values."""
+        return {
+            "business_requests": self._business_request_count,
+            "status_counts": dict(self._status_counts),
+            "budget": self._request_budget,
+        }
 
     # -- low-level request ------------------------------------------------
     def request(self, method: str, path: str) -> requests.Response:
@@ -131,6 +155,10 @@ class OslcClient:
         method = method.upper()
         if method not in READ_ONLY_METHODS:
             raise OslcError(f"blocked non-read-only method for Maximo: {method}")
+        if self._request_budget is not None and self._business_request_count >= self._request_budget:
+            raise OslcRequestBudgetExceeded(
+                f"Maximo business request budget exhausted at {self._request_budget} requests"
+            )
         last_request = max(
             self._last_request,
             getattr(self._auth, "last_request_at", 0.0),
@@ -141,12 +169,15 @@ class OslcClient:
         url = path if path.startswith(("http://", "https://")) else self._config.base_url + path
         # Maximo can return the web login shell (HTTP 200) when content
         # negotiation is omitted. OSLC calls must explicitly request JSON.
+        self._business_request_count += 1
         resp = self._session.request(
             method,
             url,
             headers={"Accept": "application/json"},
             timeout=self._config.timeout_seconds,
         )
+        status = str(getattr(resp, "status_code", "unknown"))
+        self._status_counts[status] = self._status_counts.get(status, 0) + 1
         self._last_request = time.monotonic()
         if len(resp.content) > self._config.max_response_bytes:
             raise OslcError(
@@ -208,6 +239,7 @@ class OslcClient:
         retried_auth = False
         seen_page_fingerprints: set[str] = set()
         previous_page_ids: set[str] = set()
+        self._last_iteration_pages = 0
         while url:
             page_fingerprint = _page_fingerprint(url)
             if page_fingerprint in seen_page_fingerprints:
@@ -225,6 +257,7 @@ class OslcClient:
                 )
             seen_page_fingerprints.add(page_fingerprint)
             pages += 1
+            self._last_iteration_pages = pages
             self._auth.ensure_logged_in()
             resp = self.get(url)
             if MaximoAuth.looks_expired(resp):

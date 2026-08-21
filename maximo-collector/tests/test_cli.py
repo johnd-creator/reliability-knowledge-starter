@@ -6,7 +6,7 @@ import unittest
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from src.cli import _safe_error_metadata, cmd_diagnose, cmd_sync
+from src.cli import _safe_error_metadata, cmd_diagnose, cmd_sync, parse_args
 
 
 class DiagnoseSelectTest(unittest.TestCase):
@@ -68,6 +68,14 @@ class SafeErrorMetadataTest(unittest.TestCase):
         metadata = _safe_error_metadata(error)
         self.assertEqual(metadata["error_category"], "READ_TIMEOUT")
         self.assertNotIn("hidden", str(metadata))
+
+
+class ControlledLoadCliTest(unittest.TestCase):
+    def test_only_initial_controlled_profile_is_available(self):
+        args = parse_args(["mart-load", "--profile", "initial-controlled", "--dry-run"])
+        self.assertTrue(args.dry_run)
+        with self.assertRaises(SystemExit):
+            parse_args(["mart-load", "--unlimited"])
 
     def test_http_error_metadata_keeps_only_sanitized_fields(self):
         response = SimpleNamespace(

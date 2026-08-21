@@ -137,6 +137,22 @@ class CanonicalCollectorTest(unittest.TestCase):
         self.assertEqual(result.stats.source_records_read, 1)
         self.assertEqual(result.stats.canonical_records_emitted, 1)
         self.assertEqual(client.calls[0][1]["max_pages"], 1)
+        self.assertEqual(result.completeness, "CAPPED")
+
+    def test_explicit_max_pages_enables_bounded_multi_page_mode(self):
+        client = FakeCanonicalClient({"iprcfa": [RCFA, {**RCFA, "rcfaid": "<rcfa-id-2>"}]})
+        result = CanonicalCollector(client).collect_rcfa(max_records=3, max_pages=2)
+        self.assertEqual(result.stats.source_records_read, 2)
+        self.assertEqual(client.calls[0][1]["max_pages"], 2)
+        self.assertEqual(result.completeness, "EXHAUSTED")
+
+    def test_source_record_cap_is_not_emitted_record_cap(self):
+        rejected = {**ASSET, "assetid": "<asset-id-2>", "eq11": "OTHER"}
+        client = FakeCanonicalClient({"mxasset": [rejected, rejected, rejected, ASSET]})
+        result = CanonicalCollector(client).collect_assets(max_records=3, max_pages=2)
+        self.assertEqual(result.stats.source_records_read, 3)
+        self.assertEqual(result.stats.canonical_records_emitted, 0)
+        self.assertEqual(result.completeness, "CAPPED")
 
     def test_overhaul_resolution_uses_existing_records_without_extra_client_call(self):
         client = FakeCanonicalClient({"ip_dom_oh": [OVERHAUL]})
