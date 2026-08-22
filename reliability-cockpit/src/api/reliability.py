@@ -243,6 +243,59 @@ class DecisionOverviewView(BaseModel):
     integrity: IntegrityView
 
 
+class InvestigationScopeView(BaseModel):
+    site_code: Literal["BSR"]
+    organization_code: Literal["IP"]
+    registry_scope: str
+    date_basis: str
+    interpretation: Literal["ACTIVITY_NOT_FAILURE"]
+
+
+class InvestigationWindowView(BaseModel):
+    days: Literal[30, 90, 180]
+    start: datetime
+    as_of: datetime
+
+
+class InvestigationSummaryView(BaseModel):
+    registered_assets: int
+    maintenance_events: int
+    assets_with_activity: int
+    assets_with_2plus_events: int
+    assets_with_3plus_events: int
+    repeat_activity_events: int
+
+
+class InvestigationAssetView(BaseModel):
+    asset_ref: str
+    source_asset_number: str
+    description: str | None = None
+    event_count: int
+    repeat_activity_events: int
+    latest_activity: datetime | None = None
+    previous_activity: datetime | None = None
+    latest_gap_days: float | None = None
+    minimum_gap_days: float | None = None
+    latest_work_type: str | None = None
+    dominant_work_type: str | None = None
+
+
+class InvestigationEvidenceView(BaseModel):
+    repeat_activity: Literal["DERIVED_SAFE"]
+    work_type_source: str
+    activity_date: str
+    repeat_failure: Literal["BUSINESS_SEMANTICS_REQUIRED"]
+
+
+class MaintenanceInvestigationView(BaseModel):
+    scope: InvestigationScopeView
+    window: InvestigationWindowView
+    summary: InvestigationSummaryView
+    assets: list[InvestigationAssetView]
+    meta: PageMeta
+    evidence: InvestigationEvidenceView
+
+
 class ContextView(BaseModel):
     asset: AssetView
     maintenance: list[MaintenanceView]
@@ -377,6 +430,17 @@ def _decision_overview(raw: dict[str, object], window_days: int) -> DecisionOver
     )
 
 
+def _maintenance_investigation(raw: dict[str, object]) -> MaintenanceInvestigationView:
+    return MaintenanceInvestigationView(
+        scope=InvestigationScopeView(**raw["scope"]),
+        window=InvestigationWindowView(**raw["window"]),
+        summary=InvestigationSummaryView(**raw["summary"]),
+        assets=[InvestigationAssetView(**row) for row in raw["assets"]],
+        meta=PageMeta(**raw["meta"]),
+        evidence=InvestigationEvidenceView(**raw["evidence"]),
+    )
+
+
 @router.get("/assets", response_model=Page[AssetView], summary="List Reliability Mart assets")
 def list_assets(
     status: str | None = None,
@@ -406,6 +470,22 @@ def decision_overview(
     if window_days not in {7, 30, 90}:
         raise HTTPException(status_code=422, detail="window_days must be one of 7, 30, or 90")
     return _decision_overview(service.repository.decision_overview(window_days=window_days), window_days)
+
+
+@router.get("/maintenance-investigation", response_model=MaintenanceInvestigationView, summary="Bounded repeat maintenance activity investigation")
+def maintenance_investigation(
+    window_days: int = Query(90, enum=[30, 90, 180]),
+    min_events: int = Query(2, enum=[2, 3, 5]),
+    offset: int = Query(0, ge=0),
+    limit: int = Query(25, ge=1, le=100),
+    sort: Literal["event_count_desc", "latest_activity_desc", "latest_gap_asc"] = "event_count_desc",
+    service: ReliabilityQueryService = Depends(_service),
+) -> MaintenanceInvestigationView:
+    if window_days not in {30, 90, 180}:
+        raise HTTPException(status_code=422, detail="window_days must be one of 30, 90, or 180")
+    if min_events not in {2, 3, 5}:
+        raise HTTPException(status_code=422, detail="min_events must be one of 2, 3, or 5")
+    return _maintenance_investigation(service.repository.maintenance_investigation(window_days=window_days, min_events=min_events, offset=offset, limit=limit, sort=sort))
 
 
 @router.get("/assets/{canonical_id}", response_model=AssetView)

@@ -50,9 +50,13 @@ management-facing identity. The canonical `asset_ref` remains an internal link
 target. Rows are deterministically ordered by event count, latest activity,
 source Asset number, and canonical reference.
 
-Status values are preserved, including `CAN`. Null status or work type is
-shown as `UNKNOWN`; no status is filtered or mapped to Open, Closed, Backlog,
-or Overdue.
+Status values are preserved, including `CAN`. Null status is shown as
+`UNKNOWN`; no status is filtered or mapped to Open, Closed, Backlog, or
+Overdue. Work Type distribution reads the quarantined source value at
+`sources.maximo.worktype`, falls back to canonical `event_type` only when the
+source value is absent, and uses `UNKNOWN` only when both are absent. The
+canonical enum is conservative, so it does not represent every source Work
+Type.
 
 ## Data maturity
 
@@ -87,8 +91,9 @@ RBAC, or new KPI storage table in this task.
 
 Choose the next surface from verified evidence and business semantics:
 
-1. Maintenance Investigation / Repeat Activity analysis after repeat identity
-   and failure semantics are verified.
+1. Maintenance Investigation / Repeat Activity analysis is now available as a
+   factual, bounded investigation surface; Repeat Failure remains gated until
+   failure identity and business semantics are verified.
 2. Asset Health business-semantics verification before any condition metric.
 3. FMEA coverage and workspace maturity after population completeness is
    established.

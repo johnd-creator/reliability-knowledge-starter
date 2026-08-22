@@ -1,6 +1,6 @@
 const baseUrl = (process.env.NADI_WEB_BASE_URL || "http://127.0.0.1:3000").replace(/\/$/, "");
-const routes = ["/", "/assets", "/maintenance", "/fmea", "/rcfa", "/asset-health", "/overhauls", "/data-quality"];
-const navigationHrefs = routes;
+const routes = ["/", "/assets", "/maintenance", "/maintenance/investigation", "/fmea", "/rcfa", "/asset-health", "/overhauls", "/data-quality"];
+const navigationHrefs = ["/", "/assets", "/maintenance", "/fmea", "/rcfa", "/asset-health", "/overhauls", "/data-quality"];
 
 const failures = [];
 for (const route of routes) {

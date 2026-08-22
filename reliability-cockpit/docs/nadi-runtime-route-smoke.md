@@ -26,9 +26,11 @@ No source collector or corporate endpoint is required for route serving.
 ## Route smoke
 
 The lightweight smoke command checks direct local responses for `/`, `/assets`,
-`/maintenance`, `/fmea`, `/rcfa`, `/asset-health`, `/overhauls`, and
-`/data-quality`. It also checks that the root response contains all expected
-sidebar hrefs:
+`/maintenance`, `/maintenance/investigation`, `/fmea`, `/rcfa`,
+`/asset-health`, `/overhauls`, and `/data-quality`. The investigation route is
+deliberately not a new sidebar entry; it is reached from Maintenance and the
+overview concentration surface. The smoke also checks that the root response
+contains all expected sidebar hrefs:
 
 ```bash
 npm run smoke:routes
@@ -39,7 +41,7 @@ does not download Mart rows or write test artifacts.
 
 ## Regression result
 
-All eight routes must return HTTP 200 after a clean development start or a
+All nine routes must return HTTP 200 after a clean development start or a
 successful production build. Existing pages retain their shell and bounded
 `ErrorState` when a read API is unavailable; API failure must not remove route
 navigation.

@@ -121,6 +121,39 @@ export interface DecisionOverviewView {
   integrity: IntegrityView;
 }
 
+export interface MaintenanceInvestigationView {
+  scope: { site_code: "BSR"; organization_code: "IP"; registry_scope: string; date_basis: string; interpretation: "ACTIVITY_NOT_FAILURE" };
+  window: { days: 30 | 90 | 180; start: string; as_of: string };
+  summary: {
+    registered_assets: number;
+    maintenance_events: number;
+    assets_with_activity: number;
+    assets_with_2plus_events: number;
+    assets_with_3plus_events: number;
+    repeat_activity_events: number;
+  };
+  assets: {
+    asset_ref: string;
+    source_asset_number: string;
+    description: string | null;
+    event_count: number;
+    repeat_activity_events: number;
+    latest_activity: string | null;
+    previous_activity: string | null;
+    latest_gap_days: number | null;
+    minimum_gap_days: number | null;
+    latest_work_type: string | null;
+    dominant_work_type: string | null;
+  }[];
+  meta: PageMeta;
+  evidence: {
+    repeat_activity: "DERIVED_SAFE";
+    work_type_source: string;
+    activity_date: string;
+    repeat_failure: "BUSINESS_SEMANTICS_REQUIRED";
+  };
+}
+
 export interface AssetFilters { status?: string; unit?: string; asset_type?: string; offset?: number; limit?: number; sort?: "updated_desc" | "updated_asc" | "status"; }
 export interface MaintenanceFilters { asset_ref?: string; work_order_id?: string; status?: string; event_type?: string; date_from?: string; date_to?: string; offset?: number; limit?: number; sort?: "date_desc" | "date_asc" | "status"; }
 export interface FmeaFilters { asset_ref?: string; lifecycle_status?: string; source_number?: string; updated_from?: string; updated_to?: string; offset?: number; limit?: number; sort?: "updated_desc" | "updated_asc" | "status"; }
@@ -163,6 +196,7 @@ export const cockpitApi = {
 
 export const reliabilityApi = {
   decisionOverview: (windowDays: 7 | 30 | 90 = 30) => get<DecisionOverviewView>(`/v1/reliability/decision-overview?window_days=${windowDays}`),
+  maintenanceInvestigation: (windowDays: 30 | 90 | 180 = 90, minEvents: 2 | 3 | 5 = 2, offset = 0, limit = 25, sort: "event_count_desc" | "latest_activity_desc" | "latest_gap_asc" = "event_count_desc") => get<MaintenanceInvestigationView>(`/v1/reliability/maintenance-investigation${query({ window_days: windowDays, min_events: minEvents, offset, limit, sort })}`),
   assets: (filters: AssetFilters = {}) => get<Page<AssetView>>(`/v1/reliability/assets${query(filters)}`),
   registry: () => get<RegistryView>("/v1/reliability/registry"),
   asset: (canonicalId: string) => get<AssetView>(`/v1/reliability/assets/${encodeURIComponent(canonicalId)}`),

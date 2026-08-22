@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from typing import Any, TypeVar
 
-from sqlalchemy import Select, asc, desc, func, select
+from sqlalchemy import Select, asc, case, desc, func, select
 
 from src.repositories.mart_models import (
     AssetHealthAssessmentMart,
@@ -22,6 +22,12 @@ from src.repositories.mart_database import MartDatabase
 T = TypeVar("T")
 SITE_CODE = "BSR"
 ORGANIZATION_CODE = "IP"
+
+
+def _raw_work_type(column: Any) -> Any:
+    """Read the quarantined source Work Type on PostgreSQL and SQLite."""
+
+    return func.nullif(func.trim(column["maximo"]["worktype"].as_string()), "")
 
 
 @dataclass(frozen=True)
@@ -64,6 +70,11 @@ class MartQueryRepository:
     @staticmethod
     def _sort(statement: Select[Any], column: Any, reverse: bool = True) -> Select[Any]:
         return statement.order_by(desc(column) if reverse else asc(column), asc(column))
+
+    def _gap_days(self, later: Any, earlier: Any) -> Any:
+        if self.database.engine.dialect.name == "sqlite":
+            return func.julianday(later) - func.julianday(earlier)
+        return func.extract("epoch", later - earlier) / 86400.0
 
     def list_assets(
         self,
@@ -445,7 +456,9 @@ class MartQueryRepository:
             func.count(func.distinct(maintenance_scope.c.equipment_id)).filter(scoped_date >= current - timedelta(days=90), scoped_date <= current).label("assets_active_90d"),
         )
         status_value = func.coalesce(maintenance_scope.c.status, "UNKNOWN")
-        work_type_value = func.coalesce(maintenance_scope.c.event_type, "UNKNOWN")
+        raw_work_type = _raw_work_type(maintenance_scope.c.sources)
+        canonical_work_type = func.nullif(func.trim(maintenance_scope.c.event_type), "")
+        work_type_value = func.coalesce(raw_work_type, canonical_work_type, "UNKNOWN")
         window_statement = select(
             status_value.label("value"),
             func.count(maintenance_scope.c.canonical_id).label("count"),
@@ -562,4 +575,176 @@ class MartQueryRepository:
             "integrity": integrity,
             "window_start": window_start,
             "as_of": current,
+        }
+
+    def maintenance_investigation(
+        self,
+        *,
+        window_days: int = 90,
+        min_events: int = 2,
+        offset: int = 0,
+        limit: int = 25,
+        sort: str = "event_count_desc",
+        as_of: datetime | None = None,
+    ) -> dict[str, object]:
+        """Return bounded Registry-scoped repeat-activity aggregates.
+
+        Repeat activity is deliberately an event-count description.  The
+        query uses SQL window functions for chronology and never loads raw
+        maintenance rows into Python.
+        """
+        if window_days not in {30, 90, 180}:
+            raise ValueError("window_days must be one of 30, 90, or 180")
+        if min_events not in {2, 3, 5}:
+            raise ValueError("min_events must be one of 2, 3, or 5")
+        if sort not in {"event_count_desc", "latest_activity_desc", "latest_gap_asc"}:
+            raise ValueError("unsupported maintenance investigation sort")
+
+        current = as_of or datetime.now(timezone.utc)
+        if current.tzinfo is None:
+            current = current.replace(tzinfo=timezone.utc)
+        window_start = current - timedelta(days=window_days)
+        activity_date = func.coalesce(MaintenanceEventMart.actual_start, MaintenanceEventMart.source_changed_at)
+        raw_work_type = _raw_work_type(MaintenanceEventMart.sources)
+        canonical_work_type = func.nullif(func.trim(MaintenanceEventMart.event_type), "")
+        work_type = func.coalesce(raw_work_type, canonical_work_type, "UNKNOWN")
+
+        scoped = (
+            select(
+                MaintenanceEventMart.equipment_id.label("asset_ref"),
+                ReliabilityAssetRegistryMart.source_asset_number.label("source_asset_number"),
+                MaintenanceEventMart.canonical_id.label("event_ref"),
+                activity_date.label("activity_date"),
+                work_type.label("work_type"),
+            )
+            .join(ReliabilityAssetRegistryMart, ReliabilityAssetRegistryMart.asset_ref == MaintenanceEventMart.equipment_id)
+            .where(
+                MaintenanceEventMart.site_code == SITE_CODE,
+                MaintenanceEventMart.organization_code == ORGANIZATION_CODE,
+                ReliabilityAssetRegistryMart.site_code == SITE_CODE,
+                ReliabilityAssetRegistryMart.organization_code == ORGANIZATION_CODE,
+                activity_date >= window_start,
+                activity_date <= current,
+                activity_date.is_not(None),
+            )
+            .subquery()
+        )
+        latest_rank = func.row_number().over(
+            partition_by=scoped.c.asset_ref,
+            order_by=(desc(scoped.c.activity_date), desc(scoped.c.event_ref)),
+        ).label("latest_rank")
+        prior_activity = func.lag(scoped.c.activity_date).over(
+            partition_by=scoped.c.asset_ref,
+            order_by=(asc(scoped.c.activity_date), asc(scoped.c.event_ref)),
+        ).label("prior_activity")
+        chronology = select(scoped, latest_rank, prior_activity).subquery()
+
+        event_count = func.count(chronology.c.event_ref).label("event_count")
+        latest_activity = func.max(chronology.c.activity_date).label("latest_activity")
+        previous_activity = func.max(case((chronology.c.latest_rank == 2, chronology.c.activity_date), else_=None)).label("previous_activity")
+        minimum_gap = func.min(self._gap_days(chronology.c.activity_date, chronology.c.prior_activity)).label("minimum_gap_days")
+        latest_work_type = func.max(case((chronology.c.latest_rank == 1, chronology.c.work_type), else_=None)).label("latest_work_type")
+        aggregate = (
+            select(
+                chronology.c.asset_ref,
+                event_count,
+                latest_activity,
+                previous_activity,
+                minimum_gap,
+                latest_work_type,
+            )
+            .group_by(chronology.c.asset_ref)
+            .subquery()
+        )
+
+        type_count = func.count(chronology.c.event_ref).label("type_event_count")
+        type_counts = select(chronology.c.asset_ref, chronology.c.work_type, type_count).group_by(chronology.c.asset_ref, chronology.c.work_type).subquery()
+        type_rank = func.row_number().over(
+            partition_by=type_counts.c.asset_ref,
+            order_by=(desc(type_counts.c.type_event_count), asc(type_counts.c.work_type)),
+        ).label("type_rank")
+        dominant_type = select(type_counts, type_rank).subquery()
+
+        asset_statement = (
+            select(
+                aggregate.c.asset_ref,
+                ReliabilityAssetRegistryMart.source_asset_number,
+                AssetMasterMart.description,
+                aggregate.c.event_count,
+                aggregate.c.latest_activity,
+                aggregate.c.previous_activity,
+                self._gap_days(aggregate.c.latest_activity, aggregate.c.previous_activity).label("latest_gap_days"),
+                aggregate.c.minimum_gap_days,
+                aggregate.c.latest_work_type,
+                dominant_type.c.work_type.label("dominant_work_type"),
+            )
+            .select_from(aggregate)
+            .join(ReliabilityAssetRegistryMart, ReliabilityAssetRegistryMart.asset_ref == aggregate.c.asset_ref)
+            .outerjoin(AssetMasterMart, AssetMasterMart.canonical_id == aggregate.c.asset_ref)
+            .outerjoin(dominant_type, (dominant_type.c.asset_ref == aggregate.c.asset_ref) & (dominant_type.c.type_rank == 1))
+            .where(
+                ReliabilityAssetRegistryMart.site_code == SITE_CODE,
+                ReliabilityAssetRegistryMart.organization_code == ORGANIZATION_CODE,
+                aggregate.c.event_count >= min_events,
+            )
+        )
+        tie_breakers = (asc(ReliabilityAssetRegistryMart.source_asset_number), asc(aggregate.c.asset_ref))
+        if sort == "latest_activity_desc":
+            asset_statement = asset_statement.order_by(desc(aggregate.c.latest_activity), *tie_breakers)
+        elif sort == "latest_gap_asc":
+            asset_statement = asset_statement.order_by(self._gap_days(aggregate.c.latest_activity, aggregate.c.previous_activity).nulls_last(), *tie_breakers)
+        else:
+            asset_statement = asset_statement.order_by(desc(aggregate.c.event_count), *tie_breakers)
+
+        summary_statement = select(
+            select(func.count(ReliabilityAssetRegistryMart.asset_ref)).where(
+                ReliabilityAssetRegistryMart.site_code == SITE_CODE,
+                ReliabilityAssetRegistryMart.organization_code == ORGANIZATION_CODE,
+            ).scalar_subquery().label("registered_assets"),
+            select(func.count()).select_from(scoped).scalar_subquery().label("maintenance_events"),
+            select(func.count()).select_from(aggregate).scalar_subquery().label("assets_with_activity"),
+            select(func.count()).select_from(aggregate).where(aggregate.c.event_count >= 2).scalar_subquery().label("assets_with_2plus_events"),
+            select(func.count()).select_from(aggregate).where(aggregate.c.event_count >= 3).scalar_subquery().label("assets_with_3plus_events"),
+            select(func.coalesce(func.sum(case((aggregate.c.event_count > 1, aggregate.c.event_count - 1), else_=0)), 0)).select_from(aggregate).scalar_subquery().label("repeat_activity_events"),
+        )
+
+        with self.database.read_session() as session:
+            summary = session.execute(summary_statement).one()._mapping
+            total = int(session.scalar(select(func.count()).select_from(asset_statement.order_by(None).subquery())) or 0)
+            rows = session.execute(asset_statement.offset(offset).limit(limit)).all()
+
+        assets = [
+            {
+                "asset_ref": row.asset_ref,
+                "source_asset_number": row.source_asset_number,
+                "description": row.description,
+                "event_count": int(row.event_count or 0),
+                "repeat_activity_events": max(int(row.event_count or 0) - 1, 0),
+                "latest_activity": row.latest_activity,
+                "previous_activity": row.previous_activity,
+                "latest_gap_days": float(row.latest_gap_days) if row.latest_gap_days is not None else None,
+                "minimum_gap_days": float(row.minimum_gap_days) if row.minimum_gap_days is not None else None,
+                "latest_work_type": row.latest_work_type,
+                "dominant_work_type": row.dominant_work_type,
+            }
+            for row in rows
+        ]
+        return {
+            "scope": {
+                "site_code": SITE_CODE,
+                "organization_code": ORGANIZATION_CODE,
+                "registry_scope": "reliability_asset_registry",
+                "date_basis": "COALESCE(actual_start, source_changed_at)",
+                "interpretation": "ACTIVITY_NOT_FAILURE",
+            },
+            "window": {"days": window_days, "start": window_start, "as_of": current},
+            "summary": {key: int(summary[key] or 0) for key in summary.keys()},
+            "assets": assets,
+            "meta": {"total": total, "offset": offset, "limit": limit, "has_more": offset + len(assets) < total},
+            "evidence": {
+                "repeat_activity": "DERIVED_SAFE",
+                "work_type_source": "sources.maximo.worktype → event_type → UNKNOWN",
+                "activity_date": "Activity date uses actual start when available, otherwise source change time.",
+                "repeat_failure": "BUSINESS_SEMANTICS_REQUIRED",
+            },
         }

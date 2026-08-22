@@ -31,7 +31,7 @@ from normal Asset and Maintenance metrics.
 | Assets with Maintenance Activity — 30 days | `DERIVED_SAFE` | `COUNT(DISTINCT equipment_id)` in the Registry-scoped 30-day event set | Registered Asset references only; not Asset coverage or health. |
 | Assets with Maintenance Activity — 90 days | `DERIVED_SAFE` | `COUNT(DISTINCT equipment_id)` in the Registry-scoped 90-day event set | Registered Asset references only; not Asset coverage or health. |
 | Maintenance status distribution | `DERIVED_SAFE` | Count grouped by source `status`, with null shown as `UNKNOWN` | Selected 7/30/90-day window; values are preserved exactly, including `CAN`. No Open/Closed/Backlog mapping. |
-| Maintenance work-type distribution | `DERIVED_SAFE` | Count grouped by canonical `event_type`, which preserves source `worktype`; null shown as `UNKNOWN` | Selected bounded window; no normalization beyond the verified source mapping. |
+| Maintenance work-type distribution | `DERIVED_SAFE` | Count grouped by quarantined source `sources.maximo.worktype`; fall back to canonical `event_type`, then `UNKNOWN` only when both are absent | Selected bounded window; canonical `event_type` is conservative and does not represent every source Work Type. Raw values such as `PDM`, `CD`, and `OH` remain source values. |
 | Assets with highest Maintenance Activity | `DERIVED_SAFE` | Group Registry-scoped events by registered Asset and order by count descending, latest activity descending, then stable Asset identifiers | Selected bounded window; “high activity” is an investigation signal, not a bad-actor, risk, or condition ranking. |
 | Weekly Maintenance Activity Trend | `DERIVED_SAFE` | Twelve backend aggregate weekly counts of Registry-scoped events | Weekly buckets use the same activity date basis; no client-side event download. |
 | FMEA records available | `VERIFIED` | Count of current scoped `fmea_assessment` rows | Current controlled Mart population; not full FMEA completion. |
@@ -42,6 +42,23 @@ from normal Asset and Maintenance metrics.
 | Overhaul records available | `VERIFIED` | Count of current scoped `overhaul_event` rows | Global factual count; null/unresolved Asset refs remain unresolved. |
 | Relationship integrity | `VERIFIED` | Existing Mart relationship totals and resolved/unresolved counts | Factual relationship checks; not a health score. |
 | Registry completeness | `VERIFIED` | Registry rows resolved to `asset_master` versus total Registry rows | Relationship integrity for the current snapshot; not historical completeness. |
+
+## Maintenance Investigation metrics
+
+The investigation surface uses the same Registry join and factual activity date
+as the Executive Overview. Its bounded windows are 30, 90, and 180 days; the
+default is 90 days. Results are aggregated in SQL and paginated before they
+reach the browser.
+
+| Candidate | Class | Definition / formula | Boundary |
+| --- | --- | --- | --- |
+| Assets with 2+ Activity | `DERIVED_SAFE` | Registered Assets with at least two Maintenance Events in the selected window | Event repetition is an activity observation, not repeat failure, condition, or risk. |
+| Assets with 3+ Activity | `DERIVED_SAFE` | Registered Assets with at least three Maintenance Events in the selected window | Same boundary; the threshold is an allowlisted investigation filter. |
+| Repeat Activity Events | `DERIVED_SAFE` | `MAX(event_count - 1, 0)` per Asset, summed over the selected window | Events beyond the first observed event; no failure identity is inferred. |
+| Maintenance Event count per Asset | `DERIVED_SAFE` | Count of Registry-scoped events grouped by registered Asset | Bounded selected window; technical non-Registry rows are excluded. |
+| Consecutive Activity Gap | `DERIVED_SAFE` | Descriptive interval in days between consecutive activity dates; latest and minimum gaps are exposed | Uses `COALESCE(actual_start, source_changed_at)` and is not a rapid-failure or repair-duration measure. |
+| Same Work-Type Activity | `DERIVED_SAFE` | Raw source Work Type counts per Asset, with latest and dominant Work Type | Repeated `PM`, `CM`, or another source Work Type does not establish failure. |
+| Repeat Failure | `BUSINESS_SEMANTICS_REQUIRED` | Not implemented | Requires verified failure identity, failure-code meaning, qualifying Work Types/statuses, occurrence and repair semantics, interval rules, parent/child treatment, and business-owner validation. Current Mart failure-code coverage is unavailable. |
 
 ## Evaluated but not exposed as decision KPIs
 
@@ -56,7 +73,7 @@ from normal Asset and Maintenance metrics.
 | Bad Actor ranking | `DEFERRED` | Activity concentration is available only as an investigation signal; no bad-actor rule is verified. |
 | Critical Asset count | `BUSINESS_SEMANTICS_REQUIRED` | Criticality field and management threshold semantics require verification. |
 | Backlog | `BUSINESS_SEMANTICS_REQUIRED` | Source status semantics are not verified for Open/Closed/Overdue/Backlog mapping. |
-| Repeat Failure | `DATA_NOT_AVAILABLE` | Requires verified failure identity and repeat window rules. |
+| Repeat Failure | `BUSINESS_SEMANTICS_REQUIRED` | Collector failure codes exist locally, but are not promoted into the Mart and their business meaning is unverified; a failure identity and governed repeat rule are still required. |
 | PdM alerts | `DATA_NOT_AVAILABLE` | PI/DCS signals are not part of the current NADI decision model. |
 | Recommendations | `DEFERRED` | No verified action rules or governance; no Action Board is generated here. |
 

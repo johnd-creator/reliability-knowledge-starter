@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import unittest
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from unittest.mock import patch
 
 from fastapi import HTTPException
@@ -237,6 +237,165 @@ class ReliabilityMartApiTest(unittest.TestCase):
         self.assertEqual(parameter["schema"]["enum"], [7, 30, 90])
 
     def test_decision_overview_returns_503_when_mart_is_unavailable(self):
+        with patch("src.api.reliability.get_mart_database", side_effect=reliability_api.MartDatabaseConfigError("offline")):
+            with self.assertRaises(HTTPException) as error:
+                reliability_api._db()
+        self.assertEqual(error.exception.status_code, 503)
+
+
+class MaintenanceInvestigationFixtureTest(unittest.TestCase):
+    """Synthetic repeat-activity evidence for the SQL aggregation boundary."""
+
+    A = "asset:MAXIMO:MXASSET:BSR:IP:INV-A"
+    B = "asset:MAXIMO:MXASSET:BSR:IP:INV-B"
+    C = "asset:MAXIMO:MXASSET:BSR:IP:INV-C"
+    TECHNICAL = "asset:MAXIMO:MXASSET:BSR:IP:INV-TECHNICAL"
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.database = MartDatabase(MartDbConfig(dsn="sqlite+pysqlite:///:memory:"))
+        MartBase.metadata.create_all(cls.database.engine)
+        def asset(ref: str, number: str) -> AssetMasterMart:
+            return AssetMasterMart(
+                **_common(ref, "MXASSET"),
+                source_asset_number=number,
+                description=f"Synthetic {number}",
+                status="OPERATING",
+                asset_type="PUMP",
+                unit="UNIT-A",
+                source_updated_at=NOW,
+            )
+
+        def registry(ref: str, number: str) -> ReliabilityAssetRegistryMart:
+            return ReliabilityAssetRegistryMart(
+                asset_ref=ref,
+                source_asset_number=number,
+                site_code="BSR",
+                organization_code="IP",
+                registry_source="SYNTHETIC",
+                snapshot_sha256="b" * 64,
+                snapshot_row_count=3,
+                snapshot_imported_at=NOW,
+            )
+
+        def event(
+            number: int,
+            ref: str,
+            days_ago: int | None,
+            *,
+            raw_work_type: str | None,
+            event_type: str | None,
+            actual_start: datetime | None = None,
+            source_changed_at: datetime | None = None,
+        ) -> MaintenanceEventMart:
+            sources = {"maximo": {"source_object": "MXWODETAIL"}}
+            if raw_work_type is not None:
+                sources["maximo"]["worktype"] = raw_work_type
+            activity = NOW - timedelta(days=days_ago) if days_ago is not None else None
+            return MaintenanceEventMart(
+                **(_common(f"maintenance:INV-{number}", "MXWODETAIL") | {"sources": sources}),
+                id=f"INV-{number}",
+                equipment_id=ref,
+                work_order_id=f"WO-INV-{number}",
+                event_type=event_type,
+                status="CAN" if number == 6 else "CLOSE",
+                actual_start=actual_start if actual_start is not None else activity,
+                actual_finish=None,
+                source_changed_at=source_changed_at if source_changed_at is not None else activity,
+            )
+
+        with Session(cls.database.engine) as session:
+            session.add_all([asset(cls.A, "INV-A"), asset(cls.B, "INV-B"), asset(cls.C, "INV-C"), asset(cls.TECHNICAL, "INV-TECHNICAL")])
+            session.add_all([registry(cls.A, "INV-A"), registry(cls.B, "INV-B"), registry(cls.C, "INV-C")])
+            session.add_all([
+                event(1, cls.A, 5, raw_work_type="PM", event_type="PM"),
+                event(2, cls.A, 10, raw_work_type="PDM", event_type=None),
+                event(3, cls.A, 20, raw_work_type="PDM", event_type=None),
+                event(4, cls.A, 30, raw_work_type="CD", event_type=None),
+                event(5, cls.A, 40, raw_work_type=None, event_type=None),
+                event(6, cls.B, 15, raw_work_type="CM", event_type="CM"),
+                event(7, cls.B, 25, raw_work_type="CM", event_type="CM"),
+                event(8, cls.C, 100, raw_work_type="PM", event_type="PM", actual_start=NOW - timedelta(days=15), source_changed_at=NOW - timedelta(days=100)),
+                event(9, cls.TECHNICAL, 5, raw_work_type="PM", event_type="PM"),
+                event(10, cls.A, None, raw_work_type="PM", event_type="PM", actual_start=None, source_changed_at=None),
+            ])
+            session.commit()
+        cls.repository = MartQueryRepository(cls.database)
+
+    def test_repeat_activity_counts_and_registry_scope(self):
+        result = self.repository.maintenance_investigation(window_days=90, min_events=2, as_of=NOW)
+        self.assertEqual(result["summary"], {
+            "registered_assets": 3,
+            "maintenance_events": 8,
+            "assets_with_activity": 3,
+            "assets_with_2plus_events": 2,
+            "assets_with_3plus_events": 1,
+            "repeat_activity_events": 5,
+        })
+        self.assertEqual([row["source_asset_number"] for row in result["assets"]], ["INV-A", "INV-B"])
+        self.assertEqual(result["assets"][0]["event_count"], 5)
+        self.assertEqual(result["assets"][0]["repeat_activity_events"], 4)
+        self.assertEqual(result["assets"][1]["event_count"], 2)
+        self.assertEqual(result["assets"][1]["repeat_activity_events"], 1)
+
+    def test_activity_date_preference_gaps_and_work_types(self):
+        result = self.repository.maintenance_investigation(window_days=180, min_events=2, as_of=NOW)
+        first = result["assets"][0]
+        self.assertEqual(first["latest_work_type"], "PM")
+        self.assertEqual(first["dominant_work_type"], "PDM")
+        self.assertAlmostEqual(first["latest_gap_days"], 5.0)
+        self.assertAlmostEqual(first["minimum_gap_days"], 5.0)
+
+        thirty_day = self.repository.maintenance_investigation(window_days=30, min_events=2, as_of=NOW)
+        self.assertEqual(thirty_day["summary"]["maintenance_events"], 7)
+        self.assertEqual(thirty_day["summary"]["assets_with_activity"], 3)
+
+        overview = self.repository.decision_overview(window_days=90, as_of=NOW)
+        self.assertEqual({row["value"] for row in overview["work_type_distribution"]}, {"PM", "PDM", "CD", "CM", "UNKNOWN"})
+        self.assertEqual(sum(row["count"] for row in overview["work_type_distribution"]), 8)
+        self.assertIn({"value": "CAN", "count": 1}, overview["status_distribution"])
+
+    def test_allowlisted_thresholds_pagination_and_sort(self):
+        result = self.repository.maintenance_investigation(window_days=30, min_events=3, offset=0, limit=1, sort="latest_gap_asc", as_of=NOW)
+        self.assertEqual(result["meta"], {"total": 1, "offset": 0, "limit": 1, "has_more": False})
+        self.assertEqual(result["assets"][0]["source_asset_number"], "INV-A")
+        with self.assertRaises(ValueError):
+            self.repository.maintenance_investigation(window_days=7, as_of=NOW)
+        with self.assertRaises(ValueError):
+            self.repository.maintenance_investigation(min_events=4, as_of=NOW)
+
+
+class MaintenanceInvestigationApiTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        if not hasattr(MaintenanceInvestigationFixtureTest, "database"):
+            MaintenanceInvestigationFixtureTest.setUpClass()
+        cls.database = MaintenanceInvestigationFixtureTest.database
+        cls.service = ReliabilityQueryService(MartQueryRepository(cls.database))
+
+    def test_api_default_and_allowlisted_windows(self):
+        class FixedDateTime(datetime):
+            @classmethod
+            def now(cls, tz=None):
+                return NOW
+
+        with patch("src.repositories.mart_reader.datetime", FixedDateTime):
+            response = reliability_api.maintenance_investigation(window_days=90, min_events=2, offset=0, limit=25, sort="event_count_desc", service=self.service)
+        self.assertEqual(response.window.days, 90)
+        self.assertEqual(response.summary.repeat_activity_events, 5)
+        self.assertEqual(response.scope.interpretation, "ACTIVITY_NOT_FAILURE")
+        for days in (30, 90, 180):
+            with patch("src.repositories.mart_reader.datetime", FixedDateTime):
+                response = reliability_api.maintenance_investigation(window_days=days, min_events=2, offset=0, limit=25, sort="event_count_desc", service=self.service)
+            self.assertEqual(response.window.days, days)
+
+    def test_api_validation_and_503_boundary(self):
+        with self.assertRaises(HTTPException) as error:
+            reliability_api.maintenance_investigation(window_days=7, service=self.service)
+        self.assertEqual(error.exception.status_code, 422)
+        with self.assertRaises(HTTPException) as error:
+            reliability_api.maintenance_investigation(window_days=90, min_events=4, offset=0, limit=25, sort="event_count_desc", service=self.service)
+        self.assertEqual(error.exception.status_code, 422)
         with patch("src.api.reliability.get_mart_database", side_effect=reliability_api.MartDatabaseConfigError("offline")):
             with self.assertRaises(HTTPException) as error:
                 reliability_api._db()
