@@ -12,6 +12,7 @@ for (const route of routes) {
     for (const href of navigationHrefs) {
       if (!body.includes(`href="${href}"`)) failures.push(`/: sidebar href missing: ${href}`);
     }
+    if (!body.includes("Data Trust")) failures.push("/: Data Trust navigation label missing");
   }
   console.log(`${response.ok ? "PASS" : "FAIL"} ${route} HTTP ${response.status}`);
 }

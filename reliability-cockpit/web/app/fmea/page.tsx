@@ -41,9 +41,9 @@ export default function FmeaPage() {
   }
 
   return <>
-    <PageHeader eyebrow="Controlled Mart population" title="FMEA" description="FMEA records available for Registered Reliability Assets. Item-level failure-mode details remain outside the current controlled dataset." actions={<span className="scope-chip">BSR / IP</span>} />
+    <PageHeader eyebrow="Controlled Mart population" title="FMEA" description="FMEA records available for Registered Reliability Assets. Item-level failure-mode details remain outside the current controlled population." actions={<span className="scope-chip">BSR / IP</span>} />
     <div className="scope-banner trust-strip"><DataMaturity state="CONTROLLED MART POPULATION" detail="Current FMEA records are a controlled Mart population." /><DataMaturity state="ASSET RELATIONSHIP VERIFIED" /><DataMaturity state="FMEA ITEM DETAILS DEFERRED" /><span className="muted-label">Registry-scoped normal view</span></div>
-    <SectionCard className="neutral-note"><strong>FMEA records are evidence. Failure-mode item details, severity, occurrence, detectability, and RPN are not available in the current controlled dataset.</strong></SectionCard>
+    <SectionCard className="neutral-note"><strong>FMEA records are evidence. Failure-mode item details, severity, occurrence, detectability, and RPN are not available in the current controlled population.</strong></SectionCard>
     {loading && <LoadingState label="Reading FMEA assessment aggregates…" />}
     {!loading && error && <ErrorState message={error} />}
     {!loading && !error && overview && page && <>

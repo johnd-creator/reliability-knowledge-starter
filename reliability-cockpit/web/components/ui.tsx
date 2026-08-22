@@ -14,7 +14,7 @@ const navigation = [
   { href: "/rcfa", label: "RCFA", icon: "⌁" },
   { href: "/asset-health", label: "Asset Health", icon: "◒" },
   { href: "/overhauls", label: "Overhaul", icon: "◫" },
-  { href: "/data-quality", label: "Data Quality", icon: "✓" },
+  { href: "/data-quality", label: "Data Trust", icon: "✓" },
 ];
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -53,7 +53,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       </aside>
       <div className="nadi-content">
         <header className="nadi-topbar">
-          <div><span className="topbar-kicker">NADI / RELIABILITY INFORMATION</span><span className="topbar-title">Asset reliability workspace</span></div>
+          <div><span className="topbar-kicker">NADI / RELIABILITY COCKPIT</span><span className="topbar-title">Asset reliability workspace</span></div>
           <div className="topbar-actions"><div className="topbar-status"><span className="pulse-dot" /> Mart read-only <span className="scope-chip">BSR / IP</span></div><button className="theme-toggle" type="button" onClick={toggleTheme} aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`} aria-pressed={theme === "dark"}>{theme === "light" ? "☾" : "☀"}<span>{theme === "light" ? "Dark" : "Light"}</span></button></div>
         </header>
         <main className="nadi-main">{children}</main>
@@ -74,9 +74,11 @@ export function DataMaturity({ state, detail }: { state: string; detail?: string
   return <span className="maturity-badge" title={detail}>{state}</span>;
 }
 
-export function StatusBadge({ value }: { value: string | null | undefined }) {
+export type StatusBadgeMode = "semantic" | "raw-neutral";
+
+export function StatusBadge({ value, mode = "raw-neutral" }: { value: string | null | undefined; mode?: StatusBadgeMode }) {
   const normalized = value?.toUpperCase() ?? "UNKNOWN";
-  const tone = normalized.includes("CLOSE") || normalized.includes("COMPLETE") || normalized === "ACTIVE" || normalized === "OPERATING" ? "positive" : normalized === "UNRESOLVED" ? "neutral" : "default";
+  const tone = mode === "semantic" && (normalized.includes("CLOSE") || normalized.includes("COMPLETE") || normalized === "ACTIVE" || normalized === "OPERATING") ? "positive" : "neutral";
   return <span className={`status-badge ${tone}`}>{value ?? "—"}</span>;
 }
 
@@ -88,18 +90,18 @@ export function LoadingState({ label = "Memuat data Reliability Mart…" }: { la
   return <div className="state-card loading-state"><span className="spinner" />{label}</div>;
 }
 
-export function EmptyState({ title = "Belum ada data pada dataset Reliability Mart saat ini.", detail }: { title?: string; detail?: string }) {
+export function EmptyState({ title = "Belum ada data Reliability Mart untuk tampilan ini.", detail }: { title?: string; detail?: string }) {
   return <div className="state-card empty-state"><span className="state-symbol">∅</span><strong>{title}</strong>{detail && <p>{detail}</p>}</div>;
 }
 
 export function ErrorState({ message = "Reliability Mart unavailable" }: { message?: string }) {
-  return <div className="state-card error-state"><span className="state-symbol">!</span><strong>{message}</strong><p>Data canonical belum dapat dibaca. Coba muat ulang beberapa saat lagi.</p></div>;
+  return <div className="state-card error-state"><span className="state-symbol">!</span><strong>{message}</strong><p>Data Reliability Mart belum dapat dibaca. Coba muat ulang beberapa saat lagi.</p></div>;
 }
 
 export function Pagination({ meta, onChange }: { meta: PageMeta; onChange: (offset: number) => void }) {
   const first = meta.total === 0 ? 0 : meta.offset + 1;
   const last = Math.min(meta.offset + meta.limit, meta.total);
-  return <div className="pagination"><span>{first}–{last} dari {meta.total.toLocaleString("id-ID")}</span><div><button className="icon-button" disabled={meta.offset === 0} onClick={() => onChange(Math.max(0, meta.offset - meta.limit))}>←</button><span className="page-number">{Math.floor(meta.offset / meta.limit) + 1}</span><button className="icon-button" disabled={!meta.has_more} onClick={() => onChange(meta.offset + meta.limit)}>→</button></div></div>;
+  return <div className="pagination"><span>{first}–{last} dari {meta.total.toLocaleString("id-ID")}</span><div><button className="icon-button" type="button" aria-label="Previous page" disabled={meta.offset === 0} onClick={() => onChange(Math.max(0, meta.offset - meta.limit))}>←</button><span className="page-number" aria-live="polite">{Math.floor(meta.offset / meta.limit) + 1}</span><button className="icon-button" type="button" aria-label="Next page" disabled={!meta.has_more} onClick={() => onChange(meta.offset + meta.limit)}>→</button></div></div>;
 }
 
 export function TableFrame({ children, minWidth = 900 }: { children: ReactNode; minWidth?: number }) {
