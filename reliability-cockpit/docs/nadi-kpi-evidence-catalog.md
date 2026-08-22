@@ -85,6 +85,26 @@ and are reported as relationship evidence, not silently reclassified.
 | RPN | `BUSINESS_SEMANTICS_REQUIRED` | Not implemented | Requires verified Severity, Occurrence, Detectability, scales, formula, thresholds, and governance. |
 | Risk classification | `BUSINESS_SEMANTICS_REQUIRED` | Not implemented | No verified risk taxonomy, inputs, or business thresholds. |
 
+## RCFA global analysis metrics
+
+The RCFA workspace is intentionally global. `rcfa_analysis` has no verified
+Asset, Work Order, or Failure Event relationship in Contract v1, so the normal
+surface does not show Asset statistics or links and does not connect RCFA to
+Maintenance, FMEA, or Repeat Activity.
+
+| Candidate | Class | Definition / formula | Boundary |
+| --- | --- | --- | --- |
+| RCFA records | `VERIFIED` | Count of current scoped `rcfa_analysis` rows | Controlled Mart population; not all RCFA history or compliance. |
+| RCFA Status Distribution | `DERIVED_SAFE` | Count grouped by raw `lifecycle_status`, with null shown as `UNKNOWN` | Source status only; no Open/Closed/Approved/Completed mapping. |
+| RCFA Category Distribution | `DERIVED_SAFE` | Count grouped by raw `category`, with null shown as `UNKNOWN` | Source value only; category taxonomy is unverified. |
+| RCFA Revision Distribution | `VERIFIED` | Count grouped by raw `revision`, with null shown as `UNKNOWN` | Revision lineage and approval semantics are unverified. |
+| RCFA Record Age | `DERIVED_SAFE` | `as_of - requested_at` | Current population has no `source_created_at`; age means request-record recency only. |
+| Request-to-created gap | `DATA_NOT_AVAILABLE` | Not exposed because no current record has both timestamps | Not a response-time, investigation-delay, or SLA metric. |
+| RCFA by Asset | `DATA_NOT_AVAILABLE` | Not implemented; `asset_ref` relationship is unresolved | No fuzzy, text, date, number, FMEA, or Work Order join. |
+| RCFA Completion | `BUSINESS_SEMANTICS_REQUIRED` | Not implemented | Requires verified completion status meanings and governance. |
+| Root Cause category | `BUSINESS_SEMANTICS_REQUIRED` | Not interpreted from raw `category` | Requires verified taxonomy and root-cause field semantics. |
+| Corrective Action completion | `DATA_NOT_AVAILABLE` | No approved action/completion fields in the current RCFA contract | Requires a verified related source object and completion rule. |
+
 ## Evaluated but not exposed as decision KPIs
 
 | Candidate | Class | Missing evidence or boundary |

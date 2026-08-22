@@ -104,6 +104,8 @@ class RcfaView(BaseModel):
     organization_code: str
     source_created_at: datetime | None = None
     requested_at: datetime | None = None
+    rcfa_record_date: datetime | None = None
+    rcfa_age_days: float | None = None
     relationship_status: str = "UNRESOLVED"
 
 
@@ -354,6 +356,60 @@ class FmeaOverviewView(BaseModel):
     evidence: FmeaEvidenceView
 
 
+class RcfaScopeView(BaseModel):
+    site_code: Literal["BSR"]
+    organization_code: Literal["IP"]
+    population: Literal["CONTROLLED_MART_POPULATION"]
+    asset_relationship: Literal["UNRESOLVED"]
+    workorder_relationship: Literal["UNRESOLVED"]
+    failure_event_relationship: Literal["UNRESOLVED"]
+    interpretation: Literal["GLOBAL_RCFA_RECORDS"]
+
+
+class RcfaSummaryView(BaseModel):
+    rcfa_records: int
+    records_with_category: int
+    records_with_revision: int
+    records_with_requested_at: int
+    records_with_source_created_at: int
+    record_date_available: int
+
+
+class RcfaRecencyView(BaseModel):
+    oldest_record_at: datetime | None = None
+    latest_record_at: datetime | None = None
+    as_of: datetime
+    latest_rcfa_age_days: float | None = None
+    date_basis: str
+
+
+class RcfaEvidenceView(BaseModel):
+    rcfa_records: EvidenceClass
+    rcfa_number: EvidenceClass
+    revision: EvidenceClass
+    lifecycle_status: EvidenceClass
+    category: EvidenceClass
+    rcfa_record_age: EvidenceClass
+    request_to_created_gap: EvidenceClass
+    category_taxonomy: EvidenceClass
+    asset_relationship: EvidenceClass
+    workorder_relationship: EvidenceClass
+    failure_event_relationship: EvidenceClass
+    root_cause_details: EvidenceClass
+    root_cause_taxonomy: EvidenceClass
+    rcfa_completion: EvidenceClass
+
+
+class RcfaOverviewView(BaseModel):
+    scope: RcfaScopeView
+    summary: RcfaSummaryView
+    status_distribution: list[DistributionView]
+    category_distribution: list[DistributionView]
+    revision_distribution: list[DistributionView]
+    record_recency: RcfaRecencyView
+    evidence: RcfaEvidenceView
+
+
 class InvestigationScopeView(BaseModel):
     site_code: Literal["BSR"]
     organization_code: Literal["IP"]
@@ -582,6 +638,21 @@ def _fmea_overview(raw: dict[str, object]) -> FmeaOverviewView:
     )
 
 
+def _rcfa_overview(raw: dict[str, object]) -> RcfaOverviewView:
+    def distribution(rows):
+        return [DistributionView(value=row["value"], count=_evidence(int(row["count"]), "VERIFIED")) for row in rows]
+
+    return RcfaOverviewView(
+        scope=RcfaScopeView(**raw["scope"]),
+        summary=RcfaSummaryView(**raw["summary"]),
+        status_distribution=distribution(raw["status_distribution"]),
+        category_distribution=distribution(raw["category_distribution"]),
+        revision_distribution=distribution(raw["revision_distribution"]),
+        record_recency=RcfaRecencyView(**raw["record_recency"]),
+        evidence=RcfaEvidenceView(**raw["evidence"]),
+    )
+
+
 @router.get("/assets", response_model=Page[AssetView], summary="List Reliability Mart assets")
 def list_assets(
     status: str | None = None,
@@ -621,6 +692,11 @@ def asset_health_overview(service: ReliabilityQueryService = Depends(_service)) 
 @router.get("/fmea/overview", response_model=FmeaOverviewView, summary="Factual FMEA assessment overview")
 def fmea_overview(service: ReliabilityQueryService = Depends(_service)) -> FmeaOverviewView:
     return _fmea_overview(service.repository.fmea_overview())
+
+
+@router.get("/rcfa/overview", response_model=RcfaOverviewView, summary="Global factual RCFA overview")
+def rcfa_overview(service: ReliabilityQueryService = Depends(_service)) -> RcfaOverviewView:
+    return _rcfa_overview(service.repository.rcfa_overview())
 
 
 @router.get("/maintenance-investigation", response_model=MaintenanceInvestigationView, summary="Bounded repeat maintenance activity investigation")
@@ -721,7 +797,7 @@ def rcfa(lifecycle_status: str | None = None, category: str | None = None, sourc
     if asset_ref is not None:
         raise HTTPException(status_code=422, detail="asset_ref filter is unavailable because RCFA asset relationship is unresolved")
     _validate_range(created_from, created_to)
-    return _page(service.repository.list_rcfa(lifecycle_status=lifecycle_status, category=category, source_number=source_number, created_from=created_from, created_to=created_to, offset=offset, limit=limit, sort=sort), _rcfa)
+    return _page(service.repository.list_rcfa_workspace(lifecycle_status=lifecycle_status, category=category, source_number=source_number, created_from=created_from, created_to=created_to, offset=offset, limit=limit, sort=sort), _rcfa)
 
 
 @router.get("/overhauls", response_model=Page[OverhaulView])

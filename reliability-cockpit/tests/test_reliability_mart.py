@@ -390,6 +390,111 @@ class FmeaApiTest(unittest.TestCase):
         self.assertEqual(error.exception.status_code, 503)
 
 
+class RcfaSemanticsFixtureTest(unittest.TestCase):
+    """Synthetic global RCFA evidence with no guessed relationships."""
+
+    AS_OF = datetime(2026, 1, 15, 12, 0, tzinfo=timezone.utc)
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.database = MartDatabase(MartDbConfig(dsn="sqlite+pysqlite:///:memory:"))
+        MartBase.metadata.create_all(cls.database.engine)
+
+        def rcfa(number: int, source_number: str | None, revision: str | None, status: str | None, category: str | None, requested: datetime | None) -> RcfaAnalysisMart:
+            return RcfaAnalysisMart(
+                **_common(f"rcfa:RCFA-{number}", "IPRCFA"),
+                source_record_id=f"RCFA-{number}",
+                source_number=source_number,
+                revision=revision,
+                lifecycle_status=status,
+                category=category,
+                asset_ref=None,
+                location_ref=None,
+                workorder_ref=None,
+                failure_event_ref=None,
+                source_created_at=None,
+                requested_at=requested,
+            )
+
+        with Session(cls.database.engine) as session:
+            session.add_all([
+                rcfa(1, "RCFA-1", "0", "CLOSE", "1", cls.AS_OF - timedelta(days=3)),
+                rcfa(2, "RCFA-2", "0", "OPEN", "1", cls.AS_OF - timedelta(days=2)),
+                rcfa(3, "RCFA-2", "1", "REVISI", None, None),
+                rcfa(4, "RCFA-3", "1", "CLOSE", "2", cls.AS_OF),
+                rcfa(5, "RCFA-4", "2", None, "2", cls.AS_OF - timedelta(days=1)),
+                rcfa(6, "RCFA-5", "0", "CLOSE", "3", None),
+            ])
+            session.commit()
+        cls.repository = MartQueryRepository(cls.database)
+
+    def test_overview_is_global_and_relationship_safe(self):
+        result = self.repository.rcfa_overview(as_of=self.AS_OF)
+        self.assertEqual(result["summary"], {
+            "rcfa_records": 6,
+            "records_with_category": 5,
+            "records_with_revision": 6,
+            "records_with_requested_at": 4,
+            "records_with_source_created_at": 0,
+            "record_date_available": 4,
+        })
+        self.assertEqual({row["value"] for row in result["status_distribution"]}, {"CLOSE", "OPEN", "REVISI", "UNKNOWN"})
+        self.assertEqual({row["value"] for row in result["category_distribution"]}, {"1", "2", "3", "UNKNOWN"})
+        self.assertEqual({row["value"] for row in result["revision_distribution"]}, {"0", "1", "2"})
+        self.assertEqual(result["scope"]["asset_relationship"], "UNRESOLVED")
+        self.assertEqual(result["record_recency"]["latest_record_at"].replace(tzinfo=None), self.AS_OF.replace(tzinfo=None))
+        self.assertEqual(result["evidence"]["request_to_created_gap"], "DATA_NOT_AVAILABLE")
+
+    def test_workspace_filters_paginates_and_exposes_no_relationship(self):
+        page = self.repository.list_rcfa_workspace(as_of=self.AS_OF, offset=0, limit=2)
+        self.assertEqual(page.total, 6)
+        self.assertTrue(page.has_more)
+        self.assertTrue(all(row.asset_ref is None and row.workorder_ref is None and row.failure_event_ref is None for row in page.items))
+        status = self.repository.list_rcfa_workspace(lifecycle_status="CLOSE", as_of=self.AS_OF)
+        self.assertEqual(status.total, 3)
+        category = self.repository.list_rcfa_workspace(category="2", as_of=self.AS_OF)
+        self.assertEqual(category.total, 2)
+        number = self.repository.list_rcfa_workspace(source_number="RCFA-2", as_of=self.AS_OF)
+        self.assertEqual(number.total, 2)
+        latest = self.repository.list_rcfa_workspace(as_of=self.AS_OF, limit=1).items[0]
+        self.assertEqual(latest.source_number, "RCFA-3")
+        self.assertEqual(latest.rcfa_record_date, self.AS_OF.replace(tzinfo=None))
+        self.assertAlmostEqual(latest.rcfa_age_days, 0.0)
+
+
+class RcfaApiTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        if not hasattr(RcfaSemanticsFixtureTest, "database"):
+            RcfaSemanticsFixtureTest.setUpClass()
+        cls.database = RcfaSemanticsFixtureTest.database
+        cls.service = ReliabilityQueryService(MartQueryRepository(cls.database))
+
+    def test_overview_and_list_api_are_typed(self):
+        response = reliability_api.rcfa_overview(service=self.service)
+        self.assertEqual(response.scope.interpretation, "GLOBAL_RCFA_RECORDS")
+        self.assertEqual(response.summary.rcfa_records, 6)
+        self.assertEqual(response.evidence.asset_relationship, "DATA_NOT_AVAILABLE")
+        page = reliability_api.rcfa(lifecycle_status="CLOSE", category="1", offset=0, limit=50, service=self.service)
+        self.assertEqual(page["meta"].total, 1)
+        self.assertEqual(page["items"][0].relationship_status, "UNRESOLVED")
+        self.assertIsNone(page["items"][0].asset_ref)
+
+    def test_asset_filter_is_rejected_and_empty_boundary_is_safe(self):
+        with self.assertRaises(HTTPException) as error:
+            reliability_api.rcfa(asset_ref="asset:synthetic", service=self.service)
+        self.assertEqual(error.exception.status_code, 422)
+        empty_db = MartDatabase(MartDbConfig(dsn="sqlite+pysqlite:///:memory:"))
+        MartBase.metadata.create_all(empty_db.engine)
+        response = reliability_api.rcfa_overview(service=ReliabilityQueryService(MartQueryRepository(empty_db)))
+        self.assertEqual(response.summary.rcfa_records, 0)
+        self.assertIsNone(response.record_recency.latest_record_at)
+        with patch("src.api.reliability.get_mart_database", side_effect=reliability_api.MartDatabaseConfigError("offline")):
+            with self.assertRaises(HTTPException) as error:
+                reliability_api._db()
+        self.assertEqual(error.exception.status_code, 503)
+
+
 class MaintenanceInvestigationFixtureTest(unittest.TestCase):
     """Synthetic repeat-activity evidence for the SQL aggregation boundary."""
 

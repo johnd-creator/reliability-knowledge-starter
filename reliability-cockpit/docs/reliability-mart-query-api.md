@@ -39,6 +39,7 @@ All routes are GET-only and use canonical reliability concepts:
 | `GET /v1/reliability/decision-overview?window_days=30` | Bounded Executive Overview aggregates; `window_days` is 7, 30, or 90 |
 | `GET /v1/reliability/asset-health/overview` | Factual Asset Health population, raw status, relationship, and record-recency aggregates |
 | `GET /v1/reliability/fmea/overview` | Factual FMEA population, raw status/revision, relationship, Failure Code, and record-recency aggregates |
+| `GET /v1/reliability/rcfa/overview` | Global factual RCFA population, raw status/category/revision, and record-recency aggregates; relationships remain unresolved |
 | `GET /v1/reliability/assets/{canonical_id}` | Asset detail |
 | `GET /v1/reliability/assets/{canonical_id}/context` | Bounded asset context: maintenance, FMEA, health, and overhaul |
 | `GET /v1/reliability/assets/{canonical_id}/fmea` | Paginated FMEA assessments for an asset |
@@ -48,7 +49,7 @@ All routes are GET-only and use canonical reliability concepts:
 | `GET /v1/reliability/maintenance-events` | Maintenance event list and filters |
 | `GET /v1/reliability/fmea` | Registry-scoped FMEA list with FMEA number, Asset number, source status, and source Failure Code filters |
 | `GET /v1/reliability/asset-health` | Registry-scoped Asset Health list with Asset number, description, status, and pagination filters |
-| `GET /v1/reliability/rcfa` | RCFA list; no asset filter is offered |
+| `GET /v1/reliability/rcfa` | Global RCFA list with number, status, category, pagination, and no Asset/Work Order filters |
 | `GET /v1/reliability/overhauls` | Overhaul list and filters |
 | `GET /v1/reliability/integrity` | Aggregate logical-reference health counts |
 

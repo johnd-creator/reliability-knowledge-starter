@@ -52,6 +52,7 @@ export interface RcfaView {
   canonical_id: string; contract_version: string; source_record_id: string | null; source_number: string | null; revision: string | null;
   lifecycle_status: string | null; category: string | null; asset_ref: string | null; location_ref: string | null; workorder_ref: string | null;
   failure_event_ref: string | null; site_code: string; organization_code: string; source_created_at: string | null; requested_at: string | null;
+  rcfa_record_date: string | null; rcfa_age_days: number | null;
   relationship_status: "UNRESOLVED";
 }
 export interface AssetHealthView {
@@ -122,6 +123,19 @@ export interface FmeaOverviewView {
     fmea_records: EvidenceClass; registered_assets_represented: EvidenceClass; assets_with_multiple_records: EvidenceClass;
     records_with_failure_code: EvidenceClass; fmea_record_age: EvidenceClass; lifecycle_status: EvidenceClass; revision: EvidenceClass;
     failure_mode_details: EvidenceClass; rpn: EvidenceClass; risk_classification: EvidenceClass;
+  };
+}
+export interface RcfaOverviewView {
+  scope: { site_code: "BSR"; organization_code: "IP"; population: "CONTROLLED_MART_POPULATION"; asset_relationship: "UNRESOLVED"; workorder_relationship: "UNRESOLVED"; failure_event_relationship: "UNRESOLVED"; interpretation: "GLOBAL_RCFA_RECORDS" };
+  summary: { rcfa_records: number; records_with_category: number; records_with_revision: number; records_with_requested_at: number; records_with_source_created_at: number; record_date_available: number };
+  status_distribution: { value: string; count: EvidenceValue }[];
+  category_distribution: { value: string; count: EvidenceValue }[];
+  revision_distribution: { value: string; count: EvidenceValue }[];
+  record_recency: { oldest_record_at: string | null; latest_record_at: string | null; as_of: string; latest_rcfa_age_days: number | null; date_basis: string };
+  evidence: {
+    rcfa_records: EvidenceClass; rcfa_number: EvidenceClass; revision: EvidenceClass; lifecycle_status: EvidenceClass; category: EvidenceClass;
+    rcfa_record_age: EvidenceClass; request_to_created_gap: EvidenceClass; category_taxonomy: EvidenceClass; asset_relationship: EvidenceClass;
+    workorder_relationship: EvidenceClass; failure_event_relationship: EvidenceClass; root_cause_details: EvidenceClass; root_cause_taxonomy: EvidenceClass; rcfa_completion: EvidenceClass;
   };
 }
 export interface DecisionOverviewView {
@@ -231,6 +245,7 @@ export const reliabilityApi = {
   decisionOverview: (windowDays: 7 | 30 | 90 = 30) => get<DecisionOverviewView>(`/v1/reliability/decision-overview?window_days=${windowDays}`),
   assetHealthOverview: () => get<AssetHealthOverviewView>("/v1/reliability/asset-health/overview"),
   fmeaOverview: () => get<FmeaOverviewView>("/v1/reliability/fmea/overview"),
+  rcfaOverview: () => get<RcfaOverviewView>("/v1/reliability/rcfa/overview"),
   maintenanceInvestigation: (windowDays: 30 | 90 | 180 = 90, minEvents: 2 | 3 | 5 = 2, offset = 0, limit = 25, sort: "event_count_desc" | "latest_activity_desc" | "latest_gap_asc" = "event_count_desc") => get<MaintenanceInvestigationView>(`/v1/reliability/maintenance-investigation${query({ window_days: windowDays, min_events: minEvents, offset, limit, sort })}`),
   assets: (filters: AssetFilters = {}) => get<Page<AssetView>>(`/v1/reliability/assets${query(filters)}`),
   registry: () => get<RegistryView>("/v1/reliability/registry"),

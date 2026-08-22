@@ -42,6 +42,12 @@ def _fmea_record_date(column: type[FmeaAssessmentMart]) -> Any:
     return func.coalesce(column.status_changed_at, column.source_updated_at)
 
 
+def _rcfa_record_date(column: type[RcfaAnalysisMart]) -> Any:
+    """Return the explicit RCFA record-date source used by the workspace."""
+
+    return column.requested_at
+
+
 def _assessment_date(column: type[AssetHealthAssessmentMart]) -> Any:
     """Return the verified source timestamp fallback for an assessment record."""
 
@@ -437,6 +443,60 @@ class MartQueryRepository:
         with self.database.read_session() as session:
             return _page(session, statement, offset, limit)
 
+    def list_rcfa_workspace(
+        self,
+        *,
+        lifecycle_status: str | None = None,
+        category: str | None = None,
+        source_number: str | None = None,
+        created_from: datetime | None = None,
+        created_to: datetime | None = None,
+        offset: int = 0,
+        limit: int = 50,
+        sort: str = "created_desc",
+        as_of: datetime | None = None,
+    ) -> QueryPage:
+        """Return the global RCFA population without relationship projections."""
+
+        current = as_of or datetime.now(timezone.utc)
+        if current.tzinfo is None:
+            current = current.replace(tzinfo=timezone.utc)
+        record_date = _rcfa_record_date(RcfaAnalysisMart)
+        columns = (
+            RcfaAnalysisMart.canonical_id,
+            RcfaAnalysisMart.contract_version,
+            RcfaAnalysisMart.source_record_id,
+            RcfaAnalysisMart.source_number,
+            RcfaAnalysisMart.revision,
+            RcfaAnalysisMart.lifecycle_status,
+            RcfaAnalysisMart.category,
+            RcfaAnalysisMart.asset_ref,
+            RcfaAnalysisMart.location_ref,
+            RcfaAnalysisMart.workorder_ref,
+            RcfaAnalysisMart.failure_event_ref,
+            RcfaAnalysisMart.site_code,
+            RcfaAnalysisMart.organization_code,
+            RcfaAnalysisMart.source_created_at,
+            RcfaAnalysisMart.requested_at,
+            record_date.label("rcfa_record_date"),
+            self._gap_days(literal(current), record_date).label("rcfa_age_days"),
+        )
+        statement = self._scope(select(*columns), RcfaAnalysisMart)
+        if lifecycle_status:
+            statement = statement.where(RcfaAnalysisMart.lifecycle_status == lifecycle_status)
+        if category:
+            statement = statement.where(RcfaAnalysisMart.category.ilike(f"%{_contains(category)}%", escape="\\"))
+        if source_number:
+            statement = statement.where(RcfaAnalysisMart.source_number.ilike(f"%{_contains(source_number)}%", escape="\\"))
+        if created_from:
+            statement = statement.where(RcfaAnalysisMart.source_created_at >= created_from)
+        if created_to:
+            statement = statement.where(RcfaAnalysisMart.source_created_at <= created_to)
+        order_column = RcfaAnalysisMart.lifecycle_status if sort == "status" else record_date
+        statement = statement.order_by(desc(order_column) if sort != "created_asc" else asc(order_column), asc(RcfaAnalysisMart.canonical_id))
+        with self.database.read_session() as session:
+            return _page_rows(session, statement, offset, limit)
+
     def list_overhauls(
         self,
         *,
@@ -757,6 +817,121 @@ class MartQueryRepository:
             "integrity": integrity,
             "window_start": window_start,
             "as_of": current,
+        }
+
+    def rcfa_overview(self, *, as_of: datetime | None = None) -> dict[str, object]:
+        """Return global aggregate-only evidence for the controlled RCFA population."""
+
+        current = as_of or datetime.now(timezone.utc)
+        if current.tzinfo is None:
+            current = current.replace(tzinfo=timezone.utc)
+        record_date = _rcfa_record_date(RcfaAnalysisMart)
+        summary_statement = select(
+            select(func.count(RcfaAnalysisMart.canonical_id)).where(
+                RcfaAnalysisMart.site_code == SITE_CODE,
+                RcfaAnalysisMart.organization_code == ORGANIZATION_CODE,
+            ).scalar_subquery().label("rcfa_records"),
+            select(func.count(RcfaAnalysisMart.category)).where(
+                RcfaAnalysisMart.site_code == SITE_CODE,
+                RcfaAnalysisMart.organization_code == ORGANIZATION_CODE,
+            ).scalar_subquery().label("records_with_category"),
+            select(func.count(RcfaAnalysisMart.revision)).where(
+                RcfaAnalysisMart.site_code == SITE_CODE,
+                RcfaAnalysisMart.organization_code == ORGANIZATION_CODE,
+            ).scalar_subquery().label("records_with_revision"),
+            select(func.count(RcfaAnalysisMart.requested_at)).where(
+                RcfaAnalysisMart.site_code == SITE_CODE,
+                RcfaAnalysisMart.organization_code == ORGANIZATION_CODE,
+            ).scalar_subquery().label("records_with_requested_at"),
+            select(func.count(RcfaAnalysisMart.source_created_at)).where(
+                RcfaAnalysisMart.site_code == SITE_CODE,
+                RcfaAnalysisMart.organization_code == ORGANIZATION_CODE,
+            ).scalar_subquery().label("records_with_source_created_at"),
+            select(func.count(record_date)).where(
+                RcfaAnalysisMart.site_code == SITE_CODE,
+                RcfaAnalysisMart.organization_code == ORGANIZATION_CODE,
+            ).scalar_subquery().label("record_date_available"),
+            select(func.min(record_date)).where(
+                RcfaAnalysisMart.site_code == SITE_CODE,
+                RcfaAnalysisMart.organization_code == ORGANIZATION_CODE,
+            ).scalar_subquery().label("oldest_record_at"),
+            select(func.max(record_date)).where(
+                RcfaAnalysisMart.site_code == SITE_CODE,
+                RcfaAnalysisMart.organization_code == ORGANIZATION_CODE,
+            ).scalar_subquery().label("latest_record_at"),
+        )
+        status_statement = select(
+            func.coalesce(RcfaAnalysisMart.lifecycle_status, "UNKNOWN").label("value"),
+            func.count(RcfaAnalysisMart.canonical_id).label("count"),
+        ).where(
+            RcfaAnalysisMart.site_code == SITE_CODE,
+            RcfaAnalysisMart.organization_code == ORGANIZATION_CODE,
+        ).group_by(RcfaAnalysisMart.lifecycle_status).order_by(asc(RcfaAnalysisMart.lifecycle_status))
+        category_statement = select(
+            func.coalesce(RcfaAnalysisMart.category, "UNKNOWN").label("value"),
+            func.count(RcfaAnalysisMart.canonical_id).label("count"),
+        ).where(
+            RcfaAnalysisMart.site_code == SITE_CODE,
+            RcfaAnalysisMart.organization_code == ORGANIZATION_CODE,
+        ).group_by(RcfaAnalysisMart.category).order_by(asc(RcfaAnalysisMart.category))
+        revision_statement = select(
+            func.coalesce(RcfaAnalysisMart.revision, "UNKNOWN").label("value"),
+            func.count(RcfaAnalysisMart.canonical_id).label("count"),
+        ).where(
+            RcfaAnalysisMart.site_code == SITE_CODE,
+            RcfaAnalysisMart.organization_code == ORGANIZATION_CODE,
+        ).group_by(RcfaAnalysisMart.revision).order_by(asc(RcfaAnalysisMart.revision))
+        with self.database.read_session() as session:
+            summary = session.execute(summary_statement).one()._mapping
+            statuses = session.execute(status_statement).all()
+            categories = session.execute(category_statement).all()
+            revisions = session.execute(revision_statement).all()
+        latest = summary["latest_record_at"]
+        latest_age_days = None
+        if latest is not None:
+            if latest.tzinfo is None:
+                latest = latest.replace(tzinfo=timezone.utc)
+            latest_age_days = (current - latest).total_seconds() / 86400.0
+        return {
+            "scope": {
+                "site_code": SITE_CODE,
+                "organization_code": ORGANIZATION_CODE,
+                "population": "CONTROLLED_MART_POPULATION",
+                "asset_relationship": "UNRESOLVED",
+                "workorder_relationship": "UNRESOLVED",
+                "failure_event_relationship": "UNRESOLVED",
+                "interpretation": "GLOBAL_RCFA_RECORDS",
+            },
+            "summary": {key: int(summary[key] or 0) for key in (
+                "rcfa_records", "records_with_category", "records_with_revision", "records_with_requested_at",
+                "records_with_source_created_at", "record_date_available",
+            )},
+            "status_distribution": [{"value": row.value, "count": int(row.count)} for row in statuses],
+            "category_distribution": [{"value": row.value, "count": int(row.count)} for row in categories],
+            "revision_distribution": [{"value": row.value, "count": int(row.count)} for row in revisions],
+            "record_recency": {
+                "oldest_record_at": summary["oldest_record_at"],
+                "latest_record_at": latest,
+                "as_of": current,
+                "latest_rcfa_age_days": latest_age_days,
+                "date_basis": "requested_at (source_created_at unavailable in current population)",
+            },
+            "evidence": {
+                "rcfa_records": "VERIFIED",
+                "rcfa_number": "VERIFIED",
+                "revision": "VERIFIED",
+                "lifecycle_status": "VERIFIED",
+                "category": "VERIFIED",
+                "rcfa_record_age": "DERIVED_SAFE",
+                "request_to_created_gap": "DATA_NOT_AVAILABLE",
+                "category_taxonomy": "BUSINESS_SEMANTICS_REQUIRED",
+                "asset_relationship": "DATA_NOT_AVAILABLE",
+                "workorder_relationship": "DATA_NOT_AVAILABLE",
+                "failure_event_relationship": "DATA_NOT_AVAILABLE",
+                "root_cause_details": "DATA_NOT_AVAILABLE",
+                "root_cause_taxonomy": "BUSINESS_SEMANTICS_REQUIRED",
+                "rcfa_completion": "BUSINESS_SEMANTICS_REQUIRED",
+            },
         }
 
     def fmea_overview(self, *, as_of: datetime | None = None) -> dict[str, object]:

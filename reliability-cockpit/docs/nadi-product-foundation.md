@@ -31,7 +31,7 @@ top bar, and the preference is retained locally in the browser.
 | `/assets` | Canonical asset list with server-side filters and pagination |
 | `/maintenance` | Maintenance event list |
 | `/fmea` | Factual FMEA assessment workspace; item-level details remain deferred |
-| `/rcfa` | RCFA list with an explicit unresolved asset relationship |
+| `/rcfa` | Global factual RCFA workspace with explicit unresolved relationships |
 | `/asset-health` | Factual Asset Health assessment workspace without a numerical health score |
 | `/overhauls` | Overhaul list, including unresolved asset references |
 | `/data-quality` | Canonical reference resolution summary |
