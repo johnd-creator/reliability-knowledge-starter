@@ -63,7 +63,10 @@ export interface AssetHealthView {
 }
 export interface OverhaulView {
   canonical_id: string; contract_version: string; source_record_id: string | null; source_number: string | null; lifecycle_status: string | null;
-  workorder_ref: string | null; asset_ref: string | null; site_code: string; organization_code: string; planned_start_at: string | null;
+  workorder_ref: string | null; source_work_order_number: string | null; asset_ref: string | null; source_asset_number: string | null; asset_description: string | null;
+  work_order_resolution: "SOURCE_LINK_VERIFIED_AND_MART_RESOLVED" | "SOURCE_LINK_VERIFIED_BUT_MART_UNRESOLVED" | "SOURCE_WORK_ORDER_MISSING";
+  asset_resolution: "ASSET_RESOLVED_REGISTERED" | "ASSET_RESOLVED_TECHNICAL_CONTEXT" | "ASSET_UNRESOLVED";
+  site_code: string; organization_code: string; planned_start_at: string | null;
   planned_finish_at: string | null; actual_start_at: string | null; actual_finish_at: string | null; progress: unknown | null;
   unresolved_attributes_present: boolean;
 }
@@ -138,6 +141,25 @@ export interface RcfaOverviewView {
     workorder_relationship: EvidenceClass; failure_event_relationship: EvidenceClass; root_cause_details: EvidenceClass; root_cause_taxonomy: EvidenceClass; rcfa_completion: EvidenceClass;
   };
 }
+export interface OverhaulOverviewView {
+  scope: { site_code: "BSR"; organization_code: "IP"; population: "CONTROLLED_MART_POPULATION"; workorder_relationship: "DIRECT_VERIFIED"; asset_relationship: "DERIVED_VIA_WORK_ORDER"; interpretation: "OVERHAUL_RECORDS_NOT_PERFORMANCE_SCORE" };
+  summary: {
+    overhaul_records: number; source_record_id_present: number; source_number_present: number; records_with_work_order: number;
+    work_orders_resolved_in_mart: number; work_orders_unresolved_in_mart: number; source_work_order_number_available: number; work_order_source_missing: number;
+    records_with_asset: number; asset_master_resolved: number; registered_assets_resolved: number; technical_non_registry: number; asset_ref_absent: number; asset_refs_unresolved: number;
+    planned_start_present: number; planned_finish_present: number; actual_start_present: number; actual_finish_present: number; planned_duration_available: number; actual_duration_available: number;
+    records_with_progress: number; inspection_number_present: number; performance_test_present: number;
+  };
+  status_distribution: { value: string; count: EvidenceValue }[];
+  date_availability: { planned_start_present: number; planned_finish_present: number; actual_start_present: number; actual_finish_present: number; planned_duration_available: number; actual_duration_available: number };
+  relationship_integrity: { workorder_refs_present: number; workorder_refs_resolved_in_mart: number; workorder_refs_unresolved_in_mart: number; workorder_source_missing: number; asset_refs_present: number; asset_refs_resolved_to_asset_master: number; registered_assets_resolved: number; technical_non_registry: number; asset_refs_unresolved: number };
+  evidence: {
+    overhaul_records: EvidenceClass; overhaul_number: EvidenceClass; workorder_source_relationship: EvidenceClass; workorder_mart_resolution: EvidenceClass;
+    asset_derived_relationship: EvidenceClass; lifecycle_status: EvidenceClass; planned_duration: EvidenceClass; actual_duration: EvidenceClass;
+    progress_value: EvidenceClass; progress_scale: EvidenceClass; schedule_variance: EvidenceClass; overhaul_completion: EvidenceClass;
+    inspection_number: EvidenceClass; inspection_relationship: EvidenceClass; performance_test: EvidenceClass; performance_test_semantics: EvidenceClass;
+  };
+}
 export interface DecisionOverviewView {
   scope: { site_code: "BSR"; organization_code: "IP"; registry_scope: string; maintenance_source: string; date_basis: string };
   data_maturity: { asset_maintenance: string; controlled_domains: string; rcfa_relationship: string; technical_context: string };
@@ -206,7 +228,7 @@ export interface MaintenanceFilters { asset_ref?: string; work_order_id?: string
 export interface FmeaFilters { asset_ref?: string; asset_number?: string; lifecycle_status?: string; source_number?: string; source_failure_code?: string; updated_from?: string; updated_to?: string; offset?: number; limit?: number; sort?: "updated_desc" | "updated_asc" | "status"; }
 export interface RcfaFilters { lifecycle_status?: string; category?: string; source_number?: string; created_from?: string; created_to?: string; offset?: number; limit?: number; sort?: "created_desc" | "created_asc" | "status"; }
 export interface HealthFilters { asset_ref?: string; asset_number?: string; description?: string; lifecycle_status?: string; updated_from?: string; updated_to?: string; offset?: number; limit?: number; sort?: "updated_desc" | "updated_asc" | "status"; }
-export interface OverhaulFilters { asset_ref?: string; workorder_ref?: string; lifecycle_status?: string; planned_from?: string; planned_to?: string; actual_from?: string; actual_to?: string; offset?: number; limit?: number; sort?: "date_desc" | "date_asc" | "status"; }
+export interface OverhaulFilters { source_number?: string; asset_ref?: string; workorder_ref?: string; source_work_order_number?: string; lifecycle_status?: string; planned_from?: string; planned_to?: string; actual_from?: string; actual_to?: string; offset?: number; limit?: number; sort?: "date_desc" | "date_asc" | "status"; }
 export interface AssetDetailPageFilters { offset?: number; limit?: number; }
 
 export class ApiError extends Error {
@@ -259,6 +281,7 @@ export const reliabilityApi = {
   fmea: (filters: FmeaFilters = {}) => get<Page<FmeaView>>(`/v1/reliability/fmea${query(filters)}`),
   rcfa: (filters: RcfaFilters = {}) => get<Page<RcfaView>>(`/v1/reliability/rcfa${query(filters)}`),
   assetHealth: (filters: HealthFilters = {}) => get<Page<AssetHealthView>>(`/v1/reliability/asset-health${query(filters)}`),
+  overhaulOverview: () => get<OverhaulOverviewView>("/v1/reliability/overhauls/overview"),
   overhauls: (filters: OverhaulFilters = {}) => get<Page<OverhaulView>>(`/v1/reliability/overhauls${query(filters)}`),
   integrity: () => get<IntegrityView>("/v1/reliability/integrity"),
 };

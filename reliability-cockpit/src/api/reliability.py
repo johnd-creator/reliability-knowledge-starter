@@ -136,7 +136,12 @@ class OverhaulView(BaseModel):
     source_number: str | None = None
     lifecycle_status: str | None = None
     workorder_ref: str | None = None
+    source_work_order_number: str | None = None
     asset_ref: str | None = None
+    source_asset_number: str | None = None
+    asset_description: str | None = None
+    work_order_resolution: Literal["SOURCE_LINK_VERIFIED_AND_MART_RESOLVED", "SOURCE_LINK_VERIFIED_BUT_MART_UNRESOLVED", "SOURCE_WORK_ORDER_MISSING"] = "SOURCE_WORK_ORDER_MISSING"
+    asset_resolution: Literal["ASSET_RESOLVED_REGISTERED", "ASSET_RESOLVED_TECHNICAL_CONTEXT", "ASSET_UNRESOLVED"] = "ASSET_UNRESOLVED"
     site_code: str
     organization_code: str
     planned_start_at: datetime | None = None
@@ -410,6 +415,90 @@ class RcfaOverviewView(BaseModel):
     evidence: RcfaEvidenceView
 
 
+class OverhaulScopeView(BaseModel):
+    site_code: Literal["BSR"]
+    organization_code: Literal["IP"]
+    population: Literal["CONTROLLED_MART_POPULATION"]
+    workorder_relationship: Literal["DIRECT_VERIFIED"]
+    asset_relationship: Literal["DERIVED_VIA_WORK_ORDER"]
+    interpretation: Literal["OVERHAUL_RECORDS_NOT_PERFORMANCE_SCORE"]
+
+
+class OverhaulSummaryView(BaseModel):
+    overhaul_records: int
+    source_record_id_present: int
+    source_number_present: int
+    records_with_work_order: int
+    work_orders_resolved_in_mart: int
+    work_orders_unresolved_in_mart: int
+    source_work_order_number_available: int
+    work_order_source_missing: int
+    records_with_asset: int
+    asset_master_resolved: int
+    registered_assets_resolved: int
+    technical_non_registry: int
+    asset_ref_absent: int
+    asset_refs_unresolved: int
+    planned_start_present: int
+    planned_finish_present: int
+    actual_start_present: int
+    actual_finish_present: int
+    planned_duration_available: int
+    actual_duration_available: int
+    records_with_progress: int
+    inspection_number_present: int
+    performance_test_present: int
+
+
+class OverhaulDateAvailabilityView(BaseModel):
+    planned_start_present: int
+    planned_finish_present: int
+    actual_start_present: int
+    actual_finish_present: int
+    planned_duration_available: int
+    actual_duration_available: int
+
+
+class OverhaulRelationshipIntegrityView(BaseModel):
+    workorder_refs_present: int
+    workorder_refs_resolved_in_mart: int
+    workorder_refs_unresolved_in_mart: int
+    workorder_source_missing: int
+    asset_refs_present: int
+    asset_refs_resolved_to_asset_master: int
+    registered_assets_resolved: int
+    technical_non_registry: int
+    asset_refs_unresolved: int
+
+
+class OverhaulEvidenceView(BaseModel):
+    overhaul_records: EvidenceClass
+    overhaul_number: EvidenceClass
+    workorder_source_relationship: EvidenceClass
+    workorder_mart_resolution: EvidenceClass
+    asset_derived_relationship: EvidenceClass
+    lifecycle_status: EvidenceClass
+    planned_duration: EvidenceClass
+    actual_duration: EvidenceClass
+    progress_value: EvidenceClass
+    progress_scale: EvidenceClass
+    schedule_variance: EvidenceClass
+    overhaul_completion: EvidenceClass
+    inspection_number: EvidenceClass
+    inspection_relationship: EvidenceClass
+    performance_test: EvidenceClass
+    performance_test_semantics: EvidenceClass
+
+
+class OverhaulOverviewView(BaseModel):
+    scope: OverhaulScopeView
+    summary: OverhaulSummaryView
+    status_distribution: list[DistributionView]
+    date_availability: OverhaulDateAvailabilityView
+    relationship_integrity: OverhaulRelationshipIntegrityView
+    evidence: OverhaulEvidenceView
+
+
 class InvestigationScopeView(BaseModel):
     site_code: Literal["BSR"]
     organization_code: Literal["IP"]
@@ -511,8 +600,39 @@ def _health(row) -> HealthView:
     return HealthView.model_validate({k: getattr(row, k, None) for k in HealthView.model_fields})
 
 
+def _source_attribute(row, key: str) -> str | None:
+    sources = getattr(row, "sources", None) or {}
+    maximo = sources.get("maximo") if isinstance(sources, dict) else None
+    value = maximo.get(key) if isinstance(maximo, dict) else None
+    return str(value) if value not in (None, "") else None
+
+
 def _overhaul(row) -> OverhaulView:
-    return OverhaulView.model_validate({k: getattr(row, k) for k in OverhaulView.model_fields if k not in {"unresolved_attributes_present"}} | {"unresolved_attributes_present": bool(row.unresolved_source_attributes)})
+    workorder_ref = getattr(row, "workorder_ref", None)
+    asset_ref = getattr(row, "asset_ref", None)
+    values = {
+        key: getattr(row, key)
+        for key in OverhaulView.model_fields
+        if key not in {"unresolved_attributes_present", "source_work_order_number", "source_asset_number", "asset_description", "work_order_resolution", "asset_resolution"}
+        and hasattr(row, key)
+    }
+    values.update({
+        "source_work_order_number": getattr(row, "source_work_order_number", None) or _source_attribute(row, "wonum"),
+        "source_asset_number": getattr(row, "source_asset_number", None),
+        "asset_description": getattr(row, "asset_description", None),
+        "work_order_resolution": getattr(
+            row,
+            "work_order_resolution",
+            "SOURCE_LINK_VERIFIED_BUT_MART_UNRESOLVED" if workorder_ref else "SOURCE_WORK_ORDER_MISSING",
+        ),
+        "asset_resolution": getattr(
+            row,
+            "asset_resolution",
+            "ASSET_RESOLVED_REGISTERED" if asset_ref else "ASSET_UNRESOLVED",
+        ),
+        "unresolved_attributes_present": bool(getattr(row, "unresolved_source_attributes", None)),
+    })
+    return OverhaulView.model_validate(values)
 
 
 def _timeline(row: TimelineEvent) -> TimelineView:
@@ -650,6 +770,20 @@ def _rcfa_overview(raw: dict[str, object]) -> RcfaOverviewView:
         revision_distribution=distribution(raw["revision_distribution"]),
         record_recency=RcfaRecencyView(**raw["record_recency"]),
         evidence=RcfaEvidenceView(**raw["evidence"]),
+    )
+
+
+def _overhaul_overview(raw: dict[str, object]) -> OverhaulOverviewView:
+    return OverhaulOverviewView(
+        scope=OverhaulScopeView(**raw["scope"]),
+        summary=OverhaulSummaryView(**raw["summary"]),
+        status_distribution=[
+            DistributionView(value=row["value"], count=_evidence(int(row["count"]), "VERIFIED"))
+            for row in raw["status_distribution"]
+        ],
+        date_availability=OverhaulDateAvailabilityView(**raw["date_availability"]),
+        relationship_integrity=OverhaulRelationshipIntegrityView(**raw["relationship_integrity"]),
+        evidence=OverhaulEvidenceView(**raw["evidence"]),
     )
 
 
@@ -800,11 +934,16 @@ def rcfa(lifecycle_status: str | None = None, category: str | None = None, sourc
     return _page(service.repository.list_rcfa_workspace(lifecycle_status=lifecycle_status, category=category, source_number=source_number, created_from=created_from, created_to=created_to, offset=offset, limit=limit, sort=sort), _rcfa)
 
 
+@router.get("/overhauls/overview", response_model=OverhaulOverviewView, summary="Factual Overhaul execution overview")
+def overhaul_overview(service: ReliabilityQueryService = Depends(_service)) -> OverhaulOverviewView:
+    return _overhaul_overview(service.repository.overhaul_overview())
+
+
 @router.get("/overhauls", response_model=Page[OverhaulView])
-def overhauls(asset_ref: str | None = None, workorder_ref: str | None = None, lifecycle_status: str | None = None, planned_from: datetime | None = None, planned_to: datetime | None = None, actual_from: datetime | None = None, actual_to: datetime | None = None, offset: int = Query(0, ge=0), limit: int = Query(50, ge=1, le=200), sort: Literal["date_desc", "date_asc", "status"] = "date_desc", service: ReliabilityQueryService = Depends(_service)):
+def overhauls(source_number: str | None = None, asset_ref: str | None = None, workorder_ref: str | None = None, source_work_order_number: str | None = None, lifecycle_status: str | None = None, planned_from: datetime | None = None, planned_to: datetime | None = None, actual_from: datetime | None = None, actual_to: datetime | None = None, offset: int = Query(0, ge=0), limit: int = Query(50, ge=1, le=200), sort: Literal["date_desc", "date_asc", "status"] = "date_desc", service: ReliabilityQueryService = Depends(_service)):
     _validate_range(planned_from, planned_to)
     _validate_range(actual_from, actual_to)
-    return _page(service.repository.list_overhauls(asset_ref=asset_ref, workorder_ref=workorder_ref, lifecycle_status=lifecycle_status, planned_from=planned_from, planned_to=planned_to, actual_from=actual_from, actual_to=actual_to, offset=offset, limit=limit, sort=sort), _overhaul)
+    return _page(service.repository.list_overhaul_workspace(source_number=source_number, asset_ref=asset_ref, workorder_ref=workorder_ref, source_work_order_number=source_work_order_number, lifecycle_status=lifecycle_status, planned_from=planned_from, planned_to=planned_to, actual_from=actual_from, actual_to=actual_to, offset=offset, limit=limit, sort=sort), _overhaul)
 
 
 @router.get("/integrity", response_model=IntegrityView)

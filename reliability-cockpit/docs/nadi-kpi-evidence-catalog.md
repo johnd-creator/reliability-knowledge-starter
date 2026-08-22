@@ -105,6 +105,27 @@ Maintenance, FMEA, or Repeat Activity.
 | Root Cause category | `BUSINESS_SEMANTICS_REQUIRED` | Not interpreted from raw `category` | Requires verified taxonomy and root-cause field semantics. |
 | Corrective Action completion | `DATA_NOT_AVAILABLE` | No approved action/completion fields in the current RCFA contract | Requires a verified related source object and completion rule. |
 
+## Overhaul execution metrics
+
+The Overhaul workspace uses the existing `IP_DOM_OH` population. Its Work
+Order relationship is direct verified source evidence; its Asset relationship
+is accepted only when the already-projected Work Order path resolves locally.
+
+| Candidate | Class | Definition / formula | Boundary |
+| --- | --- | --- | --- |
+| Overhaul records | `VERIFIED` | Count of current scoped `overhaul_event` rows | Controlled Mart population; not all Overhaul history or compliance. |
+| Records with Work Order | `VERIFIED` | Count of rows with `workorder_ref` | Source relationship present; not proof of local Mart resolution. |
+| Work Order Mart resolution | `VERIFIED` | `workorder_ref` matches scoped `maintenance_event.work_order_id` | Resolution is measured separately from the direct source relationship. |
+| Registered Assets resolved | `VERIFIED` | Existing `asset_ref` resolves through the verified Work Order path to `reliability_asset_registry` | No direct Overhaul-to-Asset inference; unresolved rows remain global only. |
+| Planned Duration | `DERIVED_SAFE` | `planned_finish_at - planned_start_at` when both exist | Timestamp interval only; not schedule adherence or delay. |
+| Actual Duration | `DERIVED_SAFE` | `actual_finish_at - actual_start_at` when both exist | Timestamp interval only; not efficiency or outage duration. |
+| Progress Value | `VERIFIED` | Raw `progress` value preserved from source | Scale and percentage meaning are unverified; no `%` suffix. |
+| Schedule Variance | `BUSINESS_SEMANTICS_REQUIRED` | Not implemented | Planned/actual boundaries, status rules, partial work, cancellation, timezone, and governance are unverified. |
+| Overhaul Completion | `BUSINESS_SEMANTICS_REQUIRED` | Not implemented | Raw lifecycle status is not mapped to completion. |
+| Inspection Number | `VERIFIED` | Presence of `unresolved_source_attributes.inspection_number` | Source attribute only; relationship to inspection records is unverified. |
+| Inspection Result | `DATA_NOT_AVAILABLE` | Not implemented | No verified inspection-result relation in the current contract. |
+| Performance Test | `BUSINESS_SEMANTICS_REQUIRED` | Presence of `unresolved_source_attributes.performance_test` | Source spelling/value is preserved; meaning and relation are unverified. |
+
 ## Evaluated but not exposed as decision KPIs
 
 | Candidate | Class | Missing evidence or boundary |

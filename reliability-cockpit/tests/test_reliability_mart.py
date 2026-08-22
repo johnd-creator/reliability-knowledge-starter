@@ -243,6 +243,88 @@ class ReliabilityMartApiTest(unittest.TestCase):
         self.assertEqual(error.exception.status_code, 503)
 
 
+class OverhaulSemanticsFixtureTest(unittest.TestCase):
+    """Synthetic Overhaul rows cover source and local relationship states."""
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.database = MartDatabase(MartDbConfig(dsn="sqlite+pysqlite:///:memory:"))
+        MartBase.metadata.create_all(cls.database.engine)
+        with Session(cls.database.engine) as session:
+            session.add_all([
+                AssetMasterMart(**_common(ASSET_A, "MXASSET"), source_asset_number="ASSET-A", description="Synthetic asset A", status="OPERATING", asset_type="PUMP", unit="UNIT-A", source_updated_at=NOW),
+                AssetMasterMart(**_common(TECHNICAL_ASSET, "MXASSET"), source_asset_number="TECHNICAL", description="Technical context", status="OPERATING", asset_type="COMPONENT", unit="UNIT-A", source_updated_at=NOW),
+                ReliabilityAssetRegistryMart(asset_ref=ASSET_A, source_asset_number="ASSET-A", site_code="BSR", organization_code="IP", registry_source="SYNTHETIC", snapshot_sha256="c" * 64, snapshot_row_count=1, snapshot_imported_at=NOW),
+                MaintenanceEventMart(**_common("maintenance:OH-WO", "MXWODETAIL"), id="OH-WO", equipment_id=ASSET_A, work_order_id="WO-RESOLVED", event_type="PM", status="COMP", actual_start=NOW, source_changed_at=NOW),
+                OverhaulEventMart(**(_common("oh:OH-RESOLVED", "IP_DOM_OH") | {"sources": {"maximo": {"wonum": "WO-SOURCE-A"}}}), source_record_id="OH-RESOLVED", source_number="OH-1", lifecycle_status="EKS-COMP", workorder_ref="WO-RESOLVED", asset_ref=ASSET_A, planned_start_at=NOW - timedelta(days=10), planned_finish_at=NOW - timedelta(days=5), actual_start_at=NOW - timedelta(days=9), actual_finish_at=NOW - timedelta(days=4), progress=45.28, source_created_at=NOW - timedelta(days=20), source_updated_at=NOW, unresolved_source_attributes={"inspection_number": "INS-1", "performance_test": "RAW"}),
+                OverhaulEventMart(**(_common("oh:OH-MISSING", "IP_DOM_OH") | {"sources": {"maximo": {"wonum": "WO-SOURCE-B"}}}), source_record_id="OH-MISSING", source_number="OH-2", lifecycle_status="OPEN", workorder_ref="WO-MISSING", asset_ref=None, planned_start_at=NOW),
+                OverhaulEventMart(**(_common("oh:OH-TECHNICAL", "IP_DOM_OH") | {"sources": {"maximo": {}}}), source_record_id="OH-TECHNICAL", source_number="OH-3", lifecycle_status=None, workorder_ref=None, asset_ref=TECHNICAL_ASSET, progress=None),
+            ])
+            session.commit()
+        cls.repository = MartQueryRepository(cls.database)
+
+    def test_overhaul_overview_separates_source_and_mart_resolution(self):
+        result = self.repository.overhaul_overview()
+        self.assertEqual(result["summary"]["overhaul_records"], 3)
+        self.assertEqual(result["summary"]["records_with_work_order"], 2)
+        self.assertEqual(result["summary"]["work_orders_resolved_in_mart"], 1)
+        self.assertEqual(result["summary"]["work_orders_unresolved_in_mart"], 1)
+        self.assertEqual(result["summary"]["work_order_source_missing"], 1)
+        self.assertEqual(result["summary"]["records_with_asset"], 2)
+        self.assertEqual(result["summary"]["asset_master_resolved"], 2)
+        self.assertEqual(result["summary"]["registered_assets_resolved"], 1)
+        self.assertEqual(result["summary"]["technical_non_registry"], 1)
+        self.assertEqual(result["summary"]["planned_duration_available"], 1)
+        self.assertEqual(result["summary"]["actual_duration_available"], 1)
+        self.assertEqual(result["summary"]["records_with_progress"], 1)
+        self.assertEqual(result["summary"]["inspection_number_present"], 1)
+        self.assertEqual(result["summary"]["performance_test_present"], 1)
+        self.assertEqual(result["evidence"]["schedule_variance"], "BUSINESS_SEMANTICS_REQUIRED")
+
+    def test_workspace_exposes_human_source_numbers_and_neutral_states(self):
+        resolved = self.repository.list_overhaul_workspace(source_work_order_number="WO-SOURCE-A").items
+        self.assertEqual(len(resolved), 1)
+        self.assertEqual(resolved[0].source_work_order_number, "WO-SOURCE-A")
+        self.assertEqual(resolved[0].work_order_resolution, "SOURCE_LINK_VERIFIED_AND_MART_RESOLVED")
+        self.assertEqual(resolved[0].asset_resolution, "ASSET_RESOLVED_REGISTERED")
+        self.assertEqual(resolved[0].source_asset_number, "ASSET-A")
+        unresolved = self.repository.list_overhaul_workspace(source_work_order_number="WO-SOURCE-B").items
+        self.assertEqual(unresolved[0].asset_resolution, "ASSET_UNRESOLVED")
+        missing = self.repository.list_overhaul_workspace(source_work_order_number="NO_MATCH")
+        self.assertEqual(missing.total, 0)
+        by_number = self.repository.list_overhaul_workspace(source_number="OH-2").items
+        self.assertEqual(len(by_number), 1)
+        self.assertEqual(by_number[0].source_number, "OH-2")
+
+
+class OverhaulApiTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        if not hasattr(OverhaulSemanticsFixtureTest, "database"):
+            OverhaulSemanticsFixtureTest.setUpClass()
+        cls.database = OverhaulSemanticsFixtureTest.database
+        cls.service = ReliabilityQueryService(MartQueryRepository(cls.database))
+
+    def test_overview_and_list_are_typed(self):
+        response = reliability_api.overhaul_overview(service=self.service)
+        self.assertEqual(response.scope.asset_relationship, "DERIVED_VIA_WORK_ORDER")
+        self.assertEqual(response.summary.overhaul_records, 3)
+        page = reliability_api.overhauls(source_work_order_number="WO-SOURCE-A", offset=0, limit=50, service=self.service)
+        self.assertEqual(page["meta"].total, 1)
+        self.assertEqual(page["items"][0].source_work_order_number, "WO-SOURCE-A")
+        self.assertEqual(page["items"][0].asset_resolution, "ASSET_RESOLVED_REGISTERED")
+
+    def test_empty_overview_and_mart_unavailable_boundary(self):
+        empty_db = MartDatabase(MartDbConfig(dsn="sqlite+pysqlite:///:memory:"))
+        MartBase.metadata.create_all(empty_db.engine)
+        response = reliability_api.overhaul_overview(service=ReliabilityQueryService(MartQueryRepository(empty_db)))
+        self.assertEqual(response.summary.overhaul_records, 0)
+        with patch("src.api.reliability.get_mart_database", side_effect=reliability_api.MartDatabaseConfigError("offline")):
+            with self.assertRaises(HTTPException) as error:
+                reliability_api._db()
+        self.assertEqual(error.exception.status_code, 503)
+
+
 class FmeaSemanticsFixtureTest(unittest.TestCase):
     """Synthetic FMEA evidence for identity, relationship, and raw-value boundaries."""
 

@@ -30,6 +30,10 @@ import {
 
 type Tab = "overview" | "timeline" | "maintenance" | "fmea" | "health" | "overhaul";
 
+function SourceStatus({ value }: { value: string | null | undefined }) {
+  return <span className="status-badge neutral">{value ?? "UNKNOWN"}</span>;
+}
+
 const tabs: Array<{ id: Tab; label: string }> = [
   { id: "overview", label: "Overview" },
   { id: "timeline", label: "Timeline" },
@@ -106,7 +110,7 @@ function RecentHealth({ rows }: { rows: AssetHealthView[] }) {
 
 function RecentOverhaul({ rows }: { rows: OverhaulView[] }) {
   if (rows.length === 0) return <EmptyState title="No recent Overhaul resolved to this Asset." />;
-  return <div className="asset-record-list">{rows.map((row) => <div className="asset-record" key={row.canonical_id}><div><strong>{row.source_number ?? row.source_record_id ?? "Overhaul"}</strong><small>{formatDate(row.actual_start_at ?? row.planned_start_at)} · {row.workorder_ref ?? "No Work Order reference"}</small></div><StatusBadge value={row.lifecycle_status} /></div>)}</div>;
+  return <div className="asset-record-list">{rows.map((row) => <div className="asset-record" key={row.canonical_id}><div><strong>{row.source_number ?? row.source_record_id ?? "Overhaul"}</strong><small>{formatDate(row.actual_start_at ?? row.planned_start_at)} · {row.source_work_order_number ?? "No Work Order number"}</small></div><SourceStatus value={row.lifecycle_status} /></div>)}</div>;
 }
 
 function TimelinePanel({ page, onChange }: { page: Page<TimelineView>; onChange: (offset: number) => void }) {
@@ -134,7 +138,7 @@ function HealthPanel({ page, onChange }: { page: Page<AssetHealthView>; onChange
 
 function OverhaulPanel({ page, onChange }: { page: Page<OverhaulView>; onChange: (offset: number) => void }) {
   if (page.items.length === 0) return <EmptyState title="No Overhaul records resolved to this Asset." detail="Overhauls without a proven Asset relationship remain visible only on the global Overhaul view." />;
-  return <><TableFrame minWidth={920}><table><thead><tr><th>Overhaul number</th><th>Status</th><th>Work Order</th><th>Planned dates</th><th>Actual dates</th><th>Progress</th></tr></thead><tbody>{page.items.map((row) => <tr key={row.canonical_id}><td><strong>{row.source_number ?? row.source_record_id ?? "—"}</strong></td><td><StatusBadge value={row.lifecycle_status} /></td><td>{row.workorder_ref ?? "—"}</td><td>{formatDate(row.planned_start_at)}<br />{formatDate(row.planned_finish_at)}</td><td>{formatDate(row.actual_start_at)}<br />{formatDate(row.actual_finish_at)}</td><td>{displayValue(row.progress)}</td></tr>)}</tbody></table></TableFrame><Pagination meta={page.meta} onChange={onChange} /></>;
+  return <><TableFrame minWidth={920}><table><thead><tr><th>Overhaul number</th><th>Source status</th><th>Work Order</th><th>Planned dates</th><th>Actual dates</th><th>Source Progress</th></tr></thead><tbody>{page.items.map((row) => <tr key={row.canonical_id}><td><strong>{row.source_number ?? row.source_record_id ?? "—"}</strong></td><td><SourceStatus value={row.lifecycle_status} /></td><td>{row.source_work_order_number ?? "Work Order identified"}</td><td>{formatDate(row.planned_start_at)}<br />{formatDate(row.planned_finish_at)}</td><td>{formatDate(row.actual_start_at)}<br />{formatDate(row.actual_finish_at)}</td><td>{displayValue(row.progress)}</td></tr>)}</tbody></table></TableFrame><Pagination meta={page.meta} onChange={onChange} /></>;
 }
 
 export default function AssetDetailPage({ params }: { params: Promise<{ canonicalId: string[] }> }) {

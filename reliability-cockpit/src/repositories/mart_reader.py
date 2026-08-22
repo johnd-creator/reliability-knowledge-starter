@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from typing import Any, TypeVar
 
-from sqlalchemy import Select, asc, case, desc, func, literal, select
+from sqlalchemy import Select, String, asc, case, cast, desc, func, literal, select
 
 from src.repositories.mart_models import (
     AssetHealthAssessmentMart,
@@ -34,6 +34,12 @@ def _raw_failure_code(column: Any) -> Any:
     """Read the approved source Failure Code value on PostgreSQL and SQLite."""
 
     return func.nullif(func.trim(column["maximo"]["failurecode"].as_string()), "")
+
+
+def _raw_work_order_number(column: Any) -> Any:
+    """Read the approved source Work Order number on PostgreSQL and SQLite."""
+
+    return func.nullif(func.trim(column["maximo"]["wonum"].as_string()), "")
 
 
 def _fmea_record_date(column: type[FmeaAssessmentMart]) -> Any:
@@ -531,6 +537,126 @@ class MartQueryRepository:
         with self.database.read_session() as session:
             return _page(session, statement, offset, limit)
 
+    def list_overhaul_workspace(
+        self,
+        *,
+        source_number: str | None = None,
+        asset_ref: str | None = None,
+        workorder_ref: str | None = None,
+        source_work_order_number: str | None = None,
+        lifecycle_status: str | None = None,
+        planned_from: datetime | None = None,
+        planned_to: datetime | None = None,
+        actual_from: datetime | None = None,
+        actual_to: datetime | None = None,
+        offset: int = 0,
+        limit: int = 50,
+        sort: str = "date_desc",
+    ) -> QueryPage:
+        """Return Overhaul rows with factual relationship projections.
+
+        The Asset relationship is never derived here.  ``asset_ref`` is the
+        already-projected result of the verified Work Order path; this query
+        only checks whether that reference resolves locally.
+        """
+
+        source_work_order = _raw_work_order_number(OverhaulEventMart.sources)
+        maintenance_work_orders = select(MaintenanceEventMart.work_order_id).where(
+            MaintenanceEventMart.site_code == SITE_CODE,
+            MaintenanceEventMart.organization_code == ORGANIZATION_CODE,
+            MaintenanceEventMart.work_order_id.is_not(None),
+        )
+        asset_master_refs = select(AssetMasterMart.canonical_id).where(
+            AssetMasterMart.site_code == SITE_CODE,
+            AssetMasterMart.organization_code == ORGANIZATION_CODE,
+        )
+        registry_refs = select(ReliabilityAssetRegistryMart.asset_ref).where(
+            ReliabilityAssetRegistryMart.site_code == SITE_CODE,
+            ReliabilityAssetRegistryMart.organization_code == ORGANIZATION_CODE,
+        )
+        workorder_resolution = case(
+            (OverhaulEventMart.workorder_ref.is_(None), literal("SOURCE_WORK_ORDER_MISSING")),
+            (OverhaulEventMart.workorder_ref.in_(maintenance_work_orders), literal("SOURCE_LINK_VERIFIED_AND_MART_RESOLVED")),
+            else_=literal("SOURCE_LINK_VERIFIED_BUT_MART_UNRESOLVED"),
+        )
+        asset_resolution = case(
+            (OverhaulEventMart.asset_ref.in_(registry_refs), literal("ASSET_RESOLVED_REGISTERED")),
+            (OverhaulEventMart.asset_ref.in_(asset_master_refs), literal("ASSET_RESOLVED_TECHNICAL_CONTEXT")),
+            else_=literal("ASSET_UNRESOLVED"),
+        )
+        date_column = func.coalesce(
+            OverhaulEventMart.actual_start_at,
+            OverhaulEventMart.planned_start_at,
+            OverhaulEventMart.source_updated_at,
+        )
+        columns = (
+            OverhaulEventMart.canonical_id,
+            OverhaulEventMart.contract_version,
+            OverhaulEventMart.source_record_id,
+            OverhaulEventMart.source_number,
+            OverhaulEventMart.lifecycle_status,
+            OverhaulEventMart.workorder_ref,
+            OverhaulEventMart.asset_ref,
+            OverhaulEventMart.site_code,
+            OverhaulEventMart.organization_code,
+            OverhaulEventMart.planned_start_at,
+            OverhaulEventMart.planned_finish_at,
+            OverhaulEventMart.actual_start_at,
+            OverhaulEventMart.actual_finish_at,
+            OverhaulEventMart.progress,
+            OverhaulEventMart.source_created_at,
+            OverhaulEventMart.source_updated_at,
+            OverhaulEventMart.unresolved_source_attributes,
+            OverhaulEventMart.sources,
+            ReliabilityAssetRegistryMart.source_asset_number.label("source_asset_number"),
+            AssetMasterMart.description.label("asset_description"),
+            source_work_order.label("source_work_order_number"),
+            workorder_resolution.label("work_order_resolution"),
+            asset_resolution.label("asset_resolution"),
+        )
+        statement = (
+            select(*columns)
+            .select_from(OverhaulEventMart)
+            .outerjoin(
+                AssetMasterMart,
+                (AssetMasterMart.canonical_id == OverhaulEventMart.asset_ref)
+                & (AssetMasterMart.site_code == SITE_CODE)
+                & (AssetMasterMart.organization_code == ORGANIZATION_CODE),
+            )
+            .outerjoin(
+                ReliabilityAssetRegistryMart,
+                (ReliabilityAssetRegistryMart.asset_ref == OverhaulEventMart.asset_ref)
+                & (ReliabilityAssetRegistryMart.site_code == SITE_CODE)
+                & (ReliabilityAssetRegistryMart.organization_code == ORGANIZATION_CODE),
+            )
+            .where(
+                OverhaulEventMart.site_code == SITE_CODE,
+                OverhaulEventMart.organization_code == ORGANIZATION_CODE,
+            )
+        )
+        if asset_ref:
+            statement = statement.where(OverhaulEventMart.asset_ref == asset_ref)
+        if workorder_ref:
+            statement = statement.where(OverhaulEventMart.workorder_ref == workorder_ref)
+        if source_number:
+            statement = statement.where(OverhaulEventMart.source_number.ilike(f"%{_contains(source_number)}%", escape="\\"))
+        if source_work_order_number:
+            statement = statement.where(source_work_order.ilike(f"%{_contains(source_work_order_number)}%", escape="\\"))
+        if lifecycle_status:
+            statement = statement.where(OverhaulEventMart.lifecycle_status == lifecycle_status)
+        if planned_from:
+            statement = statement.where(OverhaulEventMart.planned_start_at >= planned_from)
+        if planned_to:
+            statement = statement.where(OverhaulEventMart.planned_start_at <= planned_to)
+        if actual_from:
+            statement = statement.where(OverhaulEventMart.actual_start_at >= actual_from)
+        if actual_to:
+            statement = statement.where(OverhaulEventMart.actual_start_at <= actual_to)
+        order_column = OverhaulEventMart.lifecycle_status if sort == "status" else date_column
+        statement = statement.order_by(desc(order_column) if sort != "date_asc" else asc(order_column), asc(OverhaulEventMart.canonical_id))
+        with self.database.read_session() as session:
+            return _page_rows(session, statement, offset, limit)
+
     def integrity_summary(self) -> dict[str, int]:
         with self.database.read_session() as session:
             technical_asset_total = session.scalar(select(func.count(AssetMasterMart.canonical_id)).where(
@@ -817,6 +943,114 @@ class MartQueryRepository:
             "integrity": integrity,
             "window_start": window_start,
             "as_of": current,
+        }
+
+    def overhaul_overview(self) -> dict[str, object]:
+        """Return aggregate-only evidence for the controlled Overhaul population."""
+
+        scoped = (
+            OverhaulEventMart.site_code == SITE_CODE,
+            OverhaulEventMart.organization_code == ORGANIZATION_CODE,
+        )
+        maintenance_work_orders = select(MaintenanceEventMart.work_order_id).where(
+            MaintenanceEventMart.site_code == SITE_CODE,
+            MaintenanceEventMart.organization_code == ORGANIZATION_CODE,
+            MaintenanceEventMart.work_order_id.is_not(None),
+        )
+        asset_master_refs = select(AssetMasterMart.canonical_id).where(
+            AssetMasterMart.site_code == SITE_CODE,
+            AssetMasterMart.organization_code == ORGANIZATION_CODE,
+        )
+        registry_refs = select(ReliabilityAssetRegistryMart.asset_ref).where(
+            ReliabilityAssetRegistryMart.site_code == SITE_CODE,
+            ReliabilityAssetRegistryMart.organization_code == ORGANIZATION_CODE,
+        )
+        source_work_order = _raw_work_order_number(OverhaulEventMart.sources)
+        inspection_number = func.nullif(func.trim(OverhaulEventMart.unresolved_source_attributes["inspection_number"].as_string()), "")
+        performance_test = func.nullif(func.trim(OverhaulEventMart.unresolved_source_attributes["performance_test"].as_string()), "")
+        summary_statement = select(
+            select(func.count(OverhaulEventMart.canonical_id)).where(*scoped).scalar_subquery().label("overhaul_records"),
+            select(func.count(OverhaulEventMart.source_record_id)).where(*scoped).scalar_subquery().label("source_record_id_present"),
+            select(func.count(OverhaulEventMart.source_number)).where(*scoped).scalar_subquery().label("source_number_present"),
+            select(func.count(OverhaulEventMart.workorder_ref)).where(*scoped).scalar_subquery().label("records_with_work_order"),
+            select(func.count(OverhaulEventMart.workorder_ref).filter(OverhaulEventMart.workorder_ref.in_(maintenance_work_orders))).where(*scoped).scalar_subquery().label("work_orders_resolved_in_mart"),
+            select(func.count(source_work_order)).where(*scoped).scalar_subquery().label("source_work_order_number_available"),
+            select(func.count(OverhaulEventMart.asset_ref)).where(*scoped).scalar_subquery().label("records_with_asset"),
+            select(func.count(OverhaulEventMart.asset_ref).filter(OverhaulEventMart.asset_ref.in_(asset_master_refs))).where(*scoped).scalar_subquery().label("asset_master_resolved"),
+            select(func.count(OverhaulEventMart.asset_ref).filter(OverhaulEventMart.asset_ref.in_(registry_refs))).where(*scoped).scalar_subquery().label("registered_assets_resolved"),
+            select(func.count(OverhaulEventMart.asset_ref).filter(OverhaulEventMart.asset_ref.in_(asset_master_refs), OverhaulEventMart.asset_ref.not_in(registry_refs))).where(*scoped).scalar_subquery().label("technical_non_registry"),
+            select(func.count(OverhaulEventMart.planned_start_at)).where(*scoped).scalar_subquery().label("planned_start_present"),
+            select(func.count(OverhaulEventMart.planned_finish_at)).where(*scoped).scalar_subquery().label("planned_finish_present"),
+            select(func.count(OverhaulEventMart.actual_start_at)).where(*scoped).scalar_subquery().label("actual_start_present"),
+            select(func.count(OverhaulEventMart.actual_finish_at)).where(*scoped).scalar_subquery().label("actual_finish_present"),
+            select(func.count(OverhaulEventMart.planned_start_at).filter(OverhaulEventMart.planned_finish_at.is_not(None))).where(*scoped).scalar_subquery().label("planned_duration_available"),
+            select(func.count(OverhaulEventMart.actual_start_at).filter(OverhaulEventMart.actual_finish_at.is_not(None))).where(*scoped).scalar_subquery().label("actual_duration_available"),
+            select(func.count(func.nullif(cast(OverhaulEventMart.progress, String), "null"))).where(*scoped).scalar_subquery().label("records_with_progress"),
+            select(func.count(inspection_number)).where(*scoped).scalar_subquery().label("inspection_number_present"),
+            select(func.count(performance_test)).where(*scoped).scalar_subquery().label("performance_test_present"),
+        )
+        status_statement = select(
+            func.coalesce(OverhaulEventMart.lifecycle_status, "UNKNOWN").label("value"),
+            func.count(OverhaulEventMart.canonical_id).label("count"),
+        ).where(*scoped).group_by(OverhaulEventMart.lifecycle_status).order_by(asc(OverhaulEventMart.lifecycle_status))
+        with self.database.read_session() as session:
+            summary = session.execute(summary_statement).one()._mapping
+            statuses = session.execute(status_statement).all()
+
+        values = {key: int(value or 0) for key, value in summary.items()}
+        values["work_orders_unresolved_in_mart"] = values["records_with_work_order"] - values["work_orders_resolved_in_mart"]
+        values["work_order_source_missing"] = values["overhaul_records"] - values["records_with_work_order"]
+        values["asset_ref_absent"] = values["overhaul_records"] - values["records_with_asset"]
+        values["asset_refs_unresolved"] = values["overhaul_records"] - values["asset_master_resolved"]
+        values["technical_non_registry"] = max(values["technical_non_registry"], 0)
+        return {
+            "scope": {
+                "site_code": SITE_CODE,
+                "organization_code": ORGANIZATION_CODE,
+                "population": "CONTROLLED_MART_POPULATION",
+                "workorder_relationship": "DIRECT_VERIFIED",
+                "asset_relationship": "DERIVED_VIA_WORK_ORDER",
+                "interpretation": "OVERHAUL_RECORDS_NOT_PERFORMANCE_SCORE",
+            },
+            "summary": values,
+            "status_distribution": [{"value": row.value, "count": int(row.count)} for row in statuses],
+            "date_availability": {
+                "planned_start_present": values["planned_start_present"],
+                "planned_finish_present": values["planned_finish_present"],
+                "actual_start_present": values["actual_start_present"],
+                "actual_finish_present": values["actual_finish_present"],
+                "planned_duration_available": values["planned_duration_available"],
+                "actual_duration_available": values["actual_duration_available"],
+            },
+            "relationship_integrity": {
+                "workorder_refs_present": values["records_with_work_order"],
+                "workorder_refs_resolved_in_mart": values["work_orders_resolved_in_mart"],
+                "workorder_refs_unresolved_in_mart": values["work_orders_unresolved_in_mart"],
+                "workorder_source_missing": values["work_order_source_missing"],
+                "asset_refs_present": values["records_with_asset"],
+                "asset_refs_resolved_to_asset_master": values["asset_master_resolved"],
+                "registered_assets_resolved": values["registered_assets_resolved"],
+                "technical_non_registry": values["technical_non_registry"],
+                "asset_refs_unresolved": values["asset_refs_unresolved"],
+            },
+            "evidence": {
+                "overhaul_records": "VERIFIED",
+                "overhaul_number": "VERIFIED",
+                "workorder_source_relationship": "VERIFIED",
+                "workorder_mart_resolution": "VERIFIED",
+                "asset_derived_relationship": "VERIFIED",
+                "lifecycle_status": "VERIFIED",
+                "planned_duration": "DERIVED_SAFE",
+                "actual_duration": "DERIVED_SAFE",
+                "progress_value": "VERIFIED",
+                "progress_scale": "BUSINESS_SEMANTICS_REQUIRED",
+                "schedule_variance": "BUSINESS_SEMANTICS_REQUIRED",
+                "overhaul_completion": "BUSINESS_SEMANTICS_REQUIRED",
+                "inspection_number": "VERIFIED",
+                "inspection_relationship": "DATA_NOT_AVAILABLE",
+                "performance_test": "VERIFIED",
+                "performance_test_semantics": "BUSINESS_SEMANTICS_REQUIRED",
+            },
         }
 
     def rcfa_overview(self, *, as_of: datetime | None = None) -> dict[str, object]:

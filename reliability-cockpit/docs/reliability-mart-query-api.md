@@ -40,6 +40,7 @@ All routes are GET-only and use canonical reliability concepts:
 | `GET /v1/reliability/asset-health/overview` | Factual Asset Health population, raw status, relationship, and record-recency aggregates |
 | `GET /v1/reliability/fmea/overview` | Factual FMEA population, raw status/revision, relationship, Failure Code, and record-recency aggregates |
 | `GET /v1/reliability/rcfa/overview` | Global factual RCFA population, raw status/category/revision, and record-recency aggregates; relationships remain unresolved |
+| `GET /v1/reliability/overhauls/overview` | Factual Overhaul population, Work Order Mart resolution, Asset-path resolution, dates, progress availability, and raw status |
 | `GET /v1/reliability/assets/{canonical_id}` | Asset detail |
 | `GET /v1/reliability/assets/{canonical_id}/context` | Bounded asset context: maintenance, FMEA, health, and overhaul |
 | `GET /v1/reliability/assets/{canonical_id}/fmea` | Paginated FMEA assessments for an asset |
@@ -50,7 +51,7 @@ All routes are GET-only and use canonical reliability concepts:
 | `GET /v1/reliability/fmea` | Registry-scoped FMEA list with FMEA number, Asset number, source status, and source Failure Code filters |
 | `GET /v1/reliability/asset-health` | Registry-scoped Asset Health list with Asset number, description, status, and pagination filters |
 | `GET /v1/reliability/rcfa` | Global RCFA list with number, status, category, pagination, and no Asset/Work Order filters |
-| `GET /v1/reliability/overhauls` | Overhaul list and filters |
+| `GET /v1/reliability/overhauls` | Overhaul list with Overhaul Number, source Work Order number, lifecycle status, bounded filters, and relationship states |
 | `GET /v1/reliability/integrity` | Aggregate logical-reference health counts |
 
 List responses contain `items` and `meta` (`total`, `offset`, `limit`, and
@@ -99,6 +100,14 @@ assume `work_order_id` is unique. RCFA asset, location, and Work Order
 relationships are unresolved in Contract v1, so RCFA is not attached to an
 asset context or timeline. The context response reports
 `rcfa_relationship_status: UNRESOLVED`.
+
+Overhaul source Work Order identity is read from the approved
+`sources.maximo.wonum` value when present. The API exposes separate factual
+states for a source Work Order that is locally resolved, a source Work Order
+whose local Mart row is absent, and a missing source Work Order. The Asset
+link is never created by the query layer: an existing `asset_ref` is checked
+against `asset_master` and the Registry, reflecting the verified
+`IP_DOM_OH.wonum -> MXWODETAIL.wonum -> MXWODETAIL.assetnum` path.
 
 Asset context uses a fixed small section limit (five by default, capped at ten)
 and does not return full child history. Unresolved Overhaul rows remain

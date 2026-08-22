@@ -33,7 +33,7 @@ top bar, and the preference is retained locally in the browser.
 | `/fmea` | Factual FMEA assessment workspace; item-level details remain deferred |
 | `/rcfa` | Global factual RCFA workspace with explicit unresolved relationships |
 | `/asset-health` | Factual Asset Health assessment workspace without a numerical health score |
-| `/overhauls` | Overhaul list, including unresolved asset references |
+| `/overhauls` | Factual Overhaul execution workspace with Work Order resolution and derived Asset states |
 | `/data-quality` | Canonical reference resolution summary |
 
 The current operating scope is BSR / IP. NADI does not provide a site
@@ -59,7 +59,10 @@ column to RCFA through inference and does not allow an asset filter for RCFA.
 The UI uses neutral language: **Asset relationship not mapped**.
 
 Overhaul rows can also have no `asset_ref`. They remain visible and display
-**Asset unresolved** rather than inventing a link.
+**Asset not resolved through current Work Order context** rather than inventing
+a link. A Work Order source relationship and local Mart resolution are shown as
+separate facts. Planned/actual dates and Source Progress remain raw evidence;
+NADI does not derive schedule variance or completion KPIs.
 
 Data Quality reports resolved and unresolved asset/work-order references. An
 unresolved reference may point outside the bounded initial sample; it is not
