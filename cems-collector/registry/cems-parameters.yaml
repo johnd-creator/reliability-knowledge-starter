@@ -31,6 +31,17 @@
 # production — normalization.enabled stays false for every parameter so the
 # collector reproduces the production numbers (max deviation ~0.5%, from the
 # O2 value the production collector feeds its correction).
+#
+# Operator override (2026-08-20): NO, NO2, CO2, Flow are stored RAW
+# (value_final = value_raw) by request — their O2-reference correction and
+# Flow's span 0.6 are disabled below. Only SO2/NOx/PM keep span + O2
+# correction and Laju_alir keeps adjust=44.15625.
+#
+# Laju_alir raw values (~36) are CORRECT, not a decode error: register 3102
+# carries a span-scaled dimensionless transmitter output, and the
+# engineering value is value_final = raw x 44.15625 (≈ 1590 m3/s, matching
+# the production DAS). Register 3102 is shared with Flow, which decodes the
+# same ~36.x raw word. Do not "fix" value_raw — it records what the PLC sent.
 
 stacks:
   - stack_id: "1"
@@ -133,8 +144,8 @@ parameters:
       data_type: float32
     normalization:
       enabled: false
-    adjustment:
-      o2_reference: 7.0
+    adjustment:  # raw passthrough (operator override 2026-08-20)
+      o2_reference: null
       adjust: 1.0
       constant: 0.0
 
@@ -149,7 +160,8 @@ parameters:
       data_type: float32
     normalization:
       enabled: false
-    adjustment:
+    adjustment:  # raw ≈ 36 is the genuine span-scaled register content:
+      # final = raw x 44.15625 ≈ 1590 m3/s (matches production DAS)
       o2_reference: null
       adjust: 44.15625
       constant: 0.0
@@ -165,8 +177,8 @@ parameters:
       data_type: float32
     normalization:
       enabled: false
-    adjustment:
-      o2_reference: 7.0
+    adjustment:  # raw passthrough (operator override 2026-08-20)
+      o2_reference: null
       adjust: 1.0
       constant: 0.0
 
@@ -181,8 +193,8 @@ parameters:
       data_type: float32
     normalization:
       enabled: false
-    adjustment:
-      o2_reference: 7.0
+    adjustment:  # raw passthrough (operator override 2026-08-20)
+      o2_reference: null
       adjust: 1.0
       constant: 0.0
 
@@ -215,9 +227,9 @@ parameters:
       data_type: float32
     normalization:
       enabled: false
-    adjustment:
-      o2_reference: 7.0
-      adjust: 0.6
+    adjustment:  # raw passthrough (operator override 2026-08-20; production used span 0.6 + O2 ref 7%)
+      o2_reference: null
+      adjust: 1.0
       constant: 0.0
 
   - code: Opacity

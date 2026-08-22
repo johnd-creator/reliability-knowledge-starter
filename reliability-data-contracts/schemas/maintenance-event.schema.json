@@ -2,10 +2,12 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://reliability-data-contracts/schemas/maintenance-event.schema.json",
   "title": "MaintenanceEvent",
-  "description": "Vendor-neutral maintenance execution event, derived from work order actuals. A WorkOrder is the planning/scheduling document; a MaintenanceEvent captures what actually happened on the equipment — actual start/finish, realized duration, labor hours, and downtime. Derived from mxwodetail actual fields (site BSR).",
+  "description": "Vendor-neutral maintenance execution event, also used as the MX-007R canonical maintenance_event contract. Legacy fields remain compatible; v1 provenance and evidence are optional during migration.",
   "type": "object",
   "required": ["id", "equipment_id"],
   "properties": {
+    "canonical_id": {"type": ["string", "null"], "description": "NADI-owned stable event identity."},
+    "contract_version": {"type": ["string", "null"], "const": "1.0"},
     "id": {
       "type": "string",
       "description": "Stable event identifier (typically the originating work order id)"
@@ -114,6 +116,38 @@
           }
         }
       }
-    }
+    },
+    "provenance": {
+      "type": ["object", "null"],
+      "required": ["source_system", "source_object", "source_record_id"],
+      "properties": {
+        "source_system": {"const": "MAXIMO"},
+        "source_application": {"type": ["string", "null"]},
+        "source_object": {"type": "string"},
+        "source_record_id": {"type": "string"},
+        "source_number": {"type": ["string", "null"]},
+        "source_site": {"type": ["string", "null"]},
+        "source_organization": {"type": ["string", "null"]},
+        "source_created_at": {"type": ["string", "null"], "format": "date-time"},
+        "source_updated_at": {"type": ["string", "null"], "format": "date-time"},
+        "ingested_at": {"type": ["string", "null"], "format": "date-time"}
+      },
+      "additionalProperties": false
+    },
+    "relationship_evidence": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["status"],
+        "properties": {
+          "status": {"enum": ["DIRECT_VERIFIED", "DERIVED_VERIFIED_PATH", "UNRESOLVED", "DEFERRED"]},
+          "path": {"type": "array", "items": {"type": "string"}},
+          "notes": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "site_code": {"type": ["string", "null"]},
+    "organization_code": {"type": ["string", "null"]}
   }
 }

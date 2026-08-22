@@ -14,6 +14,7 @@ from pydantic import BaseModel
 from src.repositories import get_database
 from src.repositories.database import Database
 from src.repositories.store import CockpitStore
+from src.api.reliability import router as reliability_router
 
 LOG = logging.getLogger(__name__)
 
@@ -41,6 +42,16 @@ class WorkOrderView(BaseModel):
     reported_at: str | None = None
     downtime_hours: float | None = None
     failure_code: str | None = None
+
+
+class WorkOrderPage(BaseModel):
+    """Bounded work-order page; the browser never receives the whole table."""
+
+    items: list[WorkOrderView]
+    total: int
+    offset: int
+    limit: int
+    has_more: bool
 
 
 class ReliabilityKpiView(BaseModel):
@@ -116,14 +127,22 @@ def create_app() -> FastAPI:
             downtime_total_hours=i.downtime_total_hours,
         )
 
-    @app.get("/work-orders", response_model=list[WorkOrderView], tags=["work-orders"])
+    @app.get("/work-orders", response_model=WorkOrderPage, tags=["work-orders"])
     def list_work_orders(
         equipment_id: str | None = None,
-        limit: int = Query(100, ge=1, le=1000),
+        offset: int = Query(0, ge=0),
+        limit: int = Query(50, ge=1, le=200),
         store: CockpitStore = Depends(_store),
-    ) -> list[WorkOrderView]:
-        items = store.list_work_orders(equipment_id=equipment_id, limit=limit)
-        return [
+        status: str | None = None,
+    ) -> WorkOrderPage:
+        count_kwargs = {"equipment_id": equipment_id}
+        list_kwargs = {"equipment_id": equipment_id, "offset": offset, "limit": limit}
+        if status:
+            count_kwargs["status"] = status
+            list_kwargs["status"] = status
+        total = store.count_work_orders(**count_kwargs)
+        items = store.list_work_orders(**list_kwargs)
+        views = [
             WorkOrderView(
                 id=i.id,
                 equipment_id=i.equipment_id,
@@ -136,6 +155,17 @@ def create_app() -> FastAPI:
             )
             for i in items
         ]
+        return WorkOrderPage(
+            items=views,
+            total=total,
+            offset=offset,
+            limit=limit,
+            has_more=offset + len(views) < total,
+        )
+
+    @app.get("/work-orders/statuses", response_model=list[str], tags=["work-orders"])
+    def list_work_order_statuses(store: CockpitStore = Depends(_store)) -> list[str]:
+        return store.list_work_order_statuses()
 
     @app.get("/kpis/{equipment_id}/{metric}", response_model=ReliabilityKpiView, tags=["kpis"])
     def get_kpi(equipment_id: str, metric: str, store: CockpitStore = Depends(_store)) -> ReliabilityKpiView:
@@ -167,4 +197,9 @@ def create_app() -> FastAPI:
                 rows_seen=row.rows_seen,
             )
 
+    # FastAPI's installed version inserts an internal ``_IncludedRouter``
+    # sentinel when ``include_router`` is called.  The legacy test/helpers
+    # iterate ``app.routes`` and expect concrete routes, so extend the app
+    # router with the already-prefixed, read-only routes directly.
+    app.router.routes.extend(reliability_router.routes)
     return app

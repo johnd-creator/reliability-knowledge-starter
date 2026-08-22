@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reliability-data-contracts/schemas/asset-master.schema.json",
+  "title": "NADI Asset Master v1",
+  "description": "Canonical asset identity for the NADI Reliability Mart. Maximo identifiers remain under sources.maximo.",
+  "type": "object",
+  "required": ["canonical_id", "contract_version", "provenance"],
+  "properties": {
+    "canonical_id": {"type": "string", "description": "Organization-owned stable ID; never a mutable description."},
+    "contract_version": {"const": "1.0"},
+    "source_asset_number": {"type": ["string", "null"]},
+    "description": {"type": ["string", "null"]},
+    "status": {"type": ["string", "null"]},
+    "location_ref": {"type": ["string", "null"]},
+    "parent_asset_ref": {"type": ["string", "null"]},
+    "site_code": {"type": ["string", "null"]},
+    "organization_code": {"type": ["string", "null"]},
+    "asset_type": {"type": ["string", "null"]},
+    "plant": {"type": ["string", "null"]},
+    "unit": {"type": ["string", "null"]},
+    "criticality": {"type": ["integer", "number", "string", "null"]},
+    "source_updated_at": {"type": ["string", "null"], "format": "date-time"},
+    "provenance": {"$ref": "#/$defs/provenance"},
+    "relationship_evidence": {"$ref": "#/$defs/relationshipEvidence"},
+    "sources": {"$ref": "#/$defs/sources"}
+  },
+  "$defs": {
+    "provenance": {"type": "object", "required": ["source_system", "source_object", "source_record_id"], "properties": {
+      "source_system": {"const": "MAXIMO"}, "source_application": {"type": ["string", "null"]},
+      "source_object": {"type": "string"}, "source_record_id": {"type": "string"},
+      "source_number": {"type": ["string", "null"]}, "source_site": {"type": ["string", "null"]},
+      "source_organization": {"type": ["string", "null"]}, "source_created_at": {"type": ["string", "null"], "format": "date-time"},
+      "source_updated_at": {"type": ["string", "null"], "format": "date-time"}, "ingested_at": {"type": ["string", "null"], "format": "date-time"}
+    }, "additionalProperties": false},
+    "relationshipEvidence": {"type": "object", "additionalProperties": {"type": "object", "required": ["status"], "properties": {
+      "status": {"enum": ["DIRECT_VERIFIED", "DERIVED_VERIFIED_PATH", "UNRESOLVED", "DEFERRED"]},
+      "path": {"type": "array", "items": {"type": "string"}}, "notes": {"type": "string"}
+    }, "additionalProperties": false}},
+    "sources": {"type": "object", "properties": {"maximo": {"type": ["object", "null"], "properties": {
+      "object_structure": {"type": ["string", "null"]}, "assetnum": {"type": ["string", "null"]}, "assetid": {"type": ["string", "integer", "null"]},
+      "description": {"type": ["string", "null"]}, "location": {"type": ["string", "null"]}, "siteid": {"type": ["string", "null"]}, "orgid": {"type": ["string", "null"]},
+      "status": {"type": ["string", "null"]}, "assettype": {"type": ["string", "null"]}, "plant": {"type": ["string", "null"]}, "eq11": {"type": ["string", "null"]}, "parent": {"type": ["string", "null"]}, "changedate": {"type": ["string", "null"]}
+    }, "additionalProperties": false}}, "additionalProperties": false}
+  }
+}

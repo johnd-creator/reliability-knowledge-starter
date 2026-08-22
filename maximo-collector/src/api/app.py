@@ -19,11 +19,24 @@ from src.adapters.maximo.mappers import (
     service_request_from_payload,
     work_order_from_payload,
 )
+from src.adapters.maximo.oslc_client import ASSET_DETAIL_FIELDS
 from src.config import MaximoConfig
 from src.repositories import models as orm
 from src.repositories.database import Database, get_database
 from src.repositories.store import CollectorStore
 from src.services.sync import ObjectSyncConfig, SyncService
+from src.api.data_explorer import router as data_explorer_router
+
+WORK_ORDER_SELECT = (
+    "wonum", "workorderid", "assetnum", "location", "status", "status_description",
+    "worktype", "woclass", "description", "reportdate", "changedate", "statusdate",
+    "schedstart", "schedfinish", "targcompdate", "estdur", "downtime", "wopriority",
+    "wopriority_description", "reportedby", "supervisor", "lead", "failurecode", "istask",
+    "pctaskid", "haschildren", "estlabcost", "estmatcost", "actlabcost", "actmatcost",
+    "actlabhrs", "siteid", "seksi", "bu", "jumlahhidup", "jumlahmati", "luasareatanam",
+)
+PERSON_SELECT = ("personid", "displayname", "firstname", "status", "statusdate", "locationorg")
+ASSET_SELECT = ASSET_DETAIL_FIELDS
 
 # object_structure -> (entity_name, mapper, watermark_field, order_by, changed_column)
 OBJECTS: dict[str, dict[str, Any]] = {
@@ -34,7 +47,7 @@ OBJECTS: dict[str, dict[str, Any]] = {
         entity="equipment", mapper=equipment_from_payload,
         watermark="changedate", order_by="-changedate", changed_column="source_changed_at",
         orm=orm.EquipmentOrm, scope='siteid="BSR"', compare_column="source_changed_at",
-        required_field="eq11",
+        required_field="eq11", select=ASSET_SELECT,
     ),
     "mxasset": dict(
         entity="equipment", mapper=equipment_from_payload,
@@ -44,9 +57,11 @@ OBJECTS: dict[str, dict[str, Any]] = {
     ),
     "mxwodetail": dict(
         entity="work_order", mapper=work_order_from_payload,
-        watermark="changedate", order_by="-changedate", changed_column="source_changed_at",
+        watermark="changedate", order_by=None, changed_column="source_changed_at",
         orm=orm.WorkOrderOrm, scope='siteid="BSR"', compare_column="source_changed_at",
-        prefix_field="wonum",
+        prefix_field="wonum", select=WORK_ORDER_SELECT, batch_size=100, page_size=25,
+        prefix_query=False,
+        watermark_query=False,
     ),
     "mxapisr": dict(
         entity="service_request", mapper=service_request_from_payload,
@@ -57,6 +72,7 @@ OBJECTS: dict[str, dict[str, Any]] = {
         entity="person", mapper=person_from_payload,
         watermark="statusdate", order_by="-statusdate", changed_column="status_changed_at",
         orm=orm.PersonOrm, scope='locationorg="IP"', compare_column="status_changed_at", batch_size=100,
+        select=PERSON_SELECT,
     ),
     "mxitem": dict(
         entity="item", mapper=item_from_payload,
@@ -103,6 +119,11 @@ def sync_config_for(object_structure: str) -> ObjectSyncConfig:
             (spec["required_field"], runtime_config.equipment_unit),
         ) if spec.get("required_field") else (),
         batch_size=spec.get("batch_size", 1),
+        select=spec.get("select", ()),
+        page_size=spec.get("page_size"),
+        max_pages=spec.get("max_pages", 1000),
+        prefix_query=spec.get("prefix_query", True),
+        watermark_query=spec.get("watermark_query", True),
     )
 
 
@@ -136,6 +157,7 @@ def _serialize(row: Any) -> dict:
 
 def create_app() -> FastAPI:
     app = FastAPI(title="Maximo Collector API", version="0.1.0")
+    app.include_router(data_explorer_router)
     runtime_config = MaximoConfig.from_environment()
     wo_prefixes = runtime_config.wo_prefixes
     equipment_unit = runtime_config.equipment_unit
@@ -315,6 +337,9 @@ def create_app() -> FastAPI:
             "skipped": stats.skipped,
             "errors": stats.errors,
             "watermark": _iso(stats.watermark),
+            "complete": stats.complete,
+            "pagination_error": stats.pagination_error,
+            "duplicate_ids": stats.duplicate_ids,
         }
 
     return app

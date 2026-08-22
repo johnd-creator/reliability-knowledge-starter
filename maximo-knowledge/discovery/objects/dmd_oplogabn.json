@@ -1,0 +1,142 @@
+{
+  "system": "maximo",
+  "object_structure": "DMD_OPLOGABN",
+  "resource": "dmdoplogabn",
+  "status": "verified",
+  "access": "http_200",
+  "endpoint": "/oslc/os/DMD_OPLOGABN?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+  "primary_key": {
+    "preferred": null,
+    "candidates": [],
+    "excluded": [
+      {
+        "field": "dmd_logsheet_collectionref",
+        "role": "COLLECTION_REFERENCE",
+        "reason": "scope or relationship field is not record identity"
+      },
+      {
+        "field": "dmd_lap_counter_collectionref",
+        "role": "COLLECTION_REFERENCE",
+        "reason": "scope or relationship field is not record identity"
+      },
+      {
+        "field": "dmd_oplogbook_entry_collectionref",
+        "role": "COLLECTION_REFERENCE",
+        "reason": "scope or relationship field is not record identity"
+      }
+    ]
+  },
+  "field_candidates": [],
+  "important_fields": [
+    "dmd_logsheet_collectionref",
+    "dmd_lap_counter_collectionref",
+    "dmd_oplogbook_entry_collectionref"
+  ],
+  "field_types": {
+    "dmd_logsheet_collectionref": "string",
+    "dmd_lap_counter_collectionref": "string",
+    "dmd_oplogbook_entry_collectionref": "string"
+  },
+  "field_roles": {
+    "dmd_logsheet_collectionref": [
+      "COLLECTION_REFERENCE"
+    ],
+    "dmd_lap_counter_collectionref": [
+      "COLLECTION_REFERENCE"
+    ],
+    "dmd_oplogbook_entry_collectionref": [
+      "COLLECTION_REFERENCE"
+    ]
+  },
+  "role_evidence": [
+    {
+      "field": "dmd_logsheet_collectionref",
+      "roles": [
+        "COLLECTION_REFERENCE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "dmd_lap_counter_collectionref",
+      "roles": [
+        "COLLECTION_REFERENCE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "dmd_oplogbook_entry_collectionref",
+      "roles": [
+        "COLLECTION_REFERENCE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    }
+  ],
+  "metadata_fields": [
+    "_rowstamp",
+    "rdf:about"
+  ],
+  "pagination": {
+    "total_count": null,
+    "next_page": true,
+    "prev_page": false
+  },
+  "sample": {
+    "dmd_logsheet_collectionref": "<string>",
+    "dmd_lap_counter_collectionref": "<string>",
+    "dmd_oplogbook_entry_collectionref": "<string>"
+  },
+  "use_cases": [],
+  "relationships": [],
+  "notes": [
+    "query shape maxitems_select_href hit the response cap",
+    "inline business member used; no detail GET was necessary",
+    "catalog returned no member names; using documented seed",
+    "catalog selection used explicit MX-006B allowlisted targets"
+  ],
+  "verified_at": "2026-08-21T04:01:37.102280+00:00",
+  "scope": {
+    "field": "siteid",
+    "value": "BSR",
+    "status": "PRIOR_LIVE_QUERY",
+    "evidence": "MX-006R used this BSR-scoped clause and received a bounded response; detail field evidence remains required."
+  },
+  "detail_dereference": {
+    "attempted": false,
+    "collection_records": 1,
+    "detail_records": 0,
+    "maximum_dereference_depth": 1,
+    "pagination_followed": false,
+    "query_shape_attempts": [
+      {
+        "name": "maxitems_select_href",
+        "endpoint": "/oslc/os/DMD_OPLOGABN?_maxitems=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+        "evidence": "MX-006B bounded collection shape",
+        "result": "RESPONSE_CAP"
+      },
+      {
+        "name": "paged_select_href",
+        "endpoint": "/oslc/os/DMD_OPLOGABN?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+        "evidence": "maximo-collector verified oslc.paging/oslc.pageSize shape",
+        "result": "HTTP 200"
+      }
+    ],
+    "response_cap": true,
+    "status": "INLINE_BUSINESS_RECORD",
+    "fields": [
+      "dmd_logsheet_collectionref",
+      "dmd_lap_counter_collectionref",
+      "dmd_oplogbook_entry_collectionref"
+    ],
+    "field_types": {
+      "dmd_logsheet_collectionref": "string",
+      "dmd_lap_counter_collectionref": "string",
+      "dmd_oplogbook_entry_collectionref": "string"
+    },
+    "metadata_fields": [
+      "_rowstamp",
+      "rdf:about"
+    ]
+  },
+  "http_diagnostics": {},
+  "catalog_source": "seed-fallback"
+}

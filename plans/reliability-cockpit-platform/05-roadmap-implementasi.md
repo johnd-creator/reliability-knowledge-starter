@@ -121,6 +121,11 @@ Exit criteria:
 
 ## Milestone 4 — Cockpit ingestion dan observability
 
+Current boundary: **Maximo Collector → Cockpit: IMPLEMENTED**. PI Collector API
+and CEMS Collector API are **VERIFIED**, while **PI → Cockpit projection** and
+**CEMS → Cockpit projection** remain **PENDING**. The current Cockpit worker does
+not ingest all configurable collector APIs.
+
 | ID | Pri | Size | Task |
 |---|---|---:|---|
 | ING-001 | P0 | M | Selaraskan cockpit CLI dengan `CollectorClient` Maximo |
@@ -299,9 +304,9 @@ Legenda: **DONE** berarti artefak dan validasi lokal ada; **PARTIAL** berarti fo
 
 | Milestone | DONE | PARTIAL | BLOCKED |
 |---|---|---|---|
-| M0 | ARCH-001, ARCH-002, UX-001 (dokumentasi traceability) | ARCH-003, DATA-001, DATA-003 | DATA-002 (tier PI dan benchmark owner engineering) |
+| M0 | ARCH-001, ARCH-002, ARCH-003 collector API audit, DATA-001 registry reconciliation, UX-001 (dokumentasi traceability) | DATA-003 (business definition WO) | DATA-002 hanya P0/P1/benchmark; baseline PI collection sudah verified dan tidak diblokir oleh tier |
 | M1 | PLAT-001..008: Dockerfile non-root, Compose, init, env/runbook, dev port override | cold-start/restart dengan Docker image dan source nyata | — |
-| M2 | MXR-001 (dua cadence + SIGTERM), CER-001 (aggregation daemon + SIGTERM) | MXR-002..004, CER-002..005; scheduler Cockpit berjalan tetapi tanpa distributed lock/run audit | PIR-001..006 serta MXR-005/CER manual-trigger auth: perlu policy, lease, dan PI verified |
+| M2 | MXR-001 (dua cadence + SIGTERM), CER-001 (aggregation daemon + SIGTERM), PI registry/API/data collection verified | MXR-002..004, CER-002..005, PIR-001..006; scheduler Cockpit berjalan tetapi tanpa distributed lock/run audit | MXR-005/CER manual-trigger auth perlu policy; PI tier is not a source-access blocker |
 | M3 | CON-001 (schema workflow), bagian CON-003/CON-004, validasi 19 schema | CON-002, CON-003..005 karena schema/mapping/fixture belum lengkap | IDN-001..003 tanpa evidence mapping verified |
 | M4 | ING-001, ING-002 (collector paging), ING-007 | ING-005 | ING-003/004/006/008: read model PI/CEMS/status belum dibangun |
 | M5 | — | DOM-007 memakai KPI yang telah ada | DOM-001..006/008: formula, threshold, mapping, dan workflow approval belum ada |

@@ -18,6 +18,7 @@ docker compose up -d postgres # Postgres on :5434
 mxcollector init-db
 mxcollector sync              # WO/SR and operational master data
 mxcollector sync mxapiasset   # explicit asset baseline/status refresh
+mxcollector backfill          # cursor-independent, idempotent BSR WO traversal
 mxcollector diagnose master-data # GET-only probe for Persons, Items, Labor
 mxcollector serve             # http://127.0.0.1:8002 (+ /docs)
 ```
@@ -26,7 +27,16 @@ The master-data sync uses verified scopes: Persons `locationorg="IP"`, Labor
 `worksite="BSR"`, and Items `site="BSR"`. Person, Item, and Labor rows are
 written in batches to the local Postgres store. If the diagnostic reports
 `mxitem: zero_rows`, do not broaden the query by guesswork; verify the Item
-object's live site/item-set scope in `maximo-knowledge` first.
+object’s live site/item-set scope in `maximo-knowledge` first.
+
+`mxcollector backfill` never advances the incremental `mxwodetail` cursor. It
+uses the verified `siteid="BSR"` scope, follows Maximo’s server-provided
+`oslc:nextPage`, and returns a non-zero partial result when its configurable
+page cap is reached. A rerun is safe because work orders are upserted by
+`wonum`; do not treat a page-cap result as complete. The legacy `like`
+wildcard predicate is not used because this Maximo instance returns
+`BMXAA8744E` for it (and for the unsupported incremental date comparator on
+`mxwodetail`).
 
 The dashboard is a separate Next.js process:
 

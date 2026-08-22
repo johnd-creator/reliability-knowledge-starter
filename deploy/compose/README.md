@@ -1,20 +1,42 @@
 # Reliability Cockpit platform Compose
 
-This Compose stack starts the three collectors concurrently while keeping their
-databases isolated: Maximo/CEMS use Postgres and PI uses TimescaleDB. The
-Cockpit reads collector APIs only; it has no Maximo, PI, or PLC credential.
+The platform has two deliberately separate deployment modes. The Cockpit always
+reads collector APIs only; it has no Maximo, PI, or PLC credential.
 
-## First start
+## Mode 1 — external collectors (default for an existing local deployment)
 
-1. Copy `.env.platform.example` to `.env.platform` and set passwords plus the
-   collector-only source configuration.
-2. Start the production-shaped local stack:
+Use this mode when Maximo, PI, and CEMS collectors already run on the host or
+elsewhere. It creates **only** Cockpit's local database/API/worker/web and
+never starts a source collector, preventing duplicate source polling. The
+current Cockpit worker ingests Maximo collector resources only; PI and CEMS API
+bases are configurable, but their Cockpit projections remain pending.
+
+1. Copy `.env.platform.example` to `.env.platform`.
+2. Set `COCKPIT_DB_PASSWORD` and the three `*_COLLECTOR_API_BASE` values.
+   For host-local collector APIs from Docker on Linux, use
+   `http://host.docker.internal:800{1,2,3}`; the file supplies the required
+   `host-gateway` mapping.
+3. Start external mode:
 
    ```bash
-   docker compose --env-file .env.platform up --build -d
+   docker compose --env-file .env.platform -f compose.external.yaml up --build -d
    ```
 
-3. For development ports for the internal APIs, add `-f compose.dev.yaml`.
+## Mode 2 — managed collectors
+
+Use this only when no existing worker polls the same source. `compose.yaml`
+starts isolated Maximo/CEMS Postgres and their collector workers/APIs plus the
+PI TimescaleDB, init, and API services. It does **not** define a `pi-worker`;
+managed mode must not be described as running PI collection. It requires the
+source-only environment names exactly as implemented:
+`CEMS_MODBUS_HOST`, `CEMS_MODBUS_PORT`, `PI_WEB_API_BASE_URL`, and one valid
+Maximo authentication mode (`login`, `token`, or `cookie`).
+
+```bash
+docker compose --env-file .env.platform up --build -d
+```
+
+For development ports for managed internal APIs, add `-f compose.dev.yaml`.
 
 Only the Cockpit web port is published by default. Databases are never
 published. Attach source-network routes/firewall policy outside this file; do
@@ -25,9 +47,11 @@ not put a production Maximo, PI, or PLC endpoint on a public Docker network.
 | Service | Responsibility |
 | --- | --- |
 | `maximo-worker` | scheduled GET-only delta sync; operational data is frequent, asset master data is slow |
-| `pi-api` | serves the existing PI collector store; interval/tier worker remains an explicit deployment decision |
+| `pi-api` | serves the existing PI collector store; `pi-init`/`pi-api` are present in managed Compose, but `pi-worker` is not |
 | `cems-worker` / `cems-aggregator` | FC03/FC04 polling and separate completed-window aggregation |
-| `cockpit-worker` | pulls `maximo-api`, then derives KPIs; never accesses source systems |
+| `cockpit-worker` | currently ingests Maximo collector resources and derives KPIs; PI/CEMS API bases are configurable, but their projections are pending |
 
-PI registry loading and collection profiles are deliberately not auto-started
-until verified PI WebIds and P0/P1 sampling policy are approved. See plan 02.
+PI baseline collection uses every registry record with `status: verified` and
+`stream_status: ok`; P0/P1 selects priority/cadence/dashboard use only and is
+not an access blocker. Do not start managed PI collection if its external
+worker is already active.

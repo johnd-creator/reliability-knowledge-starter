@@ -1,0 +1,680 @@
+{
+  "system": "maximo",
+  "object_structure": "IP_DOM_OH",
+  "resource": "ipdomoh",
+  "status": "verified",
+  "access": "http_200",
+  "endpoint": "/oslc/os/IP_DOM_OH?_maxitems=1&oslc.where=siteid%3D%22BSR%22",
+  "primary_key": {
+    "preferred": {
+      "field": "domid",
+      "confidence": "CANDIDATE",
+      "reason": "resource-specific identity preference"
+    },
+    "candidates": [
+      {
+        "field": "domid",
+        "confidence": "CANDIDATE",
+        "reason": "resource-specific identity preference"
+      },
+      {
+        "field": "domohnum",
+        "confidence": "CANDIDATE",
+        "reason": "resource-specific identity preference"
+      }
+    ],
+    "excluded": [
+      {
+        "field": "wonum",
+        "role": "WORKORDER_REFERENCE",
+        "reason": "scope or relationship field is not record identity"
+      },
+      {
+        "field": "orgid",
+        "role": "SCOPE_ORGANIZATION",
+        "reason": "scope or relationship field is not record identity"
+      },
+      {
+        "field": "siteid",
+        "role": "SCOPE_SITE",
+        "reason": "scope or relationship field is not record identity"
+      },
+      {
+        "field": "inspeksinum",
+        "role": "INSPECTION_REFERENCE",
+        "reason": "scope or relationship field is not record identity"
+      },
+      {
+        "field": "changedate",
+        "role": "TIMESTAMP",
+        "reason": "scope or relationship field is not record identity"
+      },
+      {
+        "field": "createdate",
+        "role": "TIMESTAMP",
+        "reason": "scope or relationship field is not record identity"
+      }
+    ]
+  },
+  "field_candidates": [
+    "domid",
+    "domohnum"
+  ],
+  "important_fields": [
+    "attach_notulen",
+    "status",
+    "berita_acara_serahterima",
+    "dur_actual_oh",
+    "changeby",
+    "siklus",
+    "wonum",
+    "domohnum",
+    "orgid",
+    "absensi",
+    "laporan_evaluasi",
+    "domid",
+    "pic",
+    "dur_oh",
+    "otg_leader",
+    "tgl_actual_mulai",
+    "laporan_teknik",
+    "createby",
+    "dokumen_rekomendasi",
+    "rencana_beban",
+    "siteid",
+    "inspeksinum",
+    "pic_description",
+    "description",
+    "tgl_selesai",
+    "realisasi_scope",
+    "jumlahworekom",
+    "mesin",
+    "jumlah_mitra",
+    "perfomance_test",
+    "progress",
+    "tgl_mulai",
+    "berita_acara_syncron",
+    "notulensi",
+    "siklus_description",
+    "prefixes",
+    "attach_absensi",
+    "tgl_actual_selesai",
+    "rencana_scope",
+    "changedate",
+    "status_description",
+    "createdate",
+    "realisasi_cost"
+  ],
+  "field_types": {
+    "status": "string",
+    "wonum": "string",
+    "domohnum": "string",
+    "orgid": "string",
+    "domid": "integer",
+    "tgl_actual_mulai": "datetime",
+    "siteid": "string",
+    "inspeksinum": "string",
+    "description": "string",
+    "tgl_selesai": "datetime",
+    "progress": "number",
+    "tgl_mulai": "datetime",
+    "tgl_actual_selesai": "datetime",
+    "changedate": "datetime",
+    "createdate": "datetime",
+    "realisasi_cost": "number"
+  },
+  "metadata_fields": [
+    "rdf:about",
+    "_rowstamp"
+  ],
+  "pagination": {
+    "single_record_via": "same-origin resource href; no next page followed"
+  },
+  "sample": {
+    "status": "<string>",
+    "wonum": "<string>",
+    "domohnum": "<string>",
+    "orgid": "<string>",
+    "domid": "<integer>",
+    "tgl_actual_mulai": "<datetime>",
+    "siteid": "<string>",
+    "inspeksinum": "<string>",
+    "tgl_selesai": "<datetime>",
+    "progress": "<number>",
+    "tgl_mulai": "<datetime>",
+    "changedate": "<datetime>",
+    "createdate": "<datetime>",
+    "realisasi_cost": "<number>"
+  },
+  "use_cases": [],
+  "relationships": [
+    "site: siteid (VERIFIED field evidence)",
+    "organization: orgid (VERIFIED field evidence)",
+    "workorder: wonum (VERIFIED field evidence)",
+    "status: status (VERIFIED field evidence)",
+    "timestamp: changedate, createdate (VERIFIED field evidence)"
+  ],
+  "notes": [
+    "MX-006B first bounded detail run: collection HTTP 200 plus one same-origin detail HTTP 200; no raw values persisted.",
+    "OH to Work Order is a VERIFIED field correlation candidate; OH to asset is UNKNOWN because no assetnum field was exposed."
+  ],
+  "verified_at": "2026-08-21T03:20:29.915365+00:00",
+  "scope": {
+    "field": "siteid",
+    "value": "BSR",
+    "status": "PRIOR_LIVE_QUERY",
+    "evidence": "MX-006R bounded BSR query plus detail field evidence"
+  },
+  "detail_dereference": {
+    "attempted": true,
+    "collection_records": 1,
+    "detail_records": 1,
+    "maximum_dereference_depth": 1,
+    "pagination_followed": false,
+    "resource_path": "/maximo/oslc/os/ip_dom_oh/<resource-id>",
+    "http_status": 200,
+    "status": "VERIFIED",
+    "fields": [
+      "attach_notulen",
+      "status",
+      "berita_acara_serahterima",
+      "dur_actual_oh",
+      "changeby",
+      "siklus",
+      "wonum",
+      "domohnum",
+      "orgid",
+      "absensi",
+      "laporan_evaluasi",
+      "domid",
+      "pic",
+      "dur_oh",
+      "otg_leader",
+      "tgl_actual_mulai",
+      "laporan_teknik",
+      "createby",
+      "dokumen_rekomendasi",
+      "rencana_beban",
+      "siteid",
+      "inspeksinum",
+      "pic_description",
+      "description",
+      "tgl_selesai",
+      "realisasi_scope",
+      "jumlahworekom",
+      "mesin",
+      "jumlah_mitra",
+      "perfomance_test",
+      "progress",
+      "tgl_mulai",
+      "berita_acara_syncron",
+      "notulensi",
+      "siklus_description",
+      "prefixes",
+      "attach_absensi",
+      "tgl_actual_selesai",
+      "rencana_scope",
+      "changedate",
+      "status_description",
+      "createdate",
+      "realisasi_cost"
+    ],
+    "field_types": {
+      "status": "string",
+      "wonum": "string",
+      "domohnum": "string",
+      "orgid": "string",
+      "domid": "integer",
+      "tgl_actual_mulai": "datetime",
+      "siteid": "string",
+      "inspeksinum": "string",
+      "description": "string",
+      "tgl_selesai": "datetime",
+      "progress": "number",
+      "tgl_mulai": "datetime",
+      "tgl_actual_selesai": "datetime",
+      "changedate": "datetime",
+      "createdate": "datetime",
+      "realisasi_cost": "number"
+    },
+    "metadata_fields": [
+      "_rowstamp",
+      "rdf:about"
+    ]
+  },
+  "http_diagnostics": {},
+  "field_roles": {
+    "attach_notulen": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "status": [
+      "STATUS"
+    ],
+    "berita_acara_serahterima": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "dur_actual_oh": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "changeby": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "siklus": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "wonum": [
+      "WORKORDER_REFERENCE"
+    ],
+    "domohnum": [
+      "IDENTIFIER_CANDIDATE"
+    ],
+    "orgid": [
+      "SCOPE_ORGANIZATION"
+    ],
+    "absensi": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "laporan_evaluasi": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "domid": [
+      "IDENTIFIER_CANDIDATE"
+    ],
+    "pic": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "dur_oh": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "otg_leader": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "tgl_actual_mulai": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "laporan_teknik": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "createby": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "dokumen_rekomendasi": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "rencana_beban": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "siteid": [
+      "SCOPE_SITE"
+    ],
+    "inspeksinum": [
+      "INSPECTION_REFERENCE"
+    ],
+    "pic_description": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "description": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "tgl_selesai": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "realisasi_scope": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "jumlahworekom": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "mesin": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "jumlah_mitra": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "perfomance_test": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "progress": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "tgl_mulai": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "berita_acara_syncron": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "notulensi": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "siklus_description": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "prefixes": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "attach_absensi": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "tgl_actual_selesai": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "rencana_scope": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "changedate": [
+      "TIMESTAMP"
+    ],
+    "status_description": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "createdate": [
+      "TIMESTAMP"
+    ],
+    "realisasi_cost": [
+      "BUSINESS_ATTRIBUTE"
+    ]
+  },
+  "role_evidence": [
+    {
+      "field": "attach_notulen",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "status",
+      "roles": [
+        "STATUS"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "berita_acara_serahterima",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "dur_actual_oh",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "changeby",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "siklus",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "wonum",
+      "roles": [
+        "WORKORDER_REFERENCE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "domohnum",
+      "roles": [
+        "IDENTIFIER_CANDIDATE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "orgid",
+      "roles": [
+        "SCOPE_ORGANIZATION"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "absensi",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "laporan_evaluasi",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "domid",
+      "roles": [
+        "IDENTIFIER_CANDIDATE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "pic",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "dur_oh",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "otg_leader",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "tgl_actual_mulai",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "laporan_teknik",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "createby",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "dokumen_rekomendasi",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "rencana_beban",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "siteid",
+      "roles": [
+        "SCOPE_SITE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "inspeksinum",
+      "roles": [
+        "INSPECTION_REFERENCE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "pic_description",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "description",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "tgl_selesai",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "realisasi_scope",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "jumlahworekom",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "mesin",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "jumlah_mitra",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "perfomance_test",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "progress",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "tgl_mulai",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "berita_acara_syncron",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "notulensi",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "siklus_description",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "prefixes",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "attach_absensi",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "tgl_actual_selesai",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "rencana_scope",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "changedate",
+      "roles": [
+        "TIMESTAMP"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "status_description",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "createdate",
+      "roles": [
+        "TIMESTAMP"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "realisasi_cost",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    }
+  ]
+}

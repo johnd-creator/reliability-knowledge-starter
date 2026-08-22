@@ -1,23 +1,43 @@
 {
   "system": "maximo",
-  "object_structure": "mxapimeter",
-  "resource": "meter",
-  "endpoint": "/oslc/os/mxapimeter",
-  "primary_key": "metername",
-  "use_cases": [
-    "condition-monitoring"
-  ],
-  "relationships": [],
-  "notes": [
-    "READ action not allowed for this account (BMXAA0024E). Field list pending read-enabled credential."
-  ],
-  "verified_at": null,
-  "status": "forbidden",
+  "object_structure": "MXAPIMETER",
+  "resource": "mxapimeter",
+  "status": "documented",
   "access": "http_400",
-  "important_fields": [],
+  "endpoint": "/oslc/os/MXAPIMETER?_maxitems=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+  "primary_key": null,
   "field_candidates": [],
+  "important_fields": [],
+  "field_types": {},
+  "metadata_fields": [],
   "pagination": {},
   "sample": null,
-  "catalog_source": "oas-documented",
-  "data_scope": "BSR (org IP)"
+  "use_cases": [],
+  "relationships": [],
+  "notes": [
+    "describe GET returned HTTP 400",
+    "catalog GET returned HTTP 400; using documented seed",
+    "catalog selection used explicit MX-006B allowlisted targets"
+  ],
+  "verified_at": null,
+  "scope": {
+    "field": "siteid",
+    "value": "BSR",
+    "status": "PRIOR_LIVE_QUERY",
+    "evidence": "MX-006R used this BSR-scoped clause and received a bounded response; detail field evidence remains required."
+  },
+  "detail_dereference": {
+    "attempted": false,
+    "collection_records": 0,
+    "detail_records": 0,
+    "maximum_dereference_depth": 1,
+    "pagination_followed": false
+  },
+  "http_diagnostics": {
+    "http_status": 400,
+    "maximo_error_code": null,
+    "reason": "HTTP 400; sanitized error detail unavailable",
+    "raw_response_saved": false
+  },
+  "catalog_source": "seed-fallback"
 }

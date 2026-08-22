@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { use, useEffect, useState } from "react";
-import { cockpitApi, KPI_METRICS, type EquipmentView, type ReliabilityKpiView, type WorkOrderView } from "../../../lib/api";
+import { cockpitApi, KPI_METRICS, type EquipmentView, type ReliabilityKpiView, type WorkOrderPage } from "../../../lib/api";
 
 export default function EquipmentDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const [equipment, setEquipment] = useState<EquipmentView | null>(null);
   const [kpis, setKpis] = useState<Record<string, ReliabilityKpiView | null>>({});
-  const [workOrders, setWorkOrders] = useState<WorkOrderView[] | null>(null);
+  const [workOrders, setWorkOrders] = useState<WorkOrderPage | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
     setError(null);
     Promise.all([
       cockpitApi.getEquipment(id).then(setEquipment).catch(() => null),
-      cockpitApi.listWorkOrders(id, 200).then(setWorkOrders).catch(() => null),
+      cockpitApi.listWorkOrders(id, 0, 200).then(setWorkOrders).catch(() => null),
       Promise.all(
         KPI_METRICS.map((m) =>
           cockpitApi.getKpi(id, m).then((k) => [m, k] as const).catch(() => [m, null] as const),
@@ -102,10 +102,10 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
       </section>
 
       <section className="card">
-        <h2>Work Orders ({workOrders?.length ?? 0})</h2>
+        <h2>Work Orders ({workOrders?.total ?? 0})</h2>
         {workOrders === null && <div className="empty">Loading…</div>}
-        {workOrders && workOrders.length === 0 && <div className="empty">No work orders for this equipment.</div>}
-        {workOrders && workOrders.length > 0 && (
+        {workOrders && workOrders.items.length === 0 && <div className="empty">No work orders for this equipment.</div>}
+        {workOrders && workOrders.items.length > 0 && (
           <table>
             <thead>
               <tr>
@@ -119,7 +119,7 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
               </tr>
             </thead>
             <tbody>
-              {workOrders.map((wo) => (
+              {workOrders.items.map((wo) => (
                 <tr key={wo.id}>
                   <td>{wo.id}</td>
                   <td>

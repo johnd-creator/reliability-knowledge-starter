@@ -1,0 +1,1736 @@
+{
+  "system": "maximo",
+  "catalog_source": "discovery/oslc/catalog.json",
+  "catalog_status": "partial",
+  "evidence_note": "MX-005R catalog evidence was extended by the bounded MX-006B read-only detail follow-up. Detail fields are structural evidence only; no raw production values are persisted.",
+  "scope": {
+    "organization": "IP (scope clause evidence)",
+    "site": "BSR (scope clause evidence)"
+  },
+  "resources": [
+    {
+      "application": "Reliability",
+      "object_structure": "IPFMEA",
+      "api_resource": "/oslc/os/ipfmea",
+      "object": "PARTIAL — detail schema verified",
+      "primary_key": {
+        "preferred": {
+          "field": "fmeaid",
+          "confidence": "CANDIDATE",
+          "reason": "resource-specific identity preference"
+        },
+        "candidates": [
+          {
+            "field": "fmeaid",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          },
+          {
+            "field": "fmeanum",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          }
+        ],
+        "excluded": [
+          {
+            "field": "lastmodifieddate",
+            "role": "TIMESTAMP",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "orgid",
+            "role": "SCOPE_ORGANIZATION",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "failurecode",
+            "role": "FAILURE_REFERENCE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "fmea_asset_collectionref",
+            "role": "COLLECTION_REFERENCE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "assetnum",
+            "role": "ASSET_REFERENCE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "siteid",
+            "role": "SCOPE_SITE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "statusdate",
+            "role": "TIMESTAMP",
+            "reason": "scope or relationship field is not record identity"
+          }
+        ]
+      },
+      "status_field": "status",
+      "relationships": {
+        "asset": "assetnum (VERIFIED)",
+        "location": "UNKNOWN",
+        "site": "siteid (VERIFIED)",
+        "organization": "orgid (VERIFIED)",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "UNKNOWN",
+        "failurecode": "failurecode (VERIFIED FIELD EVIDENCE)"
+      },
+      "important_fields": [
+        "lastmodifieddate",
+        "status",
+        "description",
+        "fmea_asset",
+        "lastmodifiedby",
+        "orgid",
+        "failurecode",
+        "referensi",
+        "prefixes",
+        "fmea_asset_collectionref",
+        "assetnum",
+        "fmeanum",
+        "revision",
+        "status_description",
+        "fmeaid",
+        "siteid",
+        "statusdate"
+      ],
+      "nadi_relevance": "HIGH",
+      "confidence": "PARTIAL",
+      "notes": [
+        "MX-006B one collection + one same-origin detail GET verified field names/types. FMEA parent/RCFA relation remains UNKNOWN."
+      ],
+      "key_candidates": [
+        {
+          "field": "fmeaid",
+          "reason": "resource-specific identity preference"
+        },
+        {
+          "field": "fmeanum",
+          "reason": "resource-specific identity preference"
+        }
+      ],
+      "excluded_identity_fields": [
+        {
+          "field": "lastmodifieddate",
+          "role": "TIMESTAMP",
+          "reason": "scope or relationship field is not record identity"
+        },
+        {
+          "field": "orgid",
+          "role": "SCOPE_ORGANIZATION",
+          "reason": "scope or relationship field is not record identity"
+        },
+        {
+          "field": "failurecode",
+          "role": "FAILURE_REFERENCE",
+          "reason": "scope or relationship field is not record identity"
+        },
+        {
+          "field": "fmea_asset_collectionref",
+          "role": "COLLECTION_REFERENCE",
+          "reason": "scope or relationship field is not record identity"
+        },
+        {
+          "field": "assetnum",
+          "role": "ASSET_REFERENCE",
+          "reason": "scope or relationship field is not record identity"
+        },
+        {
+          "field": "siteid",
+          "role": "SCOPE_SITE",
+          "reason": "scope or relationship field is not record identity"
+        },
+        {
+          "field": "statusdate",
+          "role": "TIMESTAMP",
+          "reason": "scope or relationship field is not record identity"
+        }
+      ],
+      "field_roles": {
+        "lastmodifieddate": [
+          "TIMESTAMP"
+        ],
+        "status": [
+          "STATUS"
+        ],
+        "description": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "fmea_asset": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "lastmodifiedby": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "orgid": [
+          "SCOPE_ORGANIZATION"
+        ],
+        "failurecode": [
+          "FAILURE_REFERENCE"
+        ],
+        "referensi": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "prefixes": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "fmea_asset_collectionref": [
+          "COLLECTION_REFERENCE"
+        ],
+        "assetnum": [
+          "ASSET_REFERENCE"
+        ],
+        "fmeanum": [
+          "IDENTIFIER_CANDIDATE"
+        ],
+        "revision": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "status_description": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "fmeaid": [
+          "IDENTIFIER_CANDIDATE"
+        ],
+        "siteid": [
+          "SCOPE_SITE"
+        ],
+        "statusdate": [
+          "TIMESTAMP"
+        ]
+      }
+    },
+    {
+      "application": "Reliability",
+      "object_structure": "IPFMEAITEM",
+      "api_resource": "/oslc/os/ipfmeaitem",
+      "object": "PARTIAL — bounded contract evidence",
+      "primary_key": "UNKNOWN",
+      "status_field": "UNKNOWN",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "UNKNOWN",
+        "organization": "UNKNOWN",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "probable"
+      },
+      "important_fields": [],
+      "nadi_relevance": "HIGH",
+      "confidence": "PARTIAL",
+      "notes": [
+        "Collection response exceeded the 1 MiB safety cap even with the observed href projection; fields and parent relation remain UNKNOWN. No brute-force alternate query was attempted."
+      ],
+      "key_candidates": [],
+      "excluded_identity_fields": [],
+      "field_roles": {},
+      "query_shape_evidence": {
+        "attempts": [
+          {
+            "name": "maxitems_select_href",
+            "endpoint": "/oslc/os/IPFMEAITEM?_maxitems=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+            "evidence": "MX-006B bounded collection shape",
+            "result": "RESPONSE_CAP"
+          },
+          {
+            "name": "paged_select_href",
+            "endpoint": "/oslc/os/IPFMEAITEM?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+            "evidence": "maximo-collector verified oslc.paging/oslc.pageSize shape",
+            "result": "HTTP 200"
+          }
+        ],
+        "response_cap": true,
+        "detail_status": "UNKNOWN"
+      }
+    },
+    {
+      "application": "Reliability",
+      "object_structure": "IPFMEAWORKSHOP",
+      "api_resource": "/oslc/os/ipfmeaworkshop",
+      "object": "UNKNOWN",
+      "primary_key": "UNKNOWN",
+      "status_field": "UNKNOWN",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "UNKNOWN",
+        "organization": "UNKNOWN",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "probable"
+      },
+      "important_fields": [],
+      "nadi_relevance": "POTENTIAL",
+      "confidence": "PARTIAL",
+      "notes": [
+        "Workshop/participant semantics are not verified from fields."
+      ]
+    },
+    {
+      "application": "Reliability",
+      "object_structure": "IPRCFA",
+      "api_resource": "/oslc/os/iprcfa",
+      "object": "PARTIAL — detail schema verified",
+      "primary_key": {
+        "preferred": {
+          "field": "rcfaid",
+          "confidence": "CANDIDATE",
+          "reason": "resource-specific identity preference"
+        },
+        "candidates": [
+          {
+            "field": "rcfaid",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          },
+          {
+            "field": "norcfa",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          }
+        ],
+        "excluded": [
+          {
+            "field": "createddate",
+            "role": "TIMESTAMP",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "req_date",
+            "role": "TIMESTAMP",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "orgid",
+            "role": "SCOPE_ORGANIZATION",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "siteid",
+            "role": "SCOPE_SITE",
+            "reason": "scope or relationship field is not record identity"
+          }
+        ]
+      },
+      "status_field": "status",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "siteid (VERIFIED)",
+        "organization": "orgid (VERIFIED)",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "UNKNOWN"
+      },
+      "important_fields": [
+        "createddate",
+        "kategori_description",
+        "status",
+        "norcfa",
+        "revisi",
+        "req_date",
+        "orgid",
+        "rcfaid",
+        "ispronia",
+        "prefixes",
+        "originator",
+        "status_description",
+        "kategori",
+        "createdby",
+        "siteid"
+      ],
+      "nadi_relevance": "HIGH",
+      "confidence": "PARTIAL",
+      "notes": [
+        "MX-006B one collection + one same-origin detail GET verified RCFA fields. Asset, location, Work Order, and failure/event joins remain UNKNOWN."
+      ],
+      "key_candidates": [
+        {
+          "field": "rcfaid",
+          "reason": "resource-specific identity preference"
+        },
+        {
+          "field": "norcfa",
+          "reason": "resource-specific identity preference"
+        }
+      ],
+      "excluded_identity_fields": [
+        {
+          "field": "createddate",
+          "role": "TIMESTAMP",
+          "reason": "scope or relationship field is not record identity"
+        },
+        {
+          "field": "req_date",
+          "role": "TIMESTAMP",
+          "reason": "scope or relationship field is not record identity"
+        },
+        {
+          "field": "orgid",
+          "role": "SCOPE_ORGANIZATION",
+          "reason": "scope or relationship field is not record identity"
+        },
+        {
+          "field": "siteid",
+          "role": "SCOPE_SITE",
+          "reason": "scope or relationship field is not record identity"
+        }
+      ],
+      "field_roles": {
+        "createddate": [
+          "TIMESTAMP"
+        ],
+        "kategori_description": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "status": [
+          "STATUS"
+        ],
+        "norcfa": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "revisi": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "req_date": [
+          "TIMESTAMP"
+        ],
+        "orgid": [
+          "SCOPE_ORGANIZATION"
+        ],
+        "rcfaid": [
+          "IDENTIFIER_CANDIDATE"
+        ],
+        "ispronia": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "prefixes": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "originator": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "status_description": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "kategori": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "createdby": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "siteid": [
+          "SCOPE_SITE"
+        ]
+      }
+    },
+    {
+      "application": "Reliability",
+      "object_structure": "IPRCFAFDT",
+      "api_resource": "/oslc/os/iprcfafdt",
+      "object": "UNKNOWN",
+      "primary_key": "UNKNOWN",
+      "status_field": "UNKNOWN",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "UNKNOWN",
+        "organization": "UNKNOWN",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "probable"
+      },
+      "important_fields": [],
+      "nadi_relevance": "HIGH",
+      "confidence": "PARTIAL",
+      "notes": [
+        "Controlled BSR-scoped GET returned HTTP 400 with sanitized metadata only; FDT grain remains UNKNOWN and was not classified FORBIDDEN."
+      ]
+    },
+    {
+      "application": "Reliability",
+      "object_structure": "IPRCFAWORKSHOP",
+      "api_resource": "/oslc/os/iprcfaworkshop",
+      "object": "UNKNOWN",
+      "primary_key": "UNKNOWN",
+      "status_field": "UNKNOWN",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "UNKNOWN",
+        "organization": "UNKNOWN",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "probable"
+      },
+      "important_fields": [],
+      "nadi_relevance": "POTENTIAL",
+      "confidence": "PARTIAL",
+      "notes": [
+        "Catalog label is RCFA WORKSHOP + PESERTA; participant and asset relationships are not verified."
+      ]
+    },
+    {
+      "application": "Reliability",
+      "object_structure": "IPBHM",
+      "api_resource": "/oslc/os/ipbhm",
+      "object": "PARTIAL — detail schema verified",
+      "primary_key": {
+        "preferred": {
+          "field": "bhmid",
+          "confidence": "CANDIDATE",
+          "reason": "resource-specific identity preference"
+        },
+        "candidates": [
+          {
+            "field": "bhmid",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          },
+          {
+            "field": "eid",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          }
+        ],
+        "excluded": [
+          {
+            "field": "lastmodifieddate",
+            "role": "TIMESTAMP",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "createddate",
+            "role": "TIMESTAMP",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "orgid",
+            "role": "SCOPE_ORGANIZATION",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "assetnum",
+            "role": "ASSET_REFERENCE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "siteid",
+            "role": "SCOPE_SITE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "statusdate",
+            "role": "TIMESTAMP",
+            "reason": "scope or relationship field is not record identity"
+          }
+        ]
+      },
+      "status_field": "status",
+      "relationships": {
+        "asset": "assetnum (VERIFIED)",
+        "location": "UNKNOWN",
+        "site": "siteid (VERIFIED)",
+        "organization": "orgid (VERIFIED)",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "UNKNOWN"
+      },
+      "important_fields": [
+        "lastmodifieddate",
+        "createddate",
+        "status",
+        "description",
+        "lastmodifiedby",
+        "fungsi",
+        "bhmid",
+        "orgid",
+        "prefixes",
+        "assetnum",
+        "revision",
+        "status_description",
+        "eid",
+        "createdby",
+        "siteid",
+        "statusdate"
+      ],
+      "nadi_relevance": "HIGH",
+      "confidence": "PARTIAL",
+      "notes": [
+        "MX-006B one collection + one same-origin detail GET verified a BHM header-like record with asset/site/org/status/timestamps. Expansion remains UNKNOWN."
+      ],
+      "key_candidates": [
+        {
+          "field": "bhmid",
+          "reason": "resource-specific identity preference"
+        },
+        {
+          "field": "eid",
+          "reason": "resource-specific identity preference"
+        }
+      ],
+      "excluded_identity_fields": [
+        {
+          "field": "lastmodifieddate",
+          "role": "TIMESTAMP",
+          "reason": "scope or relationship field is not record identity"
+        },
+        {
+          "field": "createddate",
+          "role": "TIMESTAMP",
+          "reason": "scope or relationship field is not record identity"
+        },
+        {
+          "field": "orgid",
+          "role": "SCOPE_ORGANIZATION",
+          "reason": "scope or relationship field is not record identity"
+        },
+        {
+          "field": "assetnum",
+          "role": "ASSET_REFERENCE",
+          "reason": "scope or relationship field is not record identity"
+        },
+        {
+          "field": "siteid",
+          "role": "SCOPE_SITE",
+          "reason": "scope or relationship field is not record identity"
+        },
+        {
+          "field": "statusdate",
+          "role": "TIMESTAMP",
+          "reason": "scope or relationship field is not record identity"
+        }
+      ],
+      "field_roles": {
+        "lastmodifieddate": [
+          "TIMESTAMP"
+        ],
+        "createddate": [
+          "TIMESTAMP"
+        ],
+        "status": [
+          "STATUS"
+        ],
+        "description": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "lastmodifiedby": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "fungsi": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "bhmid": [
+          "IDENTIFIER_CANDIDATE"
+        ],
+        "orgid": [
+          "SCOPE_ORGANIZATION"
+        ],
+        "prefixes": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "assetnum": [
+          "ASSET_REFERENCE"
+        ],
+        "revision": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "status_description": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "eid": [
+          "IDENTIFIER_CANDIDATE"
+        ],
+        "createdby": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "siteid": [
+          "SCOPE_SITE"
+        ],
+        "statusdate": [
+          "TIMESTAMP"
+        ]
+      }
+    },
+    {
+      "application": "Reliability",
+      "object_structure": "IPBHMLINE",
+      "api_resource": "/oslc/os/ipbhmline",
+      "object": "UNKNOWN",
+      "primary_key": "UNKNOWN",
+      "status_field": "UNKNOWN",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "UNKNOWN",
+        "organization": "UNKNOWN",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "UNKNOWN"
+      },
+      "important_fields": [],
+      "nadi_relevance": "HIGH",
+      "confidence": "PARTIAL",
+      "notes": [
+        "Catalog label indicates a BHM line/detail candidate; parent key is UNKNOWN."
+      ]
+    },
+    {
+      "application": "Reliability",
+      "object_structure": "IPBHMMEASUREMENT",
+      "api_resource": "/oslc/os/ipbhmmeasurement",
+      "object": "PARTIAL — bounded contract evidence",
+      "primary_key": "UNKNOWN",
+      "status_field": "UNKNOWN",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "UNKNOWN",
+        "organization": "UNKNOWN",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "UNKNOWN"
+      },
+      "important_fields": [],
+      "nadi_relevance": "HIGH",
+      "confidence": "PARTIAL",
+      "notes": [
+        "Collection response exceeded the 1 MiB safety cap even with the observed href projection; measurement parent/value/unit/timestamp fields remain UNKNOWN."
+      ],
+      "key_candidates": [],
+      "excluded_identity_fields": [],
+      "field_roles": {},
+      "query_shape_evidence": {
+        "attempts": [
+          {
+            "name": "maxitems_select_href",
+            "endpoint": "/oslc/os/IPBHMMEASUREMENT?_maxitems=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+            "evidence": "MX-006B bounded collection shape",
+            "result": "RESPONSE_CAP"
+          },
+          {
+            "name": "paged_select_href",
+            "endpoint": "/oslc/os/IPBHMMEASUREMENT?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+            "evidence": "maximo-collector verified oslc.paging/oslc.pageSize shape",
+            "result": "HTTP 200"
+          }
+        ],
+        "response_cap": true,
+        "detail_status": "UNKNOWN"
+      }
+    },
+    {
+      "application": "Reliability",
+      "object_structure": "IPBHMWORKSHOP",
+      "api_resource": "/oslc/os/ipbhmworkshop",
+      "object": "UNKNOWN",
+      "primary_key": "UNKNOWN",
+      "status_field": "UNKNOWN",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "UNKNOWN",
+        "organization": "UNKNOWN",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "UNKNOWN"
+      },
+      "important_fields": [],
+      "nadi_relevance": "POTENTIAL",
+      "confidence": "PARTIAL",
+      "notes": [
+        "Workshop label is documented; no participant or asset join is verified."
+      ]
+    },
+    {
+      "application": "Reliability",
+      "object_structure": "IPMSMSFAILUREMECHANI",
+      "api_resource": "/oslc/os/ipmsmsfailuremechani",
+      "object": "PARTIAL — bounded contract evidence",
+      "primary_key": "UNKNOWN",
+      "status_field": "UNKNOWN",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "UNKNOWN",
+        "organization": "UNKNOWN",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "probable"
+      },
+      "important_fields": [],
+      "nadi_relevance": "HIGH",
+      "confidence": "PARTIAL",
+      "notes": [
+        "Collection response exceeded the 1 MiB safety cap even with the observed href projection; failure-mechanism fields remain UNKNOWN and were not equated with Maximo failure codes."
+      ],
+      "key_candidates": [],
+      "excluded_identity_fields": [],
+      "field_roles": {},
+      "query_shape_evidence": {
+        "attempts": [
+          {
+            "name": "maxitems_select_href",
+            "endpoint": "/oslc/os/IPMSMSFAILUREMECHANI?_maxitems=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+            "evidence": "MX-006B bounded collection shape",
+            "result": "RESPONSE_CAP"
+          },
+          {
+            "name": "paged_select_href",
+            "endpoint": "/oslc/os/IPMSMSFAILUREMECHANI?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+            "evidence": "maximo-collector verified oslc.paging/oslc.pageSize shape",
+            "result": "HTTP 200"
+          }
+        ],
+        "response_cap": true,
+        "detail_status": "UNKNOWN"
+      }
+    },
+    {
+      "application": "Reliability",
+      "object_structure": "IPENGJUDGE",
+      "api_resource": "/oslc/os/ipengjudge",
+      "object": "UNKNOWN",
+      "primary_key": "UNKNOWN",
+      "status_field": "UNKNOWN",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "UNKNOWN",
+        "organization": "UNKNOWN",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "UNKNOWN"
+      },
+      "important_fields": [],
+      "nadi_relevance": "POTENTIAL",
+      "confidence": "PARTIAL",
+      "notes": [
+        "Engineering judgement is a candidate reliability input; it is not evidence of an Engineering Service Sheet resource."
+      ]
+    },
+    {
+      "application": "DIAMOND",
+      "object_structure": "DMDLOGSHEET",
+      "api_resource": "/oslc/os/dmdlogsheet",
+      "object": "UNKNOWN",
+      "primary_key": "UNKNOWN",
+      "status_field": "UNKNOWN",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "UNKNOWN",
+        "organization": "UNKNOWN",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "UNKNOWN"
+      },
+      "important_fields": [],
+      "nadi_relevance": "POTENTIAL",
+      "confidence": "PARTIAL",
+      "notes": [
+        "Catalog identifies DIAMOND logsheet resource; correlation to an asset event is not verified."
+      ]
+    },
+    {
+      "application": "DIAMOND",
+      "object_structure": "DMDLOGSHEETDTL",
+      "api_resource": "/oslc/os/dmdlogsheetdtl",
+      "object": "UNKNOWN",
+      "primary_key": "UNKNOWN",
+      "status_field": "UNKNOWN",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "UNKNOWN",
+        "organization": "UNKNOWN",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "UNKNOWN"
+      },
+      "important_fields": [],
+      "nadi_relevance": "POTENTIAL",
+      "confidence": "PARTIAL",
+      "notes": [
+        "Detail resource is documented; observation, timestamp, and equipment fields are UNKNOWN."
+      ]
+    },
+    {
+      "application": "DIAMOND",
+      "object_structure": "DMDLOGSHEETHDR",
+      "api_resource": "/oslc/os/dmdlogsheethdr",
+      "object": "UNKNOWN",
+      "primary_key": "UNKNOWN",
+      "status_field": "UNKNOWN",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "UNKNOWN",
+        "organization": "UNKNOWN",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "UNKNOWN"
+      },
+      "important_fields": [],
+      "nadi_relevance": "POTENTIAL",
+      "confidence": "PARTIAL",
+      "notes": [
+        "Header resource is documented; shift/unit/time fields require a minimal GET."
+      ]
+    },
+    {
+      "application": "DIAMOND",
+      "object_structure": "DMD_OPLOGABN",
+      "api_resource": "/oslc/os/dmd_oplogabn",
+      "object": "PARTIAL — bounded contract evidence",
+      "primary_key": {
+        "preferred": null,
+        "candidates": [],
+        "excluded": [
+          {
+            "field": "dmd_logsheet_collectionref",
+            "role": "COLLECTION_REFERENCE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "dmd_lap_counter_collectionref",
+            "role": "COLLECTION_REFERENCE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "dmd_oplogbook_entry_collectionref",
+            "role": "COLLECTION_REFERENCE",
+            "reason": "scope or relationship field is not record identity"
+          }
+        ]
+      },
+      "status_field": "UNKNOWN",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "UNKNOWN",
+        "organization": "UNKNOWN",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "UNKNOWN"
+      },
+      "important_fields": [
+        "dmd_logsheet_collectionref",
+        "dmd_lap_counter_collectionref",
+        "dmd_oplogbook_entry_collectionref"
+      ],
+      "nadi_relevance": "HIGH",
+      "confidence": "PARTIAL",
+      "notes": [
+        "Collection response exceeded the 1 MiB safety cap even with the observed href projection; operator personal data was not retrieved or persisted. Asset/time correlation remains UNKNOWN."
+      ],
+      "key_candidates": [],
+      "excluded_identity_fields": [
+        {
+          "field": "dmd_logsheet_collectionref",
+          "role": "COLLECTION_REFERENCE",
+          "reason": "scope or relationship field is not record identity"
+        },
+        {
+          "field": "dmd_lap_counter_collectionref",
+          "role": "COLLECTION_REFERENCE",
+          "reason": "scope or relationship field is not record identity"
+        },
+        {
+          "field": "dmd_oplogbook_entry_collectionref",
+          "role": "COLLECTION_REFERENCE",
+          "reason": "scope or relationship field is not record identity"
+        }
+      ],
+      "field_roles": {
+        "dmd_logsheet_collectionref": [
+          "COLLECTION_REFERENCE"
+        ],
+        "dmd_lap_counter_collectionref": [
+          "COLLECTION_REFERENCE"
+        ],
+        "dmd_oplogbook_entry_collectionref": [
+          "COLLECTION_REFERENCE"
+        ]
+      },
+      "query_shape_evidence": {
+        "attempts": [
+          {
+            "name": "maxitems_select_href",
+            "endpoint": "/oslc/os/DMD_OPLOGABN?_maxitems=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+            "evidence": "MX-006B bounded collection shape",
+            "result": "RESPONSE_CAP"
+          },
+          {
+            "name": "paged_select_href",
+            "endpoint": "/oslc/os/DMD_OPLOGABN?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+            "evidence": "maximo-collector verified oslc.paging/oslc.pageSize shape",
+            "result": "HTTP 200"
+          }
+        ],
+        "response_cap": true,
+        "detail_status": "INLINE_BUSINESS_RECORD"
+      }
+    },
+    {
+      "application": "DIAMOND",
+      "object_structure": "DMD_OPLOGINFO",
+      "api_resource": "/oslc/os/dmd_oploginfo",
+      "object": "UNKNOWN",
+      "primary_key": "UNKNOWN",
+      "status_field": "UNKNOWN",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "UNKNOWN",
+        "organization": "UNKNOWN",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "UNKNOWN"
+      },
+      "important_fields": [],
+      "nadi_relevance": "POTENTIAL",
+      "confidence": "PARTIAL",
+      "notes": [
+        "Operator-log information candidate; field grain and timestamp are UNKNOWN."
+      ]
+    },
+    {
+      "application": "DIAMOND",
+      "object_structure": "DMD_OPOPLOG",
+      "api_resource": "/oslc/os/dmd_opoplog",
+      "object": "UNKNOWN",
+      "primary_key": "UNKNOWN",
+      "status_field": "UNKNOWN",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "UNKNOWN",
+        "organization": "UNKNOWN",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "UNKNOWN"
+      },
+      "important_fields": [],
+      "nadi_relevance": "POTENTIAL",
+      "confidence": "PARTIAL",
+      "notes": [
+        "Operator-log candidate based only on catalog naming."
+      ]
+    },
+    {
+      "application": "DOMINION",
+      "object_structure": "IP_DOM_OH",
+      "api_resource": "/oslc/os/ip_dom_oh",
+      "object": "PARTIAL — detail schema verified",
+      "primary_key": {
+        "preferred": {
+          "field": "domid",
+          "confidence": "CANDIDATE",
+          "reason": "resource-specific identity preference"
+        },
+        "candidates": [
+          {
+            "field": "domid",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          },
+          {
+            "field": "domohnum",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          }
+        ],
+        "excluded": [
+          {
+            "field": "wonum",
+            "role": "WORKORDER_REFERENCE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "orgid",
+            "role": "SCOPE_ORGANIZATION",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "siteid",
+            "role": "SCOPE_SITE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "inspeksinum",
+            "role": "INSPECTION_REFERENCE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "changedate",
+            "role": "TIMESTAMP",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "createdate",
+            "role": "TIMESTAMP",
+            "reason": "scope or relationship field is not record identity"
+          }
+        ]
+      },
+      "status_field": "status",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "siteid (VERIFIED)",
+        "organization": "orgid (VERIFIED)",
+        "workorder": "wonum (VERIFIED FIELD EVIDENCE)",
+        "fmea_rcfa": "UNKNOWN"
+      },
+      "important_fields": [
+        "attach_notulen",
+        "status",
+        "berita_acara_serahterima",
+        "dur_actual_oh",
+        "changeby",
+        "siklus",
+        "wonum",
+        "domohnum",
+        "orgid",
+        "absensi",
+        "laporan_evaluasi",
+        "domid",
+        "pic",
+        "dur_oh",
+        "otg_leader",
+        "tgl_actual_mulai",
+        "laporan_teknik",
+        "createby",
+        "dokumen_rekomendasi",
+        "rencana_beban",
+        "siteid",
+        "inspeksinum",
+        "pic_description",
+        "description",
+        "tgl_selesai",
+        "realisasi_scope",
+        "jumlahworekom",
+        "mesin",
+        "jumlah_mitra",
+        "perfomance_test",
+        "progress",
+        "tgl_mulai",
+        "berita_acara_syncron",
+        "notulensi",
+        "siklus_description",
+        "prefixes",
+        "attach_absensi",
+        "tgl_actual_selesai",
+        "rencana_scope",
+        "changedate",
+        "status_description",
+        "createdate",
+        "realisasi_cost"
+      ],
+      "nadi_relevance": "HIGH",
+      "confidence": "PARTIAL",
+      "notes": [
+        "MX-006B one collection + one same-origin detail GET verified OH/status/workorder/site/org/date fields. OH-to-workorder is a verified field correlation; OH-to-asset remains UNKNOWN."
+      ],
+      "key_candidates": [
+        {
+          "field": "domid",
+          "reason": "resource-specific identity preference"
+        },
+        {
+          "field": "domohnum",
+          "reason": "resource-specific identity preference"
+        }
+      ],
+      "excluded_identity_fields": [
+        {
+          "field": "wonum",
+          "role": "WORKORDER_REFERENCE",
+          "reason": "scope or relationship field is not record identity"
+        },
+        {
+          "field": "orgid",
+          "role": "SCOPE_ORGANIZATION",
+          "reason": "scope or relationship field is not record identity"
+        },
+        {
+          "field": "siteid",
+          "role": "SCOPE_SITE",
+          "reason": "scope or relationship field is not record identity"
+        },
+        {
+          "field": "inspeksinum",
+          "role": "INSPECTION_REFERENCE",
+          "reason": "scope or relationship field is not record identity"
+        },
+        {
+          "field": "changedate",
+          "role": "TIMESTAMP",
+          "reason": "scope or relationship field is not record identity"
+        },
+        {
+          "field": "createdate",
+          "role": "TIMESTAMP",
+          "reason": "scope or relationship field is not record identity"
+        }
+      ],
+      "field_roles": {
+        "attach_notulen": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "status": [
+          "STATUS"
+        ],
+        "berita_acara_serahterima": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "dur_actual_oh": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "changeby": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "siklus": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "wonum": [
+          "WORKORDER_REFERENCE"
+        ],
+        "domohnum": [
+          "IDENTIFIER_CANDIDATE"
+        ],
+        "orgid": [
+          "SCOPE_ORGANIZATION"
+        ],
+        "absensi": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "laporan_evaluasi": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "domid": [
+          "IDENTIFIER_CANDIDATE"
+        ],
+        "pic": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "dur_oh": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "otg_leader": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "tgl_actual_mulai": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "laporan_teknik": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "createby": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "dokumen_rekomendasi": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "rencana_beban": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "siteid": [
+          "SCOPE_SITE"
+        ],
+        "inspeksinum": [
+          "INSPECTION_REFERENCE"
+        ],
+        "pic_description": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "description": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "tgl_selesai": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "realisasi_scope": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "jumlahworekom": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "mesin": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "jumlah_mitra": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "perfomance_test": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "progress": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "tgl_mulai": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "berita_acara_syncron": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "notulensi": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "siklus_description": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "prefixes": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "attach_absensi": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "tgl_actual_selesai": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "rencana_scope": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "changedate": [
+          "TIMESTAMP"
+        ],
+        "status_description": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "createdate": [
+          "TIMESTAMP"
+        ],
+        "realisasi_cost": [
+          "BUSINESS_ATTRIBUTE"
+        ]
+      },
+      "performance_test_clue": {
+        "field": "perfomance_test",
+        "status": "FIELD EXISTS; SEMANTIC MAPPING UNKNOWN",
+        "type": "unknown",
+        "efficiency_management_relation": "UNKNOWN"
+      }
+    },
+    {
+      "application": "DOMINION",
+      "object_structure": "IP_DOM_OH_SCOPE_PM",
+      "api_resource": "/oslc/os/ip_dom_oh_scope_pm",
+      "object": "PARTIAL — one inline field observed",
+      "primary_key": "UNKNOWN",
+      "status_field": "UNKNOWN",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "UNKNOWN",
+        "organization": "UNKNOWN",
+        "workorder": "workorder_collectionref (VERIFIED collection reference)",
+        "fmea_rcfa": "UNKNOWN"
+      },
+      "important_fields": [
+        "workorder_collectionref"
+      ],
+      "nadi_relevance": "HIGH",
+      "confidence": "PARTIAL",
+      "notes": [
+        "MX-006B collection HTTP 200 exposed workorder_collectionref inline; no detail GET was needed. PM, asset, and OH parent keys remain UNKNOWN."
+      ],
+      "key_candidates": [],
+      "excluded_identity_fields": [],
+      "field_roles": {}
+    },
+    {
+      "application": "DOMINION",
+      "object_structure": "IPPROJECTOH",
+      "api_resource": "/oslc/os/ipprojectoh",
+      "object": "UNKNOWN",
+      "primary_key": "UNKNOWN",
+      "status_field": "UNKNOWN",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "UNKNOWN",
+        "organization": "UNKNOWN",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "UNKNOWN"
+      },
+      "nadi_relevance": "POTENTIAL",
+      "confidence": "PARTIAL",
+      "notes": [
+        "Catalog label is MOBILE DOMINION APPS PROJECT OH; completion/history semantics are UNKNOWN."
+      ]
+    },
+    {
+      "application": "DOMINION",
+      "object_structure": "IPPERSONDOMOH",
+      "api_resource": "/oslc/os/ippersondomoh",
+      "object": "UNKNOWN",
+      "primary_key": "UNKNOWN",
+      "status_field": "UNKNOWN",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "UNKNOWN",
+        "organization": "UNKNOWN",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "UNKNOWN"
+      },
+      "nadi_relevance": "LOW",
+      "confidence": "PARTIAL",
+      "notes": [
+        "Catalog label is DOMINION manpower OH; no personnel values are retained and no reliability join is verified."
+      ]
+    },
+    {
+      "application": "DOMINION",
+      "object_structure": "DOM_INSPEKSIMESIN",
+      "api_resource": "/oslc/os/dom_inspeksimesin",
+      "object": "PARTIAL — detail schema verified",
+      "primary_key": {
+        "preferred": {
+          "field": "dom_inspeksiid",
+          "confidence": "CANDIDATE",
+          "reason": "resource-specific identity preference"
+        },
+        "candidates": [
+          {
+            "field": "dom_inspeksiid",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          },
+          {
+            "field": "dom_inspeksinum",
+            "confidence": "CANDIDATE",
+            "reason": "resource-specific identity preference"
+          },
+          {
+            "field": "scopenum",
+            "confidence": "CANDIDATE",
+            "reason": "identifier-like field; uniqueness not proven"
+          }
+        ],
+        "excluded": [
+          {
+            "field": "dom_merktype_collectionref",
+            "role": "COLLECTION_REFERENCE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "siteid",
+            "role": "SCOPE_SITE",
+            "reason": "scope or relationship field is not record identity"
+          },
+          {
+            "field": "dom_scopeline_collectionref",
+            "role": "COLLECTION_REFERENCE",
+            "reason": "scope or relationship field is not record identity"
+          }
+        ]
+      },
+      "status_field": "status",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "siteid (VERIFIED)",
+        "organization": "UNKNOWN",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "UNKNOWN"
+      },
+      "important_fields": [
+        "status",
+        "dom_merktype_collectionref",
+        "dom_scopeline",
+        "dom_inspeksinum",
+        "p2",
+        "p3",
+        "siklus",
+        "dom_merktype",
+        "pic",
+        "r1",
+        "r2",
+        "p1",
+        "r3",
+        "durasi",
+        "merktipe",
+        "siteid",
+        "pic_description",
+        "description",
+        "interval",
+        "mesin",
+        "satuanr1_description",
+        "scopenum",
+        "jenis_pembangkit_description",
+        "prefixes",
+        "jenis_pembangkit",
+        "dom_scopeline_collectionref",
+        "dom_inspeksiid",
+        "satuanr2_description",
+        "satuanp1_description",
+        "satuanr1",
+        "satuanr2",
+        "satuanp1",
+        "satuanr3_description",
+        "satuanr3",
+        "status_description",
+        "satuanint",
+        "satuanp2",
+        "satuanp2_description",
+        "satuanp3_description",
+        "satuanp3"
+      ],
+      "nadi_relevance": "HIGH",
+      "confidence": "PARTIAL",
+      "notes": [
+        "MX-006B one collection + one same-origin detail GET verified inspection identifier/status/site/description/measurement fields. Finding/recommendation, OH, asset, and Work Order joins remain UNKNOWN."
+      ],
+      "key_candidates": [
+        {
+          "field": "dom_inspeksiid",
+          "reason": "resource-specific identity preference"
+        },
+        {
+          "field": "dom_inspeksinum",
+          "reason": "resource-specific identity preference"
+        },
+        {
+          "field": "scopenum",
+          "reason": "identifier-like field; uniqueness not proven"
+        }
+      ],
+      "excluded_identity_fields": [
+        {
+          "field": "dom_merktype_collectionref",
+          "role": "COLLECTION_REFERENCE",
+          "reason": "scope or relationship field is not record identity"
+        },
+        {
+          "field": "siteid",
+          "role": "SCOPE_SITE",
+          "reason": "scope or relationship field is not record identity"
+        },
+        {
+          "field": "dom_scopeline_collectionref",
+          "role": "COLLECTION_REFERENCE",
+          "reason": "scope or relationship field is not record identity"
+        }
+      ],
+      "field_roles": {
+        "status": [
+          "STATUS"
+        ],
+        "dom_merktype_collectionref": [
+          "COLLECTION_REFERENCE"
+        ],
+        "dom_scopeline": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "dom_inspeksinum": [
+          "IDENTIFIER_CANDIDATE"
+        ],
+        "p2": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "p3": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "siklus": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "dom_merktype": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "pic": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "r1": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "r2": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "p1": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "r3": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "durasi": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "merktipe": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "siteid": [
+          "SCOPE_SITE"
+        ],
+        "pic_description": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "description": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "interval": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "mesin": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "satuanr1_description": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "scopenum": [
+          "IDENTIFIER_CANDIDATE"
+        ],
+        "jenis_pembangkit_description": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "prefixes": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "jenis_pembangkit": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "dom_scopeline_collectionref": [
+          "COLLECTION_REFERENCE"
+        ],
+        "dom_inspeksiid": [
+          "IDENTIFIER_CANDIDATE"
+        ],
+        "satuanr2_description": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "satuanp1_description": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "satuanr1": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "satuanr2": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "satuanp1": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "satuanr3_description": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "satuanr3": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "status_description": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "satuanint": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "satuanp2": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "satuanp2_description": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "satuanp3_description": [
+          "BUSINESS_ATTRIBUTE"
+        ],
+        "satuanp3": [
+          "BUSINESS_ATTRIBUTE"
+        ]
+      }
+    },
+    {
+      "application": "Efficiency Management",
+      "object_structure": "IPEMLGWR",
+      "api_resource": "/oslc/os/ipemlgwr",
+      "object": "UNKNOWN",
+      "primary_key": "UNKNOWN",
+      "status_field": "UNKNOWN",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "UNKNOWN",
+        "organization": "UNKNOWN",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "UNKNOWN"
+      },
+      "nadi_relevance": "POTENTIAL",
+      "confidence": "PARTIAL",
+      "notes": [
+        "Catalog label is IP EM Logsheet War Room; observation correlation is unverified."
+      ]
+    },
+    {
+      "application": "Efficiency Management",
+      "object_structure": "IPEMFB",
+      "api_resource": "/oslc/os/ipemfb",
+      "object": "UNKNOWN",
+      "primary_key": "UNKNOWN",
+      "status_field": "UNKNOWN",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "UNKNOWN",
+        "organization": "UNKNOWN",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "UNKNOWN"
+      },
+      "nadi_relevance": "POTENTIAL",
+      "confidence": "PARTIAL",
+      "notes": [
+        "Catalog label is EM Formula Baseline; performance interpretation is deliberately not inferred."
+      ]
+    },
+    {
+      "application": "Efficiency Management",
+      "object_structure": "IPEMFBDTL",
+      "api_resource": "/oslc/os/ipemfbdtl",
+      "object": "UNKNOWN",
+      "primary_key": "UNKNOWN",
+      "status_field": "UNKNOWN",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "UNKNOWN",
+        "organization": "UNKNOWN",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "UNKNOWN"
+      },
+      "important_fields": [],
+      "nadi_relevance": "POTENTIAL",
+      "confidence": "PARTIAL",
+      "notes": [
+        "Catalog label is EM Formula Baseline Detail; exact measured variables and test timestamps are UNKNOWN."
+      ]
+    },
+    {
+      "application": "Efficiency Management",
+      "object_structure": "IPEMMP",
+      "api_resource": "/oslc/os/ipemmp",
+      "object": "UNKNOWN",
+      "primary_key": "UNKNOWN",
+      "status_field": "UNKNOWN",
+      "relationships": {
+        "asset": "UNKNOWN",
+        "location": "UNKNOWN",
+        "site": "UNKNOWN",
+        "organization": "UNKNOWN",
+        "workorder": "UNKNOWN",
+        "fmea_rcfa": "UNKNOWN"
+      },
+      "nadi_relevance": "POTENTIAL",
+      "confidence": "PARTIAL",
+      "notes": [
+        "Catalog label is EM Master Parameter; field type and asset/unit relation require live schema evidence."
+      ]
+    }
+  ],
+  "explicit_unknowns": [
+    "OEE resource was not identified in the local catalog.",
+    "Pareto Loss Output resource was not identified in the local catalog.",
+    "Maintenance Strategy resource was not identified; IPMSMSFAILUREMECHANI is only a failure-mechanism candidate.",
+    "Engineering Service Sheet resource was not identified; IPENGJUDGE is not equivalent without evidence.",
+    "Efficiency Management Performance Test resource was not identified.",
+    "No asset, location, site, organization, workorder, status, timestamp, or primary-key relationship is VERIFIED for the extended resources in MX-005R."
+  ],
+  "request_audit": {
+    "total_maximo_requests": 0,
+    "successful": 0,
+    "http_401_403": 0,
+    "http_404": 0,
+    "http_429": 0,
+    "http_5xx": 0,
+    "other": 0,
+    "maximum_observed_concurrency": 0,
+    "minimum_request_interval_seconds": null,
+    "budget_exceeded": false,
+    "reason_for_zero": "Configured knowledge-repository auth is form-login; GET-only discovery tooling refuses to automate the login POST."
+  }
+}

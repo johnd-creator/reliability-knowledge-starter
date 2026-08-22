@@ -27,10 +27,11 @@ GET /maximo/webclient/login/login.jsp?appservauth=true
 ```
 
 The browser login form submits to `/maximo/j_security_check` with
-`j_username` and `j_password`. This flow is documented for manual or
-browser-assisted use only. The repository's safety policy prohibits POST
-requests against production, so the discovery CLI does not submit this form.
-Use an approved read-only bearer/API credential for automated GET discovery.
+`j_username` and `j_password`. The knowledge CLI may use this form flow only
+when `MAXIMO_AUTH_MODE=form` (or `login`) and only as one controlled POST to
+that exact endpoint. The dedicated read-only session is kept in memory; all
+subsequent business requests remain GET/HEAD/OPTIONS. Use an approved
+read-only bearer/API credential when available.
 
 ## Never Store
 
@@ -70,13 +71,16 @@ that intent.
 
 Therefore:
 
-- **This repository's discovery** (`scripts/discover.py`,
-  `scripts/session_discover.py`) stays GET/HEAD/OPTIONS only. AGENTS.md forbids
-  any POST to production from discovery, so discovery uses an interactive
-  browser session where a human logs in manually.
-- **The downstream app** (a separate codebase, not bound by AGENTS.md) may
-  perform the login POST itself to obtain a cookie, then issue GET-only data
-  requests. No business data is changed.
+- **Knowledge authentication** (`scripts/discover.py`) may perform one
+  controlled POST to the exact `/j_security_check` path, plus at most one
+  controlled re-login after an expired session. The login path is a constant,
+  credentials come from the environment, and cookies remain memory-only.
+- **Knowledge business discovery** (`scripts/discover.py`,
+  `scripts/session_discover.py`) sends GET/HEAD/OPTIONS only. POST/PUT/PATCH/
+  DELETE/MERGE to OSLC or business resources is blocked before transmission.
+- **The downstream app** may use the same authentication distinction: its
+  login POST only establishes a cookie, then it issues GET-only data requests.
+  No business data is changed.
 
 ### Programmatic login recipe (for the downstream app)
 
@@ -106,7 +110,7 @@ it for GET-only OSLC requests.
 
 3. Detect session expiry and re-login: a `302` to `login.jsp`, a `401/403`, or
    an HTML login page returned instead of JSON means the session expired —
-   repeat step 1.
+   repeat step 1 at most once, then stop with an authentication failure.
 
 4. Use a **dedicated read-only service account** (not a human account). Load its
    credentials from a secret manager / env var at runtime.
@@ -136,6 +140,8 @@ Cookie: JSESSIONID=<REDACTED>
 ### Build checklist for the downstream fetcher
 
 - [ ] Use a dedicated read-only service account (not a human account).
+- [ ] If form login is used, POST only to the exact `/j_security_check`
+      authentication endpoint; never to an OSLC or business resource.
 - [ ] After login, send GET / HEAD / OPTIONS only to business resources.
 - [ ] Load credentials/cookies from a secret manager / env var at runtime.
 - [ ] Never log or persist credentials, cookies, or Authorization headers.

@@ -12,7 +12,9 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Callable
 
-from src.adapters.maximo.oslc_client import OslcClient, oslc_timestamp
+import requests
+
+from src.adapters.maximo.oslc_client import OslcClient, OslcError, OslcPaginationError, oslc_timestamp
 from src.domain import models as domain
 from src.repositories.store import CollectorStore
 
@@ -32,16 +34,33 @@ class ObjectSyncConfig:
     allowed_prefixes: tuple[str, ...] = ()
     required_values: tuple[tuple[str, str], ...] = ()
     batch_size: int = 1
+    select: tuple[str, ...] = ()
+    page_size: int | None = None
+    max_pages: int = 1000
+    watermark_query: bool = True
+    # The verified BSR site scope is sufficient for work orders. Prefix
+    # validation remains client-side because this Maximo rejects the legacy
+    # wildcard prefix predicate.
+    prefix_query: bool = True
+    # A current baseline must not advance its cursor when a source row could
+    # not be mapped. Existing callers retain the historical permissive default.
+    cursor_requires_zero_errors: bool = False
 
 
 @dataclass
 class SyncStats:
     object_structure: str
-    mode: str = "full"  # full | incremental
+    mode: str = "full"  # full | incremental | partial
     rows_seen: int = 0
     upserted: int = 0
+    inserted: int = 0
+    updated: int = 0
+    unchanged: int = 0
     skipped: int = 0
     errors: int = 0
+    duplicate_ids: int = 0
+    complete: bool = True
+    pagination_error: str | None = None
     watermark: datetime | None = None
     started_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     finished_at: datetime | None = None
@@ -66,102 +85,179 @@ class SyncService:
                 stats.mode = "incremental"
 
         where = config.scope_clause
-        if config.prefix_field and config.allowed_prefixes:
-            prefix_clauses = " or ".join(
-                f'{config.prefix_field} like "{prefix}%"'
-                for prefix in config.allowed_prefixes
-            )
-            where = f"{where} and ({prefix_clauses})"
+        if config.prefix_query and config.prefix_field and config.allowed_prefixes:
+            # Maximo's OSLC parser on this instance rejects ``like``
+            # (BMXAA8744E). Its verified wildcard form is an ``in`` list.
+            prefix_values = ",".join(f'"{prefix}%"' for prefix in config.allowed_prefixes)
+            where = f"{where} and {config.prefix_field} in [{prefix_values}]"
         for field_name, expected_value in config.required_values:
             where = f'{where} and {field_name}="{expected_value}"'
-        if stats.mode == "incremental" and watermark is not None:
+        if stats.mode == "incremental" and watermark is not None and config.watermark_query:
             iso = watermark.isoformat(timespec="seconds")
             where = f'{where} and {config.watermark_field} >= "{iso}"'
 
         seen = 0
         last_change: datetime | None = None
         pending: list[object] = []
+        seen_entity_ids: set[str] = set()
 
         def flush_pending() -> None:
             if not pending:
                 return
             if config.batch_size > 1 and hasattr(self._store, "upsert_many_for"):
-                self._store.upsert_many_for(config.entity_name, pending)
+                unique: dict[object, object] = {}
+                for index, entity in enumerate(pending):
+                    entity_id = getattr(entity, "id", None)
+                    unique[entity_id if entity_id is not None else ("row", index)] = entity
+                duplicate_count = len(pending) - len(unique)
+                if duplicate_count:
+                    stats.skipped += duplicate_count
+                self._store.upsert_many_for(config.entity_name, list(unique.values()))
+                pending_count = len(unique)
             else:
                 for queued in pending:
-                    self._store.upsert_for(config.entity_name, queued)
-            stats.upserted += len(pending)
+                    outcome = self._store.upsert_for(config.entity_name, queued)
+                    if outcome == "inserted":
+                        stats.inserted += 1
+                    elif outcome == "updated":
+                        stats.updated += 1
+                    elif outcome == "unchanged":
+                        stats.unchanged += 1
+                pending_count = len(pending)
+            stats.upserted += pending_count
             pending.clear()
 
-        for raw in self._client.iterate(
-            config.object_structure,
-            where=where,
-            required_scope=config.scope_clause,
-            order_by=config.order_by,
-        ):
-            seen += 1
-            if config.prefix_field and config.allowed_prefixes:
-                raw_value = str(raw.get(config.prefix_field) or "").strip().upper()
-                if not raw_value.startswith(config.allowed_prefixes):
+        try:
+            for raw in self._client.iterate(
+                config.object_structure,
+                where=where,
+                required_scope=config.scope_clause,
+                select=list(config.select) or None,
+                order_by=config.order_by,
+                page_size=config.page_size,
+                max_pages=config.max_pages,
+                identity_field=config.prefix_field,
+            ):
+                seen += 1
+                if config.prefix_field and config.allowed_prefixes:
+                    raw_value = str(raw.get(config.prefix_field) or "").strip().upper()
+                    if not raw_value.startswith(config.allowed_prefixes):
+                        stats.skipped += 1
+                        LOG.warning(
+                            "skip %s row outside configured prefix scope",
+                            config.object_structure,
+                        )
+                        continue
+                invalid_required_value = next(
+                    (
+                        (field_name, expected_value)
+                        for field_name, expected_value in config.required_values
+                        if str(raw.get(field_name) or "").strip().upper() != expected_value.upper()
+                    ),
+                    None,
+                )
+                if invalid_required_value:
+                    field_name, expected_value = invalid_required_value
                     stats.skipped += 1
                     LOG.warning(
-                        "skip %s row outside configured prefix scope: %s",
-                        config.object_structure,
-                        raw.get(config.prefix_field, "?"),
+                        "skip %s row outside required %s=%s scope",
+                        config.object_structure, field_name, expected_value,
                     )
                     continue
-            invalid_required_value = next(
-                (
-                    (field_name, expected_value, raw.get(field_name))
-                    for field_name, expected_value in config.required_values
-                    if str(raw.get(field_name) or "").strip().upper() != expected_value.upper()
-                ),
-                None,
-            )
-            if invalid_required_value:
-                field_name, expected_value, actual_value = invalid_required_value
-                stats.skipped += 1
-                LOG.warning(
-                    "skip %s row outside required %s=%s scope: %s",
-                    config.object_structure, field_name, expected_value, actual_value,
-                )
-                continue
-            change = None
-            if config.watermark_field:
-                change = oslc_timestamp(raw.get(config.watermark_field))
-                if change is not None and (last_change is None or change > last_change):
-                    last_change = change
-            try:
-                entity = config.mapper(raw)
-                if (
-                    config.compare_column
-                    and change is not None
-                    and self._store.is_unchanged(
-                        config.entity_name,
-                        getattr(entity, "id", None),
-                        config.compare_column,
-                        change,
-                    )
-                ):
+                change = None
+                if config.watermark_field:
+                    change = oslc_timestamp(raw.get(config.watermark_field))
+                    if change is not None and (last_change is None or change > last_change):
+                        last_change = change
+                try:
+                    entity = config.mapper(raw)
+                    entity_id = str(
+                        getattr(entity, "id", None)
+                        or (entity.get("id") if isinstance(entity, dict) else None)
+                        or (entity.get("wonum") if isinstance(entity, dict) else None)
+                        or ""
+                    ).strip()
+                    if config.entity_name == "work_order":
+                        allowed = tuple(prefix.upper() for prefix in config.allowed_prefixes)
+                        if not entity_id or not entity_id.upper().startswith(allowed):
+                            stats.skipped += 1
+                            LOG.warning(
+                                "skip %s mapped row outside configured prefix scope",
+                                config.object_structure,
+                            )
+                            continue
+                    if entity_id and entity_id in seen_entity_ids:
+                        stats.duplicate_ids += 1
+                        stats.skipped += 1
+                        continue
+                    if entity_id:
+                        seen_entity_ids.add(entity_id)
+                    if (
+                        config.compare_column
+                        and change is not None
+                        and self._store.is_unchanged(
+                            config.entity_name,
+                            entity_id or None,
+                            config.compare_column,
+                            change,
+                        )
+                    ):
+                        stats.skipped += 1
+                        continue
+                    pending.append(entity)
+                    if len(pending) >= max(1, config.batch_size):
+                        flush_pending()
+                    if config.entity_name == "equipment":
+                        self._store.record_equipment_status(entity)
+                except Exception as error:  # noqa: BLE001 — one bad row must not abort the sync
                     stats.skipped += 1
-                    continue
-                pending.append(entity)
-                if len(pending) >= max(1, config.batch_size):
-                    flush_pending()
-                if config.entity_name == "equipment":
-                    self._store.record_equipment_status(entity)
-            except Exception as error:  # noqa: BLE001 — one bad row must not abort the sync
-                stats.skipped += 1
-                stats.errors += 1
-                LOG.warning(
-                    "skip %s row in %s: %s", config.object_structure, raw.get("href", "?"), error
-                )
+                    stats.errors += 1
+                    LOG.warning(
+                        "skip %s row outcome=skipped error_class=%s",
+                        config.object_structure,
+                        type(error).__name__,
+                    )
+        except OslcPaginationError as error:
+            # Rows already yielded are valid local progress. Flush them, but
+            # never move a watermark for a traversal that was not complete.
+            flush_pending()
+            stats.complete = False
+            stats.mode = "partial"
+            stats.pagination_error = type(error).__name__
+            stats.errors += 1
+            LOG.warning(
+                "partial %s sync reason=%s pages=%d",
+                config.object_structure,
+                type(error).__name__,
+                error.pages,
+            )
+        except (OslcError, requests.RequestException) as error:
+            # Transport, authentication, response-cap, and request-budget
+            # failures may happen after valid rows have been committed. Keep
+            # that progress, record a partial run, and never advance a cursor.
+            flush_pending()
+            stats.complete = False
+            stats.mode = "partial"
+            stats.pagination_error = type(error).__name__
+            stats.errors += 1
+            LOG.warning(
+                "partial %s sync reason=%s pages=%d",
+                config.object_structure,
+                type(error).__name__,
+                getattr(self._client, "last_iteration_pages", 0),
+            )
         flush_pending()
         stats.rows_seen = seen
         stats.watermark = last_change or watermark
         stats.finished_at = datetime.now(timezone.utc)
-        if config.watermark_field:
+        if config.watermark_field and stats.complete and not (
+            config.cursor_requires_zero_errors and stats.errors
+        ):
             self._store.set_cursor(config.object_structure, stats.watermark, seen)
+        elif config.watermark_field and stats.complete and stats.errors:
+            stats.complete = False
+            stats.mode = "partial"
+            stats.pagination_error = "MAPPING_ERRORS"
         self._store.record_run(stats)
         LOG.info(
             "%s sync %s: %d seen, %d upserted, %d skipped, watermark=%s",

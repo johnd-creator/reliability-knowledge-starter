@@ -10,6 +10,7 @@ import {
   GenericView,
   StatsView,
   CollectRunView,
+  ExplorerCatalogView,
   timeAgo,
 } from "@/lib/api";
 import { CollectStatusBar } from "./CollectStatusBar";
@@ -29,6 +30,7 @@ export default function HomePage() {
   const [stats, setStats] = useState<StatsView | null>(null);
   const [status, setStatus] = useState<Record<string, { watermark: string | null; rows: number }>>({});
   const [runs, setRuns] = useState<CollectRunView[]>([]);
+  const [martCatalog, setMartCatalog] = useState<ExplorerCatalogView | null>(null);
 
   // Datasets
   const [equipmentList, setEquipmentList] = useState<EquipmentView[]>([]);
@@ -111,6 +113,12 @@ export default function HomePage() {
   useEffect(() => {
     load();
   }, [load]);
+
+  useEffect(() => {
+    collectorApi.explorerResources().then(setMartCatalog).catch(() => {
+      // The Collector Store dashboard remains useful if the Mart explorer is unavailable.
+    });
+  }, []);
 
   // Reset pagination & filters on tab change
   const handleSelectResource = (key: ResourceKey) => {
@@ -450,7 +458,7 @@ export default function HomePage() {
           onClick={() => handleSelectResource("equipment")}
           title="Klik untuk membuka data Equipment"
         >
-          <span>Total Equipment (Klik untuk Buka)</span>
+          <span>Collector Store · Equipment</span>
           <strong>{stats?.resources.equipment ?? equipmentList.length ?? "—"}</strong>
           <small>preferred source: MXAPIASSET ↗</small>
         </div>
@@ -460,7 +468,7 @@ export default function HomePage() {
           onClick={() => handleSelectResource("work_order")}
           title="Klik untuk membuka Work Orders"
         >
-          <span>Total Work Orders (Klik untuk Buka)</span>
+          <span>Collector Store · Work Orders</span>
           <strong>{stats?.resources.work_order ?? workOrdersList.length ?? "—"}</strong>
           <small>MXWODETAIL ↗</small>
         </div>
@@ -470,7 +478,7 @@ export default function HomePage() {
           onClick={() => handleSelectResource("service_request")}
           title="Klik untuk membuka Service Requests"
         >
-          <span>Total Service Requests</span>
+          <span>Collector Store · Service Requests</span>
           <strong>{stats?.resources.service_request ?? serviceRequestsList.length ?? "—"}</strong>
           <small>MXAPISR ↗</small>
         </div>
@@ -479,6 +487,24 @@ export default function HomePage() {
           <span>Safety Boundary</span>
           <strong className="green">GET Only</strong>
           <small>Maximo business data</small>
+        </div>
+      </section>
+
+      <section className="mart-summary panel">
+        <div className="panel-head">
+          <div><div className="eyebrow">Canonical persistence</div><h2>Reliability Mart</h2></div>
+          <Link href="/data-explorer" className="btn btn-primary">Open Data Explorer →</Link>
+        </div>
+        <p className="panel-note">A separate read model for reliability information. These counts are not the legacy Collector Store totals.</p>
+        <div className="mart-summary-grid">
+          {(martCatalog?.resources ?? []).map((resource) => (
+            <div className="mart-summary-card" key={resource.resource_key}>
+              <span>{resource.label}</span>
+              <strong>{resource.records.toLocaleString()}</strong>
+              <small>{resource.canonical_target}</small>
+            </div>
+          ))}
+          {!martCatalog && <div className="mart-summary-loading">Loading Mart summary…</div>}
         </div>
       </section>
 

@@ -62,6 +62,30 @@ field-by-field translation tables.
 Equipment · Location · WorkOrder · MaintenanceEvent · Failure ·
 ConditionParameter · Alarm · Downtime · ReliabilityKPI
 
+## NADI Reliability Canonical Contract v1
+
+The explicit Reliability Mart boundary is documented in
+[`docs/nadi-reliability-canonical-contract-v1.md`](./docs/nadi-reliability-canonical-contract-v1.md).
+It defines `asset_master`, `maintenance_event`, `fmea_assessment`,
+`rcfa_analysis`, `asset_health_assessment`, and `overhaul_event`. The machine-
+readable Maximo mappings, relationship graph, and deferred registry are:
+
+- [`mappings/maximo-nadi-reliability.json`](./mappings/maximo-nadi-reliability.json)
+- [`catalog/nadi-reliability-relationship-graph.json`](./catalog/nadi-reliability-relationship-graph.json)
+- [`catalog/nadi-reliability-deferred.json`](./catalog/nadi-reliability-deferred.json)
+
+The v1 schemas are [`asset-master.schema.json`](./schemas/asset-master.schema.json),
+[`fmea-assessment.schema.json`](./schemas/fmea-assessment.schema.json),
+[`rcfa-analysis.schema.json`](./schemas/rcfa-analysis.schema.json),
+[`asset-health-assessment.schema.json`](./schemas/asset-health-assessment.schema.json),
+[`maintenance-event.schema.json`](./schemas/maintenance-event.schema.json), and
+[`overhaul-event.schema.json`](./schemas/overhaul-event.schema.json).
+
+These v1 contracts preserve Maximo identifiers under `sources.maximo` and
+provenance. Scope fields (`siteid`, `orgid`) and relationship fields
+(`assetnum`, `wonum`) are not record identities. The existing runtime schemas
+remain readable and are not replaced by the canonical design document.
+
 ## Rules (see AGENTS.md)
 
 1. Do not copy vendor-specific payloads into core contract fields.

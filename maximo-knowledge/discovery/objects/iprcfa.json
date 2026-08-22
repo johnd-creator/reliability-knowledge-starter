@@ -1,0 +1,316 @@
+{
+  "system": "maximo",
+  "object_structure": "IPRCFA",
+  "resource": "iprcfa",
+  "status": "verified",
+  "access": "http_200",
+  "endpoint": "/oslc/os/IPRCFA?_maxitems=1&oslc.where=siteid%3D%22BSR%22",
+  "primary_key": {
+    "preferred": {
+      "field": "rcfaid",
+      "confidence": "CANDIDATE",
+      "reason": "resource-specific identity preference"
+    },
+    "candidates": [
+      {
+        "field": "rcfaid",
+        "confidence": "CANDIDATE",
+        "reason": "resource-specific identity preference"
+      },
+      {
+        "field": "norcfa",
+        "confidence": "CANDIDATE",
+        "reason": "resource-specific identity preference"
+      }
+    ],
+    "excluded": [
+      {
+        "field": "createddate",
+        "role": "TIMESTAMP",
+        "reason": "scope or relationship field is not record identity"
+      },
+      {
+        "field": "req_date",
+        "role": "TIMESTAMP",
+        "reason": "scope or relationship field is not record identity"
+      },
+      {
+        "field": "orgid",
+        "role": "SCOPE_ORGANIZATION",
+        "reason": "scope or relationship field is not record identity"
+      },
+      {
+        "field": "siteid",
+        "role": "SCOPE_SITE",
+        "reason": "scope or relationship field is not record identity"
+      }
+    ]
+  },
+  "field_candidates": [
+    "rcfaid",
+    "norcfa"
+  ],
+  "important_fields": [
+    "createddate",
+    "kategori_description",
+    "status",
+    "norcfa",
+    "revisi",
+    "req_date",
+    "orgid",
+    "rcfaid",
+    "ispronia",
+    "prefixes",
+    "originator",
+    "status_description",
+    "kategori",
+    "createdby",
+    "siteid"
+  ],
+  "field_types": {
+    "createddate": "datetime",
+    "status": "string",
+    "norcfa": "string",
+    "revisi": "integer",
+    "req_date": "datetime",
+    "orgid": "string",
+    "rcfaid": "integer",
+    "ispronia": "boolean",
+    "prefixes": "object/reference",
+    "kategori": "string",
+    "siteid": "string"
+  },
+  "metadata_fields": [
+    "rdf:about",
+    "_rowstamp"
+  ],
+  "pagination": {
+    "single_record_via": "same-origin resource href; no next page followed"
+  },
+  "sample": {
+    "createddate": "<datetime>",
+    "status": "<string>",
+    "norcfa": "<string>",
+    "revisi": "<integer>",
+    "req_date": "<datetime>",
+    "orgid": "<string>",
+    "rcfaid": "<integer>",
+    "ispronia": "<boolean>",
+    "siteid": "<string>"
+  },
+  "use_cases": [],
+  "relationships": [
+    "site: siteid (VERIFIED field evidence)",
+    "organization: orgid (VERIFIED field evidence)",
+    "status: status (VERIFIED field evidence)",
+    "timestamp: createddate, req_date (VERIFIED field evidence)"
+  ],
+  "notes": [
+    "MX-006B first bounded detail run: collection HTTP 200 plus one same-origin detail HTTP 200; no raw values persisted.",
+    "Asset, location, workorder, and failure/event joins remain UNKNOWN."
+  ],
+  "verified_at": "2026-08-21T03:19:41.384430+00:00",
+  "scope": {
+    "field": "siteid",
+    "value": "BSR",
+    "status": "PRIOR_LIVE_QUERY",
+    "evidence": "MX-006R bounded BSR query plus detail field evidence"
+  },
+  "detail_dereference": {
+    "attempted": true,
+    "collection_records": 1,
+    "detail_records": 1,
+    "maximum_dereference_depth": 1,
+    "pagination_followed": false,
+    "resource_path": "/maximo/oslc/os/iprcfa/<resource-id>",
+    "http_status": 200,
+    "status": "VERIFIED",
+    "fields": [
+      "createddate",
+      "kategori_description",
+      "status",
+      "norcfa",
+      "revisi",
+      "req_date",
+      "orgid",
+      "rcfaid",
+      "ispronia",
+      "prefixes",
+      "originator",
+      "status_description",
+      "kategori",
+      "createdby",
+      "siteid"
+    ],
+    "field_types": {
+      "createddate": "datetime",
+      "status": "string",
+      "norcfa": "string",
+      "revisi": "integer",
+      "req_date": "datetime",
+      "orgid": "string",
+      "rcfaid": "integer",
+      "ispronia": "boolean",
+      "siteid": "string"
+    },
+    "metadata_fields": [
+      "rdf:about",
+      "_rowstamp"
+    ]
+  },
+  "http_diagnostics": {},
+  "field_roles": {
+    "createddate": [
+      "TIMESTAMP"
+    ],
+    "kategori_description": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "status": [
+      "STATUS"
+    ],
+    "norcfa": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "revisi": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "req_date": [
+      "TIMESTAMP"
+    ],
+    "orgid": [
+      "SCOPE_ORGANIZATION"
+    ],
+    "rcfaid": [
+      "IDENTIFIER_CANDIDATE"
+    ],
+    "ispronia": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "prefixes": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "originator": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "status_description": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "kategori": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "createdby": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "siteid": [
+      "SCOPE_SITE"
+    ]
+  },
+  "role_evidence": [
+    {
+      "field": "createddate",
+      "roles": [
+        "TIMESTAMP"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "kategori_description",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "status",
+      "roles": [
+        "STATUS"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "norcfa",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "revisi",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "req_date",
+      "roles": [
+        "TIMESTAMP"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "orgid",
+      "roles": [
+        "SCOPE_ORGANIZATION"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "rcfaid",
+      "roles": [
+        "IDENTIFIER_CANDIDATE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "ispronia",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "prefixes",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "originator",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "status_description",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "kategori",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "createdby",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "siteid",
+      "roles": [
+        "SCOPE_SITE"
+      ],
+      "evidence": "observed field name on one bounded Maximo record"
+    }
+  ]
+}

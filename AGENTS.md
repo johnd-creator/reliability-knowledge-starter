@@ -51,9 +51,11 @@ pi-knowledge       ─┘     (vendor-neutral contracts)       (transactional ap
   Schemas (Draft 2020-12) plus field-mapping tables. Core fields are
   snake_case; **vendor fields are quarantined under `sources.maximo` /
   `sources.pi`** and must never leak into core contract fields.
-- **`reliability-cockpit`** is the only application. It **syncs** verified
-  Maximo objects into its own local Postgres, **computes** reliability KPIs, and
-  **serves** a FastAPI + Next.js UI.
+- **`reliability-cockpit`** is the only application. Its current production path
+  **syncs** verified Maximo collector resources into its own local Postgres,
+  **computes** reliability KPIs, and **serves** a FastAPI + Next.js UI. The PI
+  and CEMS collector APIs are verified and configurable, but PI → Cockpit and
+  CEMS → Cockpit projections remain pending.
 
 **Non-negotiable rule:** the cockpit **never rediscovers** Maximo/PI. Before
 introducing any source field, tag, endpoint, or WebId into the cockpit, look it
@@ -83,9 +85,13 @@ cd pi-knowledge
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 .venv/bin/python -m unittest discover -s tests    # 7 tests
 ```
-PI access is **not yet verified**. `discovery/*.json` entries are
-`status: documented` (public OSIsoft behavior), never instance-verified. The
-cockpit's PI adapter is a placeholder that raises `NotImplementedError`.
+PI registry access is verified for BSR1 as of 2026-08-14: the registry contains
+541 discovered attributes, of which **433** are `status: verified` with
+`stream_status: ok` (98 gone, 10 error). The PI collector may collect the 433
+active streams with its read-only safety controls. The Cockpit's direct PI
+adapter remains a placeholder; current Cockpit operation consumes Maximo
+collector resources only. PI/CEMS collector API bases do not imply an active
+Cockpit projection, and source credentials remain outside Cockpit.
 
 ### reliability-data-contracts (JSON Schemas, no own venv)
 This project has **no virtual environment of its own** — it is pure data.
@@ -128,11 +134,11 @@ python3 -m venv .venv && .venv/bin/pip install -e .   # installs `picollector` C
 cp .env.example .env                                  # PI credentials + DATABASE_URL
 docker-compose up -d postgres                         # TimescaleDB on port 5433
 .venv/bin/picollector init-db                         # create tables + hypertable
-.venv/bin/picollector load-registry                   # load 150 BSR1 attributes from pi-knowledge YAML
+.venv/bin/picollector load-registry                   # load 433 verified/ok BSR1 streams from pi-knowledge YAML
 .venv/bin/picollector collect-snapshots               # fetch current values for all attributes
 .venv/bin/picollector backfill --start "*-7d" --end "*" --interval 1h  # 7-day history
 .venv/bin/picollector serve                           # FastAPI on 127.0.0.1:8001
-.venv/bin/python -m unittest discover -s tests        # 23 tests (no DB/network needed)
+.venv/bin/python -m unittest discover -s tests        # hermetic tests (no DB/network needed)
 ```
 The collector reads verified WebIds from `../pi-knowledge/mappings/bsr1-parameters.yaml`
 (never hardcoded). Two collection modes: `collect-snapshots` (lightweight, current
@@ -146,12 +152,12 @@ python3 -m venv .venv && .venv/bin/pip install -e .   # installs `cemscollector`
 cp .env.example .env                                  # PLC host/port + DATABASE_URL
 docker compose up -d postgres                         # Postgres on port 5435
 .venv/bin/cemscollector init-db                       # create tables
-.venv/bin/cemscollector load-registry                 # load 14 parameters from registry/cems-parameters.yaml
+.venv/bin/cemscollector load-registry                 # load 15 parameters from registry/cems-parameters.yaml
 .venv/bin/cemscollector collect                       # continuous Modbus polling (read-only)
 .venv/bin/cemscollector aggregate                     # 5-minute window aggregation
 .venv/bin/cemscollector diagnose                      # read-only probe of every parameter
 .venv/bin/cemscollector serve                         # FastAPI on 127.0.0.1:8003
-.venv/bin/python -m unittest discover -s tests        # 81 tests (no DB/network needed)
+.venv/bin/python -m unittest discover -s tests        # hermetic tests (no DB/network needed)
 ```
 Ported from the DAZ production collector (Beijer Box2Base Modbus TCP gateway,
 stack 1 PLTU Suralaya). Modbus access is **FC03/FC04 read function codes
@@ -211,12 +217,15 @@ against the live instance before depending on it."
 
 ### Data flow within the app
 ```text
-OslcClient (GET-only) ──▶ mappers ──▶ domain models ──▶ CockpitStore ──▶ Postgres
+Maximo CollectorClient ──▶ mappers ──▶ domain models ──▶ CockpitStore ──▶ Postgres
                                                           ▲
                                 KpiService (reads store, writes KPIs back)
                                                           ▲
                                 FastAPI (read-only views) ──▶ Next.js UI
 ```
+- Maximo Collector → Cockpit is implemented. PI Collector API and CEMS Collector
+  API access are verified/configurable, while their Cockpit projections remain
+  pending.
 - `src/adapters/maximo/oslc_client.py` — paginates OSLC collections, enforces
   read-only + rate-limit + size cap. OSLC records live under the **`_member`**
   key (with `member`/`oslc:member`/`rdfs:member` fallbacks) — not `data`/`items`.
@@ -279,10 +288,11 @@ OslcClient (GET-only) ──▶ mappers ──▶ domain models ──▶ Cockpi
   sigoptions. Derived concepts (`failure`, `location`, `maintenance-event`) fall
   back to data drawn from the verified objects until a read-enabled credential
   exists.
-- **PI is a placeholder end-to-end.** `pi-knowledge` has only `documented`
-  records and the cockpit `src/adapters/pi/client.py` raises
-  `NotImplementedError`. Do not wire the cockpit to PI until `pi-knowledge`
-  records `verified` entries.
+- **PI source collection is verified; Cockpit direct PI is still not used.**
+  BSR1 has 433 `verified`/`ok` registry streams and the PI collector persists
+  snapshots/timeseries. The cockpit `src/adapters/pi/client.py` still raises
+  `NotImplementedError` by design; route Cockpit integrations through the
+  configurable collector API bases, never by adding PI credentials to Cockpit.
 - **Maximo scalar values arrive as strings.** Booleans (`"true"`, `"1"`) and
   numbers are frequently stringified in OSLC payloads. Always use the coercion
   helpers (`oslc_boolean`, `oslc_number`, `oslc_timestamp`, `oslc_pop_*`) in

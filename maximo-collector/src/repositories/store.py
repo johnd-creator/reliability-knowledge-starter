@@ -68,12 +68,13 @@ class CollectorStore:
             session.commit()
 
     # -- entities ------------------------------------------------------------
-    def upsert_equipment(self, e: domain.Equipment) -> None:
+    def upsert_equipment(self, e: domain.Equipment) -> str:
         row = _row(e)
         with self._db.session() as session:
             existing = session.get(orm.EquipmentOrm, e.id)
             if existing is None:
                 session.add(orm.EquipmentOrm(**row))
+                outcome = "inserted"
             else:
                 # Asset master data is a baseline. Routine syncs only update
                 # volatile operational fields and never overwrite the stored
@@ -91,7 +92,9 @@ class CollectorStore:
                         old_maximo[key] = new_maximo[key]
                 old_sources["maximo"] = old_maximo
                 existing.sources = old_sources
+                outcome = "updated"
             session.commit()
+        return outcome
 
     def upsert_work_order(self, w: domain.WorkOrder) -> None:
         self._upsert(orm.WorkOrderOrm, _row(w))
@@ -108,7 +111,7 @@ class CollectorStore:
     def upsert_labor(self, l: domain.Labor) -> None:
         self._upsert(orm.LaborOrm, _row(l))
 
-    def upsert_for(self, entity_name: str, entity: object) -> None:
+    def upsert_for(self, entity_name: str, entity: object) -> object | None:
         mapping = {
             "equipment": self.upsert_equipment,
             "work_order": self.upsert_work_order,
@@ -117,7 +120,7 @@ class CollectorStore:
             "item": self.upsert_item,
             "labor": self.upsert_labor,
         }
-        mapping[entity_name](entity)
+        return mapping[entity_name](entity)
 
     def upsert_many_for(self, entity_name: str, entities: list[object]) -> None:
         """Batch upsert master rows in one local transaction.
@@ -250,6 +253,8 @@ class CollectorStore:
         search_columns: tuple[str, ...] = (),
         prefix_column: str | None = None,
         prefixes: tuple[str, ...] = (),
+        order_column: str | None = None,
+        order_desc: bool = False,
     ) -> list[Any]:
         with self._db.session() as session:
             stmt = select(orm_cls)
@@ -272,10 +277,20 @@ class CollectorStore:
                 stmt = stmt.where(
                     or_(*[func.lower(getattr(orm_cls, column)).like(needle) for column in search_columns])
                 )
-            if changed_column:
-                stmt = stmt.order_by(getattr(orm_cls, changed_column).asc().nullsfirst())
+            sort_column = order_column or changed_column
+            if sort_column:
+                # Offset pagination must have a deterministic tie-breaker.
+                # Changed timestamps are not unique, so ordering only by the
+                # watermark column can repeat/skip rows between pages.
+                column = getattr(orm_cls, sort_column)
+                identity_column = getattr(orm_cls, "id", None) or getattr(orm_cls, "canonical_id")
+                stmt = stmt.order_by(
+                    (column.desc().nullslast() if order_desc else column.asc().nullsfirst()),
+                    identity_column.asc(),
+                )
             else:
-                stmt = stmt.order_by(getattr(orm_cls, "id"))
+                identity_column = getattr(orm_cls, "id", None) or getattr(orm_cls, "canonical_id")
+                stmt = stmt.order_by(identity_column)
             stmt = stmt.offset(offset).limit(limit)
             return list(session.execute(stmt).scalars().all())
 
@@ -286,6 +301,8 @@ class CollectorStore:
         exact_filters: dict[str, str] | None = None,
         prefix_column: str | None = None,
         prefixes: tuple[str, ...] = (),
+        search: str | None = None,
+        search_columns: tuple[str, ...] = (),
     ) -> int:
         from sqlalchemy import func
 
@@ -300,6 +317,11 @@ class CollectorStore:
                         getattr(orm_cls, prefix_column).ilike(f"{prefix}%")
                         for prefix in prefixes
                     ])
+                )
+            if search and search_columns:
+                needle = f"%{search.strip().lower()}%"
+                stmt = stmt.where(
+                    or_(*[func.lower(getattr(orm_cls, column)).like(needle) for column in search_columns])
                 )
             return session.execute(stmt).scalar() or 0
 

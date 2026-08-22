@@ -5,10 +5,12 @@ from __future__ import annotations
 import unittest
 import json
 from datetime import datetime, timezone
+from types import SimpleNamespace
 from typing import Any, Mapping
 
 from src.adapters.maximo.mappers import equipment_from_payload, work_order_from_payload
-from src.adapters.maximo.oslc_client import oslc_boolean, oslc_number, oslc_timestamp
+from src.api.app import sync_config_for
+from src.adapters.maximo.oslc_client import OslcError, OslcPaginationLimitError, oslc_boolean, oslc_number, oslc_timestamp
 from src.repositories.store import _row
 from src.services.sync import ObjectSyncConfig, SyncService
 
@@ -130,6 +132,9 @@ class FakeStore:
     def upsert_for(self, entity_name, entity):
         self.entities.append((entity_name, entity))
 
+    def upsert_many_for(self, entity_name, entities):
+        self.entities.extend((entity_name, entity) for entity in entities)
+
     def is_unchanged(self, entity_name, entity_id, compare_column, source_value):
         return (entity_name, entity_id, compare_column, source_value) in self.unchanged
 
@@ -147,8 +152,8 @@ class FakeClient:
         self.pages = pages
         self.calls: list[dict] = []
 
-    def iterate(self, object_structure, *, where=None, required_scope=None, select=None, order_by=None, max_pages=1000):
-        self.calls.append({"os": object_structure, "where": where, "required_scope": required_scope, "order_by": order_by})
+    def iterate(self, object_structure, *, where=None, required_scope=None, select=None, order_by=None, page_size=None, max_pages=1000, identity_field=None):
+        self.calls.append({"os": object_structure, "where": where, "required_scope": required_scope, "select": select, "order_by": order_by, "page_size": page_size})
         yield from self.pages
 
 
@@ -233,19 +238,62 @@ class SyncEngineTest(unittest.TestCase):
         self.assertEqual(client.calls[0]["where"], 'worksite="BSR"')
         self.assertEqual(client.calls[0]["required_scope"], 'worksite="BSR"')
 
-    def test_work_order_prefix_is_applied_and_non_bsr_is_rejected(self):
+    def test_work_order_prefix_is_validated_without_legacy_query_predicate(self):
         cfg = ObjectSyncConfig(
             object_structure="mxwodetail", entity_name="work_order",
             mapper=lambda member: member,
-            prefix_field="wonum", allowed_prefixes=("BSR",),
+            prefix_field="wonum", allowed_prefixes=("BSR",), prefix_query=False,
         )
         store = FakeStore()
         client = FakeClient([SAMPLE_BSR_WO, SAMPLE_WO])
         stats = SyncService(client, store).sync(cfg)
-        self.assertIn('siteid="BSR" and (wonum like "BSR%")', client.calls[0]["where"])
+        self.assertEqual(client.calls[0]["where"], 'siteid="BSR"')
+        self.assertNotIn("like", client.calls[0]["where"])
         self.assertEqual(stats.rows_seen, 2)
         self.assertEqual(stats.upserted, 1)
         self.assertEqual(stats.skipped, 1)
+
+    def test_select_is_forwarded_to_oslc_client(self):
+        select = ("wonum", "changedate")
+        cfg = ObjectSyncConfig(
+            object_structure="mxwodetail", entity_name="work_order",
+            mapper=lambda member: member, watermark_field=None, order_by=None, select=select,
+        )
+        store, client = FakeStore(), FakeClient([])
+        SyncService(client, store).sync(cfg)
+        self.assertEqual(client.calls[0]["select"], list(select))
+
+    def test_batch_upsert_deduplicates_duplicate_entity_ids(self):
+        cfg = ObjectSyncConfig(
+            object_structure="mxperson", entity_name="person",
+            mapper=lambda member: SimpleNamespace(id=member["id"]),
+            watermark_field=None, order_by=None, batch_size=100,
+        )
+        store, client = FakeStore(), FakeClient([
+            {"id": "P-1"}, {"id": "P-1"}, {"id": "P-2"},
+        ])
+        stats = SyncService(client, store).sync(cfg)
+        self.assertEqual(stats.upserted, 2)
+        self.assertEqual(stats.skipped, 1)
+
+    def test_runtime_work_order_and_person_queries_are_bounded(self):
+        asset = sync_config_for("mxapiasset")
+        work_order = sync_config_for("mxwodetail")
+        person = sync_config_for("mxperson")
+        self.assertIsNone(work_order.order_by)
+        self.assertEqual(work_order.scope_clause, 'siteid="BSR"')
+        self.assertEqual(work_order.allowed_prefixes, ("BSR",))
+        self.assertIn("wonum", work_order.select)
+        self.assertEqual(work_order.batch_size, 100)
+        self.assertEqual(work_order.page_size, 25)
+        self.assertFalse(work_order.prefix_query)
+        self.assertFalse(work_order.watermark_query)
+        self.assertEqual(person.scope_clause, 'locationorg="IP"')
+        self.assertIn("personid", person.select)
+        self.assertIn("assetnum", asset.select)
+        self.assertIn("failurecode", asset.select)
+        self.assertIsNone(asset.page_size)  # runtime default is 100; repair pins it explicitly
+        self.assertEqual(asset.max_pages, 1000)
 
     def test_equipment_unit_is_applied_and_non_cs01_is_rejected(self):
         cfg = ObjectSyncConfig(
@@ -269,6 +317,84 @@ class SyncEngineTest(unittest.TestCase):
         SyncService(client, store).sync(self.CFG)
         self.assertEqual(len(store.runs), 1)
         self.assertIsNotNone(store.runs[0].finished_at)
+
+    def test_pagination_cap_keeps_progress_but_does_not_advance_cursor(self):
+        cfg = ObjectSyncConfig(
+            object_structure="mxwodetail",
+            entity_name="work_order",
+            mapper=work_order_from_payload,
+            prefix_field="wonum",
+            allowed_prefixes=("BSR",),
+        )
+
+        class CappedClient(FakeClient):
+            def iterate(self, *args, **kwargs):
+                yield SAMPLE_BSR_WO
+                raise OslcPaginationLimitError(
+                    "mxwodetail", pages=1000, max_pages=1000,
+                    next_page_fingerprint="safe-fingerprint",
+                )
+
+        store, client = FakeStore(), CappedClient([])
+        stats = SyncService(client, store).sync(cfg)
+        self.assertFalse(stats.complete)
+        self.assertEqual(stats.mode, "partial")
+        self.assertEqual(stats.pagination_error, "OslcPaginationLimitError")
+        self.assertEqual(stats.upserted, 1)
+        self.assertNotIn("mxwodetail", store.cursors)
+
+    def test_cursor_independent_backfill_does_not_create_cursor(self):
+        cfg = ObjectSyncConfig(
+            object_structure="mxwodetail",
+            entity_name="work_order",
+            mapper=work_order_from_payload,
+            watermark_field=None,
+            prefix_field="wonum",
+            allowed_prefixes=("BSR",),
+            prefix_query=True,
+            max_pages=2,
+        )
+        store, client = FakeStore(), FakeClient([SAMPLE_BSR_WO])
+        stats = SyncService(client, store).sync(cfg)
+        self.assertTrue(stats.complete)
+        self.assertEqual(stats.upserted, 1)
+        self.assertNotIn("mxwodetail", store.cursors)
+
+    def test_transport_failure_is_partial_and_does_not_advance_cursor(self):
+        class FailingClient(FakeClient):
+            def iterate(self, *args, **kwargs):
+                yield SAMPLE_ASSET
+                raise OslcError("synthetic transport interruption")
+
+        cfg = ObjectSyncConfig(
+            object_structure="mxapiasset",
+            entity_name="equipment",
+            mapper=equipment_from_payload,
+            cursor_requires_zero_errors=True,
+        )
+        store = FakeStore()
+        stats = SyncService(FailingClient([]), store).sync(cfg)
+        self.assertFalse(stats.complete)
+        self.assertEqual(stats.mode, "partial")
+        self.assertEqual(stats.pagination_error, "OslcError")
+        self.assertEqual(stats.upserted, 1)
+        self.assertNotIn("mxapiasset", store.cursors)
+        self.assertEqual(store.runs[0].mode, "partial")
+
+    def test_baseline_mapping_error_is_partial_and_does_not_advance_cursor(self):
+        cfg = ObjectSyncConfig(
+            object_structure="mxapiasset",
+            entity_name="equipment",
+            mapper=equipment_from_payload,
+            cursor_requires_zero_errors=True,
+        )
+        store = FakeStore()
+        stats = SyncService(FakeClient([{"eq11": "CS01", "changedate": SAMPLE_ASSET["changedate"]}]), store).sync(cfg)
+        self.assertFalse(stats.complete)
+        self.assertEqual(stats.mode, "partial")
+        self.assertEqual(stats.pagination_error, "MAPPING_ERRORS")
+        self.assertEqual(stats.errors, 1)
+        self.assertNotIn("mxapiasset", store.cursors)
 
 
 if __name__ == "__main__":

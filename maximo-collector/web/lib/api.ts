@@ -119,6 +119,7 @@ export interface ListFilters {
   changed_until?: string;
   offset?: number;
   limit?: number;
+  sort?: string;
 }
 
 export interface SyncStatus {
@@ -145,6 +146,76 @@ export interface StatsView {
   read_only: boolean;
   resources: Record<string, number>;
   last_run: CollectRunView | null;
+}
+
+export interface ExplorerResourceView {
+  resource_key: string;
+  source_system: string;
+  source_application: string | null;
+  source_object: string;
+  label: string;
+  module: string;
+  scope: { site: string; organization: string };
+  selected_fields: string[];
+  canonical_target: string;
+  contract_version: string;
+  records: number;
+  last_sync: string | null;
+  status: "READY" | "CONFIGURED_EMPTY";
+  primary_fields: string[];
+  deferred: boolean;
+}
+
+export interface ExplorerDeferredView {
+  source_object: string;
+  label: string;
+  reason: string;
+}
+
+export interface ExplorerCatalogView {
+  resources: ExplorerResourceView[];
+  deferred: ExplorerDeferredView[];
+  integrity?: ExplorerIntegrityView;
+}
+
+export interface ExplorerIntegrityView {
+  asset_reference_total: number;
+  asset_reference_resolved: number;
+  asset_reference_unresolved: number;
+  workorder_reference_total: number;
+  workorder_reference_resolved: number;
+  workorder_reference_unresolved: number;
+}
+
+export interface ExplorerPage<T> {
+  items: T[];
+  meta: { total: number; offset: number; limit: number; has_more: boolean };
+}
+
+export interface ExplorerSourceRecord {
+  canonical_id: string;
+  contract_version: string;
+  source_data: Record<string, unknown>;
+  source_updated_at: string | null;
+}
+
+export interface ExplorerMappingRow {
+  source_field: string | null;
+  canonical_field: string;
+  transformation: string;
+  nullable: boolean;
+  evidence: string;
+  notes: string | null;
+}
+
+export interface ExplorerRecordDetail {
+  resource: ExplorerResourceView;
+  canonical_id: string;
+  source_data: Record<string, unknown>;
+  canonical: Record<string, unknown>;
+  provenance: Record<string, unknown>;
+  relationship_evidence: Record<string, unknown>;
+  mapping: ExplorerMappingRow[];
 }
 
 async function get<T>(path: string): Promise<T> {
@@ -179,6 +250,16 @@ export const collectorApi = {
   items: (limit = 5000, filters: Omit<ListFilters, "limit"> = {}) => get<GenericView[]>(`/items${query({ ...filters, limit })}`),
   labor: (limit = 5000, filters: Omit<ListFilters, "limit"> = {}) => get<GenericView[]>(`/labor${query({ ...filters, limit })}`),
   sync: (object: string) => post<{ object_structure: string; rows_seen: number; upserted: number; skipped: number; errors: number }>(`/sync/${object}`),
+  explorerResources: () => get<ExplorerCatalogView>("/data-explorer/resources"),
+  explorerIntegrity: () => get<ExplorerIntegrityView>("/data-explorer/integrity"),
+  explorerResource: (resource: string) => get<ExplorerResourceView>(`/data-explorer/resources/${encodeURIComponent(resource)}`),
+  explorerSourceRecords: (resource: string, filters: { q?: string; offset?: number; limit?: number; sort?: string } = {}) =>
+    get<{ resource: ExplorerResourceView } & ExplorerPage<ExplorerSourceRecord>>(`/data-explorer/resources/${encodeURIComponent(resource)}/records${query(filters)}`),
+  explorerSourceRecord: (resource: string, canonicalId: string) => get<ExplorerRecordDetail>(`/data-explorer/resources/${encodeURIComponent(resource)}/records/${encodeURIComponent(canonicalId)}`),
+  explorerMartRecords: (entity: string, filters: { q?: string; offset?: number; limit?: number; sort?: string } = {}) =>
+    get<{ entity: string } & ExplorerPage<Record<string, unknown>>>(`/data-explorer/mart/${encodeURIComponent(entity)}${query(filters)}`),
+  explorerMartRecord: (entity: string, canonicalId: string) => get<ExplorerRecordDetail>(`/data-explorer/mart/${encodeURIComponent(entity)}/${encodeURIComponent(canonicalId)}`),
+  explorerMapping: (resource: string) => get<{ source_object: string; canonical_entity: string; contract_version: string; fields: ExplorerMappingRow[] }>(`/data-explorer/mappings/${encodeURIComponent(resource)}`),
 };
 
 export function timeAgo(value: string | null | undefined): string {

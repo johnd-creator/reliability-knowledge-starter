@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "smoke:routes": "node scripts/route-smoke.mjs",
+    "check:product-safety": "node scripts/product-safety-check.mjs"
   },
   "dependencies": {
     "next": "^15.5.9",

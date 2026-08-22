@@ -14,6 +14,7 @@ statusdate (mxperson/mxitem).
 from __future__ import annotations
 
 import logging
+import hashlib
 import time
 from datetime import datetime
 from typing import Any, Iterator, Mapping
@@ -46,7 +47,7 @@ OSLC_MEMBER_KEYS = ("_member", "member", "oslc:member", "rdfs:member")
 ASSET_DETAIL_FIELDS = (
     "assetnum", "assetid", "location", "siteid", "orgid", "status", "status_description",
     "assettype", "plant", "eq11", "parent", "ancestor", "children", "isrunning",
-    "installdate", "changedate", "totdowntime", "description", "priority", "issafety",
+    "installdate", "changedate", "totdowntime", "description", "priority", "failurecode", "issafety",
     "iscalibration", "statusdate", "purchaseprice", "replacecost", "totalcost", "manufacturer",
     "vendor", "ytdcost", "assettype_description", "plant_description", "mainstr",
     "mainstr_description", "hierarchypath", "eq5", "eq9", "eq8", "eq10", "eq11_description",
@@ -66,6 +67,43 @@ class OslcAuthExpiredError(OslcError):
     """Raised when the session expired mid-request (caller may re-login once)."""
 
 
+class OslcRequestBudgetExceeded(OslcError):
+    """Raised before sending a business request past the configured ceiling."""
+
+
+class OslcPaginationError(OslcError):
+    """Base class for a traversal that cannot be proven complete."""
+
+    def __init__(self, message: str, *, pages: int, next_page_fingerprint: str):
+        super().__init__(message)
+        self.pages = pages
+        self.next_page_fingerprint = next_page_fingerprint
+
+
+class OslcPaginationLimitError(OslcPaginationError):
+    """The safety page cap was reached while another page was advertised."""
+
+    def __init__(self, object_structure: str, *, pages: int, max_pages: int, next_page_fingerprint: str):
+        super().__init__(
+            f"Maximo pagination for {object_structure} reached max_pages={max_pages} "
+            "while another page was available",
+            pages=pages,
+            next_page_fingerprint=next_page_fingerprint,
+        )
+        self.max_pages = max_pages
+
+
+class OslcPaginationLoopError(OslcPaginationError):
+    """The source returned a page URL already seen in this traversal."""
+
+    def __init__(self, object_structure: str, *, pages: int, next_page_fingerprint: str):
+        super().__init__(
+            f"Maximo pagination for {object_structure} repeated a page URL",
+            pages=pages,
+            next_page_fingerprint=next_page_fingerprint,
+        )
+
+
 def _quote(value: str) -> str:
     return quote(value, safe="")
 
@@ -76,6 +114,7 @@ class OslcClient:
         config: MaximoConfig,
         auth: MaximoAuth | None = None,
         session: requests.Session | None = None,
+        request_budget: int | None = None,
     ):
         self._config = config
         if config.site_id != "BSR" or config.org_id != "IP":
@@ -90,6 +129,27 @@ class OslcClient:
         if self._auth.session is not self._session:
             raise OslcError("Maximo auth and OSLC client must share one HTTP session")
         self._last_request = 0.0
+        if request_budget is not None and request_budget < 1:
+            raise ValueError("request_budget must be at least 1")
+        self._request_budget = request_budget
+        self._business_request_count = 0
+        self._status_counts: dict[str, int] = {}
+        self._detail_request_count = 0
+        self._last_iteration_pages = 0
+
+    @property
+    def last_iteration_pages(self) -> int:
+        return self._last_iteration_pages
+
+    @property
+    def request_telemetry(self) -> dict[str, Any]:
+        """Return sanitized request metrics without URLs or response values."""
+        return {
+            "business_requests": self._business_request_count,
+            "status_counts": dict(self._status_counts),
+            "detail_requests": self._detail_request_count,
+            "budget": self._request_budget,
+        }
 
     # -- low-level request ------------------------------------------------
     def request(self, method: str, path: str) -> requests.Response:
@@ -97,6 +157,10 @@ class OslcClient:
         method = method.upper()
         if method not in READ_ONLY_METHODS:
             raise OslcError(f"blocked non-read-only method for Maximo: {method}")
+        if self._request_budget is not None and self._business_request_count >= self._request_budget:
+            raise OslcRequestBudgetExceeded(
+                f"Maximo business request budget exhausted at {self._request_budget} requests"
+            )
         last_request = max(
             self._last_request,
             getattr(self._auth, "last_request_at", 0.0),
@@ -107,12 +171,15 @@ class OslcClient:
         url = path if path.startswith(("http://", "https://")) else self._config.base_url + path
         # Maximo can return the web login shell (HTTP 200) when content
         # negotiation is omitted. OSLC calls must explicitly request JSON.
+        self._business_request_count += 1
         resp = self._session.request(
             method,
             url,
             headers={"Accept": "application/json"},
             timeout=self._config.timeout_seconds,
         )
+        status = str(getattr(resp, "status_code", "unknown"))
+        self._status_counts[status] = self._status_counts.get(status, 0) + 1
         self._last_request = time.monotonic()
         if len(resp.content) > self._config.max_response_bytes:
             raise OslcError(
@@ -133,7 +200,9 @@ class OslcClient:
         required_scope: str | None = None,
         select: list[str] | None = None,
         order_by: str | None = None,
+        page_size: int | None = None,
         max_pages: int = 1000,
+        identity_field: str | None = None,
     ) -> Iterator[Mapping[str, Any]]:
         """Paginate through an OSLC object structure (GET only).
 
@@ -145,13 +214,20 @@ class OslcClient:
         )
         if required_scope not in _ALLOWED_SCOPE_CLAUSES:
             raise OslcError(f"unsupported Maximo scope clause: {required_scope}")
+        if page_size is not None and not 1 <= page_size <= self._config.page_size:
+            raise OslcError(
+                f"Maximo page_size must be between 1 and {self._config.page_size}"
+            )
+        if max_pages < 1:
+            raise OslcError("Maximo max_pages must be at least 1")
+        effective_page_size = page_size or self._config.page_size
         if where is None:
             where = required_scope
         elif required_scope not in where:
             raise OslcError(f"every {object_structure} query must include {required_scope}")
         params: list[tuple[str, str]] = [
             ("oslc.paging", "true"),
-            ("oslc.pageSize", str(self._config.page_size)),
+            ("oslc.pageSize", str(effective_page_size)),
             ("oslc.where", where),
         ]
         if order_by:
@@ -163,8 +239,27 @@ class OslcClient:
         url = f"{base}?{urlencode(params, doseq=True)}"
         pages = 0
         retried_auth = False
-        while url and pages < max_pages:
+        seen_page_fingerprints: set[str] = set()
+        previous_page_ids: set[str] = set()
+        self._last_iteration_pages = 0
+        while url:
+            page_fingerprint = _page_fingerprint(url)
+            if page_fingerprint in seen_page_fingerprints:
+                raise OslcPaginationLoopError(
+                    object_structure,
+                    pages=pages,
+                    next_page_fingerprint=page_fingerprint,
+                )
+            if pages >= max_pages:
+                raise OslcPaginationLimitError(
+                    object_structure,
+                    pages=pages,
+                    max_pages=max_pages,
+                    next_page_fingerprint=page_fingerprint,
+                )
+            seen_page_fingerprints.add(page_fingerprint)
             pages += 1
+            self._last_iteration_pages = pages
             self._auth.ensure_logged_in()
             resp = self.get(url)
             if MaximoAuth.looks_expired(resp):
@@ -180,6 +275,7 @@ class OslcClient:
             resp.raise_for_status()
             payload = resp.json()
             members = _extract_members(payload)
+            page_ids: set[str] = set()
             for member in members:
                 if _is_resource_link(member):
                     resource_url = _normalize_next_page_url(
@@ -188,6 +284,7 @@ class OslcClient:
                     if not resource_url:
                         continue
                     resource_url = _add_detail_select(resource_url)
+                    self._detail_request_count += 1
                     detail = self.get(resource_url)
                     if MaximoAuth.looks_expired(detail):
                         if retried_auth:
@@ -196,18 +293,31 @@ class OslcClient:
                             )
                         retried_auth = True
                         self._auth.handle_expiry()
+                        self._detail_request_count += 1
                         detail = self.get(resource_url)
                     detail.raise_for_status()
                     detail_payload = detail.json()
                     if not isinstance(detail_payload, Mapping):
                         raise OslcError("Maximo resource link did not return a JSON object")
-                    yield _normalize_member(detail_payload)
-                    continue
-                yield _normalize_member(member)
+                    normalized = _normalize_member(detail_payload)
+                else:
+                    normalized = _normalize_member(member)
+                if identity_field:
+                    identity = str(normalized.get(identity_field) or "").strip()
+                    if identity:
+                        page_ids.add(identity)
+                yield normalized
+            overlap = len(page_ids & previous_page_ids)
+            LOG.info(
+                "Maximo pagination object=%s page=%d distinct_ids=%d overlap_previous=%d",
+                object_structure,
+                pages,
+                len(page_ids),
+                overlap,
+            )
+            previous_page_ids = page_ids
             next_url = _next_page_url(payload)
             url = _normalize_next_page_url(next_url, self._config.base_url) or ""
-        if pages >= max_pages:
-            LOG.warning("object structure %s hit max_pages=%d", object_structure, max_pages)
 
 
 def _extract_members(payload: Any) -> list[Mapping[str, Any]]:
@@ -282,6 +392,14 @@ def _next_page_url(payload: Mapping[str, Any]) -> str | None:
             or next_url.get("@id")
         )
     return str(next_url) if next_url else None
+
+
+def _page_fingerprint(url: str) -> str:
+    """Return a non-sensitive fingerprint for pagination-loop diagnostics."""
+    # The URL is needed transiently to make the request, but logs contain only
+    # a digest. This prevents query values such as a future session token from
+    # appearing in observability output.
+    return hashlib.sha256(url.encode("utf-8")).hexdigest()[:16]
 
 
 def _normalize_next_page_url(next_url: str | None, base_url: str) -> str | None:
