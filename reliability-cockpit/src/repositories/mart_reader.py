@@ -774,6 +774,292 @@ class MartQueryRepository:
             "source": "MAXIMO_LIST_OF_ASSETS",
         }
 
+    def data_trust_overview(self, *, as_of: datetime | None = None) -> dict[str, object]:
+        """Return bounded population, relationship, and semantic evidence.
+
+        This method composes aggregate-only domain evidence.  It deliberately
+        does not read raw rows or consult Collector operational metadata, so a
+        latest source-record date is never presented as ingestion freshness.
+        """
+
+        current = as_of or datetime.now(timezone.utc)
+        if current.tzinfo is None:
+            current = current.replace(tzinfo=timezone.utc)
+        registry_scope = (
+            ReliabilityAssetRegistryMart.site_code == SITE_CODE,
+            ReliabilityAssetRegistryMart.organization_code == ORGANIZATION_CODE,
+        )
+        asset_scope = (
+            AssetMasterMart.site_code == SITE_CODE,
+            AssetMasterMart.organization_code == ORGANIZATION_CODE,
+        )
+        maintenance_scope = (
+            MaintenanceEventMart.site_code == SITE_CODE,
+            MaintenanceEventMart.organization_code == ORGANIZATION_CODE,
+        )
+        overhaul_scope = (
+            OverhaulEventMart.site_code == SITE_CODE,
+            OverhaulEventMart.organization_code == ORGANIZATION_CODE,
+        )
+        maintenance_date = func.coalesce(MaintenanceEventMart.actual_start, MaintenanceEventMart.source_changed_at)
+        overhaul_date = func.coalesce(OverhaulEventMart.source_updated_at, OverhaulEventMart.source_created_at)
+        population_statement = select(
+            select(func.count(ReliabilityAssetRegistryMart.asset_ref)).where(*registry_scope).scalar_subquery().label("registered_assets"),
+            select(func.count(ReliabilityAssetRegistryMart.asset_ref)).join(
+                AssetMasterMart,
+                (ReliabilityAssetRegistryMart.asset_ref == AssetMasterMart.canonical_id)
+                & (AssetMasterMart.site_code == SITE_CODE)
+                & (AssetMasterMart.organization_code == ORGANIZATION_CODE),
+            ).where(*registry_scope).scalar_subquery().label("registry_resolved"),
+            select(func.count(AssetMasterMart.canonical_id)).where(*asset_scope).scalar_subquery().label("technical_asset_context"),
+            select(func.count(MaintenanceEventMart.canonical_id)).where(*maintenance_scope).scalar_subquery().label("maintenance_total"),
+            select(func.count(MaintenanceEventMart.canonical_id)).join(
+                ReliabilityAssetRegistryMart,
+                ReliabilityAssetRegistryMart.asset_ref == MaintenanceEventMart.equipment_id,
+            ).where(
+                *maintenance_scope,
+                *registry_scope,
+            ).scalar_subquery().label("registry_maintenance"),
+            select(func.max(AssetMasterMart.source_updated_at)).join(
+                ReliabilityAssetRegistryMart,
+                ReliabilityAssetRegistryMart.asset_ref == AssetMasterMart.canonical_id,
+            ).where(*asset_scope, *registry_scope).scalar_subquery().label("asset_latest"),
+            select(func.max(maintenance_date)).join(
+                ReliabilityAssetRegistryMart,
+                ReliabilityAssetRegistryMart.asset_ref == MaintenanceEventMart.equipment_id,
+            ).where(
+                *maintenance_scope,
+                *registry_scope,
+                maintenance_date.is_not(None),
+            ).scalar_subquery().label("maintenance_latest"),
+            select(func.max(overhaul_date)).where(*overhaul_scope, overhaul_date.is_not(None)).scalar_subquery().label("overhaul_latest"),
+        )
+        with self.database.read_session() as session:
+            population = session.execute(population_statement).one()._mapping
+
+        fmea = self.fmea_overview(as_of=current)
+        health = self.asset_health_overview(as_of=current)
+        rcfa = self.rcfa_overview(as_of=current)
+        overhaul = self.overhaul_overview()
+        fmea_summary = fmea["summary"]
+        health_summary = health["summary"]
+        rcfa_summary = rcfa["summary"]
+        overhaul_summary = overhaul["summary"]
+        registered_assets = int(population["registered_assets"] or 0)
+        registry_resolved = int(population["registry_resolved"] or 0)
+        maintenance_total = int(population["maintenance_total"] or 0)
+        registry_maintenance = int(population["registry_maintenance"] or 0)
+        fmea_records = int(fmea_summary["fmea_records"] or 0)
+        health_records = int(health_summary["assessment_records"] or 0)
+        rcfa_records = int(rcfa_summary["rcfa_records"] or 0)
+        overhaul_records = int(overhaul_summary["overhaul_records"] or 0)
+
+        domains = [
+            {
+                "domain": "ASSET",
+                "source_system": "MAXIMO",
+                "source_object": "MXASSET / registry projection",
+                "population_type": "BUSINESS_REGISTRY",
+                "record_count": registered_assets,
+                "business_scope": "Registered Reliability Assets",
+                "relationship_state": "Registry → Asset Master verified",
+                "latest_record_date": population["asset_latest"],
+                "date_basis": "asset_master.source_updated_at",
+                "known_limitation": "asset_master is broader technical context; the Registry remains the business boundary.",
+                "evidence_class": "VERIFIED",
+            },
+            {
+                "domain": "MAINTENANCE",
+                "source_system": "MAXIMO",
+                "source_object": "MXWODETAIL",
+                "population_type": "LOCAL_COLLECTOR_PROJECTION",
+                "record_count": maintenance_total,
+                "scoped_record_count": registry_maintenance,
+                "business_scope": "Registry-scoped Maintenance Events",
+                "relationship_state": "Direct Registry scope verified",
+                "latest_record_date": population["maintenance_latest"],
+                "date_basis": "COALESCE(actual_start, source_changed_at)",
+                "known_limitation": "Latest activity evidence is not a sync freshness or failure-rate measure.",
+                "evidence_class": "VERIFIED",
+            },
+            {
+                "domain": "FMEA",
+                "source_system": "MAXIMO",
+                "source_object": "IPFMEA",
+                "population_type": "CONTROLLED_MART_POPULATION",
+                "record_count": fmea_records,
+                "registered_assets_represented": int(fmea_summary["registered_assets_represented"] or 0),
+                "business_scope": "Current controlled FMEA population",
+                "relationship_state": "Direct verified source relationship; resolution measured",
+                "latest_record_date": fmea["record_recency"]["latest_record_at"],
+                "date_basis": fmea["record_recency"]["date_basis"],
+                "known_limitation": "IPFMEAITEM failure-mode details and RPN remain deferred.",
+                "evidence_class": "VERIFIED",
+            },
+            {
+                "domain": "ASSET_HEALTH",
+                "source_system": "MAXIMO",
+                "source_object": "IPBHM",
+                "population_type": "CONTROLLED_MART_POPULATION",
+                "record_count": health_records,
+                "registered_assets_represented": int(health_summary["registered_assets_represented"] or 0),
+                "business_scope": "Current controlled Asset Health assessment population",
+                "relationship_state": "Direct verified Asset relationship; resolution measured",
+                "latest_record_date": health["record_recency"]["latest_record_at"],
+                "date_basis": health["record_recency"]["date_basis"],
+                "known_limitation": "Assessment records are not a verified Health or Wellness Score.",
+                "evidence_class": "VERIFIED",
+            },
+            {
+                "domain": "RCFA",
+                "source_system": "MAXIMO",
+                "source_object": "IPRCFA",
+                "population_type": "CONTROLLED_MART_POPULATION",
+                "record_count": rcfa_records,
+                "business_scope": "Global RCFA analysis records",
+                "relationship_state": "Asset, Work Order, and Failure Event relationships unresolved",
+                "latest_record_date": rcfa["record_recency"]["latest_record_at"],
+                "date_basis": rcfa["record_recency"]["date_basis"],
+                "known_limitation": "No Asset coverage, root-cause taxonomy, or completion KPI is claimed.",
+                "evidence_class": "VERIFIED",
+            },
+            {
+                "domain": "OVERHAUL",
+                "source_system": "MAXIMO",
+                "source_object": "IP_DOM_OH",
+                "population_type": "CONTROLLED_MART_POPULATION",
+                "record_count": overhaul_records,
+                "business_scope": "Current controlled Overhaul population",
+                "relationship_state": "Work Order direct verified; Asset derived through Work Order",
+                "latest_record_date": population["overhaul_latest"],
+                "date_basis": "COALESCE(source_updated_at, source_created_at)",
+                "known_limitation": "Work Order Mart resolution and Asset resolution are measured separately; no execution KPI is claimed.",
+                "evidence_class": "VERIFIED",
+            },
+        ]
+        relationships = [
+            {
+                "relationship": "Registry → Asset Master",
+                "evidence": "VERIFIED",
+                "resolved_count": registry_resolved,
+                "unresolved_count": max(registered_assets - registry_resolved, 0),
+                "interpretation": "Business Asset Registry resolution; asset_master remains broader technical context.",
+            },
+            {
+                "relationship": "Maintenance → Registered Asset",
+                "evidence": "DIRECT_VERIFIED",
+                "resolved_count": registry_maintenance,
+                "interpretation": "The product Maintenance count is explicitly Registry-scoped.",
+            },
+            {
+                "relationship": "FMEA → Asset",
+                "evidence": "DIRECT_VERIFIED",
+                "resolved_count": int(fmea_summary["registry_resolved"] or 0),
+                "unresolved_count": int(fmea_summary["unresolved_asset_refs"] or 0),
+                "technical_context_count": int(fmea_summary["technical_non_registry_records"] or 0),
+                "interpretation": "Registered, technical, and unresolved references remain distinct.",
+            },
+            {
+                "relationship": "Asset Health → Asset",
+                "evidence": "DIRECT_VERIFIED",
+                "resolved_count": int(health_summary["registry_resolved"] or 0),
+                "unresolved_count": int(health_summary["unresolved_asset_refs"] or 0),
+                "technical_context_count": int(health_summary["technical_non_registry_records"] or 0),
+                "interpretation": "Registered, technical, and unresolved references remain distinct.",
+            },
+            {"relationship": "RCFA → Asset", "evidence": "UNRESOLVED", "interpretation": "No Asset join or coverage metric is exposed."},
+            {"relationship": "RCFA → Work Order", "evidence": "UNRESOLVED", "interpretation": "No Work Order join is exposed."},
+            {"relationship": "RCFA → Failure Event", "evidence": "UNRESOLVED", "interpretation": "RCFA is not treated as a failure event."},
+            {
+                "relationship": "Overhaul → Work Order",
+                "evidence": "DIRECT_VERIFIED",
+                "resolved_count": int(overhaul_summary["records_with_work_order"] or 0),
+                "unresolved_count": int(overhaul_summary["work_order_source_missing"] or 0),
+                "interpretation": "Source relationship is verified; local Mart resolution is separate.",
+            },
+            {
+                "relationship": "Overhaul Work Order → local maintenance_event",
+                "evidence": "RESOLUTION_MEASURED",
+                "resolved_count": int(overhaul_summary["work_orders_resolved_in_mart"] or 0),
+                "unresolved_count": int(overhaul_summary["work_orders_unresolved_in_mart"] or 0),
+                "interpretation": "A source Work Order can be identified while its local Mart context is unavailable.",
+            },
+            {
+                "relationship": "Overhaul → Asset",
+                "evidence": "DERIVED_VERIFIED_PATH",
+                "resolved_count": int(overhaul_summary["registered_assets_resolved"] or 0),
+                "unresolved_count": int(overhaul_summary["asset_refs_unresolved"] or 0),
+                "technical_context_count": int(overhaul_summary["technical_non_registry"] or 0),
+                "interpretation": "Only an existing Work Order-derived asset_ref may resolve to a Registered Asset.",
+            },
+        ]
+        readiness = [
+            ("Registered Reliability Assets", "VERIFIED", "AVAILABLE", "Business Asset boundary is reliability_asset_registry."),
+            ("Maintenance Activity", "DERIVED_SAFE", "AVAILABLE", "Registry-scoped event counts use factual activity dates."),
+            ("Repeat Activity", "DERIVED_SAFE", "AVAILABLE", "Repeated events are descriptive activity, not repeated failure."),
+            ("Activity Concentration", "DERIVED_SAFE", "AVAILABLE", "Event concentration is an investigation signal only."),
+            ("FMEA Records", "VERIFIED", "AVAILABLE", "Current controlled IPFMEA records are available."),
+            ("Asset Health Assessment Records", "VERIFIED", "AVAILABLE", "Current controlled IPBHM records are available."),
+            ("RCFA Records", "VERIFIED", "AVAILABLE", "Global controlled RCFA records are available."),
+            ("Overhaul Records", "VERIFIED", "AVAILABLE", "Current controlled Overhaul records are available."),
+            ("Raw Source Status distributions", "DERIVED_SAFE", "AVAILABLE", "Statuses remain exactly source values."),
+            ("Raw Work Type", "DERIVED_SAFE", "AVAILABLE", "Preferred source work type is preserved before canonical fallback."),
+            ("Record Recency", "DERIVED_SAFE", "AVAILABLE", "Domain-specific latest source-record dates are factual only."),
+            ("Repeat Failure", "BUSINESS_SEMANTICS_REQUIRED", "BLOCKED", "Failure identity, occurrence, qualifying statuses, and governed repeat rules are unavailable."),
+            ("MTBF", "BUSINESS_SEMANTICS_REQUIRED", "BLOCKED", "Verified failure events and operating exposure are unavailable."),
+            ("MTTR", "BUSINESS_SEMANTICS_REQUIRED", "BLOCKED", "Verified failure and repair-completion boundaries are unavailable."),
+            ("Availability", "DATA_NOT_AVAILABLE", "NOT_AVAILABLE", "Operating-time and outage boundaries are not in the current model."),
+            ("Health Score", "BUSINESS_SEMANTICS_REQUIRED", "BLOCKED", "No verified numerical source, normalization, or governance exists."),
+            ("Wellness Score", "BUSINESS_SEMANTICS_REQUIRED", "BLOCKED", "The report clue is not verified as an IPBHM source or calculation."),
+            ("Risk Score", "DATA_NOT_AVAILABLE", "NOT_AVAILABLE", "No verified risk inputs, formula, or thresholds exist."),
+            ("Reliability Score", "DEFERRED", "DEFERRED", "Intentionally postponed until reliability semantics are governed."),
+            ("Bad Actor", "DEFERRED", "DEFERRED", "Activity count is not a bad-actor rule."),
+            ("FMEA RPN", "BUSINESS_SEMANTICS_REQUIRED", "BLOCKED", "Severity, Occurrence, Detectability, scales, and governance are unavailable."),
+            ("Failure Mode analytics", "DATA_NOT_AVAILABLE", "NOT_AVAILABLE", "IPFMEAITEM remains outside the current controlled dataset."),
+            ("RCFA Completion KPI", "BUSINESS_SEMANTICS_REQUIRED", "BLOCKED", "Completion status semantics and action evidence are unavailable."),
+            ("RCFA Root Cause taxonomy", "BUSINESS_SEMANTICS_REQUIRED", "BLOCKED", "Category is a raw source value with unverified taxonomy."),
+            ("Overhaul Schedule Variance", "BUSINESS_SEMANTICS_REQUIRED", "BLOCKED", "Planned/actual boundaries and completion rules are unverified."),
+            ("Overhaul Completion KPI", "BUSINESS_SEMANTICS_REQUIRED", "BLOCKED", "Raw lifecycle status is not a verified completion mapping."),
+            ("Overhaul Progress KPI", "BUSINESS_SEMANTICS_REQUIRED", "BLOCKED", "Progress scale and business meaning are unverified."),
+            ("PdM alerts", "DATA_NOT_AVAILABLE", "NOT_AVAILABLE", "PI/DCS signals are not in the current NADI decision model."),
+            ("Recommendations", "DEFERRED", "DEFERRED", "No governed action rules are implemented."),
+        ]
+        return {
+            "scope": {
+                "site_code": SITE_CODE,
+                "organization_code": ORGANIZATION_CODE,
+                "source_system": "MAXIMO",
+                "registered_asset_boundary": "reliability_asset_registry",
+                "sync_freshness": "NOT_AVAILABLE",
+                "interpretation": "Trust dimensions are factual evidence, not a weighted score.",
+            },
+            "population": {
+                "registered_reliability_assets": registered_assets,
+                "registry_resolved": registry_resolved,
+                "registry_unresolved": max(registered_assets - registry_resolved, 0),
+                "technical_asset_context": int(population["technical_asset_context"] or 0),
+                "maintenance_total": maintenance_total,
+                "registry_maintenance": registry_maintenance,
+                "fmea": fmea_records,
+                "asset_health": health_records,
+                "rcfa": rcfa_records,
+                "overhaul": overhaul_records,
+            },
+            "domains": domains,
+            "relationships": relationships,
+            "semantic_readiness": [
+                {"capability": capability, "evidence_class": evidence_class, "status": status, "reason": reason}
+                for capability, evidence_class, status, reason in readiness
+            ],
+            "integrity": self.integrity_summary(),
+            "limitations": [
+                "Latest available record dates are not sync freshness or SLA measurements.",
+                "Controlled Mart populations are bounded evidence, not complete historical claims.",
+                "PI/DCS/CEMS integrations are deferred from the current NADI decision model.",
+                "A capability marked blocked is intentionally withheld because its business semantics or required source evidence are not yet verified. It does not mean the source system is defective.",
+            ],
+        }
+
     def decision_overview(
         self,
         *,

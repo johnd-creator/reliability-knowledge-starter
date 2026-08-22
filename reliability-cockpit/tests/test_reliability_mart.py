@@ -222,6 +222,44 @@ class ReliabilityMartApiTest(unittest.TestCase):
         body = reliability_api.registry(service=self.service)
         self.assertEqual(body.registered_asset_count, 2)
 
+    def test_data_trust_overview_keeps_population_and_semantics_separate(self):
+        response = reliability_api.data_trust(service=self.service)
+        self.assertEqual(response.scope.source_system, "MAXIMO")
+        self.assertEqual(response.scope.sync_freshness, "NOT_AVAILABLE")
+        self.assertEqual(response.population.registered_reliability_assets, 2)
+        self.assertEqual(response.population.registry_resolved, 2)
+        self.assertEqual(response.population.registry_unresolved, 0)
+        self.assertEqual(response.population.technical_asset_context, 3)
+        self.assertEqual(response.population.maintenance_total, 2)
+        self.assertEqual(response.population.registry_maintenance, 2)
+        self.assertEqual({domain.domain for domain in response.domains}, {"ASSET", "MAINTENANCE", "FMEA", "ASSET_HEALTH", "RCFA", "OVERHAUL"})
+        relationships = {row.relationship: row for row in response.relationships}
+        self.assertEqual(relationships["RCFA → Asset"].evidence, "UNRESOLVED")
+        self.assertEqual(relationships["Overhaul Work Order → local maintenance_event"].resolved_count, 1)
+        readiness = {row.capability: row for row in response.semantic_readiness}
+        self.assertEqual(readiness["Maintenance Activity"].status, "AVAILABLE")
+        self.assertEqual(readiness["Health Score"].status, "BLOCKED")
+        self.assertEqual(readiness["PdM alerts"].status, "NOT_AVAILABLE")
+        self.assertEqual(readiness["Recommendations"].status, "DEFERRED")
+        self.assertTrue(any("not mean the source system is defective" in limitation for limitation in response.limitations))
+
+    def test_data_trust_empty_mart_is_factual(self):
+        empty_database = MartDatabase(MartDbConfig(dsn="sqlite+pysqlite:///:memory:"))
+        MartBase.metadata.create_all(empty_database.engine)
+        response = reliability_api.data_trust(service=ReliabilityQueryService(MartQueryRepository(empty_database)))
+        self.assertEqual(response.population.registered_reliability_assets, 0)
+        self.assertEqual(response.population.technical_asset_context, 0)
+        self.assertEqual(response.population.maintenance_total, 0)
+        self.assertEqual(response.population.fmea, 0)
+        self.assertEqual(response.population.asset_health, 0)
+        self.assertEqual(response.population.rcfa, 0)
+        self.assertEqual(response.population.overhaul, 0)
+        self.assertEqual(len(response.domains), 6)
+        with patch("src.api.reliability.get_mart_database", side_effect=reliability_api.MartDatabaseConfigError("offline")):
+            with self.assertRaises(HTTPException) as error:
+                reliability_api._db()
+        self.assertEqual(error.exception.status_code, 503)
+
     def test_decision_overview_endpoint_defaults_to_30d_and_rejects_unbounded_window(self):
         class FixedDateTime(datetime):
             @classmethod

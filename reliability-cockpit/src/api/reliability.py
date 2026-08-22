@@ -184,11 +184,77 @@ class RegistryView(BaseModel):
 
 
 EvidenceClass = Literal["VERIFIED", "DERIVED_SAFE", "BUSINESS_SEMANTICS_REQUIRED", "DATA_NOT_AVAILABLE", "DEFERRED"]
+PopulationType = Literal["LOCAL_COLLECTOR_PROJECTION", "CONTROLLED_MART_POPULATION", "BUSINESS_REGISTRY", "TECHNICAL_CONTEXT"]
+ReadinessStatus = Literal["AVAILABLE", "BLOCKED", "NOT_AVAILABLE", "DEFERRED"]
 
 
 class EvidenceValue(BaseModel):
     value: int
     evidence_class: EvidenceClass
+
+
+class DataTrustScopeView(BaseModel):
+    site_code: Literal["BSR"]
+    organization_code: Literal["IP"]
+    source_system: Literal["MAXIMO"]
+    registered_asset_boundary: str
+    sync_freshness: Literal["NOT_AVAILABLE"]
+    interpretation: str
+
+
+class DataTrustPopulationView(BaseModel):
+    registered_reliability_assets: int
+    registry_resolved: int
+    registry_unresolved: int
+    technical_asset_context: int
+    maintenance_total: int
+    registry_maintenance: int
+    fmea: int
+    asset_health: int
+    rcfa: int
+    overhaul: int
+
+
+class DataTrustDomainView(BaseModel):
+    domain: Literal["ASSET", "MAINTENANCE", "FMEA", "ASSET_HEALTH", "RCFA", "OVERHAUL"]
+    source_system: Literal["MAXIMO"]
+    source_object: str
+    population_type: PopulationType
+    record_count: int
+    scoped_record_count: int | None = None
+    registered_assets_represented: int | None = None
+    business_scope: str
+    relationship_state: str
+    latest_record_date: datetime | None = None
+    date_basis: str
+    known_limitation: str
+    evidence_class: EvidenceClass
+
+
+class DataTrustRelationshipView(BaseModel):
+    relationship: str
+    evidence: Literal["VERIFIED", "DIRECT_VERIFIED", "DERIVED_VERIFIED_PATH", "RESOLUTION_MEASURED", "UNRESOLVED"]
+    resolved_count: int | None = None
+    unresolved_count: int | None = None
+    technical_context_count: int | None = None
+    interpretation: str
+
+
+class DataTrustReadinessView(BaseModel):
+    capability: str
+    evidence_class: EvidenceClass
+    status: ReadinessStatus
+    reason: str
+
+
+class DataTrustView(BaseModel):
+    scope: DataTrustScopeView
+    population: DataTrustPopulationView
+    domains: list[DataTrustDomainView]
+    relationships: list[DataTrustRelationshipView]
+    semantic_readiness: list[DataTrustReadinessView]
+    integrity: IntegrityView
+    limitations: list[str]
 
 
 class DecisionScopeView(BaseModel):
@@ -787,6 +853,18 @@ def _overhaul_overview(raw: dict[str, object]) -> OverhaulOverviewView:
     )
 
 
+def _data_trust(raw: dict[str, object]) -> DataTrustView:
+    return DataTrustView(
+        scope=DataTrustScopeView(**raw["scope"]),
+        population=DataTrustPopulationView(**raw["population"]),
+        domains=[DataTrustDomainView(**row) for row in raw["domains"]],
+        relationships=[DataTrustRelationshipView(**row) for row in raw["relationships"]],
+        semantic_readiness=[DataTrustReadinessView(**row) for row in raw["semantic_readiness"]],
+        integrity=IntegrityView(**raw["integrity"]),
+        limitations=list(raw["limitations"]),
+    )
+
+
 @router.get("/assets", response_model=Page[AssetView], summary="List Reliability Mart assets")
 def list_assets(
     status: str | None = None,
@@ -944,6 +1022,11 @@ def overhauls(source_number: str | None = None, asset_ref: str | None = None, wo
     _validate_range(planned_from, planned_to)
     _validate_range(actual_from, actual_to)
     return _page(service.repository.list_overhaul_workspace(source_number=source_number, asset_ref=asset_ref, workorder_ref=workorder_ref, source_work_order_number=source_work_order_number, lifecycle_status=lifecycle_status, planned_from=planned_from, planned_to=planned_to, actual_from=actual_from, actual_to=actual_to, offset=offset, limit=limit, sort=sort), _overhaul)
+
+
+@router.get("/data-trust", response_model=DataTrustView, summary="Factual NADI Data Trust Center evidence")
+def data_trust(service: ReliabilityQueryService = Depends(_service)) -> DataTrustView:
+    return _data_trust(service.repository.data_trust_overview())
 
 
 @router.get("/integrity", response_model=IntegrityView)

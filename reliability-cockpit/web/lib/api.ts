@@ -97,6 +97,27 @@ export interface RegistryView { registered_asset_count: number; snapshot_sha256:
 
 export type EvidenceClass = "VERIFIED" | "DERIVED_SAFE" | "BUSINESS_SEMANTICS_REQUIRED" | "DATA_NOT_AVAILABLE" | "DEFERRED";
 export interface EvidenceValue { value: number; evidence_class: EvidenceClass; }
+export type DataTrustPopulationType = "LOCAL_COLLECTOR_PROJECTION" | "CONTROLLED_MART_POPULATION" | "BUSINESS_REGISTRY" | "TECHNICAL_CONTEXT";
+export type DataTrustReadinessStatus = "AVAILABLE" | "BLOCKED" | "NOT_AVAILABLE" | "DEFERRED";
+export interface DataTrustView {
+  scope: { site_code: "BSR"; organization_code: "IP"; source_system: "MAXIMO"; registered_asset_boundary: string; sync_freshness: "NOT_AVAILABLE"; interpretation: string };
+  population: {
+    registered_reliability_assets: number; registry_resolved: number; registry_unresolved: number; technical_asset_context: number;
+    maintenance_total: number; registry_maintenance: number; fmea: number; asset_health: number; rcfa: number; overhaul: number;
+  };
+  domains: {
+    domain: "ASSET" | "MAINTENANCE" | "FMEA" | "ASSET_HEALTH" | "RCFA" | "OVERHAUL"; source_system: "MAXIMO"; source_object: string;
+    population_type: DataTrustPopulationType; record_count: number; scoped_record_count: number | null; registered_assets_represented: number | null;
+    business_scope: string; relationship_state: string; latest_record_date: string | null; date_basis: string; known_limitation: string; evidence_class: EvidenceClass;
+  }[];
+  relationships: {
+    relationship: string; evidence: "VERIFIED" | "DIRECT_VERIFIED" | "DERIVED_VERIFIED_PATH" | "RESOLUTION_MEASURED" | "UNRESOLVED";
+    resolved_count: number | null; unresolved_count: number | null; technical_context_count: number | null; interpretation: string;
+  }[];
+  semantic_readiness: { capability: string; evidence_class: EvidenceClass; status: DataTrustReadinessStatus; reason: string }[];
+  integrity: IntegrityView;
+  limitations: string[];
+}
 export interface AssetHealthOverviewView {
   scope: { site_code: "BSR"; organization_code: "IP"; registry_scope: string; population: "CONTROLLED_MART_POPULATION"; interpretation: "ASSESSMENT_RECORDS_NOT_HEALTH_SCORE" };
   summary: {
@@ -283,5 +304,6 @@ export const reliabilityApi = {
   assetHealth: (filters: HealthFilters = {}) => get<Page<AssetHealthView>>(`/v1/reliability/asset-health${query(filters)}`),
   overhaulOverview: () => get<OverhaulOverviewView>("/v1/reliability/overhauls/overview"),
   overhauls: (filters: OverhaulFilters = {}) => get<Page<OverhaulView>>(`/v1/reliability/overhauls${query(filters)}`),
+  dataTrust: () => get<DataTrustView>("/v1/reliability/data-trust"),
   integrity: () => get<IntegrityView>("/v1/reliability/integrity"),
 };

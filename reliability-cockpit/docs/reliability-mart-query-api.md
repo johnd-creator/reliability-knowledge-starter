@@ -52,11 +52,18 @@ All routes are GET-only and use canonical reliability concepts:
 | `GET /v1/reliability/asset-health` | Registry-scoped Asset Health list with Asset number, description, status, and pagination filters |
 | `GET /v1/reliability/rcfa` | Global RCFA list with number, status, category, pagination, and no Asset/Work Order filters |
 | `GET /v1/reliability/overhauls` | Overhaul list with Overhaul Number, source Work Order number, lifecycle status, bounded filters, and relationship states |
+| `GET /v1/reliability/data-trust` | Aggregate population, domain maturity, relationship readiness, and semantic readiness evidence; no trust score |
 | `GET /v1/reliability/integrity` | Aggregate logical-reference health counts |
 
 List responses contain `items` and `meta` (`total`, `offset`, `limit`, and
 `has_more`). Defaults are 50 records and the maximum is 200. Sort values are
 allowlisted per resource; arbitrary SQL column names are never accepted.
+
+The Data Trust route is aggregate-only and keeps the business Asset Registry,
+technical `asset_master` context, local Collector projection, and controlled
+Mart populations distinct. Latest domain dates are source-record evidence, not
+sync freshness; `sync_freshness` remains `NOT_AVAILABLE` without a permitted
+Collector operational-metadata dependency.
 
 ## Scope and provenance safety
 
