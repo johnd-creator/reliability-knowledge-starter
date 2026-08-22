@@ -243,6 +243,153 @@ class ReliabilityMartApiTest(unittest.TestCase):
         self.assertEqual(error.exception.status_code, 503)
 
 
+class FmeaSemanticsFixtureTest(unittest.TestCase):
+    """Synthetic FMEA evidence for identity, relationship, and raw-value boundaries."""
+
+    A = "asset:MAXIMO:MXASSET:BSR:IP:FMEA-A"
+    B = "asset:MAXIMO:MXASSET:BSR:IP:FMEA-B"
+    TECHNICAL = "asset:MAXIMO:MXASSET:BSR:IP:FMEA-TECHNICAL"
+    UNRESOLVED = "asset:MAXIMO:MXASSET:BSR:IP:FMEA-UNRESOLVED"
+    AS_OF = datetime(2026, 1, 15, 12, 0, tzinfo=timezone.utc)
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.database = MartDatabase(MartDbConfig(dsn="sqlite+pysqlite:///:memory:"))
+        MartBase.metadata.create_all(cls.database.engine)
+
+        def asset(ref: str, number: str) -> AssetMasterMart:
+            return AssetMasterMart(
+                **_common(ref, "MXASSET"),
+                source_asset_number=number,
+                description=f"Synthetic {number}",
+                status="OPERATING",
+                asset_type="PUMP",
+                unit="UNIT-A",
+                source_updated_at=cls.AS_OF,
+            )
+
+        def registry(ref: str, number: str) -> ReliabilityAssetRegistryMart:
+            return ReliabilityAssetRegistryMart(
+                asset_ref=ref,
+                source_asset_number=number,
+                site_code="BSR",
+                organization_code="IP",
+                registry_source="SYNTHETIC",
+                snapshot_sha256="f" * 64,
+                snapshot_row_count=2,
+                snapshot_imported_at=cls.AS_OF,
+            )
+
+        def fmea(
+            number: int,
+            ref: str | None,
+            source_number: str | None,
+            revision: str | None,
+            status: str | None,
+            source_failure_code: str | None,
+            *,
+            status_changed: datetime | None,
+            source_updated: datetime | None,
+        ) -> FmeaAssessmentMart:
+            sources = {"maximo": {"source_object": "IPFMEA"}}
+            if source_failure_code is not None:
+                sources["maximo"]["failurecode"] = source_failure_code
+            return FmeaAssessmentMart(
+                **(_common(f"fmea:FMEA-{number}", "IPFMEA") | {"sources": sources}),
+                source_record_id=f"FMEA-{number}",
+                source_number=source_number,
+                revision=revision,
+                lifecycle_status=status,
+                description=f"Synthetic FMEA {number}",
+                asset_ref=ref,
+                failure_code_ref=source_failure_code,
+                source_updated_at=source_updated,
+                status_changed_at=status_changed,
+            )
+
+        with Session(cls.database.engine) as session:
+            session.add_all([
+                asset(cls.A, "FMEA-A"), asset(cls.B, "FMEA-B"), asset(cls.TECHNICAL, "FMEA-TECHNICAL"),
+                registry(cls.A, "FMEA-A"), registry(cls.B, "FMEA-B"),
+                fmea(1, cls.A, "FMEA-1", "1", "MONITORED", "FC-A", status_changed=cls.AS_OF - timedelta(days=2), source_updated=cls.AS_OF - timedelta(days=4)),
+                fmea(2, cls.A, "FMEA-1", "2", "REVISI", None, status_changed=None, source_updated=cls.AS_OF - timedelta(days=1)),
+                fmea(3, cls.A, "FMEA-2", "1", "VER-OK", "FC-B", status_changed=cls.AS_OF - timedelta(days=3), source_updated=cls.AS_OF - timedelta(days=5)),
+                fmea(4, cls.B, None, "0", "WAPPR", None, status_changed=None, source_updated=None),
+                fmea(5, cls.TECHNICAL, "FMEA-T", "1", "MONITORED", None, status_changed=cls.AS_OF, source_updated=cls.AS_OF),
+                fmea(6, cls.UNRESOLVED, "FMEA-U", "1", "UNKNOWN", None, status_changed=cls.AS_OF, source_updated=cls.AS_OF),
+                fmea(7, None, "FMEA-N", None, None, None, status_changed=None, source_updated=None),
+            ])
+            session.commit()
+        cls.repository = MartQueryRepository(cls.database)
+
+    def test_overview_measures_registry_relationship_identity_and_raw_values(self):
+        result = self.repository.fmea_overview(as_of=self.AS_OF)
+        self.assertEqual(result["summary"], {
+            "fmea_records": 7,
+            "records_with_asset_ref": 6,
+            "records_without_asset_ref": 1,
+            "asset_master_resolved": 5,
+            "registry_resolved": 4,
+            "technical_non_registry_records": 1,
+            "unresolved_asset_refs": 1,
+            "registered_assets_represented": 2,
+            "assets_with_multiple_records": 1,
+            "maximum_records_per_asset": 3,
+            "records_with_failure_code": 2,
+            "record_date_available": 5,
+        })
+        self.assertEqual({row["value"] for row in result["status_distribution"]}, {"MONITORED", "REVISI", "VER-OK", "WAPPR", "UNKNOWN", "UNKNOWN"})
+        self.assertEqual({row["value"] for row in result["revision_distribution"]}, {"0", "1", "2", "UNKNOWN"})
+        self.assertEqual(result["record_recency"]["latest_record_at"], self.AS_OF)
+        self.assertEqual(result["record_recency"]["oldest_record_at"], (self.AS_OF - timedelta(days=3)).replace(tzinfo=None))
+
+    def test_workspace_is_registry_scoped_filters_source_values_and_dates(self):
+        page = self.repository.list_fmea_workspace(as_of=self.AS_OF, limit=50)
+        self.assertEqual(page.total, 4)
+        self.assertEqual({row.source_asset_number for row in page.items}, {"FMEA-A", "FMEA-B"})
+        self.assertEqual({row.source_failure_code for row in page.items}, {"FC-A", "FC-B", None})
+        latest = self.repository.list_fmea_workspace(asset_number="fmea-a", as_of=self.AS_OF, limit=1).items[0]
+        self.assertEqual(latest.source_number, "FMEA-1")
+        self.assertEqual(latest.source_record_id, "FMEA-2")
+        self.assertEqual(latest.fmea_record_date, (self.AS_OF - timedelta(days=1)).replace(tzinfo=None))
+        self.assertAlmostEqual(latest.fmea_age_days, 1.0)
+        by_code = self.repository.list_fmea_workspace(source_failure_code="FC-B", as_of=self.AS_OF)
+        self.assertEqual(by_code.total, 1)
+        by_number = self.repository.list_fmea_workspace(source_number="FMEA-1", as_of=self.AS_OF)
+        self.assertEqual(by_number.total, 2)
+
+
+class FmeaApiTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        if not hasattr(FmeaSemanticsFixtureTest, "database"):
+            FmeaSemanticsFixtureTest.setUpClass()
+        cls.database = FmeaSemanticsFixtureTest.database
+        cls.service = ReliabilityQueryService(MartQueryRepository(cls.database))
+
+    def test_overview_and_list_api_are_typed_and_scoped(self):
+        response = reliability_api.fmea_overview(service=self.service)
+        self.assertEqual(response.scope.interpretation, "ASSESSMENT_RECORDS_NOT_RISK_SCORE")
+        self.assertEqual(response.summary.fmea_records, 7)
+        self.assertEqual(response.summary.registered_assets_represented, 2)
+        self.assertEqual(response.evidence.failure_mode_details, "DATA_NOT_AVAILABLE")
+        page = reliability_api.fmea(asset_number="FMEA-A", source_failure_code="FC-A", offset=0, limit=50, service=self.service)
+        self.assertEqual(page["meta"].total, 1)
+        self.assertEqual(page["items"][0].source_failure_code, "FC-A")
+
+    def test_empty_and_unavailable_boundaries(self):
+        empty_db = MartDatabase(MartDbConfig(dsn="sqlite+pysqlite:///:memory:"))
+        MartBase.metadata.create_all(empty_db.engine)
+        empty_service = ReliabilityQueryService(MartQueryRepository(empty_db))
+        response = reliability_api.fmea_overview(service=empty_service)
+        self.assertEqual(response.summary.fmea_records, 0)
+        self.assertEqual(response.summary.maximum_records_per_asset, 0)
+        with patch("src.api.reliability.get_mart_database", side_effect=reliability_api.MartDatabaseConfigError("offline")):
+            with self.assertRaises(HTTPException) as error:
+                reliability_api._db()
+        self.assertEqual(error.exception.status_code, 503)
+
+
 class MaintenanceInvestigationFixtureTest(unittest.TestCase):
     """Synthetic repeat-activity evidence for the SQL aggregation boundary."""
 

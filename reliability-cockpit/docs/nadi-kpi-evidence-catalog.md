@@ -64,6 +64,27 @@ reach the browser.
 | Same Work-Type Activity | `DERIVED_SAFE` | Raw source Work Type counts per Asset, with latest and dominant Work Type | Repeated `PM`, `CM`, or another source Work Type does not establish failure. |
 | Repeat Failure | `BUSINESS_SEMANTICS_REQUIRED` | Not implemented | Requires verified failure identity, failure-code meaning, qualifying Work Types/statuses, occurrence and repair semantics, interval rules, parent/child treatment, and business-owner validation. Current Mart failure-code coverage is unavailable. |
 
+## FMEA assessment workspace metrics
+
+The FMEA workspace uses the current `IPFMEA` controlled Mart population and
+joins `fmea_assessment.asset_ref` to `reliability_asset_registry.asset_ref` for
+the normal product view. Technical and unresolved records remain in the Mart
+and are reported as relationship evidence, not silently reclassified.
+
+| Candidate | Class | Definition / formula | Boundary |
+| --- | --- | --- | --- |
+| FMEA records | `VERIFIED` | Count of current scoped `fmea_assessment` rows | Controlled Mart population; not full FMEA history or completion. |
+| Registered Assets represented in FMEA | `DERIVED_SAFE` | `COUNT(DISTINCT asset_ref)` after the Registry join | Representation only; not FMEA coverage, completion, or compliance. |
+| Assets with multiple FMEA records | `DERIVED_SAFE` | Registered Assets with at least two FMEA records | Record multiplicity only; no risk or condition interpretation. |
+| FMEA record date | `DERIVED_SAFE` | `COALESCE(status_changed_at, source_updated_at)` | Factual source timestamp fallback; not approval date, failure date, or risk review date. |
+| FMEA record age | `DERIVED_SAFE` | `as_of - FMEA record date` | Record recency only; no stale, due, or risk threshold is applied. |
+| Lifecycle status | `VERIFIED` | Raw `lifecycle_status`, with null shown as `UNKNOWN` | Source status only; business meanings such as Approved or Current are unverified. |
+| Revision | `VERIFIED` | Raw `revision` distribution | Source value; revision lineage and “latest approved revision” semantics are unverified. |
+| Failure Code present | `VERIFIED` | Count of non-empty approved source `sources.maximo.failurecode` values | Source evidence only; hierarchy and failure-mode meaning are not asserted. |
+| Failure Mode details | `DATA_NOT_AVAILABLE` | No IPFMEAITEM child population is available in the current dataset | Item details remain deferred. |
+| RPN | `BUSINESS_SEMANTICS_REQUIRED` | Not implemented | Requires verified Severity, Occurrence, Detectability, scales, formula, thresholds, and governance. |
+| Risk classification | `BUSINESS_SEMANTICS_REQUIRED` | Not implemented | No verified risk taxonomy, inputs, or business thresholds. |
+
 ## Evaluated but not exposed as decision KPIs
 
 | Candidate | Class | Missing evidence or boundary |

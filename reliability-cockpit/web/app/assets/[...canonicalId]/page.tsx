@@ -96,7 +96,7 @@ function RecentMaintenance({ rows }: { rows: MaintenanceEventView[] }) {
 
 function RecentFmea({ rows }: { rows: FmeaView[] }) {
   if (rows.length === 0) return <EmptyState title="No recent FMEA assessment in this dataset." />;
-  return <div className="asset-record-list">{rows.map((row) => <div className="asset-record" key={row.canonical_id}><div><strong>{row.source_number ?? row.source_record_id ?? "FMEA assessment"}</strong><small>{row.description ?? "No description"}</small></div><StatusBadge value={row.lifecycle_status} /></div>)}</div>;
+  return <div className="asset-record-list">{rows.map((row) => <div className="asset-record" key={row.canonical_id}><div><strong>{row.source_number ?? "FMEA record"}</strong><small>{row.fmea_record_date ? `FMEA record date ${formatDate(row.fmea_record_date)}` : row.description ?? "Date unavailable"}</small></div><span className="status-badge neutral">{row.lifecycle_status ?? "UNKNOWN"}</span></div>)}</div>;
 }
 
 function RecentHealth({ rows }: { rows: AssetHealthView[] }) {
@@ -124,7 +124,7 @@ function MaintenancePanel({ page, onChange }: { page: Page<MaintenanceEventView>
 
 function FmeaPanel({ page, onChange }: { page: Page<FmeaView>; onChange: (offset: number) => void }) {
   if (page.items.length === 0) return <EmptyState title="No FMEA assessments for this Asset." />;
-  return <><TableFrame minWidth={880}><table><thead><tr><th>FMEA number</th><th>Revision</th><th>Status</th><th>Description</th><th>Failure code</th><th>Updated</th></tr></thead><tbody>{page.items.map((row) => <tr key={row.canonical_id}><td><strong>{row.source_number ?? row.source_record_id ?? "—"}</strong></td><td>{row.revision ?? "—"}</td><td><StatusBadge value={row.lifecycle_status} /></td><td className="wide-cell">{row.description ?? "—"}</td><td>{row.failure_code_ref ?? "—"}</td><td>{formatDate(row.source_updated_at ?? row.status_changed_at)}</td></tr>)}</tbody></table></TableFrame><Pagination meta={page.meta} onChange={onChange} /></>;
+  return <><TableFrame minWidth={1050}><table><thead><tr><th>FMEA number</th><th>Revision</th><th>Source status</th><th>Description</th><th>Failure Code</th><th>FMEA record date</th><th>Age</th></tr></thead><tbody>{page.items.map((row) => <tr key={row.canonical_id}><td><strong>{row.source_number ?? "—"}</strong><small className="table-subtext">{row.source_record_id ?? "Source record unavailable"}</small></td><td>{row.revision ?? "—"}</td><td><span className="status-badge neutral">{row.lifecycle_status ?? "UNKNOWN"}</span></td><td className="wide-cell">{row.description ?? "—"}</td><td>{row.source_failure_code ?? "—"}<small className="table-subtext">Source value</small></td><td>{formatDate(row.fmea_record_date)}</td><td>{row.fmea_age_days == null ? "Date unavailable" : `${row.fmea_age_days.toFixed(0)} days`}<small className="table-subtext">Record recency only</small></td></tr>)}</tbody></table></TableFrame><Pagination meta={page.meta} onChange={onChange} /></>;
 }
 
 function HealthPanel({ page, onChange }: { page: Page<AssetHealthView>; onChange: (offset: number) => void }) {

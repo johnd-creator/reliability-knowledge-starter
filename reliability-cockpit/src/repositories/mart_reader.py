@@ -30,6 +30,18 @@ def _raw_work_type(column: Any) -> Any:
     return func.nullif(func.trim(column["maximo"]["worktype"].as_string()), "")
 
 
+def _raw_failure_code(column: Any) -> Any:
+    """Read the approved source Failure Code value on PostgreSQL and SQLite."""
+
+    return func.nullif(func.trim(column["maximo"]["failurecode"].as_string()), "")
+
+
+def _fmea_record_date(column: type[FmeaAssessmentMart]) -> Any:
+    """Return the transparent source timestamp fallback for an FMEA record."""
+
+    return func.coalesce(column.status_changed_at, column.source_updated_at)
+
+
 def _assessment_date(column: type[AssetHealthAssessmentMart]) -> Any:
     """Return the verified source timestamp fallback for an assessment record."""
 
@@ -208,6 +220,84 @@ class MartQueryRepository:
         statement = self._sort(statement, column, sort != "updated_asc")
         with self.database.read_session() as session:
             return _page(session, statement, offset, limit)
+
+    def list_fmea_workspace(
+        self,
+        *,
+        asset_ref: str | None = None,
+        asset_number: str | None = None,
+        lifecycle_status: str | None = None,
+        source_number: str | None = None,
+        source_failure_code: str | None = None,
+        updated_from: datetime | None = None,
+        updated_to: datetime | None = None,
+        offset: int = 0,
+        limit: int = 50,
+        sort: str = "updated_desc",
+        as_of: datetime | None = None,
+    ) -> QueryPage:
+        """Return Registry-scoped FMEA rows with business-facing projections."""
+
+        current = as_of or datetime.now(timezone.utc)
+        if current.tzinfo is None:
+            current = current.replace(tzinfo=timezone.utc)
+        record_date = _fmea_record_date(FmeaAssessmentMart)
+        raw_failure_code = _raw_failure_code(FmeaAssessmentMart.sources)
+        columns = (
+            FmeaAssessmentMart.canonical_id,
+            FmeaAssessmentMart.contract_version,
+            FmeaAssessmentMart.source_record_id,
+            FmeaAssessmentMart.source_number,
+            FmeaAssessmentMart.revision,
+            FmeaAssessmentMart.lifecycle_status,
+            FmeaAssessmentMart.description,
+            FmeaAssessmentMart.asset_ref,
+            FmeaAssessmentMart.failure_code_ref,
+            FmeaAssessmentMart.site_code,
+            FmeaAssessmentMart.organization_code,
+            FmeaAssessmentMart.source_updated_at,
+            FmeaAssessmentMart.status_changed_at,
+            ReliabilityAssetRegistryMart.source_asset_number.label("source_asset_number"),
+            AssetMasterMart.description.label("asset_description"),
+            raw_failure_code.label("source_failure_code"),
+            record_date.label("fmea_record_date"),
+            self._gap_days(literal(current), record_date).label("fmea_age_days"),
+        )
+        statement = (
+            select(*columns)
+            .select_from(FmeaAssessmentMart)
+            .join(ReliabilityAssetRegistryMart, ReliabilityAssetRegistryMart.asset_ref == FmeaAssessmentMart.asset_ref)
+            .outerjoin(
+                AssetMasterMart,
+                (AssetMasterMart.canonical_id == FmeaAssessmentMart.asset_ref)
+                & (AssetMasterMart.site_code == SITE_CODE)
+                & (AssetMasterMart.organization_code == ORGANIZATION_CODE),
+            )
+            .where(
+                FmeaAssessmentMart.site_code == SITE_CODE,
+                FmeaAssessmentMart.organization_code == ORGANIZATION_CODE,
+                ReliabilityAssetRegistryMart.site_code == SITE_CODE,
+                ReliabilityAssetRegistryMart.organization_code == ORGANIZATION_CODE,
+            )
+        )
+        if asset_ref:
+            statement = statement.where(FmeaAssessmentMart.asset_ref == asset_ref)
+        if asset_number:
+            statement = statement.where(ReliabilityAssetRegistryMart.source_asset_number.ilike(f"%{_contains(asset_number)}%", escape="\\"))
+        if lifecycle_status:
+            statement = statement.where(FmeaAssessmentMart.lifecycle_status == lifecycle_status)
+        if source_number:
+            statement = statement.where(FmeaAssessmentMart.source_number.ilike(f"%{_contains(source_number)}%", escape="\\"))
+        if source_failure_code:
+            statement = statement.where(raw_failure_code.ilike(f"%{_contains(source_failure_code)}%", escape="\\"))
+        if updated_from:
+            statement = statement.where(FmeaAssessmentMart.source_updated_at >= updated_from)
+        if updated_to:
+            statement = statement.where(FmeaAssessmentMart.source_updated_at <= updated_to)
+        order_column = FmeaAssessmentMart.lifecycle_status if sort == "status" else record_date
+        statement = statement.order_by(desc(order_column) if sort != "updated_asc" else asc(order_column), asc(FmeaAssessmentMart.canonical_id))
+        with self.database.read_session() as session:
+            return _page_rows(session, statement, offset, limit)
 
     def list_health(
         self,
@@ -667,6 +757,147 @@ class MartQueryRepository:
             "integrity": integrity,
             "window_start": window_start,
             "as_of": current,
+        }
+
+    def fmea_overview(self, *, as_of: datetime | None = None) -> dict[str, object]:
+        """Return aggregate-only evidence for the controlled FMEA population."""
+
+        current = as_of or datetime.now(timezone.utc)
+        if current.tzinfo is None:
+            current = current.replace(tzinfo=timezone.utc)
+        record_date = _fmea_record_date(FmeaAssessmentMart)
+        raw_failure_code = _raw_failure_code(FmeaAssessmentMart.sources)
+        relation = (
+            select(
+                FmeaAssessmentMart.canonical_id.label("record_id"),
+                FmeaAssessmentMart.asset_ref,
+                ReliabilityAssetRegistryMart.asset_ref.label("registered_ref"),
+                AssetMasterMart.canonical_id.label("asset_master_ref"),
+            )
+            .select_from(FmeaAssessmentMart)
+            .outerjoin(
+                ReliabilityAssetRegistryMart,
+                (ReliabilityAssetRegistryMart.asset_ref == FmeaAssessmentMart.asset_ref)
+                & (ReliabilityAssetRegistryMart.site_code == SITE_CODE)
+                & (ReliabilityAssetRegistryMart.organization_code == ORGANIZATION_CODE),
+            )
+            .outerjoin(
+                AssetMasterMart,
+                (AssetMasterMart.canonical_id == FmeaAssessmentMart.asset_ref)
+                & (AssetMasterMart.site_code == SITE_CODE)
+                & (AssetMasterMart.organization_code == ORGANIZATION_CODE),
+            )
+            .where(
+                FmeaAssessmentMart.site_code == SITE_CODE,
+                FmeaAssessmentMart.organization_code == ORGANIZATION_CODE,
+            )
+            .subquery()
+        )
+        registered_groups = (
+            select(
+                FmeaAssessmentMart.asset_ref,
+                func.count(FmeaAssessmentMart.canonical_id).label("record_count"),
+            )
+            .join(ReliabilityAssetRegistryMart, ReliabilityAssetRegistryMart.asset_ref == FmeaAssessmentMart.asset_ref)
+            .where(
+                FmeaAssessmentMart.site_code == SITE_CODE,
+                FmeaAssessmentMart.organization_code == ORGANIZATION_CODE,
+                ReliabilityAssetRegistryMart.site_code == SITE_CODE,
+                ReliabilityAssetRegistryMart.organization_code == ORGANIZATION_CODE,
+            )
+            .group_by(FmeaAssessmentMart.asset_ref)
+            .subquery()
+        )
+        summary_statement = select(
+            select(func.count(FmeaAssessmentMart.canonical_id)).where(
+                FmeaAssessmentMart.site_code == SITE_CODE,
+                FmeaAssessmentMart.organization_code == ORGANIZATION_CODE,
+            ).scalar_subquery().label("fmea_records"),
+            select(func.count()).select_from(relation).where(relation.c.asset_ref.is_not(None)).scalar_subquery().label("records_with_asset_ref"),
+            select(func.count()).select_from(relation).where(relation.c.asset_ref.is_(None)).scalar_subquery().label("records_without_asset_ref"),
+            select(func.count()).select_from(relation).where(relation.c.asset_master_ref.is_not(None)).scalar_subquery().label("asset_master_resolved"),
+            select(func.count()).select_from(relation).where(relation.c.registered_ref.is_not(None)).scalar_subquery().label("registry_resolved"),
+            select(func.count()).select_from(relation).where(relation.c.asset_ref.is_not(None), relation.c.asset_master_ref.is_not(None), relation.c.registered_ref.is_(None)).scalar_subquery().label("technical_non_registry_records"),
+            select(func.count()).select_from(relation).where(relation.c.asset_ref.is_not(None), relation.c.asset_master_ref.is_(None)).scalar_subquery().label("unresolved_asset_refs"),
+            select(func.count(func.distinct(relation.c.registered_ref))).select_from(relation).scalar_subquery().label("registered_assets_represented"),
+            select(func.count()).select_from(registered_groups).where(registered_groups.c.record_count >= 2).scalar_subquery().label("assets_with_multiple_records"),
+            select(func.max(registered_groups.c.record_count)).select_from(registered_groups).scalar_subquery().label("maximum_records_per_asset"),
+            select(func.count(raw_failure_code)).where(
+                FmeaAssessmentMart.site_code == SITE_CODE,
+                FmeaAssessmentMart.organization_code == ORGANIZATION_CODE,
+            ).scalar_subquery().label("records_with_failure_code"),
+            select(func.count(record_date)).where(
+                FmeaAssessmentMart.site_code == SITE_CODE,
+                FmeaAssessmentMart.organization_code == ORGANIZATION_CODE,
+            ).scalar_subquery().label("record_date_available"),
+            select(func.min(record_date)).where(
+                FmeaAssessmentMart.site_code == SITE_CODE,
+                FmeaAssessmentMart.organization_code == ORGANIZATION_CODE,
+            ).scalar_subquery().label("oldest_record_at"),
+            select(func.max(record_date)).where(
+                FmeaAssessmentMart.site_code == SITE_CODE,
+                FmeaAssessmentMart.organization_code == ORGANIZATION_CODE,
+            ).scalar_subquery().label("latest_record_at"),
+        )
+        status_statement = select(
+            func.coalesce(FmeaAssessmentMart.lifecycle_status, "UNKNOWN").label("value"),
+            func.count(FmeaAssessmentMart.canonical_id).label("count"),
+        ).where(
+            FmeaAssessmentMart.site_code == SITE_CODE,
+            FmeaAssessmentMart.organization_code == ORGANIZATION_CODE,
+        ).group_by(FmeaAssessmentMart.lifecycle_status).order_by(asc(FmeaAssessmentMart.lifecycle_status))
+        revision_statement = select(
+            func.coalesce(FmeaAssessmentMart.revision, "UNKNOWN").label("value"),
+            func.count(FmeaAssessmentMart.canonical_id).label("count"),
+        ).where(
+            FmeaAssessmentMart.site_code == SITE_CODE,
+            FmeaAssessmentMart.organization_code == ORGANIZATION_CODE,
+        ).group_by(FmeaAssessmentMart.revision).order_by(asc(FmeaAssessmentMart.revision))
+        with self.database.read_session() as session:
+            summary = session.execute(summary_statement).one()._mapping
+            statuses = session.execute(status_statement).all()
+            revisions = session.execute(revision_statement).all()
+        latest = summary["latest_record_at"]
+        latest_age_days = None
+        if latest is not None:
+            if latest.tzinfo is None:
+                latest = latest.replace(tzinfo=timezone.utc)
+            latest_age_days = (current - latest).total_seconds() / 86400.0
+        return {
+            "scope": {
+                "site_code": SITE_CODE,
+                "organization_code": ORGANIZATION_CODE,
+                "registry_scope": "reliability_asset_registry",
+                "population": "CONTROLLED_MART_POPULATION",
+                "interpretation": "ASSESSMENT_RECORDS_NOT_RISK_SCORE",
+            },
+            "summary": {key: int(summary[key] or 0) for key in (
+                "fmea_records", "records_with_asset_ref", "records_without_asset_ref", "asset_master_resolved",
+                "registry_resolved", "technical_non_registry_records", "unresolved_asset_refs",
+                "registered_assets_represented", "assets_with_multiple_records", "maximum_records_per_asset",
+                "records_with_failure_code", "record_date_available",
+            )},
+            "status_distribution": [{"value": row.value, "count": int(row.count)} for row in statuses],
+            "revision_distribution": [{"value": row.value, "count": int(row.count)} for row in revisions],
+            "record_recency": {
+                "oldest_record_at": summary["oldest_record_at"],
+                "latest_record_at": latest,
+                "as_of": current,
+                "latest_fmea_age_days": latest_age_days,
+                "date_basis": "COALESCE(status_changed_at, source_updated_at)",
+            },
+            "evidence": {
+                "fmea_records": "VERIFIED",
+                "registered_assets_represented": "DERIVED_SAFE",
+                "assets_with_multiple_records": "DERIVED_SAFE",
+                "records_with_failure_code": "VERIFIED",
+                "fmea_record_age": "DERIVED_SAFE",
+                "lifecycle_status": "VERIFIED",
+                "revision": "VERIFIED",
+                "failure_mode_details": "DATA_NOT_AVAILABLE",
+                "rpn": "BUSINESS_SEMANTICS_REQUIRED",
+                "risk_classification": "BUSINESS_SEMANTICS_REQUIRED",
+            },
         }
 
     def asset_health_overview(self, *, as_of: datetime | None = None) -> dict[str, object]:

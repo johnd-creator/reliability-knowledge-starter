@@ -46,6 +46,7 @@ export interface FmeaView {
   canonical_id: string; contract_version: string; source_record_id: string | null; source_number: string | null; revision: string | null;
   lifecycle_status: string | null; description: string | null; asset_ref: string | null; failure_code_ref: string | null;
   site_code: string; organization_code: string; source_updated_at: string | null; status_changed_at: string | null;
+  source_asset_number: string | null; asset_description: string | null; source_failure_code: string | null; fmea_record_date: string | null; fmea_age_days: number | null;
 }
 export interface RcfaView {
   canonical_id: string; contract_version: string; source_record_id: string | null; source_number: string | null; revision: string | null;
@@ -105,6 +106,22 @@ export interface AssetHealthOverviewView {
     assessment_records: EvidenceClass; registered_assets_represented: EvidenceClass; assets_with_multiple_records: EvidenceClass;
     latest_assessment_record: EvidenceClass; assessment_age: EvidenceClass; lifecycle_status: EvidenceClass; health_score: EvidenceClass;
     wellness_score: EvidenceClass; condition_classification: EvidenceClass;
+  };
+}
+export interface FmeaOverviewView {
+  scope: { site_code: "BSR"; organization_code: "IP"; registry_scope: string; population: "CONTROLLED_MART_POPULATION"; interpretation: "ASSESSMENT_RECORDS_NOT_RISK_SCORE" };
+  summary: {
+    fmea_records: number; records_with_asset_ref: number; records_without_asset_ref: number; asset_master_resolved: number;
+    registry_resolved: number; technical_non_registry_records: number; unresolved_asset_refs: number; registered_assets_represented: number;
+    assets_with_multiple_records: number; maximum_records_per_asset: number; records_with_failure_code: number; record_date_available: number;
+  };
+  status_distribution: { value: string; count: EvidenceValue }[];
+  revision_distribution: { value: string; count: EvidenceValue }[];
+  record_recency: { oldest_record_at: string | null; latest_record_at: string | null; as_of: string; latest_fmea_age_days: number | null; date_basis: string };
+  evidence: {
+    fmea_records: EvidenceClass; registered_assets_represented: EvidenceClass; assets_with_multiple_records: EvidenceClass;
+    records_with_failure_code: EvidenceClass; fmea_record_age: EvidenceClass; lifecycle_status: EvidenceClass; revision: EvidenceClass;
+    failure_mode_details: EvidenceClass; rpn: EvidenceClass; risk_classification: EvidenceClass;
   };
 }
 export interface DecisionOverviewView {
@@ -172,7 +189,7 @@ export interface MaintenanceInvestigationView {
 
 export interface AssetFilters { status?: string; unit?: string; asset_type?: string; offset?: number; limit?: number; sort?: "updated_desc" | "updated_asc" | "status"; }
 export interface MaintenanceFilters { asset_ref?: string; work_order_id?: string; status?: string; event_type?: string; date_from?: string; date_to?: string; offset?: number; limit?: number; sort?: "date_desc" | "date_asc" | "status"; }
-export interface FmeaFilters { asset_ref?: string; lifecycle_status?: string; source_number?: string; updated_from?: string; updated_to?: string; offset?: number; limit?: number; sort?: "updated_desc" | "updated_asc" | "status"; }
+export interface FmeaFilters { asset_ref?: string; asset_number?: string; lifecycle_status?: string; source_number?: string; source_failure_code?: string; updated_from?: string; updated_to?: string; offset?: number; limit?: number; sort?: "updated_desc" | "updated_asc" | "status"; }
 export interface RcfaFilters { lifecycle_status?: string; category?: string; source_number?: string; created_from?: string; created_to?: string; offset?: number; limit?: number; sort?: "created_desc" | "created_asc" | "status"; }
 export interface HealthFilters { asset_ref?: string; asset_number?: string; description?: string; lifecycle_status?: string; updated_from?: string; updated_to?: string; offset?: number; limit?: number; sort?: "updated_desc" | "updated_asc" | "status"; }
 export interface OverhaulFilters { asset_ref?: string; workorder_ref?: string; lifecycle_status?: string; planned_from?: string; planned_to?: string; actual_from?: string; actual_to?: string; offset?: number; limit?: number; sort?: "date_desc" | "date_asc" | "status"; }
@@ -213,6 +230,7 @@ export const cockpitApi = {
 export const reliabilityApi = {
   decisionOverview: (windowDays: 7 | 30 | 90 = 30) => get<DecisionOverviewView>(`/v1/reliability/decision-overview?window_days=${windowDays}`),
   assetHealthOverview: () => get<AssetHealthOverviewView>("/v1/reliability/asset-health/overview"),
+  fmeaOverview: () => get<FmeaOverviewView>("/v1/reliability/fmea/overview"),
   maintenanceInvestigation: (windowDays: 30 | 90 | 180 = 90, minEvents: 2 | 3 | 5 = 2, offset = 0, limit = 25, sort: "event_count_desc" | "latest_activity_desc" | "latest_gap_asc" = "event_count_desc") => get<MaintenanceInvestigationView>(`/v1/reliability/maintenance-investigation${query({ window_days: windowDays, min_events: minEvents, offset, limit, sort })}`),
   assets: (filters: AssetFilters = {}) => get<Page<AssetView>>(`/v1/reliability/assets${query(filters)}`),
   registry: () => get<RegistryView>("/v1/reliability/registry"),

@@ -81,6 +81,11 @@ class FmeaView(BaseModel):
     organization_code: str
     source_updated_at: datetime | None = None
     status_changed_at: datetime | None = None
+    source_asset_number: str | None = None
+    asset_description: str | None = None
+    source_failure_code: str | None = None
+    fmea_record_date: datetime | None = None
+    fmea_age_days: float | None = None
 
 
 class RcfaView(BaseModel):
@@ -296,6 +301,59 @@ class AssetHealthOverviewView(BaseModel):
     evidence: AssetHealthEvidenceView
 
 
+class FmeaScopeView(BaseModel):
+    site_code: Literal["BSR"]
+    organization_code: Literal["IP"]
+    registry_scope: str
+    population: Literal["CONTROLLED_MART_POPULATION"]
+    interpretation: Literal["ASSESSMENT_RECORDS_NOT_RISK_SCORE"]
+
+
+class FmeaSummaryView(BaseModel):
+    fmea_records: int
+    records_with_asset_ref: int
+    records_without_asset_ref: int
+    asset_master_resolved: int
+    registry_resolved: int
+    technical_non_registry_records: int
+    unresolved_asset_refs: int
+    registered_assets_represented: int
+    assets_with_multiple_records: int
+    maximum_records_per_asset: int
+    records_with_failure_code: int
+    record_date_available: int
+
+
+class FmeaRecencyView(BaseModel):
+    oldest_record_at: datetime | None = None
+    latest_record_at: datetime | None = None
+    as_of: datetime
+    latest_fmea_age_days: float | None = None
+    date_basis: str
+
+
+class FmeaEvidenceView(BaseModel):
+    fmea_records: EvidenceClass
+    registered_assets_represented: EvidenceClass
+    assets_with_multiple_records: EvidenceClass
+    records_with_failure_code: EvidenceClass
+    fmea_record_age: EvidenceClass
+    lifecycle_status: EvidenceClass
+    revision: EvidenceClass
+    failure_mode_details: EvidenceClass
+    rpn: EvidenceClass
+    risk_classification: EvidenceClass
+
+
+class FmeaOverviewView(BaseModel):
+    scope: FmeaScopeView
+    summary: FmeaSummaryView
+    status_distribution: list[DistributionView]
+    revision_distribution: list[DistributionView]
+    record_recency: FmeaRecencyView
+    evidence: FmeaEvidenceView
+
+
 class InvestigationScopeView(BaseModel):
     site_code: Literal["BSR"]
     organization_code: Literal["IP"]
@@ -386,7 +444,7 @@ def _maintenance(row) -> MaintenanceView:
 
 
 def _fmea(row) -> FmeaView:
-    return FmeaView.model_validate({k: getattr(row, k) for k in FmeaView.model_fields})
+    return FmeaView.model_validate({k: getattr(row, k, None) for k in FmeaView.model_fields})
 
 
 def _rcfa(row) -> RcfaView:
@@ -507,6 +565,23 @@ def _asset_health_overview(raw: dict[str, object]) -> AssetHealthOverviewView:
     )
 
 
+def _fmea_overview(raw: dict[str, object]) -> FmeaOverviewView:
+    return FmeaOverviewView(
+        scope=FmeaScopeView(**raw["scope"]),
+        summary=FmeaSummaryView(**raw["summary"]),
+        status_distribution=[
+            DistributionView(value=row["value"], count=_evidence(int(row["count"]), "VERIFIED"))
+            for row in raw["status_distribution"]
+        ],
+        revision_distribution=[
+            DistributionView(value=row["value"], count=_evidence(int(row["count"]), "VERIFIED"))
+            for row in raw["revision_distribution"]
+        ],
+        record_recency=FmeaRecencyView(**raw["record_recency"]),
+        evidence=FmeaEvidenceView(**raw["evidence"]),
+    )
+
+
 @router.get("/assets", response_model=Page[AssetView], summary="List Reliability Mart assets")
 def list_assets(
     status: str | None = None,
@@ -541,6 +616,11 @@ def decision_overview(
 @router.get("/asset-health/overview", response_model=AssetHealthOverviewView, summary="Factual Asset Health assessment overview")
 def asset_health_overview(service: ReliabilityQueryService = Depends(_service)) -> AssetHealthOverviewView:
     return _asset_health_overview(service.repository.asset_health_overview())
+
+
+@router.get("/fmea/overview", response_model=FmeaOverviewView, summary="Factual FMEA assessment overview")
+def fmea_overview(service: ReliabilityQueryService = Depends(_service)) -> FmeaOverviewView:
+    return _fmea_overview(service.repository.fmea_overview())
 
 
 @router.get("/maintenance-investigation", response_model=MaintenanceInvestigationView, summary="Bounded repeat maintenance activity investigation")
@@ -587,7 +667,7 @@ def asset_context(canonical_id: str, service: ReliabilityQueryService = Depends(
 def asset_fmea(canonical_id: str, offset: int = Query(0, ge=0), limit: int = Query(50, ge=1, le=200), service: ReliabilityQueryService = Depends(_service)):
     if service.repository.get_asset(canonical_id) is None:
         raise HTTPException(status_code=404, detail="asset not found")
-    return _page(service.repository.list_fmea(asset_ref=canonical_id, offset=offset, limit=limit), _fmea)
+    return _page(service.repository.list_fmea_workspace(asset_ref=canonical_id, offset=offset, limit=limit), _fmea)
 
 
 @router.get("/assets/{canonical_id}/health-assessments", response_model=Page[HealthView])
@@ -625,9 +705,9 @@ def maintenance_events(
 
 
 @router.get("/fmea", response_model=Page[FmeaView])
-def fmea(asset_ref: str | None = None, lifecycle_status: str | None = None, source_number: str | None = None, updated_from: datetime | None = None, updated_to: datetime | None = None, offset: int = Query(0, ge=0), limit: int = Query(50, ge=1, le=200), sort: Literal["updated_desc", "updated_asc", "status"] = "updated_desc", service: ReliabilityQueryService = Depends(_service)):
+def fmea(asset_ref: str | None = None, asset_number: str | None = None, lifecycle_status: str | None = None, source_number: str | None = None, source_failure_code: str | None = None, updated_from: datetime | None = None, updated_to: datetime | None = None, offset: int = Query(0, ge=0), limit: int = Query(50, ge=1, le=200), sort: Literal["updated_desc", "updated_asc", "status"] = "updated_desc", service: ReliabilityQueryService = Depends(_service)):
     _validate_range(updated_from, updated_to)
-    return _page(service.repository.list_fmea(asset_ref=asset_ref, lifecycle_status=lifecycle_status, source_number=source_number, updated_from=updated_from, updated_to=updated_to, offset=offset, limit=limit, sort=sort), _fmea)
+    return _page(service.repository.list_fmea_workspace(asset_ref=asset_ref, asset_number=asset_number, lifecycle_status=lifecycle_status, source_number=source_number, source_failure_code=source_failure_code, updated_from=updated_from, updated_to=updated_to, offset=offset, limit=limit, sort=sort), _fmea)
 
 
 @router.get("/asset-health", response_model=Page[HealthView])

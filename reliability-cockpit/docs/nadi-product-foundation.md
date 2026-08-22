@@ -30,7 +30,7 @@ top bar, and the preference is retained locally in the browser.
 | `/` | Overview of factual Reliability Mart counts and integrity |
 | `/assets` | Canonical asset list with server-side filters and pagination |
 | `/maintenance` | Maintenance event list |
-| `/fmea` | FMEA assessment list |
+| `/fmea` | Factual FMEA assessment workspace; item-level details remain deferred |
 | `/rcfa` | RCFA list with an explicit unresolved asset relationship |
 | `/asset-health` | Factual Asset Health assessment workspace without a numerical health score |
 | `/overhauls` | Overhaul list, including unresolved asset references |

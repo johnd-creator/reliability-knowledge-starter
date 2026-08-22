@@ -31,7 +31,7 @@ class ReliabilityQueryService:
         return {
             "asset": asset,
             "maintenance": self.repository.list_maintenance(asset_ref=canonical_id, limit=bounded),
-            "fmea": self.repository.list_fmea(asset_ref=canonical_id, limit=bounded),
+            "fmea": self.repository.list_fmea_workspace(asset_ref=canonical_id, limit=bounded),
             "health": self.repository.list_health(asset_ref=canonical_id, limit=bounded),
             "overhauls": self.repository.list_overhauls(asset_ref=canonical_id, limit=bounded),
             "rcfa_relationship_status": "UNRESOLVED",
