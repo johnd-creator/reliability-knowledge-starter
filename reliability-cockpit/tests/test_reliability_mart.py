@@ -402,5 +402,156 @@ class MaintenanceInvestigationApiTest(unittest.TestCase):
         self.assertEqual(error.exception.status_code, 503)
 
 
+class AssetHealthSemanticsFixtureTest(unittest.TestCase):
+    A = "asset:MAXIMO:MXASSET:BSR:IP:HEALTH-A"
+    B = "asset:MAXIMO:MXASSET:BSR:IP:HEALTH-B"
+    TECHNICAL = "asset:MAXIMO:MXASSET:BSR:IP:HEALTH-TECHNICAL"
+    UNRESOLVED = "asset:MAXIMO:MXASSET:BSR:IP:HEALTH-UNRESOLVED"
+    AS_OF = datetime(2026, 1, 15, 12, 0, tzinfo=timezone.utc)
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.database = MartDatabase(MartDbConfig(dsn="sqlite+pysqlite:///:memory:"))
+        MartBase.metadata.create_all(cls.database.engine)
+
+        def asset(ref: str, number: str) -> AssetMasterMart:
+            return AssetMasterMart(
+                **_common(ref, "MXASSET"),
+                source_asset_number=number,
+                description=f"Synthetic {number}",
+                status="OPERATING",
+                asset_type="PUMP",
+                unit="UNIT-A",
+                source_updated_at=cls.AS_OF,
+            )
+
+        def registry(ref: str, number: str) -> ReliabilityAssetRegistryMart:
+            return ReliabilityAssetRegistryMart(
+                asset_ref=ref,
+                source_asset_number=number,
+                site_code="BSR",
+                organization_code="IP",
+                registry_source="SYNTHETIC",
+                snapshot_sha256="c" * 64,
+                snapshot_row_count=2,
+                snapshot_imported_at=cls.AS_OF,
+            )
+
+        def health(
+            number: int,
+            ref: str | None,
+            *,
+            status: str | None,
+            revision: str | None,
+            created: datetime | None,
+            updated: datetime | None,
+            status_changed: datetime | None,
+        ) -> AssetHealthAssessmentMart:
+            sources = {"maximo": {"source_object": "IPBHM", "eid": f"EID-{number}"}}
+            return AssetHealthAssessmentMart(
+                **(_common(f"bhm:HEALTH-{number}", "IPBHM") | {"sources": sources}),
+                source_record_id=f"BHM-{number}",
+                revision=revision,
+                lifecycle_status=status,
+                description=f"Assessment description {number}",
+                function_description=f"Function {number}",
+                asset_ref=ref,
+                source_created_at=created,
+                source_updated_at=updated,
+                status_changed_at=status_changed,
+            )
+
+        with Session(cls.database.engine) as session:
+            session.add_all([asset(cls.A, "HEALTH-A"), asset(cls.B, "HEALTH-B"), asset(cls.TECHNICAL, "HEALTH-TECHNICAL")])
+            session.add_all([registry(cls.A, "HEALTH-A"), registry(cls.B, "HEALTH-B")])
+            session.add_all([
+                health(1, cls.A, status="VER-OK", revision="0", created=datetime(2026, 1, 1), updated=datetime(2026, 1, 2), status_changed=None),
+                health(2, cls.A, status="VER-OK", revision="0", created=datetime(2026, 1, 3), updated=datetime(2026, 1, 4), status_changed=datetime(2026, 1, 5)),
+                health(3, cls.B, status="DRAFT", revision="0", created=None, updated=None, status_changed=None),
+                health(4, cls.TECHNICAL, status="VER-OK", revision="1", created=datetime(2026, 1, 6), updated=datetime(2026, 1, 6), status_changed=None),
+                health(5, cls.UNRESOLVED, status="UNKNOWN-SOURCE", revision="1", created=datetime(2026, 1, 7), updated=datetime(2026, 1, 7), status_changed=None),
+                health(6, None, status=None, revision=None, created=None, updated=None, status_changed=None),
+            ])
+            session.commit()
+        cls.repository = MartQueryRepository(cls.database)
+
+    def test_overview_measures_relationships_status_and_multiple_records(self):
+        result = self.repository.asset_health_overview(as_of=self.AS_OF)
+        self.assertEqual(result["summary"], {
+            "assessment_records": 6,
+            "records_with_asset_ref": 5,
+            "records_without_asset_ref": 1,
+            "asset_master_resolved": 4,
+            "registry_resolved": 3,
+            "technical_non_registry_records": 1,
+            "unresolved_asset_refs": 1,
+            "registered_assets_represented": 2,
+            "assets_with_multiple_records": 1,
+            "maximum_records_per_asset": 2,
+        })
+        self.assertEqual({row["value"] for row in result["status_distribution"]}, {"VER-OK", "DRAFT", "UNKNOWN-SOURCE", "UNKNOWN"})
+        self.assertEqual(result["record_recency"]["latest_record_at"], datetime(2026, 1, 7, tzinfo=timezone.utc))
+        self.assertEqual(result["record_recency"]["oldest_record_at"], datetime(2026, 1, 2))
+        self.assertAlmostEqual(result["record_recency"]["latest_assessment_age_days"], 8.5)
+        self.assertNotIn("eid", result)
+
+    def test_workspace_is_registry_scoped_and_date_fallback_is_transparent(self):
+        page = self.repository.list_health_workspace(offset=0, limit=50, as_of=self.AS_OF)
+        self.assertEqual(page.total, 3)
+        self.assertEqual({row.source_asset_number for row in page.items}, {"HEALTH-A", "HEALTH-B"})
+        latest = self.repository.latest_health_workspace(self.A, as_of=self.AS_OF)
+        self.assertEqual(latest.source_record_id, "BHM-2")
+        self.assertEqual(latest.assessment_record_date, datetime(2026, 1, 5))
+        self.assertAlmostEqual(latest.assessment_age_days, 10.5)
+        null_date = next(row for row in page.items if row.source_asset_number == "HEALTH-B")
+        self.assertIsNone(null_date.assessment_record_date)
+        self.assertIsNone(null_date.assessment_age_days)
+
+    def test_workspace_filters_and_pagination(self):
+        filtered = self.repository.list_health_workspace(asset_number="health-a", offset=0, limit=1, as_of=self.AS_OF)
+        self.assertEqual(filtered.total, 2)
+        self.assertEqual(len(filtered.items), 1)
+        self.assertTrue(filtered.has_more)
+        status = self.repository.list_health_workspace(lifecycle_status="DRAFT", offset=0, limit=50, as_of=self.AS_OF)
+        self.assertEqual(status.total, 1)
+
+
+class AssetHealthApiTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        if not hasattr(AssetHealthSemanticsFixtureTest, "database"):
+            AssetHealthSemanticsFixtureTest.setUpClass()
+        cls.database = AssetHealthSemanticsFixtureTest.database
+        cls.service = ReliabilityQueryService(MartQueryRepository(cls.database))
+
+    def test_overview_api_and_list_filters(self):
+        class FixedDateTime(datetime):
+            @classmethod
+            def now(cls, tz=None):
+                return AssetHealthSemanticsFixtureTest.AS_OF
+
+        with patch("src.repositories.mart_reader.datetime", FixedDateTime):
+            overview = reliability_api.asset_health_overview(service=self.service)
+        self.assertEqual(overview.summary.assessment_records, 6)
+        self.assertEqual(overview.summary.registered_assets_represented, 2)
+        self.assertEqual(overview.evidence.health_score, "BUSINESS_SEMANTICS_REQUIRED")
+        page = reliability_api.asset_health_list(asset_number="health-a", lifecycle_status=None, updated_from=None, updated_to=None, offset=0, limit=1, sort="updated_desc", service=self.service)
+        self.assertEqual(page["meta"].total, 2)
+        self.assertEqual(page["items"][0].source_asset_number, "HEALTH-A")
+
+    def test_empty_overview_is_factual_and_mart_unavailable_is_503(self):
+        empty_database = MartDatabase(MartDbConfig(dsn="sqlite+pysqlite:///:memory:"))
+        MartBase.metadata.create_all(empty_database.engine)
+        empty_service = ReliabilityQueryService(MartQueryRepository(empty_database))
+        empty = reliability_api.asset_health_overview(service=empty_service)
+        self.assertEqual(empty.summary.assessment_records, 0)
+        self.assertEqual(empty.summary.registered_assets_represented, 0)
+        self.assertEqual(empty.status_distribution, [])
+        with patch("src.api.reliability.get_mart_database", side_effect=reliability_api.MartDatabaseConfigError("offline")):
+            with self.assertRaises(HTTPException) as error:
+                reliability_api._db()
+        self.assertEqual(error.exception.status_code, 503)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -32,7 +32,7 @@ top bar, and the preference is retained locally in the browser.
 | `/maintenance` | Maintenance event list |
 | `/fmea` | FMEA assessment list |
 | `/rcfa` | RCFA list with an explicit unresolved asset relationship |
-| `/asset-health` | Asset health assessment list without a numerical health score |
+| `/asset-health` | Factual Asset Health assessment workspace without a numerical health score |
 | `/overhauls` | Overhaul list, including unresolved asset references |
 | `/data-quality` | Canonical reference resolution summary |
 
@@ -47,9 +47,10 @@ current controlled Mart populations. NADI presents factual counts as records
 available in those populations; it does not call them complete history or full
 plant population.
 
-The Executive Overview uses one bounded aggregate endpoint and explicitly
-labels metric evidence. It intentionally does not fabricate MTBF, MTTR,
-availability, risk, health, or reliability scores.
+The Executive Overview and Asset Health workspace use bounded read aggregates
+and explicitly label metric evidence. Asset Health record age means record
+recency only. NADI intentionally does not fabricate MTBF, MTTR, availability,
+risk, health, wellness, or reliability scores.
 
 ## Relationship semantics
 

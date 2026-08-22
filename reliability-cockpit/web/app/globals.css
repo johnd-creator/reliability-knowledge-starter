@@ -266,6 +266,14 @@ td strong { color: var(--text); font-weight: 650; }
 .asset-tab:hover { color: var(--text); background: var(--surface); }
 .asset-tab.active { border-color: rgba(0,127,131,.22); color: var(--cyan); background: var(--surface); box-shadow: 0 2px 7px rgba(18,58,67,.08); }
 .asset-stat-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-bottom: 15px; }
+.asset-health-stat-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-bottom: 15px; }
+.health-status-card { margin-bottom: 14px; }
+.health-status-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.health-status-item { padding: 12px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface-2); }
+.health-status-item > div:first-child { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.health-status-item strong { color: var(--text); font-size: .82rem; }
+.health-status-track { height: 5px; margin-top: 10px; overflow: hidden; border-radius: 999px; background: var(--line); }
+.health-status-track span { display: block; height: 100%; border-radius: inherit; background: var(--cyan); }
 .asset-overview-grid, .asset-bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
 .asset-bottom-grid { grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr); }
 .asset-record-list { display: grid; gap: 0; }
@@ -293,5 +301,6 @@ td strong { color: var(--text); font-weight: 650; }
 .timeline-content > .status-badge { justify-self: end; }
 .timeline-content > small { grid-column: 1 / -1; color: var(--muted-2); font-size: .64rem; }
 
-@media (max-width: 980px) { .asset-facts { grid-template-columns: repeat(3, minmax(0, 1fr)); } .asset-overview-grid, .asset-bottom-grid { grid-template-columns: 1fr; } .asset-stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 980px) { .asset-facts { grid-template-columns: repeat(3, minmax(0, 1fr)); } .asset-overview-grid, .asset-bottom-grid { grid-template-columns: 1fr; } .asset-stat-grid, .asset-health-stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .health-status-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px) { .asset-identity-main { display: block; } .asset-identity-main > .status-badge { margin-top: 12px; } .asset-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); } .asset-tabs { overflow-x: auto; } .asset-tab { flex: 0 0 auto; padding: 8px 11px; } .asset-stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .asset-record { grid-template-columns: 1fr; gap: 5px; } .asset-record > .status-badge { justify-self: start; } }
+@media (max-width: 640px) { .health-status-grid { grid-template-columns: 1fr; } }

@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from typing import Any, TypeVar
 
-from sqlalchemy import Select, asc, case, desc, func, select
+from sqlalchemy import Select, asc, case, desc, func, literal, select
 
 from src.repositories.mart_models import (
     AssetHealthAssessmentMart,
@@ -30,6 +30,18 @@ def _raw_work_type(column: Any) -> Any:
     return func.nullif(func.trim(column["maximo"]["worktype"].as_string()), "")
 
 
+def _assessment_date(column: type[AssetHealthAssessmentMart]) -> Any:
+    """Return the verified source timestamp fallback for an assessment record."""
+
+    return func.coalesce(column.status_changed_at, column.source_updated_at, column.source_created_at)
+
+
+def _contains(value: str) -> str:
+    """Escape wildcard characters for bounded user-facing contains filters."""
+
+    return value.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+
+
 @dataclass(frozen=True)
 class QueryPage:
     items: list[Any]
@@ -46,6 +58,13 @@ def _page(session: Any, statement: Select[Any], offset: int, limit: int) -> Quer
     count_statement = select(func.count()).select_from(statement.order_by(None).subquery())
     total = int(session.scalar(count_statement) or 0)
     items = list(session.scalars(statement.offset(offset).limit(limit)).all())
+    return QueryPage(items=items, total=total, offset=offset, limit=limit)
+
+
+def _page_rows(session: Any, statement: Select[Any], offset: int, limit: int) -> QueryPage:
+    count_statement = select(func.count()).select_from(statement.order_by(None).subquery())
+    total = int(session.scalar(count_statement) or 0)
+    items = list(session.execute(statement.offset(offset).limit(limit)).all())
     return QueryPage(items=items, total=total, offset=offset, limit=limit)
 
 
@@ -215,17 +234,90 @@ class MartQueryRepository:
         with self.database.read_session() as session:
             return _page(session, statement, offset, limit)
 
+    def list_health_workspace(
+        self,
+        *,
+        asset_ref: str | None = None,
+        asset_number: str | None = None,
+        description: str | None = None,
+        lifecycle_status: str | None = None,
+        updated_from: datetime | None = None,
+        updated_to: datetime | None = None,
+        offset: int = 0,
+        limit: int = 50,
+        sort: str = "updated_desc",
+        as_of: datetime | None = None,
+    ) -> QueryPage:
+        """Return Registry-scoped Asset Health rows with management identity."""
+
+        current = as_of or datetime.now(timezone.utc)
+        if current.tzinfo is None:
+            current = current.replace(tzinfo=timezone.utc)
+        record_date = _assessment_date(AssetHealthAssessmentMart)
+        columns = (
+            AssetHealthAssessmentMart.canonical_id,
+            AssetHealthAssessmentMart.contract_version,
+            AssetHealthAssessmentMart.source_record_id,
+            AssetHealthAssessmentMart.revision,
+            AssetHealthAssessmentMart.lifecycle_status,
+            AssetHealthAssessmentMart.description,
+            AssetHealthAssessmentMart.function_description,
+            AssetHealthAssessmentMart.asset_ref,
+            AssetHealthAssessmentMart.site_code,
+            AssetHealthAssessmentMart.organization_code,
+            AssetHealthAssessmentMart.source_created_at,
+            AssetHealthAssessmentMart.source_updated_at,
+            AssetHealthAssessmentMart.status_changed_at,
+            ReliabilityAssetRegistryMart.source_asset_number.label("source_asset_number"),
+            AssetMasterMart.description.label("asset_description"),
+            record_date.label("assessment_record_date"),
+            self._gap_days(literal(current), record_date).label("assessment_age_days"),
+        )
+        statement = (
+            select(*columns)
+            .select_from(AssetHealthAssessmentMart)
+            .join(ReliabilityAssetRegistryMart, ReliabilityAssetRegistryMart.asset_ref == AssetHealthAssessmentMart.asset_ref)
+            .outerjoin(
+                AssetMasterMart,
+                (AssetMasterMart.canonical_id == AssetHealthAssessmentMart.asset_ref)
+                & (AssetMasterMart.site_code == SITE_CODE)
+                & (AssetMasterMart.organization_code == ORGANIZATION_CODE),
+            )
+            .where(
+                AssetHealthAssessmentMart.site_code == SITE_CODE,
+                AssetHealthAssessmentMart.organization_code == ORGANIZATION_CODE,
+                ReliabilityAssetRegistryMart.site_code == SITE_CODE,
+                ReliabilityAssetRegistryMart.organization_code == ORGANIZATION_CODE,
+            )
+        )
+        if asset_ref:
+            statement = statement.where(AssetHealthAssessmentMart.asset_ref == asset_ref)
+        if asset_number:
+            statement = statement.where(ReliabilityAssetRegistryMart.source_asset_number.ilike(f"%{_contains(asset_number)}%", escape="\\"))
+        if description:
+            statement = statement.where(AssetMasterMart.description.ilike(f"%{_contains(description)}%", escape="\\"))
+        if lifecycle_status:
+            statement = statement.where(AssetHealthAssessmentMart.lifecycle_status == lifecycle_status)
+        if updated_from:
+            statement = statement.where(AssetHealthAssessmentMart.source_updated_at >= updated_from)
+        if updated_to:
+            statement = statement.where(AssetHealthAssessmentMart.source_updated_at <= updated_to)
+        order_column = AssetHealthAssessmentMart.lifecycle_status if sort == "status" else record_date
+        statement = statement.order_by(desc(order_column) if sort != "updated_asc" else asc(order_column), asc(AssetHealthAssessmentMart.canonical_id))
+        with self.database.read_session() as session:
+            return _page_rows(session, statement, offset, limit)
+
     def latest_health(self, asset_ref: str) -> AssetHealthAssessmentMart | None:
         statement = self._scope(
             select(AssetHealthAssessmentMart).where(AssetHealthAssessmentMart.asset_ref == asset_ref),
             AssetHealthAssessmentMart,
-        ).order_by(
-            desc(AssetHealthAssessmentMart.status_changed_at),
-            desc(AssetHealthAssessmentMart.source_updated_at),
-            desc(AssetHealthAssessmentMart.source_created_at),
-        )
+        ).order_by(desc(_assessment_date(AssetHealthAssessmentMart)), desc(AssetHealthAssessmentMart.canonical_id))
         with self.database.read_session() as session:
             return session.scalar(statement.limit(1))
+
+    def latest_health_workspace(self, asset_ref: str, *, as_of: datetime | None = None) -> Any | None:
+        page = self.list_health_workspace(asset_ref=asset_ref, offset=0, limit=1, as_of=as_of)
+        return page.items[0] if page.items else None
 
     def list_rcfa(
         self,
@@ -575,6 +667,128 @@ class MartQueryRepository:
             "integrity": integrity,
             "window_start": window_start,
             "as_of": current,
+        }
+
+    def asset_health_overview(self, *, as_of: datetime | None = None) -> dict[str, object]:
+        """Return aggregate-only evidence for the controlled Asset Health population."""
+
+        current = as_of or datetime.now(timezone.utc)
+        if current.tzinfo is None:
+            current = current.replace(tzinfo=timezone.utc)
+        record_date = _assessment_date(AssetHealthAssessmentMart)
+        relation = (
+            select(
+                AssetHealthAssessmentMart.canonical_id.label("record_id"),
+                AssetHealthAssessmentMart.asset_ref,
+                ReliabilityAssetRegistryMart.asset_ref.label("registered_ref"),
+                AssetMasterMart.canonical_id.label("asset_master_ref"),
+            )
+            .select_from(AssetHealthAssessmentMart)
+            .outerjoin(
+                ReliabilityAssetRegistryMart,
+                (ReliabilityAssetRegistryMart.asset_ref == AssetHealthAssessmentMart.asset_ref)
+                & (ReliabilityAssetRegistryMart.site_code == SITE_CODE)
+                & (ReliabilityAssetRegistryMart.organization_code == ORGANIZATION_CODE),
+            )
+            .outerjoin(
+                AssetMasterMart,
+                (AssetMasterMart.canonical_id == AssetHealthAssessmentMart.asset_ref)
+                & (AssetMasterMart.site_code == SITE_CODE)
+                & (AssetMasterMart.organization_code == ORGANIZATION_CODE),
+            )
+            .where(
+                AssetHealthAssessmentMart.site_code == SITE_CODE,
+                AssetHealthAssessmentMart.organization_code == ORGANIZATION_CODE,
+            )
+            .subquery()
+        )
+        registered_groups = (
+            select(
+                AssetHealthAssessmentMart.asset_ref,
+                func.count(AssetHealthAssessmentMart.canonical_id).label("record_count"),
+            )
+            .join(ReliabilityAssetRegistryMart, ReliabilityAssetRegistryMart.asset_ref == AssetHealthAssessmentMart.asset_ref)
+            .where(
+                AssetHealthAssessmentMart.site_code == SITE_CODE,
+                AssetHealthAssessmentMart.organization_code == ORGANIZATION_CODE,
+                ReliabilityAssetRegistryMart.site_code == SITE_CODE,
+                ReliabilityAssetRegistryMart.organization_code == ORGANIZATION_CODE,
+            )
+            .group_by(AssetHealthAssessmentMart.asset_ref)
+            .subquery()
+        )
+        summary_statement = select(
+            select(func.count(AssetHealthAssessmentMart.canonical_id)).where(
+                AssetHealthAssessmentMart.site_code == SITE_CODE,
+                AssetHealthAssessmentMart.organization_code == ORGANIZATION_CODE,
+            ).scalar_subquery().label("assessment_records"),
+            select(func.count()).select_from(relation).where(relation.c.asset_ref.is_not(None)).scalar_subquery().label("records_with_asset_ref"),
+            select(func.count()).select_from(relation).where(relation.c.asset_ref.is_(None)).scalar_subquery().label("records_without_asset_ref"),
+            select(func.count()).select_from(relation).where(relation.c.asset_master_ref.is_not(None)).scalar_subquery().label("asset_master_resolved"),
+            select(func.count()).select_from(relation).where(relation.c.registered_ref.is_not(None)).scalar_subquery().label("registry_resolved"),
+            select(func.count()).select_from(relation).where(relation.c.asset_ref.is_not(None), relation.c.asset_master_ref.is_not(None), relation.c.registered_ref.is_(None)).scalar_subquery().label("technical_non_registry_records"),
+            select(func.count()).select_from(relation).where(relation.c.asset_ref.is_not(None), relation.c.asset_master_ref.is_(None)).scalar_subquery().label("unresolved_asset_refs"),
+            select(func.count(func.distinct(relation.c.registered_ref))).select_from(relation).scalar_subquery().label("registered_assets_represented"),
+            select(func.count()).select_from(registered_groups).where(registered_groups.c.record_count >= 2).scalar_subquery().label("assets_with_multiple_records"),
+            select(func.max(registered_groups.c.record_count)).select_from(registered_groups).scalar_subquery().label("maximum_records_per_asset"),
+            select(func.min(record_date)).where(
+                AssetHealthAssessmentMart.site_code == SITE_CODE,
+                AssetHealthAssessmentMart.organization_code == ORGANIZATION_CODE,
+            ).scalar_subquery().label("oldest_record_at"),
+            select(func.max(record_date)).where(
+                AssetHealthAssessmentMart.site_code == SITE_CODE,
+                AssetHealthAssessmentMart.organization_code == ORGANIZATION_CODE,
+            ).scalar_subquery().label("latest_record_at"),
+        )
+        status_statement = select(
+            func.coalesce(AssetHealthAssessmentMart.lifecycle_status, "UNKNOWN").label("value"),
+            func.count(AssetHealthAssessmentMart.canonical_id).label("count"),
+        ).where(
+            AssetHealthAssessmentMart.site_code == SITE_CODE,
+            AssetHealthAssessmentMart.organization_code == ORGANIZATION_CODE,
+        ).group_by(AssetHealthAssessmentMart.lifecycle_status).order_by(asc(AssetHealthAssessmentMart.lifecycle_status))
+        with self.database.read_session() as session:
+            summary = session.execute(summary_statement).one()._mapping
+            statuses = session.execute(status_statement).all()
+        latest = summary["latest_record_at"]
+        latest_age_days = None
+        if latest is not None:
+            if latest.tzinfo is None:
+                latest = latest.replace(tzinfo=timezone.utc)
+            latest_age_days = (current - latest).total_seconds() / 86400.0
+        return {
+            "scope": {
+                "site_code": SITE_CODE,
+                "organization_code": ORGANIZATION_CODE,
+                "registry_scope": "reliability_asset_registry",
+                "population": "CONTROLLED_MART_POPULATION",
+                "interpretation": "ASSESSMENT_RECORDS_NOT_HEALTH_SCORE",
+            },
+            "summary": {key: int(summary[key] or 0) for key in (
+                "assessment_records", "records_with_asset_ref", "records_without_asset_ref",
+                "asset_master_resolved", "registry_resolved", "technical_non_registry_records",
+                "unresolved_asset_refs", "registered_assets_represented", "assets_with_multiple_records",
+                "maximum_records_per_asset",
+            )},
+            "status_distribution": [{"value": row.value, "count": int(row.count)} for row in statuses],
+            "record_recency": {
+                "oldest_record_at": summary["oldest_record_at"],
+                "latest_record_at": latest,
+                "as_of": current,
+                "latest_assessment_age_days": latest_age_days,
+                "date_basis": "COALESCE(status_changed_at, source_updated_at, source_created_at)",
+            },
+            "evidence": {
+                "assessment_records": "VERIFIED",
+                "registered_assets_represented": "DERIVED_SAFE",
+                "assets_with_multiple_records": "DERIVED_SAFE",
+                "latest_assessment_record": "DERIVED_SAFE",
+                "assessment_age": "DERIVED_SAFE",
+                "lifecycle_status": "VERIFIED",
+                "health_score": "BUSINESS_SEMANTICS_REQUIRED",
+                "wellness_score": "BUSINESS_SEMANTICS_REQUIRED",
+                "condition_classification": "BUSINESS_SEMANTICS_REQUIRED",
+            },
         }
 
     def maintenance_investigation(

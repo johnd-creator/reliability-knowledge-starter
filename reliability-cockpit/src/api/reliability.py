@@ -116,6 +116,10 @@ class HealthView(BaseModel):
     source_created_at: datetime | None = None
     source_updated_at: datetime | None = None
     status_changed_at: datetime | None = None
+    source_asset_number: str | None = None
+    asset_description: str | None = None
+    assessment_record_date: datetime | None = None
+    assessment_age_days: float | None = None
 
 
 class OverhaulView(BaseModel):
@@ -243,6 +247,55 @@ class DecisionOverviewView(BaseModel):
     integrity: IntegrityView
 
 
+class AssetHealthScopeView(BaseModel):
+    site_code: Literal["BSR"]
+    organization_code: Literal["IP"]
+    registry_scope: str
+    population: Literal["CONTROLLED_MART_POPULATION"]
+    interpretation: Literal["ASSESSMENT_RECORDS_NOT_HEALTH_SCORE"]
+
+
+class AssetHealthSummaryView(BaseModel):
+    assessment_records: int
+    records_with_asset_ref: int
+    records_without_asset_ref: int
+    asset_master_resolved: int
+    registry_resolved: int
+    technical_non_registry_records: int
+    unresolved_asset_refs: int
+    registered_assets_represented: int
+    assets_with_multiple_records: int
+    maximum_records_per_asset: int
+
+
+class AssetHealthRecencyView(BaseModel):
+    oldest_record_at: datetime | None = None
+    latest_record_at: datetime | None = None
+    as_of: datetime
+    latest_assessment_age_days: float | None = None
+    date_basis: str
+
+
+class AssetHealthEvidenceView(BaseModel):
+    assessment_records: EvidenceClass
+    registered_assets_represented: EvidenceClass
+    assets_with_multiple_records: EvidenceClass
+    latest_assessment_record: EvidenceClass
+    assessment_age: EvidenceClass
+    lifecycle_status: EvidenceClass
+    health_score: EvidenceClass
+    wellness_score: EvidenceClass
+    condition_classification: EvidenceClass
+
+
+class AssetHealthOverviewView(BaseModel):
+    scope: AssetHealthScopeView
+    summary: AssetHealthSummaryView
+    status_distribution: list[DistributionView]
+    record_recency: AssetHealthRecencyView
+    evidence: AssetHealthEvidenceView
+
+
 class InvestigationScopeView(BaseModel):
     site_code: Literal["BSR"]
     organization_code: Literal["IP"]
@@ -341,7 +394,7 @@ def _rcfa(row) -> RcfaView:
 
 
 def _health(row) -> HealthView:
-    return HealthView.model_validate({k: getattr(row, k) for k in HealthView.model_fields})
+    return HealthView.model_validate({k: getattr(row, k, None) for k in HealthView.model_fields})
 
 
 def _overhaul(row) -> OverhaulView:
@@ -441,6 +494,19 @@ def _maintenance_investigation(raw: dict[str, object]) -> MaintenanceInvestigati
     )
 
 
+def _asset_health_overview(raw: dict[str, object]) -> AssetHealthOverviewView:
+    return AssetHealthOverviewView(
+        scope=AssetHealthScopeView(**raw["scope"]),
+        summary=AssetHealthSummaryView(**raw["summary"]),
+        status_distribution=[
+            DistributionView(value=row["value"], count=_evidence(int(row["count"]), "VERIFIED"))
+            for row in raw["status_distribution"]
+        ],
+        record_recency=AssetHealthRecencyView(**raw["record_recency"]),
+        evidence=AssetHealthEvidenceView(**raw["evidence"]),
+    )
+
+
 @router.get("/assets", response_model=Page[AssetView], summary="List Reliability Mart assets")
 def list_assets(
     status: str | None = None,
@@ -470,6 +536,11 @@ def decision_overview(
     if window_days not in {7, 30, 90}:
         raise HTTPException(status_code=422, detail="window_days must be one of 7, 30, or 90")
     return _decision_overview(service.repository.decision_overview(window_days=window_days), window_days)
+
+
+@router.get("/asset-health/overview", response_model=AssetHealthOverviewView, summary="Factual Asset Health assessment overview")
+def asset_health_overview(service: ReliabilityQueryService = Depends(_service)) -> AssetHealthOverviewView:
+    return _asset_health_overview(service.repository.asset_health_overview())
 
 
 @router.get("/maintenance-investigation", response_model=MaintenanceInvestigationView, summary="Bounded repeat maintenance activity investigation")
@@ -523,14 +594,14 @@ def asset_fmea(canonical_id: str, offset: int = Query(0, ge=0), limit: int = Que
 def asset_health(canonical_id: str, offset: int = Query(0, ge=0), limit: int = Query(50, ge=1, le=200), service: ReliabilityQueryService = Depends(_service)):
     if service.repository.get_asset(canonical_id) is None:
         raise HTTPException(status_code=404, detail="asset not found")
-    return _page(service.repository.list_health(asset_ref=canonical_id, offset=offset, limit=limit), _health)
+    return _page(service.repository.list_health_workspace(asset_ref=canonical_id, offset=offset, limit=limit), _health)
 
 
 @router.get("/assets/{canonical_id}/health/latest", response_model=HealthView)
 def latest_health(canonical_id: str, service: ReliabilityQueryService = Depends(_service)) -> HealthView:
     if service.repository.get_asset(canonical_id) is None:
         raise HTTPException(status_code=404, detail="asset not found")
-    row = service.repository.latest_health(canonical_id)
+    row = service.repository.latest_health_workspace(canonical_id)
     if row is None:
         raise HTTPException(status_code=404, detail="health assessment not found")
     return _health(row)
@@ -560,9 +631,9 @@ def fmea(asset_ref: str | None = None, lifecycle_status: str | None = None, sour
 
 
 @router.get("/asset-health", response_model=Page[HealthView])
-def asset_health_list(asset_ref: str | None = None, lifecycle_status: str | None = None, updated_from: datetime | None = None, updated_to: datetime | None = None, offset: int = Query(0, ge=0), limit: int = Query(50, ge=1, le=200), sort: Literal["updated_desc", "updated_asc", "status"] = "updated_desc", service: ReliabilityQueryService = Depends(_service)):
+def asset_health_list(asset_ref: str | None = None, asset_number: str | None = None, description: str | None = None, lifecycle_status: str | None = None, updated_from: datetime | None = None, updated_to: datetime | None = None, offset: int = Query(0, ge=0), limit: int = Query(50, ge=1, le=200), sort: Literal["updated_desc", "updated_asc", "status"] = "updated_desc", service: ReliabilityQueryService = Depends(_service)):
     _validate_range(updated_from, updated_to)
-    return _page(service.repository.list_health(asset_ref=asset_ref, lifecycle_status=lifecycle_status, updated_from=updated_from, updated_to=updated_to, offset=offset, limit=limit, sort=sort), _health)
+    return _page(service.repository.list_health_workspace(asset_ref=asset_ref, asset_number=asset_number, description=description, lifecycle_status=lifecycle_status, updated_from=updated_from, updated_to=updated_to, offset=offset, limit=limit, sort=sort), _health)
 
 
 @router.get("/rcfa", response_model=Page[RcfaView])

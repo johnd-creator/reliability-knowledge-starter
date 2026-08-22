@@ -38,6 +38,10 @@ from normal Asset and Maintenance metrics.
 | Assets represented in current FMEA population | `DERIVED_SAFE` | Distinct non-null FMEA Asset refs that resolve to the Registry | Current controlled dataset representation; not an FMEA completion percentage. |
 | Asset Health records available | `VERIFIED` | Count of current scoped `asset_health_assessment` rows | Current controlled Mart population; lifecycle status is not converted into a score. |
 | Assets represented in current Asset Health population | `DERIVED_SAFE` | Distinct non-null Asset Health refs that resolve to the Registry | Current controlled dataset representation; not health coverage or condition. |
+| Assets with multiple Asset Health assessments | `DERIVED_SAFE` | Registered Assets with two or more current Asset Health records | Record multiplicity only; matching Asset identity does not prove assessment lineage or revision history. |
+| Latest Asset Health assessment record | `DERIVED_SAFE` | Latest record per Asset ordered by `COALESCE(status_changed_at, source_updated_at, source_created_at)` | Assessment record date; not condition measured-at time. |
+| Assessment age | `DERIVED_SAFE` | `as_of - latest assessment record date` | Record recency only; no freshness, staleness, deterioration, or health meaning is assigned. |
+| Asset Health lifecycle status | `VERIFIED` | Raw `lifecycle_status` preserved exactly, with null shown as `UNKNOWN` | Source status only; business meaning is unverified and is not mapped to Healthy, Warning, Critical, Open, or Closed. |
 | RCFA records available | `VERIFIED` | Count of current scoped `rcfa_analysis` rows | Global factual count; RCFA Asset relationship remains unresolved. |
 | Overhaul records available | `VERIFIED` | Count of current scoped `overhaul_event` rows | Global factual count; null/unresolved Asset refs remain unresolved. |
 | Relationship integrity | `VERIFIED` | Existing Mart relationship totals and resolved/unresolved counts | Factual relationship checks; not a health score. |
@@ -76,6 +80,9 @@ reach the browser.
 | Repeat Failure | `BUSINESS_SEMANTICS_REQUIRED` | Collector failure codes exist locally, but are not promoted into the Mart and their business meaning is unverified; a failure identity and governed repeat rule are still required. |
 | PdM alerts | `DATA_NOT_AVAILABLE` | PI/DCS signals are not part of the current NADI decision model. |
 | Recommendations | `DEFERRED` | No verified action rules or governance; no Action Board is generated here. |
+| Health Score | `BUSINESS_SEMANTICS_REQUIRED` | No verified numerical source, normalization, directionality, thresholds, missing-data treatment, or governance. |
+| Wellness Score | `BUSINESS_SEMANTICS_REQUIRED` | The local report contains a `Last Wellness` column, but its relationship to IPBHM and its calculation semantics are not verified. |
+| Condition Classification | `BUSINESS_SEMANTICS_REQUIRED` | Source descriptions/statuses are available, but no verified condition taxonomy or mapping exists. |
 
 `CAN`, `APPR`, `INPRG`, `WDONE`, and other source statuses remain source values.
 They are not filtered or assigned management meanings by this overview.
