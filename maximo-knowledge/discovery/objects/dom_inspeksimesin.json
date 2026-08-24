@@ -3,24 +3,24 @@
   "object_structure": "DOM_INSPEKSIMESIN",
   "resource": "dominspeksimesin",
   "status": "verified",
-  "access": "http_200",
-  "endpoint": "/oslc/os/DOM_INSPEKSIMESIN?_maxitems=1&oslc.where=siteid%3D%22BSR%22",
+  "access": "metadata_http_200; business_http_200; exact_inspection_http_200",
+  "endpoint": "/oslc/os/DOM_INSPEKSIMESIN?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=dom_inspeksinum,dom_inspeksiid,scopenum,siteid,orgid,status",
   "primary_key": {
     "preferred": {
-      "field": "dom_inspeksiid",
-      "confidence": "CANDIDATE",
-      "reason": "resource-specific identity preference"
+      "field": "siklus+mesin",
+      "confidence": "VERIFIED",
+      "reason": "live JSON Schema pk lists the composite key siklus and mesin"
     },
     "candidates": [
       {
         "field": "dom_inspeksiid",
         "confidence": "CANDIDATE",
-        "reason": "resource-specific identity preference"
+        "reason": "required integer technical identifier; not the declared composite pk"
       },
       {
         "field": "dom_inspeksinum",
         "confidence": "CANDIDATE",
-        "reason": "resource-specific identity preference"
+        "reason": "human-facing inspection number; exact relationship key was verified but uniqueness was not tested"
       },
       {
         "field": "scopenum",
@@ -91,7 +91,11 @@
     "satuanp2",
     "satuanp2_description",
     "satuanp3_description",
-    "satuanp3"
+    "satuanp3",
+    "newstatus",
+    "latitude",
+    "longitude",
+    "orgid"
   ],
   "field_types": {
     "status": "string",
@@ -118,10 +122,23 @@
     "satuanint": "string",
     "satuanp2": "string",
     "satuanp3": "string"
+    ,"newstatus": "string",
+    "latitude": "string",
+    "longitude": "string",
+    "orgid": "string",
+    "dom_scopeline": "collection-reference",
+    "dom_merktype": "collection-reference"
   },
   "metadata_fields": [
     "_rowstamp",
-    "rdf:about"
+    "rdf:about",
+    "$schema",
+    "title",
+    "resource",
+    "pk",
+    "properties",
+    "required",
+    "type"
   ],
   "pagination": {
     "single_record_via": "same-origin resource href; no next page followed"
@@ -144,18 +161,25 @@
   "use_cases": [],
   "relationships": [
     "site: siteid (VERIFIED field evidence)",
-    "status: status (VERIFIED field evidence)"
+    "organization: orgid (VERIFIED schema field; bounded value not observed)",
+    "status: status (VERIFIED field evidence)",
+    "overhaul: IP_DOM_OH.inspeksinum -> DOM_INSPEKSIMESIN.dom_inspeksinum (DIRECT_VERIFIED exact bounded key match)",
+    "scope-line: dom_scopeline -> DOM_SCOPELINE subSchema reference (VERIFIED metadata relationship; child fields not fetched)"
   ],
   "notes": [
     "MX-006B first bounded detail run: collection HTTP 200 plus one same-origin detail HTTP 200; no raw values persisted.",
     "Inspection finding/recommendation and OH/workorder joins are UNKNOWN; machine condition meaning is not inferred from the name."
+    ,"MX-017A live JSON Schema title DOM_INSPEKSI declares composite pk siklus+mesin and exposes dom_scopeline as an array with a same-origin child schema reference.",
+    "One exact BSR inspection query matched the transient IP_DOM_OH.inspeksinum to DOM_INSPEKSIMESIN.dom_inspeksinum; no raw values were persisted.",
+    "P1/P2/P3 and R1/R2/R3 are retained as technical integer fields only; their condition, result, or recommendation semantics remain UNKNOWN.",
+    "The first exact inspection probe that selected dom_scopeline and dom_merktype hit the 1 MiB response cap; no cap increase or repeated large-shape request was made."
   ],
-  "verified_at": "2026-08-21T03:20:40.006056+00:00",
+  "verified_at": "2026-08-24T06:30:00+00:00",
   "scope": {
     "field": "siteid",
     "value": "BSR",
-    "status": "PRIOR_LIVE_QUERY",
-    "evidence": "MX-006R bounded BSR query plus detail field evidence"
+    "status": "VERIFIED",
+    "evidence": "The exact inspection relationship query and the bounded inspection record carried siteid BSR; orgid is present in schema but was not observed in the selected member."
   },
   "detail_dereference": {
     "attempted": true,
@@ -207,6 +231,10 @@
       "satuanp2_description",
       "satuanp3_description",
       "satuanp3"
+      ,"newstatus",
+      "latitude",
+      "longitude",
+      "orgid"
     ],
     "field_types": {
       "status": "string",
@@ -215,10 +243,23 @@
       "description": "string",
       "scopenum": "string",
       "dom_inspeksiid": "integer"
+      ,"newstatus": "string",
+      "latitude": "string",
+      "longitude": "string",
+      "orgid": "string",
+      "dom_scopeline": "collection-reference",
+      "dom_merktype": "collection-reference"
     },
     "metadata_fields": [
       "_rowstamp",
-      "rdf:about"
+      "rdf:about",
+      "$schema",
+      "title",
+      "resource",
+      "pk",
+      "properties",
+      "required",
+      "type"
     ]
   },
   "http_diagnostics": {},
@@ -230,7 +271,7 @@
       "COLLECTION_REFERENCE"
     ],
     "dom_scopeline": [
-      "BUSINESS_ATTRIBUTE"
+      "COLLECTION_REFERENCE"
     ],
     "dom_inspeksinum": [
       "IDENTIFIER_CANDIDATE"
@@ -245,7 +286,7 @@
       "BUSINESS_ATTRIBUTE"
     ],
     "dom_merktype": [
-      "BUSINESS_ATTRIBUTE"
+      "COLLECTION_REFERENCE"
     ],
     "pic": [
       "BUSINESS_ATTRIBUTE"
@@ -342,6 +383,9 @@
     ],
     "satuanp3": [
       "BUSINESS_ATTRIBUTE"
+    ],
+    "orgid": [
+      "SCOPE_ORGANIZATION"
     ]
   },
   "role_evidence": [
@@ -624,6 +668,34 @@
         "BUSINESS_ATTRIBUTE"
       ],
       "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "siklus+mesin",
+      "roles": [
+        "IDENTIFIER_CANDIDATE"
+      ],
+      "evidence": "Live JSON Schema declares siklus and mesin as the composite pk; uniqueness was not independently tested."
+    },
+    {
+      "field": "dom_scopeline",
+      "roles": [
+        "COLLECTION_REFERENCE"
+      ],
+      "evidence": "Live JSON Schema type is array with a DOM_SCOPELINE child schema reference."
+    },
+    {
+      "field": "orgid",
+      "roles": [
+        "SCOPE_ORGANIZATION"
+      ],
+      "evidence": "Live JSON Schema exposes orgid; the selected exact member did not return a bounded orgid value."
+    },
+    {
+      "field": "inspeksinum",
+      "roles": [
+        "PARENT_REFERENCE"
+      ],
+      "evidence": "The exact BSR query matched the parent IP_DOM_OH inspection key to dom_inspeksinum."
     }
   ]
 }

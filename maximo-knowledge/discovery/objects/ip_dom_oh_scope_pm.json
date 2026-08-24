@@ -3,41 +3,209 @@
   "object_structure": "IP_DOM_OH_SCOPE_PM",
   "resource": "ipdomohscopepm",
   "status": "verified",
-  "access": "http_200",
-  "endpoint": "/oslc/os/IP_DOM_OH_SCOPE_PM?_maxitems=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
-  "primary_key": null,
-  "field_candidates": [],
+  "access": "metadata_http_200; scalar_business_http_200; collection_select_http_400",
+  "endpoint": "/oslc/os/IP_DOM_OH_SCOPE_PM?oslc.paging=true&oslc.pageSize=2&oslc.where=siteid%3D%22BSR%22&oslc.select=ohscopepmid,ohscopeid,domohnum,wonum,pmnum,taskid,status,status_penyelesaian,progress,rencana_progress,progress_act,progress_cum,daily_progress,startdate,enddate,durasi,type,bidang,isqc,siteid",
+  "primary_key": {
+    "preferred": {
+      "field": "ohscopepmid",
+      "confidence": "VERIFIED",
+      "reason": "live JSON Schema pk lists ohscopepmid"
+    },
+    "candidates": [
+      {
+        "field": "ohscopepmid",
+        "confidence": "VERIFIED",
+        "reason": "required integer technical identifier in live JSON Schema"
+      },
+      {
+        "field": "ohscopeid",
+        "confidence": "CANDIDATE",
+        "reason": "scope identifier exposed by live JSON Schema; uniqueness was not tested"
+      }
+    ],
+    "excluded": [
+      {
+        "field": "domohnum",
+        "role": "PARENT_REFERENCE",
+        "reason": "exactly matched to IP_DOM_OH.domohnum in one bounded parent verification"
+      },
+      {
+        "field": "wonum",
+        "role": "WORKORDER_REFERENCE",
+        "reason": "exactly verified against MXWODETAIL.wonum in two bounded reads"
+      },
+      {
+        "field": "siteid",
+        "role": "SCOPE_SITE",
+        "reason": "scope field is not record identity"
+      }
+    ]
+  },
+  "field_candidates": [
+    "ohscopepmid",
+    "ohscopeid",
+    "domohnum",
+    "wonum"
+  ],
   "important_fields": [
-    "workorder_collectionref"
+    "ohscopepmid",
+    "ohscopeid",
+    "domohnum",
+    "wonum",
+    "pmnum",
+    "taskid",
+    "status",
+    "status_penyelesaian",
+    "progress",
+    "rencana_progress",
+    "progress_act",
+    "progress_cum",
+    "daily_progress",
+    "startdate",
+    "enddate",
+    "startdate_qcplan",
+    "enddate_qcplan",
+    "startdate_qcexec",
+    "enddate_qcexec",
+    "durasi",
+    "type",
+    "bidang",
+    "isqc",
+    "workorder",
+    "workorder_collectionref",
+    "siteid"
   ],
   "field_types": {
-    "workorder_collectionref": "string"
+    "ohscopepmid": "integer",
+    "ohscopeid": "integer",
+    "domohnum": "string",
+    "wonum": "string",
+    "pmnum": "string",
+    "taskid": "integer",
+    "status": "string",
+    "status_penyelesaian": "string",
+    "progress": "number",
+    "rencana_progress": "number",
+    "progress_act": "number",
+    "progress_cum": "number",
+    "daily_progress": "number",
+    "startdate": "string",
+    "enddate": "string",
+    "startdate_qcplan": "string",
+    "enddate_qcplan": "string",
+    "startdate_qcexec": "string",
+    "enddate_qcexec": "string",
+    "durasi": "number",
+    "type": "string",
+    "bidang": "string",
+    "isqc": "boolean",
+    "workorder": "collection-reference",
+    "workorder_collectionref": "collection-reference",
+    "siteid": "string"
   },
   "metadata_fields": [
     "_rowstamp",
-    "rdf:about"
+    "rdf:about",
+    "$schema",
+    "title",
+    "resource",
+    "pk",
+    "properties",
+    "required",
+    "type"
   ],
   "pagination": {
     "total_count": null,
     "next_page": false,
-    "prev_page": false
+    "prev_page": false,
+    "method": "oslc.paging=true + oslc.pageSize=2"
   },
   "sample": {
-    "workorder_collectionref": "<string>"
+    "ohscopepmid": "<integer>",
+    "ohscopeid": "<integer>",
+    "domohnum": "<string>",
+    "wonum": "<string>",
+    "progress": "<number>",
+    "rencana_progress": "<number>",
+    "progress_act": "<number>",
+    "progress_cum": "<number>",
+    "daily_progress": "<number>",
+    "isqc": "<boolean>",
+    "workorder_collectionref": "<collection-reference>",
+    "siteid": "BSR"
   },
-  "use_cases": [],
-  "relationships": [],
+  "use_cases": [
+    "Overhaul scope and progress evidence",
+    "Overhaul related Work Order evidence"
+  ],
+  "relationships": [
+    "parent: IP_DOM_OH_SCOPE_PM.domohnum -> IP_DOM_OH.domohnum (DIRECT_VERIFIED exact bounded key match)",
+    "workorder: IP_DOM_OH_SCOPE_PM.wonum -> MXWODETAIL.wonum (DIRECT_VERIFIED two exact bounded reads)",
+    "workorder collection: workorder array and workorder_collectionref (VERIFIED technical collection evidence; cardinality unresolved)"
+  ],
+  "field_roles": {
+    "ohscopepmid": [
+      "IDENTIFIER_CANDIDATE"
+    ],
+    "ohscopeid": [
+      "IDENTIFIER_CANDIDATE"
+    ],
+    "domohnum": [
+      "PARENT_REFERENCE"
+    ],
+    "wonum": [
+      "WORKORDER_REFERENCE"
+    ],
+    "workorder": [
+      "COLLECTION_REFERENCE"
+    ],
+    "workorder_collectionref": [
+      "COLLECTION_REFERENCE"
+    ],
+    "siteid": [
+      "SCOPE_SITE"
+    ],
+    "status": [
+      "STATUS"
+    ]
+  },
+  "role_evidence": [
+    {
+      "field": "domohnum",
+      "roles": [
+        "PARENT_REFERENCE"
+      ],
+      "evidence": "Two bounded records exposed domohnum; one exact value matched IP_DOM_OH.domohnum."
+    },
+    {
+      "field": "wonum",
+      "roles": [
+        "WORKORDER_REFERENCE"
+      ],
+      "evidence": "Two bounded values each matched one MXWODETAIL.wonum exact read with assetnum and BSR/IP scope."
+    },
+    {
+      "field": "workorder",
+      "roles": [
+        "COLLECTION_REFERENCE"
+      ],
+      "evidence": "Live JSON Schema exposes workorder as an array with a child schema reference; collection-select retrieval returned HTTP 400."
+    }
+  ],
   "notes": [
     "inline business member used; no detail GET was necessary",
     "catalog GET returned HTTP 400; using documented seed",
-    "catalog selection used explicit MX-006B allowlisted targets"
+    "catalog selection used explicit MX-006B allowlisted targets",
+    "MX-017A live JSON Schema title DOM_OH_SCOPE_PM declares pk ohscopepmid and exposes domohnum, wonum, and workorder array fields.",
+    "Two bounded scalar records returned domohnum and wonum; one exact parent Overhaul and two exact MXWODETAIL reads matched on keys and BSR/IP scope for the Work Orders.",
+    "The collection-select shape including workorder returned HTTP 400; no broad child collection was followed and multi-WO cardinality remains unresolved."
   ],
-  "verified_at": "2026-08-21T03:33:25.412295+00:00",
+  "verified_at": "2026-08-24T06:30:00+00:00",
   "scope": {
     "field": "siteid",
     "value": "BSR",
-    "status": "PRIOR_LIVE_QUERY",
-    "evidence": "MX-006R used this BSR-scoped clause and received a bounded response; detail field evidence remains required."
+    "status": "VERIFIED",
+    "evidence": "Two bounded scalar records returned siteid BSR; this object did not expose orgid in the live schema."
   },
   "detail_dereference": {
     "attempted": false,
@@ -47,16 +215,76 @@
     "pagination_followed": false,
     "status": "INLINE_BUSINESS_RECORD",
     "fields": [
-      "workorder_collectionref"
+      "ohscopepmid",
+      "ohscopeid",
+      "domohnum",
+      "wonum",
+      "pmnum",
+      "taskid",
+      "status",
+      "status_penyelesaian",
+      "progress",
+      "rencana_progress",
+      "progress_act",
+      "progress_cum",
+      "daily_progress",
+      "startdate",
+      "enddate",
+      "startdate_qcplan",
+      "enddate_qcplan",
+      "startdate_qcexec",
+      "enddate_qcexec",
+      "durasi",
+      "type",
+      "bidang",
+      "isqc",
+      "workorder_collectionref",
+      "siteid"
     ],
     "field_types": {
-      "workorder_collectionref": "string"
+      "ohscopepmid": "integer",
+      "ohscopeid": "integer",
+      "domohnum": "string",
+      "wonum": "string",
+      "pmnum": "string",
+      "taskid": "integer",
+      "status": "string",
+      "status_penyelesaian": "string",
+      "progress": "number",
+      "rencana_progress": "number",
+      "progress_act": "number",
+      "progress_cum": "number",
+      "daily_progress": "number",
+      "startdate": "string",
+      "enddate": "string",
+      "startdate_qcplan": "string",
+      "enddate_qcplan": "string",
+      "startdate_qcexec": "string",
+      "enddate_qcexec": "string",
+      "durasi": "number",
+      "type": "string",
+      "bidang": "string",
+      "isqc": "boolean",
+      "workorder_collectionref": "collection-reference",
+      "siteid": "string"
     },
     "metadata_fields": [
       "_rowstamp",
-      "rdf:about"
+      "rdf:about",
+      "$schema",
+      "title",
+      "resource",
+      "pk",
+      "properties",
+      "required",
+      "type"
     ]
   },
-  "http_diagnostics": {},
+  "http_diagnostics": {
+    "http_status": 400,
+    "maximo_error_code": null,
+    "reason": "Collection-select shape including workorder returned HTTP 400; scalar bounded shape returned HTTP 200.",
+    "raw_response_saved": false
+  },
   "catalog_source": "seed-fallback"
 }
