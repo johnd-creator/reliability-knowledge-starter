@@ -2,41 +2,214 @@
   "system": "maximo",
   "object_structure": "IPRCFAFDT",
   "resource": "iprcfafdt",
-  "status": "documented",
-  "access": "http_400",
-  "endpoint": "/oslc/os/IPRCFAFDT?_maxitems=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
-  "primary_key": null,
-  "field_candidates": [],
-  "important_fields": [],
-  "field_types": {},
-  "metadata_fields": [],
-  "pagination": {},
-  "sample": null,
-  "use_cases": [],
-  "relationships": [],
-  "notes": [
-    "describe GET returned HTTP 400",
-    "catalog GET returned HTTP 400; using documented seed",
-    "catalog selection used explicit MX-006B allowlisted targets"
+  "status": "verified",
+  "access": "metadata_http_200; business_http_200; exact_parent_filter_http_400",
+  "endpoint": "/oslc/os/IPRCFAFDT?oslc.paging=true&oslc.pageSize=1&oslc.select=fdt_rcfaid,nofdt,norcfa,siteid,orgid,progress,href",
+  "primary_key": {
+    "preferred": {
+      "field": "fdt_rcfaid",
+      "confidence": "CANDIDATE",
+      "reason": "live JSON Schema pk lists fdt_rcfaid; uniqueness and revision lineage remain untested"
+    },
+    "candidates": [
+      {
+        "field": "fdt_rcfaid",
+        "confidence": "CANDIDATE",
+        "reason": "required integer technical identifier in live JSON Schema"
+      },
+      {
+        "field": "nofdt",
+        "confidence": "CANDIDATE",
+        "reason": "bounded business record exposes a non-empty FDT number; uniqueness was not tested"
+      }
+    ],
+    "excluded": [
+      {
+        "field": "norcfa",
+        "role": "PARENT_REFERENCE",
+        "reason": "exact bounded evidence matches the parent RCFA key and therefore is not the detail identity"
+      },
+      {
+        "field": "siteid",
+        "role": "SCOPE_SITE",
+        "reason": "scope field is not record identity"
+      },
+      {
+        "field": "orgid",
+        "role": "SCOPE_ORGANIZATION",
+        "reason": "scope field is not record identity"
+      }
+    ]
+  },
+  "field_candidates": [
+    "fdt_rcfaid",
+    "nofdt",
+    "norcfa"
   ],
-  "verified_at": null,
+  "important_fields": [
+    "fdt_rcfaid",
+    "nofdt",
+    "norcfa",
+    "siteid",
+    "orgid",
+    "progress",
+    "progress_description",
+    "actionplan",
+    "actionplan_description",
+    "feedback",
+    "activity",
+    "activity_description",
+    "worktype",
+    "worktype_description",
+    "type",
+    "type_description",
+    "description"
+  ],
+  "field_types": {
+    "fdt_rcfaid": "integer",
+    "nofdt": "string",
+    "norcfa": "string",
+    "siteid": "string",
+    "orgid": "string",
+    "progress": "string",
+    "progress_description": "string",
+    "actionplan": "string",
+    "actionplan_description": "string",
+    "feedback": "string",
+    "activity": "string",
+    "activity_description": "string",
+    "worktype": "string",
+    "worktype_description": "string",
+    "type": "string",
+    "type_description": "string",
+    "description": "string"
+  },
+  "metadata_fields": [
+    "$schema",
+    "title",
+    "resource",
+    "pk",
+    "properties",
+    "required",
+    "type"
+  ],
+  "pagination": {
+    "method": "oslc.paging=true + oslc.pageSize=1",
+    "single_record_via": "inline bounded collection member; no next page followed"
+  },
+  "sample": {
+    "fdt_rcfaid": "<integer>",
+    "nofdt": "<string>",
+    "norcfa": "<string>",
+    "siteid": "BSR",
+    "orgid": "IP",
+    "progress": "<string>"
+  },
+  "use_cases": [
+    "RCFA FDT detail evidence",
+    "RCFA progress and action-plan field discovery"
+  ],
+  "relationships": [
+    "IPRCFAFDT.norcfa -> IPRCFA.norcfa (DIRECT_VERIFIED exact bounded key match)"
+  ],
+  "notes": [
+    "MX-006B describe GET returned HTTP 400; previous documented seed evidence is preserved as historical evidence.",
+    "MX-006B catalog GET returned HTTP 400; catalog selection used the documented seed fallback.",
+    "MX-016A /oslc/apimeta/IPRCFAFDT returned HTTP 200 with title IP LOADER RCFA FDT and query capability All.",
+    "MX-016A /oslc/jsonschemas/IPRCFAFDT returned HTTP 200 with title FDT_RCFA, pk fdt_rcfaid, and the field catalog recorded above.",
+    "A metadata-supported unfiltered BSR-scoped pageSize=1 collection returned HTTP 200 with fdt_rcfaid, nofdt, norcfa, siteid, orgid, and progress structure; no raw text or person values were persisted.",
+    "The exact parent filter by a transient RCFA norcfa returned HTTP 400; reverse verification of the bounded FDT norcfa against one exact IPRCFA read matched the parent key and BSR/IP scope.",
+    "FDT actionplan, feedback, activity, type, and description are technical schema candidates; their business semantics and completion meaning remain unverified."
+  ],
+  "verified_at": "2026-08-24T05:25:33+00:00",
   "scope": {
-    "field": "siteid",
-    "value": "BSR",
-    "status": "PRIOR_LIVE_QUERY",
-    "evidence": "MX-006R used this BSR-scoped clause and received a bounded response; detail field evidence remains required."
+    "field": "siteid/orgid",
+    "value": "BSR/IP",
+    "status": "VERIFIED",
+    "evidence": "The bounded FDT member and its exact RCFA parent both returned BSR/IP scope fields."
   },
   "detail_dereference": {
     "attempted": false,
-    "collection_records": 0,
+    "collection_records": 1,
     "detail_records": 0,
     "maximum_dereference_depth": 1,
-    "pagination_followed": false
+    "pagination_followed": false,
+    "resource_path": "/maximo/oslc/os/iprcfafdt",
+    "http_status": 200,
+    "status": "INLINE_BUSINESS_RECORD",
+    "fields": [
+      "fdt_rcfaid",
+      "nofdt",
+      "norcfa",
+      "siteid",
+      "orgid",
+      "progress",
+      "progress_description",
+      "actionplan",
+      "actionplan_description",
+      "feedback",
+      "activity",
+      "activity_description",
+      "worktype",
+      "worktype_description",
+      "type",
+      "type_description",
+      "description"
+    ],
+    "field_types": {
+      "fdt_rcfaid": "integer",
+      "nofdt": "string",
+      "norcfa": "string",
+      "siteid": "string",
+      "orgid": "string",
+      "progress": "string",
+      "progress_description": "string",
+      "actionplan": "string",
+      "actionplan_description": "string",
+      "feedback": "string",
+      "activity": "string",
+      "activity_description": "string",
+      "worktype": "string",
+      "worktype_description": "string",
+      "type": "string",
+      "type_description": "string",
+      "description": "string"
+    },
+    "metadata_fields": [
+      "$schema",
+      "title",
+      "resource",
+      "pk",
+      "properties",
+      "required",
+      "type"
+    ],
+    "query_shape_attempts": [
+      {
+        "name": "prior documented BSR filter",
+        "endpoint": "/oslc/os/IPRCFAFDT?_maxitems=1&oslc.where=siteid=BSR&oslc.select=href",
+        "evidence": "historical MX-006B query",
+        "result": "HTTP 400"
+      },
+      {
+        "name": "exact parent filter",
+        "endpoint": "/oslc/os/IPRCFAFDT?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid=BSR and norcfa=<sanitized-parent-key>",
+        "evidence": "metadata-first MX-016A probe",
+        "result": "HTTP 400"
+      },
+      {
+        "name": "bounded metadata-supported collection",
+        "endpoint": "/oslc/os/IPRCFAFDT?oslc.paging=true&oslc.pageSize=1&oslc.select=fdt_rcfaid,nofdt,norcfa,siteid,orgid,progress,href",
+        "evidence": "metadata-first MX-016A probe",
+        "result": "HTTP 200; one member"
+      }
+    ],
+    "response_cap": false
   },
   "http_diagnostics": {
     "http_status": 400,
     "maximo_error_code": null,
-    "reason": "HTTP 400; sanitized error detail unavailable",
+    "reason": "Exact parent filter returned HTTP 400; unfiltered bounded collection returned HTTP 200.",
     "raw_response_saved": false
   },
   "catalog_source": "seed-fallback"
