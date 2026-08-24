@@ -203,6 +203,27 @@ class AssetAfMappingMart(MartBase):
             "evidence_method IN ('NATIVE_IDENTIFIER', 'GOVERNED_LOOKUP', 'MANUAL_VERIFICATION', 'MIGRATED_VERIFIED')",
             name="ck_asset_af_mapping_evidence",
         ),
+        CheckConstraint(
+            "mapping_status <> 'VERIFIED' OR ("
+            "verified_at IS NOT NULL AND "
+            "NULLIF(trim(coalesce(verified_by, '')), '') IS NOT NULL AND "
+            "(NULLIF(trim(coalesce(verification_note, '')), '') IS NOT NULL OR "
+            "NULLIF(trim(coalesce(evidence_ref, '')), '') IS NOT NULL)"
+            ")",
+            name="ck_asset_af_mapping_verified_provenance",
+        ),
+        CheckConstraint(
+            "mapping_status <> 'PROPOSED' OR (verified_at IS NULL AND verified_by IS NULL)",
+            name="ck_asset_af_mapping_proposed_provenance",
+        ),
+        CheckConstraint(
+            "mapping_status <> 'RETIRED' OR ("
+            "retired_at IS NOT NULL AND "
+            "NULLIF(trim(coalesce(retired_by, '')), '') IS NOT NULL AND "
+            "NULLIF(trim(coalesce(retirement_note, '')), '') IS NOT NULL"
+            ")",
+            name="ck_asset_af_mapping_retired_provenance",
+        ),
         Index(
             "uq_asset_af_mapping_active_exact",
             "canonical_asset_id",
@@ -232,7 +253,12 @@ class AssetAfMappingMart(MartBase):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     verified_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    verified_by: Mapped[str | None] = mapped_column(String(160))
+    verification_note: Mapped[str | None] = mapped_column(Text)
+    evidence_ref: Mapped[str | None] = mapped_column(String(500))
     retired_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    retired_by: Mapped[str | None] = mapped_column(String(160))
+    retirement_note: Mapped[str | None] = mapped_column(Text)
     source_assetnum_snapshot: Mapped[str | None] = mapped_column(String(160))
     source_siteid_snapshot: Mapped[str | None] = mapped_column(String(40))
     source_orgid_snapshot: Mapped[str | None] = mapped_column(String(40))
