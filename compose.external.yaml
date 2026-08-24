@@ -47,6 +47,11 @@ services:
     restart: unless-stopped
     environment:
       DATABASE_URL: postgresql://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
+      # External mode must point at the canonical Mart explicitly. For a
+      # host-published collector DB on Linux, use host.docker.internal:5434.
+      RELIABILITY_MART_DATABASE_URL: "${RELIABILITY_MART_DATABASE_URL:?set in .env.platform for the canonical Reliability Mart}"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       cockpit-init: {condition: service_completed_successfully}
     networks: [platform]

@@ -178,8 +178,12 @@ services:
     build: ./reliability-cockpit
     environment:
       DATABASE_URL: postgresql://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
+      # Canonical Mart is the Maximo collector database in managed topology;
+      # this remains separate from the legacy Cockpit DATABASE_URL.
+      RELIABILITY_MART_DATABASE_URL: "${RELIABILITY_MART_DATABASE_URL:-postgresql://maximo_collector:${MAXIMO_DB_PASSWORD}@maximo-db/maximo_collector}"
     depends_on:
       cockpit-init: {condition: service_completed_successfully}
+      maximo-init: {condition: service_completed_successfully}
 
   cockpit-web:
     build: ./reliability-cockpit/web
