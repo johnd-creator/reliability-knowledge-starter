@@ -389,10 +389,10 @@ AF_ELEMENT_TEMPLATE_IDENTIFIED: YES
 AF_STATIC_IDENTITY_ATTRIBUTE_IDENTIFIED: PARTIAL
 MAXIMO_ASSET_IDENTITY_FIELD_IDENTIFIED: YES
 MAXIMO_LOCATION_TO_AF: PARTIAL
-NATIVE_MAXIMO_AF_MAPPING: NOT_FOUND (bounded evidence only)
+NATIVE_MAXIMO_AF_MAPPING: NOT_FOUND_BOUNDED
 MAPPING_KEY_UNIQUENESS: UNKNOWN
-GOVERNED_MAPPING_REGISTRY_REQUIRED: UNKNOWN
-MAXIMO_TO_AF_MAPPING: NOT_FOUND (bounded evidence only)
+GOVERNED_MAPPING_REGISTRY_REQUIRED: YES
+MAXIMO_TO_AF_MAPPING: NOT_FOUND_BOUNDED
 ASSET_TO_AF_ELEMENT_READY: NO
 ASSET_SIGNAL_MAPPING_READY: NO
 TIME_SERIES_EVIDENCE_READY: YES
@@ -400,11 +400,12 @@ CONDITION_FINDING_READY: NO
 PDM_DATA_FOUNDATION_READY: PARTIAL
 ```
 
-Decision: `CASE D — evidence remains insufficient`. If a further targeted
-probe confirms that no native identifier or governed lookup exists, NADI will
-need an explicit, auditable Maximo Asset ↔ AF Element mapping registry rather
-than a name-based join. That registry is documented as a governance option
-only; it is not implemented here.
+Decision: `CASE C — governed mapping registry required`. The bounded discovery
+did not establish a native Maximo → AF key or governed lookup. This is not a
+claim that a native key can never exist; it is the current architecture
+decision for safe NADI operation. An explicit, auditable Maximo Asset ↔ AF
+Element mapping registry is required rather than a name-based join. A future
+authoritative native key may still be recorded with `NATIVE_IDENTIFIER`.
 
 ### PI-002A Request Audit
 

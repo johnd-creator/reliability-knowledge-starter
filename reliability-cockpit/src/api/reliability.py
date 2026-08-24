@@ -6,11 +6,13 @@ from datetime import datetime
 from typing import Generic, Literal, TypeVar
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sqlalchemy.exc import SQLAlchemyError
 
+from src.domain.asset_af_mapping import AssetAfMapping
 from src.repositories.mart_database import MartDatabase, MartDatabaseConfigError, get_mart_database
 from src.repositories.mart_reader import MartQueryRepository, QueryPage
+from src.services.asset_af_mapping import AssetAfMappingResolution
 from src.services.reliability import ReliabilityQueryService, TimelineEvent
 
 router = APIRouter(prefix="/v1/reliability", tags=["reliability-mart"])
@@ -181,6 +183,32 @@ class RegistryView(BaseModel):
     snapshot_row_count: int | None = None
     snapshot_imported_at: datetime | None = None
     source: str
+
+
+class PiAfReferenceView(BaseModel):
+    pi_source_id: str
+    af_server_ref: str
+    af_database_ref: str
+    af_element_ref: str
+    af_path_snapshot: str | None = None
+    af_element_name_snapshot: str | None = None
+
+
+class AssetAfMappingCandidateView(BaseModel):
+    mapping_id: str
+    mapping_status: Literal["PROPOSED", "VERIFIED", "RETIRED"]
+    mapping_role: Literal["PRIMARY_EQUIPMENT"]
+    evidence_method: Literal["NATIVE_IDENTIFIER", "GOVERNED_LOOKUP", "MANUAL_VERIFICATION", "MIGRATED_VERIFIED"]
+    verified_at: datetime | None = None
+    retired_at: datetime | None = None
+    pi_af: PiAfReferenceView
+
+
+class AssetAfMappingResponse(BaseModel):
+    asset_id: str
+    mapping_state: Literal["UNMAPPED", "MAPPED", "AMBIGUOUS"]
+    pi_af: PiAfReferenceView | None = None
+    candidates: list[AssetAfMappingCandidateView] = Field(default_factory=list)
 
 
 EvidenceClass = Literal["VERIFIED", "DERIVED_SAFE", "BUSINESS_SEMANTICS_REQUIRED", "DATA_NOT_AVAILABLE", "DEFERRED"]
@@ -650,6 +678,35 @@ def _asset(row) -> AssetView:
     return AssetView.model_validate({k: getattr(row, k) for k in AssetView.model_fields})
 
 
+def _mapping_candidate(mapping: AssetAfMapping) -> AssetAfMappingCandidateView:
+    return AssetAfMappingCandidateView(
+        mapping_id=mapping.id,
+        mapping_status=mapping.mapping_status,
+        mapping_role=mapping.mapping_role,
+        evidence_method=mapping.evidence_method,
+        verified_at=mapping.verified_at,
+        retired_at=mapping.retired_at,
+        pi_af=PiAfReferenceView(
+            pi_source_id=mapping.pi_source_id,
+            af_server_ref=mapping.af_server_ref,
+            af_database_ref=mapping.af_database_ref,
+            af_element_ref=mapping.af_element_ref,
+            af_path_snapshot=mapping.af_path_snapshot,
+            af_element_name_snapshot=mapping.af_element_name_snapshot,
+        ),
+    )
+
+
+def _mapping_response(resolution: AssetAfMappingResolution) -> AssetAfMappingResponse:
+    selected = _mapping_candidate(resolution.selected) if resolution.selected else None
+    return AssetAfMappingResponse(
+        asset_id=resolution.asset_id,
+        mapping_state=resolution.mapping_state,
+        pi_af=selected.pi_af if selected else None,
+        candidates=[_mapping_candidate(mapping) for mapping in resolution.candidates],
+    )
+
+
 def _maintenance(row) -> MaintenanceView:
     return MaintenanceView.model_validate({k: getattr(row, k) for k in MaintenanceView.model_fields})
 
@@ -933,6 +990,16 @@ def get_asset(canonical_id: str, service: ReliabilityQueryService = Depends(_ser
     if row is None:
         raise HTTPException(status_code=404, detail="asset not found")
     return _asset(row)
+
+
+@router.get("/assets/{canonical_id}/pi-mapping", response_model=AssetAfMappingResponse)
+def asset_af_mapping(canonical_id: str, service: ReliabilityQueryService = Depends(_service)) -> AssetAfMappingResponse:
+    if service.repository.get_asset(canonical_id) is None:
+        raise HTTPException(status_code=404, detail="asset not found")
+    try:
+        return _mapping_response(service.asset_af_mapping(canonical_id))
+    except SQLAlchemyError as error:
+        raise HTTPException(status_code=503, detail="Asset to PI AF mapping registry is unavailable") from error
 
 
 @router.get("/assets/{canonical_id}/context", response_model=ContextView)
