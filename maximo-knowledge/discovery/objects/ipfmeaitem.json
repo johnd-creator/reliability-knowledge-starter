@@ -3,38 +3,214 @@
   "object_structure": "IPFMEAITEM",
   "resource": "ipfmeaitem",
   "status": "verified",
-  "access": "http_200",
-  "endpoint": "/oslc/os/IPFMEAITEM?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
-  "primary_key": null,
-  "field_candidates": [],
-  "important_fields": [],
-  "field_types": {},
-  "field_roles": {},
-  "role_evidence": [],
+  "access": "metadata_http_200; business_http_200",
+  "endpoint": "/oslc/os/IPFMEAITEM?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=fmea_lineid,parent,fmeanum,fmeaitemcode,siteid,orgid,failuremode,failurecause,problemcode,failurelist,severity,occurence,detection,criticality,riskprioritynumber,rev,revdate,function,description,failuredetectedmethod,href",
+  "primary_key": {
+    "preferred": {
+      "field": "fmea_lineid",
+      "confidence": "CANDIDATE",
+      "reason": "required live-schema item identifier candidate; uniqueness was not tested"
+    },
+    "candidates": [
+      {
+        "field": "fmea_lineid",
+        "confidence": "CANDIDATE",
+        "reason": "required integer in the live JSON Schema and present in one bounded member"
+      },
+      {
+        "field": "fmeaitemcode",
+        "confidence": "CANDIDATE",
+        "reason": "integer item-code field in the live JSON Schema; not observed in the selected member"
+      }
+    ],
+    "excluded": [
+      {
+        "field": "fmeanum",
+        "role": "PARENT_REFERENCE",
+        "reason": "parent FMEA reference is not item identity"
+      },
+      {
+        "field": "parent",
+        "role": "PARENT_REFERENCE",
+        "reason": "relationship/reference candidate is not item identity"
+      },
+      {
+        "field": "siteid",
+        "role": "SCOPE_SITE",
+        "reason": "scope field is not record identity"
+      },
+      {
+        "field": "orgid",
+        "role": "SCOPE_ORGANIZATION",
+        "reason": "scope field is not record identity"
+      },
+      {
+        "field": "revdate",
+        "role": "TIMESTAMP",
+        "reason": "revision date is not record identity"
+      }
+    ]
+  },
+  "field_candidates": [
+    "fmea_lineid",
+    "fmeaitemcode",
+    "fmeanum",
+    "parent",
+    "failuremode",
+    "failurecause",
+    "problemcode",
+    "failurelist",
+    "function",
+    "criticality",
+    "severity",
+    "occurence",
+    "detection",
+    "riskprioritynumber",
+    "rev",
+    "revdate",
+    "siteid",
+    "orgid"
+  ],
+  "important_fields": [
+    "fmea_lineid",
+    "fmeanum",
+    "failuremode",
+    "failurecause",
+    "function",
+    "criticality",
+    "severity",
+    "occurence",
+    "detection",
+    "riskprioritynumber",
+    "siteid",
+    "orgid"
+  ],
+  "field_types": {
+    "note": "string",
+    "parent": "integer",
+    "riskprioritynumber": "integer",
+    "localref": "string",
+    "failurecause": "string",
+    "fmea_lineid": "integer",
+    "problemcode": "string",
+    "criticality": "boolean",
+    "description": "string",
+    "severity_description": "string",
+    "type": "string",
+    "componen": "string",
+    "occurence": "integer",
+    "function": "string",
+    "siteid": "string",
+    "href": "string",
+    "revdate": "string",
+    "severity": "integer",
+    "detection": "integer",
+    "rev": "integer",
+    "fmeaitemcode": "integer",
+    "nexthigerassembly": "string",
+    "failuremode": "string",
+    "functionalassembly": "string",
+    "orgid": "string",
+    "failurelist": "integer",
+    "failuredetectedmethod": "string",
+    "system": "string",
+    "_id": "string",
+    "fmeanum": "string",
+    "occurence_description": "string",
+    "detection_description": "string"
+  },
+  "field_roles": {
+    "fmea_lineid": ["IDENTIFIER_CANDIDATE"],
+    "fmeaitemcode": ["IDENTIFIER_CANDIDATE"],
+    "fmeanum": ["PARENT_REFERENCE"],
+    "parent": ["PARENT_REFERENCE"],
+    "siteid": ["SCOPE_SITE"],
+    "orgid": ["SCOPE_ORGANIZATION"],
+    "revdate": ["TIMESTAMP"],
+    "failuremode": ["BUSINESS_ATTRIBUTE"],
+    "failurecause": ["BUSINESS_ATTRIBUTE"],
+    "function": ["BUSINESS_ATTRIBUTE"],
+    "criticality": ["BUSINESS_ATTRIBUTE"],
+    "severity": ["BUSINESS_ATTRIBUTE"],
+    "occurence": ["BUSINESS_ATTRIBUTE"],
+    "detection": ["BUSINESS_ATTRIBUTE"],
+    "riskprioritynumber": ["BUSINESS_ATTRIBUTE"]
+  },
+  "role_evidence": [
+    {
+      "field": "fmea_lineid",
+      "roles": ["IDENTIFIER_CANDIDATE"],
+      "evidence": "Required integer in live JSON Schema and present in one bounded BSR member; uniqueness was not tested."
+    },
+    {
+      "field": "fmeaitemcode",
+      "roles": ["IDENTIFIER_CANDIDATE"],
+      "evidence": "Integer field in live JSON Schema; not present in the selected bounded member, so it remains a candidate."
+    },
+    {
+      "field": "fmeanum",
+      "roles": ["PARENT_REFERENCE"],
+      "evidence": "Present on the bounded item and matched to one bounded IPFMEA header through the same transient fmeanum."
+    },
+    {
+      "field": "siteid",
+      "roles": ["SCOPE_SITE"],
+      "evidence": "Present in live JSON Schema and the bounded item query was scoped to BSR."
+    },
+    {
+      "field": "orgid",
+      "roles": ["SCOPE_ORGANIZATION"],
+      "evidence": "Present in live JSON Schema and one bounded BSR item matched the IP scope check."
+    },
+    {
+      "field": "revdate",
+      "roles": ["TIMESTAMP"],
+      "evidence": "Field is typed as string in the live JSON Schema and was conservatively classified as a timestamp candidate from its name; lifecycle meaning is unverified."
+    }
+  ],
   "metadata_fields": [
     "_rowstamp",
-    "rdf:about"
+    "rdf:about",
+    "$schema",
+    "title",
+    "type",
+    "required",
+    "properties"
   ],
   "pagination": {
     "total_count": null,
     "next_page": true,
-    "prev_page": false
+    "prev_page": false,
+    "method": "oslc.paging=true + oslc.pageSize=1",
+    "single_record_via": "inline collection member; no detail dereference"
   },
   "sample": {},
-  "use_cases": [],
-  "relationships": [],
+  "use_cases": [
+    "FMEA item-level technical evidence discovery",
+    "bounded parent FMEA linkage through fmeanum",
+    "conservative assessment of failure mode and risk-looking fields"
+  ],
+  "relationships": [
+    "IPFMEAITEM.fmeanum -> IPFMEA.fmeanum (DIRECT_VERIFIED)",
+    "IPFMEAITEM -> IPFMEA -> IPFMEA.assetnum -> Asset (DERIVED_VERIFIED_PATH)"
+  ],
   "notes": [
     "query shape maxitems_select_href hit the response cap",
     "bounded response exposed no business fields or detail link",
     "catalog returned no member names; using documented seed",
-    "catalog selection used explicit MX-006B allowlisted targets"
+    "catalog selection used explicit MX-006B allowlisted targets",
+    "GET /oslc/apimeta/IPFMEAITEM returned HTTP 301; redirect target was not promoted to evidence",
+    "GET /oslc/jsonschemas/IPFMEAITEM returned HTTP 200 with title FMEA_LINE, required fields criticality and fmea_lineid, and the captured field type catalog",
+    "one bounded BSR item exposed namespaced business fields including fmea_lineid, fmeanum, failuremode, criticality, function, riskprioritynumber, siteid, and orgid",
+    "no detail record was dereferenced and no pagination link was followed",
+    "failure-mode, severity, occurrence, detectability, criticality, and risk-priority business semantics remain unverified"
   ],
-  "verified_at": "2026-08-21T04:02:44.590227+00:00",
+  "verified_at": "2026-08-24T04:42:41+00:00",
   "scope": {
-    "field": "siteid",
-    "value": "BSR",
-    "status": "PRIOR_LIVE_QUERY",
-    "evidence": "MX-006R used this BSR-scoped clause and received a bounded response; detail field evidence remains required."
+    "field": "siteid/orgid",
+    "value": "BSR/IP",
+    "status": "VERIFIED",
+    "evidence": "One bounded item request was scoped to siteid=BSR; the returned siteid/orgid fields matched BSR/IP without persisting their raw record values."
   },
   "detail_dereference": {
     "attempted": false,
@@ -42,6 +218,31 @@
     "detail_records": 0,
     "maximum_dereference_depth": 1,
     "pagination_followed": false,
+    "fields": [
+      "fmea_lineid",
+      "fmeanum",
+      "failuremode",
+      "riskprioritynumber",
+      "criticality",
+      "function",
+      "siteid",
+      "orgid"
+    ],
+    "field_types": {
+      "fmea_lineid": "integer",
+      "fmeanum": "string",
+      "failuremode": "string",
+      "riskprioritynumber": "integer",
+      "criticality": "boolean",
+      "function": "string",
+      "siteid": "string",
+      "orgid": "string"
+    },
+    "metadata_fields": [
+      "_rowstamp",
+      "rdf:about"
+    ],
+    "status": "INLINE_BUSINESS_RECORD",
     "query_shape_attempts": [
       {
         "name": "maxitems_select_href",
@@ -54,10 +255,15 @@
         "endpoint": "/oslc/os/IPFMEAITEM?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
         "evidence": "maximo-collector verified oslc.paging/oslc.pageSize shape",
         "result": "HTTP 200"
+      },
+      {
+        "name": "bounded_minimal_business_fields",
+        "endpoint": "/oslc/os/IPFMEAITEM?oslc.paging=true&oslc.pageSize=1&oslc.where=siteid%3D%22BSR%22&oslc.select=<allowlisted-fields>",
+        "evidence": "metadata-first MX-014A probe using only identity, parent, scope, and risk-looking fields",
+        "result": "HTTP 200; inline fields observed"
       }
     ],
-    "response_cap": true,
-    "status": "UNKNOWN"
+    "response_cap": true
   },
   "http_diagnostics": {},
   "catalog_source": "seed-fallback"
