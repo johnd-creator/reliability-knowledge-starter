@@ -18,11 +18,16 @@
     "haschildren -> work order task hierarchy (verified field)"
   ],
   "notes": [
-    "Data scoped to site BSR; always filter oslc.where=siteid=\"BSR\" in the downstream app."
+    "Data scoped to site BSR; always filter oslc.where=siteid=\"BSR\" in the downstream app.",
+    "GET /oslc/apimeta/MXWODETAIL returned HTTP 200; live JSON Schema title is WORKORDER.",
+    "Live JSON Schema exposes direct failure/date candidates failurecode, problemcode, plncausecode, faildate, failureinformation, reportdate, actstart, and actfinish, plus instance-specific failure-looking fields.",
+    "Three exact-WO BSR reads returned HTTP 200 with direct failurecode, assetnum, worktype, woclass, status, task/follow-up indicators, and namespaced source fields; no failure collection reference was returned.",
+    "The selected bounded members did not establish a Failure Code master relationship, failure hierarchy, cause/remedy semantics, or failure-event timestamp rule.",
+    "No raw Work Order values, descriptions, or person fields were persisted."
   ],
-  "verified_at": "2026-08-12T11:26:12Z",
+  "verified_at": "2026-08-24T05:25:33Z",
   "status": "verified",
-  "access": "http_200",
+  "access": "metadata_http_200; business_http_200",
   "important_fields": [
     "apptrequired",
     "plusgqualitycritical",
@@ -189,7 +194,116 @@
     "estintlabcost",
     "plusgsafetycrit",
     "haschildren",
-    "woeq10"
+    "woeq10",
+    "failurecode",
+    "problemcode",
+    "plncausecode",
+    "faildate",
+    "failureinformation",
+    "failureinformation_description",
+    "plusgfailmech",
+    "plusgfailmechrem",
+    "plusgfailfix",
+    "plusgproblemstmt",
+    "plusgfailsubdiv",
+    "plusgfailsubdivrem",
+    "plusghardfailmode",
+    "plusghardfailmode_description"
+  ],
+  "field_types": {
+    "wonum": "string",
+    "workorderid": "integer",
+    "assetnum": "string",
+    "siteid": "string",
+    "orgid": "string",
+    "failurecode": "string",
+    "problemcode": "string",
+    "plncausecode": "string",
+    "faildate": "string",
+    "failureinformation": "string",
+    "failureinformation_description": "string",
+    "reportdate": "string",
+    "actstart": "string",
+    "actfinish": "string",
+    "status": "string",
+    "worktype": "string",
+    "woclass": "string",
+    "istask": "boolean",
+    "pctaskid": "string",
+    "haschildren": "boolean",
+    "hasfollowupwork": "boolean",
+    "origrecordclass": "string",
+    "origrecordid": "string",
+    "plusgfailmech": "integer",
+    "plusgfailmechrem": "string",
+    "plusgfailfix": "boolean",
+    "plusgproblemstmt": "string",
+    "plusgfailsubdiv": "string",
+    "plusgfailsubdivrem": "string",
+    "plusghardfailmode": "string",
+    "plusghardfailmode_description": "string"
+  },
+  "field_roles": {
+    "wonum": ["IDENTIFIER_CANDIDATE"],
+    "workorderid": ["IDENTIFIER_CANDIDATE"],
+    "assetnum": ["ASSET_REFERENCE"],
+    "siteid": ["SCOPE_SITE"],
+    "orgid": ["SCOPE_ORGANIZATION"],
+    "failurecode": ["FAILURE_REFERENCE"],
+    "problemcode": ["BUSINESS_ATTRIBUTE"],
+    "plncausecode": ["BUSINESS_ATTRIBUTE"],
+    "faildate": ["TIMESTAMP"],
+    "reportdate": ["TIMESTAMP"],
+    "actstart": ["TIMESTAMP"],
+    "actfinish": ["TIMESTAMP"],
+    "status": ["STATUS"],
+    "worktype": ["BUSINESS_ATTRIBUTE"],
+    "woclass": ["BUSINESS_ATTRIBUTE"],
+    "pctaskid": ["PARENT_REFERENCE"],
+    "haschildren": ["BUSINESS_ATTRIBUTE"],
+    "hasfollowupwork": ["BUSINESS_ATTRIBUTE"],
+    "origrecordclass": ["BUSINESS_ATTRIBUTE"],
+    "origrecordid": ["BUSINESS_ATTRIBUTE"],
+    "plusgfailmech": ["BUSINESS_ATTRIBUTE"],
+    "plusgfailmechrem": ["BUSINESS_ATTRIBUTE"],
+    "plusgfailfix": ["BUSINESS_ATTRIBUTE"],
+    "plusgproblemstmt": ["BUSINESS_ATTRIBUTE"],
+    "plusgfailsubdiv": ["BUSINESS_ATTRIBUTE"],
+    "plusgfailsubdivrem": ["BUSINESS_ATTRIBUTE"],
+    "plusghardfailmode": ["BUSINESS_ATTRIBUTE"],
+    "plusghardfailmode_description": ["BUSINESS_ATTRIBUTE"]
+  },
+  "role_evidence": [
+    {
+      "field": "failurecode",
+      "roles": ["FAILURE_REFERENCE"],
+      "evidence": "Field is present in the live MXWODETAIL JSON Schema and in all three bounded exact-WO members."
+    },
+    {
+      "field": "problemcode",
+      "roles": ["BUSINESS_ATTRIBUTE"],
+      "evidence": "Field is present in the live schema and in two of three bounded exact-WO members; its relationship to a Failure Code master is unverified."
+    },
+    {
+      "field": "plncausecode",
+      "roles": ["BUSINESS_ATTRIBUTE"],
+      "evidence": "Field is present in the live schema but was not present in the selected bounded members; cause semantics are unverified."
+    },
+    {
+      "field": "faildate",
+      "roles": ["TIMESTAMP"],
+      "evidence": "Field is present in the live schema and in two of three bounded exact-WO members; failure-event meaning is unverified."
+    },
+    {
+      "field": "plusgfailfix",
+      "roles": ["BUSINESS_ATTRIBUTE"],
+      "evidence": "Boolean field is present in the live schema and selected in all three bounded members; label and rule are unverified."
+    },
+    {
+      "field": "pctaskid",
+      "roles": ["PARENT_REFERENCE"],
+      "evidence": "Field is present in the live schema and in bounded members where returned; parent/task semantics remain source semantics."
+    }
   ],
   "field_candidates": [
     "pctaskid",

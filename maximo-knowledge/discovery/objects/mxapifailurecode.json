@@ -3,40 +3,143 @@
   "object_structure": "MXAPIFAILURECODE",
   "resource": "mxapifailurecode",
   "status": "documented",
-  "access": "http_400",
+  "access": "metadata_http_200; business_http_400",
   "endpoint": "/oslc/os/MXAPIFAILURECODE?_maxitems=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
-  "primary_key": null,
-  "field_candidates": [],
-  "important_fields": [],
-  "field_types": {},
-  "metadata_fields": [],
+  "primary_key": {
+    "preferred": {
+      "field": "failurecodeid",
+      "confidence": "CANDIDATE",
+      "reason": "required integer identity field in the live JSON Schema; business collection read remains HTTP 400"
+    },
+    "candidates": [
+      {
+        "field": "failurecodeid",
+        "confidence": "CANDIDATE",
+        "reason": "required integer field in the live JSON Schema"
+      },
+      {
+        "field": "failurecode",
+        "confidence": "CANDIDATE",
+        "reason": "required string code field in the live JSON Schema"
+      }
+    ],
+    "excluded": [
+      {
+        "field": "orgid",
+        "role": "SCOPE_ORGANIZATION",
+        "reason": "scope field is not record identity"
+      }
+    ]
+  },
+  "field_candidates": [
+    "failurecodeid",
+    "failurecode"
+  ],
+  "important_fields": [
+    "failurecode",
+    "failurecodeid",
+    "description",
+    "description_longdescription",
+    "orgid"
+  ],
+  "field_types": {
+    "failurecode": "string",
+    "failurecodeid": "integer",
+    "description": "string",
+    "description_longdescription": "string",
+    "orgid": "string",
+    "href": "string"
+  },
+  "field_roles": {
+    "failurecodeid": ["IDENTIFIER_CANDIDATE"],
+    "failurecode": ["FAILURE_REFERENCE"],
+    "description": ["BUSINESS_ATTRIBUTE"],
+    "description_longdescription": ["BUSINESS_ATTRIBUTE"],
+    "orgid": ["SCOPE_ORGANIZATION"]
+  },
+  "role_evidence": [
+    {
+      "field": "failurecodeid",
+      "roles": ["IDENTIFIER_CANDIDATE"],
+      "evidence": "Required integer field in live JSON Schema; uniqueness and business collection access were not verified."
+    },
+    {
+      "field": "failurecode",
+      "roles": ["FAILURE_REFERENCE"],
+      "evidence": "Required string code field in live JSON Schema; no live business member was returned."
+    },
+    {
+      "field": "orgid",
+      "roles": ["SCOPE_ORGANIZATION"],
+      "evidence": "Required organization field in live JSON Schema; bounded orgid=IP collection query returned HTTP 400."
+    }
+  ],
+  "metadata_fields": [
+    "$schema",
+    "title",
+    "resource",
+    "pk",
+    "properties",
+    "required",
+    "type",
+    "description"
+  ],
   "pagination": {},
   "sample": null,
-  "use_cases": [],
+  "use_cases": [
+    "failure-code master metadata discovery",
+    "failure-classification relationship discovery"
+  ],
   "relationships": [],
   "notes": [
     "describe GET returned HTTP 400",
     "catalog GET returned HTTP 400; using documented seed",
-    "catalog selection used explicit MX-006B allowlisted targets"
+    "catalog selection used explicit MX-006B allowlisted targets",
+    "GET /oslc/apimeta/MXAPIFAILURECODE returned HTTP 200; osName is MXAPIFAILURECODE and title is Maximo API's Failure Codes.",
+    "GET /oslc/jsonschemas/MXAPIFAILURECODE returned HTTP 200 with title FAILURECODE and required fields failurecode, failurecodeid, and orgid.",
+    "The live schema exposes no parent, child, hierarchy, site, category, or type field.",
+    "A bounded orgid=IP collection request returned HTTP 400; a metadata-advertised All query with pageSize=1 and minimal select also returned HTTP 400.",
+    "No live Failure Code member or Work Order-to-Failure Code relationship was dereferenced."
   ],
   "verified_at": null,
   "scope": {
-    "field": "siteid",
-    "value": "BSR",
-    "status": "PRIOR_LIVE_QUERY",
-    "evidence": "MX-006R used this BSR-scoped clause and received a bounded response; detail field evidence remains required."
+    "field": "orgid",
+    "value": "IP",
+    "status": "UNKNOWN",
+    "evidence": "The live schema requires orgid, but the bounded orgid=IP collection query returned HTTP 400 and no member scope value was verified."
   },
   "detail_dereference": {
     "attempted": false,
     "collection_records": 0,
     "detail_records": 0,
     "maximum_dereference_depth": 1,
-    "pagination_followed": false
+    "pagination_followed": false,
+    "status": "UNKNOWN",
+    "query_shape_attempts": [
+      {
+        "name": "prior_bsr_select_href",
+        "endpoint": "/oslc/os/MXAPIFAILURECODE?_maxitems=1&oslc.where=siteid%3D%22BSR%22&oslc.select=href",
+        "evidence": "prior MX-006R bounded query",
+        "result": "HTTP 400"
+      },
+      {
+        "name": "bounded_org_scope",
+        "endpoint": "/oslc/os/MXAPIFAILURECODE?oslc.paging=true&oslc.pageSize=1&oslc.where=orgid%3D%22IP%22&oslc.select=failurecode,failurecodeid,description,orgid,href",
+        "evidence": "live JSON Schema exposes orgid as required; metadata-first bounded probe",
+        "result": "HTTP 400"
+      },
+      {
+        "name": "bounded_all_page",
+        "endpoint": "/oslc/os/MXAPIFAILURECODE?oslc.paging=true&oslc.pageSize=1&oslc.select=failurecode,failurecodeid,description,orgid,href",
+        "evidence": "apimeta queryCapability=All; no scope filter available in metadata",
+        "result": "HTTP 400"
+      }
+    ]
   },
   "http_diagnostics": {
     "http_status": 400,
     "maximo_error_code": null,
-    "reason": "HTTP 400; sanitized error detail unavailable",
+    "reason": "HTTP 400 on bounded Failure Code collection; sanitized error detail unavailable",
     "raw_response_saved": false
   },
   "catalog_source": "seed-fallback"
