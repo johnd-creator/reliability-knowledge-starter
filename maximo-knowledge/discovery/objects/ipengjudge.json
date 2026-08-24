@@ -1,0 +1,236 @@
+{
+  "system": "maximo",
+  "object_structure": "IPENGJUDGE",
+  "resource": "ipengjudge",
+  "status": "verified",
+  "access": "metadata_http_200; business_collection_timeout",
+  "endpoint": "/oslc/os/IPENGJUDGE",
+  "primary_key": {
+    "preferred": {
+      "field": "engjudgeid",
+      "confidence": "CANDIDATE",
+      "reason": "required by the live ENGJUDGE JSON Schema; uniqueness was not verified"
+    },
+    "candidates": [
+      {
+        "field": "engjudgeid",
+        "confidence": "CANDIDATE",
+        "reason": "required by the live ENGJUDGE JSON Schema"
+      }
+    ],
+    "excluded": [
+      {
+        "field": "assetnum",
+        "role": "ASSET_REFERENCE",
+        "reason": "schema field may identify an Asset but relationship was not verified from a business record"
+      },
+      {
+        "field": "location",
+        "role": "LOCATION_REFERENCE",
+        "reason": "schema field may identify a Location but relationship was not verified from a business record"
+      },
+      {
+        "field": "siteid",
+        "role": "SCOPE_SITE",
+        "reason": "scope field presence does not prove BSR applicability"
+      },
+      {
+        "field": "orgid",
+        "role": "SCOPE_ORGANIZATION",
+        "reason": "scope field presence does not prove IP applicability"
+      }
+    ]
+  },
+  "field_candidates": [
+    "engjudgeid"
+  ],
+  "important_fields": [
+    "keterangan",
+    "localref",
+    "createddate",
+    "description",
+    "engweek_description",
+    "description2",
+    "description3",
+    "_rowstamp",
+    "assetnum",
+    "wellness",
+    "est_date",
+    "engmonth",
+    "siteid",
+    "href",
+    "engyear_description",
+    "measurepointid",
+    "_imglibref",
+    "wellness_description",
+    "engdate",
+    "orgid",
+    "engjudgeid",
+    "metername",
+    "engyear",
+    "location",
+    "_id",
+    "engweek"
+  ],
+  "field_types": {
+    "keterangan": "string",
+    "localref": "string",
+    "createddate": "string",
+    "description": "string",
+    "engweek_description": "string",
+    "description2": "string",
+    "description3": "string",
+    "_rowstamp": "string",
+    "assetnum": "string",
+    "wellness": "string",
+    "est_date": "string",
+    "engmonth": "string",
+    "siteid": "string",
+    "href": "string",
+    "engyear_description": "string",
+    "measurepointid": "integer",
+    "_imglibref": "string",
+    "wellness_description": "string",
+    "engdate": "string",
+    "orgid": "string",
+    "engjudgeid": "integer",
+    "metername": "string",
+    "engyear": "string",
+    "location": "string",
+    "_id": "string",
+    "engweek": "string"
+  },
+  "metadata_fields": [
+    "$schema",
+    "$id",
+    "title",
+    "type",
+    "required",
+    "properties"
+  ],
+  "pagination": {
+    "method": "oslc.paging + oslc.pageSize documented in OAS; collection not verified",
+    "single_record_via": "not fetched; metadata schema only"
+  },
+  "use_cases": [
+    "engineering-judgement source discovery"
+  ],
+  "relationships": [
+    "asset: assetnum (FIELD PRESENT; relationship UNKNOWN)",
+    "location: location (FIELD PRESENT; relationship UNKNOWN)",
+    "site: siteid (FIELD PRESENT; BSR applicability UNKNOWN)",
+    "organization: orgid (FIELD PRESENT; IP applicability UNKNOWN)",
+    "timestamp candidate: engdate, est_date, createddate (semantic date meaning UNKNOWN)"
+  ],
+  "scope": {
+    "field": "siteid,orgid",
+    "value": "not observed",
+    "status": "UNKNOWN",
+    "evidence": "metadata-only; no business record was retrieved"
+  },
+  "detail_dereference": {
+    "attempted": false,
+    "collection_records": 0,
+    "detail_records": 0,
+    "maximum_dereference_depth": 1,
+    "pagination_followed": false,
+    "status": "UNKNOWN"
+  },
+  "notes": [
+    "Live apimeta metadata identified osName IPENGJUDGE, title IP LOADER ENGINEERING JUDGEMENT (LOADER), useWith INTEGRATION, and defaultPageSize 100.",
+    "Metadata endpoints /oslc/apimeta/IPENGJUDGE and /oslc/jsonschemas/IPENGJUDGE both returned HTTP 200.",
+    "Live ENGJUDGE JSON Schema returned HTTP 200 and exposed the listed field names and types; no raw payload or business value was persisted.",
+    "The wellness and wellness_description field names are technical source evidence only. Their relationship to report column Last Wellness and their business semantics remain UNKNOWN.",
+    "assetnum, location, siteid, and orgid are field-presence evidence only; Asset identity and BSR/IP applicability require a business record or explicit relationship metadata.",
+    "The IPENGJUDGE collection GET remains a TIMEOUT from MX-013A; no blind retry was made in this follow-up.",
+    "No ACR, MPI, current-condition, judgement-date, or program-recommendation field was present in the live ENGJUDGE schema."
+  ],
+  "data_scope": "metadata-only; no business records persisted",
+  "verified_at": "2026-08-24T04:25:06+00:00",
+  "field_roles": {
+    "engjudgeid": [
+      "IDENTIFIER_CANDIDATE"
+    ],
+    "assetnum": [
+      "ASSET_REFERENCE"
+    ],
+    "location": [
+      "LOCATION_REFERENCE"
+    ],
+    "siteid": [
+      "SCOPE_SITE"
+    ],
+    "orgid": [
+      "SCOPE_ORGANIZATION"
+    ],
+    "engdate": [
+      "TIMESTAMP"
+    ],
+    "est_date": [
+      "TIMESTAMP"
+    ],
+    "wellness": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "wellness_description": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "description": [
+      "BUSINESS_ATTRIBUTE"
+    ],
+    "keterangan": [
+      "BUSINESS_ATTRIBUTE"
+    ]
+  },
+  "role_evidence": [
+    {
+      "field": "engjudgeid",
+      "roles": [
+        "IDENTIFIER_CANDIDATE"
+      ],
+      "evidence": "required field in live ENGJUDGE JSON Schema; uniqueness not tested"
+    },
+    {
+      "field": "assetnum",
+      "roles": [
+        "ASSET_REFERENCE"
+      ],
+      "evidence": "field name and string type in live schema; relationship not tested"
+    },
+    {
+      "field": "wellness",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "field name and string type in live schema; report ownership and semantics not tested"
+    },
+    {
+      "field": "wellness_description",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "field name and string type in live schema; semantic meaning not tested"
+    },
+    {
+      "field": "siteid",
+      "roles": [
+        "SCOPE_SITE"
+      ],
+      "evidence": "field name and string type in live schema; BSR applicability not tested"
+    },
+    {
+      "field": "orgid",
+      "roles": [
+        "SCOPE_ORGANIZATION"
+      ],
+      "evidence": "field name and string type in live schema; IP applicability not tested"
+    },
+    {
+      "field": "engdate",
+      "roles": [
+        "TIMESTAMP"
+      ],
+      "evidence": "date-like field name and string type in live schema; date format/meaning not tested"
+    }
+  ]
+}

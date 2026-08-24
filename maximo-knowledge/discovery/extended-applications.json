@@ -785,22 +785,51 @@
       "application": "Reliability",
       "object_structure": "IPENGJUDGE",
       "api_resource": "/oslc/os/ipengjudge",
-      "object": "UNKNOWN",
-      "primary_key": "UNKNOWN",
+      "object": "ENGJUDGE (metadata schema verified; business record unknown)",
+      "primary_key": "engjudgeid (schema-required; uniqueness UNKNOWN)",
       "status_field": "UNKNOWN",
       "relationships": {
-        "asset": "UNKNOWN",
-        "location": "UNKNOWN",
-        "site": "UNKNOWN",
-        "organization": "UNKNOWN",
+        "asset": "assetnum field present; relationship UNKNOWN",
+        "location": "location field present; relationship UNKNOWN",
+        "site": "siteid field present; BSR applicability UNKNOWN",
+        "organization": "orgid field present; IP applicability UNKNOWN",
         "workorder": "UNKNOWN",
         "fmea_rcfa": "UNKNOWN"
       },
-      "important_fields": [],
+      "important_fields": [
+        "engjudgeid",
+        "assetnum",
+        "wellness",
+        "wellness_description",
+        "engdate",
+        "est_date",
+        "siteid",
+        "orgid",
+        "location",
+        "description",
+        "keterangan",
+        "measurepointid",
+        "metername",
+        "engweek",
+        "engmonth",
+        "engyear"
+      ],
       "nadi_relevance": "POTENTIAL",
       "confidence": "PARTIAL",
+      "metadata_evidence": {
+        "apimeta": "/oslc/apimeta/IPENGJUDGE HTTP 200",
+        "json_schema": "/oslc/jsonschemas/IPENGJUDGE HTTP 200",
+        "schema_title": "ENGJUDGE",
+        "schema_required": [
+          "engjudgeid"
+        ],
+        "business_collection": "TIMEOUT"
+      },
       "notes": [
-        "Engineering judgement is a candidate reliability input; it is not evidence of an Engineering Service Sheet resource."
+        "Live metadata identifies the object structure as IP LOADER ENGINEERING JUDGEMENT (LOADER) with schema title ENGJUDGE and useWith INTEGRATION.",
+        "The live schema exposes wellness and wellness_description as string fields plus assetnum, engdate, siteid, orgid, and location; report ownership and business semantics remain UNKNOWN.",
+        "Engineering judgement is a candidate reliability input; it is not evidence of an Engineering Service Sheet resource or of the report column Last Wellness.",
+        "No raw business values were persisted; the bounded business collection request remains TIMEOUT."
       ]
     },
     {
