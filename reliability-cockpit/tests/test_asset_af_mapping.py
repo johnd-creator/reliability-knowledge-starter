@@ -58,7 +58,11 @@ def _mapping(status: str, element_ref: str = "AF_ELEMENT_TEST_001") -> AssetAfMa
         created_at=NOW,
         updated_at=NOW,
         verified_at=NOW if status == "VERIFIED" else None,
+        verified_by="foundation-test-operator" if status == "VERIFIED" else None,
+        verification_note="Synthetic foundation verification" if status == "VERIFIED" else None,
         retired_at=NOW if status == "RETIRED" else None,
+        retired_by="foundation-test-operator" if status == "RETIRED" else None,
+        retirement_note="Synthetic foundation retirement" if status == "RETIRED" else None,
         source_assetnum_snapshot="SYNTHETIC-ASSET-001",
         source_siteid_snapshot="BSR",
         source_orgid_snapshot="IP",
@@ -147,6 +151,9 @@ class AssetAfMappingRegistryTest(unittest.TestCase):
         self.assertEqual(response.mapping_state, "MAPPED")
         self.assertEqual(response.pi_af.af_server_ref, "AF_SERVER_TEST")
         self.assertEqual(response.pi_af.af_element_ref, "AF_ELEMENT_TEST_001")
+        self.assertEqual(response.candidates[0].evidence_method, "MANUAL_VERIFICATION")
+        self.assertEqual(response.candidates[0].verified_at, NOW)
+        self.assertNotIn("verification_note", response.candidates[0].model_fields_set)
 
     def test_registry_has_no_credential_or_live_value_fields(self):
         names = set(AssetAfMappingMart.__table__.columns.keys())

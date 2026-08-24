@@ -1,0 +1,2 @@
+canonical_asset_id,pi_source_id,af_server_ref,af_database_ref,af_element_ref,mapping_role,evidence_method,evidence_ref,verification_note,source_assetnum_snapshot,source_siteid_snapshot,source_orgid_snapshot,af_path_snapshot,af_element_name_snapshot
+NADI-ASSET-001,CENTRAL_PI,AF_SERVER_TEST,AF_DATABASE_TEST,AF_ELEMENT_TEST_001,PRIMARY_EQUIPMENT,MANUAL_VERIFICATION,synthetic-evidence-ref,Synthetic candidate only,NADI-ASSET-001,BSR,IP,Test\Elements\NADI-ASSET-001,Synthetic test element

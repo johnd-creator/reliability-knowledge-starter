@@ -37,7 +37,12 @@ class AssetAfMapping:
     created_at: datetime
     updated_at: datetime
     verified_at: datetime | None = None
+    verified_by: str | None = None
+    verification_note: str | None = None
+    evidence_ref: str | None = None
     retired_at: datetime | None = None
+    retired_by: str | None = None
+    retirement_note: str | None = None
     source_assetnum_snapshot: str | None = None
     source_siteid_snapshot: str | None = None
     source_orgid_snapshot: str | None = None
@@ -50,3 +55,6 @@ MAPPING_EVIDENCE_METHODS = frozenset(
     {"NATIVE_IDENTIFIER", "GOVERNED_LOOKUP", "MANUAL_VERIFICATION", "MIGRATED_VERIFIED"}
 )
 MAPPING_ROLES = frozenset({"PRIMARY_EQUIPMENT"})
+# Administrative input is allowlisted to the governed PI source alias already
+# used by the foundation's synthetic fixtures. This is not a live PI lookup.
+SUPPORTED_PI_SOURCE_IDS = frozenset({"CENTRAL_PI"})

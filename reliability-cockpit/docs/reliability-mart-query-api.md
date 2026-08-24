@@ -159,6 +159,40 @@ evidence fields required by this governed relation, so the registry remains a
 Mart-internal cross-source relation until a future contract task establishes a
 vendor-neutral extension.
 
+## Controlled mapping administration
+
+The internal workflow is documented in
+[`asset-af-mapping-admin.md`](./asset-af-mapping-admin.md). It is deliberately
+separate from this public read-only API:
+
+```text
+controlled CSV
+     ↓
+  DRY RUN
+     ↓
+ validation
+     ↓
+ PROPOSED
+     ↓
+human verification
+     ↓
+ VERIFIED
+     ↓
+usable mapping
+```
+
+`cockpit mapping import --file <csv> --dry-run` parses and validates a bounded
+candidate batch without database writes. The same command without `--dry-run`
+persists the complete batch atomically as `PROPOSED`; it never accepts a
+status column and never creates a `VERIFIED` row. Verification and retirement
+are separate internal commands requiring an explicit human actor and evidence
+or reason. No command performs a PI request or a fuzzy/name/tag match.
+
+The public `GET /v1/reliability/assets/{canonical_id}/pi-mapping` route remains
+the only mapping HTTP route. It exposes safe evidence method and verification
+timestamp fields, while verification notes, evidence references, and actor
+identities remain administrative fields.
+
 ## Legacy coexistence and handoff
 
 Existing `/equipment`, `/work-orders`, `/kpis/...`, `/sync/status`, and

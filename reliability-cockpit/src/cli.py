@@ -7,20 +7,25 @@ The Cockpit reads only from local collector APIs. Commands:
   kpi             - compute + persist reliability KPIs from synced work orders
   run             - continuously sync the collector and refresh KPIs
   serve           - start the FastAPI app
+  mapping         - internal governed Asset to PI AF administration
 """
 
 from __future__ import annotations
 
 import argparse
+import json
 import logging
 import signal
 import sys
 import threading
 from datetime import date, timedelta
+from pathlib import Path
 
 from src.config import CollectorConfig, load_env
+from src.repositories.asset_af_mapping_store import AssetAfMappingCommandStore
 from src.repositories.database import get_database
 from src.repositories.store import CockpitStore
+from src.services.asset_af_mapping_admin import AssetAfMappingAdminService
 from src.services.kpi import KpiPeriod, KpiService
 from src.services.sync import SyncService
 
@@ -115,6 +120,65 @@ def cmd_kpi(args: argparse.Namespace) -> int:
     return 0
 
 
+def _mapping_command_store() -> AssetAfMappingCommandStore:
+    return AssetAfMappingCommandStore.from_environment()
+
+
+def cmd_mapping_import(args: argparse.Namespace) -> int:
+    store = _mapping_command_store()
+    try:
+        result = AssetAfMappingAdminService(store).import_csv(
+            Path(args.file),
+            dry_run=args.dry_run,
+        )
+        print(json.dumps(result.as_dict(), sort_keys=True))
+        return 0 if result.rejected == 0 else 2
+    finally:
+        store.close()
+
+
+def cmd_mapping_verify(args: argparse.Namespace) -> int:
+    store = _mapping_command_store()
+    try:
+        mapping = store.verify(
+            args.mapping_id,
+            verified_by=args.verified_by,
+            verification_note=args.verification_note,
+            evidence_ref=args.evidence_ref,
+        )
+        print(
+            json.dumps(
+                {
+                    "mapping_id": mapping.id,
+                    "status": mapping.mapping_status,
+                    "verified_at": mapping.verified_at.isoformat() if mapping.verified_at else None,
+                    "verified_by": mapping.verified_by,
+                },
+                sort_keys=True,
+            )
+        )
+        return 0
+    finally:
+        store.close()
+
+
+def cmd_mapping_retire(args: argparse.Namespace) -> int:
+    store = _mapping_command_store()
+    try:
+        retired = store.retire(
+            args.mapping_id,
+            retired_by=args.retired_by,
+            retirement_note=args.reason,
+        )
+        if not retired:
+            print(json.dumps({"mapping_id": args.mapping_id, "status": "NOT_FOUND_OR_ALREADY_RETIRED"}))
+            return 1
+        print(json.dumps({"mapping_id": args.mapping_id, "status": "RETIRED"}, sort_keys=True))
+        return 0
+    finally:
+        store.close()
+
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(prog="cockpit", description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -149,6 +213,36 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     serve.add_argument("--host", default="127.0.0.1")
     serve.add_argument("--port", type=int, default=8000)
     serve.set_defaults(func=cmd_serve)
+
+    mapping = sub.add_parser("mapping", help="internal governed Asset to PI AF administration")
+    mapping_sub = mapping.add_subparsers(dest="mapping_command", required=True)
+
+    mapping_import = mapping_sub.add_parser(
+        "import",
+        help="validate and atomically import CSV rows as PROPOSED mappings",
+    )
+    mapping_import.add_argument("--file", required=True, help="controlled CSV proposal file")
+    mapping_import.add_argument("--dry-run", action="store_true", help="validate without database writes")
+    mapping_import.set_defaults(func=cmd_mapping_import)
+
+    mapping_verify = mapping_sub.add_parser(
+        "verify",
+        help="explicitly verify one PROPOSED mapping with human evidence",
+    )
+    mapping_verify.add_argument("--mapping-id", required=True)
+    mapping_verify.add_argument("--verified-by", required=True)
+    mapping_verify.add_argument("--verification-note")
+    mapping_verify.add_argument("--evidence-ref")
+    mapping_verify.set_defaults(func=cmd_mapping_verify)
+
+    mapping_retire = mapping_sub.add_parser(
+        "retire",
+        help="retire one mapping with explicit operator reason",
+    )
+    mapping_retire.add_argument("--mapping-id", required=True)
+    mapping_retire.add_argument("--retired-by", required=True)
+    mapping_retire.add_argument("--reason", required=True)
+    mapping_retire.set_defaults(func=cmd_mapping_retire)
 
     parser.set_defaults(func=cmd_init_db)
     parser.set_defaults(command="init-db")
