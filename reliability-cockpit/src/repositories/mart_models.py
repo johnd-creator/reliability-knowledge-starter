@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from sqlalchemy import DateTime, Float, Integer, JSON, String, Text
+from sqlalchemy import CheckConstraint, DateTime, Float, ForeignKey, Index, Integer, JSON, String, Text, text
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
@@ -184,3 +184,57 @@ class ReliabilityAssetRegistryMart(MartBase):
     snapshot_sha256: Mapped[str] = mapped_column(String(64), nullable=False)
     snapshot_row_count: Mapped[int] = mapped_column(Integer, nullable=False)
     snapshot_imported_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+
+class AssetAfMappingMart(MartBase):
+    """NADI-owned, governed Maximo Asset to PI AF identity relation."""
+
+    __tablename__ = "asset_af_mapping"
+    __table_args__ = (
+        CheckConstraint(
+            "mapping_status IN ('PROPOSED', 'VERIFIED', 'RETIRED')",
+            name="ck_asset_af_mapping_status",
+        ),
+        CheckConstraint(
+            "mapping_role = 'PRIMARY_EQUIPMENT'",
+            name="ck_asset_af_mapping_role",
+        ),
+        CheckConstraint(
+            "evidence_method IN ('NATIVE_IDENTIFIER', 'GOVERNED_LOOKUP', 'MANUAL_VERIFICATION', 'MIGRATED_VERIFIED')",
+            name="ck_asset_af_mapping_evidence",
+        ),
+        Index(
+            "uq_asset_af_mapping_active_exact",
+            "canonical_asset_id",
+            "af_element_ref",
+            "mapping_role",
+            unique=True,
+            postgresql_where=text("mapping_status IN ('PROPOSED', 'VERIFIED')"),
+            sqlite_where=text("mapping_status IN ('PROPOSED', 'VERIFIED')"),
+        ),
+        Index("ix_asset_af_mapping_asset_status", "canonical_asset_id", "mapping_status"),
+        Index("ix_asset_af_mapping_af_element", "af_element_ref"),
+    )
+
+    id: Mapped[str] = mapped_column(String(200), primary_key=True)
+    canonical_asset_id: Mapped[str] = mapped_column(
+        String(200),
+        ForeignKey("asset_master.canonical_id", ondelete="RESTRICT"),
+        nullable=False,
+    )
+    pi_source_id: Mapped[str] = mapped_column(String(80), nullable=False)
+    af_server_ref: Mapped[str] = mapped_column(String(200), nullable=False)
+    af_database_ref: Mapped[str] = mapped_column(String(200), nullable=False)
+    af_element_ref: Mapped[str] = mapped_column(String(200), nullable=False)
+    mapping_role: Mapped[str] = mapped_column(String(40), nullable=False)
+    mapping_status: Mapped[str] = mapped_column(String(20), nullable=False)
+    evidence_method: Mapped[str] = mapped_column(String(40), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    verified_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    retired_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    source_assetnum_snapshot: Mapped[str | None] = mapped_column(String(160))
+    source_siteid_snapshot: Mapped[str | None] = mapped_column(String(40))
+    source_orgid_snapshot: Mapped[str | None] = mapped_column(String(40))
+    af_path_snapshot: Mapped[str | None] = mapped_column(String(500))
+    af_element_name_snapshot: Mapped[str | None] = mapped_column(String(240))

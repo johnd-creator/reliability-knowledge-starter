@@ -10,6 +10,7 @@ from sqlalchemy import Select, String, asc, case, cast, desc, func, literal, sel
 
 from src.repositories.mart_models import (
     AssetHealthAssessmentMart,
+    AssetAfMappingMart,
     AssetMasterMart,
     FmeaAssessmentMart,
     MaintenanceEventMart,
@@ -164,6 +165,31 @@ class MartQueryRepository:
         )
         with self.database.read_session() as session:
             return session.scalar(statement)
+
+    def list_asset_af_mappings(self, canonical_id: str | None = None) -> list[AssetAfMappingMart]:
+        """Return governance rows for registered BSR/IP Assets.
+
+        Retired rows remain visible so the API can explain governance history;
+        readiness logic deliberately ignores their retired state. Supplying an
+        Asset ID keeps the read bounded to that canonical Asset.
+        """
+
+        statement = (
+            select(AssetAfMappingMart)
+            .join(AssetMasterMart, AssetMasterMart.canonical_id == AssetAfMappingMart.canonical_asset_id)
+            .join(ReliabilityAssetRegistryMart, ReliabilityAssetRegistryMart.asset_ref == AssetMasterMart.canonical_id)
+            .where(
+                AssetMasterMart.site_code == SITE_CODE,
+                AssetMasterMart.organization_code == ORGANIZATION_CODE,
+                ReliabilityAssetRegistryMart.site_code == SITE_CODE,
+                ReliabilityAssetRegistryMart.organization_code == ORGANIZATION_CODE,
+            )
+            .order_by(AssetAfMappingMart.created_at, AssetAfMappingMart.id)
+        )
+        if canonical_id is not None:
+            statement = statement.where(AssetAfMappingMart.canonical_asset_id == canonical_id)
+        with self.database.read_session() as session:
+            return list(session.scalars(statement).all())
 
     def list_maintenance(
         self,

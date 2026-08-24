@@ -7,6 +7,7 @@ from datetime import datetime
 from typing import Any
 
 from src.repositories.mart_reader import MartQueryRepository, QueryPage
+from src.services.asset_af_mapping import AssetAfMappingResolution, mapping_from_row, resolve_asset_af_mapping
 
 
 @dataclass(frozen=True)
@@ -58,3 +59,7 @@ class ReliabilityQueryService:
         events.sort(key=lambda item: (item.event_at is not None, item.event_at or datetime.min), reverse=True)
         total = len(events)
         return QueryPage(events[offset:offset + limit], total, offset, limit)
+
+    def asset_af_mapping(self, canonical_id: str) -> AssetAfMappingResolution:
+        rows = self.repository.list_asset_af_mappings(canonical_id)
+        return resolve_asset_af_mapping(canonical_id, [mapping_from_row(row) for row in rows])

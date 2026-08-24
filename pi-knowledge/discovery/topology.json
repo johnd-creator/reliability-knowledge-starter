@@ -160,8 +160,8 @@
     "maximo_location_to_af": "PARTIAL",
     "native_mapping": "NOT_FOUND_BOUNDED",
     "mapping_key_uniqueness": "UNKNOWN",
-    "governed_mapping_registry_required": "UNKNOWN",
-    "decision": "CASE_D_TARGETED_DISCOVERY_REQUIRED",
+    "governed_mapping_registry_required": "YES",
+    "decision": "CASE_C_GOVERNED_MAPPING_REGISTRY",
     "raw_identifiers_persisted": false,
     "raw_values_persisted": false,
     "request_audit": {

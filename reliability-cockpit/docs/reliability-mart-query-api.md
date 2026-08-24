@@ -47,6 +47,7 @@ All routes are GET-only and use canonical reliability concepts:
 | `GET /v1/reliability/assets/{canonical_id}/health-assessments` | Paginated health assessments for an asset |
 | `GET /v1/reliability/assets/{canonical_id}/health/latest` | Latest health assessment using the documented timestamp fallback |
 | `GET /v1/reliability/assets/{canonical_id}/timeline` | Bounded reliability timeline |
+| `GET /v1/reliability/assets/{canonical_id}/pi-mapping` | Governed Maximo Asset to PI AF mapping state and safe AF reference metadata |
 | `GET /v1/reliability/maintenance-events` | Maintenance event list and filters |
 | `GET /v1/reliability/fmea` | Registry-scoped FMEA list with FMEA number, Asset number, source status, and source Failure Code filters |
 | `GET /v1/reliability/asset-health` | Registry-scoped Asset Health list with Asset number, description, status, and pagination filters |
@@ -133,6 +134,30 @@ uses these timestamp fallbacks:
 * overhaul: `actual_start_at`, then `planned_start_at`, then `source_updated_at`.
 
 No health score, MTBF, MTTR, or other analytics are calculated here.
+
+## Governed Maximo Asset to PI AF mapping
+
+PI Asset Framework is a verified downstream source boundary, but the bounded
+PI discovery did not find a native Maximo Asset → AF identity key:
+`NATIVE_MAXIMO_AF_MAPPING: NOT_FOUND_BOUNDED`. The NADI-owned
+`asset_af_mapping` relation is therefore the explicit governance boundary. It
+is stored in the existing Reliability Mart database and references the
+canonical `asset_master.canonical_id`; it is not a second Asset master and is
+never written back to Maximo or PI.
+
+The registry has `PROPOSED`, `VERIFIED`, and `RETIRED` lifecycle states and
+never treats a proposal as usable identity. Only one `VERIFIED`
+`PRIMARY_EQUIPMENT` row resolves an Asset to `MAPPED`; zero resolves to
+`UNMAPPED`, and more than one resolves to `AMBIGUOUS` without silently choosing
+an AF Element. The public route is read-only. Registry commands are internal
+administration boundaries only; this task adds no browser form, anonymous write
+endpoint, production seed, PI request, or fuzzy/name-based fallback.
+
+The generic `asset-source-link` contract remains unchanged. Its source-link
+vocabulary does not carry the AF server/database, mapping role, lifecycle, and
+evidence fields required by this governed relation, so the registry remains a
+Mart-internal cross-source relation until a future contract task establishes a
+vendor-neutral extension.
 
 ## Legacy coexistence and handoff
 
