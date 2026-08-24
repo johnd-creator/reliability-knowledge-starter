@@ -1,0 +1,156 @@
+{
+  "task_id": "PI-001A",
+  "system": "PI",
+  "status": "partially_verified",
+  "verified_at": "2026-08-24T07:53:42Z",
+  "source_boundary": {
+    "nadi_entry_point": "PI_WEB_API",
+    "acquisition": "EXISTING_DCS_OPC_PI_INTERFACE_PIPELINE_REPORTED",
+    "direct_dcs_requests": 0,
+    "direct_opc_requests": 0,
+    "direct_pi_interface_requests": 0
+  },
+  "pi_vision": {
+    "application": "PI_VISION",
+    "network_evidence": "NOT_OBTAINED",
+    "browser_observation": "navigation blocked by a certificate hostname mismatch; TLS warning was not bypassed",
+    "calls_pi_web_api": "UNKNOWN",
+    "evidence_class": "UNKNOWN"
+  },
+  "web_api": {
+    "base_url_template": "https://<central-pi-host>/piwebapi",
+    "root": {
+      "status": "verified",
+      "http_status": 200,
+      "links_observed": ["AssetServers", "DataServers", "Omf", "Self", "System"]
+    },
+    "authentication": {
+      "observed_model": "basic_auth",
+      "credential_storage": "runtime_only",
+      "evidence_class": "VERIFIED"
+    },
+    "read_only_methods": ["GET", "HEAD", "OPTIONS"],
+    "write_requests": 0
+  },
+  "data_archive": {
+    "identified": "YES",
+    "server_count_observed": 2,
+    "connected_server_alias": "PI_DATA_ARCHIVE_1",
+    "secondary_server_alias": "PI_DATA_ARCHIVE_2",
+    "point_access": "VERIFIED",
+    "stream_access": {
+      "snapshot": "VERIFIED",
+      "recorded": "VERIFIED",
+      "interpolated": "VERIFIED",
+      "summary": "VERIFIED",
+      "plot": "VERIFIED",
+      "end": "VERIFIED"
+    },
+    "server_identity_values": "not persisted in this sanitized artifact"
+  },
+  "asset_framework": {
+    "server": "AF_SERVER_1",
+    "server_identified": "YES",
+    "database": "AF_DATABASE_1",
+    "database_identified": "YES",
+    "database_count_observed": 14,
+    "hierarchy": {
+      "site_alias": "BSR",
+      "unit_alias": "UNIT_SAMPLE",
+      "system_count_observed": 4,
+      "root_element_count_observed": 47,
+      "shape": "SITE → UNIT → SYSTEM → EQUIPMENT"
+    },
+    "attribute_model": {
+      "sampled_elements": 3,
+      "sampled_attributes": 3,
+      "types_observed": ["Double"],
+      "units_observed": ["degree Celsius", "Micrometer", "revolution per minute"],
+      "data_reference": "PI Point",
+      "attribute_to_point": "VERIFIED"
+    }
+  },
+  "signals": [
+    {
+      "alias": "SIGNAL_SAMPLE_1",
+      "role": "bearing temperature",
+      "type": "Double",
+      "unit": "degree Celsius",
+      "pi_point_backed": true,
+      "current_snapshot": "VERIFIED",
+      "historical_sample": "VERIFIED"
+    },
+    {
+      "alias": "SIGNAL_SAMPLE_2",
+      "role": "bearing vibration",
+      "type": "Double",
+      "unit": "Micrometer",
+      "pi_point_backed": true,
+      "current_snapshot": "VERIFIED",
+      "historical_sample": "NOT_REQUESTED"
+    },
+    {
+      "alias": "SIGNAL_SAMPLE_3",
+      "role": "rotational speed",
+      "type": "Double",
+      "unit": "revolution per minute",
+      "pi_point_backed": true,
+      "current_snapshot": "VERIFIED",
+      "historical_sample": "NOT_REQUESTED"
+    }
+  ],
+  "stream_contract": {
+    "current_shape": {
+      "timestamp": true,
+      "value": true,
+      "value_type": "float",
+      "engineering_unit": true,
+      "good": true,
+      "questionable": true,
+      "substituted": true,
+      "annotated": true
+    },
+    "historical_shape": {
+      "window": "15 minutes",
+      "maximum_requested": 20,
+      "items_returned": 20,
+      "timestamp": true,
+      "value": true,
+      "good": true
+    },
+    "live_values": "not persisted"
+  },
+  "maximo_to_af": {
+    "candidate_assets_tested": 3,
+    "exact_identifier_matches": 0,
+    "mapping_method": "NOT_FOUND",
+    "name_similarity_used": false,
+    "readiness": "NOT_FOUND",
+    "scope": "Maximo BSR/IP candidates compared with sampled AF evidence only; no global absence claim"
+  },
+  "readiness": {
+    "PI_WEB_API_IDENTIFIED": "YES",
+    "PI_DATA_ARCHIVE_IDENTIFIED": "YES",
+    "AF_SERVER_IDENTIFIED": "YES",
+    "AF_DATABASE_IDENTIFIED": "YES",
+    "AF_ATTRIBUTE_MODEL_IDENTIFIED": "YES",
+    "AF_TO_PI_POINT_RELATIONSHIP": "VERIFIED",
+    "MAXIMO_TO_AF_MAPPING": "NOT_FOUND",
+    "TIMESTAMP_SEMANTICS_IDENTIFIED": "YES",
+    "QUALITY_FIELDS_IDENTIFIED": "YES",
+    "ENGINEERING_UNIT_AVAILABLE": "YES",
+    "TIME_SERIES_EVIDENCE_READY": "YES",
+    "ASSET_SIGNAL_MAPPING_READY": "NO",
+    "CONDITION_FINDING_READY": "NO",
+    "PDM_DATA_FOUNDATION_READY": "PARTIAL",
+    "PDM_MODEL_READY": "NO",
+    "ANOMALY_DETECTION_READY": "NO",
+    "RECOMMENDATION_READY": "NO"
+  },
+  "request_audit": {
+    "pi_get": 22,
+    "historical_window_get": 1,
+    "writes": 0,
+    "oversized_responses": 0
+  }
+}
