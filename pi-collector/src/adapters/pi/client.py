@@ -16,7 +16,7 @@ import socket
 import time
 from datetime import datetime, timezone
 from typing import Any, Iterator, Mapping
-from urllib.parse import quote, urlencode
+from urllib.parse import parse_qs, quote, urlparse
 
 import requests
 from requests.adapters import HTTPAdapter
@@ -89,12 +89,50 @@ def _parse_timestamp(value: Any) -> datetime | None:
 
 
 def _coerce_float(value: Any) -> float | None:
-    if value is None or value == "":
+    # PI digital states and text are source values, not numeric measurements.
+    # Only JSON numeric values may cross the numeric domain boundary.
+    if value is None or isinstance(value, bool) or not isinstance(value, (int, float)):
         return None
+    return float(value)
+
+
+def _coerce_bool(value: Any) -> bool | None:
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        normalized = value.strip().lower()
+        if normalized in {"true", "1", "yes"}:
+            return True
+        if normalized in {"false", "0", "no"}:
+            return False
+    return None
+
+
+def _infer_value_type(value: Any) -> str:
+    if value is None:
+        return "NULL"
+    if isinstance(value, bool):
+        return "BOOLEAN"
+    if isinstance(value, (int, float)):
+        return "NUMERIC"
+    if isinstance(value, Mapping):
+        return "DIGITAL_STATE"
+    return "TEXT"
+
+
+def _origin(url: str) -> tuple[str, str, int]:
+    parsed = urlparse(url)
+    if parsed.scheme not in {"http", "https"} or not parsed.hostname:
+        raise ValueError("invalid PI URL")
+    if parsed.username or parsed.password:
+        raise ValueError("PI URL must not contain credentials")
     try:
-        return float(value)
-    except (TypeError, ValueError):
-        return None
+        port = parsed.port
+    except ValueError as error:
+        raise ValueError("invalid PI URL port") from error
+    if port is None:
+        port = 443 if parsed.scheme == "https" else 80
+    return parsed.scheme.lower(), parsed.hostname.lower(), port
 
 
 class PiClient:
@@ -113,19 +151,44 @@ class PiClient:
         method = method.upper()
         if method not in READ_ONLY_METHODS:
             raise PiClientError(f"blocked non-read-only method for PI: {method}")
+        base_url = self._config.base_url
+        if not base_url:
+            raise PiClientError("PI Web API base URL is required for source operations")
+        if (self._config.username is None) != (self._config.password is None):
+            raise PiClientError("PI Basic auth requires both PI_USERNAME and PI_PASSWORD")
+        try:
+            base_origin = _origin(base_url)
+        except ValueError as error:
+            raise PiClientError("PI Web API base URL is invalid") from error
+        if path.startswith(("http://", "https://")):
+            try:
+                same_origin = _origin(path) == base_origin
+            except ValueError as error:
+                raise PiClientError("PI absolute link rejected: invalid origin") from error
+            if not same_origin:
+                raise PiClientError("PI absolute link rejected: foreign origin")
+            url = path
+        else:
+            url = base_url.rstrip("/") + (path if path.startswith("/") else f"/{path}")
         delay = self._config.rate_limit_seconds - (time.monotonic() - self._last_request)
         if delay > 0:
             time.sleep(delay)
-        url = path if path.startswith(("http://", "https://")) else self._config.base_url + path
         extra = self._config.auth_kwargs()
-        resp = self._session.request(
-            method, url, params=params, timeout=self._config.timeout_seconds,
-            verify=self._config.verify_tls, **extra,
-        )
+        try:
+            resp = self._session.request(
+                method, url, params=params, timeout=self._config.timeout_seconds,
+                verify=self._config.verify_tls, allow_redirects=False, **extra,
+            )
+        except requests.exceptions.Timeout as error:
+            raise PiClientError("PI request timed out") from error
+        except requests.exceptions.SSLError as error:
+            raise PiClientError("PI TLS verification failed") from error
+        except requests.exceptions.RequestException as error:
+            raise PiClientError("PI transport failure") from error
         self._last_request = time.monotonic()
         if len(resp.content) > self._config.max_response_bytes:
             raise PiClientError(
-                f"PI {method} {path} returned oversized body "
+                f"PI {method} returned oversized body "
                 f"({len(resp.content)} > {self._config.max_response_bytes} bytes)"
             )
         return resp
@@ -133,16 +196,18 @@ class PiClient:
     def get_json(self, path: str, *, params: dict | None = None) -> dict:
         resp = self.request("GET", path, params=params)
         if resp.status_code == 401:
-            raise PiClientError(f"PI returned HTTP 401; authentication failed for {path}")
+            raise PiClientError("PI returned HTTP 401; authentication failed")
         if resp.status_code == 410:
-            detail = ""
-            try:
-                detail = resp.json().get("Errors", [""])[0]
-            except Exception:
-                pass
-            raise PiGoneError(f"PI returned HTTP 410 Gone for {path}: {detail}")
-        resp.raise_for_status()
-        return resp.json()
+            raise PiGoneError("PI returned HTTP 410 Gone for PI resource")
+        if resp.status_code >= 400:
+            raise PiClientError(f"PI returned HTTP {resp.status_code} for PI resource")
+        try:
+            payload = resp.json()
+        except (TypeError, ValueError) as error:
+            raise PiClientError("PI returned invalid JSON") from error
+        if not isinstance(payload, dict):
+            raise PiClientError("PI returned an unexpected JSON shape")
+        return payload
 
     # -- PI Web API helpers ----------------------------------------------
     def get_snapshot(self, web_id: str) -> dict:
@@ -183,6 +248,66 @@ class PiClient:
             params["endTime"] = end_time
         return self.get_json(f"/streams/{_quote(web_id)}/recorded", params=params)
 
+    # -- AF metadata and bounded source operations -----------------------
+    def get_af_element(self, element_web_id: str) -> dict:
+        """GET AF Element metadata without traversing child elements."""
+        return self.get_json(f"/elements/{_quote(element_web_id)}")
+
+    def list_af_attributes(self, element_web_id: str, *, max_count: int = 100) -> list[dict]:
+        """List at most 100 direct attributes for one AF Element."""
+        bounded_count = max(1, min(max_count, 100))
+        payload = self.get_json(
+            f"/elements/{_quote(element_web_id)}/attributes",
+            params={"maxCount": str(bounded_count)},
+        )
+        items = payload.get("Items")
+        if not isinstance(items, list):
+            raise PiClientError("AF attribute response missing Items")
+        if len(items) > bounded_count:
+            raise PiClientError("AF attribute response exceeded bounded limit")
+        if any(not isinstance(item, dict) for item in items):
+            raise PiClientError("AF attribute response contained an invalid item")
+        return items
+
+    def get_af_attribute(self, attribute_web_id: str) -> dict:
+        """GET one AF Attribute metadata document."""
+        return self.get_json(f"/attributes/{_quote(attribute_web_id)}")
+
+    @staticmethod
+    def _related_link(metadata: Mapping[str, Any], relation: str) -> str:
+        links = metadata.get("Links")
+        link = links.get(relation) if isinstance(links, Mapping) else None
+        if not isinstance(link, str) or not link:
+            raise PiClientError(f"AF attribute metadata missing {relation} link")
+        return link
+
+    def get_af_attribute_value(self, metadata: Mapping[str, Any]) -> dict:
+        """Read the current value through the AF Attribute's Value link."""
+        return self.get_json(self._related_link(metadata, "Value"))
+
+    def get_af_attribute_recorded(
+        self,
+        metadata: Mapping[str, Any],
+        *,
+        start_time: str,
+        end_time: str,
+        max_count: int = 20,
+    ) -> dict:
+        """Read bounded recorded data through the AF Attribute's link.
+
+        The governed source boundary caps a single operation at 20 samples;
+        larger extraction belongs to the existing technical collector modes.
+        """
+        bounded_count = max(1, min(max_count, 20))
+        return self.get_json(
+            self._related_link(metadata, "RecordedData"),
+            params={
+                "startTime": start_time,
+                "endTime": end_time,
+                "maxCount": str(bounded_count),
+            },
+        )
+
     def iter_recorded(
         self,
         web_id: str,
@@ -217,15 +342,14 @@ class PiClient:
                 },
             )
             yield payload
-            items = payload.get("Items") or []
+            items = payload.get("Items")
+            if not isinstance(items, list):
+                raise PiClientError("PI recorded response missing Items")
             if len(items) < max_count:
                 return  # final page — under the cap means no more data
             # Prefer server-provided Next link when present
             next_url = (payload.get("Links") or {}).get("Next")
             if next_url:
-                base = self._config.base_url
-                if next_url.startswith(base):
-                    next_url = next_url[len(base):]
                 # advance cursor from the URL's startTime if parseable, else items
                 current_start = self._start_from_url(next_url) or items[-1].get("Timestamp", current_start)
                 continue
@@ -238,14 +362,28 @@ class PiClient:
 
     def _start_from_url(self, url: str) -> str | None:
         """Extract startTime parameter from a Next link URL, if present."""
-        from urllib.parse import parse_qs, urlparse
-
         try:
+            if url.startswith(("http://", "https://")):
+                self._resolve_absolute_link(url)
             qs = parse_qs(urlparse(url).query)
             values = qs.get("startTime")
             return values[0] if values else None
-        except Exception:
+        except PiClientError:
+            raise
+        except (TypeError, ValueError):
             return None
+
+    def _resolve_absolute_link(self, url: str) -> str:
+        """Validate a PI response link before it can be requested."""
+        base_url = self._config.base_url
+        if not base_url:
+            raise PiClientError("PI Web API base URL is required for source operations")
+        try:
+            if _origin(url) != _origin(base_url):
+                raise PiClientError("PI absolute link rejected: foreign origin")
+        except ValueError as error:
+            raise PiClientError("PI absolute link rejected: invalid origin") from error
+        return url
 
 
 # -- payload parsing helpers ---------------------------------------------------
@@ -253,14 +391,14 @@ def extract_snapshot(snapshot_payload: Mapping[str, Any], attribute_id: str, uni
     """Parse a PI /streams/{webId}/value response into a Snapshot domain object."""
     from src.domain.models import Snapshot
 
+    if "Value" not in snapshot_payload:
+        raise PiClientError("PI snapshot response missing Value")
     raw_value = snapshot_payload.get("Value")
     # PI digital states may return dicts; coerce numeric values only
     value = _coerce_float(raw_value)
-    good = snapshot_payload.get("Good")
-    if isinstance(good, str):
-        good = good.lower() in ("true", "1", "yes")
+    good = _coerce_bool(snapshot_payload.get("Good"))
     ts = _parse_timestamp(snapshot_payload.get("Timestamp"))
-    units_abbr = snapshot_payload.get("UnitsAbbreviation") or units or ""
+    units_abbr = snapshot_payload.get("UnitsAbbreviation") or snapshot_payload.get("Units") or units or ""
     return Snapshot(
         attribute_id=attribute_id,
         value=value,
@@ -268,7 +406,26 @@ def extract_snapshot(snapshot_payload: Mapping[str, Any], attribute_id: str, uni
         units=str(units_abbr) if units_abbr else None,
         source_timestamp=ts,
         collected_at=datetime.now(timezone.utc),
+        value_type=str(snapshot_payload.get("ValueType") or _infer_value_type(raw_value)),
+        value_questionable=_coerce_bool(
+            snapshot_payload.get("Questionable", snapshot_payload.get("IsQuestionable"))
+        ),
+        value_substituted=_coerce_bool(
+            snapshot_payload.get("Substituted", snapshot_payload.get("IsSubstituted"))
+        ),
+        value_annotated=_coerce_bool(
+            snapshot_payload.get("Annotated", snapshot_payload.get("IsAnnotated"))
+        ),
     )
+
+
+def _history_items(payload: Mapping[str, Any]) -> list[Mapping[str, Any]]:
+    items = payload.get("Items")
+    if not isinstance(items, list):
+        raise PiClientError("PI history response missing Items")
+    if any(not isinstance(item, Mapping) for item in items):
+        raise PiClientError("PI history response contained an invalid item")
+    return items
 
 
 def extract_interpolated(payload: Mapping[str, Any], attribute_id: str) -> list:
@@ -276,12 +433,11 @@ def extract_interpolated(payload: Mapping[str, Any], attribute_id: str) -> list:
     from src.domain.models import TimeseriesPoint
 
     points: list[TimeseriesPoint] = []
-    for item in payload.get("Items", []) or []:
+    default_units = payload.get("UnitsAbbreviation") or payload.get("Units")
+    for item in _history_items(payload):
         raw = item.get("Value")
         value = _coerce_float(raw)
-        good = item.get("Good")
-        if isinstance(good, str):
-            good = good.lower() in ("true", "1", "yes")
+        good = _coerce_bool(item.get("Good"))
         ts = _parse_timestamp(item.get("Timestamp"))
         if ts is None:
             continue
@@ -290,6 +446,18 @@ def extract_interpolated(payload: Mapping[str, Any], attribute_id: str) -> list:
             timestamp=ts,
             value=value,
             value_good=good,
+            units=str(item.get("UnitsAbbreviation") or item.get("Units") or default_units)
+            if item.get("UnitsAbbreviation") or item.get("Units") or default_units else None,
+            value_type=str(item.get("ValueType") or _infer_value_type(raw)),
+            value_questionable=_coerce_bool(
+                item.get("Questionable", item.get("IsQuestionable"))
+            ),
+            value_substituted=_coerce_bool(
+                item.get("Substituted", item.get("IsSubstituted"))
+            ),
+            value_annotated=_coerce_bool(
+                item.get("Annotated", item.get("IsAnnotated"))
+            ),
         ))
     return points
 
@@ -302,12 +470,11 @@ def extract_recorded(payload: Mapping[str, Any], attribute_id: str) -> list:
     from src.domain.models import TimeseriesPoint
 
     points: list[TimeseriesPoint] = []
-    for item in payload.get("Items", []) or []:
+    default_units = payload.get("UnitsAbbreviation") or payload.get("Units")
+    for item in _history_items(payload):
         raw = item.get("Value")
         value = _coerce_float(raw)
-        good = item.get("Good")
-        if isinstance(good, str):
-            good = good.lower() in ("true", "1", "yes")
+        good = _coerce_bool(item.get("Good"))
         ts = _parse_timestamp(item.get("Timestamp"))
         if ts is None:
             continue
@@ -316,5 +483,17 @@ def extract_recorded(payload: Mapping[str, Any], attribute_id: str) -> list:
             timestamp=ts,
             value=value,
             value_good=good,
+            units=str(item.get("UnitsAbbreviation") or item.get("Units") or default_units)
+            if item.get("UnitsAbbreviation") or item.get("Units") or default_units else None,
+            value_type=str(item.get("ValueType") or _infer_value_type(raw)),
+            value_questionable=_coerce_bool(
+                item.get("Questionable", item.get("IsQuestionable"))
+            ),
+            value_substituted=_coerce_bool(
+                item.get("Substituted", item.get("IsSubstituted"))
+            ),
+            value_annotated=_coerce_bool(
+                item.get("Annotated", item.get("IsAnnotated"))
+            ),
         ))
     return points

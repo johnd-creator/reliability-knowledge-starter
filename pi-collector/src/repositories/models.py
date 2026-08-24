@@ -34,6 +34,10 @@ class SnapshotOrm(Base):
     value: Mapped[float | None] = mapped_column(Float)
     value_good: Mapped[bool | None] = mapped_column(Boolean)
     units: Mapped[str | None] = mapped_column(String(40))
+    value_type: Mapped[str | None] = mapped_column(String(40))
+    value_questionable: Mapped[bool | None] = mapped_column(Boolean)
+    value_substituted: Mapped[bool | None] = mapped_column(Boolean)
+    value_annotated: Mapped[bool | None] = mapped_column(Boolean)
     source_timestamp: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     collected_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
@@ -45,6 +49,11 @@ class TimeseriesOrm(Base):
     timestamp: Mapped[datetime] = mapped_column(DateTime(timezone=True), primary_key=True)
     value: Mapped[float | None] = mapped_column(Float)
     value_good: Mapped[bool | None] = mapped_column(Boolean)
+    units: Mapped[str | None] = mapped_column(String(40))
+    value_type: Mapped[str | None] = mapped_column(String(40))
+    value_questionable: Mapped[bool | None] = mapped_column(Boolean)
+    value_substituted: Mapped[bool | None] = mapped_column(Boolean)
+    value_annotated: Mapped[bool | None] = mapped_column(Boolean)
     collected_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
 

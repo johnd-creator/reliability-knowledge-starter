@@ -39,6 +39,10 @@ class SnapshotView(BaseModel):
     value: float | None = None
     value_good: bool | None = None
     units: str | None = None
+    value_type: str | None = None
+    value_questionable: bool | None = None
+    value_substituted: bool | None = None
+    value_annotated: bool | None = None
     source_timestamp: str | None = None
     collected_at: str | None = None
 
@@ -47,6 +51,11 @@ class TimeseriesPointView(BaseModel):
     timestamp: str
     value: float | None = None
     value_good: bool | None = None
+    units: str | None = None
+    value_type: str | None = None
+    value_questionable: bool | None = None
+    value_substituted: bool | None = None
+    value_annotated: bool | None = None
 
 
 class TimeseriesResponse(BaseModel):
@@ -155,6 +164,10 @@ def create_app() -> FastAPI:
                 value=i.value,
                 value_good=i.value_good,
                 units=i.units,
+                value_type=i.value_type,
+                value_questionable=i.value_questionable,
+                value_substituted=i.value_substituted,
+                value_annotated=i.value_annotated,
                 source_timestamp=_iso(i.source_timestamp),
                 collected_at=_iso(i.collected_at),
             )
@@ -171,6 +184,10 @@ def create_app() -> FastAPI:
             value=snap.value,
             value_good=snap.value_good,
             units=snap.units,
+            value_type=snap.value_type,
+            value_questionable=snap.value_questionable,
+            value_substituted=snap.value_substituted,
+            value_annotated=snap.value_annotated,
             source_timestamp=_iso(snap.source_timestamp),
             collected_at=_iso(snap.collected_at),
         )
@@ -195,6 +212,11 @@ def create_app() -> FastAPI:
                     timestamp=_iso(p.timestamp),
                     value=p.value,
                     value_good=p.value_good,
+                    units=p.units,
+                    value_type=p.value_type,
+                    value_questionable=p.value_questionable,
+                    value_substituted=p.value_substituted,
+                    value_annotated=p.value_annotated,
                 )
                 for p in points
             ],

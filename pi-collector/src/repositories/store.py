@@ -182,6 +182,10 @@ class CollectorStore:
             row.value = snap.value
             row.value_good = snap.value_good
             row.units = snap.units
+            row.value_type = snap.value_type
+            row.value_questionable = snap.value_questionable
+            row.value_substituted = snap.value_substituted
+            row.value_annotated = snap.value_annotated
             row.source_timestamp = snap.source_timestamp
             row.collected_at = snap.collected_at or datetime.now(timezone.utc)
             session.add(row)
@@ -199,6 +203,10 @@ class CollectorStore:
                 units=row.units,
                 source_timestamp=row.source_timestamp,
                 collected_at=row.collected_at,
+                value_type=row.value_type,
+                value_questionable=row.value_questionable,
+                value_substituted=row.value_substituted,
+                value_annotated=row.value_annotated,
             )
 
     def list_snapshots(self, equipment: str | None = None, limit: int = 500) -> list[Snapshot]:
@@ -219,6 +227,10 @@ class CollectorStore:
                     units=r.units,
                     source_timestamp=r.source_timestamp,
                     collected_at=r.collected_at,
+                    value_type=r.value_type,
+                    value_questionable=r.value_questionable,
+                    value_substituted=r.value_substituted,
+                    value_annotated=r.value_annotated,
                 )
                 for r in rows
             ]
@@ -247,6 +259,11 @@ class CollectorStore:
                 "timestamp": p.timestamp,
                 "value": p.value,
                 "value_good": p.value_good,
+                "units": p.units,
+                "value_type": p.value_type,
+                "value_questionable": p.value_questionable,
+                "value_substituted": p.value_substituted,
+                "value_annotated": p.value_annotated,
                 "collected_at": now,
             }
             for p in deduped.values()
@@ -261,6 +278,11 @@ class CollectorStore:
                     set_={
                         "value": stmt.excluded.value,
                         "value_good": stmt.excluded.value_good,
+                        "units": stmt.excluded.units,
+                        "value_type": stmt.excluded.value_type,
+                        "value_questionable": stmt.excluded.value_questionable,
+                        "value_substituted": stmt.excluded.value_substituted,
+                        "value_annotated": stmt.excluded.value_annotated,
                         "collected_at": stmt.excluded.collected_at,
                     },
                 )
@@ -290,6 +312,11 @@ class CollectorStore:
                     timestamp=r.timestamp,
                     value=r.value,
                     value_good=r.value_good,
+                    units=r.units,
+                    value_type=r.value_type,
+                    value_questionable=r.value_questionable,
+                    value_substituted=r.value_substituted,
+                    value_annotated=r.value_annotated,
                 )
                 for r in rows
             ]

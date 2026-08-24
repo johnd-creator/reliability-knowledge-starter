@@ -8,8 +8,8 @@ reliability cockpit.
 ## Design Principles
 
 1. **Read-only against PI** — GET/HEAD/OPTIONS only, enforced in code.
-2. **Knowledge-driven** — the registry of attributes to collect comes from
-   `pi-knowledge` (verified mappings), never hardcoded.
+2. **Knowledge-driven** — the technical registry of attributes to collect comes
+   from `pi-knowledge`, never hardcoded. It is not a governed Asset mapping.
 3. **Time-series optimized** — TimescaleDB hypertable for efficient range
    queries and aggregation at scale.
 4. **Multi-consumer** — clean REST API, no vendor payloads escape the layer.
@@ -17,21 +17,32 @@ reliability cockpit.
 ## Architecture
 
 ```text
-pi-knowledge/mappings/bsr1-parameters.yaml
-    (source of truth: 541 discovered BSR1 attributes; 433 stream-ok attributes are collectable)
+DCS / control systems
         │
-        ▼  load-registry
-pi_attribute_registry (Postgres)
+        ▼ existing acquisition / OPC / PI Interface pipeline
+Central PI Data Archive + AF
         │
-        ▼  collect-snapshots / backfill
-PiClient (GET-only) ──▶ pi_snapshot + pi_timeseries (TimescaleDB)
-                             │
-                             ▼  serve
-                    FastAPI (port 8001)
-                    ├── /snapshots      (latest values)
-                    ├── /timeseries/{id} (history for trending/ML)
-                    ├── /attributes      (registry catalog)
-                    └── /stats           (collection metrics)
+        ▼ PI Web API / AF (Basic auth, runtime-only credentials)
+PiClient (GET/HEAD/OPTIONS, same-origin only)
+        │
+        ├── technical collection mode ──▶ local pi_snapshot/pi_timeseries
+        │                                  (trending and ML consumers)
+        │
+        └── governed source boundary ◀── VERIFIED Asset ↔ AF target supplied
+                                         by future NADI orchestration
+
+The broad `pi-knowledge/mappings/bsr1-parameters.yaml` inventory contains 541
+technical attributes, including 433 stream-ok entries. It is a technical
+collection registry, not a list of governed reliability signals:
+
+```text
+TECHNICAL_PI_ATTRIBUTE != GOVERNED_ASSET_SIGNAL
+```
+
+PI Vision is a visualization surface, not the ingestion API. The collector
+does not crawl the AF hierarchy or infer Asset identity from names, tags, or
+similarity. Existing raw registry identifiers are pre-existing technical debt;
+this work adds no new production WebIds or tags.
 ```
 
 ## Setup
@@ -51,6 +62,13 @@ python3 -m venv .venv
 .venv/bin/pip install -e .          # installs the `picollector` CLI
 cp .env.example .env                # fill PI credentials + DATABASE_URL
 ```
+
+`PI_WEB_API_BASE_URL` is required for live source operations and must be
+provided as a runtime value. `PI_VERIFY_TLS` defaults to `1`. The currently
+instance-verified authentication mode is Basic auth via `PI_USERNAME` and
+`PI_PASSWORD`; credentials are never logged, persisted, or returned by the
+collector. Bearer configuration remains compatibility-only and is not claimed
+as verified for the current instance.
 
 ### Start TimescaleDB
 
@@ -114,6 +132,32 @@ Swagger docs: `http://127.0.0.1:8001/docs`
 | `/collect/backfill` | POST | Trigger backfill (`?start=&end=&interval=`) |
 | `/stats` | GET | Collection statistics |
 
+The API serves locally collected data. It is not a live PI proxy and does not
+accept arbitrary WebIds or URLs. The existing collection trigger routes only
+start the configured local collector modes; they do not create governed
+Asset↔AF mappings.
+
+## Governed source boundary
+
+`src/domain/governed.py` defines `GovernedAfTarget`. The
+`GovernedSourceBoundary` accepts only an explicit target with:
+
+- `mapping_status=VERIFIED`
+- `mapping_role=PRIMARY_EQUIPMENT`
+- `pi_source_id=CENTRAL_PI`
+
+`PROPOSED`, `RETIRED`, `UNMAPPED`, and `AMBIGUOUS` targets are rejected. The
+boundary reads one AF Element, at most 100 direct Attributes, Attribute
+metadata, a linked current value, or a bounded recorded window of at most 20
+samples. It does not read or write the Reliability Mart and does not discover
+Asset↔AF relationships.
+
+The normalized local signal retains the source timestamp, numeric/text/digital
+value classification, engineering unit, and the PI `Good`, `Questionable`,
+`Substituted`, and `Annotated` flags. A digital state remains non-numeric;
+quality is source evidence and is not interpreted as an alarm, failure, or
+diagnosis.
+
 ## Safety guardrails (bulk downloads)
 
 `backfill-recorded` is the heaviest operation — it downloads every raw point.
@@ -164,14 +208,16 @@ src/
 ├── cli.py                      # picollector CLI (7 commands)
 ├── config.py                   # PiApiConfig, DbConfig, CollectSafetyConfig
 ├── adapters/pi/client.py       # PiClient (GET-only, rate-limit, pagination)
-├── domain/models.py            # Snapshot, TimeseriesPoint, AttributeRegistration
+├── domain/models.py            # normalized PI readings and registrations
+├── domain/governed.py          # validated NADI Asset↔AF target boundary
 ├── repositories/
 │   ├── database.py             # SQLAlchemy engine + TimescaleDB hypertable
 │   ├── models.py               # ORM models
 │   └── store.py                # CollectorStore (upsert/query/heatmap)
 ├── services/
 │   ├── registry.py             # parse pi-knowledge YAML → registrations
-│   └── collector.py            # collection engine + circuit breaker + off-hours gate
+│   ├── collector.py            # technical collection engine + safety gates
+│   └── governed_source.py      # AF-linked reads for validated targets
 └── api/app.py                  # FastAPI consumer endpoints
 web/                            # Next.js UI (attribute list, heatmap, collect buttons)
 deploy/                         # systemd timer/service + cron examples

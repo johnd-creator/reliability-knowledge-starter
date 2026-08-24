@@ -12,7 +12,8 @@ Before introducing a PI tag, WebId, or attribute into the collector:
 
 1. The attribute **must** exist in `pi-knowledge` with `status: verified`.
 2. The registry YAML (`../pi-knowledge/mappings/bsr1-parameters.yaml`) is the
-   sole input — never hardcode WebIds in collector code.
+   sole input for technical collection — never hardcode WebIds in collector
+   code. A technical registry entry is not a governed NADI Asset signal.
 3. If an attribute is missing, create a discovery task in `pi-knowledge` first.
 4. Do not guess production identifiers.
 
@@ -84,8 +85,9 @@ weekends; the in-app off-hours gate stays active as the final authority.
 
 ## Gotchas
 
-- PI pagination links (`Links.Next`) are absolute URLs; `iter_recorded()` strips
-  the base URL before re-requesting — keep that behavior if refactoring.
+- PI pagination links (`Links.Next`) may be absolute URLs; `iter_recorded()`
+  validates scheme/host/port against the configured PI origin before using the
+  link. Foreign origins must be rejected so credentials cannot be forwarded.
 - `recorded-delta` run mode tracks its cursor in `pi_collect_cursor` keyed
   `recorded-delta`; do not reuse that scope name for other purposes.
 - The heatmap endpoint uses `date_trunc('day', ...)` — TimescaleDB accelerates

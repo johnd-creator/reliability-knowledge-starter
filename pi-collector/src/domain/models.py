@@ -28,6 +28,10 @@ class Snapshot:
     units: str | None
     source_timestamp: datetime | None
     collected_at: datetime | None = None
+    value_type: str | None = None
+    value_questionable: bool | None = None
+    value_substituted: bool | None = None
+    value_annotated: bool | None = None
 
 
 @dataclass(frozen=True)
@@ -36,3 +40,8 @@ class TimeseriesPoint:
     timestamp: datetime
     value: float | None
     value_good: bool | None
+    units: str | None = None
+    value_type: str | None = None
+    value_questionable: bool | None = None
+    value_substituted: bool | None = None
+    value_annotated: bool | None = None
