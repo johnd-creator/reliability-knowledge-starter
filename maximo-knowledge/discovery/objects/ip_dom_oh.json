@@ -3,24 +3,24 @@
   "object_structure": "IP_DOM_OH",
   "resource": "ipdomoh",
   "status": "verified",
-  "access": "http_200",
-  "endpoint": "/oslc/os/IP_DOM_OH?_maxitems=1&oslc.where=siteid%3D%22BSR%22",
+  "access": "metadata_http_200; business_http_200",
+  "endpoint": "/oslc/os/IP_DOM_OH?oslc.paging=true&oslc.pageSize=5&oslc.where=siteid%3D%22BSR%22",
   "primary_key": {
     "preferred": {
-      "field": "domid",
-      "confidence": "CANDIDATE",
-      "reason": "resource-specific identity preference"
+      "field": "domohnum+siteid",
+      "confidence": "VERIFIED",
+      "reason": "live JSON Schema pk lists the composite key domohnum and siteid"
     },
     "candidates": [
       {
-        "field": "domid",
-        "confidence": "CANDIDATE",
-        "reason": "resource-specific identity preference"
-      },
-      {
         "field": "domohnum",
         "confidence": "CANDIDATE",
-        "reason": "resource-specific identity preference"
+        "reason": "component of the live JSON Schema composite pk and human-facing Overhaul number"
+      },
+      {
+        "field": "domid",
+        "confidence": "CANDIDATE",
+        "reason": "required integer technical identifier in live JSON Schema; not the declared composite pk"
       }
     ],
     "excluded": [
@@ -103,7 +103,19 @@
     "changedate",
     "status_description",
     "createdate",
-    "realisasi_cost"
+    "realisasi_cost",
+    "rencana_cost",
+    "rencana_time",
+    "realisasi_time",
+    "judgement_scope",
+    "judgement_time",
+    "judgement_quality",
+    "judgement_cost",
+    "judgement_safety",
+    "scopenum",
+    "jenisinsp",
+    "startactual",
+    "endactual"
   ],
   "field_types": {
     "status": "string",
@@ -121,11 +133,42 @@
     "tgl_actual_selesai": "datetime",
     "changedate": "datetime",
     "createdate": "datetime",
-    "realisasi_cost": "number"
+    "realisasi_cost": "number",
+    "rencana_cost": "integer",
+    "rencana_time": "string",
+    "realisasi_time": "string",
+    "judgement_scope": "string",
+    "judgement_time": "string",
+    "judgement_quality": "string",
+    "judgement_cost": "string",
+    "judgement_safety": "string",
+    "scopenum": "string",
+    "jenisinsp": "string",
+    "startactual": "string",
+    "endactual": "string",
+    "dur_oh": "integer",
+    "dur_actual_oh": "integer",
+    "rencana_scope": "integer",
+    "realisasi_scope": "integer",
+    "jumlahworekom": "integer",
+    "perfomance_test": "boolean",
+    "dokumen_rekomendasi": "boolean",
+    "laporan_teknik": "boolean",
+    "laporan_evaluasi": "boolean",
+    "berita_acara_serahterima": "boolean",
+    "berita_acara_syncron": "boolean",
+    "notulensi": "boolean"
   },
   "metadata_fields": [
     "rdf:about",
-    "_rowstamp"
+    "_rowstamp",
+    "$schema",
+    "title",
+    "resource",
+    "pk",
+    "properties",
+    "required",
+    "type"
   ],
   "pagination": {
     "single_record_via": "same-origin resource href; no next page followed"
@@ -151,19 +194,28 @@
     "site: siteid (VERIFIED field evidence)",
     "organization: orgid (VERIFIED field evidence)",
     "workorder: wonum (VERIFIED field evidence)",
+    "inspection: inspeksinum -> DOM_INSPEKSIMESIN.dom_inspeksinum (DIRECT_VERIFIED exact bounded key match)",
+    "scope_pm: IP_DOM_OH_SCOPE_PM.domohnum -> IP_DOM_OH.domohnum (DIRECT_VERIFIED exact bounded key match)",
     "status: status (VERIFIED field evidence)",
-    "timestamp: changedate, createdate (VERIFIED field evidence)"
+    "timestamp: changedate, createdate (VERIFIED field evidence)",
+    "asset: derived through wonum -> MXWODETAIL.assetnum -> Asset (DERIVED_VERIFIED_PATH; existing verified path)"
   ],
   "notes": [
     "MX-006B first bounded detail run: collection HTTP 200 plus one same-origin detail HTTP 200; no raw values persisted.",
     "OH to Work Order is a VERIFIED field correlation candidate; OH to asset is UNKNOWN because no assetnum field was exposed."
+    ,"MX-017A live JSON Schema title DOM_OH declares composite pk domohnum+siteid; domid remains an internal identifier candidate.",
+    "MX-017A schema titles identify progress as Progress Keseluruhan, dates as planned/actual start and finish, dur_oh as Durasi OH (Hari), and perfomance_test as a boolean Perfomance Test Setelah OH.",
+    "One bounded BSR Overhaul record returned status EKS-COMP, progress 45.28, both planned and actual date pairs, numeric duration/scope/cost fields, and boolean document/performance-test indicators; lifecycle and KPI semantics remain unresolved.",
+    "One exact BSR inspection query matched IP_DOM_OH.inspeksinum to DOM_INSPEKSIMESIN.dom_inspeksinum; no values were persisted.",
+    "Two bounded BSR IP_DOM_OH_SCOPE_PM records exposed domohnum and wonum; one exact parent Overhaul and two exact MXWODETAIL reads verified the keys and Asset fields. The workorder collection field was not requested after its larger query shape returned HTTP 400.",
+    "No raw Overhaul descriptions, cost values, document contents, or person values were persisted."
   ],
-  "verified_at": "2026-08-21T03:20:29.915365+00:00",
+  "verified_at": "2026-08-24T06:30:00+00:00",
   "scope": {
-    "field": "siteid",
-    "value": "BSR",
-    "status": "PRIOR_LIVE_QUERY",
-    "evidence": "MX-006R bounded BSR query plus detail field evidence"
+    "field": "siteid/orgid",
+    "value": "BSR/IP",
+    "status": "VERIFIED",
+    "evidence": "The bounded Overhaul record and exact Work Order verifications carried BSR/IP scope; Scope PM exposed BSR site scope but not orgid."
   },
   "detail_dereference": {
     "attempted": true,
@@ -217,7 +269,19 @@
       "changedate",
       "status_description",
       "createdate",
-      "realisasi_cost"
+      "realisasi_cost",
+      "rencana_cost",
+      "rencana_time",
+      "realisasi_time",
+      "judgement_scope",
+      "judgement_time",
+      "judgement_quality",
+      "judgement_cost",
+      "judgement_safety",
+      "scopenum",
+      "jenisinsp",
+      "startactual",
+      "endactual"
     ],
     "field_types": {
       "status": "string",
@@ -235,11 +299,42 @@
       "tgl_actual_selesai": "datetime",
       "changedate": "datetime",
       "createdate": "datetime",
-      "realisasi_cost": "number"
+      "realisasi_cost": "number",
+      "rencana_cost": "integer",
+      "rencana_time": "string",
+      "realisasi_time": "string",
+      "judgement_scope": "string",
+      "judgement_time": "string",
+      "judgement_quality": "string",
+      "judgement_cost": "string",
+      "judgement_safety": "string",
+      "scopenum": "string",
+      "jenisinsp": "string",
+      "startactual": "string",
+      "endactual": "string",
+      "dur_oh": "integer",
+      "dur_actual_oh": "integer",
+      "rencana_scope": "integer",
+      "realisasi_scope": "integer",
+      "jumlahworekom": "integer",
+      "perfomance_test": "boolean",
+      "dokumen_rekomendasi": "boolean",
+      "laporan_teknik": "boolean",
+      "laporan_evaluasi": "boolean",
+      "berita_acara_serahterima": "boolean",
+      "berita_acara_syncron": "boolean",
+      "notulensi": "boolean"
     },
     "metadata_fields": [
       "_rowstamp",
-      "rdf:about"
+      "rdf:about",
+      "$schema",
+      "title",
+      "resource",
+      "pk",
+      "properties",
+      "required",
+      "type"
     ]
   },
   "http_diagnostics": {},
@@ -675,6 +770,62 @@
         "BUSINESS_ATTRIBUTE"
       ],
       "evidence": "observed field name on one bounded Maximo record"
+    },
+    {
+      "field": "domohnum+siteid",
+      "roles": [
+        "IDENTIFIER_CANDIDATE"
+      ],
+      "evidence": "Live JSON Schema declares domohnum and siteid as the composite pk; uniqueness across revisions was not independently tested."
+    },
+    {
+      "field": "progress",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "Live schema title is Progress Keseluruhan and one bounded record exposed numeric 45.28; range and percentage semantics remain unverified."
+    },
+    {
+      "field": "tgl_mulai/tgl_selesai",
+      "roles": [
+        "TIMESTAMP"
+      ],
+      "evidence": "Live schema titles are Tanggal Mulai and Tanggal Selesai; both were present in the bounded record, but outage-boundary semantics are unknown."
+    },
+    {
+      "field": "tgl_actual_mulai/tgl_actual_selesai",
+      "roles": [
+        "TIMESTAMP"
+      ],
+      "evidence": "Live schema titles are Tanggal Actual Mulai and Tanggal Actual Selesai; both were present in the bounded record, but outage-boundary semantics are unknown."
+    },
+    {
+      "field": "dur_oh",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "Live schema title is Durasi OH (Hari), establishing the planned-duration unit as days."
+    },
+    {
+      "field": "perfomance_test",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "Live schema type is boolean and title preserves the exact source spelling Perfomance Test Setelah OH; pass/fail semantics are unknown."
+    },
+    {
+      "field": "inspeksinum",
+      "roles": [
+        "INSPECTION_REFERENCE"
+      ],
+      "evidence": "Live schema title is Inspeksi; one exact BSR query matched DOM_INSPEKSIMESIN.dom_inspeksinum."
+    },
+    {
+      "field": "dokumen_rekomendasi/laporan_teknik/laporan_evaluasi/berita_acara_serahterima/berita_acara_syncron/notulensi",
+      "roles": [
+        "BUSINESS_ATTRIBUTE"
+      ],
+      "evidence": "Live JSON Schema types all six fields as boolean indicators; no document content or completion semantics were retrieved."
     }
   ]
 }
