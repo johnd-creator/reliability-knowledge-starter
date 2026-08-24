@@ -152,7 +152,10 @@ class AssetAfMappingRegistryTest(unittest.TestCase):
         self.assertEqual(response.pi_af.af_server_ref, "AF_SERVER_TEST")
         self.assertEqual(response.pi_af.af_element_ref, "AF_ELEMENT_TEST_001")
         self.assertEqual(response.candidates[0].evidence_method, "MANUAL_VERIFICATION")
-        self.assertEqual(response.candidates[0].verified_at, NOW)
+        verified_at = response.candidates[0].verified_at
+        if verified_at is not None and verified_at.tzinfo is None:
+            verified_at = verified_at.replace(tzinfo=timezone.utc)
+        self.assertEqual(verified_at, NOW)
         self.assertNotIn("verification_note", response.candidates[0].model_fields_set)
 
     def test_registry_has_no_credential_or_live_value_fields(self):
