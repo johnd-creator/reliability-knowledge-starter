@@ -258,4 +258,164 @@ justified.
 - OPC direct requests: 0.
 - PI Interface direct requests: 0.
 - DCS direct requests: 0.
+
+## PI-002A Maximo → AF Identity Follow-up
+
+This section is the sequential PI-002A follow-up. It preserves the PI-001A
+result: AF → PI Point and the stream contract are verified, while Maximo Asset
+→ AF Element remains unresolved. The evidence below is bounded to BSR/IP and
+does not claim global absence of a mapping.
+
+### Maximo Identity Candidates
+
+The verified Maximo Asset evidence identifies `assetnum` as the Object
+Structure primary key for `mxapiasset`. The collector keeps this value in its
+Maximo source quarantine and uses it as the source Asset number. It is the
+strongest candidate for a cross-system identity, but it is not promoted into a
+PI mapping without an explicit AF match.
+
+Other verified Asset fields that remain candidates for a future bridge are
+`assetid`, `location`, `parent`, `ancestor`, `plant`, `eq11`, `eq9`, `eq10`,
+`eq23`, and `eq5`, together with the scoped `siteid` and `orgid`. These fields
+describe source identity or context; their presence does not prove that AF
+uses the same key. The bounded scope is Maximo `BSR/IP`.
+
+Evidence class: `VERIFIED` for the Maximo field presence and `UNKNOWN` for a
+cross-system interpretation.
+
+### AF Equipment Identity Model
+
+Ten equipment Elements were resolved from existing verified AF attribute
+evidence and inspected through Element metadata. All ten exposed an Element
+name and a Description field; all ten exposed parent/child navigation links.
+Nine of ten exposed an Element Template link. This confirms contextual AF
+metadata and hierarchy navigation, not a Maximo identity bridge.
+
+No inspected Element metadata exposed a field explicitly verified as the
+Maximo `assetnum`, a Maximo `assetid`, or another governed external equipment
+identifier. Element names and descriptions were therefore treated only as
+possible discovery clues, not canonical identity.
+
+Evidence class: `VERIFIED` for the observed AF metadata shape; `UNKNOWN` for
+Maximo identity ownership.
+
+### AF Template Evidence
+
+Three referenced AF templates were inspected within the five-template bound.
+The sampled template responses did not expose an attribute collection that
+could be used to verify a Maximo, CMMS, EAM, or external-equipment key. No
+template field was promoted from naming similarity.
+
+`AF_ELEMENT_TEMPLATE_IDENTIFIED: YES` records the observed template
+references. `AF_STATIC_IDENTITY_ATTRIBUTE_IDENTIFIED: PARTIAL` records that
+identity-looking metadata was sampled but its source semantics and values were
+not verified.
+
+### Static Attribute Evidence
+
+Sixty non-PI-Point AF attribute metadata entries were inspected. Twenty-six
+had names that were candidate-like under literal identity tokens such as
+asset, equipment, location, plant, unit, ID, or code. This is naming evidence
+only. Ten bounded value requests for candidate attributes did not return a
+usable value, so no AF identifier value was available for exact comparison.
+
+No raw AF names, WebIds, ConfigStrings, or attribute values were retained.
+The existing PI-001A result remains unchanged: PI Point-backed Attributes are
+technically linked to streams, but that does not establish Asset identity.
+
+Evidence class: `SOURCE_SEMANTICS_REQUIRE_VERIFICATION` for the
+identity-looking names; `UNKNOWN` for their business ownership.
+
+### Reverse Mapping Evidence
+
+The reverse direction was evaluated from the sampled AF Element metadata and
+candidate static attributes toward the local Maximo/Collector Asset identity.
+Ten local Registered Reliability Asset candidates were selected in memory;
+their raw identifiers were not persisted. No AF Element name/description and
+no usable static-attribute value produced an exact match to a candidate
+`assetnum`.
+
+The local bounded platform contains 845 registered BSR/IP Assets and 10,660
+Asset Master rows. Those counts establish candidate-selection context only;
+they do not create an AF relationship.
+
+Evidence class: `NOT_FOUND` for the tested bounded exact-match paths, with the
+overall native mapping still unresolved.
+
+### Location Mapping
+
+Maximo `location` is a verified source field and remains a possible bridge.
+The sampled AF Element metadata did not expose a verified location identifier
+or an exact location value that could be joined to Maximo. Hierarchy position,
+Element name, and description are supporting context only.
+
+`MAXIMO_LOCATION_TO_AF: PARTIAL` for this bounded metadata probe. A direct
+Asset → AF mapping must not be inferred from location or hierarchy alone.
+
+### Mapping Candidate Matrix
+
+| Maximo candidate | AF evidence tested | Exact result | Classification |
+|---|---|---:|---|
+| `assetnum` | Element name/description and usable static values | 0 | `NOT_FOUND` in bounded sample |
+| `assetid` | Element metadata and static-attribute metadata | 0 usable values | `UNKNOWN` |
+| `location` | Element metadata and hierarchy context | 0 | `SUPPORTING_CONTEXT_ONLY` |
+| `parent` / `ancestor` | AF parent/child navigation | no identity edge | `SUPPORTING_CONTEXT_ONLY` |
+| `plant` / unit / equipment fields | AF hierarchy and candidate static names | no governed key | `NAME_SIMILARITY_ONLY` at most |
+
+No candidate meets `DIRECT_VERIFIED_IDENTIFIER`, `DERIVED_VERIFIED_PATH`, or
+`GOVERNED_LOOKUP`.
+
+### Exact Match Results
+
+- Maximo Registered Reliability Asset candidates tested: 10.
+- AF equipment Elements sampled: 10.
+- AF templates sampled: 3.
+- Non-PI-Point AF attributes inspected: 60.
+- Usable candidate identity values read: 0.
+- Exact Element identifier matches: 0.
+- Exact static-attribute identifier matches: 0.
+- Ambiguous matches: 0.
+- Unmatched candidates: 10.
+- Mapping-key uniqueness: `UNKNOWN`, because no candidate key was verified.
+
+The previous PI-001A three-candidate result is preserved. This follow-up
+expands bounded metadata inspection and still does not establish a native
+Maximo → AF key.
+
+### Mapping Readiness
+
+```text
+AF_ELEMENT_TEMPLATE_IDENTIFIED: YES
+AF_STATIC_IDENTITY_ATTRIBUTE_IDENTIFIED: PARTIAL
+MAXIMO_ASSET_IDENTITY_FIELD_IDENTIFIED: YES
+MAXIMO_LOCATION_TO_AF: PARTIAL
+NATIVE_MAXIMO_AF_MAPPING: NOT_FOUND (bounded evidence only)
+MAPPING_KEY_UNIQUENESS: UNKNOWN
+GOVERNED_MAPPING_REGISTRY_REQUIRED: UNKNOWN
+MAXIMO_TO_AF_MAPPING: NOT_FOUND (bounded evidence only)
+ASSET_TO_AF_ELEMENT_READY: NO
+ASSET_SIGNAL_MAPPING_READY: NO
+TIME_SERIES_EVIDENCE_READY: YES
+CONDITION_FINDING_READY: NO
+PDM_DATA_FOUNDATION_READY: PARTIAL
+```
+
+Decision: `CASE D — evidence remains insufficient`. If a further targeted
+probe confirms that no native identifier or governed lookup exists, NADI will
+need an explicit, auditable Maximo Asset ↔ AF Element mapping registry rather
+than a name-based join. That registry is documented as a governance option
+only; it is not implemented here.
+
+### PI-002A Request Audit
+
+- PI GET requests: 42 total in the bounded AF metadata probe; 32 returned
+  HTTP 200 and 10 returned non-success responses while probing candidate
+  attribute values.
+- Maximo GET requests: 0; existing verified Maximo Asset schema and local
+  collector data were sufficient for candidate selection.
+- PI writes: 0.
+- DCS direct requests: 0.
+- OPC direct requests: 0.
+- PI Interface direct requests: 0.
+- Historical stream GET requests: 0.
 - Response-size cap: preserved at 1 MiB.
