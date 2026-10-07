@@ -102,6 +102,24 @@ class ReadOnlyGuardTest(unittest.TestCase):
         self.assertEqual(client.request_telemetry["business_requests"], 1)
         self.assertEqual(client.request_telemetry["status_counts"], {"200": 1})
 
+    def test_scoped_budget_restores_and_cannot_expand_outer_budget(self):
+        class Session:
+            def request(self, *args, **kwargs):
+                return SimpleNamespace(status_code=200, content=b"{}")
+        session = Session()
+        client = OslcClient(self.config, MaximoAuth(self.config, session=session),
+                            session=session, request_budget=2)
+        with client.bounded_requests(1):
+            client.get("/oslc/os/mxwodetail")
+            with self.assertRaises(OslcError):
+                client.get("/oslc/os/mxwodetail")
+        self.assertEqual(client.request_telemetry["budget"], 2)
+        with client.bounded_requests(40):
+            client.get("/oslc/os/mxwodetail")
+            with self.assertRaises(OslcError):
+                client.get("/oslc/os/mxwodetail")
+        self.assertEqual(client.request_telemetry["business_requests"], 2)
+
     def test_auth_and_oslc_share_session(self):
         auth = MaximoAuth(self.config)
         client = OslcClient(self.config, auth)
@@ -163,6 +181,19 @@ class PaginationCompletionTest(unittest.TestCase):
         queue = iter(responses)
         client.get = lambda _url: next(queue)
         return client
+
+    def test_strict_page_shapes_reject_silent_row_loss(self):
+        for payload in ({}, {"_member": [None]}, {"_member": [{"wonum": "BSR1"}, 7]}):
+            with self.subTest(payload=payload):
+                client = self._client([self.Response(payload)])
+                with self.assertRaises(OslcError):
+                    list(client.iterate_pages("mxwodetail", strict_members=True))
+
+    def test_complete_page_is_available_for_order_validation(self):
+        client = self._client([self.Response({"_member": [{"wonum": "BSR1"}, {"wonum": "BSR2"}]})])
+        pages = list(client.iterate_pages("mxwodetail", strict_members=True))
+        self.assertEqual(len(pages), 1)
+        self.assertEqual(len(pages[0]), 2)
 
     def test_natural_final_page_is_complete_at_cap_boundary(self):
         client = self._client([

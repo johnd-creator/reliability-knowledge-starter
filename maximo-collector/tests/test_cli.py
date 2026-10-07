@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import unittest
 from types import SimpleNamespace
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 from src.cli import _safe_error_metadata, cmd_diagnose, cmd_sync, parse_args
 
@@ -60,6 +60,24 @@ class SyncIsolationTest(unittest.TestCase):
 
         self.assertEqual(result, 1)
         self.assertEqual(service.calls, ["mxwodetail", "mxperson"])
+
+
+class BackfillIsolationTest(unittest.TestCase):
+    def test_backfill_disables_recency_and_cursor(self):
+        from src.cli import cmd_backfill
+        service = Mock()
+        service.sync.return_value = SimpleNamespace(
+            object_structure="mxwodetail", rows_seen=0, upserted=0, skipped=0,
+            errors=0, complete=True, pagination_error=None)
+        with (patch("src.cli.get_database", return_value=object()),
+              patch("src.cli.CollectorStore", return_value=object()),
+              patch("src.cli._sync_service", return_value=(service, object()))):
+            self.assertEqual(cmd_backfill(SimpleNamespace(page_size=5, max_pages=2)), 0)
+        cfg = service.sync.call_args.args[0]
+        self.assertFalse(cfg.recent_work_orders)
+        self.assertIsNone(cfg.watermark_field)
+        self.assertIsNone(cfg.order_by)
+        self.assertEqual(cfg.max_pages, 2)
 
 
 class SafeErrorMetadataTest(unittest.TestCase):

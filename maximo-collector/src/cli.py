@@ -149,6 +149,8 @@ def cmd_sync(args: argparse.Namespace) -> int:
             f"{stats.skipped} skipped, {stats.errors} errors, "
             f"complete={complete}, watermark={stats.watermark}"
         )
+        if getattr(stats, "recency", None):
+            print(json.dumps(stats.recency, sort_keys=True))
         if not complete:
             exit_code = 1
     return exit_code
@@ -163,6 +165,8 @@ def cmd_backfill(args: argparse.Namespace) -> int:
     config = replace(
         sync_config_for("mxwodetail"),
         watermark_field=None,
+        recent_work_orders=False,
+        order_by=None,
         # The verified site scope plus the accepted Maximo IN-prefix filter
         # bounds the historical traversal to BSR work-order keys. The prefix
         # is still validated client-side as a second safety boundary.
