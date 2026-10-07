@@ -1,5 +1,13 @@
 # 01 — Audit Kondisi Saat Ini dan Inventaris Data
 
+> PARTIAL / HISTORICAL proposal context (20 Agustus 2026). Current vision and
+> execution status: [platform roadmap](../README.md), [NADI product roadmap](../NADI-ROADMAP.md)
+> and [reconciled M0–M8](05-roadmap-implementasi.md). Preserve this document's
+> design detail; do not treat its dated DONE/BLOCKED tables as current status.
+> The canonical NADI Mart reader is an explicit SELECT-only path into the existing
+> Maximo Collector DB, superseding old blanket “Cockpit API-only” assumptions.
+> PI/CEMS NADI projections remain pending; reuse existing stores/volumes.
+
 ## Metode dan batas audit
 
 Audit ini membaca kode, konfigurasi contoh, schema, registry, migration, API, dan

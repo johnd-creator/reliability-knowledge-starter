@@ -1,5 +1,55 @@
 # 05 — Roadmap Implementasi dan Backlog
 
+> Current roadmap entry point: [Power Plant Data Platform](../README.md).
+> Product priority: NADI Phase 0–5; this document owns the M0–M8 engineering backlog.
+
+## Status eksekusi terkini — rekonsiliasi 7 Oktober 2026
+
+Basis: `main ef07a263b122d30e7dbec451e6094f9016b603c3`. Roadmap ini adalah
+**engineering implementation roadmap di bawah [NADI Phase 0–5](../NADI-ROADMAP.md)**,
+bukan roadmap produk yang terpisah. [Repository Status](../REPOSITORY-STATUS.md)
+menyimpan bukti PR/branch dan batas audit. NK mempunyai [child roadmap](../NK-ROADMAP.md).
+
+Status milestone menggunakan seluruh exit criteria, bukan sekadar keberadaan
+file. Karena acceptance luas belum terbukti, M0–M8 dinilai **PARTIAL**; tabel
+berikut tetap mengakui artefak yang sudah selesai. `NEEDS_REVIEW` berarti belum
+ada bukti yang cukup untuk menerima exit criterion, bukan klaim implementasi
+itu pasti tidak ada. Test/QA lama dicatat sebagai evidence historis, tidak
+sebagai test run baru pada audit dokumentasi ini.
+
+| Milestone | Status / kemajuan yang terbukti di main | Remaining / acceptance | Product relationship |
+|---|---|---|---|
+| M0 Architecture | PARTIAL: baseline/proposal/collector API boundary tersedia (`5f87013`, `87486cc`); factual NADI scope dan semantic trust matang lewat PR #1–#10 | ARCH-002 API-only harus dibaca dengan pengecualian Mart SELECT-only; DATA-002 cadence/SLO dan DATA-003 governed failure meaning belum diterima | Foundation untuk semua phase |
+| M1 Runtime | PARTIAL: backend/web Dockerfile, root Compose/dev override, empat DB volume, init/env/runbook tersedia | Main belum memasok Mart DSN dan managed PI worker; cold-start/restart/restore acceptance perlu review. `7149455` dan `0c800da` adalah kandidat UNMERGED, bukan DONE | Phase 0 runtime debt / Phase 1 readiness |
+| M2 Collectors | PARTIAL: Maximo cadence/run, PI snapshot/history CLI, CEMS collect/aggregation daemon dan source safety sudah menjadi artefak main | Global lease/non-overlap, benchmark tier/freshness, gap metrics, retention dan 24h multi-source acceptance belum terbukti lengkap | Shared foundation / Phase 1 evidence |
+| M3 Contracts & Identity | PARTIAL: canonical Contract v1 (`28a0d47`, `0213402`), Mart (`6ec2b22`, `9e6f2b5`), governed Asset↔AF registry/admin (PR #8–#10) merged | IDN pilot VERIFIED mappings belum dibuktikan; migration/read-only grants/runtime acceptance terpisah. Richer PI quality exposure/contracts serta CEMS/status/decision contracts perlu review | Phase 0 canonical foundation + Phase 1 identity; future domain contracts |
+| M4 Ingestion | PARTIAL: Maximo API→legacy Cockpit path, canonical Mart query (`7576214`), local Collector→Mart projection (`fa1bc05`) tersedia | ING-003/004/006/008 PI/CEMS projection, integration freshness/degraded/coverage dan acceptance belum diterima. Configurable API bases tidak membuktikan ingestion | Phase 1 current execution |
+| M5 Derived Reliability Domain | PARTIAL: legacy KPI code dan evidence catalog tersedia; factual Maintenance Activity accepted | DOM-001..006/008 belum diterima sebagai NADI intelligence; DOM-007 lineage/failure definition tetap dibatasi. Health/risk/failure/PdM/recommendation tidak dibuka oleh legacy KPI | Phase 3–4; bukan syarat mengada-ada untuk factual Phase 0 |
+| M6 API / UI Foundation | PARTIAL: read-only canonical API, AppShell, factual aggregates, paging/filter/error/accessibility evidence ada dalam PR #1 | API-003/004 workflow/AuthZ/concurrency, UI-004 integration status dan wider freshness/caching acceptance perlu pekerjaan/verification | Phase 0 factual scope COMPLETE; Phase 1–2 expansion |
+| M7 Product Screens | PARTIAL: sembilan factual NADI routes accepted PR #1, `v0.1.0-rc.1`; Overview, Assets, Maintenance, FMEA, RCFA, Health, Overhaul, Data Trust | UI-103 PdM, UI-104 Recommendations, UI-105 Action Board sengaja belum exposed; Reports/Admin tetap scope/acceptance mendatang, bukan placeholder dianggap DONE | Phase 0 factual screens COMPLETE; Phase 2–4 later screens |
+| M8 Hardening / Release | PARTIAL: factual RC freeze, recorded backend/web/type/build/route/contract/privacy QA; mapping timestamp fix PR #10; RC tag exists | OPS backup/restore, RPO/RTO, retention, soak, performance/security scan/UAT dan broader release acceptance NEEDS_REVIEW. No tracked GitHub workflow config at baseline | Phase-specific acceptance; full operational platform later |
+
+### Rekonsiliasi ID dan klaim lama
+
+- ARCH-002 / ING-007: consumer tidak memiliki credential sumber. Legacy memakai
+  API collector; canonical Mart memakai approved local SELECT-only reader.
+- M1 PLAT artefacts “ada” tidak sama dengan exit criteria runtime diterima.
+  Jangan membuat ulang DB untuk mencapai cold-start checklist pada deployment existing.
+- M3 IDN-001: mekanisme governance sudah merged; pilot data VERIFIED belum
+  tersertifikasi. IDN-002 CEMS stack identity tidak dipaksa menjadi PI/Asset identity.
+- M4 ING-001/002: Maximo legacy path implemented; Mart projection adalah jalur
+  berbeda. PI/CEMS projection tetap pending di main, bukan source-access claim.
+- M6–M7: tabel lama “seluruh UI blocked” superseded oleh factual V1 release.
+  Domain baru/kolaborasi/prediktif tetap future scope.
+- M8: PR #1 dan tag sudah ada; status release PR/tag pending pada snapshot lama
+  tidak lagi berlaku. Operational sign-off/soak/restore tidak disimpulkan dari tag.
+
+**Next technical PR: NADI-PI-001**, review/integrasi governed PI source boundary
+`d23f848` tanpa bulk merge NK/deployment `0c800da`. Lanjut pilot mapping → PI
+projection → integration trust → Phase 1 acceptance, sesuai NADI roadmap.
+Backlog detail dan exit criteria M0–M8 di atas tetap tersedia; dokumen ini tidak
+mengimplementasikan future workflow, scoring atau source integrations.
+
 ## Cara membaca roadmap
 
 Roadmap ini berurutan berdasarkan dependency, bukan janji kalender. Estimasi memakai
@@ -298,7 +348,11 @@ tidak boleh masuk production sebelum diputuskan:
 
 Jawaban disimpan sebagai ADR/configuration approval, bukan hanya percakapan.
 
-## Status eksekusi — 20 Agustus 2026
+## Historical snapshot — Status eksekusi 20 Agustus 2026
+
+> HISTORICAL: tabel dan hasil test di bawah dipertahankan sebagai audit trail.
+> Gunakan rekonsiliasi di atas untuk status aktif; angka test/schema bukan target permanen.
+
 
 Legenda: **DONE** berarti artefak dan validasi lokal ada; **PARTIAL** berarti fondasi ada tetapi exit criterion belum terbukti; **BLOCKED** menunggu data/keputusan yang tidak boleh diasumsikan.
 

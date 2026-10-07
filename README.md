@@ -1,45 +1,87 @@
-# Reliability Knowledge Starter
+# Power Plant Data Platform
 
-Starter workspace for building a reusable organizational data knowledge layer around:
+Monorepo untuk fondasi data pembangkit yang dipakai bersama oleh aplikasi
+engineering dan analitik. Nama repository tetap `reliability-knowledge-starter`;
+visi produknya telah berkembang menjadi **Power Plant Data Platform**.
 
-- IBM Maximo APIs
-- AVEVA/OSIsoft PI Web API / PI Vision-adjacent data access
-- Reliability semantic contracts
-- Application consumers such as Reliability Cockpit
-
-## Repository Layout
+**Mulai di [peta platform dan roadmap](plans/README.md).** Dalam beberapa menit,
+dokumen itu menjelaskan posisi produk, pekerjaan berikutnya, dan utang branch.
 
 ```text
-reliability-knowledge-starter/
-├── maximo-knowledge/
-├── pi-knowledge/
-├── reliability-data-contracts/
-├── reliability-cockpit/
-├── pi-collector/
-└── maximo-collector/
+POWER PLANT DATA PLATFORM
+├── Shared Data Foundation
+│   ├── Maximo Knowledge + Maximo Collector
+│   ├── PI Knowledge + PI Collector
+│   ├── CEMS Collector
+│   └── Reliability Data Contracts / Governance
+├── NADI — main quest: Reliability / Engineering Intelligence
+└── NK — child roadmap: Coal Calorific Value Prediction
 ```
 
-## Design Principles
+Collector memiliki akuisisi sumber, pengaturan cadence, kualitas sumber, dan
+penyimpanan lokal. Aplikasi memakai kemampuan collector atau kontrak yang
+dikelola; aplikasi tidak melakukan discovery produksi sendiri.
 
-1. Source knowledge is separated from applications.
-2. Discovery must be read-only.
-3. Knowledge must be both human-readable and machine-readable.
-4. Business meaning must be recorded alongside technical API details.
-5. Credentials, tokens, cookies, passwords, and sensitive production data must never be committed.
-6. Applications should depend on semantic contracts rather than vendor-specific APIs whenever possible.
+## Posisi saat kembali ke repository
 
-This is a mono repository. Git is initialized at this root; the subprojects do
-not contain nested Git repositories. Each project retains its own setup, test,
-and run commands as documented in its `AGENTS.md` / `README.md`.
+Audit **7 Oktober 2026**, baseline `main`:
+[`ef07a26`](https://github.com/johnd-creator/reliability-knowledge-starter/commit/ef07a263b122d30e7dbec451e6094f9016b603c3)
+(24 Agustus 2026).
 
-## Recommended Workflow
+- **NADI Phase 0 — Factual Foundation: COMPLETE**, dalam batas release faktual
+  `v0.1.0-rc.1`. Ini bukan sertifikasi bahwa seluruh platform production-ready.
+- **NADI Phase 1 — Evidence Expansion: CURRENT / PARTIAL.** Discovery sumber
+  dan administrasi governed Asset ↔ AF sudah merged. Pilot mapping dan bukti PI
+  di NADI masih belum diterima.
+- **Next technical PR: NADI-PI-001 — Governed PI Source Adapter.** Review dan
+  rekonsiliasi kandidat `d23f848` ke baseline terbaru; jangan merge seluruh
+  branch campuran NK/deployment hanya untuk mengambil adapter.
+- **NK sengaja menjadi aplikasi kedua.** Implementasi manual dan integrasi PI
+  ada di feature branch `feature/pi-governed-source-adapter`, belum di `main`.
+  PI integration masih partial: seluruh 13 feature mapping belum disetujui.
+- Utang runtime Mart, branch lama, dan perbedaan Git/runtime dijelaskan di
+  [Repository Status](plans/REPOSITORY-STATUS.md). Audit ini tidak menjalankan
+  source collector atau memeriksa ulang data produksi.
 
-1. Start discovery inside `maximo-knowledge` and `pi-knowledge`.
-2. Let Codex document verified endpoints and data structures.
-3. Map technical source fields into reliability concepts.
-4. Store shared entity definitions inside `reliability-data-contracts`.
-5. Build application integrations from the knowledge repositories rather than rediscovering the source systems.
+## Komponen
 
-## Important
+| Path | Peran |
+|---|---|
+| `maximo-knowledge/` | Pengetahuan sumber Maximo dan discovery read-only |
+| `pi-knowledge/` | Registry, topology dan bukti sumber PI |
+| `maximo-collector/` | Sinkronisasi Maximo, local store, canonical Mart |
+| `pi-collector/` | Snapshot / time-series PI dan API untuk banyak consumer |
+| `cems-collector/` | Read-only Modbus, normalisasi dan agregasi CEMS |
+| `reliability-data-contracts/` | Kontrak vendor-neutral, identity dan provenance |
+| `reliability-cockpit/` | Implementasi NADI: FastAPI + Next.js |
+| `NK/` | Streamlit / ML; tersedia di feature branch, sengaja belum disalin ke main |
 
-This starter contains templates only. Replace placeholders only after verifying them against your authorized environment.
+Tidak ada root build/test tunggal; setiap komponen memiliki environment sendiri.
+Root Compose adalah deployment orchestration. Reuse database dan volume yang
+sudah ada. Reliability Mart berada di database Maximo Collector; **NK tidak
+memerlukan database baru** dan membaca PI Collector API.
+
+## Sumber kebenaran
+
+1. [Vision](plans/PLATFORM-VISION.md): tanggung jawab dan batas data.
+2. [NADI Product Roadmap](plans/NADI-ROADMAP.md): Phase 0–5 dan next task.
+3. [Engineering Roadmap](plans/reliability-cockpit-platform/05-roadmap-implementasi.md):
+   M0–M8, dependency dan status yang direkonsiliasi.
+4. [NK Child Roadmap](plans/NK-ROADMAP.md): manual, mapping, fetch, validation, pilot.
+5. [Repository Status](plans/REPOSITORY-STATUS.md): SHA, PR, branch debt dan governance.
+6. [AGENTS.md](AGENTS.md): instruksi agen; baca juga aturan scoped setiap komponen.
+
+Dokumen discovery/domain tetap menjadi bukti semantik. Dokumen proposal lama dan
+`summary.md` tetap tersedia sebagai histori, bukan daftar pekerjaan aktif.
+
+## Cara bekerja
+
+Gunakan branch per task → PR ke `main` → review dan pemeriksaan yang relevan.
+Default branch belum protected pada audit; rekomendasi ringan ada di Repository
+Status. Jangan auto-merge atau menghapus branch berdasarkan dokumen audit ini.
+
+Produksi tetap read-only. Jangan commit `.env`, credential, cookie, payload
+produksi mentah, atau data personal. Jangan membuat database/worker duplikat untuk
+mengatasi halaman kosong. Periksa konfigurasi, ownership, cursor dan freshness
+terlebih dahulu; lihat [deployment runbook](deploy/compose/README.md), termasuk
+batas runtime pada baseline `main`.

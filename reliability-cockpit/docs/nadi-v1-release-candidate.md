@@ -1,5 +1,11 @@
 # NADI V1 Release Candidate
 
+> Release QA snapshot for factual V1 (2026-08-22). Mainline reconciliation
+> (2026-10-07): PR #1 merged as `af1d9bd`; tag `v0.1.0-rc.1` exists at that
+> commit. Current product priority/status lives in [NADI Roadmap](../../plans/NADI-ROADMAP.md).
+> Later merged discovery advanced FMEA item/RCFA source relationships without
+> changing this accepted product projection or unlocking their business analytics.
+
 ## Product Identity
 
 NADI — Navigasi Analitik Data dan Informasi
@@ -117,7 +123,7 @@ convention is `v0.1.0-rc.1`; no Git tag is created by this task.
 - Raw statuses and unresolved relationships are not fabricated into business
   conclusions.
 
-## Release Acceptance
+## Release QA Acceptance — historical snapshot
 
 The checklist below is the evidence gate for this factual V1 release candidate
 and is updated by the release-freeze task:
@@ -133,7 +139,9 @@ and is updated by the release-freeze task:
 - [PASS] Development and production route smoke pass for all nine routes.
 - [PASS] Reliability Contract schemas validate without changes.
 - [PASS] Secret/privacy audit and `git diff --check` pass.
-- [PENDING] Separate release PR, mainline integration, and release tagging task.
+- [PASS — reconciled 2026-10-07] PR #1 mainline integration (`af1d9bd`) and
+  existing tag `v0.1.0-rc.1` verified by Git/GitHub. The active branch and upstream
+  checks above describe the original release QA, not this docs audit branch.
 
 This document certifies a tested factual release boundary, not a claim that
 the future reliability platform is complete.

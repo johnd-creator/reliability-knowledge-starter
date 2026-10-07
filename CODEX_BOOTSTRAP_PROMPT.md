@@ -1,42 +1,43 @@
-# Codex Bootstrap Task — Reliability Knowledge Foundation
+# Agent bootstrap — Power Plant Data Platform
 
-You are working on an enterprise reliability knowledge foundation.
+Read `AGENTS.md` and `plans/README.md` before choosing work. This repository is
+an existing platform, not a templates-only discovery starter.
 
-## Objective
+## First actions
 
-Build and continuously improve reusable read-only knowledge for:
+1. Read Git status, branch and current main baseline; preserve local changes.
+2. Read `plans/PLATFORM-VISION.md`, the relevant product roadmap, engineering
+   roadmap and `plans/REPOSITORY-STATUS.md`.
+3. Read the owning component's scoped `AGENTS.md` / `CONTEXT.md` and domain docs.
+4. Verify proposed work against actual Git/PR/source evidence; distinguish
+   merged, unmerged, partial and planned work. Old graph/doc snapshots are not
+   proof of current completeness.
+5. Work in a task branch/worktree from the requested baseline. Use source graph
+   discovery with coverage checks, then exact source fallback where stale.
 
-1. Maximo
-2. PI Web API
-3. Reliability semantic contracts
+## Current product direction
 
-## First Task
+NADI is the main quest: factual Phase 0 accepted, Phase 1 Evidence Expansion
+current/partial. Next technical PR is NADI-PI-001, whose scope/acceptance is in
+`plans/NADI-ROADMAP.md`. NK is an intentional child application, with branch-only
+code and separate mapping/model validation acceptance in `plans/NK-ROADMAP.md`.
 
-Inspect the repository structure and validate all starter catalogs and schemas.
+Do not start an implementation merely because it is listed as next; execute the
+actual user task. Do not bulk merge old branches or copy their data/models.
 
-Then, for the selected source repository:
+## Boundaries
 
-- inspect existing documentation first
-- identify safe discovery targets
-- document unknowns
-- do not fabricate endpoint names
-- do not fabricate tags/WebIds
-- keep production interactions read-only
-- sanitize all samples
-- update machine-readable catalogs
-- update human-readable documentation
-- create small focused commits
+Reuse existing DBs/volumes and shared collectors. NK needs no DB. Mart lives in
+Maximo Collector DB; NADI legacy store and canonical Mart read paths differ.
+No source credentials or independent production discovery in consumer apps.
+Preserve read-only guards, semantic unknowns, units/identity/quality/time rules.
+No runtime restart, source probe or model retraining as an implicit docs task.
+PI credential investigation remains deferred until the user requests resumption.
 
-## Completion Criteria
+## Handoff
 
-A discovery item is complete only when:
-
-- endpoint/resource identity is recorded
-- access status is recorded
-- important fields are documented
-- business use is documented
-- sample is sanitized
-- verification date is stored
-- uncertainty is explicit
-
-Never treat guessed information as verified.
+Report changes, evidence, checks and limitations; update the owning roadmap
+when accepted scope changes. Prefer focused PRs with task ID and acceptance.
+Never describe tests, runtime freshness, mappings or analytics as verified from
+branch existence or a conversation alone. Never publish secrets or raw source
+exports. Documentation-only tasks must remain Markdown-only.
