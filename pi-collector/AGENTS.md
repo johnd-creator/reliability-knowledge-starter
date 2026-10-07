@@ -8,13 +8,22 @@ without ever mutating production PI.
 
 ## Source of Truth
 
-Before introducing a PI tag, WebId, or attribute into the collector:
+Before introducing a PI tag, WebId, or attribute into technical collection:
 
 1. The attribute **must** exist in `pi-knowledge` with `status: verified`.
 2. The registry YAML (`../pi-knowledge/mappings/bsr1-parameters.yaml`) is the
-   sole input — never hardcode WebIds in collector code.
+   sole input for technical collection — never hardcode WebIds in collector
+   code. A technical registry entry is not a governed NADI Asset signal.
 3. If an attribute is missing, create a discovery task in `pi-knowledge` first.
 4. Do not guess production identifiers.
+
+Governed source operations accept only explicit `GovernedAfTarget` values from
+a trusted mapping resolver. They use source-returned metadata after checking
+AF server/database/element/attribute lineage, not guessed names or new technical
+registry seeds. This does not approve attribute business semantics. See
+[governed boundary](docs/governed-source-boundary.md). No public live-source
+proxy route is provided; future orchestration must enforce unique Mart mapping
+resolution and caller authorization before creating a target.
 
 ## Mandatory Safety Rules
 
@@ -23,7 +32,7 @@ Before introducing a PI tag, WebId, or attribute into the collector:
 2. Never create/delete/update PI Points, AF Elements, Attributes, analyses,
    event frames, or configuration.
 3. Never brute-force WebIds, tag names, or authentication.
-4. Respect server rate limits (default 1 req/s).
+4. Respect server rate limits (hard minimum 1s/request).
 5. Never store credentials, cookies, NTLM/Kerberos artifacts, tokens, or
    session data.
 6. The collector writes only to its **own** Postgres/TimescaleDB store.
@@ -84,8 +93,9 @@ weekends; the in-app off-hours gate stays active as the final authority.
 
 ## Gotchas
 
-- PI pagination links (`Links.Next`) are absolute URLs; `iter_recorded()` strips
-  the base URL before re-requesting — keep that behavior if refactoring.
+- PI pagination links (`Links.Next`) may be absolute URLs; `iter_recorded()`
+  validates scheme/host/port against the configured PI origin before using the
+  link. Foreign origins must be rejected so credentials cannot be forwarded.
 - `recorded-delta` run mode tracks its cursor in `pi_collect_cursor` keyed
   `recorded-delta`; do not reuse that scope name for other purposes.
 - The heatmap endpoint uses `date_trunc('day', ...)` — TimescaleDB accelerates

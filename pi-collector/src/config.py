@@ -32,7 +32,7 @@ def load_env() -> None:
 
 @dataclass(frozen=True)
 class PiApiConfig:
-    base_url: str
+    base_url: str | None = None
     timeout_seconds: int = 30
     rate_limit_seconds: float = 1.0
     max_response_bytes: int = 1_048_576
@@ -43,8 +43,9 @@ class PiApiConfig:
 
     @classmethod
     def from_environment(cls) -> "PiApiConfig":
+        base_url = os.getenv("PI_WEB_API_BASE_URL", "").strip().rstrip("/") or None
         return cls(
-            base_url=os.getenv("PI_WEB_API_BASE_URL", "https://pivision.plnindonesiapower.co.id/piwebapi").rstrip("/"),
+            base_url=base_url,
             timeout_seconds=int(os.getenv("PI_TIMEOUT_SECONDS", "30")),
             rate_limit_seconds=float(os.getenv("PI_RATE_LIMIT_SECONDS", "1.0")),
             max_response_bytes=int(os.getenv("PI_MAX_RESPONSE_BYTES", str(1_048_576))),
