@@ -1,6 +1,12 @@
 # MAXIMO-WO-RECENCY-001 — bounded recent WO sync
 
-Status: **PARTIAL**, implemented for review; not deployed, no production catch-up.
+FIX-01 status: **PASS (code-complete)**, pending review/deployment.
+
+- SOURCE CAPABILITY VERIFIED: prior bounded live evidence below.
+- IMPLEMENTATION VERIFIED: 181 hermetic tests pass.
+- BOOTSTRAP NOT YET EXECUTED in production.
+- ROUTINE NOT CURRENT in production; reviewed code is not deployed.
+- NADI NOT CURRENT / recent Maintenance not yet verified.
 Baseline: `a8393ba7d8dfddcae67b14b6153a8056c2f01d34` (latest main verified before
 and after implementation). Branch: `codex/maximo-wo-recency-001`. Independent
 PR #12 remains open at `417dbc8316e1bfbd9ffba0c8bd4777bd186cf8ff`; no changes.
@@ -76,14 +82,49 @@ errors, pagination loops/caps and request budgets retain the old cursor. Earlier
 valid committed rows can replay on restart. `cursor_requires_zero_errors=True`
 is mandatory in the routine recency path.
 
-**Empty cursor limitation:** bounded newest-first bootstrap can acquire current
-rows but cannot declare historical coverage after a cap. It will replay that
-bounded top population on later runs while the cursor remains empty. No cursor
-is inferred from MAX(local changedate), no cursor is reset, and this PR does not
-silently select a new history boundary. Establishing a reviewed initial coverage
-policy/continuation strategy remains necessary for this deployment to become a
-steady incremental worker. The cursor-independent historical `backfill` command
-still traverses its explicitly capped population; it does not move this cursor.
+**Empty cursor recovery (FIX-01):** routine sync now returns
+BOOTSTRAP_REQUIRED with zero source requests. It records aggregate local run
+state but never traverses the top population or invents a cursor.
+
+The explicit `bootstrap-workorders-recent` command takes required finite
+`--max-pages` (1..1000) and `--request-budget` (1..2000), plus `--page-size`
+(1..25, default 25). No unlimited mode. It uses the verified prefix/order/site
+query and the same full-page BSR/IP, order and mapping validation. Ordinary
+routine limits remain 20 pages/40 business requests.
+
+Its initial recovery floor comes from MAX(work_order.source_changed_at) in the
+existing Collector, not the Mart. A standalone `latest_work_order_change()`
+store query is read-only and never mutates a cursor. Before any source reads or
+WO upserts, the operator command saves this floor as a reserved
+`mxwodetail-recovery-floor` / `recovery-floor` evidence row in the existing
+collect_run table. It is **not** a sync_cursor. Retries reuse that original
+marker, because partial upserts may raise the current local MAX. Never remove
+or replace the floor marker merely to make recovery appear complete. No new
+DB/table/migration. A PG session advisory lock serializes explicit bootstrap
+attempts and is released on success/failure. Empty/missing/unusable local
+floor returns BOOTSTRAP_BLOCKED without source access. A pre-existing runtime
+cursor returns BOOTSTRAP_NOT_REQUIRED and is never reset.
+
+Traverse from source newest through **all floor timestamp ties**, then stop
+strictly below the floor. Natural source exhaustion is acceptable only when
+its validated oldest row has reached the floor (including equality). Exhaustion
+above the floor returns RECOVERY_FLOOR_NOT_REACHED. Every partial/error leaves
+the runtime cursor absent; valid committed rows remain idempotent local progress.
+Retry starts newest-first with the same durable floor and deliberately chosen
+larger finite ceilings if needed. It does not resume an unstable offset token.
+
+After successful reconciliation, set the cursor to the newest successful
+accepted change, capped at bootstrap start time. Changes made after bootstrap
+started therefore remain eligible for the next normal sync. The CLI immediately
+runs a conservative routine verification and reports its result separately. If
+that verification fails, bootstrap success is not undone or equated with routine
+freshness. Historical `backfill` remains independent and does not establish the
+operational cursor.
+
+Additional stop states: BOOTSTRAP_REQUIRED, BOOTSTRAP_BLOCKED, BOOTSTRAP_BUSY,
+BOOTSTRAP_NOT_REQUIRED, RECOVERY_FLOOR_REACHED, RECOVERY_FLOOR_NOT_REACHED,
+CURSOR_STORE_ERROR. Evidence includes recovery floor, floor reached, configured
+page/request ceilings, consumed requests/pages, source range and cursor before/after.
 
 **Paging limitation:** tie overlap/local order validation assumes the source
 honors its descending-order contract over the traversed population. A moving
@@ -108,8 +149,11 @@ From the isolated worktree's `maximo-collector` directory:
 /home/john-d/Music/reliability-knowledge-starter/maximo-collector/.venv/bin/python -m unittest discover -s tests
 ```
 
-**155 tests passed**, including 19 new recency cases, client page-shape/budget
-regressions and CLI backfill isolation. Tests use fakes/local SQLite only, with
+**181 tests passed**: the previous 155-test regression coverage plus 26 FIX-01
+cases for bootstrap/floor/retry/concurrency/CLI/store behavior. Two earlier
+cursorless expectations were updated to the reviewed explicit-recovery policy.
+The local store query/anchor tests use actual isolated SQLite storage; source,
+CLI and PG advisory-lock tests use fakes/mocks. Tests use fakes/local SQLite only, with
 no live Maximo or production DB. `git diff --check` passes.
 
 ## NADI handoff and review gates
@@ -118,9 +162,23 @@ No runtime code deployment or broad catch-up was performed. Existing worker was
 restored after every probe. Existing DB/credential/collector boundaries and Mart
 schemas remain unchanged. No new database.
 
-After review/merge, deploy the reviewed collector image and agree the empty-cursor
-bootstrap/coverage policy before a broad acquisition. Then inspect the aggregate
-recency completion reason and cursor alongside newly collected row timestamps.
+After review/merge, deploy the reviewed collector image. Stop the old worker
+before switching code so it cannot perform the legacy historical walk. Confirm
+new routine WO cycles report BOOTSTRAP_REQUIRED without source requests. Choose
+and review finite operator ceilings for recovery; for example after deployment:
+
+```sh
+docker compose --env-file .env.platform -p reliability-cockpit-platform \
+  -f compose.yaml -f compose.dev.yaml run --rm --no-deps -T maximo-worker \
+  mxcollector bootstrap-workorders-recent --page-size 25 \
+  --max-pages 40 --request-budget 60
+```
+
+This example has **not been executed**. Inspect oldest reached versus the frozen
+floor and the stop reason before deciding whether a larger bounded retry is
+reasonable. Require successful recovery and the CLI's immediate routine
+verification before treating the Collector current tail as recovered. Then
+inspect newly collected factual dates and the existing local projection.
 Current rows feed the existing local Mart incremental projector; the managed
 runtime already runs it every 300 seconds. To trigger local projection explicitly,
 from the configured runtime checkout (with its existing `.env.platform`):
@@ -138,4 +196,22 @@ change time; inspect factual dates and registered-asset linkage after projection
 Do not equate a recent changedate with a recent actual maintenance start.
 Until collection and projection are verified, NADI 7/30-day activity remains
 unproven. Phase 1 remains incomplete; MXR-004 remains PARTIAL. PR must remain open
-and unmerged for senior review of bootstrap, source paging and deployment.
+and unmerged for senior review of recovery ceilings, source paging and deployment.
+
+
+## FIX-01 execution evidence
+
+Previous HEAD: `83992835e37b14f7475b19285b4ae54acd393e53`; continued on the same
+branch and PR #13. No new PR or merge. This correction performed **zero Maximo
+requests** and **zero production DB writes**. Only aggregate local state was
+read: 112,259 WOs, recovery-floor candidate 2026-08-21 03:56:54 UTC, no runtime
+WO cursor, zero recovery-floor markers, Maintenance Mart watermark unchanged
+at 2026-08-21 03:56:54 UTC (projection status SUCCEEDED). No production bootstrap
+has been attempted. Current capability timestamps in the earlier table remain
+historical probe evidence; they are not a new bootstrap execution claim.
+
+The hermetic bootstrap-success test immediately followed by routine sync uses
+one routine page/request, reports NO_NEW_ROWS and performs zero repeat upserts.
+Post-start changes, floor ties across pages, all required partial/error branches,
+retry-stable floor and independent backfill are covered. Paging under a moving
+source remains unproven; MXR-004 remains PARTIAL and Phase 1 incomplete.

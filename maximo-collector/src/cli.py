@@ -156,6 +156,41 @@ def cmd_sync(args: argparse.Namespace) -> int:
     return exit_code
 
 
+def cmd_bootstrap_workorders_recent(args: argparse.Namespace) -> int:
+    """Recover the missing WO tail with explicit finite operator ceilings."""
+    from src.api.app import sync_config_for
+    from src.services.workorder_recency import bootstrap_recent_work_orders
+    store = CollectorStore(get_database())
+    service, _config = _sync_service(store)
+    routine = sync_config_for("mxwodetail")
+    config = replace(routine, page_size=args.page_size, max_pages=args.max_pages,
+                     request_limit=args.request_budget)
+    try:
+        stats = bootstrap_recent_work_orders(service._client, store, config)
+    except Exception as error:
+        print(json.dumps({"stop_reason": "BOOTSTRAP_STORE_OR_CONFIG_ERROR",
+                          "error_class": type(error).__name__}, sort_keys=True))
+        return 2
+    print(json.dumps(stats.recency, sort_keys=True))
+    if not stats.complete:
+        return 2
+    followup = service.sync(routine)
+    print(json.dumps({"routine_verification": followup.recency}, sort_keys=True))
+    return 0 if followup.complete else 2
+
+
+def _bootstrap_limit(maximum):
+    def parse(value):
+        try:
+            number = int(value)
+        except ValueError as error:
+            raise argparse.ArgumentTypeError("expected an integer") from error
+        if not 1 <= number <= maximum:
+            raise argparse.ArgumentTypeError(f"expected a value between 1 and {maximum}")
+        return number
+    return parse
+
+
 def cmd_backfill(args: argparse.Namespace) -> int:
     """Run an idempotent, cursor-independent BSR work-order traversal."""
     from src.api.app import sync_config_for
@@ -557,6 +592,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     sync.add_argument("objects", nargs="*", help=f"any of: {', '.join(AVAILABLE_OBJECTS)} (or aliases)")
 
+    bootstrap = sub.add_parser("bootstrap-workorders-recent",
+        help="explicit bounded recovery to a durable local WO floor; establishes cursor only after reconciliation")
+    bootstrap.add_argument("--page-size", type=_bootstrap_limit(25), default=25)
+    bootstrap.add_argument("--max-pages", type=_bootstrap_limit(1000), required=True)
+    bootstrap.add_argument("--request-budget", type=_bootstrap_limit(2000), required=True)
+
     backfill = sub.add_parser(
         "backfill",
         help="complete a cursor-independent, read-only BSR work-order traversal",
@@ -679,6 +720,8 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_init_db(args)
     if args.command == "sync":
         return cmd_sync(args)
+    if args.command == "bootstrap-workorders-recent":
+        return cmd_bootstrap_workorders_recent(args)
     if args.command == "backfill":
         return cmd_backfill(args)
     if args.command == "repair-asset-coverage":

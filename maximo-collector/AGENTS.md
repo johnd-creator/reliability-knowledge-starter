@@ -97,9 +97,13 @@ Routine `mxwodetail` sync uses newest-first bounded acquisition: 25 rows/page,
 verified `wonum in ["BSR%"]` form, never LIKE or an unverified date comparator.
 It validates whole-page descending order and BSR/IP scope, replays cursor ties,
 and stops strictly below an existing cursor. Partial/error runs never advance
-the WO cursor. Missing cursors remain missing after a capped bootstrap; never
-seed one from MAX(local changedate). See `docs/maximo-wo-recency-001.md` for
-live evidence and the outstanding bootstrap/deployment review.
+the WO cursor. Missing routine cursors return BOOTSTRAP_REQUIRED with zero source requests.
+Use explicit `bootstrap-workorders-recent --max-pages N --request-budget N` for
+operator-controlled recovery. Its initial floor comes from existing local WO
+MAX but is frozen before upserts in the existing collect_run recovery-floor
+marker; retain that marker on retry. Only reconciled traversal through all floor
+ties can establish a runtime cursor. Partial runs never seed one from local MAX.
+See `docs/maximo-wo-recency-001.md` for ceilings and deployment/paging review.
 
 `mxcollector backfill` remains separate and cursor-independent; it does not
 establish an operational cursor. Generic resources keep their existing mapping
