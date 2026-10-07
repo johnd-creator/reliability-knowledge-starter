@@ -3,7 +3,27 @@
 Audit date: **2026-10-07**. This is the Git-backed repository snapshot, not a
 fresh production-runtime audit. Read [roadmap index](README.md) for priorities.
 
-## Current NADI-IDN-002A pilot checkpoint — 2026-10-07
+## Current NADI-IDN-002A-R2 checkpoint — 2026-10-07
+
+PR17 MERGED14:00:31 UTC, origin/main
+`83c529fd2d9ea5e3d3233f8d3b6025937a97054f`; fresh
+`codex/nadi-idn-002-crosswalk`, separate candidate PR stays OPEN/UNMERGED.
+[Round2 evidence/review](../reliability-cockpit/docs/nadi-idn-002-round2.md):
+local-first controlled identity search, PI25 GETs, Maximo3 exact scoped GETs.
+Three hypotheses remain insufficient; BFPT rejection frozen. Coal Feeder KKS
+configuration selects ASSETNUM from [BLT ASSET], but its result is No Data and
+BSR/IP ownership/version of that lookup is unknown. Pattern fragments/shared
+unit code do not establish equipment identity. No proven bridge or proposal.
+
+PROPOSED0→0 / VERIFIED0→0. Existing Mart845/PI433 and current factual pipeline
+preserved; all inspected operational container identities unchanged.
+117 targeted tests passed; no implementation/runtime code change or new tests.
+Evidence/proposal **PARTIAL**, human verification **PENDING**;
+**HUMAN CROSSWALK REQUIRED**. Three unresolved technician decision rows; no
+mapping verification by executor. NADI-IDN-002 remains unaccepted and Phase1
+CURRENT/PARTIAL. Older checkpoints retain their historical measured evidence.
+
+## Historical NADI-IDN-002A pilot checkpoint — 2026-10-07
 
 PR #16 MERGED at 13:30:28 UTC; `origin/main`
 `a1c9270deea75d369548137a137f6eb5817c4242`. Fresh branch
