@@ -13,6 +13,7 @@ statusdate (mxperson/mxitem).
 
 from __future__ import annotations
 
+from contextlib import contextmanager
 import logging
 import hashlib
 import time
@@ -151,6 +152,19 @@ class OslcClient:
             "budget": self._request_budget,
         }
 
+    @contextmanager
+    def bounded_requests(self, limit: int):
+        """Limit a traversal including detail reads and authentication retries."""
+        if limit < 1:
+            raise ValueError("request limit must be positive")
+        previous = self._request_budget
+        boundary = self._business_request_count + limit
+        self._request_budget = min(previous, boundary) if previous is not None else boundary
+        try:
+            yield
+        finally:
+            self._request_budget = previous
+
     # -- low-level request ------------------------------------------------
     def request(self, method: str, path: str) -> requests.Response:
         """GET/HEAD/OPTIONS only. Login POSTs never go through here."""
@@ -192,7 +206,11 @@ class OslcClient:
         return self.request("GET", path)
 
     # -- OSLC helpers -----------------------------------------------------
-    def iterate(
+    def iterate(self, object_structure: str, **kwargs) -> Iterator[Mapping[str, Any]]:
+        for page in self.iterate_pages(object_structure, **kwargs):
+            yield from page
+
+    def iterate_pages(
         self,
         object_structure: str,
         *,
@@ -203,7 +221,8 @@ class OslcClient:
         page_size: int | None = None,
         max_pages: int = 1000,
         identity_field: str | None = None,
-    ) -> Iterator[Mapping[str, Any]]:
+        strict_members: bool = False,
+    ) -> Iterator[list[Mapping[str, Any]]]:
         """Paginate through an OSLC object structure (GET only).
 
         Logs in lazily on the first request; on session expiry re-logs-in
@@ -275,6 +294,15 @@ class OslcClient:
             resp.raise_for_status()
             payload = resp.json()
             members = _extract_members(payload)
+            if strict_members:
+                collection = payload if isinstance(payload, list) else next(
+                    (payload[k] for k in OSLC_MEMBER_KEYS if k in payload), None
+                ) if isinstance(payload, Mapping) else None
+                if isinstance(collection, Mapping):
+                    collection = [collection]
+                if not isinstance(collection, list) or len(collection) != len(members):
+                    raise OslcError("invalid OSLC collection shape")
+            normalized_page = []
             page_ids: set[str] = set()
             for member in members:
                 if _is_resource_link(member):
@@ -282,7 +310,7 @@ class OslcClient:
                         str(member["rdf:resource"]), self._config.base_url
                     )
                     if not resource_url:
-                        continue
+                        raise OslcError("invalid resource link")
                     resource_url = _add_detail_select(resource_url)
                     self._detail_request_count += 1
                     detail = self.get(resource_url)
@@ -306,7 +334,7 @@ class OslcClient:
                     identity = str(normalized.get(identity_field) or "").strip()
                     if identity:
                         page_ids.add(identity)
-                yield normalized
+                normalized_page.append(normalized)
             overlap = len(page_ids & previous_page_ids)
             LOG.info(
                 "Maximo pagination object=%s page=%d distinct_ids=%d overlap_previous=%d",
@@ -318,6 +346,7 @@ class OslcClient:
             previous_page_ids = page_ids
             next_url = _next_page_url(payload)
             url = _normalize_next_page_url(next_url, self._config.base_url) or ""
+            yield normalized_page
 
 
 def _extract_members(payload: Any) -> list[Mapping[str, Any]]:

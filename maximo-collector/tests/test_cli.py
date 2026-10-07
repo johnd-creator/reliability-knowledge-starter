@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import unittest
 from types import SimpleNamespace
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 from src.cli import _safe_error_metadata, cmd_diagnose, cmd_sync, parse_args
 
@@ -60,6 +60,24 @@ class SyncIsolationTest(unittest.TestCase):
 
         self.assertEqual(result, 1)
         self.assertEqual(service.calls, ["mxwodetail", "mxperson"])
+
+
+class BackfillIsolationTest(unittest.TestCase):
+    def test_backfill_disables_recency_and_cursor(self):
+        from src.cli import cmd_backfill
+        service = Mock()
+        service.sync.return_value = SimpleNamespace(
+            object_structure="mxwodetail", rows_seen=0, upserted=0, skipped=0,
+            errors=0, complete=True, pagination_error=None)
+        with (patch("src.cli.get_database", return_value=object()),
+              patch("src.cli.CollectorStore", return_value=object()),
+              patch("src.cli._sync_service", return_value=(service, object()))):
+            self.assertEqual(cmd_backfill(SimpleNamespace(page_size=5, max_pages=2)), 0)
+        cfg = service.sync.call_args.args[0]
+        self.assertFalse(cfg.recent_work_orders)
+        self.assertIsNone(cfg.watermark_field)
+        self.assertIsNone(cfg.order_by)
+        self.assertEqual(cfg.max_pages, 2)
 
 
 class SafeErrorMetadataTest(unittest.TestCase):
@@ -124,3 +142,38 @@ class ProfilerSafetyCliTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class BootstrapCliTest(unittest.TestCase):
+    def test_finite_explicit_limits_required(self):
+        args = parse_args(["bootstrap-workorders-recent", "--max-pages", "40", "--request-budget", "60"])
+        self.assertEqual(args.page_size, 25)
+        for suffix in ([], ["--max-pages", "0", "--request-budget", "10"],
+                       ["--max-pages", "1001", "--request-budget", "10"],
+                       ["--max-pages", "10", "--request-budget", "2001"],
+                       ["--max-pages", "10", "--request-budget", "10", "--page-size", "26"]):
+            with self.assertRaises(SystemExit):
+                parse_args(["bootstrap-workorders-recent", *suffix])
+
+    def test_success_immediately_verifies_routine_with_conservative_config(self):
+        from src.cli import cmd_bootstrap_workorders_recent
+        service = Mock()
+        service.sync.return_value = SimpleNamespace(complete=True, recency={"stop_reason": "NO_NEW_ROWS"})
+        with (patch("src.cli.get_database"), patch("src.cli.CollectorStore"),
+              patch("src.cli._sync_service", return_value=(service, object())),
+              patch("src.services.workorder_recency.bootstrap_recent_work_orders",
+                    return_value=SimpleNamespace(complete=True, recency={})) as bootstrap):
+            self.assertEqual(cmd_bootstrap_workorders_recent(SimpleNamespace(page_size=5, max_pages=100, request_budget=150)), 0)
+        self.assertEqual(bootstrap.call_args.args[2].max_pages, 100)
+        self.assertEqual(service.sync.call_args.args[0].max_pages, 20)
+        self.assertEqual(service.sync.call_args.args[0].request_limit, 40)
+
+    def test_partial_bootstrap_does_not_run_normal_verification(self):
+        from src.cli import cmd_bootstrap_workorders_recent
+        service = Mock()
+        with (patch("src.cli.get_database"), patch("src.cli.CollectorStore"),
+              patch("src.cli._sync_service", return_value=(service, object())),
+              patch("src.services.workorder_recency.bootstrap_recent_work_orders",
+                    return_value=SimpleNamespace(complete=False, recency={}))):
+            self.assertEqual(cmd_bootstrap_workorders_recent(SimpleNamespace(page_size=5, max_pages=1, request_budget=2)), 2)
+        service.sync.assert_not_called()

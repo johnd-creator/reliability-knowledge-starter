@@ -38,13 +38,14 @@ class ObjectSyncConfig:
     page_size: int | None = None
     max_pages: int = 1000
     watermark_query: bool = True
-    # The verified BSR site scope is sufficient for work orders. Prefix
-    # validation remains client-side because this Maximo rejects the legacy
-    # wildcard prefix predicate.
+    # IN-prefix is verified; LIKE remains unsupported. Always retain the
+    # local prefix guard even when server-side restriction is enabled.
     prefix_query: bool = True
     # A current baseline must not advance its cursor when a source row could
     # not be mapped. Existing callers retain the historical permissive default.
     cursor_requires_zero_errors: bool = False
+    recent_work_orders: bool = False
+    request_limit: int = 40
 
 
 @dataclass
@@ -64,6 +65,7 @@ class SyncStats:
     watermark: datetime | None = None
     started_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     finished_at: datetime | None = None
+    recency: dict = field(default_factory=dict)
 
 
 class SyncService:
@@ -77,6 +79,9 @@ class SyncService:
         self._site_id = site_id
 
     def sync(self, config: ObjectSyncConfig) -> SyncStats:
+        if config.recent_work_orders:
+            from src.services.workorder_recency import sync_recent_work_orders
+            return sync_recent_work_orders(self._client, self._store, config)
         stats = SyncStats(object_structure=config.object_structure)
         watermark = None
         if config.watermark_field:

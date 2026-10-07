@@ -33,7 +33,7 @@ WORK_ORDER_SELECT = (
     "schedstart", "schedfinish", "targcompdate", "estdur", "downtime", "wopriority",
     "wopriority_description", "reportedby", "supervisor", "lead", "failurecode", "istask",
     "pctaskid", "haschildren", "estlabcost", "estmatcost", "actlabcost", "actmatcost",
-    "actlabhrs", "siteid", "seksi", "bu", "jumlahhidup", "jumlahmati", "luasareatanam",
+    "actlabhrs", "siteid", "orgid", "seksi", "bu", "jumlahhidup", "jumlahmati", "luasareatanam",
 )
 PERSON_SELECT = ("personid", "displayname", "firstname", "status", "statusdate", "locationorg")
 ASSET_SELECT = ASSET_DETAIL_FIELDS
@@ -57,11 +57,12 @@ OBJECTS: dict[str, dict[str, Any]] = {
     ),
     "mxwodetail": dict(
         entity="work_order", mapper=work_order_from_payload,
-        watermark="changedate", order_by=None, changed_column="source_changed_at",
+        watermark="changedate", order_by="-changedate", changed_column="source_changed_at",
         orm=orm.WorkOrderOrm, scope='siteid="BSR"', compare_column="source_changed_at",
         prefix_field="wonum", select=WORK_ORDER_SELECT, batch_size=100, page_size=25,
-        prefix_query=False,
-        watermark_query=False,
+        prefix_query=True,
+        watermark_query=False, max_pages=20, recent_work_orders=True,
+        cursor_requires_zero_errors=True,
     ),
     "mxapisr": dict(
         entity="service_request", mapper=service_request_from_payload,
@@ -124,6 +125,8 @@ def sync_config_for(object_structure: str) -> ObjectSyncConfig:
         max_pages=spec.get("max_pages", 1000),
         prefix_query=spec.get("prefix_query", True),
         watermark_query=spec.get("watermark_query", True),
+        recent_work_orders=spec.get("recent_work_orders", False),
+        cursor_requires_zero_errors=spec.get("cursor_requires_zero_errors", False),
     )
 
 
@@ -340,6 +343,7 @@ def create_app() -> FastAPI:
             "complete": stats.complete,
             "pagination_error": stats.pagination_error,
             "duplicate_ids": stats.duplicate_ids,
+            "recency": stats.recency,
         }
 
     return app
