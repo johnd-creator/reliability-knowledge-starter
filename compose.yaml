@@ -67,7 +67,7 @@ services:
     restart: "no"
     command: ["mxcollector", "init-db"]
     environment:
-      DATABASE_URL: postgresql://maximo_collector:${MAXIMO_DB_PASSWORD}@maximo-db/maximo_collector
+      DATABASE_URL: postgresql+psycopg://maximo_collector:${MAXIMO_DB_PASSWORD}@maximo-db/maximo_collector
     depends_on:
       maximo-db: {condition: service_healthy}
 
@@ -76,7 +76,7 @@ services:
     build: ./maximo-collector
     command: ["mxcollector", "run", "--operational-interval-seconds", "${MAXIMO_OPERATIONAL_INTERVAL_SECONDS:-300}", "--asset-interval-seconds", "${MAXIMO_ASSET_INTERVAL_SECONDS:-21600}"]
     environment:
-      DATABASE_URL: postgresql://maximo_collector:${MAXIMO_DB_PASSWORD}@maximo-db/maximo_collector
+      DATABASE_URL: postgresql+psycopg://maximo_collector:${MAXIMO_DB_PASSWORD}@maximo-db/maximo_collector
       MAXIMO_BASE_URL: ${MAXIMO_BASE_URL}
       MAXIMO_AUTH_MODE: ${MAXIMO_AUTH_MODE:-login}
       MAXIMO_USERNAME: ${MAXIMO_USERNAME:-}
@@ -90,7 +90,7 @@ services:
     <<: *python-common
     build: ./maximo-collector
     environment:
-      DATABASE_URL: postgresql://maximo_collector:${MAXIMO_DB_PASSWORD}@maximo-db/maximo_collector
+      DATABASE_URL: postgresql+psycopg://maximo_collector:${MAXIMO_DB_PASSWORD}@maximo-db/maximo_collector
     depends_on:
       maximo-init: {condition: service_completed_successfully}
 
@@ -192,13 +192,69 @@ services:
     depends_on:
       cems-init: {condition: service_completed_successfully}
 
+  # Existing Mart only: status/ready never initializes tables or acquires sources.
+  mart-ready:
+    <<: *python-common
+    build: ./reliability-cockpit
+    restart: "no"
+    command: ["cockpit", "mart-migrate", "--require-ready"]
+    environment:
+      COCKPIT_CONFIG_MODE: managed
+      RELIABILITY_MART_ADMIN_DATABASE_URL: ${RELIABILITY_MART_ADMIN_DATABASE_URL:?set existing Mart writer in .env.platform}
+      RELIABILITY_MART_EXPECT_DATABASE: ${RELIABILITY_MART_EXPECT_DATABASE:?set existing Mart database name}
+    depends_on:
+      maximo-db: {condition: service_healthy}
+
+  mart-migrate:
+    <<: *python-common
+    profiles: [mart-maintenance]
+    build: ./reliability-cockpit
+    restart: "no"
+    command: ["cockpit", "mart-migrate"]
+    environment:
+      COCKPIT_CONFIG_MODE: managed
+      RELIABILITY_MART_ADMIN_DATABASE_URL: ${RELIABILITY_MART_ADMIN_DATABASE_URL:?set existing Mart writer in .env.platform}
+      RELIABILITY_MART_EXPECT_DATABASE: ${RELIABILITY_MART_EXPECT_DATABASE:?set existing Mart database name}
+    depends_on:
+      maximo-db: {condition: service_healthy}
+
+  mart-reader:
+    <<: *python-common
+    profiles: [mart-maintenance]
+    build: ./reliability-cockpit
+    restart: "no"
+    command: ["cockpit", "mart-reader"]
+    environment:
+      COCKPIT_CONFIG_MODE: managed
+      RELIABILITY_MART_ADMIN_DATABASE_URL: ${RELIABILITY_MART_ADMIN_DATABASE_URL:?set existing Mart writer in .env.platform}
+      RELIABILITY_MART_EXPECT_DATABASE: ${RELIABILITY_MART_EXPECT_DATABASE:?set existing Mart database name}
+      RELIABILITY_MART_READER_PASSWORD: ${RELIABILITY_MART_READER_PASSWORD:-}
+    depends_on:
+      maximo-db: {condition: service_healthy}
+
+  mart-projector:
+    <<: *python-common
+    build: ./maximo-collector
+    # Local incremental projection only. Preserve reviewed WO runtime override.
+    command: ["sh", "-c", 'while true; do mxcollector mart-project --incremental; sleep "$${MART_PROJECTION_INTERVAL_SECONDS}"; done']
+    environment:
+      DATABASE_URL: postgresql+psycopg://maximo_collector:${MAXIMO_DB_PASSWORD}@maximo-db/maximo_collector
+      RELIABILITY_MART_DATABASE_URL: ${RELIABILITY_MART_ADMIN_DATABASE_URL:?set existing Mart writer in .env.platform}
+      RELIABILITY_CONTRACTS_ROOT: /contracts
+      MART_PROJECTION_INTERVAL_SECONDS: ${MART_PROJECTION_INTERVAL_SECONDS:-300}
+    volumes: [./reliability-data-contracts:/contracts:ro]
+    depends_on:
+      maximo-db: {condition: service_healthy}
+      mart-ready: {condition: service_completed_successfully}
+
   cockpit-init:
     <<: *python-common
     build: ./reliability-cockpit
     restart: "no"
     command: ["cockpit", "init-db"]
     environment:
-      DATABASE_URL: postgresql://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
+      COCKPIT_CONFIG_MODE: managed
+      DATABASE_URL: postgresql+psycopg://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
     depends_on:
       cockpit-db: {condition: service_healthy}
 
@@ -207,7 +263,8 @@ services:
     build: ./reliability-cockpit
     command: ["cockpit", "run", "--interval-seconds", "${COCKPIT_SYNC_INTERVAL_SECONDS:-300}"]
     environment:
-      DATABASE_URL: postgresql://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
+      COCKPIT_CONFIG_MODE: managed
+      DATABASE_URL: postgresql+psycopg://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
       MAXIMO_COLLECTOR_API_BASE: ${MAXIMO_COLLECTOR_API_BASE:-http://maximo-api:8002}
       PI_COLLECTOR_API_BASE: ${PI_COLLECTOR_API_BASE:-http://pi-api:8001}
       CEMS_COLLECTOR_API_BASE: ${CEMS_COLLECTOR_API_BASE:-http://cems-api:8003}
@@ -219,11 +276,13 @@ services:
     <<: *python-common
     build: ./reliability-cockpit
     environment:
+      COCKPIT_CONFIG_MODE: managed
       # Reliability Mart remains in the existing Maximo collector DB.
-      RELIABILITY_MART_DATABASE_URL: postgresql+psycopg://maximo_collector:${MAXIMO_DB_PASSWORD}@maximo-db/maximo_collector
-      DATABASE_URL: postgresql://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
+      RELIABILITY_MART_DATABASE_URL: ${RELIABILITY_MART_DATABASE_URL:?set SELECT-only existing Mart DSN in .env.platform}
+      DATABASE_URL: postgresql+psycopg://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
     depends_on:
       cockpit-init: {condition: service_completed_successfully}
+      mart-ready: {condition: service_completed_successfully}
 
   cockpit-web:
     build: ./reliability-cockpit/web

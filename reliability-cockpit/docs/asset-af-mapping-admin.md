@@ -4,6 +4,13 @@ This is an internal, operator-run workflow for candidate governance data. It
 does not query Maximo or PI, write to either source system, or expose a browser
 mutation API.
 
+## Runtime credentials
+
+Mapping CLI requires `RELIABILITY_MART_ADMIN_DATABASE_URL` and explicit
+`RELIABILITY_MART_EXPECT_DATABASE`; it checks canonical governance readiness.
+It never falls back to the SELECT-only reader DSN or legacy `DATABASE_URL`.
+See [existing Mart runbook](mart-runtime.md). Public NADI keeps the reader DSN.
+
 ## Import format
 
 The CSV header must contain these fields:
@@ -95,6 +102,6 @@ available as historical governance evidence and cannot be reactivated directly.
 - No description, Asset-name, AF-name, PI-tag, Levenshtein, embedding, or LLM
   matching is performed.
 - No production mappings are seeded by this workflow.
-- Migration `003_asset_af_mapping_provenance.sql` is schema-only and must be
-  applied deliberately in a later runtime migration task; this task does not
-  apply it to an active Mart.
+- Canonical migrations `002/003` are deliberately applied through the existing
+  Mart governance runner, never `init-db`; see [runtime evidence](nadi-runtime-002.md).
+  They contain no production mapping rows.

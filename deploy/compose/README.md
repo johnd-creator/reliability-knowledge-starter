@@ -5,13 +5,11 @@ collector APIs. Canonical NADI routes use a SELECT-only Reliability Mart reader
 against the existing Maximo Collector DB. Cockpit has no production Maximo, PI
 or PLC credential.
 
-> NADI-PI-RUNTIME-001 proposes managed `cockpit-api` Mart DSN to the existing
-> Maximo DB, PI psycopg DSNs, and opt-in migration/worker profiles. Existing
-> deployment evidence is [here](../../pi-collector/docs/nadi-pi-runtime-001.md);
-> these candidate changes are not a clean-platform acceptance certificate.
-> [NADI-RUNTIME-002](../../plans/NADI-RUNTIME-002.md) owns missing actual Mart
-> governance schema, projection/init ordering, remaining driver debt and
-> external-mode Mart DSN. Historical `7149455` is not blindly cherry-picked.
+NADI-PI-001 is MERGED; NADI-PI-RUNTIME-001 is ACCEPTED via merged PR #15.
+NADI-RUNTIME-002 candidate reconciles existing Mart governance and explicit
+reader/admin paths. [Mart operator runbook](../../reliability-cockpit/docs/mart-runtime.md)
+contains backup, deliberate DDL, role and accepted-override requirements.
+Historical `7149455` remains evidence only.
 
 Reuse the existing project identity, stores, volumes and env files. Preserve
 all accepted ignored overrides. The commands below describe deliberately
@@ -27,7 +25,9 @@ current Cockpit worker ingests Maximo collector resources only; PI and CEMS API
 bases are configurable, but their Cockpit projections remain pending.
 
 1. Only if absent, copy `.env.platform.example` to `.env.platform`.
-2. Set `COCKPIT_DB_PASSWORD` and the three `*_COLLECTOR_API_BASE` values.
+2. Set `COCKPIT_DB_PASSWORD`, the three `*_COLLECTOR_API_BASE` values and
+   **RELIABILITY_MART_DATABASE_URL** for the existing external SELECT-only Mart.
+   No admin DSN or Mart initialization is passed to the external API.
    For host-local collector APIs from Docker on Linux, use
    `http://host.docker.internal:800{1,2,3}`; the file supplies the required
    `host-gateway` mapping.
@@ -55,6 +55,9 @@ source-only environment names exactly as implemented:
 Maximo authentication mode (`login`, `token`, or `cookie`).
 
 ```bash
+# Only deliberately selected fresh installations; existing runtime uses targeted
+# operations with accepted overrides, never this broad command as a repair.
+# First prepare existing Mart governance/reader via the operator runbook.
 docker compose --env-file .env.platform up --build -d
 ```
 
@@ -68,6 +71,10 @@ not put a production Maximo, PI, or PLC endpoint on a public Docker network.
 
 | Service | Responsibility |
 | --- | --- |
+| `mart-migrate` / `mart-reader` | opt-in, status by default; explicit local DDL/role apply only after backup |
+| `mart-ready` | non-destructive canonical schema gate in owning Maximo DB |
+| `mart-projector` | local incremental projection after gate; contracts mounted, no source acquisition |
+| `cockpit-api` | explicit SELECT-only existing-Mart DSN, distinct legacy store; no admin/source credentials |
 | `maximo-worker` | scheduled GET-only delta sync; operational data is frequent, asset master data is slow |
 | `pi-api` | serves existing stored PI data without source credentials |
 | `pi-migrate` | opt-in maintenance: status by default, deliberate local DDL with `--apply` |

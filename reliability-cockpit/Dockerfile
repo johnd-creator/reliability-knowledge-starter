@@ -1,8 +1,9 @@
 FROM python:3.12-slim
 WORKDIR /app
-ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 RELIABILITY_MART_MIGRATIONS_ROOT=/app/migrations
 COPY pyproject.toml ./
 COPY src ./src
+COPY migrations ./migrations
 RUN pip install --no-cache-dir .
 RUN addgroup --system app && adduser --system --ingroup app app && chown -R app:app /app
 USER app

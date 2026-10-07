@@ -1,6 +1,14 @@
 # NADI-RUNTIME-002 — Existing Mart Governance Schema and Runtime Reconciliation
 
-Status: **PLANNED / prerequisite before executing NADI-IDN-002 pilot**.
+Status: **CURRENT / CANDIDATE — runtime scope PASS, ready for senior review**.
+
+PR #15 merged as `c052d7d`; fresh branch `codex/nadi-runtime-002`. Existing
+Mart canonical governance 002/003 applied with private backup and all 17 factual
+populations/fingerprints preserved; empty mapping table and SELECT-only reader
+are operational. Only NADI API replaced. [Acceptance evidence and exact tests](../reliability-cockpit/docs/nadi-runtime-002.md).
+**READY — NADI-IDN-002**; no real mapping/pilot performed, Phase 1 CURRENT/PARTIAL.
+
+The paragraphs below preserve the initial task rationale, not post-task schema state.
 Evidence: [NADI-PI-RUNTIME-001](../pi-collector/docs/nadi-pi-runtime-001.md),
 7 October 2026, merged baseline `3e981a3`.
 

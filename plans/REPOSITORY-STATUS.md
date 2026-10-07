@@ -3,7 +3,25 @@
 Audit date: **2026-10-07**. This is the Git-backed repository snapshot, not a
 fresh production-runtime audit. Read [roadmap index](README.md) for priorities.
 
-## Current NADI-PI-RUNTIME-001 checkpoint — 2026-10-07
+## Current NADI-RUNTIME-002 candidate checkpoint — 2026-10-07
+
+PR #15 MERGED at 12:45:45 UTC; baseline `origin/main`
+`c052d7d7d007c2a670300d0eb9d08dda8d93f473`. Fresh `codex/nadi-runtime-002`
+re-derives runtime reconciliation; historical `7149455` remains evidence only.
+NADI-PI-001 ✅ MERGED; NADI-PI-RUNTIME-001 ✅ ACCEPTED;
+NADI-RUNTIME-002 current / candidate; NADI-IDN-002 next.
+
+Existing maximo-db/maximo_collector Mart now has canonical governance 002/003,
+empty asset_af_mapping, checksummed ledger and dedicated SELECT-only NADI reader.
+All 17 existing table counts/content fingerprints preserved during DDL. Only API
+replaced; accepted Maximo/PI/CEMS/projector/volumes remain unchanged. Managed and
+external DSNs are explicit with no legacy fallback; new schema gate is local-only.
+[Acceptance evidence](../reliability-cockpit/docs/nadi-runtime-002.md).
+READY — NADI-IDN-002, without executing real pilot mapping. Review PR stays
+OPEN/UNMERGED; Phase 1 stays CURRENT / PARTIAL. Older sections below are dated
+historical checkpoints; their absent-schema/open-PR claims are not current state.
+
+## Historical NADI-PI-RUNTIME-001 checkpoint — 2026-10-07
 
 Latest verified baseline `origin/main`: `3e981a3c5e20e148feba5b01ec0b1c134ca89205`.
 PR #12 is **MERGED** at 10:27:39 UTC, after PR #13/#14. Its final pre-merge
