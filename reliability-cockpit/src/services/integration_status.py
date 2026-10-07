@@ -46,7 +46,7 @@ class IntegrationStatusService:
             source=FreshnessDimension();quality=Quality.UNKNOWN
             if component==Component.PI_COLLECTOR:
                 times=[observation.oldest_source_timestamp]
-                if observation.unknown_source_timestamps or observation.snapshots!=observation.registry_active:times.append(None)
+                if observation.unknown_source_timestamps is None or observation.unknown_source_timestamps or observation.future_source_timestamps is None or observation.future_source_timestamps or observation.snapshots!=observation.registry_active:times.append(None)
                 source=self.freshness("SOURCE",times)
                 if source.state==TrustState.STALE:reasons.add(Reason.SOURCE_STALE)
                 quality=Quality.BAD if observation.bad_quality_signals else Quality.UNKNOWN if observation.unknown_quality_signals is None or observation.unknown_quality_signals or not observation.snapshots else Quality.GOOD
@@ -57,7 +57,7 @@ class IntegrationStatusService:
                 state=self._state(reasons,[collection],observation.availability),collection_freshness=collection,source_freshness=source,quality=quality,
                 last_successful_activity=observation.last_successful_activity,degraded_reasons=tuple(sorted(reasons))))
         availability=Availability.AVAILABLE if inventory["available"] else Availability.UNAVAILABLE if self.database else Availability.NOT_CONFIGURED
-        martfresh=self.freshness("PROJECTION",[inventory.get("mart_success")]);reasons=set()
+        martfresh=self.freshness("PROJECTION",inventory.get("mart_success_times",[inventory.get("mart_success")]));reasons=set()
         if availability!=Availability.AVAILABLE:reasons.add(Reason.MART_UNAVAILABLE if self.database else Reason.MART_NOT_CONFIGURED)
         if inventory.get("mart_degraded"):reasons.add(Reason.PROJECTION_ERROR)
         if martfresh.state==TrustState.STALE:reasons.add(Reason.PROJECTION_STALE)

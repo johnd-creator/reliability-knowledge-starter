@@ -204,9 +204,9 @@ class EvidenceBatch(EvidenceModel):
 
 class FreshnessPolicy(EvidenceModel):
     # None deliberately means UNKNOWN. These are operator policies, not product SLAs.
-    collector_max_age_seconds: float | None = Field(default=None, gt=0)
-    source_max_age_seconds: float | None = Field(default=None, gt=0)
-    projection_max_age_seconds: float | None = Field(default=None, gt=0)
+    collector_max_age_seconds: float | None = Field(default=None, gt=0, allow_inf_nan=False)
+    source_max_age_seconds: float | None = Field(default=None, gt=0, allow_inf_nan=False)
+    projection_max_age_seconds: float | None = Field(default=None, gt=0, allow_inf_nan=False)
 
     @classmethod
     def from_environment(cls):

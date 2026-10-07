@@ -43,3 +43,8 @@ class ObservationClientTest(unittest.TestCase):
     def test_invalid_or_naive_observation_cannot_claim_success(self):
         for payload in ({'availability':'AVAILABLE','last_successful_activity':'2026-10-07T12:00:00'}, {'availability':'AVAILABLE','PI_PASSWORD':'secret'}):
             client,_=self.client([payload]);self.assertEqual(client.pi().availability,'UNKNOWN')
+
+    def test_unchanged_overlap_rows_are_not_collection_errors(self):
+        time='2026-10-07T12:00:00+00:00'
+        client,_=self.client([{'mxwodetail':{'watermark':time}},[{'object_structure':'mxwodetail','mode':'incremental','finished_at':time,'errors':0,'skipped':25,'upserted':0}]])
+        result=client.maximo();self.assertEqual(result.errors,0);self.assertIsNotNone(result.last_successful_activity)

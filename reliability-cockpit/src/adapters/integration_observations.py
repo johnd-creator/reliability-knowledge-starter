@@ -45,12 +45,12 @@ class LocalCollectorObservations:
             if not isinstance(runs,list) or len(runs)>100: raise ValueError("invalid bounded runs")
             wo=[r for r in runs if r.get("object_structure")=="mxwodetail" and r.get("finished_at") and r.get("mode")!="recovery-floor"]
             wo.sort(key=lambda r: _time(r["finished_at"]), reverse=True)
-            success=next((r for r in wo if r.get("errors")==0 and r.get("skipped")==0),None)
+            success=next((r for r in wo if r.get("errors")==0 and r.get("mode") in {"incremental","full"}),None)
             return CollectorObservation(availability=Availability.AVAILABLE,
                 cursor_present=bool(cursors.get("mxwodetail",{}).get("watermark")),
                 last_successful_activity=_time(success["finished_at"]) if success else None,
                 latest_completed_at=_time(wo[0]["finished_at"]) if wo else None,
-                errors=(wo[0].get("errors",0)+wo[0].get("skipped",0)) if wo else None)
+                errors=(wo[0].get("errors",0)+int(wo[0].get("mode")=="partial")) if wo else None)
         except (requests.RequestException, ValueError, TypeError, KeyError, AttributeError):
             return CollectorObservation(availability=Availability.UNAVAILABLE)
 

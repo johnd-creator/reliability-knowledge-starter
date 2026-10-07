@@ -133,6 +133,19 @@
       "default": null,
       "title": "Unknown Source Timestamps"
     },
+    "future_source_timestamps": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Future Source Timestamps"
+    },
     "bad_quality_signals": {
       "anyOf": [
         {

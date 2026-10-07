@@ -17,6 +17,8 @@ def phase1_readiness(status:IntegrationStatus,*,evidence_origin="LOCAL_RUNTIME")
         # A stale technical PI source timestamp does not invalidate the collector
         # activity gate. Source quality/freshness is independently checked below.
         collector_errors=set(observation.degraded_reasons)&{"COLLECTOR_ERRORS","CURSOR_MISSING","NO_SUCCESSFUL_ACTIVITY","PROJECTION_ERROR"}
+        if component==Component.PI_COLLECTOR and (not status.coverage.technical_registry_active or status.coverage.technical_snapshots is None or status.coverage.technical_snapshots<status.coverage.technical_registry_active):
+            gate(identity,Verdict.PARTIAL,Reason.PARTIAL_SIGNAL_SET);continue
         if collector_errors:gate(identity,Verdict.PARTIAL,Reason.LOCAL_EVIDENCE_DEGRADED)
         elif freshness.state==TrustState.STALE:gate(identity,Verdict.PARTIAL,Reason.LOCAL_EVIDENCE_STALE)
         elif freshness.state==TrustState.CURRENT:gate(identity,Verdict.PASS,Reason.LOCAL_EVIDENCE_CURRENT)

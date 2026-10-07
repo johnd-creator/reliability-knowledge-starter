@@ -92,6 +92,7 @@ class CollectorObservation(EvidenceModel):
     snapshots: int | None = Field(default=None, ge=0)
     oldest_source_timestamp: datetime | None = None
     unknown_source_timestamps: int | None = Field(default=None, ge=0)
+    future_source_timestamps: int | None = Field(default=None, ge=0)
     bad_quality_signals: int | None = Field(default=None, ge=0)
     unknown_quality_signals: int | None = Field(default=None, ge=0)
 

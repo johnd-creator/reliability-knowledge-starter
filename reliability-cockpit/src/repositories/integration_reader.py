@@ -33,8 +33,12 @@ class IntegrationMartReader:
                 with self.database.read_session() as s:
                     states=list(s.execute(text("SELECT projection_key, last_status, last_success_at FROM mart_projection_state WHERE projection_key IN ('asset_master','maintenance_event')")))
                 # Both factual projections need recorded success. No business changedate fallback.
+                result["mart_success_times"]=[r.last_success_at for r in states] if len(states)==2 else [None]
                 result["mart_degraded"]=any(r.last_status!="SUCCEEDED" for r in states)
                 result["mart_success"]=min((r.last_success_at for r in states if r.last_success_at),default=None) if len(states)>=2 and all(r.last_success_at for r in states) else None
+                if any(isinstance(value,str) for value in result["mart_success_times"]):
+                    from datetime import datetime
+                    result["mart_success_times"]=[datetime.fromisoformat(value.replace("Z","+00:00")) if isinstance(value,str) else value for value in result["mart_success_times"]]
                 if isinstance(result["mart_success"],str):
                     from datetime import datetime
                     result["mart_success"]=datetime.fromisoformat(result["mart_success"].replace("Z","+00:00"))

@@ -105,3 +105,8 @@ class Phase1ReadinessTest(unittest.TestCase):
             with contextlib.redirect_stdout(output):self.assertEqual(args.func(args),2)
             self.assertEqual(json.loads(output.getvalue())["reason"],"PREFLIGHT_OBSERVATION_FAILED")
             self.assertNotIn("secret",output.getvalue())
+
+    def test_missing_technical_snapshots_cannot_pass_collector_gate(self):
+        status=self.status();status=status.model_copy(update={"coverage":status.coverage.model_copy(update={"technical_snapshots":432})})
+        gate=self.gates(phase1_readiness(status))[GateId.PI_COLLECTOR]
+        self.assertEqual(gate.verdict,"PARTIAL");self.assertEqual(gate.reason,"PARTIAL_SIGNAL_SET")

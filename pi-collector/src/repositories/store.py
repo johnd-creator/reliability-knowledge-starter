@@ -532,6 +532,7 @@ class CollectorStore:
             count = session.scalar(select(func.count()).select_from(snapshots))
             oldest = session.scalar(select(func.min(snapshots.c.source_timestamp)))
             unknown_time = session.scalar(select(func.count()).select_from(snapshots).where(snapshots.c.source_timestamp.is_(None)))
+            future_time = session.scalar(select(func.count()).select_from(snapshots).where(snapshots.c.source_timestamp > datetime.now(timezone.utc)))
             bad = session.scalar(select(func.count()).select_from(snapshots).where(
                 snapshots.c.value_good.is_(False) | snapshots.c.value_questionable.is_(True)))
             unknown_quality = session.scalar(select(func.count()).select_from(snapshots).where(
@@ -551,4 +552,4 @@ class CollectorStore:
                 "latest_completed_at":iso(completed.finished_at) if completed else None,
                 "errors":(completed.errors + int(completed.aborted)) if completed else None,
                 "oldest_source_timestamp":iso(oldest), "unknown_source_timestamps":unknown_time,
-                "bad_quality_signals":bad, "unknown_quality_signals":unknown_quality}
+                "future_source_timestamps":future_time, "bad_quality_signals":bad, "unknown_quality_signals":unknown_quality}

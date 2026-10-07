@@ -18,11 +18,12 @@ null when their schema/query is unavailable; real zero remains zero.
 
 - Maximo: fixed local Collector GET `/sync/status` and `/collect-runs?limit=100`;
   successful completed WO incremental runs, excluding recovery-floor records.
-  Missing WO observations within that bounded window remain UNKNOWN. No business
+  Unchanged/overlap skips are not errors; the run error count and partial mode
+  determine acquisition failure. Missing WO observations within that bounded window remain UNKNOWN. No business
   changedate is treated as collector freshness; source freshness remains UNKNOWN.
 - PI: fixed local GET `/integration-observation`, aggregating active local
   registry, stored snapshots and successful snapshot runs. Minimum source time
-  detects stale members. Partial/unknown source coverage prevents CURRENT.
+  detects stale members; future timestamps also have an explicit unknown count. Partial/unknown source coverage prevents CURRENT.
   The new endpoint needs reviewed collector deployment; older APIs report UNKNOWN.
 - Mart: registered BSR/IP Asset scope, explicit SELECT-only Mart DSN, factual
   projection state, existing mappings and selected evidence tables. No legacy DSN

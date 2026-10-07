@@ -28,7 +28,7 @@ class IntegrationStatusTest(unittest.TestCase):
         observations=Mock()
         observations.maximo.return_value=CollectorObservation(availability="AVAILABLE",last_successful_activity=NOW,errors=0,cursor_present=True)
         observations.pi.return_value=CollectorObservation(availability="AVAILABLE",last_successful_activity=NOW,errors=0,
-            registry_total=490,registry_active=433,snapshots=433,oldest_source_timestamp=NOW,unknown_source_timestamps=0,bad_quality_signals=0,unknown_quality_signals=0)
+            registry_total=490,registry_active=433,snapshots=433,oldest_source_timestamp=NOW,unknown_source_timestamps=0,future_source_timestamps=0,bad_quality_signals=0,unknown_quality_signals=0)
         with self.engine.begin() as c:
             c.exec_driver_sql("CREATE TABLE IF NOT EXISTS mart_projection_state (projection_key text PRIMARY KEY,last_status text,last_success_at text)")
             c.exec_driver_sql("DELETE FROM mart_projection_state")
@@ -115,3 +115,14 @@ class IntegrationStatusTest(unittest.TestCase):
         self.project(self.source_document());service=self.service()
         self.assertEqual(service.status(ASSET_ID).coverage.registered_assets,1)
         self.assertEqual(service.status("UNKNOWN").coverage.registered_assets,0)
+
+    def test_future_member_timestamp_does_not_hide_behind_oldest_current(self):
+        service=self.service();service.observations.pi.return_value=service.observations.pi.return_value.model_copy(update={"future_source_timestamps":1})
+        self.assertEqual(self.component(service.status(),Component.PI_COLLECTOR).source_freshness.state,"UNKNOWN")
+        with self.engine.begin() as c:
+            c.execute(text("UPDATE mart_projection_state SET last_success_at=:time WHERE projection_key='maintenance_event'"),{"time":(NOW+timedelta(minutes=1)).isoformat()})
+        self.assertEqual(self.component(service.status(),Component.RELIABILITY_MART).projection_freshness.state,"UNKNOWN")
+
+    def test_non_finite_freshness_policy_rejected(self):
+        for value in (float('inf'),float('nan')):
+            with self.assertRaises(ValueError):FreshnessPolicy(source_max_age_seconds=value)
