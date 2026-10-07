@@ -6,8 +6,8 @@ RUN npm install
 FROM node:22-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
-ARG COCKPIT_API_BASE=http://cockpit-api:8000
-ENV COCKPIT_API_BASE=$COCKPIT_API_BASE
+ARG MAXIMO_COLLECTOR_API_BASE=http://maximo-api:8002
+ENV MAXIMO_COLLECTOR_API_BASE=$MAXIMO_COLLECTOR_API_BASE
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build

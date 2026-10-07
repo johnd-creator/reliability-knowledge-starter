@@ -1,0 +1,157 @@
+{
+  "version": 1,
+  "features": {
+    "Gross Load": {
+      "attribute_id": null,
+      "status": "unknown",
+      "training_unit": "",
+      "source_unit": "",
+      "source_unit_confirmed": false,
+      "evidence_ref": "",
+      "candidates": [
+        "BSR-BSR1-bsr1_nphr-unclassified-bsr_gen_active_power_1",
+        "BSR-BSR1-bsr1_nphr-unclassified-bsr_gen_active_power_2",
+        "BSR-BSR1-bsr1_nphr-unclassified-bsr_gen_active_power_3",
+        "BSR-BSR1-bsr1_nphr-unclassified-bsr1_generator_gross_capacity_rev"
+      ]
+    },
+    "PS": {
+      "attribute_id": null,
+      "status": "unknown",
+      "training_unit": "",
+      "source_unit": "",
+      "source_unit_confirmed": false,
+      "evidence_ref": "",
+      "candidates": [
+        "BSR-BSR1-bsr1_nphr-unclassified-bsr_uataactivepower_real",
+        "BSR-BSR1-bsr1_nphr-unclassified-bsr_uatbactivepower_real"
+      ]
+    },
+    "Coal flow": {
+      "attribute_id": null,
+      "status": "unknown",
+      "training_unit": "",
+      "source_unit": "",
+      "source_unit_confirmed": false,
+      "evidence_ref": "",
+      "candidates": [
+        "BSR-BSR1-bsr1_coal_feeder-coal_flow-total_coal_flow",
+        "BSR-BSR1-bsr1_coal_feeder-unclassified-total_coal_flow_edited",
+        "BSR-BSR1-bsr1_turbine-coal_flow-total_coal_flow"
+      ]
+    },
+    "SFC": {
+      "attribute_id": null,
+      "status": "unknown",
+      "training_unit": "",
+      "source_unit": "",
+      "source_unit_confirmed": false,
+      "evidence_ref": "",
+      "candidates": []
+    },
+    "Main Steam Press": {
+      "attribute_id": null,
+      "status": "unknown",
+      "training_unit": "",
+      "source_unit": "",
+      "source_unit_confirmed": false,
+      "evidence_ref": "",
+      "candidates": [
+        "BSR-BSR1-bsr1_nphr-unclassified-bsr_main_steam_head_pre1",
+        "BSR-BSR1-bsr1_nphr-unclassified-bsr_main_steam_head_pre2",
+        "BSR-BSR1-bsr1_nphr-unclassified-bsr_main_steam_head_pre3"
+      ]
+    },
+    "Main Steam Temp": {
+      "attribute_id": null,
+      "status": "unknown",
+      "training_unit": "",
+      "source_unit": "",
+      "source_unit_confirmed": false,
+      "evidence_ref": "",
+      "candidates": [
+        "BSR-BSR1-bsr1_nphr-unclassified-bsr_main_steam_temp"
+      ]
+    },
+    "Main Steam Flow": {
+      "attribute_id": null,
+      "status": "unknown",
+      "training_unit": "",
+      "source_unit": "",
+      "source_unit_confirmed": false,
+      "evidence_ref": "",
+      "candidates": [
+        "BSR-BSR1-bsr1_nphr-unclassified-bsr_main_steam_flow"
+      ]
+    },
+    "Economizer Inlet Temp": {
+      "attribute_id": null,
+      "status": "unknown",
+      "training_unit": "",
+      "source_unit": "",
+      "source_unit_confirmed": false,
+      "evidence_ref": "",
+      "candidates": []
+    },
+    "APH A In O2": {
+      "attribute_id": null,
+      "status": "unknown",
+      "training_unit": "",
+      "source_unit": "",
+      "source_unit_confirmed": false,
+      "evidence_ref": "",
+      "candidates": [
+        "BSR-BSR1-bsr1_nphr-unclassified-bsr_aph_a_in_flue_gas_o2_1",
+        "BSR-BSR1-bsr1_nphr-unclassified-bsr_aph_a_in_flue_gas_o2_2",
+        "BSR-BSR1-bsr1_nphr-unclassified-bsr_aph_a_in_flue_gas_o2_3"
+      ]
+    },
+    "APH A in flue gas temp": {
+      "attribute_id": null,
+      "status": "unknown",
+      "training_unit": "",
+      "source_unit": "",
+      "source_unit_confirmed": false,
+      "evidence_ref": "",
+      "candidates": [
+        "BSR-BSR1-bsr1_nphr-unclassified-bsr_aph_a_otl_flue_gas_temp_1",
+        "BSR-BSR1-bsr1_nphr-unclassified-bsr_aph_a_otl_flue_gas_temp_2",
+        "BSR-BSR1-bsr1_nphr-unclassified-bsr_aph_a_otl_flue_gas_temp_3"
+      ]
+    },
+    "Condensor Vacuum": {
+      "attribute_id": null,
+      "status": "unknown",
+      "training_unit": "",
+      "source_unit": "",
+      "source_unit_confirmed": false,
+      "evidence_ref": "",
+      "candidates": [
+        "BSR-BSR1-bsr1_nphr-unclassified-bsr_condenser_a_vaccum",
+        "BSR-BSR1-bsr1_nphr-unclassified-bsr_condenser_b_vaccum"
+      ]
+    },
+    "Feedwater Flow": {
+      "attribute_id": null,
+      "status": "unknown",
+      "training_unit": "",
+      "source_unit": "",
+      "source_unit_confirmed": false,
+      "evidence_ref": "",
+      "candidates": [
+        "BSR-BSR1-bsr1_turbine-unclassified-final_feedwater_flow"
+      ]
+    },
+    "Total Air Flow": {
+      "attribute_id": null,
+      "status": "unknown",
+      "training_unit": "",
+      "source_unit": "",
+      "source_unit_confirmed": false,
+      "evidence_ref": "",
+      "candidates": [
+        "BSR-BSR1-bsr1_nphr-unclassified-bsr_total_airflow"
+      ]
+    }
+  }
+}

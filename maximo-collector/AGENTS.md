@@ -1,5 +1,28 @@
 # AGENTS.md — Maximo Collector
 
+## Existing deployment and database ownership
+
+Read the root `../AGENTS.md` first. The existing managed deployment is
+`reliability-cockpit-platform`, using root `compose.yaml` + `compose.dev.yaml`.
+Reuse `maximo-db` / database `maximo_collector` / volume `maximo-db`.
+No new DB, parallel Compose project, or duplicate Maximo worker is needed.
+The old per-project Postgres container on host port 5434 is not this store;
+do not start it or copy an example over the existing `.env` by default.
+
+The **Reliability Mart lives in this same database**. Keep legacy tables and
+canonical tables together. `mart-projector` runs
+`mxcollector mart-project --incremental` over local Equipment/Work Order rows,
+with `RELIABILITY_CONTRACTS_ROOT=/contracts` and a read-only contract mount.
+It does not call Maximo or load every canonical domain. Preserve existing
+FMEA/RCFA/health/overhaul data and the governed `reliability_asset_registry`.
+NADI's canonical read API uses this Mart; legacy Cockpit sync uses our API.
+
+Before source collection, check for Docker, local, systemd and cron workers.
+Use one source worker; preserve scope, rate/page guards and cursors. A partial
+run must not advance its successful watermark. API availability is not proof
+of a complete, fresh source sync. See `docs/reliability-mart-v1.md` and
+`docs/mx-012r-unified-collector-mart-pipeline.md` for projection semantics.
+
 ## Mission
 
 Collect verified Maximo OSLC objects (site BSR, org IP) into a local
@@ -54,21 +77,28 @@ mxcollector sync ──▶ OslcClient (GET-only, rate-limited)
       │                 re-login once on expiry)
       ▼
 Postgres (contract-shaped: equipment, work_order, service_request,
-          person, item, labor, sync_cursor, collect_run)  :5434
+          person, item, labor, sync_cursor, collect_run, Reliability Mart)
+          managed maximo-db:5432; host :5434 is legacy standalone only
       │
       ▼
 FastAPI read-only views (contract field names, vendor under sources.maximo)
                                           :8002
       │
       ▼
-reliability-cockpit (dashboard — pulls from this API, never touches Maximo)
+reliability-cockpit (legacy sync pulls API; canonical API reads this DB's Mart;
+                     never touches production Maximo)
 ```
 
 ## Commands
 
+The bootstrap below describes a fresh isolated installation. For this existing
+workspace, reuse the root Compose services and stores instead; do not run
+these DB/worker bootstrap steps alongside the managed deployment. Create an
+environment file only if absent. Read-only tests can use the existing venv.
+
 ```bash
 python3 -m venv .venv && .venv/bin/pip install -e .
-cp .env.example .env                    # fill MAXIMO_USERNAME/PASSWORD (read-only account)
+[ -e .env ] || cp .env.example .env      # fresh setup only; preserve existing credentials
 docker compose up -d postgres           # Postgres on :5434
 mxcollector init-db
 mxcollector sync                        # WO/SR + operational master data

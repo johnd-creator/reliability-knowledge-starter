@@ -1,5 +1,30 @@
 # AGENTS.md — PI Collector
 
+## Existing deployment and consumers
+
+Read `../AGENTS.md` first. Reuse the managed `pi-db` / database `pi_collector`
+/ volume `pi-db` in Compose project `reliability-cockpit-platform`.
+The old per-project host port 5433 and `.env` DSN may point to a stopped legacy
+store; do not start another DB or source worker. Never overwrite existing env
+files with examples. API default port is 8001; managed web default is 3002.
+
+**NK has no DB**: it reads our stored `/attributes` and `/snapshots` through
+the API. It must not receive source credentials, read production PI directly,
+or trigger collection. Cockpit's PI ingestion projection is still pending;
+a configured API base is not evidence that it is implemented.
+
+Operational handoff (2026-10-07): source authentication returned HTTP 401 and
+the user asked to skip it until they check credentials. Keep `pi-auth-check`
+and `pi-worker` (profile `pi-collection`) disabled until the user requests
+resumption. Do not retry credentials or backfill to compensate for stale data.
+The API remains usable for stored history; show freshness honestly.
+
+`pi-registry` is a one-shot local loader of verified/ok entries, not a daemon.
+The managed worker reads `pi-collector/.env` source settings but its DB URL is
+overridden to `pi-db`. Confirm no other worker polls the same registry before
+enabling collection. All default standalone commands below require reconciling
+their DB target and worker ownership with the root deployment first.
+
 ## Mission
 
 Collect verified PI Web API time-series data into a local store and serve it
@@ -80,8 +105,10 @@ must not be weakened without explicit authorization:
 7. **Idempotent resume** — upserts by (attribute_id, timestamp). After any
    abort, re-running the same command resumes; NEVER retry with a fresh table.
 
-Scheduling (systemd units + cron in `deploy/`) triggers runs at night and on
-weekends; the in-app off-hours gate stays active as the final authority.
+Standalone scheduling templates (systemd units + cron in `deploy/`) support
+night/weekend runs. Their presence does not prove they are enabled. Inspect
+the current runtime before using them; never enable them alongside a worker
+polling the same registry. The in-app off-hours gate stays active.
 
 ## Gotchas
 

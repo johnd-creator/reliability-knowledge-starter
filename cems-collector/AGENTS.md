@@ -1,5 +1,19 @@
 # AGENTS.md — CEMS Collector
 
+## Existing deployment and database ownership
+
+Read `../AGENTS.md` first. Reuse `cems-db` / database `cems_collector` / volume
+`cems-db` in root Compose project `reliability-cockpit-platform`.
+Managed DB port is private 5432; host 5435 belongs to the legacy standalone
+container. Do not restart that container, add another DB, overwrite `.env`,
+or run a local collector alongside `cems-worker`. The managed web default is
+3003 and API is 8003. `cems-aggregator` owns aggregation separately from polling.
+
+Cockpit has a configurable CEMS API base, but its CEMS projection is pending.
+Do not claim that NADI already ingests emissions merely because this API works.
+Preserve all normalization and operator overrides below. Source diagnostics
+must not be run as an implicit effect of consumer/UI development.
+
 ## Mission
 
 Collect CEMS (Continuous Emissions Monitoring System) readings from the
@@ -48,7 +62,8 @@ maximo-collector architecture and workspace safety conventions.
    order for parameters whose current read is implausible (SO2/CO), with
    plausibility bounds and rate-limited logging. Anything else must be
    recorded as `status: unknown` in the registry, not guessed.
-7. The collector writes only to its **own** Postgres store (:5435).
+7. The collector writes only to its **own existing** Postgres store
+   (`cems-db:5432` managed; host :5435 is legacy standalone only).
 8. **Outbound push to the KLHK/CEMS server is intentionally absent.**
    The DAZ `SendDataToCEMS` job (POST to 192.168.198.22) was not ported —
    this collector is read-only end to end. If reporting is ever needed it
@@ -68,18 +83,23 @@ Normalizer (gas conversion → threshold clamp → state overrides →
       │
       ▼
 Postgres (contract-shaped: stack, parameter, reading_realtime,
-          reading_5min, sync_cursor, collect_run)  :5435
+          reading_5min, sync_cursor, collect_run)  managed cems-db:5432
       │
       ├──▶ cemscollector aggregate (5-minute windows, idempotent upserts)
       ▼
-FastAPI read-only views (:8003) ──▶ Next.js dashboard (:3000, optional)
+FastAPI read-only views (:8003) ──▶ Next.js dashboard (managed host :3003)
 ```
 
 ## Commands
 
+These bootstrap commands describe a fresh isolated installation. They are not
+the default for the current managed workspace. Reuse root Compose and existing
+stores; create env files only if absent and avoid duplicate polling. Tests can
+use the existing venv without starting a DB or contacting the PLC.
+
 ```bash
 python3 -m venv .venv && .venv/bin/pip install -e .
-cp .env.example .env                      # PLC host/port + DATABASE_URL
+[ -e .env ] || cp .env.example .env        # fresh setup only; preserve existing settings
 docker compose up -d postgres             # Postgres on :5435
 cemscollector init-db
 cemscollector load-registry               # stacks + 14 parameters from YAML
@@ -174,8 +194,8 @@ without operator approval.
   delegate signature at runtime.
 - Learned probe overrides are process-local; to make one durable, edit the
   registry YAML and flip the parameter to `verified`.
-- Postgres port is **5435** (after cockpit 5432, pi-collector 5433,
-  maximo-collector 5434); API port **8003**.
+- Standalone legacy Postgres uses host port **5435**. Managed Compose uses
+  private `cems-db:5432` without a published DB port; API port is **8003**.
 
 ## Git Rules
 

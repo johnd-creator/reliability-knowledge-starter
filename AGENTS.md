@@ -1,339 +1,300 @@
 # AGENTS.md — Reliability Knowledge Starter (workspace root)
 
-This is a **single mono repository containing seven separate projects**, not one
-combined application. There is **no top-level build, test, or run command** —
-each subproject has its own. Read this file first, then the `AGENTS.md` /
-`CONTEXT.md` inside the subproject you are working in.
+Read this file before changing any subproject, then read that subproject's
+`AGENTS.md` and relevant `CONTEXT.md`. This is one Git repository with **eight
+components**. Each component has its own dependencies and tests; the root
+Compose files provide a shared deployment, not a shared build or test suite.
 
-> Each subproject also has its **own `AGENTS.md`** with project-specific safety
-> rules. Those are authoritative for their scope; this file covers cross-cutting
-> knowledge and how the pieces fit together.
+## 1. Existing data and deployment are the default
 
-## 1. Workspace layout & git model
+**Continue development using the existing databases, volumes, collectors, and
+APIs. Do not create a new application database to implement a feature.**
 
-```text
-reliability-knowledge-starter/        <- mono repo root
-├── maximo-knowledge/                 <- source knowledge
-├── pi-knowledge/                     <- source knowledge
-├── reliability-data-contracts/       <- vendor-neutral schemas
-├── reliability-cockpit/              <- consumer app: transactional
-├── pi-collector/                     <- consumer app: time-series
-├── maximo-collector/                 <- consumer app: Maximo read-only sync
-└── cems-collector/                   <- consumer app: CEMS Modbus read-only polling
-```
+- Reuse the owning component's current store. Reliability Mart is a set of
+  tables inside the Maximo Collector database, not a fifth database.
+- NK has no database. Its PI input comes from the existing PI Collector API.
+- Do not add a DB container, redirect a DSN to a new store, change database or
+  volume identities, switch Compose project names, or switch deployment modes
+  as a routine setup/fix. Those
+  changes require an explicit user request for an architecture or data migration.
+  Correcting a mistaken DSN to the documented existing owner is allowed after
+  verifying the target; it must not create or replace a database.
+- Do not use `docker compose down -v`, remove volumes, drop/truncate tables,
+  recreate stores, or reset cursors to solve missing data.
+- Schema additions belong in the existing owning store with compatible
+  migrations. Temporary hermetic test databases are allowed; they must not
+  replace operational stores or contact production sources.
+- Preserve existing `.env` files and unrelated working-tree edits. Never
+  overwrite an existing `.env` by copying an example over it.
 
-- The root directory is the **only Git repository**. Subproject `.git`
-  directories are intentionally absent so GitHub receives one coherent tree.
-  Run Git commands from the root and use each subproject's own commands for
-  setup, tests, and runtime.
-- `manifest.json` is a generated snapshot of the starter's file list, not a
-  package manifest. It is not used by any build.
+A request to resume development or fix an empty page does not authorize
+rebuilding the persistence architecture or deleting history.
 
-## 2. The architectural mental model (read this before changing anything)
+## 2. Components and responsibilities
 
-The projects form a **one-way data pipeline**. This directionality is the
-most important rule in the workspace:
-
-```text
-maximo-knowledge   ─┐
-                    ├──▶  reliability-data-contracts  ──▶  reliability-cockpit
-pi-knowledge       ─┘     (vendor-neutral contracts)       (transactional app)
-      │                                              ──▶  pi-collector
-      └─────────────────── (verified WebIds)              (time-series app)
-(SOURCE OF TRUTH)                                           (trending + ML)
-```
-
-- **`maximo-knowledge` / `pi-knowledge`** are *read-only knowledge bases*, **not
-  applications**. They record what the source systems expose, how to read it
-  safely, and what it means. They contain discovery scripts, JSON catalogs, and
-  docs.
-- **`reliability-data-contracts`** is the vendor-neutral contract layer. JSON
-  Schemas (Draft 2020-12) plus field-mapping tables. Core fields are
-  snake_case; **vendor fields are quarantined under `sources.maximo` /
-  `sources.pi`** and must never leak into core contract fields.
-- **`reliability-cockpit`** is the only application. Its current production path
-  **syncs** verified Maximo collector resources into its own local Postgres,
-  **computes** reliability KPIs, and **serves** a FastAPI + Next.js UI. The PI
-  and CEMS collector APIs are verified and configurable, but PI → Cockpit and
-  CEMS → Cockpit projections remain pending.
-
-**Non-negotiable rule:** the cockpit **never rediscovers** Maximo/PI. Before
-introducing any source field, tag, endpoint, or WebId into the cockpit, look it
-up in the knowledge repos and prefer entries with `status: verified`. If the
-knowledge is missing, the correct action is to add a discovery task in the
-relevant knowledge repo — not to guess an identifier in the app.
-
-## 3. Commands — there is no unified entrypoint
-
-Each project is independent. The correct setup/test cycle differs per project.
-
-### maximo-knowledge (Python, stdlib + playwright)
-```bash
-cd maximo-knowledge
-python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
-.venv/bin/python -m playwright install chromium   # only for session discovery
-cp .env.example .env                              # fill MAXIMO_READ_ONLY_TOKEN
-.venv/bin/python -m unittest discover -s tests    # 37 tests
-```
-Discovery CLIs (`scripts/discover.py`, `scripts/session_discover.py`) are
-GET/HEAD/OPTIONS only. **All network discovery requires an explicit `--execute`
-flag** — without it they run offline/dry-run against local fixtures.
-
-### pi-knowledge (Python, stdlib)
-```bash
-cd pi-knowledge
-python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
-.venv/bin/python -m unittest discover -s tests    # 7 tests
-```
-PI registry access is verified for BSR1 as of 2026-08-14: the registry contains
-541 discovered attributes, of which **433** are `status: verified` with
-`stream_status: ok` (98 gone, 10 error). The PI collector may collect the 433
-active streams with its read-only safety controls. The Cockpit's direct PI
-adapter remains a placeholder; current Cockpit operation consumes Maximo
-collector resources only. PI/CEMS collector API bases do not imply an active
-Cockpit projection, and source credentials remain outside Cockpit.
-
-### reliability-data-contracts (JSON Schemas, no own venv)
-This project has **no virtual environment of its own** — it is pure data.
-Validate schemas by borrowing the maximo-knowledge venv (which has `jsonschema`):
-```bash
-cd reliability-data-contracts
-../maximo-knowledge/.venv/bin/python -c "
-import json, glob
-from jsonschema import Draft202012Validator
-for f in sorted(glob.glob('schemas/*.schema.json')):
-    Draft202012Validator.check_schema(json.load(open(f)))
-"
-# 12 schemas expected
-```
-
-### reliability-cockpit (Python app + Postgres + Next.js web)
-```bash
-cd reliability-cockpit
-python3 -m venv .venv && .venv/bin/pip install -e .   # -e . installs the `cockpit` CLI
-cp .env.example .env                                  # MAXIMO_READ_ONLY_TOKEN + DATABASE_URL
-.venv/bin/cockpit init-db                             # create Postgres tables
-.venv/bin/cockpit sync                                # delta-sync Maximo objects
-.venv/bin/cockpit kpi                                 # compute + persist KPIs
-.venv/bin/cockpit serve                               # FastAPI on 127.0.0.1:8000
-.venv/bin/python -m unittest discover -s tests        # 34 tests (no DB needed)
-```
-Web UI (separate process):
-```bash
-cd reliability-cockpit/web
-npm install && cp .env.example .env.local && npm run dev   # Next.js on :3000
-```
-
-`USERGUIDE.md` (root) is a detailed end-to-end runbook for these three projects
-(written in Indonesian; `pi-knowledge` is intentionally not covered there).
-
-### pi-collector (Python app + TimescaleDB + FastAPI)
-```bash
-cd pi-collector
-python3 -m venv .venv && .venv/bin/pip install -e .   # installs `picollector` CLI
-cp .env.example .env                                  # PI credentials + DATABASE_URL
-docker-compose up -d postgres                         # TimescaleDB on port 5433
-.venv/bin/picollector init-db                         # create tables + hypertable
-.venv/bin/picollector load-registry                   # load 433 verified/ok BSR1 streams from pi-knowledge YAML
-.venv/bin/picollector collect-snapshots               # fetch current values for all attributes
-.venv/bin/picollector backfill --start "*-7d" --end "*" --interval 1h  # 7-day history
-.venv/bin/picollector serve                           # FastAPI on 127.0.0.1:8001
-.venv/bin/python -m unittest discover -s tests        # hermetic tests (no DB/network needed)
-```
-The collector reads verified WebIds from `../pi-knowledge/mappings/bsr1-parameters.yaml`
-(never hardcoded). Two collection modes: `collect-snapshots` (lightweight, current
-values) and `backfill` (heavy, interpolated history for trending/ML). Time-series
-data stored in a TimescaleDB hypertable for efficient range queries.
-
-### cems-collector (Python app + Postgres + FastAPI)
-```bash
-cd cems-collector
-python3 -m venv .venv && .venv/bin/pip install -e .   # installs `cemscollector` CLI
-cp .env.example .env                                  # PLC host/port + DATABASE_URL
-docker compose up -d postgres                         # Postgres on port 5435
-.venv/bin/cemscollector init-db                       # create tables
-.venv/bin/cemscollector load-registry                 # load 15 parameters from registry/cems-parameters.yaml
-.venv/bin/cemscollector collect                       # continuous Modbus polling (read-only)
-.venv/bin/cemscollector aggregate                     # 5-minute window aggregation
-.venv/bin/cemscollector diagnose                      # read-only probe of every parameter
-.venv/bin/cemscollector serve                         # FastAPI on 127.0.0.1:8003
-.venv/bin/python -m unittest discover -s tests        # hermetic tests (no DB/network needed)
-```
-Ported from the DAZ production collector (Beijer Box2Base Modbus TCP gateway,
-stack 1 PLTU Suralaya). Modbus access is **FC03/FC04 read function codes
-only** — the guard raises on any write/mask call. The registry YAML is the
-single source for register numbers; entries are `status: documented` until
-re-verified against the live PLC. Normalization (gas conversion, threshold
-clamp, maintenance overrides, O2-reference correction) runs inside the
-collector; the DAZ outbound KLHK/CEMS push was deliberately not ported.
-Optional Next.js dashboard under `web/` (proxy `CEMS_COLLECTOR_API_BASE`).
-
-## 4. Hard safety boundary (enforced in code, not just convention)
-
-All access to production Maximo/PI is **READ ONLY**. This is not a guideline —
-it is implemented as a guard:
-
-- `maximo-knowledge/scripts/discover.py` and
-  `reliability-cockpit/src/adapters/maximo/oslc_client.py` both define
-  `READ_ONLY_METHODS = {"GET", "HEAD", "OPTIONS"}` and **raise** on any other
-  method. Do not "relax" these checks.
-- `cems-collector/src/adapters/modbus/client.py` defines
-  `READ_ONLY_FUNCTIONS = {"read_holding_registers", "read_input_registers"}`;
-  any write/mask-shaped call raises `ModbusGuardError`. Same rule: do not
-  relax it.
-- Every Maximo sync query is scoped `oslc.where=siteid="BSR"` (org `IP`) by
-  default. This site scope matches the read-only discovery account.
-- Rate limiting (default **1 request/second**) and a **1 MiB response size cap**
-  are mandatory and applied on every request.
-- **Never commit credentials, tokens, cookies, API keys, or Authorization
-  headers.** `.env*` is gitignored (except `.env.example`). All saved response
-  samples must be sanitized (sensitive + personal key regexes live in
-  `discover.py`).
-- Never brute-force paths, IDs, object names, WebIds, or tags. If access
-  behavior is uncertain, record the record as `status: unknown` and stop.
-
-> Boundary nuance: the *knowledge repos' own tooling* stays GET-only. A
-> **downstream app** (e.g. the cockpit) may use programmatic login
-> (`POST /j_security_check`) to obtain a session, because login is
-> authentication, not data mutation. See `maximo-knowledge/CONTEXT.md` §5.
-
-## 5. Status vocabulary — trust only `verified`
-
-Every catalog/sample record carries a `status`. This vocabulary is identical
-across all repos:
-
-| status | meaning |
-|---|---|
-| `unknown` | not tested — do not rely on it |
-| `documented` | present in vendor docs/seed, not verified on this instance |
-| `verified` | tested with authorized read-only access — **trust this** |
-| `forbidden` | endpoint exists but the current account cannot access it |
-| `deprecated` | known but should not be used |
-
-Treat anything that is not `verified` as "probably correct, must be re-verified
-against the live instance before depending on it."
-
-## 6. reliability-cockpit internals (the application)
-
-### Data flow within the app
-```text
-Maximo CollectorClient ──▶ mappers ──▶ domain models ──▶ CockpitStore ──▶ Postgres
-                                                          ▲
-                                KpiService (reads store, writes KPIs back)
-                                                          ▲
-                                FastAPI (read-only views) ──▶ Next.js UI
-```
-- Maximo Collector → Cockpit is implemented. PI Collector API and CEMS Collector
-  API access are verified/configurable, while their Cockpit projections remain
-  pending.
-- `src/adapters/maximo/oslc_client.py` — paginates OSLC collections, enforces
-  read-only + rate-limit + size cap. OSLC records live under the **`_member`**
-  key (with `member`/`oslc:member`/`rdfs:member` fallbacks) — not `data`/`items`.
-- `src/adapters/maximo/mappers.py` — raw OSLC payload → frozen dataclass domain
-  models. The field-by-field translation source of truth is
-  `reliability-data-contracts/mappings/maximo-to-contracts.md`.
-- `src/domain/` — frozen dataclasses (`Equipment`, `WorkOrder`, `ServiceRequest`,
-  `Person`, `Item`, `Labor`, `ReliabilityKpi`, …). Vendor fields live in
-  `*Source` nested dataclasses (e.g. `MaximoEquipmentSource`).
-- `src/services/sync.py` — delta sync using the `changedate` watermark. First
-  run = `full`; later runs append `changedate >= "<watermark>"` to `oslc.where`.
-  Watermarks persist in the `sync_cursor` table. A row that fails to map is
-  **logged and skipped** — one bad row never aborts a sync.
-- `src/services/kpi.py` — computes MTBF, MTTR, AVAILABILITY, PM_COMPLIANCE from
-  normalized work orders. KPIs are **derived by the cockpit**, never read
-  directly from Maximo. Default period = last 90 days (`--from`/`--to`/`--equipment`
-  to override). PM compliance counts `work_type == "PM"`; "completed" status set
-  is `{CLOSE, CLOSED, COMP, COMPLETE, COMPLETED}`.
-- `src/repositories/` — SQLAlchemy 2.0 (declarative `Base`). Tables are created
-  via `Base.metadata.create_all` (`cockpit init-db`); the ORM in `models.py` is
-  the source of truth and `migrations/001_init.sql` mirrors it. 8 tables:
-  `equipment`, `work_order`, `service_request`, `person`, `item`, `labor`,
-  `reliability_kpi`, `sync_cursor`.
-- `src/api/app.py` — FastAPI. Endpoints use Pydantic `*View` models whose field
-  names mirror the contracts. No raw vendor payload escapes this layer. Swagger
-  at `/docs`.
-
-### Web UI
-- Next.js 15 (App Router) + React 19 + TypeScript under `web/`.
-- The browser never calls FastAPI directly: requests go to `/api/cockpit/*` and a
-  `next.config.js` rewrite proxies them to `COCKPIT_API_BASE`
-  (default `http://127.0.0.1:8000`). Set this in `web/.env.local` if the API
-  runs on another host/port.
-- API client lives in `web/lib/api.ts`.
-
-### CLI object → resource map (`src/cli.py`)
-| object structure | resource | watermark |
+| Directory | Stack / responsibility | Persistent data owner |
 |---|---|---|
-| `mxasset` | equipment | `changedate` |
-| `mxwodetail` | workorder | `changedate` |
-| `mxapisr` | servicerequest | `changedate` |
-| `mxperson` | person | `statusdate` |
-| `mxitem` | item | `statusdate` |
-| `mxapilabor` | labor | — |
+| `maximo-knowledge/` | Python discovery, sanitized catalogs and verified Maximo mappings | Knowledge files; no app DB |
+| `pi-knowledge/` | Python discovery, PI registry and verified WebIds | Knowledge files; no app DB |
+| `reliability-data-contracts/` | JSON Schema Draft 2020-12 and semantic mappings | Contract files; no app DB |
+| `maximo-collector/` | Python / FastAPI / SQLAlchemy; Maximo read-only sync and Mart projection | Existing Maximo Collector Postgres |
+| `pi-collector/` | Python / FastAPI / SQLAlchemy; PI snapshots and time series | Existing PI Collector TimescaleDB |
+| `cems-collector/` | Python / FastAPI; Modbus reads, normalization, aggregation | Existing CEMS Collector Postgres |
+| `reliability-cockpit/` | NADI: FastAPI backend + Next.js 15 / React 19 / TypeScript | Existing Cockpit Postgres for legacy sync/KPIs; reads Mart in Maximo DB |
+| `NK/` | Streamlit / pandas / scikit-learn / joblib; coal calorific value prediction | No DB; local model/scaler/mapping files and session history |
 
-`cockpit sync` accepts either the object-structure name or the resource name
-(e.g. `cockpit sync mxasset` or `cockpit sync equipment` both work).
+Collector dashboards also live under each collector's `web/`. The knowledge
+repositories are not daemon applications. `manifest.json` is a generated file
+inventory, not a build manifest. Only the workspace root is a Git repository.
 
-## 7. Non-obvious gotchas
+## 3. Data flow and ownership
 
-- **`cockpit: command not found`** — the CLI is only available after
-  `pip install -e .` (editable install) **in the cockpit venv**. Run it from
-  `.venv/bin/cockpit` or activate the venv.
-- **Postgres is required for the cockpit to run** (not for its unit tests). Use
-  `docker-compose up -d postgres` or a local instance; default DSN is
-  `postgresql://cockpit:cockpit@localhost:5432/cockpit`.
-- **6 Maximo objects are `forbidden`** (`failurecode`, `location`, `pm`, `meter`,
-  `jobplan`, `mxapiwodetail`) for the current discovery account — they return
-  `BMXAA0024E`. This is **not a bug**; the account lacks object-level READ
-  sigoptions. Derived concepts (`failure`, `location`, `maintenance-event`) fall
-  back to data drawn from the verified objects until a read-enabled credential
-  exists.
-- **PI source collection is verified; Cockpit direct PI is still not used.**
-  BSR1 has 433 `verified`/`ok` registry streams and the PI collector persists
-  snapshots/timeseries. The cockpit `src/adapters/pi/client.py` still raises
-  `NotImplementedError` by design; route Cockpit integrations through the
-  configurable collector API bases, never by adding PI credentials to Cockpit.
-- **Maximo scalar values arrive as strings.** Booleans (`"true"`, `"1"`) and
-  numbers are frequently stringified in OSLC payloads. Always use the coercion
-  helpers (`oslc_boolean`, `oslc_number`, `oslc_timestamp`, `oslc_pop_*`) in
-  `oslc_client.py` rather than casting directly.
-- **Site scope is always BSR.** Omitting the `siteid="BSR"` filter returns data
-  from other sites. The sync engine and client apply it by default — preserve
-  that when adding queries.
-- **CEMS registry codes must be quoted in YAML.** YAML 1.1 parses bare
-  `NO`/`YES`/`ON`/`OFF` as booleans; the cems-collector registry loader
-  rejects non-string codes with a hint. Registry `status` is the knowledge
-  vocabulary; the operational on/off switch is `collect: true|false`.
-- **Tests use `unittest`, not `pytest`**, and do **not** require a database or
-  network — `OslcClient` and `CockpitStore` are replaced with lightweight fakes
-  (`FakeClient`/`FakeStore`) in `reliability-cockpit/tests/`. Keep new tests
-  hermetic the same way.
+```text
+maximo-knowledge + pi-knowledge → reliability-data-contracts
+          │ verified source identifiers and semantic mappings
+          ▼
+Maximo → maximo-worker → Maximo Collector DB → maximo-api
+                              │                     │
+                              │                     └→ cockpit-worker → Cockpit DB
+                              │                                           │
+                       mart-projector                           legacy sync/KPI API
+                              │                                           │
+                 Reliability Mart tables                                  │
+                 IN THE SAME MAXIMO DB                                    │
+                              │                                           │
+                 cockpit-api /v1/reliability/* ────────────────────────────┤
+                                                                          ▼
+                                                                  NADI Next.js UI
+PI → pi-worker → PI Collector DB → pi-api → PI dashboard / NK input
+PLC → cems-worker → CEMS DB → cems-aggregator → cems-api → CEMS dashboard
+Manual input / CSV ───────────────────────────────────────→ NK prediction
+```
 
-## 8. Conventions
+### NADI has two distinct read paths
 
-- **Contract field naming:** snake_case for core/vendor-neutral fields; vendor
-  (Maximo) identifiers isolated under a `sources.maximo` object, PI under
-  `sources.pi`, CEMS Modbus details under `sources.cems`. Never copy vendor
-  field names into core fields.
-- **Schema files:** `<entity>.schema.json`, JSON Schema Draft 2020-12, in
-  `reliability-data-contracts/schemas/`. Breaking changes require a version bump;
-  prefer backward-compatible additions.
-- **Timestamps:** ISO-8601. The delta-sync watermark is `changedate`.
-- **Domain models:** frozen `@dataclass` instances in `src/domain/`.
-- **Commit messages** (per-subproject AGENTS.md): scoped conventional style, e.g.
-  `docs(maximo): …`, `feat(discovery): …`, `docs(mapping): …`, `feat(pi): …`.
-- **Config:** all secrets via environment / `.env` (never source control). The
-  cockpit loads `.env` from the repo root and `~/.reliability-cockpit.env`.
-  Auth is either `MAXIMO_READ_ONLY_TOKEN` (bearer) or an out-of-band
-  `MAXIMO_SESSION_COOKIE`.
+1. **Legacy collector ingestion:** `cockpit-worker` consumes Maximo Collector
+   API resources, writes normalized records to Cockpit's `DATABASE_URL`, and
+   computes legacy KPIs. It does not rediscover or authenticate to Maximo.
+2. **Canonical Reliability Mart:** `cockpit-api` reads
+   `RELIABILITY_MART_DATABASE_URL`, pointing to the existing Maximo Collector
+   database. Public `/v1/reliability/*` queries are read-only and do not copy
+   Mart records into Cockpit's legacy store. No fallback to the legacy DSN is
+   allowed when the Mart DSN is missing; Mart routes can return HTTP 503.
 
-## 9. Where to look next (progressive disclosure)
+The Mart includes `asset_master`, `maintenance_event`, `fmea_assessment`,
+`rcfa_analysis`, `asset_health_assessment`, `overhaul_event`, and governance /
+projection relations such as `reliability_asset_registry`, `asset_af_mapping`,
+and `mart_projection_state`. Normal NADI Asset lists use governed Registry
+membership; technical `equipment` or `asset_master` counts alone do not prove
+those lists are populated. Do not register every technical asset automatically.
 
-| If you are working on… | read this first |
+`mart-projector` incrementally projects **local** Equipment and Work Order
+records. It never calls production Maximo. It requires the read-only contract
+mount and `RELIABILITY_CONTRACTS_ROOT=/contracts`. It does not populate all
+FMEA/RCFA/health/overhaul records from production; preserve their existing
+controlled loads and handle missing domains through their documented pipeline.
+
+PI/CEMS Collector API bases are configurable in Cockpit, but their Cockpit
+projections remain pending. Configured URLs do not prove ingestion exists.
+The direct Cockpit PI adapter remains a placeholder. Do not add production
+PI/Maximo credentials to Cockpit or NK.
+
+The browser uses `/api/cockpit/*`; Next.js proxies to `COCKPIT_API_BASE`.
+Diagnose both the proxy and the corresponding backend data path.
+
+## 4. Deployment identity and database map
+
+Last deployment handoff: **2026-10-07**. Confirm actual runtime before making
+changes; these names describe the existing managed deployment, not a reason to
+create missing resources in a different project.
+
+- Compose project: `reliability-cockpit-platform` (`name` in `compose.yaml`).
+- Files: `compose.yaml` + `compose.dev.yaml`; configuration: `.env.platform`.
+- Network: `reliability-cockpit-platform_platform`.
+- DBs use container port 5432 on the private network, with **no published host
+  DB ports**. `localhost:5432` is not evidence of the managed Cockpit DB.
+
+| DB service | Database / user | Compose volume | Used by |
+|---|---|---|---|
+| `maximo-db` | `maximo_collector` | `maximo-db` | Maximo worker/API, Mart projector, NADI Mart reader |
+| `pi-db` | `pi_collector` | `pi-db` | PI registry loader, worker/API; NK consumes API only |
+| `cems-db` | `cems_collector` | `cems-db` | CEMS worker, aggregator, API |
+| `cockpit-db` | `cockpit` | `cockpit-db` | Cockpit legacy worker/API/KPIs |
+
+Physical volumes are prefixed `reliability-cockpit-platform_`, e.g.
+`reliability-cockpit-platform_maximo-db`. Changing `-p`, `COMPOSE_PROJECT_NAME`,
+or the Compose `name` can select different, empty volumes.
+
+| Application | Web port default | API port with `compose.dev.yaml` |
+|---|---|---|
+| NADI / Cockpit | 3000 | 8000 |
+| Maximo Collector | 3001 | 8002 |
+| PI Collector | 3002 | 8001 |
+| CEMS Collector | 3003 | 8003 |
+| NK (separate Streamlit process) | 8501 | Uses PI API; no separate backend DB |
+
+Ports can be overridden; confirm listeners and resolved non-secret settings.
+Legacy per-project DB containers (`maximo-collector-postgres`,
+`pi-collector-postgres`, `cems-collector-postgres`, `cockpit-postgres`) and their
+volumes may still exist. They were stopped after local-data migration. Their
+old host ports 5434/5433/5435 and local Cockpit port configuration are not the
+managed databases. Do not restart them or use their `.env` DSNs by default.
+
+`compose.external.yaml` is an alternative deployment named
+`reliability-cockpit-external`; it creates a separate Cockpit volume. It is not
+an overlay for the running managed deployment. Do not switch to it to fix NADI.
+Read `deploy/compose/README.md` before deployment changes.
+
+## 5. Mandatory checks before running services or repairing data
+
+1. Read `git status`, the relevant scoped instructions, and current Compose
+   service definitions. Confirm the project name and existing containers/volumes.
+2. Inspect running Docker workers, local processes, systemd units, and cron for
+   the affected source. **One collector worker per source/registry**: do not run
+   local `.venv` collection alongside Compose, systemd, or another worker.
+3. Confirm API bases and DB host/database/owner without printing passwords,
+   tokens, cookies, full DSNs, or interpolated Compose environment output.
+4. Check API responses, worker logs, last completed runs, cursors and recent
+   collection timestamps. HTTP 200 proves availability, not fresh source data.
+   Source-record dates and `mart_updated_at` are not source sync freshness.
+5. For empty NADI pages, check the Mart DSN, canonical table population,
+   Registry membership, scope filters, and `mart_projection_state` before
+   touching legacy sync or production collection.
+6. If old local data is in another existing volume, use a backed-up, reviewed
+   local migration into the intended store. Preserve newer rows and cursors,
+   use stable conflict keys, and reset sequences after importing explicit IDs.
+   Do not redownload production history to compensate for a wrong DSN.
+7. Restart only the affected services after a necessary change. Init/registry
+   services exiting successfully are normal one-shot jobs, not broken daemons.
+
+Safe initial runtime inventory from the root:
+
+```bash
+docker compose --env-file .env.platform -f compose.yaml -f compose.dev.yaml ps -a
+docker compose --env-file .env.platform -f compose.yaml -f compose.dev.yaml config --services
+docker volume ls --filter name=reliability-cockpit-platform
+```
+
+Do not run unfiltered `docker inspect` or interpolated `compose config` in chat
+outputs: they can expose secrets. Per-project README/bootstrap commands are
+for isolated installations; they do not override this existing deployment.
+
+## 6. Current operational handoff (recheck when relevant)
+
+- **PI authentication is deferred at the user's request.** Last source check
+  returned HTTP 401. Do not retry credentials, enable `pi-collection`, or start
+  `pi-auth-check` / `pi-worker` until the user says credentials are ready and
+  asks to resume. This is a session handoff, not a permanent PI limitation.
+- PI API/dashboard may serve stored snapshots and history while collection is
+  paused. `pi-registry` is a local registry loader, not a collection daemon.
+  `pi-auth-check` and `pi-worker` are opt-in under the `pi-collection` profile.
+- Managed PI workers read source config from `pi-collector/.env`; Compose
+  overrides their `DATABASE_URL` to `pi-db`. Managed DB and Maximo/CEMS worker
+  settings use `.env.platform`. Do not copy source secrets into consumer apps.
+- Local history was merged into the managed Maximo/PI stores; NADI Mart routes
+  were populated and the local projector completed. Do not assume today's
+  exact row counts or timestamps from that handoff; verify them when needed.
+- Maximo worker was active, but some source runs reported partial completion
+  and mapping skips. A running process or successful login does not prove full
+  sync. Preserve page/rate guards and never advance cursors for incomplete runs.
+
+## 7. NK input rules — no new database
+
+NK supports **manual sliders/CSV** and **PI Collector API** input. PI mode reads
+stored `GET /attributes` and `GET /snapshots?limit=5000`; it must not connect
+directly to PI production, read SQL with a new DSN, or trigger collection.
+`PI_COLLECTOR_API_BASE` defaults to `http://127.0.0.1:8001` for host-local NK.
+Containerized clients must use the appropriate service/network address.
+
+`NK/pi_feature_mapping.json` governs all 13 model inputs. Candidate tags are
+not verified model mappings. Confirm feature meaning, source/training units,
+registry identity and evidence before marking a mapping usable. Validate
+finite numbers, quality flags, source age and timestamp skew on every refresh.
+Missing/stale/invalid inputs block automatic predictions; do not substitute
+zeros, dummy values, or manual inputs silently. Preserve training feature order
+and the model/scaler pair. Technical integration is not model validation.
+
+**PS means pemakaian sendiri**, confirmed by the user. The exact tag and unit
+(W or MW) remain unconfirmed; do not treat PS as a percentage or infer a sum of
+auxiliary tags. SFC derivation and APH inlet/outlet equivalence also remain
+unconfirmed. Prediction history is session-local (bounded, JSON export), not
+persistent storage. Read `NK/AGENTS.md` and `NK/PI_MAPPING.md` before changes.
+
+## 8. Production safety and semantic contracts
+
+- Production business data stays **READ ONLY**. Maximo OSLC and PI requests
+  allow GET/HEAD/OPTIONS only. The sole Maximo POST exception is the controlled
+  `/j_security_check` authentication handshake documented in the scoped rules;
+  never relax the business-data guard. No authentication brute force.
+- Preserve Maximo BSR/IP scope and validated CS01 equipment scope. Field names
+  differ by object (`siteid`, `worksite`, `site`, `locationorg`); follow the
+  verified mapping rather than adding `siteid` blindly to every resource.
+- Maximo/PI HTTP clients enforce rate limiting (default 1 request/second) and
+  a 1 MiB response cap. CEMS permits FC03/FC04 reads only; preserve its own
+  register caps, transaction gap and poll floors, and normalization overrides.
+- PI bulk recorded history has off-hours gates, circuit breakers, bounded
+  chunks and resumable upserts. Never bypass guards or reset tables to retry.
+  Do not launch backfills as a side effect of opening NK or diagnosing a page.
+- Never guess production paths, objects, tags, WebIds or register numbers.
+  Add a bounded discovery task in the owning knowledge repository when needed;
+  discovery execution is opt-in, not implicit in ordinary app development.
+- Status vocabulary: `unknown` = untested; `documented` = described but not
+  verified; `verified` = tested with authorized access; `forbidden` = current
+  account denied; `deprecated` = should not be used. PI collection eligibility
+  requires registry `verified` + stream `ok`. CEMS operational `collect` is a
+  separate switch from registry verification status; preserve scoped rules.
+- Core contracts use snake_case, explicit units and ISO-8601 timestamps.
+  Vendor fields belong under `sources.maximo`, `sources.pi`, `sources.cems`.
+  Public NADI DTOs follow their stricter approved exposure boundary; do not
+  expose raw vendor payloads or internal provenance automatically.
+- Preserve governed identities and unresolved relationships. Do not fuzzy-match
+  Maximo Assets to PI AF elements or invent RCFA links/health scores.
+- Secrets remain in ignored environment files/runtime memory. Never commit or
+  log credentials, tokens, cookies, Authorization headers, private DSNs, or
+  unsanitized source samples. Report authentication status without secret values.
+
+## 9. Code discovery and validation
+
+Prefer codebase-memory MCP graph tools for structural discovery. At session
+start or after compaction confirm the nearest graph project and generation
+with `list_projects` or `index_status`; use Tier 2 verification by default.
+Use `search_graph`, `trace_path`, and `get_code_snippet`, then
+`check_index_coverage` for every evidence path and scopes behind negative or
+exhaustive claims. Use `query_graph` / `get_architecture` for broader structure.
+Coverage is best-effort. Read stale, partial, skipped, excluded or unknown
+source directly; do not infer completeness from an old graph. File reads/`rg`
+are appropriate for config, documentation, literals, and coverage fallback.
+
+Use each component's environment and tests; there is no root test command.
+Most Python suites use hermetic `unittest` tests without production access;
+Mart tests can use temporary SQLite. Do not create an operational database to
+run them. Typical commands (reuse existing environments):
+
+```bash
+cd maximo-collector  # or pi-collector, cems-collector, reliability-cockpit, knowledge dirs
+.venv/bin/python -m unittest discover -s tests
+# NK, from NK/:
+MPLCONFIGDIR=/tmp/nk-matplotlib .venv/bin/python -m unittest discover -s tests
+# A relevant Next.js web/ directory: inspect package.json for its checks/build.
+```
+
+Schema validation belongs in `reliability-data-contracts`; reuse an environment
+with `jsonschema`, and validate the actual schema set rather than a hardcoded
+count. Use focused checks appropriate to the change. For docs-only changes,
+verify references and `git diff --check`; runtime restarts are unnecessary.
+Use scoped conventional commits; never reset, force-push, or discard unrelated
+changes. Do not commit secrets or model/data artifacts incidentally.
+
+## 10. Read next
+
+| Task | Documentation |
 |---|---|
-| Maximo discovery / catalogs | `maximo-knowledge/CONTEXT.md` → `AGENTS.md` |
-| PI discovery | `pi-knowledge/CONTEXT.md` → `AGENTS.md` |
-| Contracts / schemas | `reliability-data-contracts/README.md` → `AGENTS.md` |
-| The cockpit app | `reliability-cockpit/docs/adapter.md`, `docs/source-resolution.md` → `AGENTS.md` |
-| CEMS collection | `cems-collector/AGENTS.md` (registry → guard → normalization) |
-| End-to-end runbook | `USERGUIDE.md` (root) |
+| Deployment or worker diagnosis | `deploy/compose/README.md`, Compose files, relevant scoped `AGENTS.md` |
+| Maximo source discovery | `maximo-knowledge/CONTEXT.md`, `maximo-knowledge/AGENTS.md` |
+| PI source discovery | `pi-knowledge/CONTEXT.md`, `pi-knowledge/AGENTS.md` |
+| Contracts and mappings | `reliability-data-contracts/README.md`, `reliability-data-contracts/AGENTS.md` |
+| Maximo collection / Mart projection | `maximo-collector/AGENTS.md`, `docs/reliability-mart-v1.md`, `docs/mx-012r-unified-collector-mart-pipeline.md` under that project |
+| NADI queries / governance | `reliability-cockpit/AGENTS.md`, `docs/reliability-mart-query-api.md`, `docs/asset-af-mapping-admin.md` under that project |
+| CEMS reads / normalization | `cems-collector/AGENTS.md` (preserve documented operator overrides) |
+| NK manual / automatic prediction | `NK/AGENTS.md`, `NK/README_WebApp.md`, `NK/PI_MAPPING.md` |
+| Historical local setup | `USERGUIDE.md` and per-project READMEs; reconcile with current deployment first |

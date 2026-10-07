@@ -67,7 +67,7 @@ services:
     restart: "no"
     command: ["mxcollector", "init-db"]
     environment:
-      DATABASE_URL: postgresql://maximo_collector:${MAXIMO_DB_PASSWORD}@maximo-db/maximo_collector
+      DATABASE_URL: postgresql+psycopg://maximo_collector:${MAXIMO_DB_PASSWORD}@maximo-db/maximo_collector
     depends_on:
       maximo-db: {condition: service_healthy}
 
@@ -76,7 +76,7 @@ services:
     build: ./maximo-collector
     command: ["mxcollector", "run", "--operational-interval-seconds", "${MAXIMO_OPERATIONAL_INTERVAL_SECONDS:-300}", "--asset-interval-seconds", "${MAXIMO_ASSET_INTERVAL_SECONDS:-21600}"]
     environment:
-      DATABASE_URL: postgresql://maximo_collector:${MAXIMO_DB_PASSWORD}@maximo-db/maximo_collector
+      DATABASE_URL: postgresql+psycopg://maximo_collector:${MAXIMO_DB_PASSWORD}@maximo-db/maximo_collector
       MAXIMO_BASE_URL: ${MAXIMO_BASE_URL}
       MAXIMO_AUTH_MODE: ${MAXIMO_AUTH_MODE:-login}
       MAXIMO_USERNAME: ${MAXIMO_USERNAME:-}
@@ -86,11 +86,24 @@ services:
     depends_on:
       maximo-init: {condition: service_completed_successfully}
 
+  mart-projector:
+    <<: *python-common
+    build: ./maximo-collector
+    command: ["sh", "-c", "while true; do mxcollector mart-project --incremental; sleep $${MART_PROJECTION_INTERVAL_SECONDS}; done"]
+    environment:
+      DATABASE_URL: postgresql+psycopg://maximo_collector:${MAXIMO_DB_PASSWORD}@maximo-db/maximo_collector
+      MART_PROJECTION_INTERVAL_SECONDS: ${MART_PROJECTION_INTERVAL_SECONDS:-300}
+      RELIABILITY_CONTRACTS_ROOT: /contracts
+    volumes:
+      - ./reliability-data-contracts:/contracts:ro
+    depends_on:
+      maximo-init: {condition: service_completed_successfully}
+
   maximo-api:
     <<: *python-common
     build: ./maximo-collector
     environment:
-      DATABASE_URL: postgresql://maximo_collector:${MAXIMO_DB_PASSWORD}@maximo-db/maximo_collector
+      DATABASE_URL: postgresql+psycopg://maximo_collector:${MAXIMO_DB_PASSWORD}@maximo-db/maximo_collector
     depends_on:
       maximo-init: {condition: service_completed_successfully}
 
@@ -100,15 +113,61 @@ services:
     restart: "no"
     command: ["picollector", "init-db"]
     environment:
-      DATABASE_URL: postgresql://pi_collector:${PI_DB_PASSWORD}@pi-db/pi_collector
+      DATABASE_URL: postgresql+psycopg://pi_collector:${PI_DB_PASSWORD}@pi-db/pi_collector
     depends_on:
       pi-db: {condition: service_healthy}
+
+  pi-registry:
+    <<: *python-common
+    build: ./pi-collector
+    restart: "no"
+    command: ["picollector", "load-registry", "--registry", "/registry/bsr1-parameters.yaml", "--prune"]
+    environment:
+      DATABASE_URL: postgresql+psycopg://pi_collector:${PI_DB_PASSWORD}@pi-db/pi_collector
+    volumes:
+      - ./pi-knowledge/mappings/bsr1-parameters.yaml:/registry/bsr1-parameters.yaml:ro
+    depends_on:
+      pi-init: {condition: service_completed_successfully}
+
+  pi-auth-check:
+    <<: *python-common
+    profiles: [pi-collection]
+    build: ./pi-collector
+    restart: "no"
+    env_file:
+      - ./pi-collector/.env
+    command:
+      - python
+      - -c
+      - >-
+        import sys;
+        from src.config import PiApiConfig;
+        from src.adapters.pi.client import PiClient;
+        response = PiClient(PiApiConfig.from_environment()).request("GET", "/");
+        print("PI authentication HTTP", response.status_code);
+        sys.exit(0 if response.status_code == 200 else 1)
+
+  pi-worker:
+    <<: *python-common
+    profiles: [pi-collection]
+    build: ./pi-collector
+    command: ["picollector", "run", "--mode", "snapshot", "--interval-seconds", "${PI_SNAPSHOT_INTERVAL_SECONDS:-300}"]
+    env_file:
+      - ./pi-collector/.env
+    environment:
+      DATABASE_URL: postgresql+psycopg://pi_collector:${PI_DB_PASSWORD}@pi-db/pi_collector
+      PI_REGISTRY_PATH: /registry/bsr1-parameters.yaml
+    volumes:
+      - ./pi-knowledge/mappings/bsr1-parameters.yaml:/registry/bsr1-parameters.yaml:ro
+    depends_on:
+      pi-registry: {condition: service_completed_successfully}
+      pi-auth-check: {condition: service_completed_successfully}
 
   pi-api:
     <<: *python-common
     build: ./pi-collector
     environment:
-      DATABASE_URL: postgresql://pi_collector:${PI_DB_PASSWORD}@pi-db/pi_collector
+      DATABASE_URL: postgresql+psycopg://pi_collector:${PI_DB_PASSWORD}@pi-db/pi_collector
     depends_on:
       pi-init: {condition: service_completed_successfully}
 
@@ -118,7 +177,7 @@ services:
     restart: "no"
     command: ["sh", "-c", "cemscollector init-db && cemscollector load-registry"]
     environment:
-      DATABASE_URL: postgresql://cems_collector:${CEMS_DB_PASSWORD}@cems-db/cems_collector
+      DATABASE_URL: postgresql+psycopg://cems_collector:${CEMS_DB_PASSWORD}@cems-db/cems_collector
     depends_on:
       cems-db: {condition: service_healthy}
 
@@ -127,7 +186,7 @@ services:
     build: ./cems-collector
     command: ["cemscollector", "collect"]
     environment:
-      DATABASE_URL: postgresql://cems_collector:${CEMS_DB_PASSWORD}@cems-db/cems_collector
+      DATABASE_URL: postgresql+psycopg://cems_collector:${CEMS_DB_PASSWORD}@cems-db/cems_collector
       CEMS_MODBUS_HOST: ${CEMS_MODBUS_HOST}
       CEMS_MODBUS_PORT: ${CEMS_MODBUS_PORT:-502}
     depends_on:
@@ -138,7 +197,7 @@ services:
     build: ./cems-collector
     command: ["cemscollector", "run-aggregator", "--interval-seconds", "${CEMS_AGGREGATION_INTERVAL_SECONDS:-300}"]
     environment:
-      DATABASE_URL: postgresql://cems_collector:${CEMS_DB_PASSWORD}@cems-db/cems_collector
+      DATABASE_URL: postgresql+psycopg://cems_collector:${CEMS_DB_PASSWORD}@cems-db/cems_collector
     depends_on:
       cems-init: {condition: service_completed_successfully}
 
@@ -146,7 +205,7 @@ services:
     <<: *python-common
     build: ./cems-collector
     environment:
-      DATABASE_URL: postgresql://cems_collector:${CEMS_DB_PASSWORD}@cems-db/cems_collector
+      DATABASE_URL: postgresql+psycopg://cems_collector:${CEMS_DB_PASSWORD}@cems-db/cems_collector
     depends_on:
       cems-init: {condition: service_completed_successfully}
 
@@ -156,7 +215,7 @@ services:
     restart: "no"
     command: ["cockpit", "init-db"]
     environment:
-      DATABASE_URL: postgresql://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
+      DATABASE_URL: postgresql+psycopg://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
     depends_on:
       cockpit-db: {condition: service_healthy}
 
@@ -165,7 +224,7 @@ services:
     build: ./reliability-cockpit
     command: ["cockpit", "run", "--interval-seconds", "${COCKPIT_SYNC_INTERVAL_SECONDS:-300}"]
     environment:
-      DATABASE_URL: postgresql://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
+      DATABASE_URL: postgresql+psycopg://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
       MAXIMO_COLLECTOR_API_BASE: ${MAXIMO_COLLECTOR_API_BASE:-http://maximo-api:8002}
       PI_COLLECTOR_API_BASE: ${PI_COLLECTOR_API_BASE:-http://pi-api:8001}
       CEMS_COLLECTOR_API_BASE: ${CEMS_COLLECTOR_API_BASE:-http://cems-api:8003}
@@ -177,12 +236,16 @@ services:
     <<: *python-common
     build: ./reliability-cockpit
     environment:
-      DATABASE_URL: postgresql://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
+      DATABASE_URL: postgresql+psycopg://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
+      RELIABILITY_MART_DATABASE_URL: postgresql+psycopg://maximo_collector:${MAXIMO_DB_PASSWORD}@maximo-db/maximo_collector
     depends_on:
       cockpit-init: {condition: service_completed_successfully}
 
   cockpit-web:
-    build: ./reliability-cockpit/web
+    build:
+      context: ./reliability-cockpit/web
+      args:
+        COCKPIT_API_BASE: http://cockpit-api:8000
     restart: unless-stopped
     environment:
       COCKPIT_API_BASE: http://cockpit-api:8000
@@ -190,6 +253,45 @@ services:
       cockpit-api: {condition: service_started}
     networks: [platform]
     ports: ["${COCKPIT_WEB_PORT:-3000}:3000"]
+
+  maximo-web:
+    build:
+      context: ./maximo-collector/web
+      args:
+        MAXIMO_COLLECTOR_API_BASE: http://maximo-api:8002
+    restart: unless-stopped
+    environment:
+      MAXIMO_COLLECTOR_API_BASE: http://maximo-api:8002
+    depends_on:
+      maximo-api: {condition: service_started}
+    networks: [platform]
+    ports: ["${MAXIMO_WEB_PORT:-3001}:3000"]
+
+  pi-web:
+    build:
+      context: ./pi-collector/web
+      args:
+        COLLECTOR_API_BASE: http://pi-api:8001
+    restart: unless-stopped
+    environment:
+      COLLECTOR_API_BASE: http://pi-api:8001
+    depends_on:
+      pi-api: {condition: service_started}
+    networks: [platform]
+    ports: ["${PI_WEB_PORT:-3002}:3000"]
+
+  cems-web:
+    build:
+      context: ./cems-collector/web
+      args:
+        CEMS_COLLECTOR_API_BASE: http://cems-api:8003
+    restart: unless-stopped
+    environment:
+      CEMS_COLLECTOR_API_BASE: http://cems-api:8003
+    depends_on:
+      cems-api: {condition: service_started}
+    networks: [platform]
+    ports: ["${CEMS_WEB_PORT:-3003}:3000"]
 
 networks:
   platform:
