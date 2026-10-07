@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
+from contextlib import contextmanager
 import dataclasses
 from datetime import datetime, timezone
 from typing import Any
 
-from sqlalchemy import desc, func, or_, select
+from sqlalchemy import desc, func, or_, select, text
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 
 from src.domain import models as domain
@@ -349,6 +350,47 @@ class CollectorStore:
         return rows[0] if rows else None
 
     # -- cursor / run log -------------------------------------------------------
+    def latest_work_order_change(self) -> datetime | None:
+        """Read local Collector evidence only; never mutate source or cursor."""
+        with self._db.session() as session:
+            return session.scalar(select(func.max(orm.WorkOrderOrm.source_changed_at)))
+
+    @contextmanager
+    def work_order_recovery_lock(self):
+        """Serialize explicit recoveries across processes in the existing PG DB."""
+        with self._db.engine.connect() as connection:
+            # Session-scoped lock stays held while ordinary store sessions commit.
+            acquired = connection.scalar(text("SELECT pg_try_advisory_lock(714025013)"))
+            try:
+                connection.commit()  # avoid an idle transaction during slow source reads
+                yield bool(acquired)
+            finally:
+                if acquired:
+                    connection.execute(text("SELECT pg_advisory_unlock(714025013)"))
+                    connection.commit()
+
+    def prepare_work_order_recovery_floor(self) -> datetime | None:
+        """Persist a retry-stable floor before source reads, using existing run log.
+
+        Caller must hold work_order_recovery_lock. Partial upserts must not raise
+        the floor on retry; this marker is evidence, never a runtime cursor.
+        """
+        with self._db.session() as session:
+            anchor = session.scalar(select(orm.CollectRunOrm).where(
+                orm.CollectRunOrm.object_structure == "mxwodetail-recovery-floor"
+            ).order_by(orm.CollectRunOrm.id).limit(1))
+            if anchor is not None:
+                return anchor.watermark
+            floor = session.scalar(select(func.max(orm.WorkOrderOrm.source_changed_at)))
+            if floor is None:
+                return None
+            now = datetime.now(timezone.utc)
+            session.add(orm.CollectRunOrm(object_structure="mxwodetail-recovery-floor",
+                mode="recovery-floor", watermark=floor, rows_seen=0, upserted=0,
+                skipped=0, errors=0, started_at=now, finished_at=now))
+            session.commit()
+            return floor
+
     def get_cursor(self, scope: str) -> datetime | None:
         with self._db.session() as session:
             row = session.get(orm.SyncCursorOrm, scope)
