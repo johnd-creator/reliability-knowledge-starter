@@ -1,6 +1,12 @@
 # MAXIMO-WO-RECENCY-001 — bounded recent WO sync
 
-FIX-01 status: **PASS (code-complete)**, pending review/deployment.
+Current operational evidence is in [MAXIMO-WO-RECENCY-002](maximo-wo-recency-002.md).
+PR #13 was merged and its exact main code deployed on 2026-10-07. The sections
+below preserve pre-deployment implementation/probe/FIX-01 evidence; their
+"not executed", "not current" and review-hold statements describe that earlier
+checkpoint and are superseded by the linked operational report.
+
+Historical FIX-01 status: **PASS (code-complete)**, then pending review/deployment.
 
 - SOURCE CAPABILITY VERIFIED: prior bounded live evidence below.
 - IMPLEMENTATION VERIFIED: 181 hermetic tests pass.
