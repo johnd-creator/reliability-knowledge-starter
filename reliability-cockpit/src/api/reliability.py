@@ -9,6 +9,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
 from sqlalchemy.exc import SQLAlchemyError
 
+from src.services.condition_query import AssetConditionEvidence, ConditionQueryService
 from src.domain.asset_af_mapping import AssetAfMapping
 from src.repositories.mart_database import MartDatabase, MartDatabaseConfigError, get_mart_database
 from src.repositories.mart_reader import MartQueryRepository, QueryPage
@@ -990,6 +991,14 @@ def get_asset(canonical_id: str, service: ReliabilityQueryService = Depends(_ser
     if row is None:
         raise HTTPException(status_code=404, detail="asset not found")
     return _asset(row)
+
+
+@router.get("/assets/{canonical_id}/condition-evidence", response_model=AssetConditionEvidence)
+def asset_condition_evidence(canonical_id: str, db: MartDatabase = Depends(_db)) -> AssetConditionEvidence:
+    response = ConditionQueryService(db).asset_evidence(canonical_id)
+    if response is None:
+        raise HTTPException(status_code=404, detail="asset not found")
+    return response
 
 
 @router.get("/assets/{canonical_id}/pi-mapping", response_model=AssetAfMappingResponse)

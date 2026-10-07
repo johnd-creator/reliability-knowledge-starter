@@ -1,0 +1,31 @@
+{
+  "contract_version": "1.0",
+  "canonical_asset_id": "NADI-ASSET-001",
+  "mapping_id": "mapping-verified-af_element_test_001",
+  "sources": {
+    "pi": {
+      "pi_source_id": "CENTRAL_PI",
+      "af_server_ref": "AF_SERVER_TEST",
+      "af_database_ref": "AF_DATABASE_TEST",
+      "af_element_ref": "AF_ELEMENT_TEST_001",
+      "mapping_role": "PRIMARY_EQUIPMENT",
+      "mapping_status": "VERIFIED"
+    }
+  },
+  "signals": [
+    {
+      "signal_id": "synthetic-current",
+      "mapping_id": "mapping-verified-af_element_test_001",
+      "sources": {
+        "pi": {
+          "attribute_ref": "SYNTHETIC-ATTRIBUTE-synthetic-current"
+        }
+      },
+      "semantic_name": "motor_current",
+      "approval_status": "APPROVED",
+      "approved_by": "synthetic-signal-reviewer",
+      "approved_at": "2026-10-07T12:00:00Z",
+      "evidence_ref": "synthetic-only-selection"
+    }
+  ]
+}

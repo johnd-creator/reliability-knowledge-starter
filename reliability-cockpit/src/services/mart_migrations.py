@@ -1,7 +1,7 @@
 """Deliberate canonical governance DDL in an existing Collector-owned Mart.
 
 No base initialization, source calls, seeds or legacy DATABASE_URL fallback.
-Status is read-only; apply is one bounded, leased transaction for 002/003.
+Status is read-only; apply is one bounded, leased transaction for additive migrations.
 """
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from src.repositories.mart_models import AssetAfMappingMart
 
-FILES = ("002_asset_af_mapping.sql", "003_asset_af_mapping_provenance.sql")
+FILES = ("002_asset_af_mapping.sql", "003_asset_af_mapping_provenance.sql", "004_condition_evidence.sql")
 ROOT = Path(os.getenv("RELIABILITY_MART_MIGRATIONS_ROOT", str(Path(__file__).resolve().parents[2] / "migrations")))
 LEDGER = "nadi_mart_schema_migration"
 BASE_TABLES = (
@@ -26,7 +26,8 @@ BASE_TABLES = (
 )
 READ_TABLES = ("asset_master", "maintenance_event", "fmea_assessment", "rcfa_analysis",
                "asset_health_assessment", "overhaul_event", "reliability_asset_registry",
-               "mart_projection_state", "asset_af_mapping")
+               "mart_projection_state", "asset_af_mapping",
+               "condition_signal_selection", "condition_evidence_latest", "condition_projection_state")
 READER_ROLE = "nadi_mart_reader"
 LEASE_KEY = 73002002
 
@@ -115,6 +116,34 @@ def _validate_mapping(c, provenance):
         raise MartMigrationError("mapping constraints are not validated")
 
 
+def _validate_condition(c):
+    from src.repositories.condition_models import CONDITION_TABLES
+    from src.repositories.mart_models import MartBase
+    inspector = inspect(c)
+    for name in CONDITION_TABLES:
+        expected = MartBase.metadata.tables[name]
+        actual = {v["name"]: v for v in inspector.get_columns(name, schema="public")}
+        if set(actual) != set(expected.columns.keys()):
+            raise MartMigrationError("condition schema columns differ")
+        for col in expected.columns:
+            a = actual[col.name]
+            if a["nullable"] != col.nullable or str(a["type"].compile(dialect=c.dialect)).upper() != str(col.type.compile(dialect=c.dialect)).upper():
+                raise MartMigrationError("condition schema types differ")
+        if inspector.get_pk_constraint(name, schema="public")["constrained_columns"] != [col.name for col in expected.primary_key]:
+            raise MartMigrationError("condition schema primary key differs")
+        actual_fks = inspector.get_foreign_keys(name, schema="public")
+        for col in expected.columns:
+            for fk in col.foreign_keys:
+                if not any(f["constrained_columns"] == [col.name] and f["referred_table"] == fk.column.table.name
+                           and f["referred_columns"] == [fk.column.name] and f["options"].get("ondelete") == "RESTRICT" for f in actual_fks):
+                    raise MartMigrationError("condition schema lineage FK differs")
+        actual_indexes = {i["name"]: i["column_names"] for i in inspector.get_indexes(name, schema="public")}
+        for index in expected.indexes:
+            if actual_indexes.get(index.name) != [col.name for col in index.columns]:
+                raise MartMigrationError("condition schema index differs")
+    if "ck_condition_signal_status" not in {v["name"] for v in inspector.get_check_constraints("condition_signal_selection", schema="public")}:
+        raise MartMigrationError("condition selection constraint missing")
+
 def _status(c, names, entries):
     applied = []
     if LEDGER in names:
@@ -127,9 +156,15 @@ def _status(c, names, entries):
     if "asset_af_mapping" in names:
         if not applied:
             raise MartMigrationError("untracked governance schema: explicit reconciliation required")
-        _validate_mapping(c, len(applied) == 2)
+        _validate_mapping(c, len(applied) >= 2)
     elif applied:
         raise MartMigrationError("ledger present but mapping schema missing")
+    from src.repositories.condition_models import CONDITION_TABLES
+    deployed = set(CONDITION_TABLES) & names
+    if deployed and (len(applied) < 3 or deployed != set(CONDITION_TABLES)):
+        raise MartMigrationError("untracked/incomplete condition schema")
+    if len(applied) >= 3:
+        _validate_condition(c)
     return [{"filename": name, "sha256": digest, "status": "APPLIED" if i < len(applied) else "PENDING"}
             for i, (name, digest, _) in enumerate(entries)]
 

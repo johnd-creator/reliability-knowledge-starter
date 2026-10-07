@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import unittest
+from unittest.mock import patch
 from datetime import datetime, timedelta, timezone
 
 from src.config import CollectSafetyConfig
@@ -120,11 +121,14 @@ class BackfillRecordedOffHoursTest(unittest.TestCase):
             def record_run(self, stats): pass
 
         service = CollectorService(client=None, store=Store(), safety=safety)  # type: ignore[arg-type]
-        stats = service.backfill_recorded(
-            start_time="2024-01-01T00:00:00Z",
-            end_time="*",
-            enforce_off_hours=True,
-        )
+        # The assertion above uses a fixed noon; the service gate must use the
+        # same test condition instead of depending on the real machine clock.
+        with patch.object(CollectSafetyConfig, "is_off_hours", return_value=False):
+            stats = service.backfill_recorded(
+                start_time="2024-01-01T00:00:00Z",
+                end_time="*",
+                enforce_off_hours=True,
+            )
         self.assertTrue(stats.aborted)
         self.assertIn("outside off-hours", stats.abort_reason)
 

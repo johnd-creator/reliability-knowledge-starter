@@ -206,6 +206,43 @@ def cmd_mapping_retire(args: argparse.Namespace) -> int:
         store.close()
 
 
+def cmd_condition(args: argparse.Namespace) -> int:
+    from pathlib import Path
+    import os
+    from src.domain.condition_evidence import SignalSelection, EvidenceBatch
+    from src.repositories.condition_store import ConditionCommandStore
+    store = None
+    try:
+        store = ConditionCommandStore.from_environment()
+        if args.condition_command == "plan":
+            plan = store.plan(args.asset_id)
+            # Exclusive private output avoids overwriting an earlier controlled handoff.
+            fd = os.open(args.output, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+            with os.fdopen(fd, "w") as stream:
+                stream.write(plan.model_dump_json(indent=2))
+            print(json.dumps({"status": "PLAN_CREATED", "selected_signals": len(plan.signals)}))
+            return 0
+        path = Path(args.file)
+        if path.stat().st_size > 262144:
+            raise ValueError("bounded condition document exceeds 256 KiB")
+        document = json.loads(path.read_text())
+        if args.condition_command == "approve-signal":
+            store.approve_signal(SignalSelection.model_validate(document))
+            print(json.dumps({"status": "SIGNAL_APPROVED"}))
+        elif args.condition_command == "retire-signal":
+            store.retire_signal(document["signal_id"])
+            print(json.dumps({"status": "SIGNAL_RETIRED"}))
+        else:
+            result = store.project(EvidenceBatch.model_validate(document))
+            print(json.dumps(result))
+        return 0
+    except Exception:
+        print("Condition administration failed closed; inspect local governance and document", file=sys.stderr)
+        return 2
+    finally:
+        if store is not None:
+            store.engine.dispose()
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(prog="cockpit", description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -219,6 +256,17 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     reader = sub.add_parser("mart-reader", help="inspect named SELECT-only role; deliberate --apply grants")
     reader.add_argument("--apply", action="store_true")
     reader.set_defaults(func=cmd_mart_reader)
+
+    condition = sub.add_parser("condition", help="local governed evidence administration; never accesses PI")
+    commands = condition.add_subparsers(dest="condition_command", required=True)
+    plan = commands.add_parser("plan", help="export exact VERIFIED mapping and separately approved signal subset")
+    plan.add_argument("--asset-id", required=True)
+    plan.add_argument("--output", required=True)
+    plan.set_defaults(func=cmd_condition)
+    for name in ("approve-signal", "retire-signal", "project"):
+        command = commands.add_parser(name, help="explicit local Mart command, requires separate administrative DSN")
+        command.add_argument("--file", required=True)
+        command.set_defaults(func=cmd_condition)
 
     sync = sub.add_parser("sync", help="delta-sync verified Maximo objects")
     sync.add_argument("objects", nargs="*", help="object structure(s) or resource name(s); default all")

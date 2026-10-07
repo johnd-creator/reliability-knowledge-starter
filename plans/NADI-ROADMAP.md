@@ -1,5 +1,22 @@
 # NADI product roadmap — main quest
 
+## Current NADI-ING-PI-001A checkpoint — 2026-10-07
+
+PR #18 MERGED; baseline origin/main `f8c37f068102a06906cb3ca464fe08745e0351cf`.
+[NADI-ING-PI-001A](../reliability-cockpit/docs/nadi-ing-pi-001a.md) implementation
+**CURRENT / candidate**, synthetic acceptance **PASS**: explicit separately
+approved selected signals, governed collector boundary, canonical typed evidence,
+additive latest-only existing-Mart migration, read-only API/Asset view and four
+independent freshness dimensions. No production deployment/projection is claimed.
+
+NADI-PI-001 ✅ MERGED; NADI-PI-RUNTIME-001 ✅ ACCEPTED;
+NADI-RUNTIME-002 ✅ ACCEPTED. NADI-IDN-002A R1/R2 evidence rounds are completed;
+NADI-IDN-002 human crosswalk **BLOCKED / EXTERNAL**, human verification PENDING.
+PROPOSED0 / VERIFIED0 remain unchanged. BFPT stays REJECTED / FROZEN.
+Task source GET/write0, no operational DDL/restart/new DB. Phase 1 remains
+**CURRENT / PARTIAL**. Next: **NADI-INTEGRATION-STATUS-001**. Real governed PI
+projection still requires human identity plus signal approval and deployment review.
+
 NADI — **Navigasi Analitik Data dan Informasi**, Reliability / Engineering
 Intelligence Platform pembangkit. Implementasinya berada di
 `reliability-cockpit/`; shared collectors tetap menjadi kemampuan platform.

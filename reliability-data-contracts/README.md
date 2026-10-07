@@ -94,3 +94,13 @@ remain readable and are not replaced by the canonical design document.
 4. Document units explicitly. Use ISO-8601 timestamps.
 5. Mark nullable/unknown fields intentionally.
 6. Breaking schema changes require a version bump.
+
+### Governed condition evidence foundation (NADI-ING-PI-001A candidate)
+
+`condition-evidence.schema.json`, `condition-signal-selection.schema.json` and
+`condition-projection-plan.schema.json` are additive contracts for selected,
+governed latest evidence. Synthetic examples live in `examples/condition-evidence/`.
+They preserve numeric/text/digital/boolean/null and explicit quality/timestamps;
+source identifiers stay under `sources.pi`. They do not replace the legacy
+technical `condition-reading` contract, imply production mappings, or define
+health/reliability scores. See [foundation acceptance](../reliability-cockpit/docs/nadi-ing-pi-001a.md).

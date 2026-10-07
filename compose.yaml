@@ -200,6 +200,9 @@ services:
     command: ["cockpit", "mart-migrate", "--require-ready"]
     environment:
       COCKPIT_CONFIG_MODE: managed
+      NADI_COLLECTOR_MAX_AGE_SECONDS: ${NADI_COLLECTOR_MAX_AGE_SECONDS:-}
+      NADI_SOURCE_MAX_AGE_SECONDS: ${NADI_SOURCE_MAX_AGE_SECONDS:-}
+      NADI_PROJECTION_MAX_AGE_SECONDS: ${NADI_PROJECTION_MAX_AGE_SECONDS:-}
       RELIABILITY_MART_ADMIN_DATABASE_URL: ${RELIABILITY_MART_ADMIN_DATABASE_URL:?set existing Mart writer in .env.platform}
       RELIABILITY_MART_EXPECT_DATABASE: ${RELIABILITY_MART_EXPECT_DATABASE:?set existing Mart database name}
     depends_on:

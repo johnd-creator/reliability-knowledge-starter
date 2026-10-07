@@ -48,7 +48,7 @@ class MartPostgresMigrationTest(unittest.TestCase):
     def setUp(self):
         with self.engine.begin() as c:
             c.exec_driver_sql("DROP SCHEMA public CASCADE; CREATE SCHEMA public")
-        MartBase.metadata.create_all(self.engine, tables=[t for t in MartBase.metadata.sorted_tables if t.name != "asset_af_mapping"])
+        MartBase.metadata.create_all(self.engine, tables=[t for t in MartBase.metadata.sorted_tables if t.name not in {"asset_af_mapping", "condition_signal_selection", "condition_evidence_latest", "condition_projection_state"}])
         with self.engine.begin() as c:
             for t in ["equipment", "work_order", "collect_run", "equipment_status_history", "item", "labor", "person", "service_request"]:
                 c.exec_driver_sql(f"CREATE TABLE {t} (id text PRIMARY KEY)")
@@ -62,9 +62,34 @@ class MartPostgresMigrationTest(unittest.TestCase):
     def test_status_does_not_create_schema_or_ledger(self):
         result = self.migrate()
         self.assertFalse(result["ready"])
-        self.assertEqual(len(result["migrations"]), 2)
+        self.assertEqual(len(result["migrations"]), len(FILES))
         self.assertNotIn(LEDGER, inspect(self.engine).get_table_names())
         self.assertNotIn("asset_af_mapping", inspect(self.engine).get_table_names())
+
+    def test_accepted_two_migrations_upgrade_only_missing_condition_ddl(self):
+        from hashlib import sha256
+        with self.engine.begin() as c:
+            c.exec_driver_sql(f"CREATE TABLE {LEDGER} (filename text PRIMARY KEY, sha256 varchar(64) NOT NULL, applied_at timestamptz NOT NULL DEFAULT clock_timestamp())")
+            for name in FILES[:2]:
+                raw=(ROOT/name).read_bytes()
+                c.exec_driver_sql(raw.decode())
+                c.execute(text(f"INSERT INTO {LEDGER}(filename,sha256) VALUES (:name,:sha)"),{"name":name,"sha":sha256(raw).hexdigest()})
+        status=self.migrate()
+        self.assertEqual([m["status"] for m in status["migrations"]],["APPLIED","APPLIED","PENDING"])
+        result=self.migrate(apply=True)
+        self.assertEqual(result["applied"],["004_condition_evidence.sql"])
+        self.assertEqual(result["fingerprints_before"],result["fingerprints_after"])
+        self.assertEqual(self.migrate(apply=True)["applied"],[])
+
+    def test_condition_schema_index_drift_fails_closed(self):
+        self.migrate(apply=True)
+        with self.engine.begin() as c:c.exec_driver_sql("DROP INDEX ix_condition_evidence_asset")
+        with self.assertRaises(MartMigrationError):self.migrate(require_ready=True)
+
+    def test_untracked_condition_ddl_is_not_adopted(self):
+        self.migrate(apply=True)
+        with self.engine.begin() as c:c.execute(text(f"DELETE FROM {LEDGER} WHERE filename=:name"),{"name":FILES[2]})
+        with self.assertRaises(MartMigrationError):self.migrate(apply=True)
 
     def test_wrong_database_fails_without_ddl(self):
         with self.assertRaises(MartMigrationError):
@@ -107,7 +132,7 @@ class MartPostgresMigrationTest(unittest.TestCase):
     def test_ledger_with_missing_schema_is_rejected(self):
         self.migrate(apply=True)
         with self.engine.begin() as c:
-            c.exec_driver_sql("DROP TABLE asset_af_mapping")
+            c.exec_driver_sql("DROP TABLE asset_af_mapping CASCADE")
         with self.assertRaises(MartMigrationError):
             self.migrate()
 
