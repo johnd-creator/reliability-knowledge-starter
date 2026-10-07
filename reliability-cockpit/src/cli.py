@@ -41,6 +41,28 @@ AVAILABLE_SOURCES = {
 }
 
 
+def cmd_phase1_readiness(args: argparse.Namespace) -> int:
+    from src.domain.integration_status import IntegrationStatus
+    from src.services.phase1_readiness import phase1_readiness
+    try:
+        if args.status_file:
+            path=Path(args.status_file)
+            if path.stat().st_size>1_048_576:raise ValueError("bounded status document required")
+            status=IntegrationStatus.model_validate_json(path.read_bytes())
+            origin="OPERATOR_DOCUMENT"
+        else:
+            from src.api.reliability import _integration_service
+            status=_integration_service().status()
+            origin="LOCAL_RUNTIME"
+        result=phase1_readiness(status,evidence_origin=origin)
+        print(result.model_dump_json())
+        return 2 if args.require_pass and result.verdict!="PASS" else 0
+    except Exception:
+        # Do not expose DSNs, URLs, credentials or source payloads in CLI errors.
+        print('{"verdict":"UNKNOWN","reason":"PREFLIGHT_OBSERVATION_FAILED"}')
+        return 2
+
+
 def cmd_init_db(args: argparse.Namespace) -> int:
     db = get_database()
     db.create_all()
@@ -246,6 +268,11 @@ def cmd_condition(args: argparse.Namespace) -> int:
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(prog="cockpit", description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
+
+    readiness=sub.add_parser("phase1-readiness",help="read-only Phase-1 JSON preflight; no DDL/source calls/service control")
+    readiness.add_argument("--status-file",help="bounded offline IntegrationStatus document; output explicitly marks OPERATOR_DOCUMENT")
+    readiness.add_argument("--require-pass",action="store_true",help="exit 2 unless all product pilot gates pass")
+    readiness.set_defaults(func=cmd_phase1_readiness)
 
     sub.add_parser("init-db", help="create cockpit local tables")
 
