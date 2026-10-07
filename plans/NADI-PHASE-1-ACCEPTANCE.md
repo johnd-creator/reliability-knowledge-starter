@@ -1,4 +1,86 @@
-# NADI Phase 1 acceptance — NADI-PHASE1-OVERNIGHT-BUNDLE-01
+# NADI Phase 1 acceptance
+
+## Current accepted runtime — NADI-PHASE1-RUNTIME-ACCEPTANCE-001
+
+8 October 2026 Jakarta. Exact merged main
+`c2fb0fc686396e79c19f42af46694673827493a9`, PR20 MERGED.
+[Full operational report](../reliability-cockpit/docs/nadi-phase1-runtime-acceptance-001.md)
+records backup, migrations, ACL, exact images/configuration, actual readiness and
+post-deploy smoke. This supersedes the historical candidate/runtime-gap labels
+below without changing their measured evidence.
+
+**PHASE 1 SOFTWARE READINESS: PASS — bounded merged foundation.**
+**PHASE 1 SOFTWARE RUNTIME FOUNDATION: ACCEPTED.**
+**PHASE 1 PRODUCT ACCEPTANCE: BLOCKED.**
+Primary external identity blocker: **HUMAN_CROSSWALK_REQUIRED**.
+Independent engineering-policy prerequisite: **FRESHNESS_POLICY_PENDING**.
+Phase 1 remains CURRENT / PARTIAL. Human identity is not the only prerequisite
+for final product PASS: policy, approved pilot signals, governed source time/quality
+acceptance and bounded real evidence must follow in their controlled scopes.
+
+| Capability | Implementation | Actual runtime / evidence | Status | Remaining prerequisite |
+|---|---|---|---|---|
+| Maximo factual evidence | Merged bounded WO/local Mart path |845 Registry,113886 WO,69619 maintenance; post-deploy25-row incremental errors0; cursor advances, recovery floor intact; factual7d765/30d1990 | ACCEPTED factual/current activity; freshness gate UNKNOWN | Approved collection policy; global MXR-004 remains separate PARTIAL scope |
+| PI technical collection | Guarded accepted single owner |490 total/433 active/433 snapshots; post-deploy433/433/errors0; existing PI004/history/hypertable preserved | ACCEPTED collection; technical quality DEGRADED |18 bad-quality technical signals visible; source timestamps/selected signals require separate review |
+| Asset↔AF governance | Canonical002/003/admin/resolver | Owning Maximo Mart unchanged, mapping table empty, SELECT-only reader | ACCEPTED mechanism | Real controlled identity absent |
+| Human crosswalk | Safe R1/R2 completed | PROPOSED0/VERIFIED0; BFPT frozen; no new discovery/import/verify | BLOCKED / EXTERNAL | Responsible MATCH naming exact identities/date/evidence |
+| Governed PI boundary | Merged adapter | Accepted technical worker preserved; governed canary deliberately not run | SOFTWARE ACCEPTED | Human-VERIFIED target plus separately authorized bounded canary |
+| Condition contract | Merged PR20 typed/provenance foundation | Exact main API deployed; numeric/text/digital/boolean/null tested previously, no real condition values | ACCEPTED foundation | Real selected-signal time/quality acceptance |
+| Signal selection | Explicit approval contract | condition_signal_selection exists and empty | ACCEPTED foundation; product BLOCKED | Identity then controlled signal meaning/unit/role approval |
+| Condition projection | Bounded handoff/local writer | Mart004 applied after backup;17 locked counts/fingerprints equal; latest/state tables empty; API no-mapping UNKNOWN | ACCEPTED runtime; production NOT_AVAILABLE | VERIFIED identity, approved signals, bounded trusted handoff/projection |
+| Integration status | Typed five-component API/UI | Local PI observation/status/proxy200; real Data Trust and Asset panels;845/0/0/0 coverage; no source auth | ACCEPTED runtime | Neutral policies intentionally UNKNOWN; no fake health score |
+| Acceptance automation | Read-only9-gate CLI | Actual LOCAL_RUNTIME BLOCKED, normal exit0; require-pass exit2; schema/status PASS | ACCEPTED runtime; product BLOCKED | Satisfy real identity/policy/signal/evidence gates without weakening logic |
+
+Current nine gates:
+
+| Gate | Verdict | Reason |
+|---|---|---|
+| P1-MAXIMO-CURRENT | UNKNOWN | UNKNOWN_FRESHNESS_POLICY |
+| P1-MART-CURRENT | UNKNOWN | UNKNOWN_FRESHNESS_POLICY |
+| P1-PI-COLLECTOR-CURRENT | UNKNOWN | UNKNOWN_FRESHNESS_POLICY |
+| P1-MART-GOVERNANCE-READY | PASS | READER_SCHEMA_COMPATIBLE |
+| P1-CONDITION-SCHEMA-READY | PASS | READER_SCHEMA_COMPATIBLE |
+| P1-IDENTITY-MAPPING-READY | BLOCKED | HUMAN_CROSSWALK_REQUIRED |
+| P1-SIGNAL-SELECTION-READY | BLOCKED | HUMAN_CROSSWALK_REQUIRED |
+| P1-CONDITION-PROJECTION-READY | BLOCKED | HUMAN_CROSSWALK_REQUIRED |
+| P1-INTEGRATION-STATUS-READY | PASS | STATUS_CONTRACT_VALID |
+
+| Gap class | Current state |
+|---|---|
+| SOFTWARE | Bounded Phase1 foundation merged/tested, no unmerged code deployed |
+| RUNTIME | Exact main consumer images, Mart004 and reader grants accepted; source workers preserved |
+| POLICY | FRESHNESS_POLICY_PENDING; no approved SLA inferred from measured cycle durations |
+| DATA | No production approved signals/governed condition evidence; technical BAD_QUALITY18 visible |
+| HUMAN | HUMAN_CROSSWALK_REQUIRED; attributable review not supplied by executor |
+| OPTIONAL/FUTURE | Wider semantics/MXR-004, scheduling/soak/restore, CEMS evidence, scoring and Phase2–5 remain separate scope |
+
+Private full backup13,198,605bytes/catalog130, SHA256
+6ae19af92b30ac5d960755e40e289894e757e2621a1b755df98d8cf34c7a32c3.
+Mart004 transaction7.968s, second apply no-op. No condition DDL in legacy Cockpit.
+80 targeted tests PASS (62Cockpit/18PI),9 web route shells plus2 hydrated views,
+2 real JSON proxy routes and final Next build PASS. Accepted prior full-suite
+245Cockpit/177PI evidence remains below; not mechanically rerun for doc/config work.
+
+Only pi-api/cockpit-api/cockpit-web replaced; web rebuilt once with the existing
+supported non-secret Next build configuration to fix baked localhost proxy.
+All tracked application code is exact merged main. .env.platform/accepted overrides,
+20 other container identities, workers/projector/DB volumes/networks unchanged.
+Task source business GET/write0, mapping imports/verifies0, signal approvals0,
+condition projections0, history/discovery/registry/reset/volume recreation0,
+new operational DB0, CEMS/NK changes0. Background approved collection continues.
+
+GitHub metadata already marks PR19 MERGED, contrary to superseded/unmerged
+expectation;211faec is an ancestor of required main. This task merged neither PR.
+Runtime-acceptance evidence branch/PR remains open/unmerged for senior review.
+
+Next: obtain controlled human MATCH, execute NADI-IDN-002B attributable verification
+and separately authorized governed canary, then approved signals/policy/bounded
+real projection and actual phase1-readiness --require-pass. Runtime is ready for
+that controlled next step; full product acceptance is not claimed.
+
+---
+
+# Historical software-bundle acceptance — NADI-PHASE1-OVERNIGHT-BUNDLE-01
 
 Audit: 8 October 2026 Jakarta; operational aggregate inspection
 7 October 21:55 UTC. Main `f8c37f068102a06906cb3ca464fe08745e0351cf`;

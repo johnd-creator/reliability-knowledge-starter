@@ -4,19 +4,23 @@ Read [plans/README.md](plans/README.md) first, then the scoped `AGENTS.md` and
 `CONTEXT.md` for any component you touch. Root rules govern platform ownership;
 scoped rules govern source safety, normalization and implementation details.
 
-## Current Phase-1 candidate handoff — 2026-10-08
+## Current Phase-1 runtime handoff — 2026-10-08
 
-Read [authoritative acceptance](plans/NADI-PHASE-1-ACCEPTANCE.md). Main f8c37f0
-includes accepted PI/Mart runtime and completed safe identity rounds; operational
-asset_af_mapping exists, with PROPOSED0/VERIFIED0. Unmerged PR19 foundation211faec
-is included in the separate overnight candidate, not changed or deployed.
-Candidate condition projection/status/preflight use synthetic fixtures only.
-Existing Mart condition migration004 is NOT deployed; PI Collector migration004
-remains applied/accepted. API freshness policies default blank/UNKNOWN.
-Human crosswalk remains required; no auto-mapping, source requests, production
-signal approval/projection or redeployment is authorized by these software tests.
-Older runtime/open-PR paragraphs below retain historical context; use acceptance
-for current status and scoped docs for exact safety semantics.
+Read [authoritative acceptance](plans/NADI-PHASE-1-ACCEPTANCE.md) and
+[runtime report](reliability-cockpit/docs/nadi-phase1-runtime-acceptance-001.md).
+Merged main c2fb0fc/PR20 foundation is deployed in PI API/NADI API/UI. Existing
+Maximo-owned Mart002/003/004 and SELECT-only reader grants are ready; PI004quality
+is a separate already accepted migration. Actual control checkout remains0c800da
+with accepted private overrides; source workers/projector/volumes are preserved.
+PROPOSED0/VERIFIED0, approved signals0, projected condition evidence0. Do not
+seed mappings/signals or project technical registry merely because schema exists.
+Human crosswalk remains required; API freshness policy is blank/UNKNOWN pending
+approved engineering policy. Software runtime ACCEPTED; product BLOCKED, Phase1
+CURRENT/PARTIAL. PI technical BAD_QUALITY18 is visible separately from433/433
+collection success. Runtime is ready for controlled human-MATCH-gated IDN002B,
+not an authorization for autonomous mapping verification/source canary.
+Older checkpoint paragraphs below retain historical context; this handoff and
+acceptance override their absent-schema/open-PR/candidate deployment statements.
 
 ## Existing Mart runtime checkpoint
 
