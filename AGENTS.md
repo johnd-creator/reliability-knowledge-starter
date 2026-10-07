@@ -29,18 +29,18 @@ Authority by purpose:
 - Scoped contracts, discovery and domain docs: exact accepted source semantics.
 
 Factual NADI Phase 0 is complete within `v0.1.0-rc.1`; Phase 1 is current/partial.
-**NADI-PI-001 — Governed PI Source Adapter** is IMPLEMENTED / MERGE-CANDIDATE
-on `codex/nadi-pi-001-governed-source-adapter`, originally from `main a8393ba`,
-selectively adapting `d23f848`; FIX-01 merges latest `main 52c67d4` without
-rewriting history. Review/merge and existing-store migration 004 remain pending.
-Merged PR #13/#14 evidence establishes the Maximo WO factual pipeline and NADI
-registered BSR/IP views CURRENT within the accepted population. MXR-004 stays
-PARTIAL; preserve its recovery evidence and parked non-WO group profile. See
-[maximo acceptance](maximo-collector/docs/maximo-wo-recency-002.md).
-Next is senior review/merge PR #12, deliberate existing-store PI migration 004
-and runtime readiness, then NADI-IDN-002 pilot mapping. Do not implement
-Phase 2–5, merge historical work,
-or resume source discovery merely because it appears on a roadmap.
+**NADI-PI-001 — Governed PI Source Adapter** is MERGED via PR #12 in
+`main 3e981a3c5e20e148feba5b01ec0b1c134ca89205` (2026-10-07). PR #13/#14
+Maximo WO acceptance is preserved: registered BSR/IP factual views are CURRENT,
+MXR-004 remains PARTIAL. NADI-PI-RUNTIME-001 upgrades the existing PI store with
+migration 004 and deploys that reviewed PI main image. New operator/lease/Compose
+changes are separately reviewable in its unmerged PR; never confuse the runtime
+control checkout, reviewed image, and candidate branch.
+See [PI runtime evidence](pi-collector/docs/nadi-pi-runtime-001.md).
+NADI-IDN-002 pilot mapping follows PI readiness; first reconcile existing Mart
+schema/runtime debt through NADI-RUNTIME-002. PI evidence projection,
+integration status and Phase 1 acceptance remain pending. Do not implement
+Phase 2–5 or import unrelated feature/NK work merely because it is on a roadmap.
 
 ## 2. Reuse stores — no new application database
 
@@ -118,14 +118,21 @@ Do not add PI/Maximo source credentials to NADI. Browser requests go through
 6. Restart only affected services when authorized work requires it. Successful
    init/registry-loader exits are normal one-shot jobs, not collection daemons.
 
-At audited main, Compose does not yet wire the Mart DSN and does not define a
-managed PI worker. Runtime candidate `7149455` and feature `0c800da` have overlapping
-fixes, not complete mainline integration. Do not apply those code changes during
-a docs-only task. See `plans/REPOSITORY-STATUS.md` before choosing a runtime fix.
+At merged baseline `3e981a3`, main lacked a managed PI worker and Mart DSN.
+NADI-PI-RUNTIME-001 adds opt-in PI migration/worker wiring and managed API Mart
+DSN in its review branch. The accepted runtime still uses the original feature
+checkout with private reviewed-image overrides. Preserve these overrides; the
+new branch does not authorize a broad platform redeploy. Existing Mart is owned
+by `maximo-db`; its `asset_af_mapping` table is absent in the audited deployment.
+NADI-RUNTIME-002 owns deliberate Mart governance migrations, projection/init
+reconciliation and external-mode wiring; do not create a new Mart database.
 
-Previous operational handoff: PI auth returned HTTP 401 and the user deferred
-credential checking. Do not retry credentials or resume collection until the
-user requests it. This is a handoff constraint, not a permanent PI limitation.
+The earlier deferred HTTP 401 investigation was superseded by the explicit
+NADI-PI-RUNTIME-001 source-canary authorization. One known technical GET returned
+HTTP 200 with TLS/origin guards intact; one managed snapshot owner was then
+started. This does not approve broad AF discovery, history download, automatic
+Asset mapping, or governed NADI PI ingestion. See the runtime acceptance and
+[operator runbook](pi-collector/docs/runtime-migrations.md) before restarting.
 
 ## 5. NK consumer rules
 

@@ -3,6 +3,8 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 COPY pyproject.toml ./
 COPY src ./src
+COPY migrations ./migrations
+ENV PI_MIGRATIONS_PATH=/app/migrations
 RUN pip install --no-cache-dir .
 RUN addgroup --system app && adduser --system --ingroup app app && chown -R app:app /app
 USER app

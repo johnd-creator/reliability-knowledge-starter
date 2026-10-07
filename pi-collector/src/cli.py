@@ -55,6 +55,38 @@ def cmd_init_db(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_migrate(args: argparse.Namespace) -> int:
+    import json
+    from src.services.migrations import migrate, MigrationError
+    try:
+        result = migrate(get_database().engine, args.directory, apply=args.apply)
+        print(json.dumps({"mode": "apply" if args.apply else "status", "migrations": result}))
+        return 0
+    except MigrationError as error:
+        print(str(error), file=sys.stderr)
+        return 2
+    except Exception:
+        print("Local migration connection/configuration failed", file=sys.stderr)
+        return 2
+
+
+def cmd_worker(args: argparse.Namespace) -> int:
+    from src.services.runtime_worker import run_owned_worker
+    from src.services.migrations import MigrationError
+    if args.interval_seconds < 1:
+        print("Worker interval must be positive", file=sys.stderr)
+        return 2
+    try:
+        return run_owned_worker(get_database().engine, ["picollector", "run", "--mode", "snapshot",
+                                "--interval-seconds", str(args.interval_seconds)])
+    except MigrationError as error:
+        print(str(error), file=sys.stderr)
+        return 2
+    except Exception:
+        print("Managed PI worker failed; operator attention required", file=sys.stderr)
+        return 2
+
+
 def cmd_load_registry(args: argparse.Namespace) -> int:
     from src.services.registry import load_registry
 
@@ -224,6 +256,16 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     sub = parser.add_subparsers(dest="command", required=True)
 
     sub.add_parser("init-db", help="create collector local tables")
+
+    import os
+    from pathlib import Path
+    migration = sub.add_parser("migrate", help="inspect/apply local ordered migrations; never calls PI")
+    migration.add_argument("--directory", default=os.getenv("PI_MIGRATIONS_PATH", str(Path(__file__).resolve().parents[1] / "migrations")))
+    migration.add_argument("--apply", action="store_true", help="explicitly apply pending migrations")
+    migration.set_defaults(func=cmd_migrate)
+    worker = sub.add_parser("worker", help="single-owner snapshot scheduler; same lease as migrate")
+    worker.add_argument("--interval-seconds", type=int, default=300)
+    worker.set_defaults(func=cmd_worker)
 
     load = sub.add_parser("load-registry", help="load verified attributes from pi-knowledge YAML")
     load.add_argument("--registry", help="path to YAML (default: PI_REGISTRY_PATH)")

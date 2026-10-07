@@ -89,6 +89,18 @@ The standalone setup above is for a separate fresh development installation.
 .venv/bin/picollector backfill --start "*-7d" --end "*" --interval 1h  # 7-day history
 ```
 
+### Upgrade an existing store
+
+`init-db` does not alter existing columns. Use deliberate `picollector migrate`
+(read-only status) and `picollector migrate --apply` only after backup, schema
+preflight and acquisition quiescence. The runner tracks ordered SQL checksums
+in the existing PI store; it never calls PI or creates a database. Managed
+Compose exposes opt-in `pi-maintenance` and `pi-collection` profiles; the worker
+uses `picollector worker` for a single DB lease and snapshot-only scheduling.
+See [operator runbook](docs/runtime-migrations.md) and
+[actual runtime evidence](docs/nadi-pi-runtime-001.md) for accepted image pins,
+overrides and limitations. Do not start a second cron/systemd/manual collector.
+
 ### Download ALL historical data (recorded)
 
 ```bash
@@ -102,7 +114,7 @@ The standalone setup above is for a separate fresh development installation.
 .venv/bin/picollector backfill-recorded --start "*-30d" --end "*" --force
 ```
 
-### Continuous collection (every 5 minutes)
+### Continuous collection (serial cycle plus 300s pause)
 
 ```bash
 # Snapshot mode: current values for all attributes, every 5 minutes
