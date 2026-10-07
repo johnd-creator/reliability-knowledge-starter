@@ -48,3 +48,9 @@ class ObservationClientTest(unittest.TestCase):
         time='2026-10-07T12:00:00+00:00'
         client,_=self.client([{'mxwodetail':{'watermark':time}},[{'object_structure':'mxwodetail','mode':'incremental','finished_at':time,'errors':0,'skipped':25,'upserted':0}]])
         result=client.maximo();self.assertEqual(result.errors,0);self.assertIsNotNone(result.last_successful_activity)
+
+    def test_owned_session_is_closed_and_injected_session_retained(self):
+        from unittest.mock import patch
+        with patch('src.adapters.integration_observations.requests.Session') as factory:
+            client=LocalCollectorObservations();client.close();factory.return_value.close.assert_called_once()
+        client,session=self.client([]);client.close();session.close.assert_not_called()

@@ -10,6 +10,7 @@ from src.adapters.integration_observations import LocalCollectorObservations
 class IntegrationStatusService:
     def __init__(self,database=None,*,observations=None,policy=None,clock=None):
         self.database=database
+        self._owns_observations=observations is None
         self.observations=observations or LocalCollectorObservations(os.getenv("MAXIMO_COLLECTOR_API_BASE"),os.getenv("PI_COLLECTOR_API_BASE"))
         self.policy=policy or FreshnessPolicy.from_environment()
         self.clock=clock or (lambda:datetime.now(timezone.utc))
@@ -32,7 +33,10 @@ class IntegrationStatusService:
         return TrustState.CURRENT if freshness and all(f.state==TrustState.CURRENT for f in freshness) else TrustState.UNKNOWN
 
     def status(self,asset_id=None):
-        mx,pi=self.observations.maximo(),self.observations.pi()
+        try:
+            mx,pi=self.observations.maximo(),self.observations.pi()
+        finally:
+            if self._owns_observations: self.observations.close()
         inventory=IntegrationMartReader(self.database).inventory(asset_id) if self.database else {"available":False,"coverage":{},"governance_ready":None,"condition_ready":None,"mapping_readiness":"UNKNOWN"}
         components=[]
         c=dict(inventory["coverage"]);c.update(technical_registry_total=pi.registry_total,technical_registry_active=pi.registry_active,technical_snapshots=pi.snapshots)

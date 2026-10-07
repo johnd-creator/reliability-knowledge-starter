@@ -42,7 +42,7 @@ identities. The test fixture resets **only** its disposable schema, never an
 operational store. Set `RELIABILITY_MART_MIGRATIONS_ROOT` to this candidate's
 migration directory when reusing an older test image.
 
-From Cockpit: `python -m unittest discover -s tests -p test_projection_acceptance.py`.
+From Cockpit: `DATABASE_URL=sqlite+pysqlite:///:memory: python -m unittest discover -s tests -p test_projection_acceptance.py`. The full suite must also use an isolated legacy test DSN.
 `python scripts/export_evidence_contracts.py --check` checks reproducible status/
 handoff exports; `--write` is the explicit file-generation mode. Canonical
 selection/condition schema assertions are reused, not weakened to transport

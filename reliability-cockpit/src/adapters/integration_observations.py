@@ -21,8 +21,12 @@ class LocalCollectorObservations:
     def __init__(self, maximo_base=None, pi_base=None, *, session=None):
         self.maximo_base, self.pi_base = maximo_base, pi_base
         self.session = session or requests.Session()
+        self._owns_session = session is None
         # Credentials from ambient .netrc/proxy configuration are not used here.
         self.session.trust_env = False
+
+    def close(self):
+        if self._owns_session: self.session.close()
 
     def _get(self, base, path):
         parsed = urlsplit(base)
