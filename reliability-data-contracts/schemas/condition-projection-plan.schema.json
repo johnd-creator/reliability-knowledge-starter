@@ -1,0 +1,212 @@
+{
+  "$defs": {
+    "EvidenceSources": {
+      "additionalProperties": false,
+      "properties": {
+        "pi": {
+          "$ref": "#/$defs/PiLineage"
+        }
+      },
+      "required": [
+        "pi"
+      ],
+      "title": "EvidenceSources",
+      "type": "object"
+    },
+    "PiLineage": {
+      "additionalProperties": false,
+      "properties": {
+        "pi_source_id": {
+          "const": "CENTRAL_PI",
+          "title": "Pi Source Id",
+          "type": "string"
+        },
+        "af_server_ref": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Af Server Ref",
+          "type": "string"
+        },
+        "af_database_ref": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Af Database Ref",
+          "type": "string"
+        },
+        "af_element_ref": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Af Element Ref",
+          "type": "string"
+        },
+        "mapping_role": {
+          "const": "PRIMARY_EQUIPMENT",
+          "title": "Mapping Role",
+          "type": "string"
+        },
+        "mapping_status": {
+          "const": "VERIFIED",
+          "title": "Mapping Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "pi_source_id",
+        "af_server_ref",
+        "af_database_ref",
+        "af_element_ref",
+        "mapping_role",
+        "mapping_status"
+      ],
+      "title": "PiLineage",
+      "type": "object"
+    },
+    "SelectedPiAttribute": {
+      "additionalProperties": false,
+      "properties": {
+        "attribute_ref": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Attribute Ref",
+          "type": "string"
+        }
+      },
+      "required": [
+        "attribute_ref"
+      ],
+      "title": "SelectedPiAttribute",
+      "type": "object"
+    },
+    "SignalSelection": {
+      "additionalProperties": false,
+      "properties": {
+        "signal_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Signal Id",
+          "type": "string"
+        },
+        "mapping_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Mapping Id",
+          "type": "string"
+        },
+        "sources": {
+          "$ref": "#/$defs/SignalSources"
+        },
+        "semantic_name": {
+          "pattern": "^[a-z][a-z0-9_]{0,79}$",
+          "title": "Semantic Name",
+          "type": "string"
+        },
+        "approval_status": {
+          "enum": [
+            "APPROVED",
+            "RETIRED"
+          ],
+          "title": "Approval Status",
+          "type": "string"
+        },
+        "approved_by": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Approved By",
+          "type": "string"
+        },
+        "approved_at": {
+          "format": "date-time",
+          "title": "Approved At",
+          "type": "string",
+          "pattern": "(Z|[+-][0-9]{2}:[0-9]{2})$"
+        },
+        "evidence_ref": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Evidence Ref",
+          "type": "string"
+        }
+      },
+      "required": [
+        "signal_id",
+        "mapping_id",
+        "sources",
+        "semantic_name",
+        "approval_status",
+        "approved_by",
+        "approved_at",
+        "evidence_ref"
+      ],
+      "title": "SignalSelection",
+      "type": "object"
+    },
+    "SignalSources": {
+      "additionalProperties": false,
+      "properties": {
+        "pi": {
+          "$ref": "#/$defs/SelectedPiAttribute"
+        }
+      },
+      "required": [
+        "pi"
+      ],
+      "title": "SignalSources",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Contract Version",
+      "type": "string"
+    },
+    "canonical_asset_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Canonical Asset Id",
+      "type": "string"
+    },
+    "mapping_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Mapping Id",
+      "type": "string"
+    },
+    "sources": {
+      "$ref": "#/$defs/EvidenceSources"
+    },
+    "signals": {
+      "items": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/SignalSelection"
+          },
+          {
+            "properties": {
+              "approval_status": {
+                "const": "APPROVED"
+              }
+            }
+          }
+        ]
+      },
+      "maxItems": 5,
+      "minItems": 1,
+      "title": "Signals",
+      "type": "array"
+    }
+  },
+  "required": [
+    "canonical_asset_id",
+    "mapping_id",
+    "sources",
+    "signals"
+  ],
+  "title": "ProjectionPlan",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reliability-data-contracts/schemas/condition-projection-plan.schema.json",
+  "description": "NADI-ING-PI-001A mapping-independent foundation. Synthetic acceptance only; no production mapping or health score."
+}

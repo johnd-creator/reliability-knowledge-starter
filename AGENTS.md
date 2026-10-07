@@ -4,6 +4,20 @@ Read [plans/README.md](plans/README.md) first, then the scoped `AGENTS.md` and
 `CONTEXT.md` for any component you touch. Root rules govern platform ownership;
 scoped rules govern source safety, normalization and implementation details.
 
+## Current Phase-1 candidate handoff — 2026-10-08
+
+Read [authoritative acceptance](plans/NADI-PHASE-1-ACCEPTANCE.md). Main f8c37f0
+includes accepted PI/Mart runtime and completed safe identity rounds; operational
+asset_af_mapping exists, with PROPOSED0/VERIFIED0. Unmerged PR19 foundation211faec
+is included in the separate overnight candidate, not changed or deployed.
+Candidate condition projection/status/preflight use synthetic fixtures only.
+Existing Mart condition migration004 is NOT deployed; PI Collector migration004
+remains applied/accepted. API freshness policies default blank/UNKNOWN.
+Human crosswalk remains required; no auto-mapping, source requests, production
+signal approval/projection or redeployment is authorized by these software tests.
+Older runtime/open-PR paragraphs below retain historical context; use acceptance
+for current status and scoped docs for exact safety semantics.
+
 ## Existing Mart runtime checkpoint
 
 NADI-RUNTIME-002 uses the existing Maximo Collector DB for Mart, never a new DB.

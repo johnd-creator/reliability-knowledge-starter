@@ -41,6 +41,28 @@ AVAILABLE_SOURCES = {
 }
 
 
+def cmd_phase1_readiness(args: argparse.Namespace) -> int:
+    from src.domain.integration_status import IntegrationStatus
+    from src.services.phase1_readiness import phase1_readiness
+    try:
+        if args.status_file:
+            path=Path(args.status_file)
+            if path.stat().st_size>1_048_576:raise ValueError("bounded status document required")
+            status=IntegrationStatus.model_validate_json(path.read_bytes())
+            origin="OPERATOR_DOCUMENT"
+        else:
+            from src.api.reliability import _integration_service
+            status=_integration_service().status()
+            origin="LOCAL_RUNTIME"
+        result=phase1_readiness(status,evidence_origin=origin)
+        print(result.model_dump_json())
+        return 2 if args.require_pass and result.verdict!="PASS" else 0
+    except Exception:
+        # Do not expose DSNs, URLs, credentials or source payloads in CLI errors.
+        print('{"verdict":"UNKNOWN","reason":"PREFLIGHT_OBSERVATION_FAILED"}')
+        return 2
+
+
 def cmd_init_db(args: argparse.Namespace) -> int:
     db = get_database()
     db.create_all()
@@ -206,9 +228,51 @@ def cmd_mapping_retire(args: argparse.Namespace) -> int:
         store.close()
 
 
+def cmd_condition(args: argparse.Namespace) -> int:
+    from pathlib import Path
+    import os
+    from src.domain.condition_evidence import SignalSelection, EvidenceBatch
+    from src.repositories.condition_store import ConditionCommandStore
+    store = None
+    try:
+        store = ConditionCommandStore.from_environment()
+        if args.condition_command == "plan":
+            plan = store.plan(args.asset_id)
+            # Exclusive private output avoids overwriting an earlier controlled handoff.
+            fd = os.open(args.output, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+            with os.fdopen(fd, "w") as stream:
+                stream.write(plan.model_dump_json(indent=2))
+            print(json.dumps({"status": "PLAN_CREATED", "selected_signals": len(plan.signals)}))
+            return 0
+        path = Path(args.file)
+        if path.stat().st_size > 262144:
+            raise ValueError("bounded condition document exceeds 256 KiB")
+        document = json.loads(path.read_text())
+        if args.condition_command == "approve-signal":
+            store.approve_signal(SignalSelection.model_validate(document))
+            print(json.dumps({"status": "SIGNAL_APPROVED"}))
+        elif args.condition_command == "retire-signal":
+            store.retire_signal(document["signal_id"])
+            print(json.dumps({"status": "SIGNAL_RETIRED"}))
+        else:
+            result = store.project(EvidenceBatch.model_validate(document))
+            print(json.dumps(result))
+        return 0
+    except Exception:
+        print("Condition administration failed closed; inspect local governance and document", file=sys.stderr)
+        return 2
+    finally:
+        if store is not None:
+            store.engine.dispose()
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(prog="cockpit", description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
+
+    readiness=sub.add_parser("phase1-readiness",help="read-only Phase-1 JSON preflight; no DDL/source calls/service control")
+    readiness.add_argument("--status-file",help="bounded offline IntegrationStatus document; output explicitly marks OPERATOR_DOCUMENT")
+    readiness.add_argument("--require-pass",action="store_true",help="exit 2 unless all product pilot gates pass")
+    readiness.set_defaults(func=cmd_phase1_readiness)
 
     sub.add_parser("init-db", help="create cockpit local tables")
 
@@ -219,6 +283,17 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     reader = sub.add_parser("mart-reader", help="inspect named SELECT-only role; deliberate --apply grants")
     reader.add_argument("--apply", action="store_true")
     reader.set_defaults(func=cmd_mart_reader)
+
+    condition = sub.add_parser("condition", help="local governed evidence administration; never accesses PI")
+    commands = condition.add_subparsers(dest="condition_command", required=True)
+    plan = commands.add_parser("plan", help="export exact VERIFIED mapping and separately approved signal subset")
+    plan.add_argument("--asset-id", required=True)
+    plan.add_argument("--output", required=True)
+    plan.set_defaults(func=cmd_condition)
+    for name in ("approve-signal", "retire-signal", "project"):
+        command = commands.add_parser(name, help="explicit local Mart command, requires separate administrative DSN")
+        command.add_argument("--file", required=True)
+        command.set_defaults(func=cmd_condition)
 
     sync = sub.add_parser("sync", help="delta-sync verified Maximo objects")
     sync.add_argument("objects", nargs="*", help="object structure(s) or resource name(s); default all")

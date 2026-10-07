@@ -68,3 +68,30 @@ GET /streamsets/{webIds joined}       # batched snapshots
 
 Pagination: `Links.Next` is an absolute URL — strip the base URL before
 re-requesting. Rate limit 1 req/s, response cap 1 MiB, GET/HEAD only.
+
+## NADI-ING-PI-001A candidate: selected governed ConditionEvidence
+
+This additive product evidence path is separate from unrestricted technical
+ConditionReading inventory. A registered canonical Asset, one human-VERIFIED
+CENTRAL_PI/PRIMARY_EQUIPMENT mapping and explicit approved exact signal selection
+are mandatory. Source WebIds/name/AF lineage stay under `sources.pi`.
+
+| Boundary source | Canonical evidence |
+|---|---|
+| selected approval semantic_name and signal_id | semantic_name, signal_id |
+| resolved Mart mapping identity | canonical_asset_id, mapping_id, sources.pi AF references |
+| source-returned Attribute WebId / Name | sources.pi.attribute_ref / attribute_name |
+| snapshot.source_value / inferred value_type | value / value_type (no numeric coercion) |
+| snapshot.units | unit, nullable |
+| snapshot.source_timestamp | source_timestamp, independently evaluated freshness |
+| snapshot.collected_at | collected_at |
+| snapshot.value_good/questionable/substituted/annotated | quality_good/questionable/substituted/annotated, nullable |
+| approval actor/date/evidence reference | provenance selection_approved_by/at/evidence_ref |
+| actual new Mart upsert | projected_at in the read envelope; not refreshed by replay |
+
+There is no automatic conversion of registry attributes to governed NADI signals.
+Production acceptance remains blocked on human identity and future reviewed
+deployment; all newly committed examples are synthetic.
+
+Digital source Name/Value/IsSystem map explicitly to core `name`/`code`/`is_system`.
+Zero codes, false flags and null fields retain their source semantics.

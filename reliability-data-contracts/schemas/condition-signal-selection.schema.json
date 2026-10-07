@@ -1,0 +1,97 @@
+{
+  "$defs": {
+    "SelectedPiAttribute": {
+      "additionalProperties": false,
+      "properties": {
+        "attribute_ref": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Attribute Ref",
+          "type": "string"
+        }
+      },
+      "required": [
+        "attribute_ref"
+      ],
+      "title": "SelectedPiAttribute",
+      "type": "object"
+    },
+    "SignalSources": {
+      "additionalProperties": false,
+      "properties": {
+        "pi": {
+          "$ref": "#/$defs/SelectedPiAttribute"
+        }
+      },
+      "required": [
+        "pi"
+      ],
+      "title": "SignalSources",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "signal_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Signal Id",
+      "type": "string"
+    },
+    "mapping_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Mapping Id",
+      "type": "string"
+    },
+    "sources": {
+      "$ref": "#/$defs/SignalSources"
+    },
+    "semantic_name": {
+      "pattern": "^[a-z][a-z0-9_]{0,79}$",
+      "title": "Semantic Name",
+      "type": "string"
+    },
+    "approval_status": {
+      "enum": [
+        "APPROVED",
+        "RETIRED"
+      ],
+      "title": "Approval Status",
+      "type": "string"
+    },
+    "approved_by": {
+      "maxLength": 160,
+      "minLength": 1,
+      "title": "Approved By",
+      "type": "string"
+    },
+    "approved_at": {
+      "format": "date-time",
+      "title": "Approved At",
+      "type": "string",
+      "pattern": "(Z|[+-][0-9]{2}:[0-9]{2})$"
+    },
+    "evidence_ref": {
+      "maxLength": 500,
+      "minLength": 1,
+      "title": "Evidence Ref",
+      "type": "string"
+    }
+  },
+  "required": [
+    "signal_id",
+    "mapping_id",
+    "sources",
+    "semantic_name",
+    "approval_status",
+    "approved_by",
+    "approved_at",
+    "evidence_ref"
+  ],
+  "title": "SignalSelection",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reliability-data-contracts/schemas/condition-signal-selection.schema.json",
+  "description": "NADI-ING-PI-001A mapping-independent foundation. Synthetic acceptance only; no production mapping or health score."
+}

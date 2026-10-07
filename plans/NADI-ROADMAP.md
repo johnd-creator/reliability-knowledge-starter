@@ -1,5 +1,48 @@
 # NADI product roadmap — main quest
 
+## Current overnight bundle checkpoint — 2026-10-08
+
+NADI-PHASE1-OVERNIGHT-BUNDLE-01 branches from exact unmerged PR #19 HEAD
+`211faec4b0916361491d3ca8bc01ada2f0072284`, with authoritative main unchanged at
+`f8c37f068102a06906cb3ca464fe08745e0351cf`. PR #19 remains OPEN/UNMERGED and its
+branch is untouched. The new bundle includes that foundation and supersedes
+PR #19 **only if the bundle is accepted**. Neither PR is automatically merged.
+
+[Authoritative Phase-1 acceptance](NADI-PHASE-1-ACCEPTANCE.md) distinguishes
+candidate software tests from operational deployment and human/data acceptance.
+B0 freshness wiring, B1 integration status/Data Trust, B2 synthetic PostgreSQL
+projection acceptance and B3 read-only Phase-1 preflight are implemented candidates.
+NADI-IDN-002 human crosswalk remains BLOCKED / EXTERNAL; verification PENDING.
+Production PROPOSED0 / VERIFIED0 remain unchanged; BFPT stays REJECTED / FROZEN.
+
+**PHASE 1 SOFTWARE READINESS: PASS (candidate, bounded bundle scope)**
+**PHASE 1 PRODUCT ACCEPTANCE: BLOCKED**
+External identity blocker: **HUMAN_CROSSWALK_REQUIRED**. It is not the only
+outstanding product prerequisite: reviewed runtime deployment, existing-Mart
+condition migration 004/reader grants, explicit freshness policy, approved pilot
+signals and real governed evidence acceptance are still required. No operational
+condition migration or projection was performed. Phase 1 remains CURRENT / PARTIAL.
+Next: senior bundle review; separately authorized runtime acceptance can proceed
+independently of human crosswalk. With controlled MATCH evidence, execute
+NADI-IDN-002B human verification/governed canary, then approved bounded projection.
+
+## Historical NADI-ING-PI-001A checkpoint — 2026-10-07
+
+PR #18 MERGED; baseline origin/main `f8c37f068102a06906cb3ca464fe08745e0351cf`.
+[NADI-ING-PI-001A](../reliability-cockpit/docs/nadi-ing-pi-001a.md) implementation
+**CURRENT / candidate**, synthetic acceptance **PASS**: explicit separately
+approved selected signals, governed collector boundary, canonical typed evidence,
+additive latest-only existing-Mart migration, read-only API/Asset view and four
+independent freshness dimensions. No production deployment/projection is claimed.
+
+NADI-PI-001 ✅ MERGED; NADI-PI-RUNTIME-001 ✅ ACCEPTED;
+NADI-RUNTIME-002 ✅ ACCEPTED. NADI-IDN-002A R1/R2 evidence rounds are completed;
+NADI-IDN-002 human crosswalk **BLOCKED / EXTERNAL**, human verification PENDING.
+PROPOSED0 / VERIFIED0 remain unchanged. BFPT stays REJECTED / FROZEN.
+Task source GET/write0, no operational DDL/restart/new DB. Phase 1 remains
+**CURRENT / PARTIAL**. Next: **NADI-INTEGRATION-STATUS-001**. Real governed PI
+projection still requires human identity plus signal approval and deployment review.
+
 NADI — **Navigasi Analitik Data dan Informasi**, Reliability / Engineering
 Intelligence Platform pembangkit. Implementasinya berada di
 `reliability-cockpit/`; shared collectors tetap menjadi kemampuan platform.

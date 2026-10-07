@@ -9,6 +9,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
 from sqlalchemy.exc import SQLAlchemyError
 
+from src.services.condition_query import AssetConditionEvidence, ConditionQueryService
 from src.domain.asset_af_mapping import AssetAfMapping
 from src.repositories.mart_database import MartDatabase, MartDatabaseConfigError, get_mart_database
 from src.repositories.mart_reader import MartQueryRepository, QueryPage
@@ -992,6 +993,14 @@ def get_asset(canonical_id: str, service: ReliabilityQueryService = Depends(_ser
     return _asset(row)
 
 
+@router.get("/assets/{canonical_id}/condition-evidence", response_model=AssetConditionEvidence)
+def asset_condition_evidence(canonical_id: str, db: MartDatabase = Depends(_db)) -> AssetConditionEvidence:
+    response = ConditionQueryService(db).asset_evidence(canonical_id)
+    if response is None:
+        raise HTTPException(status_code=404, detail="asset not found")
+    return response
+
+
 @router.get("/assets/{canonical_id}/pi-mapping", response_model=AssetAfMappingResponse)
 def asset_af_mapping(canonical_id: str, service: ReliabilityQueryService = Depends(_service)) -> AssetAfMappingResponse:
     if service.repository.get_asset(canonical_id) is None:
@@ -1099,3 +1108,29 @@ def data_trust(service: ReliabilityQueryService = Depends(_service)) -> DataTrus
 @router.get("/integrity", response_model=IntegrityView)
 def integrity(service: ReliabilityQueryService = Depends(_service)) -> IntegrityView:
     return IntegrityView(**service.repository.integrity_summary())
+
+
+def _integration_service():
+    from src.services.integration_status import IntegrationStatusService
+    try:
+        database=get_mart_database()
+    except (MartDatabaseConfigError, ValueError, SQLAlchemyError):
+        database=None
+    return IntegrationStatusService(database)
+
+from src.domain.integration_status import IntegrationStatus
+
+@router.get("/integration-status",response_model=IntegrationStatus)
+def integration_status():
+    return _integration_service().status()
+
+@router.get("/assets/{canonical_id:path}/integration-status",response_model=IntegrationStatus)
+def asset_integration_status(canonical_id: str):
+    service=_integration_service()
+    if service.database is not None:
+        try:
+            if MartQueryRepository(service.database).get_asset(canonical_id) is None:
+                raise HTTPException(status_code=404,detail="registered asset not found")
+        except SQLAlchemyError:
+            pass
+    return service.status(canonical_id)

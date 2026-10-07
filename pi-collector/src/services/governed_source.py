@@ -80,12 +80,17 @@ class GovernedSourceBoundary:
         return metadata
 
     def get_snapshot(self, target: GovernedAfTarget, attribute_ref: str) -> Snapshot:
+        return self.get_evidence_snapshot(target, attribute_ref)[1]
+
+    def get_evidence_snapshot(self, target: GovernedAfTarget, attribute_ref: str) -> tuple[str | None, Snapshot]:
+        """Source-returned name and typed snapshot, with one bounded lineage check."""
         attribute = self.get_attribute(target, attribute_ref)
         payload = self._client.get_af_attribute_value(attribute)
         snapshot = extract_snapshot(payload, attribute_ref, units=_source_units({}, attribute.get("DefaultUnitsName")))
         if snapshot.source_timestamp is None:
             raise PiClientError("governed snapshot requires an aware source timestamp")
-        return snapshot
+        name = attribute.get("Name")
+        return name if isinstance(name, str) else None, snapshot
 
     def get_recorded(self, target: GovernedAfTarget, attribute_ref: str, *,
                      start_time: str, end_time: str, max_count: int = 20) -> list[TimeseriesPoint]:

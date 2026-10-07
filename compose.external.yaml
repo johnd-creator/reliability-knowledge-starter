@@ -49,6 +49,11 @@ services:
     restart: unless-stopped
     environment:
       COCKPIT_CONFIG_MODE: managed
+      MAXIMO_COLLECTOR_API_BASE: ${MAXIMO_COLLECTOR_API_BASE:-http://host.docker.internal:8002}
+      PI_COLLECTOR_API_BASE: ${PI_COLLECTOR_API_BASE:-http://host.docker.internal:8001}
+      NADI_COLLECTOR_MAX_AGE_SECONDS: ${NADI_COLLECTOR_MAX_AGE_SECONDS:-}
+      NADI_SOURCE_MAX_AGE_SECONDS: ${NADI_SOURCE_MAX_AGE_SECONDS:-}
+      NADI_PROJECTION_MAX_AGE_SECONDS: ${NADI_PROJECTION_MAX_AGE_SECONDS:-}
       RELIABILITY_MART_DATABASE_URL: ${RELIABILITY_MART_DATABASE_URL:?set SELECT-only external existing Mart DSN}
       DATABASE_URL: postgresql+psycopg://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
     extra_hosts:

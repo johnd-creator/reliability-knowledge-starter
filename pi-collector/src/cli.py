@@ -251,6 +251,40 @@ def cmd_serve(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_condition_evidence(args: argparse.Namespace) -> int:
+    """Controlled local handoff; dry-run by default, no public proxy endpoint."""
+    import json
+    import os
+    from pathlib import Path
+    from src.services.condition_evidence import collect_condition_evidence, validate_plan
+    try:
+        path = Path(args.plan_file)
+        if path.stat().st_size > 262144:
+            raise ValueError("bounded plan exceeds 256 KiB")
+        plan = json.loads(path.read_text())
+        validate_plan(plan)
+        if not args.execute:
+            print(json.dumps({"status": "DRY_RUN", "selected_signals": len(plan["signals"]), "source_requests": 0}))
+            return 0
+        if not args.output:
+            raise ValueError("private output path required")
+        # Open exclusive output BEFORE PI calls; a bad path never causes source load.
+        fd = os.open(args.output, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+        with os.fdopen(fd, "w") as output:
+            from src.adapters.pi.client import PiClient
+            from src.config import PiApiConfig
+            from src.services.governed_source import GovernedSourceBoundary
+            from src.adapters.pi.client import new_session
+            with new_session() as session:
+                client = PiClient(PiApiConfig.from_environment(), session=session)
+                batch = collect_condition_evidence(GovernedSourceBoundary(client), plan)
+                output.write(json.dumps(batch, allow_nan=False, indent=2))
+        print(json.dumps({"status": "EVIDENCE_DOCUMENT_CREATED", "selected_signals": len(plan["signals"])}))
+        return 0
+    except Exception:
+        print("Governed evidence handoff failed closed; no source details are exposed", file=sys.stderr)
+        return 2
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(prog="picollector", description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -268,6 +302,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                         default=os.getenv("PI_SNAPSHOT_INTERVAL_SECONDS", "300"),
                         help="pause after each completed cycle; legacy --interval-seconds is an alias (default from PI_SNAPSHOT_INTERVAL_SECONDS, otherwise 300)")
     worker.set_defaults(func=cmd_worker)
+
+    evidence = sub.add_parser("condition-evidence", help="trusted operator plan only; dry-run unless --execute; never HTTP")
+    evidence.add_argument("--plan-file", required=True)
+    evidence.add_argument("--output", help="new private evidence handoff file; required for --execute")
+    evidence.add_argument("--execute", action="store_true")
+    evidence.set_defaults(func=cmd_condition_evidence)
 
     load = sub.add_parser("load-registry", help="load verified attributes from pi-knowledge YAML")
     load.add_argument("--registry", help="path to YAML (default: PI_REGISTRY_PATH)")

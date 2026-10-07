@@ -264,3 +264,6 @@ class AssetAfMappingMart(MartBase):
     source_orgid_snapshot: Mapped[str | None] = mapped_column(String(40))
     af_path_snapshot: Mapped[str | None] = mapped_column(String(500))
     af_element_name_snapshot: Mapped[str | None] = mapped_column(String(240))
+
+# Register additive descriptors on MartBase only, never legacy Cockpit Base.
+from src.repositories import condition_models  # noqa: E402,F401

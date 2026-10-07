@@ -6,6 +6,13 @@ menggunakan `origin/main` pada `ef07a263b122d30e7dbec451e6094f9016b603c3`,
 7 Oktober 2026. Branch implementation yang belum merged tidak dihitung sebagai
 kemampuan `main`.
 
+## Current Phase-1 acceptance — 2026-10-08
+
+Read [Phase-1 acceptance](NADI-PHASE-1-ACCEPTANCE.md) for the overnight candidate
+from unmerged PR19 HEAD211faec. Software candidate PASS, product BLOCKED; human
+crosswalk plus runtime/policy/signal/evidence acceptance remain outstanding.
+Phase1 stays CURRENT/PARTIAL. The earlier checkpoint paragraphs below are historical.
+
 ## Baca dalam urutan ini
 
 | Dokumen | Pertanyaan yang dijawab |

@@ -4,6 +4,8 @@ import os
 import subprocess
 import tempfile
 import unittest
+from datetime import datetime, timedelta, timezone
+from src.domain.condition_evidence import FreshnessPolicy
 from pathlib import Path
 from unittest.mock import patch
 
@@ -14,6 +16,15 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class RuntimeConfigTest(unittest.TestCase):
+    def test_blank_policy_is_unknown_and_configured_policy_is_effective(self):
+        now = datetime.now(timezone.utc)
+        with patch.dict(os.environ, {}, clear=True):
+            self.assertEqual(FreshnessPolicy.from_environment().state("SOURCE", now, now), "SOURCE_UNKNOWN")
+        with patch.dict(os.environ, {"NADI_SOURCE_MAX_AGE_SECONDS": "60"}, clear=True):
+            policy = FreshnessPolicy.from_environment()
+            self.assertEqual(policy.state("SOURCE", now-timedelta(seconds=61), now), "SOURCE_STALE")
+            self.assertEqual(policy.state("SOURCE", now, now), "SOURCE_CURRENT")
+
     def test_no_legacy_mart_fallback(self):
         with patch.dict(os.environ, {"DATABASE_URL": "postgresql://legacy.invalid/cockpit"}, clear=True):
             self.assertIsNone(MartDbConfig.from_environment().dsn)
@@ -37,13 +48,15 @@ class RuntimeConfigTest(unittest.TestCase):
 
 @unittest.skipUnless(os.getenv("NADI_COMPOSE_TESTS"), "enable clean Docker Compose config checks explicitly")
 class ComposeRuntimeTest(unittest.TestCase):
-    def config(self, name, missing_reader=False):
+    def config(self, name, missing_reader=False, policy=None):
         with tempfile.TemporaryDirectory() as directory:
             clean = Path(directory)
             (clean / name).write_bytes((ROOT / name).read_bytes())
             sample = (ROOT / ".env.platform.example").read_text()
             if missing_reader:
                 sample = "\n".join(line for line in sample.splitlines() if not line.startswith("RELIABILITY_MART_DATABASE_URL="))
+            if policy:
+                sample += "\n" + "\n".join(k+"="+v for k,v in policy.items()) + "\n"
             (clean / ".env.platform").write_text(sample)
             result = subprocess.run(["docker", "compose", "--env-file", ".env.platform", "-f", name,
                 "--profile", "mart-maintenance", "config", "--format", "json"], cwd=clean,
@@ -93,3 +106,20 @@ class ComposeRuntimeTest(unittest.TestCase):
     def test_both_modes_require_reader_dsn(self):
         self.config("compose.yaml", missing_reader=True)
         self.config("compose.external.yaml", missing_reader=True)
+
+    def test_freshness_policy_goes_only_to_api_in_both_modes(self):
+        values = {"NADI_COLLECTOR_MAX_AGE_SECONDS":"61", "NADI_SOURCE_MAX_AGE_SECONDS":"62", "NADI_PROJECTION_MAX_AGE_SECONDS":"63"}
+        for mode in ("compose.yaml", "compose.external.yaml"):
+            services = self.config(mode, policy=values)
+            api_env = services["cockpit-api"]["environment"]
+            self.assertIn("MAXIMO_COLLECTOR_API_BASE", api_env)
+            self.assertIn("PI_COLLECTOR_API_BASE", api_env)
+            self.assertEqual({k:api_env[k] for k in values}, values)
+            with patch.dict(os.environ, api_env, clear=True):
+                self.assertEqual(FreshnessPolicy.from_environment().source_max_age_seconds, 62)
+            for name,service in services.items():
+                if name != "cockpit-api": self.assertFalse(values.keys() & service.get("environment", {}).keys(), name)
+            blank = self.config(mode)["cockpit-api"]["environment"]
+            with patch.dict(os.environ, blank, clear=True):
+                self.assertIsNone(FreshnessPolicy.from_environment().source_max_age_seconds)
+            self.assertFalse({"PI_USERNAME","PI_PASSWORD","PI_TOKEN","MAXIMO_PASSWORD"} & api_env.keys())

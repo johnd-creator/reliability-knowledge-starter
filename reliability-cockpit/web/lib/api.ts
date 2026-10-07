@@ -293,6 +293,8 @@ export const reliabilityApi = {
   assets: (filters: AssetFilters = {}) => get<Page<AssetView>>(`/v1/reliability/assets${query(filters)}`),
   registry: () => get<RegistryView>("/v1/reliability/registry"),
   asset: (canonicalId: string) => get<AssetView>(`/v1/reliability/assets/${encodeURIComponent(canonicalId)}`),
+  integrationStatus: (canonicalId?: string) => get<IntegrationStatus>(canonicalId ? `/v1/reliability/assets/${encodeURIComponent(canonicalId)}/integration-status` : "/v1/reliability/integration-status"),
+  conditionEvidence: (canonicalId: string) => get<AssetConditionEvidence>(`/v1/reliability/assets/${encodeURIComponent(canonicalId)}/condition-evidence`),
   assetContext: (canonicalId: string) => get<ContextView>(`/v1/reliability/assets/${encodeURIComponent(canonicalId)}/context`),
   assetTimeline: (canonicalId: string, filters: AssetDetailPageFilters = {}) => get<Page<TimelineView>>(`/v1/reliability/assets/${encodeURIComponent(canonicalId)}/timeline${query(filters)}`),
   assetFmea: (canonicalId: string, filters: AssetDetailPageFilters = {}) => get<Page<FmeaView>>(`/v1/reliability/assets/${encodeURIComponent(canonicalId)}/fmea${query(filters)}`),
@@ -307,3 +309,41 @@ export const reliabilityApi = {
   dataTrust: () => get<DataTrustView>("/v1/reliability/data-trust"),
   integrity: () => get<IntegrityView>("/v1/reliability/integrity"),
 };
+
+
+export interface AssetConditionEvidence {
+  canonical_asset_id: string;
+  mapping_readiness: string;
+  statuses: string[];
+  expected_signals: number;
+  latest_attempt_at: string | null;
+  collector_last_success_at: string | null;
+  items: {
+    evidence: {
+      signal_id: string; semantic_name: string; mapping_id: string;
+      value: number | string | boolean | { name: string | null; code: number | null; is_system: boolean | null } | null;
+      value_type: "NUMERIC" | "TEXT" | "DIGITAL_STATE" | "BOOLEAN" | "NULL";
+      unit: string | null; source_timestamp: string | null; collected_at: string;
+      quality_good: boolean | null; quality_questionable: boolean | null;
+      quality_substituted: boolean | null; quality_annotated: boolean | null;
+      evidence_status: string;
+    };
+    projected_at: string;
+    statuses: string[];
+    freshness: { collector: string; source: string; projection: string; mapping: string };
+  }[];
+}
+
+
+export type TrustState = "CURRENT" | "STALE" | "UNKNOWN" | "BLOCKED" | "DEGRADED" | "NOT_CONFIGURED";
+export interface FreshnessDimension { state: TrustState; observed_at: string | null; max_age_seconds: number | null }
+export interface IntegrationStatus {
+  contract_version: string; observed_at: string; canonical_asset_id: string | null;
+  governance_schema_ready: boolean | null; condition_schema_ready: boolean | null;
+  coverage: { registered_assets: number | null; verified_mapping_assets: number | null; ambiguous_mapping_assets: number | null;
+    approved_signal_assets: number | null; projected_assets: number | null; approved_signals: number | null; projected_signals: number | null;
+    technical_registry_total: number | null; technical_registry_active: number | null; technical_snapshots: number | null };
+  components: Array<{ component: string; state: TrustState; availability: string;
+    collection_freshness: FreshnessDimension; source_freshness: FreshnessDimension; projection_freshness: FreshnessDimension;
+    mapping_readiness: string; quality: string; last_successful_activity: string | null; degraded_reasons: string[] }>;
+}
