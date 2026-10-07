@@ -17,8 +17,10 @@ kemampuan `main`.
 | [Repository Status](REPOSITORY-STATUS.md) | Baseline, PR, branch debt, dokumen stale, governance? |
 
 **Posisi NADI:** Phase 0 COMPLETE untuk release faktual; Phase 1 CURRENT /
-PARTIAL untuk ekspansi evidence. **Next:** NADI-PI-001, review/integrasi governed
-PI source boundary. Pilot mapping, PI evidence projection dan acceptance menyusul.
+PARTIAL untuk ekspansi evidence. **NADI-PI-001:** IMPLEMENTED / MERGE-CANDIDATE di PR terpisah, belum merged.
+**Next:** rekonsiliasi runtime/Mart bila diperlukan → NADI-IDN-002 pilot mapping.
+PI evidence projection dan acceptance masih pending.
+Lihat [evidence implementasi offline](../pi-collector/docs/nadi-pi-001-implementation.md).
 NK tidak menggantikan prioritas NADI dan tidak memperluas domain Reliability.
 
 ## Aturan status

@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 from datetime import datetime
+from typing import Any
 
-from sqlalchemy import Boolean, DateTime, Float, Integer, String, Text
+from sqlalchemy import Boolean, DateTime, Float, Integer, JSON, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.repositories.database import Base
@@ -34,6 +35,11 @@ class SnapshotOrm(Base):
     value: Mapped[float | None] = mapped_column(Float)
     value_good: Mapped[bool | None] = mapped_column(Boolean)
     units: Mapped[str | None] = mapped_column(String(40))
+    source_value: Mapped[Any | None] = mapped_column(JSON(none_as_null=True))
+    value_type: Mapped[str | None] = mapped_column(String(40))
+    value_questionable: Mapped[bool | None] = mapped_column(Boolean)
+    value_substituted: Mapped[bool | None] = mapped_column(Boolean)
+    value_annotated: Mapped[bool | None] = mapped_column(Boolean)
     source_timestamp: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     collected_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
@@ -45,6 +51,12 @@ class TimeseriesOrm(Base):
     timestamp: Mapped[datetime] = mapped_column(DateTime(timezone=True), primary_key=True)
     value: Mapped[float | None] = mapped_column(Float)
     value_good: Mapped[bool | None] = mapped_column(Boolean)
+    units: Mapped[str | None] = mapped_column(String(40))
+    source_value: Mapped[Any | None] = mapped_column(JSON(none_as_null=True))
+    value_type: Mapped[str | None] = mapped_column(String(40))
+    value_questionable: Mapped[bool | None] = mapped_column(Boolean)
+    value_substituted: Mapped[bool | None] = mapped_column(Boolean)
+    value_annotated: Mapped[bool | None] = mapped_column(Boolean)
     collected_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
 

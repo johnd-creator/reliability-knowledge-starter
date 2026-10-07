@@ -3,6 +3,21 @@
 Audit date: **2026-10-07**. This is the Git-backed repository snapshot, not a
 fresh production-runtime audit. Read [roadmap index](README.md) for priorities.
 
+## NADI-PI-001 update — 2026-10-07
+
+Verified new implementation baseline: `origin/main`
+`a8393ba7d8dfddcae67b14b6153a8056c2f01d34`, which includes PLATFORM-ROADMAP-001.
+`codex/nadi-pi-001-governed-source-adapter` selectively adapts `d23f848` with
+additional lineage checks, streaming limits, typed JSON value evidence and
+hermetic persistence/API tests. **IMPLEMENTED / MERGE-CANDIDATE**, not merged
+or deployed. Migration 002 is prepared, not applied. Production PI requests: 0.
+NK/deployment/CEMS are untouched; Phase 1 remains CURRENT / PARTIAL.
+See [implementation evidence](../pi-collector/docs/nadi-pi-001-implementation.md).
+Next: runtime/Mart reconciliation if needed, then NADI-IDN-002 pilot.
+
+The remaining baseline/branch tables below preserve the PLATFORM-ROADMAP-001
+dated audit; their ahead/behind counts are historical, not recomputed here.
+
 ## Baseline and method
 
 | Fact | Verified result |
@@ -78,7 +93,7 @@ both boundaries explicit until a reviewed implementation changes them.
 
 | Debt | State | Recommended action |
 |---|---|---|
-| D01 Governed PI adapter | UNMERGED | NADI-PI-001 reviews `d23f848` against main; integrate accepted bounded source capability and quality contracts/migration separately |
+| D01 Governed PI adapter | IMPLEMENTED / MERGE-CANDIDATE | NADI-PI-001 selectively adapts `d23f848` from `main a8393ba`; review/merge and deliberate migration remain pending; no live projection |
 | D02 Mixed platform/NK feature commit | UNMERGED / NEEDS_REVIEW | Split/review NK, deployment, documentation and data/model publication from `0c800da`; do not bulk merge for PI integration |
 | D03 Mart runtime DSN | UNMERGED / PARTIAL | Review `7149455`: main Compose lacks `RELIABILITY_MART_DATABASE_URL`; retain external-mode wiring, init dependency and regression intent after reconciling managed-mode overlap in `0c800da` |
 | D04 Home Asset Health access note | UNMERGED / HISTORICAL | Compare `94721eb` with merged MX-013A/B. It records TLS-blocked access, not verified Wellness/ACR/MPI; preserve useful network evidence later without reopening this audit's source access |

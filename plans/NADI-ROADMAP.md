@@ -64,8 +64,10 @@ never overwrite unknowns from labels or branch existence.
 
 ### Phase 1 — remaining acceptance
 
-- Integrate governed PI source boundary with compatible contracts/migrations
-  and tests on `main`; candidate `d23f848` is **UNMERGED**.
+- NADI-PI-001 governed PI source boundary is **IMPLEMENTED / MERGE-CANDIDATE**
+  on `codex/nadi-pi-001-governed-source-adapter`, based on `main a8393ba`;
+  review/merge and deliberate existing-store migration remain pending. See
+  [offline implementation evidence](../pi-collector/docs/nadi-pi-001-implementation.md).
 - Approve a bounded real/pilot Registered Asset ↔ AF mapping set. Code and
   synthetic tests do not establish that production mappings are populated.
 - Project PI measurement evidence into NADI with identity lineage, units,
@@ -125,9 +127,14 @@ not an already deployed knowledge engine.
 
 ## Next execution sequence
 
-### 1. NADI-PI-001 — Governed PI Source Adapter (next technical PR)
+### 1. NADI-PI-001 — Governed PI Source Adapter (implemented / merge-candidate)
 
-Start from the latest `main`, not the mixed feature branch. Review `d23f848`
+Offline integration starts from verified `main a8393ba`, not the mixed feature
+branch. Candidate `d23f848` was selectively adapted, with lineage, streaming
+limits and lossless source values strengthened; `0c800da` was not imported.
+No live source access, migration execution or NADI projection is claimed.
+
+Original acceptance scope retained for review: review `d23f848`
 as an implementation candidate: bounded verified AF target validation,
 same-origin link guards, typed values and richer PI quality fields.
 Integrate only the reviewed source-boundary scope, not NK/data/deployment

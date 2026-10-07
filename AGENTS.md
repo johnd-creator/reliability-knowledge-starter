@@ -29,8 +29,10 @@ Authority by purpose:
 - Scoped contracts, discovery and domain docs: exact accepted source semantics.
 
 Factual NADI Phase 0 is complete within `v0.1.0-rc.1`; Phase 1 is current/partial.
-Next technical PR is **NADI-PI-001 — Governed PI Source Adapter**, reviewing the
-unmerged `d23f848` candidate. Do not implement Phase 2–5, merge historical work,
+**NADI-PI-001 — Governed PI Source Adapter** is IMPLEMENTED / MERGE-CANDIDATE
+on `codex/nadi-pi-001-governed-source-adapter` from `main a8393ba`, selectively
+adapting `d23f848`. Review/merge and existing-store migration remain pending.
+Next is runtime/Mart reconciliation if required, then NADI-IDN-002 pilot mapping. Do not implement Phase 2–5, merge historical work,
 or resume source discovery merely because it appears on a roadmap.
 
 ## 2. Reuse stores — no new application database
