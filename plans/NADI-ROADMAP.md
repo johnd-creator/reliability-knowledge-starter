@@ -65,27 +65,32 @@ New discovery has not been projected into every canonical contract or product
 view. Update those boundaries through separate reviewed technical changes;
 never overwrite unknowns from labels or branch existence.
 
-### Current runtime prerequisite checkpoint — 2026-10-07
+### Current identity pilot checkpoint — 2026-10-07
 
-NADI-PI-001 ✅ MERGED; NADI-PI-RUNTIME-001 ✅ ACCEPTED (PR #15 MERGED,
-main `c052d7d`). NADI-RUNTIME-002 **current / candidate**, runtime scope PASS:
-canonical governance deployed in existing Mart, mapping table empty, dedicated
-SELECT-only reader and explicit managed/external wiring. [Evidence](../reliability-cockpit/docs/nadi-runtime-002.md).
-NADI-IDN-002 **next / READY** for its bounded human-verified pilot; no mapping
-or PI projection executed here. Phase 1 remains CURRENT / PARTIAL.
-The older execution rationale below describes historical prerequisites and is
-superseded by this checkpoint where it says governance is absent or PR #15 open.
+Baseline main `a1c9270deea75d369548137a137f6eb5817c4242`, PR #16 MERGED
+13:30:28 UTC. NADI-PI-001 ✅ MERGED; NADI-PI-RUNTIME-001 ✅ ACCEPTED;
+NADI-RUNTIME-002 ✅ MERGED / runtime ACCEPTED: existing Mart governance 002/003,
+SELECT-only NADI reader, explicit managed/external wiring.
+[NADI-IDN-002A evidence](../reliability-cockpit/docs/nadi-idn-002-pilot.md):
+20 shortlisted assets, 4 bounded AF lineages, 18 read-only PI GETs; 1 rejected
+identity contradiction, 3 insufficient evidence, 0 confirmed candidates.
+Evidence/proposal stage **PARTIAL**, human verification **PENDING**;
+PROPOSED0 / VERIFIED0. No name-based import or automatic verification.
+**HUMAN_REVIEW_REQUIRED**: obtain controlled identity evidence before proposing
+mappings. NADI-IDN-002B — Human Verification & Governed PI Canary follows an
+identity-qualified proposal batch; it cannot start production canaries yet.
+Phase 1 remains **CURRENT / PARTIAL**.
 
 ### Phase 1 — remaining acceptance
 
 - NADI-PI-001 governed PI source boundary is **MERGED** via PR #12 in
   `main 3e981a3`. NADI-PI-RUNTIME-001 applied migration 004 to the existing PI
   Timescale store, verified stored API and one technical source GET, and wired
-  one snapshot owner. Operator/Compose changes still require their runtime PR
-  review. [Runtime evidence](../pi-collector/docs/nadi-pi-runtime-001.md).
-- NADI-RUNTIME-002 must reconcile the accepted existing Mart schema/runtime:
-  `asset_af_mapping` is absent in the real Mart even though its model/migration
-  is merged. Never fabricate a governed target or silently create a new store.
+  one snapshot owner. Operator/Compose changes are merged via PR #15; accepted
+  runtime provenance and overrides remain distinct from source-controlled wiring. [Runtime evidence](../pi-collector/docs/nadi-pi-runtime-001.md).
+- NADI-RUNTIME-002 reconciled the accepted existing Mart schema/runtime via
+  merged PR #16: `asset_af_mapping` exists, mappings remain zero, NADI uses the
+  dedicated reader. Preserve that store and the separately authorized writer.
 - Approve a bounded real/pilot Registered Asset ↔ AF mapping set. Code and
   synthetic tests do not establish that production mappings are populated.
 - Project PI measurement evidence into NADI with identity lineage, units,
@@ -154,11 +159,11 @@ and existing stores. Migration 004 and stored-data API acceptance were performed
 before the explicitly authorized one-GET technical source canary.
 
 Technical registry collection remains distinct from governed NADI signals.
-No production VERIFIED target is established: the actual existing Mart lacks
-`asset_af_mapping`. **GOVERNED CANARY DEFERRED TO NADI-IDN-002**; prepare its
-runtime prerequisite via [NADI-RUNTIME-002](NADI-RUNTIME-002.md). No PI projection
-or Phase 1 completion is claimed. New minimal operator/worker wiring is in a
-separate open runtime PR, not automatically merged or broadly redeployed.
+No production VERIFIED target is established. PR #16 now provides governance
+in the actual existing Mart, but NADI-IDN-002A found no identity-qualified
+proposal. **GOVERNED CANARY DEFERRED** until controlled identity evidence and
+human verification. PR #15/#16 are merged; their runtime acceptance is preserved.
+No PI projection or Phase 1 completion is claimed.
 
 ### 2. NADI-IDN-002 — pilot verified Asset ↔ AF mapping
 

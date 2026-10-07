@@ -20,13 +20,16 @@ kemampuan `main`.
 CURRENT / PARTIAL untuk ekspansi evidence. **NADI-PI-001: MERGED** via PR #12,
 `main 3e981a3`. Maximo WO acceptance PR #13/#14 tetap CURRENT dalam registered
 BSR/IP population; MXR-004 tetap PARTIAL.
-**NADI-PI-RUNTIME-001:** existing-store migration 004, stored API compatibility,
-live technical canary dan satu snapshot owner; operator/Compose changes berada
-pada PR runtime yang menunggu review. Lihat
-[PI runtime evidence](../pi-collector/docs/nadi-pi-runtime-001.md).
-**Next:** [NADI-RUNTIME-002](NADI-RUNTIME-002.md) untuk existing Mart governance
-schema/deployment, lalu NADI-IDN-002 pilot verified mapping. NADI-ING-PI-001,
-NADI-INTEGRATION-STATUS dan NADI-PHASE-1-ACCEPTANCE masih pending.
+**NADI-PI-RUNTIME-001:** ACCEPTED, PR #15 MERGED; existing-store migration004,
+stored API compatibility and one snapshot owner remain accepted.
+**NADI-RUNTIME-002:** MERGED via PR #16 (`main a1c9270`), existing Mart governance
+and SELECT-only reader ACCEPTED.
+**Current:** [NADI-IDN-002A](../reliability-cockpit/docs/nadi-idn-002-pilot.md)
+evidence/proposal PARTIAL, human verification PENDING. Four bounded AF lineages
+are proven, but identity evidence is insufficient; production mappings remain0.
+Obtain controlled identity evidence before the small PROPOSED batch and
+NADI-IDN-002B human verification/governed canary. NADI-ING-PI-001,
+NADI-INTEGRATION-STATUS and NADI-PHASE-1-ACCEPTANCE remain pending.
 NK tetap child roadmap; technical PI collection bukan governed Asset signal.
 
 ## Aturan status
