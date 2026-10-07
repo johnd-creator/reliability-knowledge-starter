@@ -31,9 +31,15 @@ class RuntimeWiringTests(unittest.TestCase):
             self.assertFalse(SOURCE_NAMES & set(self.services[service]['environment']))
         self.assertEqual(self.services['pi-migrate']['command'],['picollector','migrate'])
 
-    def test_main_mart_uses_existing_owner(self):
+    def test_main_mart_requires_explicit_existing_reader(self):
         dsn=self.services['cockpit-api']['environment']['RELIABILITY_MART_DATABASE_URL']
-        self.assertIn('@maximo-db/maximo_collector',dsn)
+        self.assertEqual(dsn, '${RELIABILITY_MART_DATABASE_URL:?set SELECT-only existing Mart DSN in .env.platform}')
+        # Inspect the checked-in example only; never load operator credentials.
+        example = dict(line.split('=', 1) for line in (ROOT / '.env.platform.example').read_text().splitlines()
+                       if line and not line.startswith('#') and '=' in line)
+        self.assertIn('@maximo-db/maximo_collector', example['RELIABILITY_MART_DATABASE_URL'])
+        self.assertIn('nadi_mart_reader:', example['RELIABILITY_MART_DATABASE_URL'])
+        self.assertNotIn('RELIABILITY_MART_ADMIN_DATABASE_URL', self.services['cockpit-api']['environment'])
 
     def test_worker_has_no_secondary_env_file(self):
         self.assertNotIn('env_file', self.services['pi-worker'])

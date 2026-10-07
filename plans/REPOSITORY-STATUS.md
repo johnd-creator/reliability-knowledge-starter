@@ -3,7 +3,27 @@
 Audit date: **2026-10-07**. This is the Git-backed repository snapshot, not a
 fresh production-runtime audit. Read [roadmap index](README.md) for priorities.
 
-## Current NADI-RUNTIME-002 candidate checkpoint — 2026-10-07
+## Current NADI-IDN-002A pilot checkpoint — 2026-10-07
+
+PR #16 MERGED at 13:30:28 UTC; `origin/main`
+`a1c9270deea75d369548137a137f6eb5817c4242`. Fresh branch
+`codex/nadi-idn-002-pilot` inspects the accepted runtime without redeployment.
+NADI-PI-001 ✅ MERGED; NADI-PI-RUNTIME-001 ✅ ACCEPTED;
+NADI-RUNTIME-002 ✅ MERGED / runtime ACCEPTED. Operational Mart has 845 registered
+assets, governance table empty, nadi_mart_reader SELECT-only; PI433/433/errors0.
+
+[NADI-IDN-002A packet](../reliability-cockpit/docs/nadi-idn-002-pilot.md) records
+20 shortlisted assets, 4 researched pairs, 18 bounded read-only PI GETs. One
+BFPT identity contradiction rejected, three pairs lack controlled cross-system
+identity evidence. No confirmed candidate, CSV import or production verification;
+PROPOSED0 → 0 and VERIFIED0 → 0. Evidence/proposal stage **PARTIAL**, human
+verification **PENDING**, **HUMAN_REVIEW_REQUIRED**. Phase 1 stays CURRENT/PARTIAL.
+Next correction: obtain a governed crosswalk or responsible technician identity
+evidence, then bounded PROPOSED import before NADI-IDN-002B human verification/
+governed canary. Candidate PR remains OPEN/UNMERGED; older entries below retain
+the historical evidence and must not override this checkpoint.
+
+## Historical NADI-RUNTIME-002 candidate checkpoint — 2026-10-07
 
 PR #15 MERGED at 12:45:45 UTC; baseline `origin/main`
 `c052d7d7d007c2a670300d0eb9d08dda8d93f473`. Fresh `codex/nadi-runtime-002`
