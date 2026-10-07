@@ -24,12 +24,13 @@ BSR/IP population; MXR-004 tetap PARTIAL.
 stored API compatibility and one snapshot owner remain accepted.
 **NADI-RUNTIME-002:** MERGED via PR #16 (`main a1c9270`), existing Mart governance
 and SELECT-only reader ACCEPTED.
-**Current:** [NADI-IDN-002A](../reliability-cockpit/docs/nadi-idn-002-pilot.md)
-evidence/proposal PARTIAL, human verification PENDING. Four bounded AF lineages
-are proven, but identity evidence is insufficient; production mappings remain0.
-Obtain controlled identity evidence before the small PROPOSED batch and
-NADI-IDN-002B human verification/governed canary. NADI-ING-PI-001,
-NADI-INTEGRATION-STATUS and NADI-PHASE-1-ACCEPTANCE remain pending.
+**Current:** [NADI-IDN-002A-R2](../reliability-cockpit/docs/nadi-idn-002-round2.md),
+from merged PR17/main83c529f. Evidence/proposal PARTIAL, human verification
+PENDING. Three exact hypotheses remain insufficient; BFPT stays rejected.
+AF lookup configuration exists, but no exact Asset identity bridge was obtained.
+**HUMAN CROSSWALK REQUIRED** before small PROPOSED import and NADI-IDN-002B
+human verification/governed canary. NADI-ING-PI-001, NADI-INTEGRATION-STATUS and
+NADI-PHASE-1-ACCEPTANCE remain pending; Phase1 CURRENT/PARTIAL.
 NK tetap child roadmap; technical PI collection bukan governed Asset signal.
 
 ## Aturan status

@@ -65,21 +65,22 @@ New discovery has not been projected into every canonical contract or product
 view. Update those boundaries through separate reviewed technical changes;
 never overwrite unknowns from labels or branch existence.
 
-### Current identity pilot checkpoint — 2026-10-07
+### Current controlled identity checkpoint — 2026-10-07
 
-Baseline main `a1c9270deea75d369548137a137f6eb5817c4242`, PR #16 MERGED
-13:30:28 UTC. NADI-PI-001 ✅ MERGED; NADI-PI-RUNTIME-001 ✅ ACCEPTED;
-NADI-RUNTIME-002 ✅ MERGED / runtime ACCEPTED: existing Mart governance 002/003,
-SELECT-only NADI reader, explicit managed/external wiring.
-[NADI-IDN-002A evidence](../reliability-cockpit/docs/nadi-idn-002-pilot.md):
-20 shortlisted assets, 4 bounded AF lineages, 18 read-only PI GETs; 1 rejected
-identity contradiction, 3 insufficient evidence, 0 confirmed candidates.
-Evidence/proposal stage **PARTIAL**, human verification **PENDING**;
-PROPOSED0 / VERIFIED0. No name-based import or automatic verification.
-**HUMAN_REVIEW_REQUIRED**: obtain controlled identity evidence before proposing
-mappings. NADI-IDN-002B — Human Verification & Governed PI Canary follows an
-identity-qualified proposal batch; it cannot start production canaries yet.
-Phase 1 remains **CURRENT / PARTIAL**.
+PR #17 MERGED14:00:31 UTC; fresh main
+`83c529fd2d9ea5e3d3233f8d3b6025937a97054f`. NADI-PI-001 ✅ MERGED;
+NADI-PI-RUNTIME-001 ✅ ACCEPTED; NADI-RUNTIME-002 ✅ MERGED / runtime ACCEPTED.
+[Round1](../reliability-cockpit/docs/nadi-idn-002-pilot.md) remains preserved.
+[NADI-IDN-002A-R2](../reliability-cockpit/docs/nadi-idn-002-round2.md): local exact
+identity search then PI25/30 GETs and Maximo3/10 exact scoped GETs. Three
+hypotheses remain INSUFFICIENT_EVIDENCE; BFPT stays REJECTED/FROZEN. AF KKS has
+an ASSETNUM lookup expression, but no usable result or governed table authority.
+No confirmed bridge, replacement, dry-run/import or production verification.
+PROPOSED0 / VERIFIED0. Evidence/proposal **PARTIAL**, human verification **PENDING**.
+**HUMAN CROSSWALK REQUIRED**: three-row MATCH/NOT_MATCH/UNKNOWN packet requires a
+responsible reviewer/date/controlled evidence naming both exact identities.
+NADI-IDN-002B follows qualified proposals and human verification; production
+canary cannot start now. Phase1 stays **CURRENT / PARTIAL**.
 
 ### Phase 1 — remaining acceptance
 

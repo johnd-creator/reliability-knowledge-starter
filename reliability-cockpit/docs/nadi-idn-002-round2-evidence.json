@@ -1,0 +1,880 @@
+{
+  "task": "NADI-IDN-002A-R2",
+  "status": "PARTIAL",
+  "outcome": "BLOCKED ON CONTROLLED HUMAN/CROSSWALK EVIDENCE",
+  "baseline_main": "83c529fd2d9ea5e3d3233f8d3b6025937a97054f",
+  "baseline_at": "2026-10-07T14:45:43.956236+00:00",
+  "counts": {
+    "eligible_assessed": 3,
+    "confirmed": 0,
+    "insufficient": 3,
+    "ambiguous": 0,
+    "additional_candidates": 0,
+    "frozen_rejected": 1,
+    "proposed_before": 0,
+    "proposed_after": 0,
+    "verified_before": 0,
+    "verified_after": 0
+  },
+  "PI_round2_GETs": 25,
+  "Maximo_round2_GETs": 3,
+  "PI_round1_GETs": 18,
+  "PI_audit": [
+    {
+      "ordinal": 1,
+      "kind": "exact_element_metadata",
+      "path": "/piwebapi/elements/F1EmNOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEE",
+      "params": null,
+      "at": "2026-10-07T14:50:15.961193+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 2,
+      "kind": "direct_attributes",
+      "path": "/piwebapi/elements/F1EmNOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEE/attributes",
+      "params": {
+        "maxCount": "100"
+      },
+      "at": "2026-10-07T14:50:20.249360+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 3,
+      "kind": "identity_attribute_metadata",
+      "path": "/piwebapi/attributes/F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewzj1qLrNKgVYOtG5QY5cm8QUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8RVEgTkFNRQ",
+      "params": null,
+      "at": "2026-10-07T14:50:22.624655+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 4,
+      "kind": "identity_static_value",
+      "path": "/piwebapi/attributes/F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewzj1qLrNKgVYOtG5QY5cm8QUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8RVEgTkFNRQ/value",
+      "params": null,
+      "at": "2026-10-07T14:50:26.159405+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 5,
+      "kind": "identity_attribute_metadata",
+      "path": "/piwebapi/attributes/F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiew2NFw_MKxx1MafmJOi1rHzwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8RVFVSVBNRU5UIE5BTUU",
+      "params": null,
+      "at": "2026-10-07T14:50:28.558423+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 6,
+      "kind": "identity_static_value",
+      "path": "/piwebapi/streams/F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiew2NFw_MKxx1MafmJOi1rHzwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8RVFVSVBNRU5UIE5BTUU/value",
+      "params": null,
+      "at": "2026-10-07T14:50:30.651376+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 7,
+      "kind": "identity_attribute_metadata",
+      "path": "/piwebapi/attributes/F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewv4KEnCFmzVEI1xOX-2A4BwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8S09ERSBFUVVJUE1FTlQ",
+      "params": null,
+      "at": "2026-10-07T14:50:32.763265+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 8,
+      "kind": "identity_static_value",
+      "path": "/piwebapi/streams/F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewv4KEnCFmzVEI1xOX-2A4BwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8S09ERSBFUVVJUE1FTlQ/value",
+      "params": null,
+      "at": "2026-10-07T14:50:34.853875+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 9,
+      "kind": "identity_attribute_metadata",
+      "path": "/piwebapi/attributes/F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewAbsr9RHRclAJ73KShX1rBQUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8S09ERSBTWVNURU0",
+      "params": null,
+      "at": "2026-10-07T14:50:36.972423+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 10,
+      "kind": "identity_static_value",
+      "path": "/piwebapi/streams/F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewAbsr9RHRclAJ73KShX1rBQUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8S09ERSBTWVNURU0/value",
+      "params": null,
+      "at": "2026-10-07T14:50:40.220492+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 11,
+      "kind": "identity_attribute_metadata",
+      "path": "/piwebapi/attributes/F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewOLc9vPfcFlwDZwQadJVIEwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8VU5JVA",
+      "params": null,
+      "at": "2026-10-07T14:50:42.316311+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 12,
+      "kind": "identity_static_value",
+      "path": "/piwebapi/streams/F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewOLc9vPfcFlwDZwQadJVIEwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8VU5JVA/value",
+      "params": null,
+      "at": "2026-10-07T14:50:44.509461+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 13,
+      "kind": "identity_attribute_metadata",
+      "path": "/piwebapi/attributes/F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewEwy5OhjiBFwAzFi8C2UxFwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8VU5JVCBDT0RF",
+      "params": null,
+      "at": "2026-10-07T14:50:46.606365+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 14,
+      "kind": "identity_static_value",
+      "path": "/piwebapi/streams/F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewEwy5OhjiBFwAzFi8C2UxFwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8VU5JVCBDT0RF/value",
+      "params": null,
+      "at": "2026-10-07T14:50:48.792784+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 15,
+      "kind": "exact_element_metadata",
+      "path": "/piwebapi/elements/F1EmNOCpqPfunU-7w0-YUdQS0QLcIwncUU7hG40gBQVrgiewUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5QVUxWRVJJWkVSXEJTUjEuUFVMVkVSSVpFUiBB",
+      "params": null,
+      "at": "2026-10-07T14:50:50.879086+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 16,
+      "kind": "direct_attributes",
+      "path": "/piwebapi/elements/F1EmNOCpqPfunU-7w0-YUdQS0QLcIwncUU7hG40gBQVrgiewUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5QVUxWRVJJWkVSXEJTUjEuUFVMVkVSSVpFUiBB/attributes",
+      "params": {
+        "maxCount": "100"
+      },
+      "at": "2026-10-07T14:50:52.965601+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 17,
+      "kind": "exact_element_metadata",
+      "path": "/piwebapi/elements/F1EmNOCpqPfunU-7w0-YUdQS0QP8IwncUU7hG40gBQVrgiewUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5QVUxWRVJJWkVSXEJTUjEuUFVMVkVSSVpFUiBH",
+      "params": null,
+      "at": "2026-10-07T14:50:56.416541+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 18,
+      "kind": "direct_attributes",
+      "path": "/piwebapi/elements/F1EmNOCpqPfunU-7w0-YUdQS0QP8IwncUU7hG40gBQVrgiewUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5QVUxWRVJJWkVSXEJTUjEuUFVMVkVSSVpFUiBH/attributes",
+      "params": {
+        "maxCount": "100"
+      },
+      "at": "2026-10-07T14:50:58.517966+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 19,
+      "kind": "identity_configuration_inspection",
+      "path": "/piwebapi/attributes/F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewzj1qLrNKgVYOtG5QY5cm8QUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8RVEgTkFNRQ",
+      "params": null,
+      "at": "2026-10-07T14:55:10.164128+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 20,
+      "kind": "identity_configuration_inspection",
+      "path": "/piwebapi/attributes/F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiew2NFw_MKxx1MafmJOi1rHzwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8RVFVSVBNRU5UIE5BTUU",
+      "params": null,
+      "at": "2026-10-07T14:55:10.616827+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 21,
+      "kind": "identity_configuration_inspection",
+      "path": "/piwebapi/attributes/F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewwQvAwGE4cVgyI8KGLmtVgAUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8S0tT",
+      "params": null,
+      "at": "2026-10-07T14:55:14.225853+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 22,
+      "kind": "identity_configuration_inspection",
+      "path": "/piwebapi/attributes/F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewv4KEnCFmzVEI1xOX-2A4BwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8S09ERSBFUVVJUE1FTlQ",
+      "params": null,
+      "at": "2026-10-07T14:55:16.420391+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 23,
+      "kind": "identity_configuration_inspection",
+      "path": "/piwebapi/attributes/F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewAbsr9RHRclAJ73KShX1rBQUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8S09ERSBTWVNURU0",
+      "params": null,
+      "at": "2026-10-07T14:55:18.618843+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 24,
+      "kind": "identity_configuration_inspection",
+      "path": "/piwebapi/attributes/F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewOLc9vPfcFlwDZwQadJVIEwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8VU5JVA",
+      "params": null,
+      "at": "2026-10-07T14:55:20.712793+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 25,
+      "kind": "identity_configuration_inspection",
+      "path": "/piwebapi/attributes/F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewEwy5OhjiBFwAzFi8C2UxFwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8VU5JVCBDT0RF",
+      "params": null,
+      "at": "2026-10-07T14:55:22.771908+00:00",
+      "outcome": "200"
+    }
+  ],
+  "Maximo_audit": [
+    {
+      "ordinal": 1,
+      "kind": "exact_asset_query",
+      "path": "/maximo/oslc/os/mxapiasset",
+      "exact_assetnum": "CS10HFC01AJ001-001",
+      "at": "2026-10-07T14:50:26.599238+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 2,
+      "kind": "exact_asset_query",
+      "path": "/maximo/oslc/os/mxapiasset",
+      "exact_assetnum": "CS10HFC01AJ007-001",
+      "at": "2026-10-07T14:50:29.447455+00:00",
+      "outcome": "200"
+    },
+    {
+      "ordinal": 3,
+      "kind": "exact_asset_query",
+      "path": "/maximo/oslc/os/mxapiasset",
+      "exact_assetnum": "CS10HFB01AF001-001",
+      "at": "2026-10-07T14:50:33.011846+00:00",
+      "outcome": "200"
+    }
+  ],
+  "controlled_structured_bridges": [],
+  "repository_search": {
+    "tracked_text_files_scanned": 128,
+    "exact_assetnum_hits": [],
+    "sources": [
+      {
+        "path": "pi-knowledge/discovery/topology.json",
+        "sha256": "c99422097490c5263ce8b534089324bc4fb39a3266e21fcdd702ad1d9a04e4e1"
+      },
+      {
+        "path": "pi-knowledge/docs/pi-001a-source-topology.md",
+        "sha256": "447d365e312b242f2742fbc05a52a27ad3761ce0b08eea910347f919ba48ade3"
+      },
+      {
+        "path": "pi-knowledge/mappings/bsr1-parameters.yaml",
+        "sha256": "79ec8ca75e639e67d9bb68e656a9a64f1ac5aa65d47caca340fd2f935e4b29fb"
+      },
+      {
+        "path": "maximo-knowledge/discovery/objects/mxapiasset.json",
+        "sha256": "2b2b078cf2152e192934e657c74f8c1fc2fc13cd9ba9c7bc41e6fdc4a0881f39"
+      },
+      {
+        "path": "maximo-knowledge/mappings/equipment-mapping.example.yaml",
+        "sha256": "28121f29a7cf1d7dd0b213fdea878a2de5f9f33e2af9d4330255f8c027b40411"
+      },
+      {
+        "path": "maximo-collector/docs/mx-011a-asset-registry-reconciliation.md",
+        "sha256": "c493b6275fcbd946b39c26d782bf6a4432051a056932e05cb3432ed9bc42c2ff"
+      }
+    ],
+    "excluded": "private env, run exports, untracked spreadsheets; no global absence claim"
+  },
+  "replacement_screen": {
+    "remaining_original_shortlist": [
+      "CS10PAC01AP001-001",
+      "CS10EAC01AF014-001",
+      "CS10HLD01AC001-001",
+      "CS10HLD01AC002-001",
+      "CS10USD01BF001-001",
+      "CS10EAF01AE011-001",
+      "CS10HFC01AJ005-001",
+      "CS10HNC01AN001-001",
+      "CS10EAC01AF013-001",
+      "CS10EAC01AF007-001",
+      "CS10HFC01AJ002-001",
+      "CS10LAC03AP001-001",
+      "CS10SGA05AE001-001",
+      "CS10EAC01AF024-001",
+      "CS10HFC01AJ003-001",
+      "CS10SGA05AE002-001"
+    ],
+    "local_identity_texts_checked": 50,
+    "exact_assetnum_assetid_eq9_matches": [],
+    "additional_candidates_selected": 0,
+    "limitations": "Unit/general names/pattern fragments are not unique equipment identity. No new label-based pairing. No source requests for replacements."
+  },
+  "shared_context": [
+    {
+      "unit": "CS01",
+      "assets": 11153,
+      "registered": 837
+    }
+  ],
+  "candidates": [
+    {
+      "canonical_asset_id": "asset:MAXIMO:MXASSET:BSR:IP:CS10HFB01AF001-001",
+      "source_assetnum": "CS10HFB01AF001-001",
+      "classification": "INSUFFICIENT_EVIDENCE",
+      "exact_equipment_identifier_match": false,
+      "recommendation": "NEEDS MORE EVIDENCE",
+      "maximo_local_identity": {
+        "eq5": "821021003I",
+        "eq9": "BSR26/17095",
+        "eq11": "CS01",
+        "orgid": "IP",
+        "siteid": "BSR",
+        "assetid": 656454,
+        "assetnum": "CS10HFB01AF001-001",
+        "hierarchypath": "27"
+      },
+      "maximo_live_identity": {
+        "assetnum": "CS10HFB01AF001-001",
+        "assetid": 656454,
+        "siteid": "BSR",
+        "orgid": "IP",
+        "location": "CBBAY",
+        "parent": "CS10HFB01-001",
+        "ancestor": "CS-001",
+        "assettype": "PRODUCTION",
+        "plant": "TU",
+        "eq11": "CS01",
+        "eq5": "821021003I",
+        "eq9": "BSR26/19067",
+        "manufacturer": "BSR_SPERI"
+      },
+      "maximo_inline_specs": {
+        "count": 20,
+        "attribute_ids": [
+          "02",
+          "106",
+          "11",
+          "12",
+          "129",
+          "137",
+          "22",
+          "25",
+          "26",
+          "28",
+          "53",
+          "61",
+          "63",
+          "64",
+          "65",
+          "69",
+          "71",
+          "72",
+          "76",
+          "92"
+        ],
+        "identity_values_returned": false,
+        "limitations": "Bounded inline specification metadata; numeric attribute IDs lack governed meanings here. No complete specification/dictionary absence claim."
+      },
+      "af_element": {
+        "WebId": "F1EmNOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEE",
+        "Name": "BSR1.Coal Feeder A",
+        "Path": "\\\\piaf\\Indonesia Power Corporate\\BSR\\BSR1\\Boiler System\\BSR1.Coal Feeder\\BSR1.Coal Feeder A",
+        "Description": ""
+      },
+      "af_database": {
+        "WebId": "F1RDNOCpqPfunU-7w0-YUdQS0Q99202FF7lkibHr9gNLzHJAUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRF",
+        "Name": "Indonesia Power Corporate",
+        "Path": "\\\\piaf\\Indonesia Power Corporate",
+        "Description": "Production"
+      },
+      "af_server": {
+        "WebId": "F1RSNOCpqPfunU-7w0-YUdQS0QUElBRg",
+        "Name": "piaf",
+        "Path": "\\\\piaf",
+        "Description": ""
+      },
+      "direct_attribute_names": [
+        "Coal Feeder Status",
+        "Coal Flow",
+        "Eq Name",
+        "Equipment Name",
+        "KKS",
+        "Kode Equipment",
+        "Kode System",
+        "MPI",
+        "Unit",
+        "Unit Code"
+      ],
+      "direct_listing_has_next": false,
+      "identity_attributes": [
+        {
+          "metadata": {
+            "WebId": "F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewzj1qLrNKgVYOtG5QY5cm8QUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8RVEgTkFNRQ",
+            "Name": "Eq Name",
+            "Path": "\\\\piaf\\Indonesia Power Corporate\\BSR\\BSR1\\Boiler System\\BSR1.Coal Feeder\\BSR1.Coal Feeder A|Eq Name",
+            "Description": "",
+            "Type": "String",
+            "DefaultUnitsName": "",
+            "DataReferencePlugIn": "",
+            "IsConfigurationItem": false
+          },
+          "configstring_present": false,
+          "source_timestamp": "1970-01-01T00:00:00+00:00",
+          "type": "TEXT",
+          "good": true,
+          "questionable": false,
+          "substituted": false,
+          "annotated": false,
+          "identity_text": "Coal Feeder"
+        },
+        {
+          "metadata": {
+            "WebId": "F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiew2NFw_MKxx1MafmJOi1rHzwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8RVFVSVBNRU5UIE5BTUU",
+            "Name": "Equipment Name",
+            "Path": "\\\\piaf\\Indonesia Power Corporate\\BSR\\BSR1\\Boiler System\\BSR1.Coal Feeder\\BSR1.Coal Feeder A|Equipment Name",
+            "Description": "",
+            "Type": "String",
+            "DefaultUnitsName": "",
+            "DataReferencePlugIn": "String Builder",
+            "IsConfigurationItem": false
+          },
+          "configstring_present": true,
+          "source_timestamp": "1970-01-01T00:00:00+00:00",
+          "type": "TEXT",
+          "good": true,
+          "questionable": false,
+          "substituted": false,
+          "annotated": false,
+          "identity_text": "%Coal Feeder A%"
+        },
+        {
+          "metadata": {
+            "WebId": "F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewv4KEnCFmzVEI1xOX-2A4BwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8S09ERSBFUVVJUE1FTlQ",
+            "Name": "Kode Equipment",
+            "Path": "\\\\piaf\\Indonesia Power Corporate\\BSR\\BSR1\\Boiler System\\BSR1.Coal Feeder\\BSR1.Coal Feeder A|Kode Equipment",
+            "Description": "",
+            "Type": "String",
+            "DefaultUnitsName": "",
+            "DataReferencePlugIn": "Table Lookup",
+            "IsConfigurationItem": false
+          },
+          "configstring_present": true,
+          "source_timestamp": "1970-01-01T00:00:00+00:00",
+          "type": "TEXT",
+          "good": true,
+          "questionable": false,
+          "substituted": false,
+          "annotated": false,
+          "identity_text": "%AF%"
+        },
+        {
+          "metadata": {
+            "WebId": "F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewAbsr9RHRclAJ73KShX1rBQUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8S09ERSBTWVNURU0",
+            "Name": "Kode System",
+            "Path": "\\\\piaf\\Indonesia Power Corporate\\BSR\\BSR1\\Boiler System\\BSR1.Coal Feeder\\BSR1.Coal Feeder A|Kode System",
+            "Description": "",
+            "Type": "String",
+            "DefaultUnitsName": "",
+            "DataReferencePlugIn": "Table Lookup",
+            "IsConfigurationItem": false
+          },
+          "configstring_present": true,
+          "source_timestamp": "1970-01-01T00:00:00+00:00",
+          "type": "TEXT",
+          "good": true,
+          "questionable": false,
+          "substituted": false,
+          "annotated": false,
+          "identity_text": "%HFB%"
+        },
+        {
+          "metadata": {
+            "WebId": "F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewOLc9vPfcFlwDZwQadJVIEwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8VU5JVA",
+            "Name": "Unit",
+            "Path": "\\\\piaf\\Indonesia Power Corporate\\BSR\\BSR1\\Boiler System\\BSR1.Coal Feeder\\BSR1.Coal Feeder A|Unit",
+            "Description": "",
+            "Type": "String",
+            "DefaultUnitsName": "",
+            "DataReferencePlugIn": "String Builder",
+            "IsConfigurationItem": false
+          },
+          "configstring_present": true,
+          "source_timestamp": "1970-01-01T00:00:00+00:00",
+          "type": "TEXT",
+          "good": true,
+          "questionable": false,
+          "substituted": false,
+          "annotated": false,
+          "identity_text": "CS01"
+        },
+        {
+          "metadata": {
+            "WebId": "F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewEwy5OhjiBFwAzFi8C2UxFwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8VU5JVCBDT0RF",
+            "Name": "Unit Code",
+            "Path": "\\\\piaf\\Indonesia Power Corporate\\BSR\\BSR1\\Boiler System\\BSR1.Coal Feeder\\BSR1.Coal Feeder A|Unit Code",
+            "Description": "",
+            "Type": "String",
+            "DefaultUnitsName": "",
+            "DataReferencePlugIn": "Table Lookup",
+            "IsConfigurationItem": false
+          },
+          "configstring_present": true,
+          "source_timestamp": "1970-01-01T00:00:00+00:00",
+          "type": "TEXT",
+          "good": true,
+          "questionable": false,
+          "substituted": false,
+          "annotated": false,
+          "identity_text": "CS"
+        }
+      ],
+      "configuration_evidence": [
+        {
+          "name": "Eq Name",
+          "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewzj1qLrNKgVYOtG5QY5cm8QUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8RVEgTkFNRQ",
+          "data_reference": "",
+          "configuration": "",
+          "configuration_redacted": false,
+          "source_link_relation_names": [
+            "Attributes",
+            "Categories",
+            "Element",
+            "EndValue",
+            "InterpolatedData",
+            "PlotData",
+            "RecordedData",
+            "Self",
+            "SummaryData",
+            "Template",
+            "Value"
+          ]
+        },
+        {
+          "name": "Equipment Name",
+          "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiew2NFw_MKxx1MafmJOi1rHzwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8RVFVSVBNRU5UIE5BTUU",
+          "data_reference": "String Builder",
+          "configuration": "%;Right(\"%Element%\", 13);%;",
+          "configuration_redacted": false,
+          "source_link_relation_names": [
+            "Attributes",
+            "Categories",
+            "Element",
+            "EndValue",
+            "InterpolatedData",
+            "PlotData",
+            "RecordedData",
+            "Self",
+            "SummaryData",
+            "Template",
+            "Value"
+          ]
+        },
+        {
+          "name": "KKS",
+          "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewwQvAwGE4cVgyI8KGLmtVgAUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8S0tT",
+          "data_reference": "Table Lookup",
+          "configuration": "SELECT ASSETNUM FROM [BLT ASSET] WHERE DESCRIPTION LIKE @[Equipment Name] AND EQ11 = @Unit AND ASSETNUM LIKE @[Kode Equipment] AND ASSETNUM LIKE @[Kode System] ORDER BY ASSETNUM",
+          "configuration_redacted": false,
+          "source_link_relation_names": [
+            "Attributes",
+            "Categories",
+            "Element",
+            "EndValue",
+            "InterpolatedData",
+            "PlotData",
+            "RecordedData",
+            "Self",
+            "SummaryData",
+            "Template",
+            "Value"
+          ]
+        },
+        {
+          "name": "Kode Equipment",
+          "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewv4KEnCFmzVEI1xOX-2A4BwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8S09ERSBFUVVJUE1FTlQ",
+          "data_reference": "Table Lookup",
+          "configuration": "SELECT [Kode Equipment] FROM [KKS Table] WHERE [Equipment Name KKS] = @[Eq Name] ORDER BY Kode Equipment",
+          "configuration_redacted": false,
+          "source_link_relation_names": [
+            "Attributes",
+            "Categories",
+            "Element",
+            "EndValue",
+            "InterpolatedData",
+            "PlotData",
+            "RecordedData",
+            "Self",
+            "SummaryData",
+            "Template",
+            "Value"
+          ]
+        },
+        {
+          "name": "Kode System",
+          "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewAbsr9RHRclAJ73KShX1rBQUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8S09ERSBTWVNURU0",
+          "data_reference": "Table Lookup",
+          "configuration": "SELECT [Kode System] FROM [KKS Table] WHERE [Equipment Name KKS] = @[Eq Name] ORDER BY Kode System",
+          "configuration_redacted": false,
+          "source_link_relation_names": [
+            "Attributes",
+            "Categories",
+            "Element",
+            "EndValue",
+            "InterpolatedData",
+            "PlotData",
+            "RecordedData",
+            "Self",
+            "SummaryData",
+            "Template",
+            "Value"
+          ]
+        },
+        {
+          "name": "Unit",
+          "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewOLc9vPfcFlwDZwQadJVIEwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8VU5JVA",
+          "data_reference": "String Builder",
+          "configuration": "'Unit Code';'0';Right(\"%..\\..\\..\\Element%\", 1);",
+          "configuration_redacted": false,
+          "source_link_relation_names": [
+            "Attributes",
+            "Categories",
+            "Element",
+            "EndValue",
+            "InterpolatedData",
+            "PlotData",
+            "RecordedData",
+            "Self",
+            "SummaryData",
+            "Template",
+            "Value"
+          ]
+        },
+        {
+          "name": "Unit Code",
+          "web_id": "F1AbENOCpqPfunU-7w0-YUdQS0QB8IwncUU7hG40gBQVrgiewEwy5OhjiBFwAzFi8C2UxFwUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5DT0FMIEZFRURFUlxCU1IxLkNPQUwgRkVFREVSIEF8VU5JVCBDT0RF",
+          "data_reference": "Table Lookup",
+          "configuration": "SELECT [KODE UNIT] FROM [Table Unit] WHERE UNIT = '%..\\..\\..\\..\\Element%'",
+          "configuration_redacted": false,
+          "source_link_relation_names": [
+            "Attributes",
+            "Categories",
+            "Element",
+            "EndValue",
+            "InterpolatedData",
+            "PlotData",
+            "RecordedData",
+            "Self",
+            "SummaryData",
+            "Template",
+            "Value"
+          ]
+        }
+      ]
+    },
+    {
+      "canonical_asset_id": "asset:MAXIMO:MXASSET:BSR:IP:CS10HFC01AJ001-001",
+      "source_assetnum": "CS10HFC01AJ001-001",
+      "classification": "INSUFFICIENT_EVIDENCE",
+      "exact_equipment_identifier_match": false,
+      "recommendation": "NEEDS MORE EVIDENCE",
+      "maximo_local_identity": {
+        "eq5": "821021003I",
+        "eq9": "BSR26/17161",
+        "eq11": "CS01",
+        "orgid": "IP",
+        "siteid": "BSR",
+        "assetid": 656462,
+        "assetnum": "CS10HFC01AJ001-001",
+        "hierarchypath": "02"
+      },
+      "maximo_live_identity": {
+        "assetnum": "CS10HFC01AJ001-001",
+        "assetid": 656462,
+        "siteid": "BSR",
+        "orgid": "IP",
+        "location": "CBBAY",
+        "parent": "CS10HFC01-001",
+        "ancestor": "CS-001",
+        "assettype": "PRODUCTION",
+        "plant": "TU",
+        "eq11": "CS01",
+        "eq5": "821021003I",
+        "eq9": "BSR26/19033",
+        "manufacturer": "BSR_SHMP"
+      },
+      "maximo_inline_specs": {
+        "count": 14,
+        "attribute_ids": [
+          "106",
+          "129",
+          "137",
+          "22",
+          "25",
+          "26",
+          "48",
+          "61",
+          "63",
+          "64",
+          "65",
+          "69",
+          "72",
+          "92"
+        ],
+        "identity_values_returned": false,
+        "limitations": "Bounded inline specification metadata; numeric attribute IDs lack governed meanings here. No complete specification/dictionary absence claim."
+      },
+      "af_element": {
+        "WebId": "F1EmNOCpqPfunU-7w0-YUdQS0QLcIwncUU7hG40gBQVrgiewUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5QVUxWRVJJWkVSXEJTUjEuUFVMVkVSSVpFUiBB",
+        "Name": "BSR1.Pulverizer A",
+        "Path": "\\\\piaf\\Indonesia Power Corporate\\BSR\\BSR1\\Boiler System\\BSR1.Pulverizer\\BSR1.Pulverizer A",
+        "Description": ""
+      },
+      "af_database": {
+        "WebId": "F1RDNOCpqPfunU-7w0-YUdQS0Q99202FF7lkibHr9gNLzHJAUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRF",
+        "Name": "Indonesia Power Corporate",
+        "Path": "\\\\piaf\\Indonesia Power Corporate",
+        "Description": "Production"
+      },
+      "af_server": {
+        "WebId": "F1RSNOCpqPfunU-7w0-YUdQS0QUElBRg",
+        "Name": "piaf",
+        "Path": "\\\\piaf",
+        "Description": ""
+      },
+      "direct_attribute_names": [
+        "Differential Pressure",
+        "Gearbox Bearing Temperature",
+        "Motor Current",
+        "Motor Inboard Bearing Temperature",
+        "Motor Outboard Bearing Temperature",
+        "Motor Power",
+        "Outlet Temperature",
+        "PA Cold Damper Position",
+        "PA Flow",
+        "PA Flow Shutoff/Control Damper Position",
+        "PA Hot Damper Position",
+        "PA Inlet Temperature",
+        "Running Hour",
+        "Running Status"
+      ],
+      "direct_listing_has_next": false,
+      "identity_attributes": [],
+      "configuration_evidence": []
+    },
+    {
+      "canonical_asset_id": "asset:MAXIMO:MXASSET:BSR:IP:CS10HFC01AJ007-001",
+      "source_assetnum": "CS10HFC01AJ007-001",
+      "classification": "INSUFFICIENT_EVIDENCE",
+      "exact_equipment_identifier_match": false,
+      "recommendation": "NEEDS MORE EVIDENCE",
+      "maximo_local_identity": {
+        "eq5": "821021003I",
+        "eq9": "BSR26/17170",
+        "eq11": "CS01",
+        "orgid": "IP",
+        "siteid": "BSR",
+        "assetid": 656468,
+        "assetnum": "CS10HFC01AJ007-001",
+        "hierarchypath": "02"
+      },
+      "maximo_live_identity": {
+        "assetnum": "CS10HFC01AJ007-001",
+        "assetid": 656468,
+        "siteid": "BSR",
+        "orgid": "IP",
+        "location": "CBBAY",
+        "parent": "CS10HFC01-001",
+        "ancestor": "CS-001",
+        "assettype": "PRODUCTION",
+        "plant": "TU",
+        "eq11": "CS01",
+        "eq5": "821021003I",
+        "eq9": "BSR26/19033",
+        "manufacturer": "BSR_SHMP"
+      },
+      "maximo_inline_specs": {
+        "count": 14,
+        "attribute_ids": [
+          "106",
+          "129",
+          "137",
+          "22",
+          "25",
+          "26",
+          "48",
+          "61",
+          "63",
+          "64",
+          "65",
+          "69",
+          "72",
+          "92"
+        ],
+        "identity_values_returned": false,
+        "limitations": "Bounded inline specification metadata; numeric attribute IDs lack governed meanings here. No complete specification/dictionary absence claim."
+      },
+      "af_element": {
+        "WebId": "F1EmNOCpqPfunU-7w0-YUdQS0QP8IwncUU7hG40gBQVrgiewUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXEJPSUxFUiBTWVNURU1cQlNSMS5QVUxWRVJJWkVSXEJTUjEuUFVMVkVSSVpFUiBH",
+        "Name": "BSR1.Pulverizer G",
+        "Path": "\\\\piaf\\Indonesia Power Corporate\\BSR\\BSR1\\Boiler System\\BSR1.Pulverizer\\BSR1.Pulverizer G",
+        "Description": ""
+      },
+      "af_database": {
+        "WebId": "F1RDNOCpqPfunU-7w0-YUdQS0Q99202FF7lkibHr9gNLzHJAUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRF",
+        "Name": "Indonesia Power Corporate",
+        "Path": "\\\\piaf\\Indonesia Power Corporate",
+        "Description": "Production"
+      },
+      "af_server": {
+        "WebId": "F1RSNOCpqPfunU-7w0-YUdQS0QUElBRg",
+        "Name": "piaf",
+        "Path": "\\\\piaf",
+        "Description": ""
+      },
+      "direct_attribute_names": [
+        "Differential Pressure",
+        "Gearbox Bearing Temperature",
+        "Motor Current",
+        "Motor Inboard Bearing Temperature",
+        "Motor Outboard Bearing Temperature",
+        "Motor Power",
+        "Outlet Temperature",
+        "PA Cold Damper Position",
+        "PA Flow",
+        "PA Flow Shutoff/Control Damper Position",
+        "PA Hot Damper Position",
+        "PA Inlet Temperature",
+        "Running Hour",
+        "Running Status"
+      ],
+      "direct_listing_has_next": false,
+      "identity_attributes": [],
+      "configuration_evidence": []
+    }
+  ],
+  "frozen_bfpt": {
+    "candidate_asset": {
+      "canonical_id": "asset:MAXIMO:MXASSET:BSR:IP:CS10LAC02AP001-001",
+      "source_asset_number": "CS10LAC02AP001-001",
+      "site_code": "BSR",
+      "organization_code": "IP",
+      "description": "BOILER FEED PUMP TURBINE (BFPT) A",
+      "events_90d": 46
+    },
+    "classification": "REJECTED",
+    "recommendation": "DO NOT VERIFY",
+    "af_element": {
+      "WebId": "F1EmNOCpqPfunU-7w0-YUdQS0QUMIwncUU7hG40gBQVrgiewUElBRlxJTkRPTkVTSUEgUE9XRVIgQ09SUE9SQVRFXEJTUlxCU1IxXFRVUkJJTkUgU1lTVEVNXEJGUFRcQkZQVDFB",
+      "Name": "BFPT1A",
+      "Path": "\\\\piaf\\Indonesia Power Corporate\\BSR\\BSR1\\Turbine System\\BFPT\\BFPT1A",
+      "Description": ""
+    },
+    "contradiction": {
+      "static_identity_field": "KKS",
+      "static_identity_identifier": "CS10BJC31GH000-001",
+      "exact_maximo_match": "asset:MAXIMO:MXASSET:BSR:IP:CS10BJC31GH000-001",
+      "exact_match_description": "[E] STATION SERVICE MCC B",
+      "exact_match_registered": false
+    }
+  }
+}
