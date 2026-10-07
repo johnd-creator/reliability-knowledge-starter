@@ -1,5 +1,29 @@
 # 05 — Roadmap Implementasi dan Backlog
 
+## Current Phase-1 bundle candidate — 2026-10-08
+
+Main remains f8c37f0; this bundle includes unmerged PR #19 foundation211faec and
+B0–B4. [Phase-1 acceptance](../NADI-PHASE-1-ACCEPTANCE.md) is the current authority
+for software/runtime/data/human gaps. Older milestone snapshots below retain
+historical scope, not current missing-schema/open-PR assertions.
+
+- M1: PI/Mart runtime PR #15/#16 are MERGED/ACCEPTED. Condition migration004
+  and candidate API/collector/UI deployment are separate pending runtime work.
+- M3: condition/selected-signal/handoff/status contracts are synthetic-tested
+  candidates. Production mappings remain0/0; human crosswalk BLOCKED/EXTERNAL.
+- M4: explicit selected PI evidence projection and PostgreSQL acceptance work
+  with synthetic VERIFIED fixtures. Production PI projection is not performed;
+  CEMS projection remains future scope.
+- M6: integration status API/Data Trust/Asset panel and neutral freshness policy
+  are candidates; no public write/source proxy is added.
+- M8: read-only phase1-readiness evaluates nine product gates. Synthetic all-green
+  PASS and real-like/actual zero-mapping BLOCKED are tested. Wider platform restore,
+  soak/security/UAT acceptance is not claimed by this bounded bundle.
+
+Phase1 software readiness PASS (candidate scope); product acceptance BLOCKED.
+Do not mark Phase1 or all M0–M8 COMPLETE. Human identity, reviewed runtime, signal
+semantics/approval and live governed evidence acceptance remain separate gates.
+
 > Current roadmap entry point: [Power Plant Data Platform](../README.md).
 > Product priority: NADI Phase 0–5; this document owns the M0–M8 engineering backlog.
 

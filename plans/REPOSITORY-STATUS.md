@@ -1,6 +1,32 @@
 # Repository status and debt — PLATFORM-ROADMAP-001
 
-## Current NADI-ING-PI-001A checkpoint — 2026-10-07
+## Current overnight bundle checkpoint — 2026-10-08
+
+NADI-PHASE1-OVERNIGHT-BUNDLE-01 branches from exact unmerged PR #19 HEAD
+`211faec4b0916361491d3ca8bc01ada2f0072284`, with authoritative main unchanged at
+`f8c37f068102a06906cb3ca464fe08745e0351cf`. PR #19 remains OPEN/UNMERGED and its
+branch is untouched. The new bundle includes that foundation and supersedes
+PR #19 **only if the bundle is accepted**. Neither PR is automatically merged.
+
+[Authoritative Phase-1 acceptance](NADI-PHASE-1-ACCEPTANCE.md) distinguishes
+candidate software tests from operational deployment and human/data acceptance.
+B0 freshness wiring, B1 integration status/Data Trust, B2 synthetic PostgreSQL
+projection acceptance and B3 read-only Phase-1 preflight are implemented candidates.
+NADI-IDN-002 human crosswalk remains BLOCKED / EXTERNAL; verification PENDING.
+Production PROPOSED0 / VERIFIED0 remain unchanged; BFPT stays REJECTED / FROZEN.
+
+**PHASE 1 SOFTWARE READINESS: PASS (candidate, bounded bundle scope)**
+**PHASE 1 PRODUCT ACCEPTANCE: BLOCKED**
+External identity blocker: **HUMAN_CROSSWALK_REQUIRED**. It is not the only
+outstanding product prerequisite: reviewed runtime deployment, existing-Mart
+condition migration 004/reader grants, explicit freshness policy, approved pilot
+signals and real governed evidence acceptance are still required. No operational
+condition migration or projection was performed. Phase 1 remains CURRENT / PARTIAL.
+Next: senior bundle review; separately authorized runtime acceptance can proceed
+independently of human crosswalk. With controlled MATCH evidence, execute
+NADI-IDN-002B human verification/governed canary, then approved bounded projection.
+
+## Historical NADI-ING-PI-001A checkpoint — 2026-10-07
 
 PR #18 MERGED; baseline origin/main `f8c37f068102a06906cb3ca464fe08745e0351cf`.
 [NADI-ING-PI-001A](../reliability-cockpit/docs/nadi-ing-pi-001a.md) implementation
