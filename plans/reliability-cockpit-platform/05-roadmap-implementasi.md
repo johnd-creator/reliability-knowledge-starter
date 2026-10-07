@@ -115,7 +115,7 @@ Exit criteria:
 | MXR-001 | P0 | M | Tambah daemon/scheduler per operational/asset/master group |
 | MXR-002 | P0 | M | DB advisory lock/non-overlap dan graceful SIGTERM |
 | MXR-003 | P0 | M | Retry bounded, jitter, last attempt/success/duration/next run |
-| MXR-004 | P0 | M | Cursor boundary overlap + deterministic paging regression test — PARTIAL: bounded WO recency and tie/error regressions implemented; live scoped recent read verified. FIX-01 explicit retry-stable empty-cursor recovery implemented/tested; production bootstrap/deployment and moving-source pagination guarantee remain open. See [evidence](../../maximo-collector/docs/maximo-wo-recency-001.md). |
+| MXR-004 | P0 | M | Cursor boundary overlap + deterministic paging regression test — PARTIAL: bounded WO recency and tie/error regressions implemented; live scoped recent read verified. FIX-01 explicit retry-stable empty-cursor recovery implemented/tested; merged main deployed and production recovery/routine/Mart/NADI acceptance verified on 2026-10-07; moving-source deterministic paging and global concurrency guarantees remain open. Other Maximo groups remain parked under the WO-only acceptance profile. See [implementation](../../maximo-collector/docs/maximo-wo-recency-001.md) and [operational evidence](../../maximo-collector/docs/maximo-wo-recency-002.md). |
 | MXR-005 | P1 | S | Manual trigger memakai lock yang sama dan role/internal auth |
 
 ### PI
