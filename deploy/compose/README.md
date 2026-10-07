@@ -5,19 +5,18 @@ collector APIs. Canonical NADI routes use a SELECT-only Reliability Mart reader
 against the existing Maximo Collector DB. Cockpit has no production Maximo, PI
 or PLC credential.
 
-> Baseline warning: at audited main `ef07a26`, neither Compose mode supplies
-> `RELIABILITY_MART_DATABASE_URL` to `cockpit-api`. Canonical routes require that
-> separate existing-Mart connection and have no legacy DSN fallback. Runtime fix
-> `7149455` and managed feature changes `0c800da` remain UNMERGED; review their
-> overlap and external-mode regression before applying a later runtime PR.
-> See [Repository Status](../../plans/REPOSITORY-STATUS.md). This documentation
-> task does not change Compose or claim a clean checkout is fully wired.
+> NADI-PI-RUNTIME-001 proposes managed `cockpit-api` Mart DSN to the existing
+> Maximo DB, PI psycopg DSNs, and opt-in migration/worker profiles. Existing
+> deployment evidence is [here](../../pi-collector/docs/nadi-pi-runtime-001.md);
+> these candidate changes are not a clean-platform acceptance certificate.
+> [NADI-RUNTIME-002](../../plans/NADI-RUNTIME-002.md) owns missing actual Mart
+> governance schema, projection/init ordering, remaining driver debt and
+> external-mode Mart DSN. Historical `7149455` is not blindly cherry-picked.
 
-Reuse the existing deployment identity, DBs, volumes and env files. The commands
-below describe deliberately selected installations; switching modes creates a
-different project/volume and is not a routine restart. Check for existing source
-workers before any startup. Source authentication investigation for PI remains
-deferred at the user's request; this audit does not resume it.
+Reuse the existing project identity, stores, volumes and env files. Preserve
+all accepted ignored overrides. The commands below describe deliberately
+selected installations; never switch modes or run a broad startup to restart
+one existing service. Source credentials stay only in the source collector.
 
 ## Mode 1 — external collectors (default for an existing local deployment)
 
@@ -42,8 +41,15 @@ bases are configurable, but their Cockpit projections remain pending.
 
 Use this only when no existing worker polls the same source. `compose.yaml`
 starts isolated Maximo/CEMS Postgres and their collector workers/APIs plus the
-PI TimescaleDB, init, and API services. It does **not** define a `pi-worker`;
-managed mode must not be described as running PI collection. It requires the
+PI TimescaleDB, init, and API services. A single leased `pi-worker` is defined
+under the opt-in `pi-collection` profile; default startup does not acquire PI.
+`pi-maintenance` provides deliberate status/apply migrations after backup.
+Managed PI configuration comes only from `.env.platform`; the worker receives
+explicit source substitutions and never requires `pi-collector/.env` or a home
+dotenv. API receives only non-secret pause metadata; API/migrate/Cockpit remain
+source-credential-free. `PI_SNAPSHOT_INTERVAL_SECONDS` means post-cycle pause:
+508s observed acquisition + 300s pause is ~808s (~13.5m) start-to-start.
+See [PI operator runbook](../../pi-collector/docs/runtime-migrations.md). It requires the
 source-only environment names exactly as implemented:
 `CEMS_MODBUS_HOST`, `CEMS_MODBUS_PORT`, `PI_WEB_API_BASE_URL`, and one valid
 Maximo authentication mode (`login`, `token`, or `cookie`).
@@ -63,7 +69,9 @@ not put a production Maximo, PI, or PLC endpoint on a public Docker network.
 | Service | Responsibility |
 | --- | --- |
 | `maximo-worker` | scheduled GET-only delta sync; operational data is frequent, asset master data is slow |
-| `pi-api` | serves the existing PI collector store; `pi-init`/`pi-api` are present in managed Compose, but `pi-worker` is not |
+| `pi-api` | serves existing stored PI data without source credentials |
+| `pi-migrate` | opt-in maintenance: status by default, deliberate local DDL with `--apply` |
+| `pi-worker` | opt-in single leased snapshot owner; cycle plus 300s pause, no automatic history jobs |
 | `cems-worker` / `cems-aggregator` | FC03/FC04 polling and separate completed-window aggregation |
 | `cockpit-worker` | currently ingests Maximo collector resources and derives KPIs; PI/CEMS API bases are configurable, but their projections are pending |
 

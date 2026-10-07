@@ -4,7 +4,7 @@ NADI — **Navigasi Analitik Data dan Informasi**, Reliability / Engineering
 Intelligence Platform pembangkit. Implementasinya berada di
 `reliability-cockpit/`; shared collectors tetap menjadi kemampuan platform.
 Basis audit awal: `main ef07a26`, 7 Oktober 2026; FIX-01 direkonsiliasi dengan
-`main 52c67d4` setelah PR #13/#14 merged. [Repository Status](REPOSITORY-STATUS.md)
+`main 3e981a3` setelah PR #12/#13/#14 merged; runtime evidence ada pada NADI-PI-RUNTIME-001. [Repository Status](REPOSITORY-STATUS.md)
 memuat full SHA, merged PR dan pekerjaan di luar `main`.
 
 ## Product phases
@@ -56,6 +56,7 @@ recorded, not that all business semantics became verified.
 | Central PI topology + identity investigation | PR #7, `74e5dc3` | AF→PI Point and timestamp/quality/unit shapes verified in bounded samples; native Maximo→AF key not found in bounded probe |
 | Maximo WO recency | PR #13/#14, main `52c67d4` | Bounded floor recovery, automatic cursor, cheap scheduled reads, local Mart and registered BSR/IP NADI CURRENT; MXR-004 moving-source/global concurrency remains PARTIAL |
 | Governed Asset↔AF registry | PR #8, `1c24a78` | Existing Mart relation, explicit lifecycle, UNMAPPED/MAPPED/AMBIGUOUS resolution |
+| Governed PI source adapter | PR #12, `3e981a3` | MERGED; lineage/origin guards and typed quality evidence; governed pilot/projection remain pending |
 | Controlled mapping administration | PR #9, `883534c`; PR #10, `ef07a26` | Atomic PROPOSED import, human verify/retire, provenance; SQLite timestamp test correction merged |
 
 Source findings are detailed in the linked
@@ -66,11 +67,14 @@ never overwrite unknowns from labels or branch existence.
 
 ### Phase 1 — remaining acceptance
 
-- NADI-PI-001 governed PI source boundary is **IMPLEMENTED / MERGE-CANDIDATE**
-  on PR #12 / `codex/nadi-pi-001-governed-source-adapter`; originally based on
-  `main a8393ba`, now incorporating `main 52c67d4` via normal merge.
-  Review/merge and deliberate existing-store migration 004 remain pending. See
-  [offline implementation evidence](../pi-collector/docs/nadi-pi-001-implementation.md).
+- NADI-PI-001 governed PI source boundary is **MERGED** via PR #12 in
+  `main 3e981a3`. NADI-PI-RUNTIME-001 applied migration 004 to the existing PI
+  Timescale store, verified stored API and one technical source GET, and wired
+  one snapshot owner. Operator/Compose changes still require their runtime PR
+  review. [Runtime evidence](../pi-collector/docs/nadi-pi-runtime-001.md).
+- NADI-RUNTIME-002 must reconcile the accepted existing Mart schema/runtime:
+  `asset_af_mapping` is absent in the real Mart even though its model/migration
+  is merged. Never fabricate a governed target or silently create a new store.
 - Approve a bounded real/pilot Registered Asset ↔ AF mapping set. Code and
   synthetic tests do not establish that production mappings are populated.
 - Project PI measurement evidence into NADI with identity lineage, units,
@@ -130,46 +134,28 @@ not an already deployed knowledge engine.
 
 ## Next execution sequence
 
-### 1. NADI-PI-001 — Governed PI Source Adapter (implemented / merge-candidate)
+### 1. NADI-PI-001 MERGED; NADI-PI-RUNTIME-001 runtime checkpoint
 
-Offline integration originally started from verified `main a8393ba`, not the
-mixed feature branch. FIX-01 incorporates latest `main 52c67d4` without
-rewriting published history and corrects the quality-field migration to 004.
-Candidate `d23f848` was selectively adapted, with lineage, streaming limits and lossless source values strengthened; `0c800da` was not imported.
-No live source access, migration execution or NADI projection is claimed.
+PR #12 merged at `2026-10-07T10:27:39Z`, merge SHA `3e981a3`. The historical
+implementation/FIX-01 notes remain offline evidence for that scope, not current
+merge status. Runtime uses this exact PI main image, preserving Maximo/CEMS/NK
+and existing stores. Migration 004 and stored-data API acceptance were performed
+before the explicitly authorized one-GET technical source canary.
 
-Original acceptance scope retained for review: review `d23f848`
-as an implementation candidate: bounded verified AF target validation,
-same-origin link guards, typed values and richer PI quality fields.
-Integrate only the reviewed source-boundary scope, not NK/data/deployment
-changes from `0c800da`. Decide the compatible shared contract exposure and
-schema migration (quality-field migration is not proof it has run in production).
-Source credentials stay in PI Collector, not NADI.
-
-Acceptance for the technical PR:
-
-- explicit governed target from the existing registry boundary; reject
-  PROPOSED/RETIRED/UNMAPPED/AMBIGUOUS and never auto-select or fuzzy-match;
-- bounded operations, origin validation, rate/response caps and runtime-only
-  source config retained; no broad rediscovery or implicit history download;
-- normalized evidence preserves value type, units, timestamp and source quality;
-  digital/text/bool/null are not silently numeric zero;
-- hermetic contract and failure-path tests, compatibility/migration review,
-  clear ownership between collector source boundary and future orchestration;
-- identify what remains for NADI orchestration/projection. Do not claim live
-  NADI PI ingestion from a collector class alone.
-
-No source requests are necessary for the initial offline technical review.
-The previous HTTP 401 credential investigation remains deferred by the user;
-resume live pilot access only when explicitly requested.
+Technical registry collection remains distinct from governed NADI signals.
+No production VERIFIED target is established: the actual existing Mart lacks
+`asset_af_mapping`. **GOVERNED CANARY DEFERRED TO NADI-IDN-002**; prepare its
+runtime prerequisite via [NADI-RUNTIME-002](NADI-RUNTIME-002.md). No PI projection
+or Phase 1 completion is claimed. New minimal operator/worker wiring is in a
+separate open runtime PR, not automatically merged or broadly redeployed.
 
 ### 2. NADI-IDN-002 — pilot verified Asset ↔ AF mapping
 
 Use controlled dry-run/import → PROPOSED → human verification → VERIFIED.
 Bound the pilot population, approved evidence and units; test unmapped and
 ambiguous states. Do not import a whole AF hierarchy or seed plausible names.
-Address runtime fix `7149455` against current main/feature overlap in a separate
-runtime PR before executing the pilot.
+Complete NADI-RUNTIME-002 existing-Mart schema/runtime acceptance before executing
+the pilot; `7149455` is historical evidence only, never a blind cherry-pick.
 
 ### 3. NADI-ING-PI-001 — PI evidence projection
 

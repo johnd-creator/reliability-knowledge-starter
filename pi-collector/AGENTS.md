@@ -59,7 +59,10 @@ run (daemon) ───────────┤
 ## Commands
 
 ```bash
-picollector init-db              # create tables + hypertable
+picollector init-db              # create missing tables; does not alter existing columns
+picollector migrate              # local read-only migration status; no PI requests
+picollector migrate --apply      # deliberate existing-store upgrade after backup/preflight
+picollector worker --pause-seconds 300  # single leased snapshot owner
 picollector load-registry        # load verified attributes from pi-knowledge YAML
 picollector collect-snapshots    # fetch current values for all active attributes
 picollector backfill --start "*-7d" --end "*" --interval 1h
@@ -112,3 +115,28 @@ fix(client): handle PI digital state values
 ```
 
 Do not merge, reset, force-push, or rewrite history unless explicitly authorized.
+
+## Existing-store/runtime ownership
+
+Use the existing PI owner, never a new operational database. Follow
+[operator runbook](docs/runtime-migrations.md): private full backup, actual schema
+preflight, one acquisition owner, bounded local DDL, and stored-data API
+acceptance before source canaries. `pi_schema_migration` is audit state in the
+same store. Historical quality nulls remain null. Managed `worker` and `migrate`
+share a session lease; legacy manual/backfill/API commands do not participate.
+Disable competing schedulers first. Snapshot cadence is cycle duration plus
+300s pause; no history job is automatically enabled. Read
+[runtime evidence](docs/nadi-pi-runtime-001.md) for exact reviewed-image and
+operator-tooling provenance. Governed target validation remains separate from
+technical registry access; no legitimate verified target means defer the canary.
+
+
+Managed deployment configuration belongs only to `.env.platform`: explicit
+source environment goes to `pi-worker`, never API/migrate/Cockpit. Managed PI
+roles use `PI_CONFIG_MODE=managed` to skip collector/home dotenv files.
+Standalone local dotenv support remains. `PI_SNAPSHOT_INTERVAL_SECONDS` and
+legacy CLI `--interval-seconds` mean pause after completion; `--pause-seconds`
+is preferred. `/schedule` is an estimated next cycle start, not guaranteed data
+arrival or source freshness. Keep completed/failed/successful collection and
+individual source timestamp separate. Preserve accepted runtime evidence when
+correcting labels/configuration; no production migration or source rerun needed.

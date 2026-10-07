@@ -363,7 +363,8 @@ class CollectorStore:
 
         Powers the /schedule endpoint: a snapshot cycle takes minutes
         (rate-limited at 1 req/s), so the real daemon period is
-        duration + interval — not the bare interval.
+        duration + post-cycle pause. A completed run can include errors; this
+        timestamp is not a success or individual source-freshness certificate.
         """
         with self._db.session() as session:
             row = session.execute(

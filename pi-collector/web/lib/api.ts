@@ -58,7 +58,11 @@ export interface CollectResponse {
 }
 
 export interface ScheduleView {
-  interval_seconds: number;
+  interval_seconds: number; // legacy alias for post-cycle pause
+  pause_seconds?: number;
+  last_cycle_duration_seconds?: number | null;
+  effective_start_to_start_seconds?: number | null;
+  latest_collection_activity_at?: string | null;
   state: "running" | "scheduled" | "idle";
   last_run_at: string | null;
   next_run_at: string | null;

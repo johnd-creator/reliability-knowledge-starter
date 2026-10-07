@@ -100,7 +100,8 @@ services:
     restart: "no"
     command: ["picollector", "init-db"]
     environment:
-      DATABASE_URL: postgresql://pi_collector:${PI_DB_PASSWORD}@pi-db/pi_collector
+      PI_CONFIG_MODE: managed
+      DATABASE_URL: postgresql+psycopg://pi_collector:${PI_DB_PASSWORD}@pi-db/pi_collector
     depends_on:
       pi-db: {condition: service_healthy}
 
@@ -108,9 +109,50 @@ services:
     <<: *python-common
     build: ./pi-collector
     environment:
-      DATABASE_URL: postgresql://pi_collector:${PI_DB_PASSWORD}@pi-db/pi_collector
+      # Non-secret pause metadata only; no PI URL/auth config.
+      PI_SNAPSHOT_INTERVAL_SECONDS: ${PI_SNAPSHOT_INTERVAL_SECONDS:-300}
+      PI_CONFIG_MODE: managed
+      DATABASE_URL: postgresql+psycopg://pi_collector:${PI_DB_PASSWORD}@pi-db/pi_collector
     depends_on:
       pi-init: {condition: service_completed_successfully}
+
+  # Deliberate operator path: status by default; --apply only after backup.
+  pi-migrate:
+    <<: *python-common
+    profiles: [pi-maintenance]
+    build: ./pi-collector
+    restart: "no"
+    command: ["picollector", "migrate"]
+    environment:
+      PI_CONFIG_MODE: managed
+      DATABASE_URL: postgresql+psycopg://pi_collector:${PI_DB_PASSWORD}@pi-db/pi_collector
+    depends_on:
+      pi-db: {condition: service_healthy}
+
+  # Enable only after the one-attribute source canary succeeds and all external
+  # schedules are disabled. No registry reload/prune or history job on startup.
+  pi-worker:
+    <<: *python-common
+    profiles: [pi-collection]
+    build: ./pi-collector
+    restart: "no"
+    command: ["picollector", "worker", "--pause-seconds", "${PI_SNAPSHOT_INTERVAL_SECONDS:-300}"]
+    environment:
+      # Only source-boundary worker receives source settings from .env.platform.
+      PI_CONFIG_MODE: managed
+      PI_WEB_API_BASE_URL: ${PI_WEB_API_BASE_URL:-}
+      PI_USERNAME: ${PI_USERNAME:-}
+      PI_PASSWORD: ${PI_PASSWORD:-}
+      PI_TOKEN: ${PI_TOKEN:-}
+      PI_TIMEOUT_SECONDS: ${PI_TIMEOUT_SECONDS:-30}
+      PI_RATE_LIMIT_SECONDS: ${PI_RATE_LIMIT_SECONDS:-1.0}
+      PI_MAX_RESPONSE_BYTES: ${PI_MAX_RESPONSE_BYTES:-1048576}
+      PI_VERIFY_TLS: ${PI_VERIFY_TLS:-1}
+      # Compatibility name: post-cycle pause, never fixed-rate start cadence.
+      PI_SNAPSHOT_INTERVAL_SECONDS: ${PI_SNAPSHOT_INTERVAL_SECONDS:-300}
+      DATABASE_URL: postgresql+psycopg://pi_collector:${PI_DB_PASSWORD}@pi-db/pi_collector
+    depends_on:
+      pi-db: {condition: service_healthy}
 
   cems-init:
     <<: *python-common
@@ -177,6 +219,8 @@ services:
     <<: *python-common
     build: ./reliability-cockpit
     environment:
+      # Reliability Mart remains in the existing Maximo collector DB.
+      RELIABILITY_MART_DATABASE_URL: postgresql+psycopg://maximo_collector:${MAXIMO_DB_PASSWORD}@maximo-db/maximo_collector
       DATABASE_URL: postgresql://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
     depends_on:
       cockpit-init: {condition: service_completed_successfully}

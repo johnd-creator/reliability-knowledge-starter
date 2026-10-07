@@ -3,7 +3,26 @@
 Audit date: **2026-10-07**. This is the Git-backed repository snapshot, not a
 fresh production-runtime audit. Read [roadmap index](README.md) for priorities.
 
-## NADI-PI-001-FIX-01 reconciliation — 2026-10-07
+## Current NADI-PI-RUNTIME-001 checkpoint — 2026-10-07
+
+Latest verified baseline `origin/main`: `3e981a3c5e20e148feba5b01ec0b1c134ca89205`.
+PR #12 is **MERGED** at 10:27:39 UTC, after PR #13/#14. Its final pre-merge
+head was `10f9e4a`; old IMPLEMENTED/MERGE-CANDIDATE statements below are dated
+historical checkpoints. Phase 0 factual acceptance stays CURRENT; Phase 1 stays
+CURRENT / PARTIAL. See [PI runtime evidence](../pi-collector/docs/nadi-pi-runtime-001.md).
+
+Runtime control remains the original feature checkout `0c800da`, not the fresh
+`codex/nadi-pi-runtime-001` review branch. PI API/source code was built from exact
+merged `3e981a3`; private operator/lease modules are the runtime PR's new scope.
+Migration 004 is applied to the same existing PI DB. One known source GET passed
+and one snapshot owner is enabled; no governed NADI signal/projection is claimed.
+Actual Mart owner is existing Maximo DB; `asset_af_mapping` is absent there.
+[NADI-RUNTIME-002](NADI-RUNTIME-002.md) owns broader Mart runtime/governance schema
+reconciliation before the NADI-IDN-002 pilot. Managed Mart DSN and PI opt-in
+wiring corrections are proposed here; external-mode/full-platform acceptance is
+not certified. NK and the mixed historical feature commit remain outside scope.
+
+## Historical NADI-PI-001-FIX-01 reconciliation — 2026-10-07
 
 Latest fetched `origin/main`: `52c67d41115b324e57c93bf82264a38951a6c275`.
 PR #14 merged at 2026-10-07T10:09:16Z, after PR #13. Existing PR #12 previous
@@ -111,7 +130,7 @@ both boundaries explicit until a reviewed implementation changes them.
 
 | Debt | State | Recommended action |
 |---|---|---|
-| D01 Governed PI adapter | IMPLEMENTED / MERGE-CANDIDATE | NADI-PI-001 selectively adapts `d23f848` from `main a8393ba`, reconciled with `main 52c67d4` via FIX-01; PR #12 senior review/merge and deliberate migration 004 remain pending; no live projection |
+| D01 Governed PI adapter | MERGED / runtime checkpoint above | NADI-PI-001 selectively adapts `d23f848` from `main a8393ba`, reconciled with `main 52c67d4` via FIX-01; PR #12 merged, migration 004 applied by NADI-PI-RUNTIME-001; governed pilot/projection remain pending |
 | D02 Mixed platform/NK feature commit | UNMERGED / NEEDS_REVIEW | Split/review NK, deployment, documentation and data/model publication from `0c800da`; do not bulk merge for PI integration |
 | D03 Mart runtime DSN | UNMERGED / PARTIAL | Review `7149455`: main Compose lacks `RELIABILITY_MART_DATABASE_URL`; retain external-mode wiring, init dependency and regression intent after reconciling managed-mode overlap in `0c800da` |
 | D04 Home Asset Health access note | UNMERGED / HISTORICAL | Compare `94721eb` with merged MX-013A/B. It records TLS-blocked access, not verified Wellness/ACR/MPI; preserve useful network evidence later without reopening this audit's source access |

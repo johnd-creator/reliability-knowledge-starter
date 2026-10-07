@@ -1,6 +1,7 @@
 # Governed PI source boundary — NADI-PI-001
 
-Status: **IMPLEMENTED / MERGE-CANDIDATE**, offline. NADI projection, real mapping
+Status: **MERGED** via PR #12 (`main 3e981a3`), 2026-10-07.
+PI runtime checkpoint: [NADI-PI-RUNTIME-001](nadi-pi-runtime-001.md). NADI projection, real mapping
 population and live pilot remain pending. Source acquisition belongs to PI
 Collector; NADI must never own PI source credentials or source authentication.
 

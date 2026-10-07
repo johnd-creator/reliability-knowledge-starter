@@ -16,17 +16,18 @@ kemampuan `main`.
 | [NK Roadmap](NK-ROADMAP.md) | Mengapa NK ada, apa yang bekerja di branch, apa yang belum siap? |
 | [Repository Status](REPOSITORY-STATUS.md) | Baseline, PR, branch debt, dokumen stale, governance? |
 
-**Posisi NADI:** Phase 0 COMPLETE untuk release faktual; Phase 1 CURRENT /
-PARTIAL untuk ekspansi evidence. **NADI-PI-001:** IMPLEMENTED / MERGE-CANDIDATE di PR terpisah, belum merged.
-FIX-01 merekonsiliasi PR #12 dengan `main 52c67d4` setelah PR #14 merged.
-Maximo WO factual pipeline dan NADI registered BSR/IP **CURRENT** menurut
-[acceptance WO](../maximo-collector/docs/maximo-wo-recency-002.md); MXR-004 tetap
-**PARTIAL**. Status ini tidak menyelesaikan ekspansi evidence PI.
-**Next:** senior review/merge PR #12 → kesiapan runtime dan migrasi PI 004
-pada existing store → NADI-IDN-002 pilot mapping.
-PI evidence projection dan acceptance masih pending.
-Lihat [evidence implementasi offline](../pi-collector/docs/nadi-pi-001-implementation.md).
-NK tidak menggantikan prioritas NADI dan tidak memperluas domain Reliability.
+**Posisi NADI:** Phase 0 COMPLETE + CURRENT untuk scope faktual; Phase 1
+CURRENT / PARTIAL untuk ekspansi evidence. **NADI-PI-001: MERGED** via PR #12,
+`main 3e981a3`. Maximo WO acceptance PR #13/#14 tetap CURRENT dalam registered
+BSR/IP population; MXR-004 tetap PARTIAL.
+**NADI-PI-RUNTIME-001:** existing-store migration 004, stored API compatibility,
+live technical canary dan satu snapshot owner; operator/Compose changes berada
+pada PR runtime yang menunggu review. Lihat
+[PI runtime evidence](../pi-collector/docs/nadi-pi-runtime-001.md).
+**Next:** [NADI-RUNTIME-002](NADI-RUNTIME-002.md) untuk existing Mart governance
+schema/deployment, lalu NADI-IDN-002 pilot verified mapping. NADI-ING-PI-001,
+NADI-INTEGRATION-STATUS dan NADI-PHASE-1-ACCEPTANCE masih pending.
+NK tetap child roadmap; technical PI collection bukan governed Asset signal.
 
 ## Aturan status
 

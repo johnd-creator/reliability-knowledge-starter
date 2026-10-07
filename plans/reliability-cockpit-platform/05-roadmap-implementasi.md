@@ -20,7 +20,7 @@ sebagai test run baru pada audit dokumentasi ini.
 | Milestone | Status / kemajuan yang terbukti di main | Remaining / acceptance | Product relationship |
 |---|---|---|---|
 | M0 Architecture | PARTIAL: baseline/proposal/collector API boundary tersedia (`5f87013`, `87486cc`); factual NADI scope dan semantic trust matang lewat PR #1–#10 | ARCH-002 API-only harus dibaca dengan pengecualian Mart SELECT-only; DATA-002 cadence/SLO dan DATA-003 governed failure meaning belum diterima | Foundation untuk semua phase |
-| M1 Runtime | PARTIAL: backend/web Dockerfile, root Compose/dev override, empat DB volume, init/env/runbook tersedia | Main belum memasok Mart DSN dan managed PI worker; cold-start/restart/restore acceptance perlu review. `7149455` dan `0c800da` adalah kandidat UNMERGED, bukan DONE | Phase 0 runtime debt / Phase 1 readiness |
+| M1 Runtime | PARTIAL: backend/web Dockerfile, root Compose/dev override, empat DB volume, init/env/runbook tersedia | NADI-PI-RUNTIME-001 mengusulkan managed Mart DSN dan PI worker opt-in; existing PI migration/API/source checkpoint tersedia, Mart governance schema masih perlu NADI-RUNTIME-002; cold-start/restart/restore acceptance perlu review. `7149455` dan `0c800da` adalah kandidat UNMERGED, bukan DONE | Phase 0 runtime debt / Phase 1 readiness |
 | M2 Collectors | PARTIAL: Maximo cadence/run, PI snapshot/history CLI, CEMS collect/aggregation daemon dan source safety sudah menjadi artefak main | Global lease/non-overlap, benchmark tier/freshness, gap metrics, retention dan 24h multi-source acceptance belum terbukti lengkap | Shared foundation / Phase 1 evidence |
 | M3 Contracts & Identity | PARTIAL: canonical Contract v1 (`28a0d47`, `0213402`), Mart (`6ec2b22`, `9e6f2b5`), governed Asset↔AF registry/admin (PR #8–#10) merged | IDN pilot VERIFIED mappings belum dibuktikan; migration/read-only grants/runtime acceptance terpisah. Richer PI quality exposure/contracts serta CEMS/status/decision contracts perlu review | Phase 0 canonical foundation + Phase 1 identity; future domain contracts |
 | M4 Ingestion | PARTIAL: Maximo API→legacy Cockpit path, canonical Mart query (`7576214`), local Collector→Mart projection (`fa1bc05`) tersedia | ING-003/004/006/008 PI/CEMS projection, integration freshness/degraded/coverage dan acceptance belum diterima. Configurable API bases tidak membuktikan ingestion | Phase 1 current execution |
@@ -44,14 +44,15 @@ sebagai test run baru pada audit dokumentasi ini.
 - M8: PR #1 dan tag sudah ada; status release PR/tag pending pada snapshot lama
   tidak lagi berlaku. Operational sign-off/soak/restore tidak disimpulkan dari tag.
 
-**Current technical PR: NADI-PI-001 / PR #12**, IMPLEMENTED / MERGE-CANDIDATE;
-FIX-01 incorporates `main 52c67d4` and corrects PI migration sequencing to 004.
-Senior review/merge precedes deliberate existing-store migration and pilot.
-Scope tetap review/integrasi governed PI source boundary `d23f848` tanpa
-bulk merge NK/deployment `0c800da`. Lanjut pilot mapping → PI
-projection → integration trust → Phase 1 acceptance, sesuai NADI roadmap.
-Backlog detail dan exit criteria M0–M8 di atas tetap tersedia; dokumen ini tidak
-mengimplementasikan future workflow, scoring atau source integrations.
+**NADI-PI-001 / PR #12: MERGED** (`main 3e981a3`).
+**Current runtime checkpoint: NADI-PI-RUNTIME-001** — existing PI migration 004,
+API compatibility, bounded technical source canary and single snapshot owner.
+[Evidence](../../pi-collector/docs/nadi-pi-runtime-001.md) distinguishes reviewed
+PI main image from new operator/Compose changes awaiting PR review.
+[NADI-RUNTIME-002](../NADI-RUNTIME-002.md) reconciles actual Mart governance
+schema/deployment before NADI-IDN-002 pilot mapping; then NADI-ING-PI-001 →
+NADI-INTEGRATION-STATUS → NADI-PHASE-1-ACCEPTANCE. Phase 1 and full M0–M8
+acceptance remain PARTIAL. NK/deployment `0c800da` is not bulk-merged.
 
 ## Cara membaca roadmap
 

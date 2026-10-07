@@ -1,6 +1,10 @@
 # NADI-PI-001 — implementation and offline evidence
 
-**IMPLEMENTED / MERGE-CANDIDATE**, 2026-10-07. Not merged, deployed, or live
+**Current status: MERGED**, PR #12 at 2026-10-07T10:27:39Z, main `3e981a3`.
+Runtime/migration evidence is now [NADI-PI-RUNTIME-001](nadi-pi-runtime-001.md).
+The implementation and FIX-01 observations below are historical offline checkpoints.
+
+**Historical IMPLEMENTED / MERGE-CANDIDATE**, 2026-10-07. Not merged, deployed, or live
 validated. Phase 1 stays CURRENT / PARTIAL.
 
 Current branch reconciliation and validation are recorded in

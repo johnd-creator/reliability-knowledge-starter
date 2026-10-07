@@ -94,6 +94,57 @@ class ScheduleStateTest(unittest.TestCase):
         info = compute_schedule(None, NOW, interval_seconds=0)
         self.assertEqual(info.interval_seconds, 300)
 
+    def test_countdown_uses_completion_not_cycle_start(self):
+        completed=NOW-timedelta(seconds=100)
+        info=compute_schedule(completed,NOW,interval_seconds=300,last_cycle_duration_seconds=508.142)
+        self.assertEqual(info.next_run_at, completed+timedelta(seconds=300))
+        self.assertEqual(info.last_cycle_duration_seconds+info.interval_seconds,808.142)
+
+    def test_recent_finished_cycle_does_not_claim_still_running(self):
+        info=compute_schedule(NOW-timedelta(seconds=10),NOW,interval_seconds=300,
+                              latest_activity_at=NOW-timedelta(seconds=11),last_cycle_duration_seconds=508)
+        self.assertEqual(info.state,STATE_SCHEDULED)
+        self.assertEqual(info.next_run_at,NOW+timedelta(seconds=290))
+
+    def test_future_write_is_not_activity_evidence(self):
+        info=compute_schedule(None,NOW,latest_activity_at=NOW+timedelta(seconds=1))
+        self.assertEqual(info.state,STATE_IDLE)
+
+
+class ScheduleApiSemanticsTests(unittest.TestCase):
+    def test_additive_duration_pause_and_completion_metadata(self):
+        import asyncio
+        from unittest.mock import patch
+        from src.api.app import create_app,_store
+        from test_signal_persistence_api import request
+        completed=datetime.now(UTC)-timedelta(seconds=10)
+        class Store:
+            def last_snapshot_cycle(self):return completed,508.142
+            def latest_snapshot_activity(self):return completed-timedelta(seconds=1)
+        app=create_app();app.dependency_overrides[_store]=lambda:Store()
+        with patch.dict('os.environ',{'PI_SNAPSHOT_INTERVAL_SECONDS':'300'},clear=True):
+            status,body=asyncio.run(request(app,'/schedule'))
+        self.assertEqual(status,200)
+        self.assertEqual(body['interval_seconds'],300)
+        self.assertEqual(body['pause_seconds'],300)
+        self.assertAlmostEqual(body['effective_start_to_start_seconds'],808.142)
+        self.assertEqual(body['last_cycle_duration_seconds'],508.142)
+        self.assertEqual(datetime.fromisoformat(body['next_run_at']),completed+timedelta(seconds=300))
+        self.assertEqual(body['state'],'scheduled')
+
+    def test_no_duration_does_not_invent_effective_cadence(self):
+        import asyncio
+        from src.api.app import create_app,_store
+        from test_signal_persistence_api import request
+        class Store:
+            def last_snapshot_cycle(self):return None,None
+            def latest_snapshot_activity(self):return None
+        app=create_app();app.dependency_overrides[_store]=lambda:Store()
+        status,body=asyncio.run(request(app,'/schedule'))
+        self.assertEqual(status,200)
+        self.assertIsNone(body['effective_start_to_start_seconds'])
+        self.assertIsNone(body['next_run_at'])
+
 
 if __name__ == "__main__":
     unittest.main()

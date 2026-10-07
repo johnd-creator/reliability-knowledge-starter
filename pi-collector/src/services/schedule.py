@@ -1,15 +1,9 @@
-"""Snapshot schedule computation for the web countdown.
+"""Observed snapshot activity and estimated next cycle start, not source freshness.
 
-The snapshot collector runs on a repeating cycle (cron ``*/5`` or
-``picollector run --interval-seconds 300``). One cycle takes minutes — the
-client is rate-limited to 1 req/s across 433 attributes — so a daemon's real
-period is ``cycle_duration + interval``, not the bare interval. This module
-turns the last recorded run into an honest schedule state:
-
-* ``running``  — snapshots are being written right now (latest activity < 90s)
-* ``scheduled``— collector alive; next cycle expected at ``last_run_at + interval``
-* ``idle``     — collector has not reported for longer than one full period
-                 plus grace; the UI should show a red "not running" warning
+Daemon cadence is acquisition duration + post-cycle pause. `last_run_at` is
+completion time (including partial/error runs); `next_run_at` estimates a start
+at completion + pause. Recent writes are activity evidence, not a worker lease
+or a claim that source timestamps are current. External cron is not inferred.
 """
 
 from __future__ import annotations
@@ -55,9 +49,9 @@ def compute_schedule(
     Args:
         last_run_at: when the last snapshot cycle COMPLETED (cursor/run log).
         now: current time.
-        interval_seconds: configured cycle interval (seconds).
+        interval_seconds: compatibility name for post-cycle pause (seconds).
         last_cycle_duration_seconds: how long the last cycle took; sizes the
-            idle deadline honestly (daemon period = duration + interval).
+            idle deadline honestly (daemon period = duration + pause).
         latest_activity_at: most recent snapshot write time; within
             RUNNING_ACTIVITY_WINDOW_SECONDS it means a cycle is in progress.
     """
@@ -72,7 +66,8 @@ def compute_schedule(
     # --- running: fresh snapshot writes ---
     if (
         latest_activity_at is not None
-        and now_ts - latest_activity_at.timestamp() <= RUNNING_ACTIVITY_WINDOW_SECONDS
+        and 0 <= now_ts - latest_activity_at.timestamp() <= RUNNING_ACTIVITY_WINDOW_SECONDS
+        and (last_run_at is None or latest_activity_at > last_run_at)
     ):
         return ScheduleInfo(
             interval_seconds=interval_seconds,
@@ -96,7 +91,7 @@ def compute_schedule(
 
     last_ts = last_run_at.timestamp()
     # daemon: sleep(interval) starts when the cycle ENDS; cycle N+1 starts at
-    # last_ts + interval. (Cron */5 fires at least this often too.)
+    # last_ts + pause. This estimates acquisition START, not fresh data arrival.
     next_ts = last_ts + interval_seconds
 
     # idle deadline: one full period (duration + interval) + grace. Without a
