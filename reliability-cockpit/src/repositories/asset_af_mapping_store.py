@@ -15,7 +15,7 @@ from sqlalchemy import create_engine, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, sessionmaker
 
-from src.config import MartDbConfig
+import os
 from src.domain.asset_af_mapping import (
     MAPPING_EVIDENCE_METHODS,
     MAPPING_ROLES,
@@ -58,10 +58,17 @@ class AssetAfMappingCommandStore:
     def from_environment(cls) -> "AssetAfMappingCommandStore":
         """Build the write-only mapping command boundary from the Mart DSN."""
 
-        config = MartDbConfig.from_environment()
-        if not config.dsn:
-            raise MappingValidationError("RELIABILITY_MART_DATABASE_URL is not configured")
-        return cls(create_engine(config.dsn, echo=config.echo, pool_pre_ping=True))
+        dsn = os.getenv("RELIABILITY_MART_ADMIN_DATABASE_URL")
+        if not dsn:
+            raise MappingValidationError("RELIABILITY_MART_ADMIN_DATABASE_URL is required; no reader/legacy fallback")
+        from src.services.mart_migrations import run_migrations, _expected_database
+        engine = create_engine(dsn, echo=False, pool_pre_ping=True)
+        try:
+            run_migrations(engine, expected_database=_expected_database(), require_ready=True)
+            return cls(engine)
+        except Exception:
+            engine.dispose()
+            raise
 
     def close(self) -> None:
         """Release the command store engine owned by a CLI invocation."""

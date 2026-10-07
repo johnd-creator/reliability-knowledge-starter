@@ -48,6 +48,33 @@ def cmd_init_db(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_mart_migrate(args: argparse.Namespace) -> int:
+    from src.services.mart_migrations import environment_migrations, MartMigrationError
+    try:
+        print(json.dumps(environment_migrations(apply=args.apply, require_ready=args.require_ready), sort_keys=True))
+        return 0
+    except MartMigrationError as error:
+        print(str(error), file=sys.stderr)
+        return 2
+
+
+def cmd_mart_reader(args: argparse.Namespace) -> int:
+    import os
+    from src.services.mart_migrations import admin_engine, reader_role, _expected_database, MartMigrationError
+    engine = None
+    try:
+        engine = admin_engine()
+        print(json.dumps(reader_role(engine, expected_database=_expected_database(), apply=args.apply,
+                                    password=os.getenv("RELIABILITY_MART_READER_PASSWORD")), sort_keys=True))
+        return 0
+    except MartMigrationError as error:
+        print(str(error), file=sys.stderr)
+        return 2
+    finally:
+        if engine is not None:
+            engine.dispose()
+
+
 def cmd_sync(args: argparse.Namespace) -> int:
     from src.adapters.collector_client import CollectorClient
 
@@ -184,6 +211,14 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     sub = parser.add_subparsers(dest="command", required=True)
 
     sub.add_parser("init-db", help="create cockpit local tables")
+
+    migrate = sub.add_parser("mart-migrate", help="read-only governance status; explicit --apply in existing Mart only")
+    migrate.add_argument("--apply", action="store_true")
+    migrate.add_argument("--require-ready", action="store_true", help="fail if canonical governance is pending")
+    migrate.set_defaults(func=cmd_mart_migrate)
+    reader = sub.add_parser("mart-reader", help="inspect named SELECT-only role; deliberate --apply grants")
+    reader.add_argument("--apply", action="store_true")
+    reader.set_defaults(func=cmd_mart_reader)
 
     sync = sub.add_parser("sync", help="delta-sync verified Maximo objects")
     sync.add_argument("objects", nargs="*", help="object structure(s) or resource name(s); default all")

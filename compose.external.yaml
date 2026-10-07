@@ -22,7 +22,8 @@ services:
     restart: "no"
     command: ["cockpit", "init-db"]
     environment:
-      DATABASE_URL: postgresql://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
+      COCKPIT_CONFIG_MODE: managed
+      DATABASE_URL: postgresql+psycopg://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
     depends_on:
       cockpit-db: {condition: service_healthy}
     networks: [platform]
@@ -32,7 +33,8 @@ services:
     restart: unless-stopped
     command: ["cockpit", "run", "--interval-seconds", "${COCKPIT_SYNC_INTERVAL_SECONDS:-300}"]
     environment:
-      DATABASE_URL: postgresql://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
+      COCKPIT_CONFIG_MODE: managed
+      DATABASE_URL: postgresql+psycopg://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
       MAXIMO_COLLECTOR_API_BASE: ${MAXIMO_COLLECTOR_API_BASE:-http://host.docker.internal:8002}
       PI_COLLECTOR_API_BASE: ${PI_COLLECTOR_API_BASE:-http://host.docker.internal:8001}
       CEMS_COLLECTOR_API_BASE: ${CEMS_COLLECTOR_API_BASE:-http://host.docker.internal:8003}
@@ -46,7 +48,11 @@ services:
     build: ./reliability-cockpit
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgresql://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
+      COCKPIT_CONFIG_MODE: managed
+      RELIABILITY_MART_DATABASE_URL: ${RELIABILITY_MART_DATABASE_URL:?set SELECT-only external existing Mart DSN}
+      DATABASE_URL: postgresql+psycopg://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       cockpit-init: {condition: service_completed_successfully}
     networks: [platform]

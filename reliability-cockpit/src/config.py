@@ -25,6 +25,8 @@ def _load_dotenv(path: Path) -> None:
 
 def load_env() -> None:
     """Load .env from the repo root and from the user home, if present."""
+    if os.getenv("COCKPIT_CONFIG_MODE") == "managed":
+        return
     _load_dotenv(Path(__file__).resolve().parent.parent / ".env")
     _load_dotenv(Path.home() / ".reliability-cockpit.env")
 
