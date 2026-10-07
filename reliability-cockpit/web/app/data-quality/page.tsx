@@ -1,5 +1,6 @@
 "use client";
 
+import IntegrationStatusPanel from "@/components/IntegrationStatusPanel";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { reliabilityApi, type DataTrustView, type EvidenceClass } from "../../lib/api";
@@ -36,6 +37,7 @@ export default function DataQualityPage() {
   return <>
     <PageHeader eyebrow="NADI / Trust & governance" title="Data Trust Center" description="Melihat cakupan data, kematangan populasi, integritas relasi, dan batas interpretasi yang digunakan NADI." actions={<span className="scope-chip">BSR / IP · MAXIMO</span>} />
     <div className="scope-banner trust-strip"><DataMaturity state="FACTUAL EVIDENCE" detail="Trust dimensions are shown separately." /><DataMaturity state="MIXED DATA MATURITY" /><DataMaturity state="NO TRUST SCORE" /><span className="muted-label">Latest record evidence is not sync freshness</span></div>
+    <IntegrationStatusPanel />
     {loading && <LoadingState label="Reading NADI Data Trust evidence…" />}
     {!loading && error && <ErrorState message={error} />}
     {!loading && !error && data && <>

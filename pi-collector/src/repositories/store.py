@@ -519,3 +519,36 @@ class CollectorStore:
         with self._db.session() as session:
             row = session.get(orm.CollectCursorOrm, scope)
             return row.last_collected_at if row else None
+
+    def integration_observation(self) -> dict:
+        """Local technical inventory/activity metadata; no process values or PI calls."""
+        with self._db.session() as session:
+            active = orm.AttributeRegistryOrm.is_active.is_(True)
+            registry_total = session.scalar(select(func.count()).select_from(orm.AttributeRegistryOrm))
+            registry_active = session.scalar(select(func.count()).select_from(orm.AttributeRegistryOrm).where(active))
+            snapshot_query = select(orm.SnapshotOrm).join(orm.AttributeRegistryOrm,
+                orm.SnapshotOrm.attribute_id == orm.AttributeRegistryOrm.attribute_id).where(active)
+            snapshots = snapshot_query.subquery()
+            count = session.scalar(select(func.count()).select_from(snapshots))
+            oldest = session.scalar(select(func.min(snapshots.c.source_timestamp)))
+            unknown_time = session.scalar(select(func.count()).select_from(snapshots).where(snapshots.c.source_timestamp.is_(None)))
+            bad = session.scalar(select(func.count()).select_from(snapshots).where(
+                snapshots.c.value_good.is_(False) | snapshots.c.value_questionable.is_(True)))
+            unknown_quality = session.scalar(select(func.count()).select_from(snapshots).where(
+                snapshots.c.value_good.is_(None), snapshots.c.value_questionable.is_not(True)))
+            completed = session.scalar(select(orm.CollectRunOrm).where(orm.CollectRunOrm.scope == "snapshot",
+                orm.CollectRunOrm.finished_at.is_not(None)).order_by(orm.CollectRunOrm.finished_at.desc()).limit(1))
+            success = session.scalar(select(orm.CollectRunOrm.finished_at).where(orm.CollectRunOrm.scope == "snapshot",
+                orm.CollectRunOrm.finished_at.is_not(None), orm.CollectRunOrm.aborted.is_(False),
+                orm.CollectRunOrm.errors == 0, orm.CollectRunOrm.attributes_seen > 0,
+                orm.CollectRunOrm.rows_collected == orm.CollectRunOrm.attributes_seen).order_by(orm.CollectRunOrm.finished_at.desc()).limit(1))
+            def iso(dt):
+                if dt is None: return None
+                if dt.tzinfo is None: dt = dt.replace(tzinfo=timezone.utc)
+                return dt.isoformat()
+            return {"availability":"AVAILABLE", "registry_total":registry_total, "registry_active":registry_active,
+                "snapshots":count, "last_successful_activity":iso(success),
+                "latest_completed_at":iso(completed.finished_at) if completed else None,
+                "errors":(completed.errors + int(completed.aborted)) if completed else None,
+                "oldest_source_timestamp":iso(oldest), "unknown_source_timestamps":unknown_time,
+                "bad_quality_signals":bad, "unknown_quality_signals":unknown_quality}

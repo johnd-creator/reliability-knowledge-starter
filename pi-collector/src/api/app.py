@@ -317,6 +317,11 @@ def create_app() -> FastAPI:
         except Exception as error:
             return CollectResponse(status="error", message=str(error))
 
+    @app.get("/integration-observation", tags=["system"])
+    def integration_observation(store: CollectorStore = Depends(_store)) -> dict:
+        """Aggregate stored evidence only; never triggers source acquisition."""
+        return store.integration_observation()
+
     @app.get("/schedule", response_model=ScheduleView, tags=["system"])
     def schedule(store: CollectorStore = Depends(_store)) -> ScheduleView:
         """Observed activity and estimated next cycle START, not source freshness.

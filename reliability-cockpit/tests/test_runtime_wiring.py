@@ -112,6 +112,8 @@ class ComposeRuntimeTest(unittest.TestCase):
         for mode in ("compose.yaml", "compose.external.yaml"):
             services = self.config(mode, policy=values)
             api_env = services["cockpit-api"]["environment"]
+            self.assertIn("MAXIMO_COLLECTOR_API_BASE", api_env)
+            self.assertIn("PI_COLLECTOR_API_BASE", api_env)
             self.assertEqual({k:api_env[k] for k in values}, values)
             with patch.dict(os.environ, api_env, clear=True):
                 self.assertEqual(FreshnessPolicy.from_environment().source_max_age_seconds, 62)

@@ -1,0 +1,388 @@
+{
+  "$defs": {
+    "Availability": {
+      "enum": [
+        "AVAILABLE",
+        "UNAVAILABLE",
+        "UNKNOWN",
+        "NOT_CONFIGURED"
+      ],
+      "title": "Availability",
+      "type": "string"
+    },
+    "Component": {
+      "enum": [
+        "MAXIMO",
+        "PI_COLLECTOR",
+        "RELIABILITY_MART",
+        "ASSET_AF_MAPPING",
+        "PI_CONDITION_PROJECTION"
+      ],
+      "title": "Component",
+      "type": "string"
+    },
+    "CoverageSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "registered_assets": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Registered Assets"
+        },
+        "verified_mapping_assets": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Verified Mapping Assets"
+        },
+        "ambiguous_mapping_assets": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ambiguous Mapping Assets"
+        },
+        "approved_signal_assets": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Approved Signal Assets"
+        },
+        "projected_assets": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Projected Assets"
+        },
+        "approved_signals": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Approved Signals"
+        },
+        "projected_signals": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Projected Signals"
+        },
+        "technical_registry_total": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Technical Registry Total"
+        },
+        "technical_registry_active": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Technical Registry Active"
+        },
+        "technical_snapshots": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Technical Snapshots"
+        }
+      },
+      "title": "CoverageSummary",
+      "type": "object"
+    },
+    "DegradedReason": {
+      "enum": [
+        "HUMAN_CROSSWALK_REQUIRED",
+        "AMBIGUOUS_MAPPING",
+        "PARTIAL_MAPPING_COVERAGE",
+        "COLLECTOR_UNAVAILABLE",
+        "COLLECTOR_OBSERVATION_UNAVAILABLE",
+        "COLLECTOR_ERRORS",
+        "CURSOR_MISSING",
+        "NO_SUCCESSFUL_ACTIVITY",
+        "MART_UNAVAILABLE",
+        "MART_NOT_CONFIGURED",
+        "GOVERNANCE_SCHEMA_NOT_READY",
+        "CONDITION_SCHEMA_NOT_READY",
+        "NO_APPROVED_SIGNALS",
+        "NO_PROJECTED_EVIDENCE",
+        "PARTIAL_SIGNAL_SET",
+        "SOURCE_UNAVAILABLE",
+        "SOURCE_STALE",
+        "COLLECTION_STALE",
+        "PROJECTION_STALE",
+        "PROJECTION_ERROR",
+        "BAD_QUALITY",
+        "UNKNOWN_QUALITY",
+        "UNKNOWN_FRESHNESS_POLICY",
+        "UNKNOWN_TIMESTAMP"
+      ],
+      "title": "DegradedReason",
+      "type": "string"
+    },
+    "FreshnessDimension": {
+      "additionalProperties": false,
+      "properties": {
+        "state": {
+          "$ref": "#/$defs/TrustState",
+          "default": "UNKNOWN"
+        },
+        "observed_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed At"
+        },
+        "max_age_seconds": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Age Seconds"
+        }
+      },
+      "title": "FreshnessDimension",
+      "type": "object"
+    },
+    "IntegrationComponentStatus": {
+      "additionalProperties": false,
+      "properties": {
+        "component": {
+          "$ref": "#/$defs/Component"
+        },
+        "state": {
+          "$ref": "#/$defs/TrustState"
+        },
+        "availability": {
+          "$ref": "#/$defs/Availability"
+        },
+        "collection_freshness": {
+          "$ref": "#/$defs/FreshnessDimension"
+        },
+        "source_freshness": {
+          "$ref": "#/$defs/FreshnessDimension"
+        },
+        "projection_freshness": {
+          "$ref": "#/$defs/FreshnessDimension"
+        },
+        "mapping_readiness": {
+          "$ref": "#/$defs/MappingReadiness",
+          "default": "UNKNOWN"
+        },
+        "quality": {
+          "$ref": "#/$defs/Quality",
+          "default": "UNKNOWN"
+        },
+        "last_successful_activity": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Last Successful Activity"
+        },
+        "degraded_reasons": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/DegradedReason"
+          },
+          "title": "Degraded Reasons",
+          "type": "array"
+        }
+      },
+      "required": [
+        "component",
+        "state",
+        "availability"
+      ],
+      "title": "IntegrationComponentStatus",
+      "type": "object"
+    },
+    "MappingReadiness": {
+      "enum": [
+        "VERIFIED",
+        "UNMAPPED",
+        "AMBIGUOUS",
+        "PARTIAL",
+        "UNKNOWN"
+      ],
+      "title": "MappingReadiness",
+      "type": "string"
+    },
+    "Quality": {
+      "enum": [
+        "GOOD",
+        "BAD",
+        "PARTIAL",
+        "UNKNOWN"
+      ],
+      "title": "Quality",
+      "type": "string"
+    },
+    "TrustState": {
+      "enum": [
+        "CURRENT",
+        "STALE",
+        "UNKNOWN",
+        "BLOCKED",
+        "DEGRADED",
+        "NOT_CONFIGURED"
+      ],
+      "title": "TrustState",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "default": "1.0",
+      "title": "Contract Version",
+      "type": "string"
+    },
+    "observed_at": {
+      "format": "date-time",
+      "title": "Observed At",
+      "type": "string"
+    },
+    "canonical_asset_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Canonical Asset Id"
+    },
+    "governance_schema_ready": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Governance Schema Ready"
+    },
+    "condition_schema_ready": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Condition Schema Ready"
+    },
+    "coverage": {
+      "$ref": "#/$defs/CoverageSummary"
+    },
+    "components": {
+      "items": {
+        "$ref": "#/$defs/IntegrationComponentStatus"
+      },
+      "title": "Components",
+      "type": "array"
+    }
+  },
+  "required": [
+    "observed_at",
+    "components"
+  ],
+  "title": "IntegrationStatus",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.reliability.local/integration-status.schema.json"
+}
