@@ -6,14 +6,22 @@ from __future__ import annotations
 
 import math
 from datetime import datetime, timezone
-from typing import Literal
+from typing import Literal, get_args
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, ValidationInfo, field_validator, model_validator
 
 MAX_SIGNALS = 5
 
 class EvidenceModel(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
+
+    @field_validator("*", mode="before")
+    @classmethod
+    def timestamp_representation(cls, value, info: ValidationInfo):
+        annotation = cls.model_fields[info.field_name].annotation
+        if (annotation is datetime or datetime in get_args(annotation)) and value is not None and not isinstance(value, (str, datetime)):
+            raise ValueError("timestamps require ISO-8601 strings or aware datetime objects")
+        return value
 
     @field_validator("*", mode="after")
     @classmethod

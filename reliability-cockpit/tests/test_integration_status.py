@@ -33,7 +33,7 @@ class IntegrationStatusTest(unittest.TestCase):
             c.exec_driver_sql("CREATE TABLE IF NOT EXISTS mart_projection_state (projection_key text PRIMARY KEY,last_status text,last_success_at text)")
             c.exec_driver_sql("DELETE FROM mart_projection_state")
             for key in ("asset_master","maintenance_event"):
-                c.execute(text("INSERT INTO mart_projection_state VALUES (:key,'SUCCEEDED',:time)"),{"key":key,"time":NOW.isoformat()})
+                c.execute(text("INSERT INTO mart_projection_state (projection_key,last_status,last_success_at) VALUES (:key,'SUCCEEDED',:time)"),{"key":key,"time":NOW.isoformat()})
         return IntegrationStatusService(self.reader(),observations=observations,
             policy=FreshnessPolicy(collector_max_age_seconds=60,source_max_age_seconds=60,projection_max_age_seconds=60) if policy else FreshnessPolicy(),clock=lambda:now)
 
