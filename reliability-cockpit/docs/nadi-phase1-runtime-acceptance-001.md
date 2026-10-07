@@ -48,7 +48,9 @@ Accepted invocation, in order, retains these files in the control checkout:
 Private .env.platform remains the managed configuration authority, permissions
 0600, content unchanged. Existing accepted overrides are byte-for-byte unchanged.
 Controlled migration uses a separate0600 operator admin env, never the public API.
-Effective Compose was evaluated internally and saved privately; only environment
+Effective Compose was evaluated internally; retained audit configuration is
+redacted. Temporary interpolated working config and operator credential copy
+were removed after use; original private authority remains unchanged. Only environment
 **names**, sanitized DB identities and non-secret policy values were reported.
 Comparison proves only pi-api/cockpit-api/cockpit-web definitions change;
 all other services, volume/network definitions and source-worker commands match.
@@ -247,6 +249,9 @@ docker build --label org.opencontainers.image.revision=c2fb0fc686396e79c19f42af4
 rm "$SOURCE/reliability-cockpit/web/.env.production"
 
 # Existing platform network, local writer env; default status is read-only.
+# This0600 task-only env was prepared from existing authorized operator config
+# for the recorded commands and deleted afterwards; prepare it privately before
+# repeating, never put owner credentials in API/evidence exports.
 docker run --rm --network reliability-cockpit-platform_platform \
  --env-file "$RUNTIME/secrets/nadi-phase1-runtime-acceptance-001/mart-admin.env" \
  reliability-cockpit-platform-phase1-cockpit-api:c2fb0fc cockpit mart-migrate
