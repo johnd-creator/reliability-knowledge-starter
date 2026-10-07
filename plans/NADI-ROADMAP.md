@@ -65,6 +65,17 @@ New discovery has not been projected into every canonical contract or product
 view. Update those boundaries through separate reviewed technical changes;
 never overwrite unknowns from labels or branch existence.
 
+### Current runtime prerequisite checkpoint — 2026-10-07
+
+NADI-PI-001 ✅ MERGED; NADI-PI-RUNTIME-001 ✅ ACCEPTED (PR #15 MERGED,
+main `c052d7d`). NADI-RUNTIME-002 **current / candidate**, runtime scope PASS:
+canonical governance deployed in existing Mart, mapping table empty, dedicated
+SELECT-only reader and explicit managed/external wiring. [Evidence](../reliability-cockpit/docs/nadi-runtime-002.md).
+NADI-IDN-002 **next / READY** for its bounded human-verified pilot; no mapping
+or PI projection executed here. Phase 1 remains CURRENT / PARTIAL.
+The older execution rationale below describes historical prerequisites and is
+superseded by this checkpoint where it says governance is absent or PR #15 open.
+
 ### Phase 1 — remaining acceptance
 
 - NADI-PI-001 governed PI source boundary is **MERGED** via PR #12 in

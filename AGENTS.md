@@ -4,6 +4,18 @@ Read [plans/README.md](plans/README.md) first, then the scoped `AGENTS.md` and
 `CONTEXT.md` for any component you touch. Root rules govern platform ownership;
 scoped rules govern source safety, normalization and implementation details.
 
+## Existing Mart runtime checkpoint
+
+NADI-RUNTIME-002 uses the existing Maximo Collector DB for Mart, never a new DB.
+Public NADI `RELIABILITY_MART_DATABASE_URL` is SELECT-only; legacy `DATABASE_URL`
+is separate. Controlled schema/mapping commands require explicit
+`RELIABILITY_MART_ADMIN_DATABASE_URL` and expected owner DB, no fallback.
+Read [Mart runtime runbook](reliability-cockpit/docs/mart-runtime.md) before DDL
+or Compose operations; preserve accepted ignored Maximo/PI overrides, cursors,
+recovery floor, volumes and other services. Governance is deliberately applied,
+not legacy init-db or automatic source collection. No real pilot mapping is
+created by runtime reconciliation; Phase 1 remains CURRENT/PARTIAL.
+
 ## 1. Identity, priorities and source of truth
 
 This is one Git monorepo for **Power Plant Data Platform**, evolved from
