@@ -23,9 +23,6 @@ services:
     command: ["cockpit", "init-db"]
     environment:
       COCKPIT_CONFIG_MODE: managed
-      NADI_COLLECTOR_MAX_AGE_SECONDS: ${NADI_COLLECTOR_MAX_AGE_SECONDS:-}
-      NADI_SOURCE_MAX_AGE_SECONDS: ${NADI_SOURCE_MAX_AGE_SECONDS:-}
-      NADI_PROJECTION_MAX_AGE_SECONDS: ${NADI_PROJECTION_MAX_AGE_SECONDS:-}
       DATABASE_URL: postgresql+psycopg://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
     depends_on:
       cockpit-db: {condition: service_healthy}
@@ -52,6 +49,9 @@ services:
     restart: unless-stopped
     environment:
       COCKPIT_CONFIG_MODE: managed
+      NADI_COLLECTOR_MAX_AGE_SECONDS: ${NADI_COLLECTOR_MAX_AGE_SECONDS:-}
+      NADI_SOURCE_MAX_AGE_SECONDS: ${NADI_SOURCE_MAX_AGE_SECONDS:-}
+      NADI_PROJECTION_MAX_AGE_SECONDS: ${NADI_PROJECTION_MAX_AGE_SECONDS:-}
       RELIABILITY_MART_DATABASE_URL: ${RELIABILITY_MART_DATABASE_URL:?set SELECT-only external existing Mart DSN}
       DATABASE_URL: postgresql+psycopg://cockpit:${COCKPIT_DB_PASSWORD}@cockpit-db/cockpit
     extra_hosts:
