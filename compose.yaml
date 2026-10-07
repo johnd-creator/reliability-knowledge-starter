@@ -100,6 +100,7 @@ services:
     restart: "no"
     command: ["picollector", "init-db"]
     environment:
+      PI_CONFIG_MODE: managed
       DATABASE_URL: postgresql+psycopg://pi_collector:${PI_DB_PASSWORD}@pi-db/pi_collector
     depends_on:
       pi-db: {condition: service_healthy}
@@ -108,6 +109,9 @@ services:
     <<: *python-common
     build: ./pi-collector
     environment:
+      # Non-secret pause metadata only; no PI URL/auth config.
+      PI_SNAPSHOT_INTERVAL_SECONDS: ${PI_SNAPSHOT_INTERVAL_SECONDS:-300}
+      PI_CONFIG_MODE: managed
       DATABASE_URL: postgresql+psycopg://pi_collector:${PI_DB_PASSWORD}@pi-db/pi_collector
     depends_on:
       pi-init: {condition: service_completed_successfully}
@@ -120,6 +124,7 @@ services:
     restart: "no"
     command: ["picollector", "migrate"]
     environment:
+      PI_CONFIG_MODE: managed
       DATABASE_URL: postgresql+psycopg://pi_collector:${PI_DB_PASSWORD}@pi-db/pi_collector
     depends_on:
       pi-db: {condition: service_healthy}
@@ -131,9 +136,20 @@ services:
     profiles: [pi-collection]
     build: ./pi-collector
     restart: "no"
-    command: ["picollector", "worker", "--interval-seconds", "${PI_SNAPSHOT_INTERVAL_SECONDS:-300}"]
-    env_file: [./pi-collector/.env]
+    command: ["picollector", "worker", "--pause-seconds", "${PI_SNAPSHOT_INTERVAL_SECONDS:-300}"]
     environment:
+      # Only source-boundary worker receives source settings from .env.platform.
+      PI_CONFIG_MODE: managed
+      PI_WEB_API_BASE_URL: ${PI_WEB_API_BASE_URL:-}
+      PI_USERNAME: ${PI_USERNAME:-}
+      PI_PASSWORD: ${PI_PASSWORD:-}
+      PI_TOKEN: ${PI_TOKEN:-}
+      PI_TIMEOUT_SECONDS: ${PI_TIMEOUT_SECONDS:-30}
+      PI_RATE_LIMIT_SECONDS: ${PI_RATE_LIMIT_SECONDS:-1.0}
+      PI_MAX_RESPONSE_BYTES: ${PI_MAX_RESPONSE_BYTES:-1048576}
+      PI_VERIFY_TLS: ${PI_VERIFY_TLS:-1}
+      # Compatibility name: post-cycle pause, never fixed-rate start cadence.
+      PI_SNAPSHOT_INTERVAL_SECONDS: ${PI_SNAPSHOT_INTERVAL_SECONDS:-300}
       DATABASE_URL: postgresql+psycopg://pi_collector:${PI_DB_PASSWORD}@pi-db/pi_collector
     depends_on:
       pi-db: {condition: service_healthy}

@@ -54,6 +54,20 @@ this work adds no new production WebIds or tags.
 | Python | ≥ 3.11 |
 | Docker | any (for TimescaleDB) |
 
+### Managed versus standalone configuration
+
+Managed Power Plant Data Platform uses **`.env.platform`** with Compose
+substitution as its configuration authority. Only `pi-worker` receives the
+explicit PI source URL/auth/timeout/rate/cap/TLS settings. `pi-api` receives
+non-secret post-cycle pause metadata only; `pi-migrate` and Cockpit receive no
+PI source configuration. Managed PI roles use `PI_CONFIG_MODE=managed` and do
+not read `pi-collector/.env` or `~/.pi-collector.env`.
+
+Standalone development continues to allow those local dotenv files. The
+installation examples below are standalone; do not create a second dotenv
+file or database for a managed deployment, and do not copy example files over
+existing operational secrets.
+
 ### Install
 
 ```bash
@@ -117,12 +131,35 @@ overrides and limitations. Do not start a second cron/systemd/manual collector.
 ### Continuous collection (serial cycle plus 300s pause)
 
 ```bash
-# Snapshot mode: current values for all attributes, every 5 minutes
-.venv/bin/picollector run --mode snapshot --interval-seconds 300
+# Snapshot mode: serial acquisition, then 300s pause after completion
+.venv/bin/picollector run --mode snapshot --pause-seconds 300
 
 # Recorded-delta mode: fetch new raw points since the last cursor
 .venv/bin/picollector run --mode recorded-delta --interval-seconds 300
 ```
+
+`PI_SNAPSHOT_INTERVAL_SECONDS` remains a compatible environment name for
+**post-cycle pause**; omitted CLI pause uses it (default 300). The explicit
+`--pause-seconds` and old `--interval-seconds` flags accept identical values.
+Measured acquisition 508.142s + configured pause 300s gives approximately
+808.142s start-to-start (~13.5 minutes), with no parallel polling or lower
+request spacing. CLI overrides should match API pause configuration when
+running a standalone custom schedule.
+
+`GET /schedule` estimates the **next cycle start** from the latest cycle's
+completion + pause. It preserves `interval_seconds` as a compatibility alias
+and adds `pause_seconds`, `last_cycle_duration_seconds`, estimated
+`effective_start_to_start_seconds`, and `latest_collection_activity_at`.
+Countdown is suspended during inferred active writes; an expired estimate
+means waiting for activity, not guaranteed data arrival. Cron/manual runs and
+worker ownership cannot be certified from stored writes alone.
+
+Freshness concepts remain separate: acquisition duration; post-cycle pause;
+estimated start-to-start cadence; latest completed cycle (`last_run_at`, which
+can include failures); latest **successful** collection (verify run outcomes,
+rows/errors/aborted); and each reading's **source_timestamp**. Recent collection
+can store an old source value—the accepted canary returned an epoch timestamp.
+Do not declare a signal fresh or Good solely because acquisition ran recently.
 
 ### Serve
 
@@ -145,6 +182,7 @@ Swagger docs: `http://127.0.0.1:8001/docs`
 | `/collect/snapshots` | POST | Trigger snapshot collection |
 | `/collect/backfill` | POST | Trigger backfill (`?start=&end=&interval=`) |
 | `/stats` | GET | Collection statistics |
+| `/schedule` | GET | Observed activity and estimated next cycle start; no source-freshness certificate |
 
 The API serves locally collected data. It is not a live PI proxy and does not
 accept arbitrary WebIds or URLs. The existing collection trigger routes only

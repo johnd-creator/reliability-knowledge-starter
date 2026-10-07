@@ -25,7 +25,9 @@ def _load_dotenv(path: Path) -> None:
 
 
 def load_env() -> None:
-    """Load .env from the repo root and from the user home, if present."""
+    """Standalone dotenv support; managed containers use Compose environment only."""
+    if os.getenv("PI_CONFIG_MODE") == "managed":
+        return
     _load_dotenv(Path(__file__).resolve().parent.parent / ".env")
     _load_dotenv(Path.home() / ".pi-collector.env")
 
@@ -88,9 +90,10 @@ class CollectSafetyConfig:
       * pause_between_attributes: extra cooldown between attributes
       * off_hours_start / off_hours_end: only allow heavy backfill during these hours
       * off_hours_weekend: allow backfill on Saturday/Sunday anytime
-      * snapshot_interval_seconds: expected snapshot cycle (seconds) — drives
-        the /schedule countdown in the web UI; aligns with cron */5 or
-        ``picollector run --interval-seconds``
+      * snapshot_interval_seconds: compatibility name for the post-cycle pause.
+        Start-to-start cadence = acquisition duration + pause, not cron */5.
+        /schedule estimates next cycle START from completed_at + pause;
+        it does not certify fresh source timestamps or completed acquisition.
     """
     max_requests_per_session: int = 5000
     chunk_days: int = 7

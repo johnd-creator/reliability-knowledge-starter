@@ -104,7 +104,11 @@ class CollectResponse(BaseModel):
 
 
 class ScheduleView(BaseModel):
-    interval_seconds: int
+    interval_seconds: int  # compatibility alias: post-cycle pause
+    pause_seconds: int
+    last_cycle_duration_seconds: float | None = None
+    effective_start_to_start_seconds: float | None = None
+    latest_collection_activity_at: str | None = None
     state: str  # running | scheduled | idle
     last_run_at: str | None = None
     next_run_at: str | None = None
@@ -315,11 +319,14 @@ def create_app() -> FastAPI:
 
     @app.get("/schedule", response_model=ScheduleView, tags=["system"])
     def schedule(store: CollectorStore = Depends(_store)) -> ScheduleView:
-        """Snapshot collector schedule for the web countdown.
+        """Observed activity and estimated next cycle START, not source freshness.
 
-        States: ``running`` (a cycle is writing snapshots right now),
-        ``scheduled`` (alive, next cycle at next_run_at), ``idle`` (not
-        running — the UI shows a warning instead of counting down).
+        last_run_at means latest completed cycle, possibly partial/error.
+        next_run_at = completed_at + post-cycle pause; it is an estimate,
+        not a fixed-rate schedule or promised arrival of fresh source data.
+        running/scheduled/active are activity heuristics, not worker ownership.
+        Latest successful collection must be checked against run outcomes;
+        individual signal freshness uses its own source_timestamp.
         """
         from datetime import datetime, timezone
 
@@ -328,15 +335,20 @@ def create_app() -> FastAPI:
 
         safety = CollectSafetyConfig.from_environment()
         last_run, duration = store.last_snapshot_cycle()
+        activity = store.latest_snapshot_activity()
         info = compute_schedule(
             last_run,
             datetime.now(timezone.utc),
             interval_seconds=safety.snapshot_interval_seconds,
             last_cycle_duration_seconds=duration,
-            latest_activity_at=store.latest_snapshot_activity(),
+            latest_activity_at=activity,
         )
         return ScheduleView(
             interval_seconds=info.interval_seconds,
+            pause_seconds=info.interval_seconds,
+            last_cycle_duration_seconds=duration,
+            effective_start_to_start_seconds=duration + info.interval_seconds if duration is not None and duration > 0 else None,
+            latest_collection_activity_at=_iso(activity),
             state=info.state,
             last_run_at=_iso(info.last_run_at),
             next_run_at=_iso(info.next_run_at),

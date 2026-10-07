@@ -14,6 +14,29 @@ remains **PARTIAL**: the existing Mart has no `asset_af_mapping` table.
 [NADI-RUNTIME-002](../../plans/NADI-RUNTIME-002.md). Operator/Compose changes are
 submitted for review, not automatically merged.
 
+## FIX-01 clarification — managed configuration and cadence
+
+The measured production evidence below remains accepted and unchanged:
+PI runtime PASS, migration 004 APPLIED, 433/433 first cycle with 0 errors,
+governed NADI readiness PARTIAL. Historical initial runtime used worker-side
+`pi-collector/.env`; that is provenance, **not the clean managed deployment
+contract**. FIX-01 removes the candidate worker's env_file dependency and uses
+explicit `.env.platform` substitutions. Managed PI roles skip all local/home
+dotenv loading; standalone support remains. No production services/source calls
+or migration were rerun to validate this correction.
+
+`PI_SNAPSHOT_INTERVAL_SECONDS` is a compatible name for post-completion pause.
+508.142s measured acquisition + 300s pause gives ~808.142s (~13.5m) expected
+start-to-start, not a five-minute cycle. CLI `--pause-seconds` is preferred;
+`--interval-seconds` remains an alias. Worker/API share non-secret pause metadata;
+source URL/auth/rate/cap/TLS remain worker-only. `/schedule` estimates next cycle
+start from completion + pause; duration/effective cadence are distinct fields.
+UI no longer says interval every five minutes or promises fresh data at zero.
+Latest successful collection must use run outcomes, while individual freshness
+uses source timestamps; the epoch canary remains direct stale-source evidence.
+See [FIX-01 evidence](nadi-pi-runtime-001-fix-01.md) for final commands/counts
+and PR #15 merge readiness. Accepted runtime was not redeployed in this fix.
+
 ## BASELINE
 
 - Verified `origin/main`: `3e981a3c5e20e148feba5b01ec0b1c134ca89205`.

@@ -7,7 +7,7 @@ Read-only against PI Web API. Commands:
   collect-snapshots  - fetch current snapshot for all active attributes
   backfill           - fetch interpolated history for a time range
   backfill-recorded  - download ALL raw recorded data (heavy, off-hours only)
-  run                - continuous daemon: snapshots + delta sync on interval
+  run                - continuous daemon: serial collection then a configured pause
   serve              - start the FastAPI app
 
 Credentials are never stored; use PI_USERNAME/PI_PASSWORD (Basic auth) or
@@ -74,11 +74,11 @@ def cmd_worker(args: argparse.Namespace) -> int:
     from src.services.runtime_worker import run_owned_worker
     from src.services.migrations import MigrationError
     if args.interval_seconds < 1:
-        print("Worker interval must be positive", file=sys.stderr)
+        print("Worker post-cycle pause must be positive", file=sys.stderr)
         return 2
     try:
         return run_owned_worker(get_database().engine, ["picollector", "run", "--mode", "snapshot",
-                                "--interval-seconds", str(args.interval_seconds)])
+                                "--pause-seconds", str(args.interval_seconds)])
     except MigrationError as error:
         print(str(error), file=sys.stderr)
         return 2
@@ -196,7 +196,7 @@ def cmd_run(args: argparse.Namespace) -> int:
     # Safety net 2: hard wall per cycle — interrupts even hung C syscalls.
     signal.signal(signal.SIGALRM, _on_cycle_timeout)
 
-    print(f"continuous collector: mode={mode}, interval={interval_seconds}s, "
+    print(f"continuous collector: mode={mode}, post-cycle-pause={interval_seconds}s, "
           f"cycle-timeout={cycle_timeout}s")
     print("press Ctrl+C to stop")
 
@@ -264,7 +264,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     migration.add_argument("--apply", action="store_true", help="explicitly apply pending migrations")
     migration.set_defaults(func=cmd_migrate)
     worker = sub.add_parser("worker", help="single-owner snapshot scheduler; same lease as migrate")
-    worker.add_argument("--interval-seconds", type=int, default=300)
+    worker.add_argument("--pause-seconds", "--interval-seconds", dest="interval_seconds", type=int,
+                        default=os.getenv("PI_SNAPSHOT_INTERVAL_SECONDS", "300"),
+                        help="pause after each completed cycle; legacy --interval-seconds is an alias (default from PI_SNAPSHOT_INTERVAL_SECONDS, otherwise 300)")
     worker.set_defaults(func=cmd_worker)
 
     load = sub.add_parser("load-registry", help="load verified attributes from pi-knowledge YAML")
@@ -295,10 +297,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                      help="re-download already-downloaded ranges (default: skip via watermark)")
     bfr.set_defaults(func=cmd_backfill_recorded)
 
-    run = sub.add_parser("run", help="continuous daemon: snapshots or delta sync on interval")
+    run = sub.add_parser("run", help="continuous daemon: serial cycle plus post-cycle pause")
     run.add_argument("--mode", choices=["snapshot", "recorded-delta", "interpolated"], default="snapshot",
                      help="collection mode (default: snapshot)")
-    run.add_argument("--interval-seconds", type=int, default=300, help="seconds between cycles (default 300 = 5 min)")
+    run.add_argument("--pause-seconds", "--interval-seconds", dest="interval_seconds", type=int,
+                     default=os.getenv("PI_SNAPSHOT_INTERVAL_SECONDS", "300"),
+                     help="pause after each completed cycle; start-to-start = acquisition duration + pause; legacy --interval-seconds remains an alias")
     run.add_argument("--cycle-timeout-seconds", type=int, default=1800,
                      help="hard wall-clock timeout per cycle (default 1800 = 30 min). "
                           "A normal snapshot cycle takes ~9 min; a hung syscall is "

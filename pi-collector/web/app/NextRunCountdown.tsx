@@ -104,10 +104,11 @@ export function NextRunCountdown({ onRefresh }: { onRefresh: () => void }) {
         <span className="dot dot-green dot-pulse" />
         <div style={{ flex: 1 }}>
           <div style={{ fontWeight: 700, color: "#34d399" }}>
-            Collector Sedang Berjalan (Active Cycle)
+            Aktivitas Koleksi Terdeteksi
           </div>
           <div className="sub-muted">
-            Menulis snapshot realtime • Interval {Math.round(schedule.interval_seconds / 60)} mnt
+            Snapshot sedang diperbarui • Jeda setelah siklus {Math.round((schedule.pause_seconds ?? schedule.interval_seconds) / 60)} mnt
+            <br />Kesegaran sinyal mengikuti timestamp sumber.
           </div>
         </div>
         <button
@@ -129,12 +130,12 @@ export function NextRunCountdown({ onRefresh }: { onRefresh: () => void }) {
         <span className="dot dot-red" />
         <div style={{ flex: 1 }}>
           <div style={{ fontWeight: 700, color: "#fb7185" }}>
-            Collector Tidak Aktif
+            Belum Ada Aktivitas Koleksi Terbaru
           </div>
           <div className="sub-muted">
             {schedule.last_run_at
-              ? `Siklus terakhir: ${new Date(schedule.last_run_at).toLocaleTimeString("id-ID")} — jalankan daemon 'picollector run'`
-              : "Belum ada siklus tercatat — jalankan daemon atau collect manual"}
+              ? `Siklus terakhir selesai: ${new Date(schedule.last_run_at).toLocaleTimeString("id-ID")} — periksa pemilik worker yang ada`
+              : "Belum ada siklus tercatat — periksa pemilik worker yang ada"}
           </div>
         </div>
         <button
@@ -155,13 +156,21 @@ export function NextRunCountdown({ onRefresh }: { onRefresh: () => void }) {
       <span className="dot dot-green" />
       <div style={{ flex: 1 }}>
         <div style={{ fontWeight: 600, display: "flex", alignItems: "center", gap: 8 }}>
-          <span>Collector Standby</span>
+          <span>Perkiraan Mulai Siklus Berikutnya</span>
           <span className="mono" style={{ color: "#34d399", fontWeight: 700, fontSize: "1.1rem" }}>
             {remaining != null ? fmt(remaining) : "--:--"}
           </span>
         </div>
         <div className="sub-muted">
-          Siklus berikutnya dalam hitungan mundur (Interval tiap {Math.round(schedule.interval_seconds / 60)} menit)
+          {remaining === 0 ? "Perkiraan mulai telah lewat; menunggu aktivitas koleksi." :
+            `Jeda setelah siklus selesai: ${Math.round((schedule.pause_seconds ?? schedule.interval_seconds) / 60)} menit.`}
+          {schedule.last_cycle_duration_seconds != null && <>
+            <br />Durasi siklus terakhir: {fmt(schedule.last_cycle_duration_seconds)}.
+          </>}
+          {schedule.effective_start_to_start_seconds != null && <>
+            <br />Perkiraan antar mulai siklus: {fmt(schedule.effective_start_to_start_seconds)}.
+          </>}
+          <br />Hitungan mundur memperkirakan awal koleksi; data sumber dapat tetap usang.
         </div>
       </div>
       <button

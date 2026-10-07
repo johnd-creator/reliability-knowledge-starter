@@ -44,6 +44,11 @@ starts isolated Maximo/CEMS Postgres and their collector workers/APIs plus the
 PI TimescaleDB, init, and API services. A single leased `pi-worker` is defined
 under the opt-in `pi-collection` profile; default startup does not acquire PI.
 `pi-maintenance` provides deliberate status/apply migrations after backup.
+Managed PI configuration comes only from `.env.platform`; the worker receives
+explicit source substitutions and never requires `pi-collector/.env` or a home
+dotenv. API receives only non-secret pause metadata; API/migrate/Cockpit remain
+source-credential-free. `PI_SNAPSHOT_INTERVAL_SECONDS` means post-cycle pause:
+508s observed acquisition + 300s pause is ~808s (~13.5m) start-to-start.
 See [PI operator runbook](../../pi-collector/docs/runtime-migrations.md). It requires the
 source-only environment names exactly as implemented:
 `CEMS_MODBUS_HOST`, `CEMS_MODBUS_PORT`, `PI_WEB_API_BASE_URL`, and one valid

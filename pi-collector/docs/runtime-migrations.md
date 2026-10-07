@@ -51,8 +51,12 @@ fingerprints verify compatibility; SQLite tests alone are insufficient.
 
 Candidate source-controlled managed Compose contains `pi-migrate` under
 `pi-maintenance`, status-only by default, and `pi-worker` under `pi-collection`.
-Both reuse the PI DB; only the worker loads `pi-collector/.env`. PI API and
-migration service have no PI source credentials. Existing runtime may contain
+Both reuse the PI DB. **Managed configuration comes only from `.env.platform`**;
+worker receives explicit source URL/auth/timeout/rate/cap/TLS substitutions.
+No managed `env_file` references `pi-collector/.env`. `PI_CONFIG_MODE=managed`
+skips collector/home dotenv loading. Standalone development retains those files.
+PI API gets the same non-secret pause metadata for /schedule; API, migration
+and Cockpit receive no PI source credentials. Existing runtime may contain
 ignored image/DSN overrides. Include **every accepted override**, including the
 Maximo WO runtime pin, in each command. Never issue a broad `up`, `down -v`, or
 switch deployment project/mode as part of this upgrade.
@@ -82,14 +86,36 @@ collection/backfill and API source triggers are outside this lease: it is not
 a global cross-process collector lock. API has no live source configuration in
 this deployment. Heavy history/backfill is not enabled by either profile.
 
+`PI_SNAPSHOT_INTERVAL_SECONDS` is retained compatibly as **post-cycle pause**.
+Preferred CLI `--pause-seconds` and legacy `--interval-seconds` are aliases;
+without an explicit flag both read that environment value (default 300).
 Cadence is **one serial snapshot cycle plus a 300s pause**, not a fresh cycle
 starting every five minutes; 433 streams at a minimum 1s/request take longer
-than five minutes. Merged-main's cycle timeout is 1800s. `restart: no` makes
+than five minutes. Measured first cycle 508.142s + 300s pause gives estimated
+808.142s (~13.5m) start-to-start, not a fixed five-minute cycle. Request spacing
+and serial polling remain unchanged. Merged-main's cycle timeout is 1800s. `restart: no` makes
 exit visible for operator intervention and avoids container crash retry loops.
 The existing snapshot loop itself does not abort immediately on a later 401;
 stop the owner on authentication/transport incident before repairing access.
 A one-request auth canary gates initial activation. Do not silently enable
 recorded-delta/history, relax TLS/auth/origin caps, or run parallel schedulers.
+
+## Schedule and freshness interpretation
+
+The API's `next_run_at` is an estimate of acquisition **start** at latest cycle
+completion + configured pause; its old `interval_seconds` means pause.
+Duration/pause/effective-cadence fields are separate and null duration does not
+invent an effective cadence. Recent writes indicate activity, not a lease or
+process certificate. A just-completed cycle is waiting through its pause, not
+still collecting. Countdown does not promise fresh data at zero; UI says to
+wait for observed activity if the estimate has passed.
+
+`last_run_at` is completed-cycle time, possibly partial/failed. Determine latest
+successful collection from persisted run outcome (rows/errors/aborted) separately
+from individual source timestamps. A source value can remain stale even after a
+successful collection; the accepted epoch-timestamp canary illustrates this.
+Future NADI-INTEGRATION-STATUS must keep these dimensions distinct. No SLO,
+all-signal freshness classification or new scheduler is introduced by FIX-01.
 
 ## Backup and recovery
 

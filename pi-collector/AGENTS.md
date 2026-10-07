@@ -62,7 +62,7 @@ run (daemon) ───────────┤
 picollector init-db              # create missing tables; does not alter existing columns
 picollector migrate              # local read-only migration status; no PI requests
 picollector migrate --apply      # deliberate existing-store upgrade after backup/preflight
-picollector worker --interval-seconds 300  # single leased snapshot owner
+picollector worker --pause-seconds 300  # single leased snapshot owner
 picollector load-registry        # load verified attributes from pi-knowledge YAML
 picollector collect-snapshots    # fetch current values for all active attributes
 picollector backfill --start "*-7d" --end "*" --interval 1h
@@ -129,3 +129,14 @@ Disable competing schedulers first. Snapshot cadence is cycle duration plus
 [runtime evidence](docs/nadi-pi-runtime-001.md) for exact reviewed-image and
 operator-tooling provenance. Governed target validation remains separate from
 technical registry access; no legitimate verified target means defer the canary.
+
+
+Managed deployment configuration belongs only to `.env.platform`: explicit
+source environment goes to `pi-worker`, never API/migrate/Cockpit. Managed PI
+roles use `PI_CONFIG_MODE=managed` to skip collector/home dotenv files.
+Standalone local dotenv support remains. `PI_SNAPSHOT_INTERVAL_SECONDS` and
+legacy CLI `--interval-seconds` mean pause after completion; `--pause-seconds`
+is preferred. `/schedule` is an estimated next cycle start, not guaranteed data
+arrival or source freshness. Keep completed/failed/successful collection and
+individual source timestamp separate. Preserve accepted runtime evidence when
+correcting labels/configuration; no production migration or source rerun needed.
