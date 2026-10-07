@@ -30,9 +30,16 @@ Authority by purpose:
 
 Factual NADI Phase 0 is complete within `v0.1.0-rc.1`; Phase 1 is current/partial.
 **NADI-PI-001 — Governed PI Source Adapter** is IMPLEMENTED / MERGE-CANDIDATE
-on `codex/nadi-pi-001-governed-source-adapter` from `main a8393ba`, selectively
-adapting `d23f848`. Review/merge and existing-store migration remain pending.
-Next is runtime/Mart reconciliation if required, then NADI-IDN-002 pilot mapping. Do not implement Phase 2–5, merge historical work,
+on `codex/nadi-pi-001-governed-source-adapter`, originally from `main a8393ba`,
+selectively adapting `d23f848`; FIX-01 merges latest `main 52c67d4` without
+rewriting history. Review/merge and existing-store migration 004 remain pending.
+Merged PR #13/#14 evidence establishes the Maximo WO factual pipeline and NADI
+registered BSR/IP views CURRENT within the accepted population. MXR-004 stays
+PARTIAL; preserve its recovery evidence and parked non-WO group profile. See
+[maximo acceptance](maximo-collector/docs/maximo-wo-recency-002.md).
+Next is senior review/merge PR #12, deliberate existing-store PI migration 004
+and runtime readiness, then NADI-IDN-002 pilot mapping. Do not implement
+Phase 2–5, merge historical work,
 or resume source discovery merely because it appears on a roadmap.
 
 ## 2. Reuse stores — no new application database

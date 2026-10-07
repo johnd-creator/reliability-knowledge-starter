@@ -3,7 +3,8 @@
 NADI — **Navigasi Analitik Data dan Informasi**, Reliability / Engineering
 Intelligence Platform pembangkit. Implementasinya berada di
 `reliability-cockpit/`; shared collectors tetap menjadi kemampuan platform.
-Basis audit: `main ef07a26`, 7 Oktober 2026. [Repository Status](REPOSITORY-STATUS.md)
+Basis audit awal: `main ef07a26`, 7 Oktober 2026; FIX-01 direkonsiliasi dengan
+`main 52c67d4` setelah PR #13/#14 merged. [Repository Status](REPOSITORY-STATUS.md)
 memuat full SHA, merged PR dan pekerjaan di luar `main`.
 
 ## Product phases
@@ -53,6 +54,7 @@ recorded, not that all business semantics became verified.
 | RCFA relationships | PR #5, `2c73b03` | Direct source Asset field and RCFA→FDT verified; NADI canonical Asset link remains unresolved; WO/failure-event meaning not verified |
 | DOMINION Overhaul | PR #6, `2163be2` | Inspection and Scope-PM/WO paths advanced; KPI/progress/completion semantics still incomplete |
 | Central PI topology + identity investigation | PR #7, `74e5dc3` | AF→PI Point and timestamp/quality/unit shapes verified in bounded samples; native Maximo→AF key not found in bounded probe |
+| Maximo WO recency | PR #13/#14, main `52c67d4` | Bounded floor recovery, automatic cursor, cheap scheduled reads, local Mart and registered BSR/IP NADI CURRENT; MXR-004 moving-source/global concurrency remains PARTIAL |
 | Governed Asset↔AF registry | PR #8, `1c24a78` | Existing Mart relation, explicit lifecycle, UNMAPPED/MAPPED/AMBIGUOUS resolution |
 | Controlled mapping administration | PR #9, `883534c`; PR #10, `ef07a26` | Atomic PROPOSED import, human verify/retire, provenance; SQLite timestamp test correction merged |
 
@@ -65,8 +67,9 @@ never overwrite unknowns from labels or branch existence.
 ### Phase 1 — remaining acceptance
 
 - NADI-PI-001 governed PI source boundary is **IMPLEMENTED / MERGE-CANDIDATE**
-  on `codex/nadi-pi-001-governed-source-adapter`, based on `main a8393ba`;
-  review/merge and deliberate existing-store migration remain pending. See
+  on PR #12 / `codex/nadi-pi-001-governed-source-adapter`; originally based on
+  `main a8393ba`, now incorporating `main 52c67d4` via normal merge.
+  Review/merge and deliberate existing-store migration 004 remain pending. See
   [offline implementation evidence](../pi-collector/docs/nadi-pi-001-implementation.md).
 - Approve a bounded real/pilot Registered Asset ↔ AF mapping set. Code and
   synthetic tests do not establish that production mappings are populated.
@@ -129,9 +132,10 @@ not an already deployed knowledge engine.
 
 ### 1. NADI-PI-001 — Governed PI Source Adapter (implemented / merge-candidate)
 
-Offline integration starts from verified `main a8393ba`, not the mixed feature
-branch. Candidate `d23f848` was selectively adapted, with lineage, streaming
-limits and lossless source values strengthened; `0c800da` was not imported.
+Offline integration originally started from verified `main a8393ba`, not the
+mixed feature branch. FIX-01 incorporates latest `main 52c67d4` without
+rewriting published history and corrects the quality-field migration to 004.
+Candidate `d23f848` was selectively adapted, with lineage, streaming limits and lossless source values strengthened; `0c800da` was not imported.
 No live source access, migration execution or NADI projection is claimed.
 
 Original acceptance scope retained for review: review `d23f848`

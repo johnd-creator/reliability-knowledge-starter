@@ -92,7 +92,7 @@ class PersistenceTest(unittest.TestCase):
 
 class MigrationCompatibilityTest(unittest.TestCase):
     def test_additive_migration_matches_models_and_preserves_legacy_rows(self):
-        sql = (Path(__file__).resolve().parents[1] / "migrations/002_signal_quality_fields.sql").read_text()
+        sql = (Path(__file__).resolve().parents[1] / "migrations/004_signal_quality_fields.sql").read_text()
         operations = re.findall(r"ALTER TABLE (pi_\w+)\s+(.+?);", sql, re.S)
         self.assertEqual(len(operations), 2)
         self.assertNotRegex(sql.upper(), r"\b(DROP|TRUNCATE|DELETE|UPDATE)\b")

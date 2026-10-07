@@ -103,18 +103,23 @@ vendor-neutral NADI projection contract belongs to NADI-ING-PI-001.
 
 ## Upgrade existing PI store
 
-Migration `migrations/002_signal_quality_fields.sql` adds nullable columns in a
-transaction with `ADD COLUMN IF NOT EXISTS` and no data rewrites. It requires
-existing PI tables, deliberately failing on a wrong/missing store. Apply only
+Migration `migrations/004_signal_quality_fields.sql` adds nullable columns in a
+transaction with `ADD COLUMN IF NOT EXISTS` and no data rewrites. Run migrations
+in numeric order: 001_init → 002_collect_runs → 003_backfill_progress →
+004_signal_quality_fields. It requires existing PI tables, deliberately failing on a wrong/missing store. Apply only
 after reviewing the existing owning database and migration window. This task
 has **not** executed it against PostgreSQL/TimescaleDB or production.
 
 Before starting upgraded workers/API, apply that migration deliberately to the
 existing PI Collector store. `Base.metadata.create_all` / `init-db` creates fresh
-test/development tables but does not add columns to existing tables. If the old
-`d23f848` version of 002 was previously applied, reapplying this final idempotent
-002 is required for the added `source_value` JSON columns. Old rows keep numeric
-values, timestamps and flags; new fields remain null because old text/digital
+test/development tables but does not add columns to existing tables. If an
+experimental historical
+`002_signal_quality_fields.sql` (including the old `d23f848` variant) was
+previously applied outside main, running final `004` remains safe: every
+addition uses `ADD COLUMN IF NOT EXISTS`, preserving existing columns/data and
+adding missing evidence such as `source_value`. The renamed file is the final
+migration; do not retain a second numbered 002 in the migration directory.
+Old rows keep numeric values, timestamps and flags; new fields remain null because old text/digital
 payloads cannot be reconstructed. History, cursors, volumes and DB ownership
 must be preserved.
 

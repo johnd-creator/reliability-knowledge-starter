@@ -156,9 +156,21 @@ Asset↔AF relationships.
 
 See [boundary and upgrade details](docs/governed-source-boundary.md) and
 [offline implementation evidence](docs/nadi-pi-001-implementation.md).
-Existing stores need migration `002_signal_quality_fields.sql` before this code
+Existing stores need migration `004_signal_quality_fields.sql` before this code
 is started; `init-db` does not alter existing columns. No migration was applied
-by NADI-PI-001.
+by NADI-PI-001 or FIX-01. The PI migration order is:
+
+```text
+001_init.sql
+002_collect_runs.sql
+003_backfill_progress.sql
+004_signal_quality_fields.sql
+```
+
+If an experimental `002_signal_quality_fields.sql` was applied outside main,
+final `004` remains safe: guarded `ADD COLUMN IF NOT EXISTS` additions keep
+existing columns/data and add any missing quality fields. This does not imply
+that the production migration has been executed.
 
 The normalized local signal retains `source_value`, the source timestamp, numeric/text/digital
 value classification, engineering unit, and the PI `Good`, `Questionable`,

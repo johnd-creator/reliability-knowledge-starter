@@ -44,8 +44,11 @@ sebagai test run baru pada audit dokumentasi ini.
 - M8: PR #1 dan tag sudah ada; status release PR/tag pending pada snapshot lama
   tidak lagi berlaku. Operational sign-off/soak/restore tidak disimpulkan dari tag.
 
-**Next technical PR: NADI-PI-001**, review/integrasi governed PI source boundary
-`d23f848` tanpa bulk merge NK/deployment `0c800da`. Lanjut pilot mapping → PI
+**Current technical PR: NADI-PI-001 / PR #12**, IMPLEMENTED / MERGE-CANDIDATE;
+FIX-01 incorporates `main 52c67d4` and corrects PI migration sequencing to 004.
+Senior review/merge precedes deliberate existing-store migration and pilot.
+Scope tetap review/integrasi governed PI source boundary `d23f848` tanpa
+bulk merge NK/deployment `0c800da`. Lanjut pilot mapping → PI
 projection → integration trust → Phase 1 acceptance, sesuai NADI roadmap.
 Backlog detail dan exit criteria M0–M8 di atas tetap tersedia; dokumen ini tidak
 mengimplementasikan future workflow, scoring atau source integrations.

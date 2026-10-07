@@ -1,5 +1,6 @@
 -- Preserve PI source quality/type evidence in the local collector store.
--- Apply after 001_init.sql. This migration is for pi-collector only and is
+-- Apply after 001_init.sql, 002_collect_runs.sql and 003_backfill_progress.sql.
+-- This migration is for pi-collector only and is
 -- deliberately separate from the Reliability Mart mapping migrations.
 
 BEGIN;

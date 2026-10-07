@@ -3,7 +3,12 @@
 **IMPLEMENTED / MERGE-CANDIDATE**, 2026-10-07. Not merged, deployed, or live
 validated. Phase 1 stays CURRENT / PARTIAL.
 
-## Preflight
+Current branch reconciliation and validation are recorded in
+[FIX-01 evidence](#fix-01-reconciliation-and-migration-sequence). Original
+preflight/test evidence below remains historical; no production PI deployment
+or migration execution is claimed by either checkpoint.
+
+## Original preflight
 
 - Fetched `origin/main`: `a8393ba7d8dfddcae67b14b6153a8056c2f01d34` (matches task baseline).
 - Separate managed worktree, clean before edits; new branch
@@ -86,7 +91,7 @@ production data. No live source test is needed or claimed.
 - The previous PI HTTP 401 credential investigation remains deferred.
 
 Review [boundary and upgrade notes](governed-source-boundary.md) before merging.
-Existing stores require deliberate idempotent 002 migration before upgraded
+Existing stores require deliberate idempotent 004 migration before upgraded
 workers/API; `init-db` cannot alter old tables. Rollback leaves additive columns
 and data intact. Senior review should assess the trusted-caller contract,
 strict AF link/WebId lineage prerequisites, bounded-list/24h limits, nullable
@@ -96,3 +101,74 @@ Next: separately reconcile Mart/runtime and deliberate migration readiness if
 required, then **NADI-IDN-002** scoped human-verified Asset↔AF pilot. PI evidence
 projection, integration-status acceptance, engineering signal semantics, health
 scoring and PdM remain incomplete.
+
+
+## FIX-01 reconciliation and migration sequence
+
+2026-10-07, existing PR #12 continued; no new PR or automatic merge.
+PR #14 was verified merged at 2026-10-07T10:09:16Z before fetching main.
+Latest main: `52c67d41115b324e57c93bf82264a38951a6c275`.
+Previous PR #12 HEAD: `417dbc8316e1bfbd9ffba0c8bd4777bd186cf8ff`.
+Normal main merge: `f2404aeb835cc29dfa6d66e3bd7c3a8c7c7ed417`;
+parents are the previous PR head and latest main. Merge had no conflicts;
+no rebase or force-push. Maximo source and acceptance files match latest main.
+Root/plans status retains Maximo WO and registered BSR/IP NADI CURRENT,
+NADI Phase 1 CURRENT/PARTIAL, NADI-PI-001 IMPLEMENTED/MERGE-CANDIDATE and
+MXR-004 PARTIAL. Remaining runtime wiring/read-only grants/global scheduler
+work is not declared complete by the WO acceptance.
+
+Migration `002_signal_quality_fields.sql` is renamed to
+`004_signal_quality_fields.sql`, after existing 001_init, 002_collect_runs and
+003_backfill_progress. SQL operations are unchanged; only the sequence comment
+is updated. ADD COLUMN IF NOT EXISTS, nullable columns and transactional
+additions are retained. README/boundary/tests/status references use final 004.
+Historical 002 appears only as replay guidance or a synthetic collision fixture.
+If that experimental 002 was applied outside main, final 004 preserves existing
+columns/data and adds missing columns using the guards. Existing stores still
+need a separately reviewed migration window; this task does not execute it.
+
+The lightweight test_migrations.py checks every PI SQL filename for unique
+numeric prefixes, asserts the first four ordered names, permits later unique
+migrations, and verifies rejection of the historical 002 collision and a
+zero-padding collision. It creates no migration framework or database.
+
+FIX-01 validation:
+
+```bash
+# cwd: pi-collector
+PYTHONDONTWRITEBYTECODE=1 /home/john-d/Music/reliability-knowledge-starter/pi-collector/.venv/bin/python -m unittest discover -s tests -v
+# cwd: reliability-cockpit
+PYTHONDONTWRITEBYTECODE=1 /home/john-d/Music/reliability-knowledge-starter/reliability-cockpit/.venv/bin/python -m unittest discover -s tests -p 'test_asset_af_mapping*.py' -v
+# cwd: repository root
+git diff --check
+git diff origin/main -- maximo-collector
+git merge-base --is-ancestor origin/main HEAD
+```
+
+**127 PI tests passed, 0 failed/skipped** (including 2 migration-prefix tests);
+**22 Asset↔AF registry/admin tests passed, 0 failed/skipped**: 149 unique tests.
+The initial restricted-sandbox suite stalled at ASGI dispatch and was stopped;
+the same suite outside that execution restriction completed in 7.097 seconds,
+with a 60-second process timeout and fake source transports. No application
+change was needed for the test execution issue. Mapping suite: 0.364 seconds.
+Repository checks: `git diff --check` passed; 40 relative Markdown references
+and balanced fences checked; final SQL operation body matches the prior quality
+migration exactly; no DROP/TRUNCATE/DELETE/UPDATE/NOT NULL additions. Guarded
+columns stay nullable. Maximo source/evidence, Cockpit implementation, NK and
+Compose paths match latest main; PI governed runtime code matches the previous
+PR #12 head. Added files/diff were checked for credentials and operational
+artifacts. No live source validation is claimed.
+
+Governed source/runtime implementation remains unchanged from previous PR #12
+HEAD: VERIFIED + PRIMARY_EQUIPMENT + CENTRAL_PI; trusted identity lineage,
+same-origin checks, redirect refusal, GET-only governed reads, bounded direct
+attributes, <=24h recorded interval, <=20 samples and preserved value/type/unit/
+timestamp/quality evidence. Text/digital/bool/null never silently become zero.
+NADI does not gain PI credentials, a live proxy or PI evidence projection.
+
+FIX-01 safety: production PI requests 0; production migrations 0; Maximo
+runtime/data/cursor changes 0; parked groups resumed 0; pilot mapping writes 0;
+new operational stores 0; credential introduction/exposure 0. NK is untouched.
+Tests use fake transports and temporary SQLite only. PR #12 remains open and
+unmerged; senior merge review precedes separately scoped runtime/migration
+readiness and NADI-IDN-002 human-verified pilot.

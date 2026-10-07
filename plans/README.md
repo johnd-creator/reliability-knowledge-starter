@@ -18,7 +18,12 @@ kemampuan `main`.
 
 **Posisi NADI:** Phase 0 COMPLETE untuk release faktual; Phase 1 CURRENT /
 PARTIAL untuk ekspansi evidence. **NADI-PI-001:** IMPLEMENTED / MERGE-CANDIDATE di PR terpisah, belum merged.
-**Next:** rekonsiliasi runtime/Mart bila diperlukan → NADI-IDN-002 pilot mapping.
+FIX-01 merekonsiliasi PR #12 dengan `main 52c67d4` setelah PR #14 merged.
+Maximo WO factual pipeline dan NADI registered BSR/IP **CURRENT** menurut
+[acceptance WO](../maximo-collector/docs/maximo-wo-recency-002.md); MXR-004 tetap
+**PARTIAL**. Status ini tidak menyelesaikan ekspansi evidence PI.
+**Next:** senior review/merge PR #12 → kesiapan runtime dan migrasi PI 004
+pada existing store → NADI-IDN-002 pilot mapping.
 PI evidence projection dan acceptance masih pending.
 Lihat [evidence implementasi offline](../pi-collector/docs/nadi-pi-001-implementation.md).
 NK tidak menggantikan prioritas NADI dan tidak memperluas domain Reliability.
