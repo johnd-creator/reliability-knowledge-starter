@@ -1,5 +1,10 @@
 # User Guide — Reliability Knowledge Stack
 
+> HISTORICAL standalone setup runbook. Read [AGENTS.md](AGENTS.md), the
+> [platform roadmap](plans/README.md) and [deployment runbook](deploy/compose/README.md)
+> before running commands. Reuse existing databases/volumes and env files; old
+> localhost DSNs may target legacy stores. Do not start duplicate source workers.
+
 Panduan praktis untuk menjalankan dan menguji 3 project: **maximo-knowledge**,
 **reliability-data-contracts**, dan **reliability-cockpit**.
 

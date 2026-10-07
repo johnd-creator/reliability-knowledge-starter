@@ -1,5 +1,10 @@
 # Summary of Work Done
 
+> HISTORICAL development note. Its pending-refactor/runtime statements are
+> superseded by [Repository Status](plans/REPOSITORY-STATUS.md) and the
+> [current platform roadmap](plans/README.md). Do not execute the old Next Move
+> as current onboarding or remove adapters based on this snapshot.
+
 ## Objective
 Separate the Maximo data collection into a dedicated `maximo-collector` project (mirroring `pi-collector` patterns) so the cockpit dashboard reads from the collector's local store instead of directly connecting to Maximo. Enable programmatic login via `j_security_check` (as documented in `maximo-knowledge`) and serve contract-shaped data via FastAPI. The cockpit then becomes a pure dashboard reading from the collector's store.
 

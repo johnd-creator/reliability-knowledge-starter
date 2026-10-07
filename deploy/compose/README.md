@@ -1,7 +1,23 @@
 # Reliability Cockpit platform Compose
 
-The platform has two deliberately separate deployment modes. The Cockpit always
-reads collector APIs only; it has no Maximo, PI, or PLC credential.
+The platform has two separate deployment modes. Legacy Cockpit sync reads
+collector APIs. Canonical NADI routes use a SELECT-only Reliability Mart reader
+against the existing Maximo Collector DB. Cockpit has no production Maximo, PI
+or PLC credential.
+
+> Baseline warning: at audited main `ef07a26`, neither Compose mode supplies
+> `RELIABILITY_MART_DATABASE_URL` to `cockpit-api`. Canonical routes require that
+> separate existing-Mart connection and have no legacy DSN fallback. Runtime fix
+> `7149455` and managed feature changes `0c800da` remain UNMERGED; review their
+> overlap and external-mode regression before applying a later runtime PR.
+> See [Repository Status](../../plans/REPOSITORY-STATUS.md). This documentation
+> task does not change Compose or claim a clean checkout is fully wired.
+
+Reuse the existing deployment identity, DBs, volumes and env files. The commands
+below describe deliberately selected installations; switching modes creates a
+different project/volume and is not a routine restart. Check for existing source
+workers before any startup. Source authentication investigation for PI remains
+deferred at the user's request; this audit does not resume it.
 
 ## Mode 1 — external collectors (default for an existing local deployment)
 
@@ -11,7 +27,7 @@ never starts a source collector, preventing duplicate source polling. The
 current Cockpit worker ingests Maximo collector resources only; PI and CEMS API
 bases are configurable, but their Cockpit projections remain pending.
 
-1. Copy `.env.platform.example` to `.env.platform`.
+1. Only if absent, copy `.env.platform.example` to `.env.platform`.
 2. Set `COCKPIT_DB_PASSWORD` and the three `*_COLLECTOR_API_BASE` values.
    For host-local collector APIs from Docker on Linux, use
    `http://host.docker.internal:800{1,2,3}`; the file supplies the required

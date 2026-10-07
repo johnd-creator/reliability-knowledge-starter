@@ -1,6 +1,14 @@
 # Rencana Integrasi Collector dan Reliability Cockpit
 
-Status: **proposal implementasi**
+> PARTIAL / HISTORICAL proposal context (20 Agustus 2026). Current vision and
+> execution status: [platform roadmap](../README.md), [NADI product roadmap](../NADI-ROADMAP.md)
+> and [reconciled M0–M8](05-roadmap-implementasi.md). Preserve this document's
+> design detail; do not treat its dated DONE/BLOCKED tables as current status.
+> The canonical NADI Mart reader is an explicit SELECT-only path into the existing
+> Maximo Collector DB, superseding old blanket “Cockpit API-only” assumptions.
+> PI/CEMS NADI projections remain pending; reuse existing stores/volumes.
+
+Status: **proposal historis / detail desain; execution status direkonsiliasi di roadmap M0–M8**
 
 Tanggal audit repositori: **20 Agustus 2026**
 
@@ -51,7 +59,8 @@ CEMS   ──read-only──▶ cems-collector DB/API ────┘
 ```
 
 - Setiap collector hanya menulis ke database miliknya.
-- Cockpit tidak membaca database collector secara langsung.
+- Legacy Cockpit memakai API collector. Canonical NADI memakai SELECT-only
+  Reliability Mart di database Maximo Collector existing; lihat notice di atas.
 - Cockpit tidak lagi menghubungi Maximo/PI/PLC secara langsung pada runtime normal.
 - Cockpit menarik kontrak vendor-neutral melalui API collector, menyimpan read model
   dan hasil turunan, lalu menyajikan API khusus produk.

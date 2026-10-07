@@ -1,5 +1,13 @@
 # 04 — Rencana Produk dan UI Reliability Cockpit
 
+> PARTIAL / HISTORICAL proposal context (20 Agustus 2026). Current vision and
+> execution status: [platform roadmap](../README.md), [NADI product roadmap](../NADI-ROADMAP.md)
+> and [reconciled M0–M8](05-roadmap-implementasi.md). Preserve this document's
+> design detail; do not treat its dated DONE/BLOCKED tables as current status.
+> The canonical NADI Mart reader is an explicit SELECT-only path into the existing
+> Maximo Collector DB, superseding old blanket “Cockpit API-only” assumptions.
+> PI/CEMS NADI projections remain pending; reuse existing stores/volumes.
+
 ## Arah produk
 
 Lima konsep menggambarkan satu alur keputusan:
