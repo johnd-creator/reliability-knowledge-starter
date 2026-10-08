@@ -1,0 +1,739 @@
+{
+  "scope": "OFFLINE_HYPOTHETICAL_ONLY",
+  "source_gets": 0,
+  "production_mutations": 0,
+  "cases": 14,
+  "all_assertions": "PASS",
+  "collector_null_preserved": true,
+  "threshold_boundaries": "PASS",
+  "results": [
+    {
+      "case": "actual_policy_unset",
+      "overall": "UNKNOWN",
+      "gates": [
+        {
+          "gate": "P1-MAXIMO-CURRENT",
+          "verdict": "UNKNOWN",
+          "reason": "UNKNOWN_FRESHNESS_POLICY"
+        },
+        {
+          "gate": "P1-MART-CURRENT",
+          "verdict": "UNKNOWN",
+          "reason": "UNKNOWN_FRESHNESS_POLICY"
+        },
+        {
+          "gate": "P1-PI-COLLECTOR-CURRENT",
+          "verdict": "UNKNOWN",
+          "reason": "UNKNOWN_FRESHNESS_POLICY"
+        },
+        {
+          "gate": "P1-MART-GOVERNANCE-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-CONDITION-SCHEMA-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-IDENTITY-MAPPING-READY",
+          "verdict": "PASS",
+          "reason": "VERIFIED_PILOT_AVAILABLE"
+        },
+        {
+          "gate": "P1-SIGNAL-SELECTION-READY",
+          "verdict": "PASS",
+          "reason": "APPROVED_PILOT_SIGNALS_AVAILABLE"
+        },
+        {
+          "gate": "P1-CONDITION-PROJECTION-READY",
+          "verdict": "UNKNOWN",
+          "reason": "UNKNOWN_SOURCE_OR_PROJECTION_FRESHNESS"
+        },
+        {
+          "gate": "P1-INTEGRATION-STATUS-READY",
+          "verdict": "PASS",
+          "reason": "STATUS_CONTRACT_VALID"
+        }
+      ],
+      "assertions": "PASS"
+    },
+    {
+      "case": "hypothetical_660_660_1800_only",
+      "overall": "UNKNOWN",
+      "gates": [
+        {
+          "gate": "P1-MAXIMO-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-MART-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-PI-COLLECTOR-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-MART-GOVERNANCE-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-CONDITION-SCHEMA-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-IDENTITY-MAPPING-READY",
+          "verdict": "PASS",
+          "reason": "VERIFIED_PILOT_AVAILABLE"
+        },
+        {
+          "gate": "P1-SIGNAL-SELECTION-READY",
+          "verdict": "PASS",
+          "reason": "APPROVED_PILOT_SIGNALS_AVAILABLE"
+        },
+        {
+          "gate": "P1-CONDITION-PROJECTION-READY",
+          "verdict": "UNKNOWN",
+          "reason": "UNKNOWN_SOURCE_OR_PROJECTION_FRESHNESS"
+        },
+        {
+          "gate": "P1-INTEGRATION-STATUS-READY",
+          "verdict": "PASS",
+          "reason": "STATUS_CONTRACT_VALID"
+        }
+      ],
+      "assertions": "PASS"
+    },
+    {
+      "case": "wo_stale",
+      "overall": "UNKNOWN",
+      "gates": [
+        {
+          "gate": "P1-MAXIMO-CURRENT",
+          "verdict": "PARTIAL",
+          "reason": "LOCAL_EVIDENCE_STALE"
+        },
+        {
+          "gate": "P1-MART-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-PI-COLLECTOR-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-MART-GOVERNANCE-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-CONDITION-SCHEMA-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-IDENTITY-MAPPING-READY",
+          "verdict": "PASS",
+          "reason": "VERIFIED_PILOT_AVAILABLE"
+        },
+        {
+          "gate": "P1-SIGNAL-SELECTION-READY",
+          "verdict": "PASS",
+          "reason": "APPROVED_PILOT_SIGNALS_AVAILABLE"
+        },
+        {
+          "gate": "P1-CONDITION-PROJECTION-READY",
+          "verdict": "UNKNOWN",
+          "reason": "UNKNOWN_SOURCE_OR_PROJECTION_FRESHNESS"
+        },
+        {
+          "gate": "P1-INTEGRATION-STATUS-READY",
+          "verdict": "PASS",
+          "reason": "STATUS_CONTRACT_VALID"
+        }
+      ],
+      "assertions": "PASS"
+    },
+    {
+      "case": "one_projector_stale",
+      "overall": "UNKNOWN",
+      "gates": [
+        {
+          "gate": "P1-MAXIMO-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-MART-CURRENT",
+          "verdict": "PARTIAL",
+          "reason": "LOCAL_EVIDENCE_STALE"
+        },
+        {
+          "gate": "P1-PI-COLLECTOR-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-MART-GOVERNANCE-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-CONDITION-SCHEMA-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-IDENTITY-MAPPING-READY",
+          "verdict": "PASS",
+          "reason": "VERIFIED_PILOT_AVAILABLE"
+        },
+        {
+          "gate": "P1-SIGNAL-SELECTION-READY",
+          "verdict": "PASS",
+          "reason": "APPROVED_PILOT_SIGNALS_AVAILABLE"
+        },
+        {
+          "gate": "P1-CONDITION-PROJECTION-READY",
+          "verdict": "UNKNOWN",
+          "reason": "UNKNOWN_SOURCE_OR_PROJECTION_FRESHNESS"
+        },
+        {
+          "gate": "P1-INTEGRATION-STATUS-READY",
+          "verdict": "PASS",
+          "reason": "STATUS_CONTRACT_VALID"
+        }
+      ],
+      "assertions": "PASS"
+    },
+    {
+      "case": "pi_stale",
+      "overall": "UNKNOWN",
+      "gates": [
+        {
+          "gate": "P1-MAXIMO-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-MART-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-PI-COLLECTOR-CURRENT",
+          "verdict": "PARTIAL",
+          "reason": "LOCAL_EVIDENCE_STALE"
+        },
+        {
+          "gate": "P1-MART-GOVERNANCE-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-CONDITION-SCHEMA-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-IDENTITY-MAPPING-READY",
+          "verdict": "PASS",
+          "reason": "VERIFIED_PILOT_AVAILABLE"
+        },
+        {
+          "gate": "P1-SIGNAL-SELECTION-READY",
+          "verdict": "PASS",
+          "reason": "APPROVED_PILOT_SIGNALS_AVAILABLE"
+        },
+        {
+          "gate": "P1-CONDITION-PROJECTION-READY",
+          "verdict": "UNKNOWN",
+          "reason": "UNKNOWN_SOURCE_OR_PROJECTION_FRESHNESS"
+        },
+        {
+          "gate": "P1-INTEGRATION-STATUS-READY",
+          "verdict": "PASS",
+          "reason": "STATUS_CONTRACT_VALID"
+        }
+      ],
+      "assertions": "PASS"
+    },
+    {
+      "case": "missing_second_projector",
+      "overall": "UNKNOWN",
+      "gates": [
+        {
+          "gate": "P1-MAXIMO-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-MART-CURRENT",
+          "verdict": "UNKNOWN",
+          "reason": "UNKNOWN_TIMESTAMP"
+        },
+        {
+          "gate": "P1-PI-COLLECTOR-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-MART-GOVERNANCE-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-CONDITION-SCHEMA-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-IDENTITY-MAPPING-READY",
+          "verdict": "PASS",
+          "reason": "VERIFIED_PILOT_AVAILABLE"
+        },
+        {
+          "gate": "P1-SIGNAL-SELECTION-READY",
+          "verdict": "PASS",
+          "reason": "APPROVED_PILOT_SIGNALS_AVAILABLE"
+        },
+        {
+          "gate": "P1-CONDITION-PROJECTION-READY",
+          "verdict": "UNKNOWN",
+          "reason": "UNKNOWN_SOURCE_OR_PROJECTION_FRESHNESS"
+        },
+        {
+          "gate": "P1-INTEGRATION-STATUS-READY",
+          "verdict": "PASS",
+          "reason": "STATUS_CONTRACT_VALID"
+        }
+      ],
+      "assertions": "PASS"
+    },
+    {
+      "case": "missing_pi_success",
+      "overall": "UNKNOWN",
+      "gates": [
+        {
+          "gate": "P1-MAXIMO-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-MART-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-PI-COLLECTOR-CURRENT",
+          "verdict": "UNKNOWN",
+          "reason": "UNKNOWN_TIMESTAMP"
+        },
+        {
+          "gate": "P1-MART-GOVERNANCE-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-CONDITION-SCHEMA-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-IDENTITY-MAPPING-READY",
+          "verdict": "PASS",
+          "reason": "VERIFIED_PILOT_AVAILABLE"
+        },
+        {
+          "gate": "P1-SIGNAL-SELECTION-READY",
+          "verdict": "PASS",
+          "reason": "APPROVED_PILOT_SIGNALS_AVAILABLE"
+        },
+        {
+          "gate": "P1-CONDITION-PROJECTION-READY",
+          "verdict": "UNKNOWN",
+          "reason": "UNKNOWN_SOURCE_OR_PROJECTION_FRESHNESS"
+        },
+        {
+          "gate": "P1-INTEGRATION-STATUS-READY",
+          "verdict": "PASS",
+          "reason": "STATUS_CONTRACT_VALID"
+        }
+      ],
+      "assertions": "PASS"
+    },
+    {
+      "case": "future_completion",
+      "overall": "UNKNOWN",
+      "gates": [
+        {
+          "gate": "P1-MAXIMO-CURRENT",
+          "verdict": "UNKNOWN",
+          "reason": "UNKNOWN_TIMESTAMP"
+        },
+        {
+          "gate": "P1-MART-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-PI-COLLECTOR-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-MART-GOVERNANCE-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-CONDITION-SCHEMA-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-IDENTITY-MAPPING-READY",
+          "verdict": "PASS",
+          "reason": "VERIFIED_PILOT_AVAILABLE"
+        },
+        {
+          "gate": "P1-SIGNAL-SELECTION-READY",
+          "verdict": "PASS",
+          "reason": "APPROVED_PILOT_SIGNALS_AVAILABLE"
+        },
+        {
+          "gate": "P1-CONDITION-PROJECTION-READY",
+          "verdict": "UNKNOWN",
+          "reason": "UNKNOWN_SOURCE_OR_PROJECTION_FRESHNESS"
+        },
+        {
+          "gate": "P1-INTEGRATION-STATUS-READY",
+          "verdict": "PASS",
+          "reason": "STATUS_CONTRACT_VALID"
+        }
+      ],
+      "assertions": "PASS"
+    },
+    {
+      "case": "collector_unavailable",
+      "overall": "UNKNOWN",
+      "gates": [
+        {
+          "gate": "P1-MAXIMO-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-MART-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-PI-COLLECTOR-CURRENT",
+          "verdict": "UNKNOWN",
+          "reason": "LOCAL_EVIDENCE_UNAVAILABLE"
+        },
+        {
+          "gate": "P1-MART-GOVERNANCE-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-CONDITION-SCHEMA-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-IDENTITY-MAPPING-READY",
+          "verdict": "PASS",
+          "reason": "VERIFIED_PILOT_AVAILABLE"
+        },
+        {
+          "gate": "P1-SIGNAL-SELECTION-READY",
+          "verdict": "PASS",
+          "reason": "APPROVED_PILOT_SIGNALS_AVAILABLE"
+        },
+        {
+          "gate": "P1-CONDITION-PROJECTION-READY",
+          "verdict": "UNKNOWN",
+          "reason": "UNKNOWN_SOURCE_OR_PROJECTION_FRESHNESS"
+        },
+        {
+          "gate": "P1-INTEGRATION-STATUS-READY",
+          "verdict": "PASS",
+          "reason": "STATUS_CONTRACT_VALID"
+        }
+      ],
+      "assertions": "PASS"
+    },
+    {
+      "case": "latest_wo_error",
+      "overall": "UNKNOWN",
+      "gates": [
+        {
+          "gate": "P1-MAXIMO-CURRENT",
+          "verdict": "PARTIAL",
+          "reason": "LOCAL_EVIDENCE_DEGRADED"
+        },
+        {
+          "gate": "P1-MART-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-PI-COLLECTOR-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-MART-GOVERNANCE-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-CONDITION-SCHEMA-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-IDENTITY-MAPPING-READY",
+          "verdict": "PASS",
+          "reason": "VERIFIED_PILOT_AVAILABLE"
+        },
+        {
+          "gate": "P1-SIGNAL-SELECTION-READY",
+          "verdict": "PASS",
+          "reason": "APPROVED_PILOT_SIGNALS_AVAILABLE"
+        },
+        {
+          "gate": "P1-CONDITION-PROJECTION-READY",
+          "verdict": "UNKNOWN",
+          "reason": "UNKNOWN_SOURCE_OR_PROJECTION_FRESHNESS"
+        },
+        {
+          "gate": "P1-INTEGRATION-STATUS-READY",
+          "verdict": "PASS",
+          "reason": "STATUS_CONTRACT_VALID"
+        }
+      ],
+      "assertions": "PASS"
+    },
+    {
+      "case": "good_quality_stale_source",
+      "overall": "PARTIAL",
+      "gates": [
+        {
+          "gate": "P1-MAXIMO-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-MART-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-PI-COLLECTOR-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-MART-GOVERNANCE-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-CONDITION-SCHEMA-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-IDENTITY-MAPPING-READY",
+          "verdict": "PASS",
+          "reason": "VERIFIED_PILOT_AVAILABLE"
+        },
+        {
+          "gate": "P1-SIGNAL-SELECTION-READY",
+          "verdict": "PASS",
+          "reason": "APPROVED_PILOT_SIGNALS_AVAILABLE"
+        },
+        {
+          "gate": "P1-CONDITION-PROJECTION-READY",
+          "verdict": "PARTIAL",
+          "reason": "SOURCE_STALE"
+        },
+        {
+          "gate": "P1-INTEGRATION-STATUS-READY",
+          "verdict": "PASS",
+          "reason": "STATUS_CONTRACT_VALID"
+        }
+      ],
+      "assertions": "PASS"
+    },
+    {
+      "case": "stale_projection",
+      "overall": "PARTIAL",
+      "gates": [
+        {
+          "gate": "P1-MAXIMO-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-MART-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-PI-COLLECTOR-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-MART-GOVERNANCE-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-CONDITION-SCHEMA-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-IDENTITY-MAPPING-READY",
+          "verdict": "PASS",
+          "reason": "VERIFIED_PILOT_AVAILABLE"
+        },
+        {
+          "gate": "P1-SIGNAL-SELECTION-READY",
+          "verdict": "PASS",
+          "reason": "APPROVED_PILOT_SIGNALS_AVAILABLE"
+        },
+        {
+          "gate": "P1-CONDITION-PROJECTION-READY",
+          "verdict": "PARTIAL",
+          "reason": "PROJECTION_STALE"
+        },
+        {
+          "gate": "P1-INTEGRATION-STATUS-READY",
+          "verdict": "PASS",
+          "reason": "STATUS_CONTRACT_VALID"
+        }
+      ],
+      "assertions": "PASS"
+    },
+    {
+      "case": "bad_quality_recent_times",
+      "overall": "PARTIAL",
+      "gates": [
+        {
+          "gate": "P1-MAXIMO-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-MART-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-PI-COLLECTOR-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-MART-GOVERNANCE-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-CONDITION-SCHEMA-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-IDENTITY-MAPPING-READY",
+          "verdict": "PASS",
+          "reason": "VERIFIED_PILOT_AVAILABLE"
+        },
+        {
+          "gate": "P1-SIGNAL-SELECTION-READY",
+          "verdict": "PASS",
+          "reason": "APPROVED_PILOT_SIGNALS_AVAILABLE"
+        },
+        {
+          "gate": "P1-CONDITION-PROJECTION-READY",
+          "verdict": "PARTIAL",
+          "reason": "QUALITY_NOT_ACCEPTED"
+        },
+        {
+          "gate": "P1-INTEGRATION-STATUS-READY",
+          "verdict": "PASS",
+          "reason": "STATUS_CONTRACT_VALID"
+        }
+      ],
+      "assertions": "PASS"
+    },
+    {
+      "case": "unverified_scope_never_verified",
+      "overall": "BLOCKED",
+      "gates": [
+        {
+          "gate": "P1-MAXIMO-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-MART-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-PI-COLLECTOR-CURRENT",
+          "verdict": "PASS",
+          "reason": "LOCAL_EVIDENCE_CURRENT"
+        },
+        {
+          "gate": "P1-MART-GOVERNANCE-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-CONDITION-SCHEMA-READY",
+          "verdict": "PASS",
+          "reason": "READER_SCHEMA_COMPATIBLE"
+        },
+        {
+          "gate": "P1-IDENTITY-MAPPING-READY",
+          "verdict": "BLOCKED",
+          "reason": "HUMAN_CROSSWALK_REQUIRED"
+        },
+        {
+          "gate": "P1-SIGNAL-SELECTION-READY",
+          "verdict": "BLOCKED",
+          "reason": "HUMAN_CROSSWALK_REQUIRED"
+        },
+        {
+          "gate": "P1-CONDITION-PROJECTION-READY",
+          "verdict": "BLOCKED",
+          "reason": "HUMAN_CROSSWALK_REQUIRED"
+        },
+        {
+          "gate": "P1-INTEGRATION-STATUS-READY",
+          "verdict": "PASS",
+          "reason": "STATUS_CONTRACT_VALID"
+        }
+      ],
+      "assertions": "PASS"
+    }
+  ]
+}
