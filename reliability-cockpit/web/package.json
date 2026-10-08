@@ -8,7 +8,8 @@
     "start": "next start",
     "smoke:routes": "node scripts/route-smoke.mjs",
     "check:product-safety": "node scripts/product-safety-check.mjs",
-    "check:engineering": "node scripts/engineering-check.mjs"
+    "check:engineering": "node scripts/engineering-check.mjs",
+    "check:phase2": "node scripts/phase2-check.mjs"
   },
   "dependencies": {
     "next": "^15.5.9",

@@ -43,3 +43,22 @@ button.engineering-primary {background:var(--cyan);color:var(--button-text);font
 .engineering-context summary {cursor:pointer;color:var(--cyan)}
 .engineering-context dd {margin:4px 0 12px;overflow-wrap:anywhere;white-space:pre-wrap}
 .engineering-context summary:focus-visible {outline:3px solid var(--cyan);outline-offset:3px}
+
+/* Phase 2 development lab uses the shared NADI theme and bounded responsive panels. */
+.phase2-tabs {display:flex;flex-wrap:wrap;gap:8px;margin:20px 0;}
+.phase2-tabs button {border:1px solid var(--line-strong);border-radius:7px;padding:10px 14px;background:var(--surface);color:var(--text);}
+.phase2-tabs button[aria-current="page"] {background:var(--cyan-soft);border-color:var(--cyan);color:var(--cyan);}
+.phase2-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;}
+.phase2-grid>.section-card {min-width:0;padding:22px;}
+.phase2-context {padding:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:15px;}
+.phase2-context h2 {margin:0 0 8px;}
+.phase2-context code,.phase2-record code {overflow-wrap:anywhere;}
+.phase2-muted {color:var(--muted);}
+.phase2-record {padding:16px 0;border-bottom:1px solid var(--line);}
+.phase2-record h3 {margin:0 0 8px;overflow-wrap:anywhere;}
+.phase2-record p {overflow-wrap:anywhere;}
+.phase2-form-row {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+.phase2-grid input,.phase2-grid select,.phase2-grid textarea {min-width:0;width:100%;}
+.phase2-grid details {margin-top:12px;}
+@media(max-width:1050px){.phase2-grid {grid-template-columns:minmax(0,1fr);}}
+@media(max-width:520px){.phase2-form-row {grid-template-columns:minmax(0,1fr);}.phase2-tabs button {flex:1 1 40%;}.phase2-grid>.section-card {padding:15px;}}
