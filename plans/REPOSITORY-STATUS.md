@@ -1,5 +1,26 @@
 # Repository status and debt — PLATFORM-ROADMAP-001
 
+## Current development checkpoint — Phase 2 Bundle B
+
+Main `02e887c56057611f112b7b652ba9a9aee8b382ea`, corrected PR29 MERGED.
+**Phase 1 CURRENT/PARTIAL; Phase 2 CANDIDATE/PARTIAL; activation OFF.**
+B1–B7 implement source-boundary policy/coverage, trusted identity/session adapters,
+bounded local WO context, Manual PdM envelope, NADI-native recommendations,
+development-only concept lab and isolated integrated acceptance. Maximo/PI remain
+strictly source read-only. A recommendation is not a WO or maintenance authorization.
+No production source GET, DB/DDL, deployment, activation or Phase-1 evidence mutation.
+
+Local evidence: Cockpit 462 pass (isolated PG + Compose), Maximo 181 pass,
+contracts 14 pass, PI 180 pass/11 fixture skips; frontend 25+37 assertions,
+product safety/typecheck/build and 24 browser checks pass. Enterprise provider,
+reviewed session bootstrap/provisioning/migration ledger, engineer-approved method
+fields, directories and operational UI/UAT remain required. No phase is marked COMPLETE.
+[Bundle report and review stack](../reliability-cockpit/docs/nadi-phase2-bundle-b.md) records limitations and migration/rollback proposals.
+Next: trusted enterprise identity + PdM field sign-off + reviewed application
+provisioning/backend integration. Earlier runtime checkpoints below are historical;
+GOV03 approvals/checkpoints/expiry are unchanged and are not re-certified here.
+
+
 ## Current development checkpoint — overnight Engineering bundle 01
 
 Baseline PR28 MERGED, main `e67c641e23214bf8851a05d312e1426c1e471ec3`.

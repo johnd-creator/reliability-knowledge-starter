@@ -18,7 +18,7 @@ export default function Phase2Workspace(){
   const [target,setTarget]=useState("");const [search,setSearch]=useState("");const [status,setStatus]=useState("");
   const [feedback,setFeedback]=useState("");const [dirty,setDirty]=useState(false);
   useEffect(()=>{function warn(event:BeforeUnloadEvent){if(dirty){event.preventDefault();event.returnValue="";}}window.addEventListener("beforeunload",warn);return()=>window.removeEventListener("beforeunload",warn);},[dirty]);
-  function changeScreen(next:Screen){if(dirty&&!window.confirm("Discard unsaved form input? Saved synthetic records remain in memory."))return;setDirty(false);setScreen(next);setFeedback("");}
+  function changeScreen(next:Screen){if(dirty&&!window.confirm("Discard unsaved form input? Saved synthetic records remain in memory."))return;if(dirty){setQuantity("");setValue("");setUnit("");setKind("UNKNOWN");setAt("");setContext("");setObservations("");setInterpretations("");setAction("");setRationale("");setTarget("");}setDirty(false);setScreen(next);setFeedback("");}
   function edit(change:()=>void){change();setDirty(true);}
   function saveInspection(){try{
     const input={canonical_asset_id:asset,method,method_version:"engineer-proposal-1",inspector_ref:"synthetic-inspector",
