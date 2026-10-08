@@ -30,6 +30,11 @@ record remaining operator reviews, manual expiry risk and separately authorized
 future cutover. No server migration, condition refresh/replay, DDL or approval changes.
 Earlier sections below are historical and do not override this checkpoint.
 
+Public SEC01 audit preserves approval scope, dates, thresholds and recorded readiness;
+host-specific deployment and executable recovery details are retained privately.
+Sanitization changes documentation only; runtime and accepted evidence are unchanged.
+Git history is retained, so earlier public revisions remain accessible.
+
 ## Historical owner decision — NADI-P1-FRESH-GOV-02 (8 October 2026)
 
 **PROJECT_OWNER_APPROVED**: Fauzi approved MAXIMO_WO=660s, MART_FACTUAL=660s,
@@ -195,7 +200,7 @@ and [authoritative Phase-1 matrix](NADI-PHASE-1-ACCEPTANCE.md).
 **PHASE 1 SOFTWARE RUNTIME FOUNDATION: ACCEPTED.**
 **PHASE 1 PRODUCT ACCEPTANCE: BLOCKED.** Phase 1 stays **CURRENT / PARTIAL**.
 Existing Mart canonical002/003/004 ready; validated private full backup and
-17 locked factual count/content comparisons passed. nadi_mart_reader remains
+17 locked factual count/content comparisons passed. The dedicated Mart reader remains
 SELECT-only, including three empty condition relations. PI local stored-data
 observation and NADI integration-status/Data Trust/Asset condition panels live.
 Readiness: governance/condition-schema/status PASS; collection/projection freshness
@@ -290,7 +295,7 @@ PR #16 MERGED at 13:30:28 UTC; `origin/main`
 `codex/nadi-idn-002-pilot` inspects the accepted runtime without redeployment.
 NADI-PI-001 ✅ MERGED; NADI-PI-RUNTIME-001 ✅ ACCEPTED;
 NADI-RUNTIME-002 ✅ MERGED / runtime ACCEPTED. Operational Mart has 845 registered
-assets, governance table empty, nadi_mart_reader SELECT-only; PI433/433/errors0.
+assets, governance table empty, the dedicated Mart reader SELECT-only; PI433/433/errors0.
 
 [NADI-IDN-002A packet](../reliability-cockpit/docs/nadi-idn-002-pilot.md) records
 20 shortlisted assets, 4 researched pairs, 18 bounded read-only PI GETs. One
@@ -311,7 +316,7 @@ re-derives runtime reconciliation; historical `7149455` remains evidence only.
 NADI-PI-001 ✅ MERGED; NADI-PI-RUNTIME-001 ✅ ACCEPTED;
 NADI-RUNTIME-002 current / candidate; NADI-IDN-002 next.
 
-Existing maximo-db/maximo_collector Mart now has canonical governance 002/003,
+Existing collector-owned Mart now has canonical governance 002/003,
 empty asset_af_mapping, checksummed ledger and dedicated SELECT-only NADI reader.
 All 17 existing table counts/content fingerprints preserved during DDL. Only API
 replaced; accepted Maximo/PI/CEMS/projector/volumes remain unchanged. Managed and

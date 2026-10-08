@@ -199,5 +199,13 @@
     "started_before_activation": true,
     "last_complete_success": "2026-10-08T14:38:27.535663+00:00",
     "task_attributable_source_gets": 0
+  },
+  "publication": {
+    "scope": "PUBLIC_ENGINEERING_SUMMARY",
+    "operational_inventory": "RETAINED_IN_IGNORED_PRIVATE_EVIDENCE",
+    "host_paths_and_deployment_identifiers": "WITHHELD",
+    "private_rollback_instructions": "RETAINED_PRIVATELY_FOR_ACCOUNTABLE_OPERATOR",
+    "audit_task": "NADI-P1-FRESH-GOV-03-SEC-01",
+    "git_history_rewritten": false
   }
 }

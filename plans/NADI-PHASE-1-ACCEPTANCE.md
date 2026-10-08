@@ -30,6 +30,11 @@ record remaining operator reviews, manual expiry risk and separately authorized
 future cutover. No server migration, condition refresh/replay, DDL or approval changes.
 Earlier sections below are historical and do not override this checkpoint.
 
+Public SEC01 audit preserves approval scope, dates, thresholds and recorded readiness;
+host-specific deployment and executable recovery details are retained privately.
+Sanitization changes documentation only; runtime and accepted evidence are unchanged.
+Git history is retained, so earlier public revisions remain accessible.
+
 ## Historical owner decision — NADI-P1-FRESH-GOV-02 (8 October 2026)
 
 **PROJECT_OWNER_APPROVED**: Fauzi approved MAXIMO_WO=660s, MART_FACTUAL=660s,
@@ -239,7 +244,7 @@ Current nine gates:
 | OPTIONAL/FUTURE | Wider semantics/MXR-004, scheduling/soak/restore, CEMS evidence, scoring and Phase2–5 remain separate scope |
 
 Private full backup13,198,605bytes/catalog130, SHA256
-6ae19af92b30ac5d960755e40e289894e757e2621a1b755df98d8cf34c7a32c3.
+[checksum retained privately].
 Mart004 transaction7.968s, second apply no-op. No condition DDL in legacy Cockpit.
 80 targeted tests PASS (62Cockpit/18PI),9 web route shells plus2 hydrated views,
 2 real JSON proxy routes and final Next build PASS. Accepted prior full-suite
@@ -306,15 +311,14 @@ PI credential in NADI, public mutation or arbitrary source proxy is introduced.
 ## Actual runtime and preserved evidence
 
 Control checkout remains `0c800dac1da6ef863afdb193021176fe7feac073`.
-Compose project `reliability-cockpit-platform`; actual files compose.yaml,
-compose.dev.yaml and private accepted Maximo-WO/PI-runtime/NADI-runtime overrides.
+The accepted managed deployment and reviewed private overlays are preserved.
 The inspected nine DB/API/worker/projector/web identities remain running; no
-service was restarted or deployed by this bundle. Private aggregate audit is ignored under secrets/nadi-phase1-overnight-bundle-01;
+service was restarted or deployed by this bundle. Private aggregate audit is ignored under the restricted operational evidence directory;
 the temporary0600 reader-only preflight env was removed after inspection;
 no secret/DSN or backup bytes are committed.
 
-Mart remains maximo-db / maximo_collector, owner maximo_collector. Public NADI
-uses nadi_mart_reader, distinct from legacy cockpit-db / cockpit. Reader has
+Mart remains in its existing collector-owned store. Public NADI uses a
+dedicated reader, separate from the legacy application store. Reader has
 mapping SELECT, no UPDATE and no superuser privilege. Writer/admin stays separate.
 Operational governance ledger contains002/003; condition table absent and Mart004
 not applied. Canonical query compatibility is inspected without reader access to
@@ -333,7 +337,7 @@ Moving-window changes are not a table/cursor reset or a failure score.
 PI registry490 total/433 active; snapshots433. Latest inspected snapshot success
 21:44:33 UTC, 433 seen/433 collected/errors0. Existing PI migration004
 `004_signal_quality_fields.sql` remains applied at10:49:24 UTC with checksum
-`b40f87fe86097bf2e1eda7c63063629903166627b1cca6c182de74c0dd3f1ffe`.
+`[checksum retained privately]`.
 This PI migration is distinct from new Mart004_condition_evidence.sql.
 Accepted historical508-second acquisition +300-second post-cycle pause remains
 historical evidence, not fixed five-minute cadence. No broad source re-verification.
@@ -387,48 +391,49 @@ synthetic rendered React/ASGI tests PASS; typecheck PASS; Next production build
 13 routes; product safety18 source files; route smoke9/9; git diff --check PASS.
 
 Environment preparation used a test-only image based on the existing accepted
-Cockpit runtime with jsonschema4.26.0 installed under /tmp/testdeps, not a
+Cockpit runtime with jsonschema4.26.0 installed under a test-only dependency directory, not a
 production image redeploy. Host jsonschema dependencies were installed under
-/tmp/nadi-phase1-host-testdeps; existing component environments were reused.
+a prepared test dependency directory; existing component environments were reused.
 
-Exact commands (PROJECT_WORKTREE points to this candidate worktree):
+Portable equivalents of historical commands (variables identify disposable test
+resources and a prepared component environment; exact execution records are private):
 
 ```bash
 # Cockpit directory, host: isolated legacy DSN, clean Compose config and Node case.
 DATABASE_URL=sqlite+pysqlite:///:memory: NADI_COMPOSE_TESTS=1 \
-PYTHONPATH=/tmp/nadi-phase1-host-testdeps \
-/home/john-d/Music/reliability-knowledge-starter/reliability-cockpit/.venv/bin/python \
+PYTHONPATH="$TEST_DEPS_DIR" \
+python \
 -m unittest discover -s tests -q
 
 # Disposable PostgreSQL16, no host ports/operational volumes; candidate source read-only.
-docker run --rm --network container:nadi-phase1-mart-test \
+docker run --rm --network "$MART_TEST_NETWORK" \
 -v "$PROJECT_WORKTREE:/workspace:ro" -w /workspace/reliability-cockpit \
 -e RELIABILITY_MART_MIGRATIONS_ROOT=/workspace/reliability-cockpit/migrations \
 -e DATABASE_URL=sqlite+pysqlite:///:memory: \
--e NADI_MART_TEST_DSN=postgresql+psycopg://test:test-only@127.0.0.1:5432/nadi_governance_test \
-nadi-phase1-acceptance-test:local python -m unittest discover -s tests -q
+-e NADI_MART_TEST_DSN \
+"$ACCEPTANCE_TEST_IMAGE" python -m unittest discover -s tests -q
 
 # Disposable Timescale2.16.1/PG16; no operational PI migration or source.
-docker run --rm --network container:nadi-phase1-pi-test \
+docker run --rm --network "$PI_TEST_NETWORK" \
 -v "$PROJECT_WORKTREE:/workspace:ro" -w /workspace/pi-collector \
 -e PI_MIGRATIONS_PATH=/workspace/pi-collector/migrations \
--e PI_MIGRATION_TEST_DSN=postgresql+psycopg://test:test-only@127.0.0.1:5432/pi_runtime_test \
-nadi-phase1-acceptance-test:local python -m unittest discover -s tests -q
+-e PI_MIGRATION_TEST_DSN \
+"$ACCEPTANCE_TEST_IMAGE" python -m unittest discover -s tests -q
 
 # Contracts directory (14 tests, all30 schemas).
-/home/john-d/Music/reliability-knowledge-starter/maximo-knowledge/.venv/bin/python \
+python \
 -m unittest discover -s tests -q
 
 # Cockpit directory: 3 reproducible status/handoff exports.
-/home/john-d/Music/reliability-knowledge-starter/reliability-cockpit/.venv/bin/python \
+python \
 scripts/export_evidence_contracts.py --check
 
 # Cockpit web directory.
 node_modules/.bin/tsc --noEmit
 npm run build
 node scripts/product-safety-check.mjs
-NADI_WEB_BASE_URL=http://127.0.0.1:3319 node scripts/route-smoke.mjs
-# Next start :3319 was a temporary test process, stopped after smoke.
+NADI_WEB_BASE_URL="$TEST_WEB_BASE_URL" node scripts/route-smoke.mjs
+# The temporary test web process was stopped after smoke.
 
 # Repository root.
 git diff --check
