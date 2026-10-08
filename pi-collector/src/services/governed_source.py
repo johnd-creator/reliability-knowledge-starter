@@ -13,6 +13,7 @@ from urllib.parse import quote
 from src.adapters.pi.client import PiClient, PiClientError, extract_recorded, extract_snapshot, _source_units
 from src.domain.governed import GovernedAfTarget, validate_governed_af_target
 from src.domain.models import Snapshot, TimeseriesPoint
+from src.domain.source_diagnostics import SourceFailureCode
 
 
 def _limit(value: int, maximum: int) -> int:
@@ -42,11 +43,11 @@ class GovernedSourceBoundary:
         target = validate_governed_af_target(target)
         element = self._client.get_af_element(target.af_element_ref)
         if element.get("WebId") != target.af_element_ref:
-            raise PiClientError("AF element identity mismatch")
+            raise PiClientError("AF element identity mismatch", failure_code=SourceFailureCode.CONTRACT_INVALID)
         self._client.require_resource_link(element, "Database", f"/assetdatabases/{quote(target.af_database_ref, safe='')}")
         database = self._client.get_af_database(target.af_database_ref)
         if database.get("WebId") != target.af_database_ref:
-            raise PiClientError("AF database identity mismatch")
+            raise PiClientError("AF database identity mismatch", failure_code=SourceFailureCode.CONTRACT_INVALID)
         self._client.require_resource_link(database, "AssetServer", f"/assetservers/{quote(target.af_server_ref, safe='')}")
         return element
 
@@ -59,7 +60,7 @@ class GovernedSourceBoundary:
         for item in items:
             ref = item.get("WebId")
             if not isinstance(ref, str) or not ref.strip() or ref in refs:
-                raise PiClientError("AF attribute list has missing or duplicate identity")
+                raise PiClientError("AF attribute list has missing or duplicate identity", failure_code=SourceFailureCode.CONTRACT_INVALID)
             refs.add(ref)
             self._client.require_resource_link(item, "Element", f"/elements/{quote(target.af_element_ref, safe='')}")
         return items
@@ -72,10 +73,10 @@ class GovernedSourceBoundary:
         # an unrelated VERIFIED element. Only the bounded direct list is usable.
         items = self.list_attributes(target)
         if not any(item["WebId"] == attribute_ref for item in items):
-            raise PiClientError("attribute is outside bounded governed element listing")
+            raise PiClientError("attribute is outside bounded governed element listing", failure_code=SourceFailureCode.CONTRACT_INVALID)
         metadata = self._client.get_af_attribute(attribute_ref)
         if metadata.get("WebId") != attribute_ref:
-            raise PiClientError("AF attribute identity mismatch")
+            raise PiClientError("AF attribute identity mismatch", failure_code=SourceFailureCode.CONTRACT_INVALID)
         self._client.require_resource_link(metadata, "Element", f"/elements/{quote(target.af_element_ref, safe='')}")
         return metadata
 
@@ -88,7 +89,7 @@ class GovernedSourceBoundary:
         payload = self._client.get_af_attribute_value(attribute)
         snapshot = extract_snapshot(payload, attribute_ref, units=_source_units({}, attribute.get("DefaultUnitsName")))
         if snapshot.source_timestamp is None:
-            raise PiClientError("governed snapshot requires an aware source timestamp")
+            raise PiClientError("governed snapshot requires an aware source timestamp", failure_code=SourceFailureCode.CONTRACT_INVALID)
         name = attribute.get("Name")
         return name if isinstance(name, str) else None, snapshot
 

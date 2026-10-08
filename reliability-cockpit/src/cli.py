@@ -283,7 +283,10 @@ def cmd_condition_refresh(args):
     except Exception as error:
         # No raw exceptions, source URLs, process output, values or credentials.
         reason = error.reason if isinstance(error,RefreshError) else "REFRESH_PREFLIGHT_FAILED"
-        print(json.dumps({"status":"FAILED","reason":reason}))
+        failure = {"status":"FAILED","reason":reason}
+        if isinstance(error, RefreshError) and error.source_failure_code:
+            failure['source_failure_code'] = error.source_failure_code
+        print(json.dumps(failure))
         return 2
     finally:
         if store is not None:

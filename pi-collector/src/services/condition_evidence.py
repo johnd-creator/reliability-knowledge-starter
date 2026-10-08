@@ -6,6 +6,9 @@ At most five signals, five guarded source GETs per selected snapshot, no history
 """
 from datetime import datetime, timezone
 from src.domain.governed import GovernedAfTarget, validate_governed_af_target
+from src.adapters.pi.client import PiClientError
+from src.services.condition_budget import ConditionBudgetError
+from src.domain.source_diagnostics import SourceFailureCode
 
 MAX_SIGNALS = 5
 
@@ -37,7 +40,7 @@ def validate_plan(plan):
             raise ValueError("duplicate selected signal")
     return target
 
-def collect_condition_evidence(boundary, plan, *, collector_last_success_at=None):
+def collect_condition_evidence(boundary, plan, *, collector_last_success_at=None, diagnostics=None):
     target = validate_plan(plan)  # Validate the WHOLE selection before any source call.
     results = []
     for signal in plan["signals"]:
@@ -63,7 +66,16 @@ def collect_condition_evidence(boundary, plan, *, collector_last_success_at=None
                     "selection_evidence_ref": signal["evidence_ref"], "selection_approved_by": signal["approved_by"],
                     "selection_approved_at": signal["approved_at"]}}
             results.append({"signal_id": signal["signal_id"], "status": "COLLECTED", "evidence": evidence})
-        except Exception:
+        except Exception as error:
+            # Optional private receipt metadata only. Never inspect str(error),
+            # __cause__, URLs, response bodies, headers, or credential values.
+            code = SourceFailureCode.CAUSE_UNKNOWN
+            if isinstance(error, (PiClientError, ConditionBudgetError)):
+                candidate = getattr(error, "failure_code", None)
+                if isinstance(candidate, SourceFailureCode):
+                    code = candidate
+            if diagnostics is not None:
+                diagnostics.append({"signal_id": signal["signal_id"], "code": code.value})
             # Do not serialize source URLs, responses, credentials or exception strings.
             results.append({"signal_id": signal["signal_id"], "status": "SOURCE_UNAVAILABLE", "evidence": None})
     return {"plan": plan, "results": results, "collector_last_success_at": collector_last_success_at.isoformat() if collector_last_success_at else None}
