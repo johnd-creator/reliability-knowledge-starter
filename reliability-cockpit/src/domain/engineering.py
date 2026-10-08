@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from enum import StrEnum
 from datetime import datetime
-from typing import Literal
+from typing import Annotated, Literal
 import json
 import re
 
@@ -42,13 +42,21 @@ class Principal(EvidenceModel):
     asset_ids: frozenset[str]
 
 
+# Explicit Python str.strip whitespace set, portable to JSON Schema and JavaScript.
+# Keep the semantic validator below as an independent domain safeguard.
+InvestigationItem = Annotated[str, Field(
+    strict=True, min_length=1, max_length=2000,
+    pattern=r"[^\u0009-\u000d\u001c-\u0020\u0085\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000]",
+)]
+
+
 class Investigation(EvidenceModel):
-    observed_symptoms: tuple[str, ...] = Field(default=(), max_length=20)
+    observed_symptoms: tuple[InvestigationItem, ...] = Field(default=(), max_length=20)
     operating_context: str = Field(default="", max_length=6000)
-    hypotheses: tuple[str, ...] = Field(default=(), max_length=20)
-    observations: tuple[str, ...] = Field(default=(), max_length=20)
-    open_questions: tuple[str, ...] = Field(default=(), max_length=20)
-    proposed_next_checks: tuple[str, ...] = Field(default=(), max_length=20)
+    hypotheses: tuple[InvestigationItem, ...] = Field(default=(), max_length=20)
+    observations: tuple[InvestigationItem, ...] = Field(default=(), max_length=20)
+    open_questions: tuple[InvestigationItem, ...] = Field(default=(), max_length=20)
+    proposed_next_checks: tuple[InvestigationItem, ...] = Field(default=(), max_length=20)
 
     @field_validator("observed_symptoms", "hypotheses", "observations", "open_questions", "proposed_next_checks")
     @classmethod

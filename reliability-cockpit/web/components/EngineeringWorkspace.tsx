@@ -2,7 +2,7 @@
 
 import {useEffect, useState} from "react";
 import {PageHeader, SectionCard, StatusBadge, EmptyState, Pagination} from "./ui";
-import {CaseDocument, CaseEvent, CaseStatus, Priority, demoTransition, evidenceValue} from "../lib/engineering";
+import {CaseDocument, CaseEvent, CaseStatus, Priority, demoTransition, evidenceValue, parseHypotheses} from "../lib/engineering";
 import synthetic from "../fixtures/engineering-workspace.json";
 
 const initial = synthetic.cases as CaseDocument[];
@@ -43,7 +43,7 @@ export default function EngineeringWorkspace({initialCaseId}: {initialCaseId?:st
     if(action!=="NOTE" && note.trim()) {setFeedback("Save or clear the unsaved note first.");return;}
     try {
       const data=action==="SAVE"?{title,problem_statement:problem,priority,
-        investigation:{...current.investigation,hypotheses:hypothesis.split("\n").filter(Boolean)}}:
+        investigation:{...current.investigation,hypotheses:parseHypotheses(hypothesis)}}:
         action==="LINK"?{evidence:[synthetic.available_evidence as CaseDocument["evidence"][number]]}:undefined;
       const result=demoTransition(current,loadedRevision,actor,action,new Date().toISOString(),data,action==="NOTE"?note:rationale);
       setCases(items=>items.map(item=>item.case_id===current.case_id?result.document:item));
@@ -79,7 +79,7 @@ export default function EngineeringWorkspace({initialCaseId}: {initialCaseId?:st
             <label>Case title<input maxLength={200} required disabled={!editable} value={title} onChange={event=>{setTitle(event.target.value);setDirty(true);}}/></label>
             <label>Problem statement<textarea maxLength={12000} required rows={4} disabled={!editable} value={problem} onChange={event=>{setProblem(event.target.value);setDirty(true);}}/></label>
             <label>Human priority<select disabled={!editable} value={priority} onChange={event=>{setPriority(event.target.value as Priority);setDirty(true);}}>{["LOW","NORMAL","HIGH"].map(value=><option key={value}>{value}</option>)}</select></label>
-            <label>Hypotheses — human judgment, not confirmed facts<textarea maxLength={4000} rows={3} disabled={!editable} value={hypothesis} onChange={event=>{setHypothesis(event.target.value);setDirty(true);}}/></label>
+            <label>Hypotheses — human judgment, not confirmed facts (one per line; at most 20 entries, 2,000 characters each; no blank entries)<textarea rows={3} disabled={!editable} value={hypothesis} onChange={event=>{setHypothesis(event.target.value);setDirty(true);}}/></label>
             <div className="engineering-actions"><button className="engineering-primary" disabled={!editable||!dirty} type="submit">Save synthetic draft</button><button type="button" disabled={!editable||dirty} onClick={()=>change("SUBMIT")}>Submit for synthetic review</button>{dirty&&<span>Unsaved changes</span>}</div>
           </form>
           <details className="engineering-context"><summary>Human observations and investigation context</summary><dl><dt>Operating context</dt><dd>{current.investigation.operating_context||"Not recorded"}</dd><dt>Observed symptoms</dt><dd>{current.investigation.observed_symptoms.join("; ")||"Not recorded"}</dd><dt>Engineer observations</dt><dd>{current.investigation.observations.join("; ")||"Not recorded"}</dd><dt>Open questions</dt><dd>{current.investigation.open_questions.join("; ")||"Not recorded"}</dd><dt>Proposed next checks</dt><dd>{current.investigation.proposed_next_checks.join("; ")||"Not recorded"}</dd></dl></details>

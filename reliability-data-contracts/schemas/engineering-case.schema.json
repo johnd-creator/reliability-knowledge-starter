@@ -564,6 +564,9 @@
         "observed_symptoms": {
           "default": [],
           "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
             "type": "string"
           },
           "maxItems": 20,
@@ -579,6 +582,9 @@
         "hypotheses": {
           "default": [],
           "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
             "type": "string"
           },
           "maxItems": 20,
@@ -588,6 +594,9 @@
         "observations": {
           "default": [],
           "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
             "type": "string"
           },
           "maxItems": 20,
@@ -597,6 +606,9 @@
         "open_questions": {
           "default": [],
           "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
             "type": "string"
           },
           "maxItems": 20,
@@ -606,6 +618,9 @@
         "proposed_next_checks": {
           "default": [],
           "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
             "type": "string"
           },
           "maxItems": 20,

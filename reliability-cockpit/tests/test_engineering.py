@@ -429,6 +429,60 @@ class EngineeringFixtureContractTest(unittest.TestCase):
             Draft202012Validator(schema,format_checker=FormatChecker()).validate(document)
         EvidenceReference.model_validate(fixture["available_evidence"])
 
+    def assert_investigation_contract(self, items, valid):
+        from jsonschema import Draft202012Validator
+        fixture = json.loads((ROOT/"web/fixtures/engineering-workspace.json").read_text())["cases"][0]
+        schema = json.loads((ROOT.parent/"reliability-data-contracts/schemas/engineering-case.schema.json").read_text())
+        validator = Draft202012Validator(schema)
+        for field in ("observed_symptoms", "hypotheses", "observations", "open_questions", "proposed_next_checks"):
+            with self.subTest(field=field):
+                document = copy.deepcopy(fixture)
+                document["investigation"][field] = items
+                self.assertEqual(validator.is_valid(document), valid)
+                if valid:
+                    model = EngineeringCase.model_validate(document)
+                    self.assertEqual(list(getattr(model.investigation, field)), items)
+                else:
+                    with self.assertRaises(ValidationError):
+                        EngineeringCase.model_validate(document)
+
+    def test_investigation_empty_list_is_optional(self):
+        self.assert_investigation_contract([], True)
+
+    def test_investigation_twenty_items_and_two_thousand_characters(self):
+        self.assert_investigation_contract(["x"*2000]*20, True)
+
+    def test_investigation_unicode_length_and_nonblank_preserved(self):
+        for item in ("🛠"*2000, "  hypothesis  ", "\ufeff"):
+            with self.subTest(item_kind=item[:20]):
+                self.assert_investigation_contract([item], True)
+
+    def test_investigation_twenty_one_items_rejected(self):
+        self.assert_investigation_contract(["hypothesis"]*21, False)
+
+    def test_investigation_two_thousand_one_characters_rejected(self):
+        for item in ("x"*2001, "🛠"*2001):
+            self.assert_investigation_contract([item], False)
+
+    def test_investigation_empty_and_whitespace_items_rejected(self):
+        for item in ("", " ", "\t\r\n", "\u001c", "\u0085", "\u00a0", "\u3000"):
+            with self.subTest(item=repr(item)):
+                self.assert_investigation_contract([item], False)
+
+    def test_investigation_strict_item_types(self):
+        for item in (None, 1, True, {}, []):
+            with self.subTest(item=item):
+                self.assert_investigation_contract([item], False)
+
+    def test_investigation_additional_properties_forbidden(self):
+        from jsonschema import Draft202012Validator
+        document = json.loads((ROOT/"web/fixtures/engineering-workspace.json").read_text())["cases"][0]
+        document["investigation"]["unknown"] = "not allowed"
+        schema = json.loads((ROOT.parent/"reliability-data-contracts/schemas/engineering-case.schema.json").read_text())
+        self.assertFalse(Draft202012Validator(schema).is_valid(document))
+        with self.assertRaises(ValidationError):
+            EngineeringCase.model_validate(document)
+
     def test_generated_json_contract_has_no_model_drift(self):
         schema=json.loads((ROOT.parent/"reliability-data-contracts/schemas/engineering-case.schema.json").read_text())
         generated=EngineeringCase.model_json_schema()

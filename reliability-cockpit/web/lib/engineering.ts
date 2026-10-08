@@ -40,6 +40,22 @@ export function evidenceValue(reference: EvidenceReference): string {
   if (!condition || condition.value === null) return "Unknown";
   return typeof condition.value === "object" ? condition.value.name ?? "Unknown digital state" : String(condition.value);
 }
+// Same nonblank semantics as Python str.strip and the canonical item schema.
+const nonblankInvestigationItem = /[^\u0009-\u000d\u001c-\u0020\u0085\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000]/u;
+export function parseHypotheses(text: string): string[] {
+  // An empty field is an optional empty list; blank entries must not disappear.
+  return text === "" ? [] : text.split(/\r?\n/);
+}
+export function validateHypotheses(items: string[]): void {
+  if (items.length > 20) throw new Error("Hypotheses: use at most 20 entries.");
+  items.forEach((item, index) => {
+    if (typeof item !== "string" || !nonblankInvestigationItem.test(item))
+      throw new Error(`Hypothesis ${index+1}: enter nonblank text.`);
+    // JSON Schema and Python count Unicode code points, not UTF-16 units.
+    if (Array.from(item).length > 2000)
+      throw new Error(`Hypothesis ${index+1}: use at most 2,000 characters.`);
+  });
+}
 export function demoTransition(current: CaseDocument, expected: number, actor: string,
   action: "SAVE" | "NOTE" | "LINK" | "SUBMIT" | "APPROVED" | "REJECTED" | "REVISE" | "REOPEN",
   now: string, data?: Partial<CaseDocument>, reason?: string): {document: CaseDocument; event: CaseEvent} {
@@ -54,6 +70,7 @@ export function demoTransition(current: CaseDocument, expected: number, actor: s
   if (action === "SAVE") {
     if (!data?.title?.trim() || !data.problem_statement?.trim() || data.title.length>200 || data.problem_statement.length>12000)
       throw new Error("INVALID_DRAFT");
+    validateHypotheses((data.investigation ?? current.investigation).hypotheses);
     next={...next,title:data.title,problem_statement:data.problem_statement,priority:data.priority ?? current.priority,investigation:data.investigation ?? current.investigation};
   } else if (action === "NOTE") {
     if (!reason?.trim() || reason.length>12000 || current.notes.length>=100) throw new Error("INVALID_NOTE");
@@ -63,7 +80,10 @@ export function demoTransition(current: CaseDocument, expected: number, actor: s
     if (!ref || ref.canonical_asset_id!==current.canonical_asset_id || current.evidence.length>=30) throw new Error("INVALID_EVIDENCE");
     if (current.evidence.some(item=>item.kind===ref.kind && item.record_id===ref.record_id)) throw new Error("DUPLICATE_EVIDENCE");
     next.evidence=[...current.evidence,{...ref,linked_by:actor,linked_at:now}];
-  } else if (action === "SUBMIT") next.status="IN_REVIEW";
+  } else if (action === "SUBMIT") {
+    validateHypotheses(current.investigation.hypotheses);
+    next.status="IN_REVIEW";
+  }
   else if (action === "APPROVED" || action === "REJECTED") {
     if (current.status!=="IN_REVIEW" || !reason?.trim()) throw new Error("INVALID_REVIEW");
     next.status=action; next.review={reviewer:actor,decision:action,rationale:reason,decided_at:now};
