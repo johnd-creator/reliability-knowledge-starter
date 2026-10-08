@@ -111,7 +111,7 @@ tested synthetically, not claimed for a real batch that does not exist.
 ### API, UI and actual readiness
 
 Platform status, bounded asset status, pi-mapping, condition-evidence and local
-PI integration-observation returned HTTP200. Coverage: 845 registered / 1 verified / 
+PI integration-observation returned HTTP200. Coverage: 845 registered / 1 verified /
 0 approved / 0 projected. Asset condition response MAPPING_VERIFIED,
 NO_APPROVED_SIGNALS, empty items and no successful condition collection.
 Hydrated Coal Feeder A UI showed 246 maintenance events, verified mapping,
@@ -150,8 +150,8 @@ NADI/source credentials remain separated from controlled writer.
 
 Mart factual counts stayed 845 registry / 11,845 assets / 69,635 maintenance / 113,902 WO.
 WO cursor 2026-10-08T03:35:02Z preserved, recovery-floor 2026-08-21T03:56:54Z
-and its one ledger row intact; latest bounded incremental 25 seen / 0 upserted / 
-25 skipped / errors 0. Projector succeeded normally. PI 490 total / 433 active / 433 snapshots / 
+and its one ledger row intact; latest bounded incremental 25 seen / 0 upserted /
+25 skipped / errors 0. Projector succeeded normally. PI 490 total / 433 active / 433 snapshots /
 133,570 history preserved, latest normal background cycle 03:42:56Z, 433/433, errors 0.
 No task source acquisition occurred; normal background collectors continued.
 Factual API200 and current maintenance windows remain populated.
@@ -216,4 +216,3 @@ check real exact lineage/unit/quality/time, project accepted bounded handoff,
 replay to prove idempotency and rerun API/UI/readiness. Separately approve
 defensible freshness thresholds; no value can establish equipment health.
 Phase 1 remains CURRENT/PARTIAL, product BLOCKED; this PR stays open/unmerged.
-
