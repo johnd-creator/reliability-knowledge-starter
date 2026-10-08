@@ -65,3 +65,12 @@ def build_record_router(service, *, prefix, draft_model, enabled=False, trusted_
 
 def build_inspection_router(service, **kwargs):
     return build_record_router(service, prefix="/v1/engineering/inspections", draft_model=InspectionDraft, **kwargs)
+
+
+def build_recommendation_router(service, **kwargs):
+    from typing import Literal
+    from src.domain.recommendation import RecommendationDraft
+    followup = create_model("RecommendationFollowUp", __base__=ReasonRequest,
+        status=(Literal["PLANNED", "IN_PROGRESS", "COMPLETED", "CANCELLED"], ...))
+    return build_record_router(service, prefix="/v1/engineering/recommendations", draft_model=RecommendationDraft,
+        extra_actions={"FOLLOWUP":followup}, **kwargs)
