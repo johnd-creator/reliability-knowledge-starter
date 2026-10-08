@@ -37,7 +37,7 @@ class CaseService:
         if asset_id not in actor.asset_ids:
             raise EngineeringError("NOT_FOUND", 404)
         if reviewer:
-            if Role.REVIEWER not in actor.roles or (case and actor.principal_id in {case.created_by, case.assigned_engineer}):
+            if Role.REVIEWER not in actor.roles or (case and actor.principal_id in {case.created_by, case.assigned_engineer, *case.contributors}):
                 raise EngineeringError("INDEPENDENT_REVIEWER_REQUIRED", 403)
         elif Role.AUTHOR not in actor.roles or (case and actor.principal_id not in {case.created_by, case.assigned_engineer}):
             raise EngineeringError("FORBIDDEN", 403)
@@ -102,6 +102,8 @@ class CaseService:
 
     def checked_reference(self, asset, kind, record_id, mode, actor_id, now):
         ref = self.catalog.resolve(asset, kind, record_id, mode, actor_id, now)
+        if isinstance(ref, EvidenceReference):
+            ref = EvidenceReference.model_validate(ref.model_dump(mode="json"))
         if not isinstance(ref, EvidenceReference) or (ref.canonical_asset_id, ref.kind, ref.record_id, ref.mode) != (asset, kind, record_id, mode):
             raise EngineeringError("EVIDENCE_IDENTITY_INVALID", 422)
         if (ref.linked_by, ref.linked_at) != (actor_id, now):
@@ -137,12 +139,14 @@ class CaseService:
             if action == "CREATE":
                 self.assignment(asset, draft.assigned_engineer)
                 data = dict(**draft.model_dump(mode="json"), case_id="case:"+str(uuid4()),
-                    created_at=now, updated_at=now, created_by=actor.principal_id, revision=1)
+                    created_at=now, updated_at=now, created_by=actor.principal_id, contributors=(actor.principal_id,), revision=1)
             else:
                 if current.revision != expected_revision:
                     raise EngineeringError("REVISION_CONFLICT")
                 data = current.model_dump(mode="json")
                 data.update(revision=current.revision+1, updated_at=now)
+                if action in {"UPDATE", "NOTE", "LINK", "SUBMIT", "REVISE"}:
+                    data["contributors"] = tuple(dict.fromkeys((*current.contributors, actor.principal_id)))
                 if action in {"UPDATE", "NOTE", "LINK", "SUBMIT"} and current.status != CaseStatus.DRAFT:
                     raise EngineeringError("INVALID_TRANSITION")
                 if action == "UPDATE":

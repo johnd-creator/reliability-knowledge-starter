@@ -157,6 +157,15 @@ class EngineeringTest(unittest.TestCase):
         self.case=self.command("SUBMIT",actor=assigned)
         self.assert_code("INDEPENDENT_REVIEWER_REQUIRED",lambda:self.command("REVIEW",{"decision":"APPROVED","reason":"x"},actor=assigned))
 
+    def test_previous_assignee_cannot_approve_after_unassignment(self):
+        assigned=Principal(principal_id="assigned",roles={Role.AUTHOR,Role.REVIEWER},asset_ids={ASSET})
+        self.service.directory=lambda _:assigned
+        self.case=self.command("UPDATE",dict(DRAFT,assigned_engineer="assigned"))
+        self.case=self.command("NOTE",{"text":"My work"},actor=assigned)
+        self.case=self.command("UPDATE",DRAFT,request="unassign")
+        self.case=self.command("SUBMIT")
+        self.assert_code("INDEPENDENT_REVIEWER_REQUIRED",lambda:self.command("REVIEW",{"decision":"APPROVED","reason":"x"},actor=assigned))
+
     def test_review_without_submit_or_reason_rejected(self):
         self.assert_code("INVALID_TRANSITION",lambda:self.command("REVIEW",{"decision":"APPROVED","reason":"x"},actor=REVIEWER))
         self.case=self.command("SUBMIT")
@@ -360,3 +369,43 @@ class EngineeringPostgresTest(EngineeringTest):
         tables=inspect(self.engine)
         for table in EngineeringBase.metadata.sorted_tables:
             self.assertEqual({c.name for c in table.columns},{c["name"] for c in tables.get_columns(table.name)})
+
+
+    def test_candidate_writer_cannot_tamper_with_audit(self):
+        from sqlalchemy.exc import DBAPIError
+        with self.engine.begin() as c:
+            if not c.scalar(text("SELECT 1 FROM pg_roles WHERE rolname='engineering_fixture_writer'")):
+                c.exec_driver_sql("CREATE ROLE engineering_fixture_writer NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOBYPASSRLS")
+            c.exec_driver_sql("GRANT USAGE ON SCHEMA public TO engineering_fixture_writer")
+            c.exec_driver_sql("GRANT SELECT,INSERT,UPDATE ON engineering_case TO engineering_fixture_writer")
+            c.exec_driver_sql("GRANT SELECT,INSERT ON engineering_case_event,engineering_case_receipt TO engineering_fixture_writer")
+        for sql in ("UPDATE engineering_case_event SET revision=99", "DELETE FROM engineering_case_event", "TRUNCATE engineering_case_event", "ALTER TABLE engineering_case ADD COLUMN illicit text"):
+            with self.subTest(sql=sql),self.engine.connect() as c:
+                c.exec_driver_sql("SET ROLE engineering_fixture_writer")
+                with self.assertRaises(DBAPIError):c.exec_driver_sql(sql)
+                c.rollback()
+                c.exec_driver_sql("RESET ROLE")
+        with self.engine.begin() as c:
+            c.exec_driver_sql("SET LOCAL ROLE engineering_fixture_writer")
+            self.assertEqual(c.scalar(text("SELECT count(*) FROM engineering_case_event")),1)
+
+
+class EngineeringFixtureContractTest(unittest.TestCase):
+    def test_ui_synthetic_documents_validate_python_and_json_contract(self):
+        from jsonschema import Draft202012Validator, FormatChecker
+        fixture=json.loads((ROOT/"web/fixtures/engineering-workspace.json").read_text())
+        schema=json.loads((ROOT.parent/"reliability-data-contracts/schemas/engineering-case.schema.json").read_text())
+        self.assertTrue(fixture["synthetic"])
+        for document in fixture["cases"]:
+            EngineeringCase.model_validate(document)
+            Draft202012Validator(schema,format_checker=FormatChecker()).validate(document)
+        EvidenceReference.model_validate(fixture["available_evidence"])
+
+    def test_auth_disabled_nav_and_demo_development_only(self):
+        source=(ROOT/"web/lib/engineering.ts").read_text()
+        self.assertIn('environment.NODE_ENV === "development"',source)
+        self.assertIn('environment.NADI_ENGINEERING_WORKSPACE_ENABLED !== "true"',source)
+        view=(ROOT/"web/components/EngineeringWorkspace.tsx").read_text()
+        self.assertIn('SYNTHETIC LOCAL DEMO',view)
+        self.assertNotIn('dangerouslySetInnerHTML',view)
+        self.assertNotIn('fetch(',view)

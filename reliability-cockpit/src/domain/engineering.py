@@ -164,6 +164,7 @@ class EngineeringCase(CaseDraft):
     created_at: datetime
     updated_at: datetime
     created_by: str
+    contributors: tuple[str, ...] = Field(default=(), max_length=100)
     revision: int = Field(ge=1)
     provenance: Literal["HUMAN_ENGINEERING_RECORD"] = "HUMAN_ENGINEERING_RECORD"
     notes: tuple[InvestigationNote, ...] = Field(default=(), max_length=100)
@@ -176,7 +177,7 @@ class EngineeringCase(CaseDraft):
         if terminal != (self.review is not None):
             raise ValueError("terminal case requires review decision")
         if self.review:
-            if self.review.decision != self.status or self.review.reviewer in {self.created_by, self.assigned_engineer}:
+            if self.review.decision != self.status or self.review.reviewer in {self.created_by, self.assigned_engineer, *self.contributors}:
                 raise ValueError("independent authorized review required")
         if any(r.canonical_asset_id != self.canonical_asset_id for r in self.evidence):
             raise ValueError("cross-asset evidence forbidden")
