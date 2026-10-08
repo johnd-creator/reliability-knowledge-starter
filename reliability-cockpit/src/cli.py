@@ -265,6 +265,30 @@ def cmd_condition(args: argparse.Namespace) -> int:
         if store is not None:
             store.engine.dispose()
 
+def cmd_condition_refresh(args):
+    from src.repositories.condition_store import ConditionCommandStore
+    from src.services.condition_refresh import ConditionRefreshRunner, CollectorLauncherSource, RefreshError
+    store = None
+    try:
+        source = None
+        if args.execute and not args.replay_file:
+            if not args.collector_launcher or not args.collector_sha256:
+                raise RefreshError("COLLECTOR_LAUNCHER_REQUIRED")
+            source = CollectorLauncherSource(args.collector_launcher, args.collector_sha256)
+        store = ConditionCommandStore.from_environment()
+        runner = ConditionRefreshRunner(store,args.state_directory,args.baseline_file,args.baseline_sha256,source=source)
+        result = runner.run(args.attempt_id,execute=args.execute,authorization_ref=args.authorization_ref,replay_file=args.replay_file)
+        print(json.dumps({**result,**runner.summary()}))
+        return 0
+    except Exception as error:
+        # No raw exceptions, source URLs, process output, values or credentials.
+        reason = error.reason if isinstance(error,RefreshError) else "REFRESH_PREFLIGHT_FAILED"
+        print(json.dumps({"status":"FAILED","reason":reason}))
+        return 2
+    finally:
+        if store is not None:
+            store.engine.dispose()
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(prog="cockpit", description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -290,6 +314,17 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     plan.add_argument("--asset-id", required=True)
     plan.add_argument("--output", required=True)
     plan.set_defaults(func=cmd_condition)
+    refresh = commands.add_parser("refresh", help="manual Coal Flow pilot; default dry-run, no scheduler/retry")
+    refresh.add_argument("--state-directory", required=True, help="private append-only journal root")
+    refresh.add_argument("--baseline-file", required=True, help="frozen accepted private handoff")
+    refresh.add_argument("--baseline-sha256", required=True)
+    refresh.add_argument("--attempt-id", required=True, help="unique non-reusable local execution ID")
+    refresh.add_argument("--execute", action="store_true")
+    refresh.add_argument("--authorization-ref", help="separate non-secret controlled-run approval reference")
+    refresh.add_argument("--collector-launcher", help="pinned owner-controlled executable local Collector launcher")
+    refresh.add_argument("--collector-sha256")
+    refresh.add_argument("--replay-file", help="local accepted handoff replay; no source invocation")
+    refresh.set_defaults(func=cmd_condition_refresh)
     for name in ("approve-signal", "retire-signal", "project"):
         command = commands.add_parser(name, help="explicit local Mart command, requires separate administrative DSN")
         command.add_argument("--file", required=True)
