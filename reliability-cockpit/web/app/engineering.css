@@ -18,7 +18,7 @@ button.engineering-primary {background:var(--cyan);color:var(--button-text);font
 .engineering-case code,.engineering-asset,.engineering-evidence code {overflow-wrap:anywhere;word-break:break-word;font-size:.68rem}
 .engineering-case div {display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
 .engineering-case small,.engineering-meta {color:var(--muted);font-size:.7rem}
-.engineering-heading {display:flex;justify-content:space-between;gap:12px;align-items:start}
+.engineering-heading {display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
 .engineering-editor {display:grid;gap:15px}
 .engineering-actions {display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
 .engineering-actions span {color:var(--amber);font-size:.75rem}
