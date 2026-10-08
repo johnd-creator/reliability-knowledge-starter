@@ -1,0 +1,211 @@
+{
+  "register_version": "1.0",
+  "task": "NADI-P1-FRESH-GOV-03",
+  "status": "ACTIVE_PROVISIONAL_MONITORING",
+  "latest_reviewed_main": "1f7c25a711e68afc87ee0c4b1322bfca4be6ba97",
+  "actual_deployed_sha": "1cf7fed971594581913e8e7f635691f834133b6e",
+  "application_source_identical_to_main": true,
+  "previous_register": "nadi-p1-fresh-gov-02-approval-register.json",
+  "previous_register_preserved": true,
+  "owner_approval": {
+    "status": "PROJECT_OWNER_APPROVED",
+    "owner": "Fauzi",
+    "approval_date": "2026-10-08",
+    "approval_timestamp": null,
+    "approval_timezone": null,
+    "timestamp_precision": "DATE_ONLY",
+    "evidence_ref": "NADI-P1-FRESH-GOV-02 / section 1 OWNER DECISION \u2014 ALREADY RECEIVED",
+    "evidence_kind": "OWNER_CONVERSATIONAL_AUTHORIZATION_REPORTED_IN_USER_SUPPLIED_TASK",
+    "external_digital_signature_claimed": false,
+    "external_authenticated_approval_claimed": false,
+    "scope": "PROVISIONAL_OPERATIONAL_MONITORING_ONLY",
+    "long_term_sla": false,
+    "health_scoring_authorized": false,
+    "automatic_maintenance_authorized": false,
+    "source_acquisition_authorized": false,
+    "condition_acquisition_governance_changed": false
+  },
+  "internal_technical_approver": "Fauzi",
+  "external_component_endorsements_required": false,
+  "external_component_endorsements_claimed": false,
+  "authorization_evidence": "User-supplied GOV03 explicit owner authorization and direct manual-checkpoint confirmation",
+  "authorization_date": "2026-10-08",
+  "authorization_timestamp": null,
+  "history": [
+    {
+      "event": "PROPOSED",
+      "date": "2026-10-08",
+      "evidence_ref": "nadi-p1-fresh-gov-01.md historical G03/G05 matrix",
+      "owner_approval_at_that_checkpoint": "PENDING"
+    },
+    {
+      "event": "PROJECT_OWNER_APPROVED",
+      "date": "2026-10-08",
+      "timestamp": null,
+      "evidence_ref": "NADI-P1-FRESH-GOV-02 section 1"
+    },
+    {
+      "event": "INTERNAL_MONITORING_ACTIVATION_AUTHORIZED",
+      "date": "2026-10-08",
+      "timestamp": null,
+      "owner": "Fauzi",
+      "external_approval_claimed": false
+    },
+    {
+      "event": "OWNER_REVISED_EXPLICIT_EXPIRY",
+      "date": "2026-10-08",
+      "timestamp": null,
+      "previous_calendar_reference": "2026-10-15",
+      "expires_at": "2026-10-13T00:00:00+07:00"
+    },
+    {
+      "event": "MANUAL_CHECKPOINT_CONFIRMED",
+      "date": "2026-10-08",
+      "timestamp": null,
+      "operator": "Fauzi",
+      "checkpoint": "2026-10-12T20:00:00+07:00"
+    },
+    {
+      "event": "ACTIVATED",
+      "timestamp": "2026-10-08T21:45:26.619585+07:00"
+    }
+  ],
+  "activated_at": "2026-10-08T21:45:26.619585+07:00",
+  "review_24h_due_at": "2026-10-09T21:45:26.619585+07:00",
+  "review_72h_due_at": "2026-10-11T21:45:26.619585+07:00",
+  "review_status": "PENDING_FUTURE_OPERATOR_REVIEW",
+  "hard_expiry": "2026-10-13T00:00:00+07:00",
+  "expiry_enforcement": "MANUAL_CONFIRMED_BY_FAUZI",
+  "automatic_expiry": false,
+  "manual_checkpoint": "2026-10-12T20:00:00+07:00",
+  "rollback_operator": "Fauzi",
+  "extension_requires_explicit_owner_approval": true,
+  "active_policy_values": {
+    "NADI_MAXIMO_WO_MAX_AGE_SECONDS": 660,
+    "NADI_MART_FACTUAL_PROJECTION_MAX_AGE_SECONDS": 660,
+    "NADI_PI_COLLECTOR_MAX_AGE_SECONDS": 1800
+  },
+  "unset_policy_names": [
+    "NADI_COLLECTOR_MAX_AGE_SECONDS",
+    "NADI_SOURCE_MAX_AGE_SECONDS",
+    "NADI_PROJECTION_MAX_AGE_SECONDS",
+    "NADI_CONDITION_SOURCE_MAX_AGE_SECONDS",
+    "NADI_CONDITION_PROJECTION_MAX_AGE_SECONDS"
+  ],
+  "rollback_procedure": "nadi-p1-fresh-gov-03.md#manual-review-and-expiry",
+  "runtime_readiness": "UNKNOWN",
+  "readiness_gates": [
+    {
+      "gate": "P1-MAXIMO-CURRENT",
+      "verdict": "PASS",
+      "reason": "LOCAL_EVIDENCE_CURRENT"
+    },
+    {
+      "gate": "P1-MART-CURRENT",
+      "verdict": "PASS",
+      "reason": "LOCAL_EVIDENCE_CURRENT"
+    },
+    {
+      "gate": "P1-PI-COLLECTOR-CURRENT",
+      "verdict": "PARTIAL",
+      "reason": "LOCAL_EVIDENCE_DEGRADED"
+    },
+    {
+      "gate": "P1-MART-GOVERNANCE-READY",
+      "verdict": "PASS",
+      "reason": "READER_SCHEMA_COMPATIBLE"
+    },
+    {
+      "gate": "P1-CONDITION-SCHEMA-READY",
+      "verdict": "PASS",
+      "reason": "READER_SCHEMA_COMPATIBLE"
+    },
+    {
+      "gate": "P1-IDENTITY-MAPPING-READY",
+      "verdict": "PASS",
+      "reason": "VERIFIED_PILOT_AVAILABLE"
+    },
+    {
+      "gate": "P1-SIGNAL-SELECTION-READY",
+      "verdict": "PASS",
+      "reason": "APPROVED_PILOT_SIGNALS_AVAILABLE"
+    },
+    {
+      "gate": "P1-CONDITION-PROJECTION-READY",
+      "verdict": "UNKNOWN",
+      "reason": "UNKNOWN_SOURCE_OR_PROJECTION_FRESHNESS"
+    },
+    {
+      "gate": "P1-INTEGRATION-STATUS-READY",
+      "verdict": "PASS",
+      "reason": "STATUS_CONTRACT_VALID"
+    }
+  ],
+  "scope": "INTERNAL_NADI_PROVISIONAL_ACTIVITY_MONITORING_ONLY",
+  "source_acquisition_authorized": false,
+  "condition_policy_activated": false,
+  "initial_readiness_gates": [
+    {
+      "gate": "P1-MAXIMO-CURRENT",
+      "verdict": "PASS",
+      "reason": "LOCAL_EVIDENCE_CURRENT"
+    },
+    {
+      "gate": "P1-MART-CURRENT",
+      "verdict": "PASS",
+      "reason": "LOCAL_EVIDENCE_CURRENT"
+    },
+    {
+      "gate": "P1-PI-COLLECTOR-CURRENT",
+      "verdict": "PASS",
+      "reason": "LOCAL_EVIDENCE_CURRENT"
+    },
+    {
+      "gate": "P1-MART-GOVERNANCE-READY",
+      "verdict": "PASS",
+      "reason": "READER_SCHEMA_COMPATIBLE"
+    },
+    {
+      "gate": "P1-CONDITION-SCHEMA-READY",
+      "verdict": "PASS",
+      "reason": "READER_SCHEMA_COMPATIBLE"
+    },
+    {
+      "gate": "P1-IDENTITY-MAPPING-READY",
+      "verdict": "PASS",
+      "reason": "VERIFIED_PILOT_AVAILABLE"
+    },
+    {
+      "gate": "P1-SIGNAL-SELECTION-READY",
+      "verdict": "PASS",
+      "reason": "APPROVED_PILOT_SIGNALS_AVAILABLE"
+    },
+    {
+      "gate": "P1-CONDITION-PROJECTION-READY",
+      "verdict": "UNKNOWN",
+      "reason": "UNKNOWN_SOURCE_OR_PROJECTION_FRESHNESS"
+    },
+    {
+      "gate": "P1-INTEGRATION-STATUS-READY",
+      "verdict": "PASS",
+      "reason": "STATUS_CONTRACT_VALID"
+    }
+  ],
+  "final_runtime_observed_at": "2026-10-08T14:54:51.142814Z",
+  "background_pi_last_cycle": {
+    "seen": 433,
+    "collected": 432,
+    "errors": 1,
+    "started_before_activation": true,
+    "last_complete_success": "2026-10-08T14:38:27.535663+00:00",
+    "task_attributable_source_gets": 0
+  },
+  "publication": {
+    "scope": "PUBLIC_ENGINEERING_SUMMARY",
+    "operational_inventory": "RETAINED_IN_IGNORED_PRIVATE_EVIDENCE",
+    "host_paths_and_deployment_identifiers": "WITHHELD",
+    "private_rollback_instructions": "RETAINED_PRIVATELY_FOR_ACCOUNTABLE_OPERATOR",
+    "audit_task": "NADI-P1-FRESH-GOV-03-SEC-01",
+    "git_history_rewritten": false
+  }
+}

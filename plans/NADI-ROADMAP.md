@@ -1,6 +1,41 @@
 # NADI product roadmap — main quest
 
-## Current owner decision — NADI-P1-FRESH-GOV-02 (8 October 2026)
+## Current runtime checkpoint — NADI-P1-FRESH-GOV-03 (8 October 2026)
+
+**PASS — temporary internal monitoring ACTIVE; Phase 1 CURRENT/PARTIAL.**
+Fauzi authorized MAXIMO_WO=660s, MART_FACTUAL=660s, PI_COLLECTOR=1800s as
+project owner/accountable internal technical approver. External endorsements are
+not required or claimed. Legacy and both condition policy settings remain UNSET.
+Original 8 October owner approval stays DATE_ONLY; historical GOV02 is preserved.
+
+Actual activation `2026-10-08T21:45:26.619585+07:00`; 24h review
+`2026-10-09T21:45:26.619585+07:00`; 72h review `2026-10-11T21:45:26.619585+07:00`.
+Explicit owner-revised hard expiry **2026-10-13T00:00:00+07:00**.
+Fauzi confirms **12 October 20:00 WIB** checkpoint and rollback before expiry
+without an approved extension. Enforcement is manual; no automatic scheduler.
+
+Main `1f7c25a711e68afc87ee0c4b1322bfca4be6ba97` / PR27 MERGED; actual serving SHA `1cf7fed971594581913e8e7f635691f834133b6e`,
+application source identical to main. Same-image API replacement only; other 22
+containers preserved. R3 evidence/timestamps, VERIFIED1/PROPOSED0, approved signal1,
+latest/state1/1 and 433 active technical attributes unchanged; source GET0.
+Initial readiness **8 PASS / 1 UNKNOWN**. Final observation **7 PASS / 1 PARTIAL /
+1 UNKNOWN**, overall UNKNOWN, require-pass exit2: unchanged background PI worker
+completed 432/433 with 1 error; prior full-cycle success is preserved. No retry/probe.
+Condition freshness acceptance remains outstanding; technical BAD_QUALITY18/epoch
+anomalies remain visible and are independent of collection freshness.
+
+[Activation and rollback evidence](../reliability-cockpit/docs/nadi-p1-fresh-gov-03.md)
+and [migration handoff](../reliability-cockpit/docs/nadi-pre-migration-readiness-gov-03.md)
+record remaining operator reviews, manual expiry risk and separately authorized
+future cutover. No server migration, condition refresh/replay, DDL or approval changes.
+Earlier sections below are historical and do not override this checkpoint.
+
+Public SEC01 audit preserves approval scope, dates, thresholds and recorded readiness;
+host-specific deployment and executable recovery details are retained privately.
+Sanitization changes documentation only; runtime and accepted evidence are unchanged.
+Git history is retained, so earlier public revisions remain accessible.
+
+## Historical owner decision — NADI-P1-FRESH-GOV-02 (8 October 2026)
 
 **PROJECT_OWNER_APPROVED**: Fauzi approved MAXIMO_WO=660s, MART_FACTUAL=660s,
 PI_COLLECTOR=1800s for provisional monitoring; both condition policies stay UNSET.
@@ -20,7 +55,7 @@ CURRENT/PARTIAL, not COMPLETE. Next: component endorsements, exact expiry
 resolution, reviewed release and separately authorized controlled GOV-03 activation.
 No source GET, policy change, operational mutation or deployment occurred.
 
-## Current decision package — NADI-P1-FRESH-GOV-01 (8 October 2026)
+## Historical decision package — NADI-P1-FRESH-GOV-01 (8 October 2026)
 
 **PASS: ready for owner review. Policies are not activated; approvals PENDING.**
 Reviewed/serving release `1cf7fed971594581913e8e7f635691f834133b6e` includes PR26.
@@ -165,7 +200,7 @@ and [authoritative Phase-1 matrix](NADI-PHASE-1-ACCEPTANCE.md).
 **PHASE 1 SOFTWARE RUNTIME FOUNDATION: ACCEPTED.**
 **PHASE 1 PRODUCT ACCEPTANCE: BLOCKED.** Phase 1 stays **CURRENT / PARTIAL**.
 Existing Mart canonical002/003/004 ready; validated private full backup and
-17 locked factual count/content comparisons passed. nadi_mart_reader remains
+17 locked factual count/content comparisons passed. The dedicated Mart reader remains
 SELECT-only, including three empty condition relations. PI local stored-data
 observation and NADI integration-status/Data Trust/Asset condition panels live.
 Readiness: governance/condition-schema/status PASS; collection/projection freshness
