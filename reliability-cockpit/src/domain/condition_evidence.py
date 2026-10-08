@@ -11,6 +11,9 @@ from typing import Literal, get_args
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, ValidationInfo, field_validator, model_validator
 
 MAX_SIGNALS = 5
+# Full PI WebIds include encoded paths; the real pilot reference is 203 chars.
+# Bound only Attribute refs independently from canonical IDs / mapping refs.
+MAX_ATTRIBUTE_REF_LENGTH = 512
 
 class EvidenceModel(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
@@ -49,14 +52,14 @@ class EvidenceSources(EvidenceModel):
     pi: PiLineage
 
 class PiAttributeLineage(PiLineage):
-    attribute_ref: str = Field(min_length=1, max_length=200)
+    attribute_ref: str = Field(min_length=1, max_length=MAX_ATTRIBUTE_REF_LENGTH)
     attribute_name: str | None = Field(default=None, max_length=240)
 
 class EvidenceAttributeSources(EvidenceModel):
     pi: PiAttributeLineage
 
 class SelectedPiAttribute(EvidenceModel):
-    attribute_ref: str = Field(min_length=1, max_length=200)
+    attribute_ref: str = Field(min_length=1, max_length=MAX_ATTRIBUTE_REF_LENGTH)
 
     @field_validator("attribute_ref")
     @classmethod

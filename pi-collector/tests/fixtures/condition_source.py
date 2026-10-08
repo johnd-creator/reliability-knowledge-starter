@@ -39,7 +39,7 @@ class SyntheticSession:
                        [{"WebId": "UNSELECTED_SYNTHETIC", "Links": {"Element": BASE + "/elements/" + element}}]}
         elif path.startswith("/attributes/"):
             ref = path.split("/")[-1]
-            payload = {"WebId": ref, "Name": "Synthetic attribute " + ref, "DefaultUnitsName": "A",
+            payload = {"WebId": ref, "Name": "Synthetic attribute " + attrs[ref]["semantic_name"], "DefaultUnitsName": "A",
                        "Links": {"Element": BASE + "/elements/" + element, "Value": BASE + "/streams/" + ref + "/value"}}
         elif path.startswith("/streams/") and path.endswith("/value"):
             ref = path.split("/")[-2]

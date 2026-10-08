@@ -133,7 +133,7 @@
           "type": "string"
         },
         "attribute_ref": {
-          "maxLength": 200,
+          "maxLength": 512,
           "minLength": 1,
           "title": "Attribute Ref",
           "type": "string"
