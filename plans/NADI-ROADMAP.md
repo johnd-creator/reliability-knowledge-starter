@@ -1,5 +1,25 @@
 # NADI product roadmap — main quest
 
+## Current owner decision — NADI-P1-FRESH-GOV-02 (8 October 2026)
+
+**PROJECT_OWNER_APPROVED**: Fauzi approved MAXIMO_WO=660s, MART_FACTUAL=660s,
+PI_COLLECTOR=1800s for provisional monitoring; both condition policies stay UNSET.
+This is conversational authorization reported directly in the user-supplied task,
+not digitally signed or externally authenticated approval. Three component
+endorsements remain PENDING; **ACTIVATION_NOT_AUTHORIZED / GOV-03 NOT EXECUTED**.
+
+[Approval register and handoff](../reliability-cockpit/docs/nadi-p1-fresh-gov-02.md)
+preserve the historical proposal, named reviewer gaps, date-only approval precision
+and expiry rule. Calendar expiry reference is 15 October 2026; exact expiry instant
+is NULL until approval-time/timezone evidence or explicit expiry clarification.
+Activation, 24h/72h review dates remain NULL. No duplicate owner approval requested.
+
+All eight runtime policies remain UNSET; R3 evidence/journal preserved. Actual
+readiness 5 PASS / 4 UNKNOWN; hypothetical 8 PASS / 1 UNKNOWN; overall UNKNOWN. Phase1
+CURRENT/PARTIAL, not COMPLETE. Next: component endorsements, exact expiry
+resolution, reviewed release and separately authorized controlled GOV-03 activation.
+No source GET, policy change, operational mutation or deployment occurred.
+
 ## Current decision package — NADI-P1-FRESH-GOV-01 (8 October 2026)
 
 **PASS: ready for owner review. Policies are not activated; approvals PENDING.**

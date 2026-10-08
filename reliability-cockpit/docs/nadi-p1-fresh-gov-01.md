@@ -1,5 +1,18 @@
 # NADI-P1-FRESH-GOV-01 — engineering freshness decision package
 
+## Current owner decision — GOV-02
+
+**PROJECT_OWNER_APPROVED** on 8 October 2026: Fauzi approved 660/660/1800 seconds
+for provisional monitoring and keeping both condition policies UNSET.
+**COMPONENT_ENDORSEMENT_PENDING / ACTIVATION_NOT_AUTHORIZED.**
+[Current decision and approval register](nadi-p1-fresh-gov-02.md) records the
+conversational provenance, date-only expiry limitation, pending reviewers and
+prepared GOV-03 gates. Historical PENDING recommendations below are preserved
+as the GOV-01 checkpoint; they do not negate the later owner decision. Numeric
+condition policies remain deferred and all eight production settings remain UNSET.
+
+## Historical GOV-01 decision package
+
 **Decision package: PASS / ready for owner review. Approval: PENDING.**
 Proposal date: 8 October 2026. Production policy activation: **NONE**.
 Phase 1 remains **CURRENT/PARTIAL**, actual readiness **UNKNOWN**.
@@ -96,7 +109,7 @@ measurement limitations. Read-only observations are sequential, not one atomic
 cross-database snapshot. Graph generation2026-08-24 lacks current freshness paths;
 this assessment uses direct exact-release source and current runtime records.
 
-## G03 / G05 — five-policy owner decision matrix
+## Historical G03 / G05 — five-policy proposal before owner decision
 
 All values below are engineering **recommendations**, not approvals or SLAs.
 Date proposed2026-10-08. Accountable project operator is Fauzi; component owner
@@ -230,7 +243,7 @@ UNKNOWN_SOURCE_OR_PROJECTION_FRESHNESS; governance, condition schema, identity,
 signal selection and integration status PASS. Hypothetical policies were never
 exported into API/worker/private configuration.
 
-## G07 — approval points, future rollout and rollback
+## Historical G07 — approval points before GOV-02
 
 Required owner decisions (not supplied by this task):
 
