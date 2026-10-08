@@ -644,7 +644,7 @@ superuser/createDB/createRole/bypass-RLS powers.22 other container identities un
 Registry 845 / assets 11845 / maintenance 69635 / WO 113902 retained. Mapping content
 fingerprint exactly unchanged (VERIFIED 1/PROPOSED 0). WO cursor04:21:34Z→04:58:27Z
 via normal background collector; recovery floor 2026-08-21T03:56:54Z and single
-recovery row intact. Latest bounded incremental 05:04:54Z→05:05:05Z: 25 seen / 0 upserted / 
+recovery row intact. Latest bounded incremental 05:04:54Z→05:05:05Z: 25 seen / 0 upserted /
 25 skipped / errors 0, local projector SUCCEEDED. Factual API 200 with 7d 711 / 30d 1987.
 PI 490 total / 433 active / 433 snapshots / 133570 history, hypertable/two chunks and single
 worker lease unchanged; last observed complete technical cycle 04:53:52Z: 433/433,
