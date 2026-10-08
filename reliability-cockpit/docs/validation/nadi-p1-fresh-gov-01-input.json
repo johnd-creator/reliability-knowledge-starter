@@ -1,0 +1,158 @@
+{
+  "scope": "FROZEN_LOCAL_AGGREGATE_FOR_OFFLINE_HYPOTHESIS",
+  "release": "1cf7fed971594581913e8e7f635691f834133b6e",
+  "observed_at": "2026-10-08T13:48:16.203800+00:00",
+  "status": {
+    "contract_version": "1.0",
+    "observed_at": "2026-10-08T13:23:12.628688Z",
+    "canonical_asset_id": null,
+    "governance_schema_ready": true,
+    "condition_schema_ready": true,
+    "coverage": {
+      "registered_assets": 845,
+      "verified_mapping_assets": 1,
+      "ambiguous_mapping_assets": 0,
+      "approved_signal_assets": 1,
+      "projected_assets": 1,
+      "approved_signals": 1,
+      "projected_signals": 1,
+      "technical_registry_total": 490,
+      "technical_registry_active": 433,
+      "technical_snapshots": 433
+    },
+    "components": [
+      {
+        "component": "MAXIMO",
+        "state": "UNKNOWN",
+        "availability": "AVAILABLE",
+        "collection_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": "2026-10-08T13:18:58.416283Z",
+          "max_age_seconds": null
+        },
+        "source_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": null,
+          "max_age_seconds": null
+        },
+        "projection_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": null,
+          "max_age_seconds": null
+        },
+        "mapping_readiness": "UNKNOWN",
+        "quality": "UNKNOWN",
+        "last_successful_activity": "2026-10-08T13:18:58.416283Z",
+        "degraded_reasons": []
+      },
+      {
+        "component": "PI_COLLECTOR",
+        "state": "DEGRADED",
+        "availability": "AVAILABLE",
+        "collection_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": "2026-10-08T13:14:24.231883Z",
+          "max_age_seconds": null
+        },
+        "source_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": "1970-01-01T00:00:00Z",
+          "max_age_seconds": null
+        },
+        "projection_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": null,
+          "max_age_seconds": null
+        },
+        "mapping_readiness": "UNKNOWN",
+        "quality": "BAD",
+        "last_successful_activity": "2026-10-08T13:14:24.231883Z",
+        "degraded_reasons": [
+          "BAD_QUALITY"
+        ]
+      },
+      {
+        "component": "RELIABILITY_MART",
+        "state": "UNKNOWN",
+        "availability": "AVAILABLE",
+        "collection_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": null,
+          "max_age_seconds": null
+        },
+        "source_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": null,
+          "max_age_seconds": null
+        },
+        "projection_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": "2026-10-08T13:23:02.904523Z",
+          "max_age_seconds": null
+        },
+        "mapping_readiness": "UNKNOWN",
+        "quality": "UNKNOWN",
+        "last_successful_activity": "2026-10-08T13:23:02.904523Z",
+        "degraded_reasons": []
+      },
+      {
+        "component": "ASSET_AF_MAPPING",
+        "state": "DEGRADED",
+        "availability": "AVAILABLE",
+        "collection_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": null,
+          "max_age_seconds": null
+        },
+        "source_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": null,
+          "max_age_seconds": null
+        },
+        "projection_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": null,
+          "max_age_seconds": null
+        },
+        "mapping_readiness": "PARTIAL",
+        "quality": "UNKNOWN",
+        "last_successful_activity": null,
+        "degraded_reasons": [
+          "PARTIAL_MAPPING_COVERAGE"
+        ]
+      },
+      {
+        "component": "PI_CONDITION_PROJECTION",
+        "state": "UNKNOWN",
+        "availability": "AVAILABLE",
+        "collection_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": null,
+          "max_age_seconds": null
+        },
+        "source_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": "2026-10-08T13:17:39.051010Z",
+          "max_age_seconds": null
+        },
+        "projection_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": "2026-10-08T13:17:40.313906Z",
+          "max_age_seconds": null
+        },
+        "mapping_readiness": "PARTIAL",
+        "quality": "GOOD",
+        "last_successful_activity": "2026-10-08T13:17:40.313906Z",
+        "degraded_reasons": []
+      }
+    ]
+  },
+  "maximo_success": "2026-10-08T13:44:46.988804+00:00",
+  "pi_success": "2026-10-08T13:42:00.14878+00:00",
+  "mart_successes": [
+    "2026-10-08T13:48:11.816283+00:00",
+    "2026-10-08T13:48:12.110575+00:00"
+  ],
+  "source_timestamp": "2026-10-08T13:17:39.051010+00:00",
+  "projected_at": "2026-10-08T13:17:40.313906+00:00"
+}

@@ -1,5 +1,29 @@
 # Repository status and debt — PLATFORM-ROADMAP-001
 
+## Current decision package — NADI-P1-FRESH-GOV-01 (8 October 2026)
+
+**PASS: ready for owner review. Policies are not activated; approvals PENDING.**
+Reviewed/serving release `1cf7fed971594581913e8e7f635691f834133b6e` includes PR26.
+Accepted R3 real Coal Flow A evidence 54.84218978881836 Ton/h, original source/
+collection/projection times and strict replay are preserved. VERIFIED=1 / PROPOSED=0,
+approved signal=1, latest/state=1/1; all eight freshness settings remain UNSET.
+
+[Engineering decision package](../reliability-cockpit/docs/nadi-p1-fresh-gov-01.md)
+evaluates nearly 24h of local evidence: 278 WO attempts / 273 successes; 287 paired Mart
+completion reports; 104 PI runs / 99 full 433/433 successes. Proposes 660/660/1800 seconds for
+**provisional monitoring pending named owner/reviewer approval**, with proposed
+7-day expiry. Condition source/projection remain DEFERRED: two manual samples
+cannot establish cadence or acceptable use-age. No source GET/acquisition/replay,
+production mutation, activation or restart occurred.
+
+Source-free fourteen-case simulation passes; targeted 45 tests PASS / 9 PostgreSQL skips.
+Actual readiness remains 5 PASS / 4 UNKNOWN, overall UNKNOWN. Hypothetical three
+monitoring policies yield 8 PASS / 1 UNKNOWN, leaving product acceptance UNKNOWN. Phase 1 remains
+**CURRENT/PARTIAL — FRESHNESS_POLICY_PENDING**. Next: accountable owner decision,
+then separately authorized controlled activation; condition policies need further
+engineering evidence. BFPT frozen/KKS issue unchanged. Earlier sections are
+historical checkpoints, not current policy activation instructions.
+
 ## Latest runtime promotion — NADI-IDN-002B-R1-FIX-01 (8 October 2026)
 
 **PASS — bounded first real Coal Flow A evidence pilot.** PR22 MERGED;
