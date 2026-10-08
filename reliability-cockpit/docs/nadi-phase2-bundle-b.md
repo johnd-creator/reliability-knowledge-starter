@@ -55,7 +55,7 @@ Main was fetched again before publication and remained `02e887c56057611f112b7b65
 | B4 `codex/nadi-ph2-b4-manual-pdm` | `7c594c6` | [PR33](https://github.com/johnd-creator/reliability-knowledge-starter/pull/33), B3 |
 | B5 `codex/nadi-ph2-b5-recommendations` | `ed1f7f8` + compatibility repair `87e4b93` | [PR34](https://github.com/johnd-creator/reliability-knowledge-starter/pull/34), B4 |
 | B6 `codex/nadi-ph2-b6-concept-ui` | `4eeea80` | [PR35](https://github.com/johnd-creator/reliability-knowledge-starter/pull/35), B5 |
-| B7 `codex/nadi-ph2-b7-integrated-quality` | current PR HEAD | final integrated review, B6 |
+| B7 `codex/nadi-ph2-b7-integrated-quality` | code/test checkpoint `6dda97f`; documentation at current PR HEAD | [PR36](https://github.com/johnd-creator/reliability-knowledge-starter/pull/36), B6 |
 
 All PRs stay OPEN/UNMERGED. Review in dependency order; retarget a dependent PR to main only after its predecessor is reviewed/merged. B7 supplies final formatting, exact-subject session hardening, bounded scopes, unsaved-form discard correction, shared nonblank/schema alignment, acceptance and truthful roadmap reconciliation. Earlier checkpoints are not independent deployment releases. No merge, rebase/force push or runtime promotion is performed.
 

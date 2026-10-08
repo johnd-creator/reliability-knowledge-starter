@@ -114,3 +114,16 @@ references. Hypotheses and human priority are not source facts or risk scores.
 Condition snapshots reuse the canonical condition-evidence shape with PI identity
 under sources.pi. Fixtures are synthetic; no production case migration or write
 endpoint is activated. See [Engineering ADR](../reliability-cockpit/docs/adr/006-engineering-workspace.md).
+
+
+## Phase 2 Bundle B candidate contracts
+
+The existing generic recommendation contract is preserved. These candidate schemas are generated from the strict application domain models and exercised only with synthetic/isolated persistence:
+
+| Schema | Purpose | Readiness |
+|---|---|---|
+| [`manual-inspection.schema.json`](schemas/manual-inspection.schema.json) | Human measurement envelope; original values/units/timestamps and separate interpretation | Candidate; engineer field approval pending |
+| [`engineering-recommendation.schema.json`](schemas/engineering-recommendation.schema.json) | Independently reviewed NADI proposal, local follow-up, exact case/evidence/existing-WO references | Candidate; never a Maximo WO or maintenance authorization |
+| [`existing-work-order-reference.schema.json`](schemas/existing-work-order-reference.schema.json) | Bounded informational canonical WO identity/status/provenance | SELECT-only local reference; no source command |
+
+Structural/nonblank constraints are in JSON Schema. Cross-field chronology, lifecycle authorization, identity resolution and review independence remain authoritative server-domain/service validation. See the [Bundle B acceptance report](../reliability-cockpit/docs/nadi-phase2-bundle-b.md). No production application activation or source write is authorized.
