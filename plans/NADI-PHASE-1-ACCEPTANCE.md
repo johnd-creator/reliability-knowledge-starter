@@ -340,3 +340,25 @@ semantics/units/time/quality policy; use the accepted runtime for trusted bounde
 handoff/projection and rerun phase1-readiness. A MATCH is not automatic approval
 of arbitrary signals, unsafe source calls or production deployment. BFPT remains
 REJECTED / FROZEN / DO NOT VERIFY.
+
+## Freshness governance proposal checkpoint — NADI-P1-FRESH-001A (8 October 2026)
+
+Reviewed main `478cce1` is serving. Runtime evidence reconciliation is the separate
+[documentation PR23](https://github.com/johnd-creator/reliability-knowledge-starter/pull/23),
+head `b08a4fd`; review that documentation checkpoint first. The earlier R1 repair
+blocker is historical: one VERIFIED mapping, one approved Coal Flow signal and
+one accepted condition row now exist. This proposal does not duplicate that
+acceptance patch or alter its measurement.
+
+[Freshness engineering proposal](../reliability-cockpit/docs/nadi-phase1-freshness-policy-proposal.md)
+records bounded local cadence/error evidence and proposes separate acquisition
+monitoring boundaries. All proposals are **PROPOSED — NOT YET APPROVED**. Coal
+Flow source/projection thresholds remain **POLICY_EVIDENCE_INSUFFICIENT**. Three
+shared runtime knobs cannot express five independent policies; reviewed compatible
+component wiring and controlled-refresh journal/chronology acceptance are next.
+Production policies remain blank, handoff collector success remains null, actual
+Phase1 readiness remains UNKNOWN; Phase1 stays CURRENT/PARTIAL, never COMPLETE.
+No source GET, mapping/selection mutation, projection, deployment or restart
+is performed by this task. Next: **NADI-P1-FRESH-001B**, engineering policy
+decisions and separately authorized manual refresh; recurring scheduling stays
+unconfigured. PI_AF_KKS_LOOKUP_UNRESOLVED and BFPT freeze remain in force.
