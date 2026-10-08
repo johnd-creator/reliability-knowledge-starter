@@ -1,6 +1,44 @@
 # Repository status and debt — PLATFORM-ROADMAP-001
 
-## Latest pilot checkpoint — NADI-IDN-002B (8 October 2026)
+## Latest R1 checkpoint — signal approved, runtime contract repair pending (8 October 2026)
+
+**PARTIAL — CODE_ACCEPTANCE_REQUIRED.** Fauzi directly approved exactly one
+Coal Flow A / `coal_flow` signal on 2026-10-08, evidence reference
+`NADI-SIGNAL-COAL-FLOW-A-20261008`. Human signal approval is now RECEIVED.
+One exact guarded Attribute metadata GET proved ownership by the existing
+VERIFIED Coal Feeder A AF Element. NUMERIC and local source unit `Ton/h` are
+preserved; no unit conversion, engineering SLA or Hidayat signal approval is claimed.
+
+Canonical production approval failed before DML: the exact Attribute WebId has
+203 characters, exceeding the merged contract's 200-character limit. PR22
+contains an additive, bounded 512-character Attribute-reference correction,
+consistent Python/JSON contracts and synthetic SQLite/PostgreSQL/API acceptance.
+No candidate application code was deployed. This is a concrete independent
+SOFTWARE/RUNTIME blocker for this pilot; historical foundation acceptance below
+remains evidence of its earlier bounded validation.
+
+Production remains PROPOSED=0 / VERIFIED=1, selected signals=0, condition
+latest/state=0/0. Source canary/handoff/projection/replay NOT RUN. R1 PI source
+GET=1 (identity metadata), Maximo GET=0; business writes/mapping mutation/
+signal persistence/projection/deployment/restart/DDL=0. Blank freshness policies
+remain UNKNOWN / FRESHNESS_POLICY_PENDING. Identity gate PASS for this pilot,
+signal/projection BLOCKED NO_APPROVED_SIGNALS; overall readiness BLOCKED.
+**PHASE 1 PRODUCT ACCEPTANCE: BLOCKED; Phase 1 CURRENT/PARTIAL.**
+
+[Full R1 evidence and test commands](../reliability-cockpit/docs/nadi-idn-002b-coal-feeder-a.md#r1--explicit-coal-flow-a-signal-approval-8-october-2026)
+records 440 distinct Cockpit/PI/contracts test cases passing across isolated
+fixtures and opt-in environments. Accepted runtime, 433 active PI attributes,
+Maximo recovery floor and SELECT-only reader are preserved.
+PI_AF_KKS_LOOKUP_UNRESOLVED stays open; BFPT REJECTED/FROZEN/DO NOT VERIFY.
+
+Next: review/merge PR22's compatible contract repair, deliberately deploy reviewed
+compatible consumer/operator tooling with accepted overrides, then resume the
+already authorized one-signal approval → bounded governed canary → schema-valid
+handoff → Mart projection/replay → API/UI/readiness. No repeat human approval is
+required for the recorded scope. Approve freshness policy separately before
+claiming final Phase-1 PASS. Earlier checkpoints below are historical.
+
+## Historical pilot checkpoint — NADI-IDN-002B (8 October 2026)
 
 [Coal Feeder A evidence](../reliability-cockpit/docs/nadi-idn-002b-coal-feeder-a.md)
 records **PARTIAL**: one BSR/IP CS01 Coal Feeder A mapping is VERIFIED via
