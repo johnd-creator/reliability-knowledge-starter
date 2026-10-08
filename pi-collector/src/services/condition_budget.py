@@ -1,5 +1,12 @@
 """Per-invocation GET-only budget for the collector-owned snapshot handoff."""
 from urllib.parse import urlsplit
+from src.domain.source_diagnostics import SourceFailureCode
+
+class ConditionBudgetError(ValueError):
+    def __init__(self, message, failure_code):
+        super().__init__(message)
+        self.failure_code = SourceFailureCode(failure_code)
+
 
 class ConditionGetBudget:
     def __init__(self, maximum):
@@ -15,9 +22,9 @@ class ConditionGetBudget:
             resource = len(parts) >= 2 and parts[-2] in {'elements', 'assetdatabases', 'attributes'}
             direct = len(parts) >= 3 and parts[-3] == 'elements' and parts[-1] == 'attributes'
             if method.upper() != 'GET' or not (snapshot or resource or direct):
-                raise ValueError("snapshot GET boundary rejected operation")
+                raise ConditionBudgetError("snapshot GET boundary rejected operation", SourceFailureCode.OPERATION_REJECTED)
             if self.used >= self.maximum:
-                raise ValueError("snapshot request budget exhausted")
+                raise ConditionBudgetError("snapshot request budget exhausted", SourceFailureCode.BUDGET_EXHAUSTED)
             self.used += 1  # Includes failed attempts; never retries outside this counter.
             return original(method, path, params=params)
         client.request = request

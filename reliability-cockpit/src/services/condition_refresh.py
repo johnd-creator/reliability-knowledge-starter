@@ -20,10 +20,16 @@ from src.domain.condition_evidence import EvidenceBatch, FreshnessPolicy
 
 PILOT_ASSET = "asset:MAXIMO:MXASSET:BSR:IP:CS10HFB01AF001-001"
 MAX_BYTES = 262144
+SAFE_SOURCE_FAILURE_CODES = frozenset({
+    'SOURCE_AUTH_FAILED', 'SOURCE_TLS_FAILED', 'SOURCE_TIMEOUT',
+    'SOURCE_CONNECT_FAILED', 'SOURCE_HTTP_ERROR', 'SOURCE_CONTRACT_INVALID',
+    'SOURCE_BUDGET_EXHAUSTED', 'SOURCE_OPERATION_REJECTED', 'SOURCE_CAUSE_UNKNOWN',
+})
 
 class RefreshError(ValueError):
-    def __init__(self, reason):
+    def __init__(self, reason, *, source_failure_code=None):
         self.reason = reason
+        self.source_failure_code = source_failure_code if isinstance(source_failure_code, str) and source_failure_code in SAFE_SOURCE_FAILURE_CODES else None
         super().__init__(reason)
 
 def private_read(path, limit=MAX_BYTES):
@@ -69,6 +75,7 @@ def validate_chronology(batch, now):
 class SourceHandoff:
     batch: EvidenceBatch
     source_gets: int
+    source_failure_code: str | None = None
 
 class CollectorLauncherSource:
     """Pinned executable local launcher with sanitized env and inherited host lock.
@@ -93,7 +100,7 @@ class CollectorLauncherSource:
             raise RefreshError('LAUNCHER_CHECKSUM_MISMATCH')
         output, report = directory/'handoff.json', directory/'receipt.json'
         command = [str(self.launcher), 'condition-evidence', '--plan-file', str(directory/'plan.json'),
-                   '--execute', '--output', str(output), '--max-source-gets', '5', '--report-file', str(report)]
+                   '--execute', '--output', str(output), '--max-source-gets', '5', '--report-file', str(report), '--diagnostics']
         # Never forward admin DSNs, PI/Maximo secrets, PYTHONPATH, proxies or .netrc.
         env = {'PATH': '/usr/bin:/bin', 'PI_CONFIG_MODE': 'managed'}
         with subprocess.Popen(command, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
@@ -107,8 +114,10 @@ class CollectorLauncherSource:
         if code != 0:
             raise RefreshError('SOURCE_PROCESS_FAILED')
         receipt = json.loads(private_read(report))
-        if (set(receipt) != {'contract_version','source_gets','max_source_gets','handoff_sha256'}
-            or receipt['contract_version'] != '1.0' or type(receipt['source_gets']) is not int
+        required = {'contract_version','source_gets','max_source_gets','handoff_sha256'}
+        fields = required | {'source_failures'} if receipt.get('contract_version') == '1.1' else required
+        if (set(receipt) != fields
+            or receipt['contract_version'] not in {'1.0', '1.1'} or type(receipt['source_gets']) is not int
             or not 0 <= receipt['source_gets'] <= 5 or type(receipt['max_source_gets']) is not int
             or receipt['max_source_gets'] != 5):
             raise RefreshError('SOURCE_RECEIPT_INVALID')
@@ -118,7 +127,20 @@ class CollectorLauncherSource:
         batch = EvidenceBatch.model_validate_json(raw)
         if batch.plan != plan:
             raise RefreshError('HANDOFF_PLAN_MISMATCH')
-        return SourceHandoff(batch, receipt['source_gets'])
+        code = None
+        if receipt['contract_version'] == '1.1':
+            failures = receipt['source_failures']
+            unavailable = {r.signal_id for r in batch.results if r.status == 'SOURCE_UNAVAILABLE'}
+            if (not isinstance(failures, list) or len(failures) > 5
+                or any(not isinstance(f, dict) or set(f) != {'signal_id', 'code'}
+                       or not isinstance(f['signal_id'], str) or not isinstance(f['code'], str)
+                       or f['code'] not in SAFE_SOURCE_FAILURE_CODES for f in failures)
+                or len({f['signal_id'] for f in failures}) != len(failures)
+                or {f['signal_id'] for f in failures} != unavailable):
+                raise RefreshError('SOURCE_DIAGNOSTICS_INVALID')
+            # The refresh runner admits one selected pilot signal only.
+            code = failures[0]['code'] if len(failures) == 1 else None
+        return SourceHandoff(batch, receipt['source_gets'], code)
 
 class ConditionRefreshRunner:
     def __init__(self, store, directory, baseline_file, baseline_sha256, *, source=None, policy=None, clock=None, lock_directory=None):
@@ -220,7 +242,7 @@ class ConditionRefreshRunner:
             folder = self.directory/attempt_id
             folder.mkdir(mode=0o700)
             self.append(attempt_id,'STARTED',mode='REPLAY' if replay_file else 'REFRESH',authorization_ref=authorization_ref)
-            phase, gets = 'PLAN', None
+            phase, gets, source_code = 'PLAN', None, None
             try:
                 plan = self.store.plan(PILOT_ASSET)
                 if plan != self.baseline.plan:
@@ -238,6 +260,8 @@ class ConditionRefreshRunner:
                     handoff = self.source.collect(plan,folder,fd)
                     batch = EvidenceBatch.model_validate(handoff.batch.model_dump(mode='json'))
                     gets = handoff.source_gets
+                    supplied_code = handoff.source_failure_code
+                    source_code = supplied_code if isinstance(supplied_code, str) and supplied_code in SAFE_SOURCE_FAILURE_CODES else 'SOURCE_CAUSE_UNKNOWN'
                     if type(gets) is not int or not 0 <= gets <= 5:
                         raise RefreshError('SOURCE_BUDGET_VIOLATION')
                 if batch.plan != plan or len(batch.results)!=1:
@@ -247,7 +271,7 @@ class ConditionRefreshRunner:
                     raise RefreshError('RECONCILIATION_HANDOFF_MISMATCH')
                 result = batch.results[0]; e = result.evidence
                 if e is None:
-                    raise RefreshError('SOURCE_UNAVAILABLE')
+                    raise RefreshError('SOURCE_UNAVAILABLE', source_failure_code=source_code or 'SOURCE_CAUSE_UNKNOWN')
                 if not replay_file:
                     self.append(attempt_id,'ACQUIRED',source_gets=gets)
                 validate_chronology(batch,aware_clock(self.clock))
@@ -279,9 +303,12 @@ class ConditionRefreshRunner:
             except Exception as error:
                 reason = error.reason if isinstance(error,RefreshError) else 'WRITER_FAILED' if phase=='WRITER' else 'REFRESH_FAILED'
                 try:
-                    self.append(attempt_id,'FAILED',phase=phase,reason=reason,source_gets=gets)
+                    fields = {}
+                    if isinstance(error, RefreshError) and error.source_failure_code:
+                        fields['source_failure_code'] = error.source_failure_code
+                    self.append(attempt_id,'FAILED',phase=phase,reason=reason,source_gets=gets,**fields)
                 except Exception:
                     # Existing durable intent still records an unknown writer outcome.
                     # Never expose raw filesystem/DB errors or retry the source.
                     reason = 'WRITER_OUTCOME_UNKNOWN' if phase == 'WRITER' else 'JOURNAL_FAILED'
-                raise RefreshError(reason) from None
+                raise RefreshError(reason, source_failure_code=error.source_failure_code if isinstance(error, RefreshError) else None) from None

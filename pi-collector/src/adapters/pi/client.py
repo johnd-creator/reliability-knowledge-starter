@@ -24,6 +24,7 @@ import requests
 from requests.adapters import HTTPAdapter
 
 from src.config import PiApiConfig
+from src.domain.source_diagnostics import SourceFailureCode
 
 LOG = logging.getLogger(__name__)
 
@@ -62,7 +63,15 @@ def new_session() -> requests.Session:
 
 
 class PiClientError(RuntimeError):
-    """Raised for non-read-only requests, transport failures or bad payloads."""
+    """Raised for non-read-only requests, transport failures or bad payloads.
+
+    failure_code is safe operator metadata. The message is never a diagnostic
+    transport contract and must not be serialized by the handoff caller.
+    """
+    def __init__(self, message, *, failure_code=SourceFailureCode.CAUSE_UNKNOWN):
+        super().__init__(message)
+        self.failure_code = SourceFailureCode(failure_code)
+
 
 
 class PiGoneError(PiClientError):
@@ -217,13 +226,15 @@ class PiClient:
                 for chunk in chunks:
                     body.extend(chunk)
                     if len(body) > cap:
-                        raise PiClientError("PI returned oversized body")
+                        raise PiClientError("PI returned oversized body", failure_code=SourceFailureCode.CONTRACT_INVALID)
                 resp._content = bytes(body)
                 return resp
             except requests.exceptions.Timeout:
-                raise PiClientError("PI request timed out") from None
+                raise PiClientError("PI request timed out", failure_code=SourceFailureCode.TIMEOUT) from None
             except requests.exceptions.SSLError:
-                raise PiClientError("PI TLS verification failed") from None
+                raise PiClientError("PI TLS verification failed", failure_code=SourceFailureCode.TLS_FAILED) from None
+            except requests.exceptions.ConnectionError:
+                raise PiClientError("PI connection failed", failure_code=SourceFailureCode.CONNECT_FAILED) from None
             except requests.exceptions.RequestException:
                 raise PiClientError("PI transport failure") from None
             finally:
@@ -245,7 +256,7 @@ class PiClient:
             parsed = urlparse(path)
             if parsed.scheme or parsed.netloc:
                 if _origin(path) != base_origin:
-                    raise PiClientError("PI absolute link rejected: foreign origin")
+                    raise PiClientError("PI absolute link rejected: foreign origin", failure_code=SourceFailureCode.CONTRACT_INVALID)
                 url = path
             elif root.path.rstrip("/") and parsed.path.startswith(root.path.rstrip("/") + "/"):
                 url = f"{root.scheme}://{root.netloc}" + path
@@ -259,32 +270,32 @@ class PiClient:
                 raise ValueError("invalid path")
             prefix = root.path.rstrip("/")
             if prefix and not (resolved.path == prefix or resolved.path.startswith(prefix + "/")):
-                raise PiClientError("PI link rejected: outside configured API root")
+                raise PiClientError("PI link rejected: outside configured API root", failure_code=SourceFailureCode.CONTRACT_INVALID)
             return url
         except (TypeError, ValueError):
-            raise PiClientError("PI Web API base URL or source link is invalid") from None
+            raise PiClientError("PI Web API base URL or source link is invalid", failure_code=SourceFailureCode.CONTRACT_INVALID) from None
 
     def require_resource_link(self, metadata: Mapping[str, Any], relation: str, path: str) -> None:
         """Require exact resource identity through a source-provided relationship."""
         actual = urlparse(self.resolve_source_link(self._related_link(metadata, relation)))
         expected = urlparse(self.resolve_source_link(path))
         if actual.path != expected.path or actual.query:
-            raise PiClientError("PI relationship does not match governed target")
+            raise PiClientError("PI relationship does not match governed target", failure_code=SourceFailureCode.CONTRACT_INVALID)
 
     def get_json(self, path: str, *, params: dict | None = None) -> dict:
         resp = self.request("GET", path, params=params)
-        if resp.status_code == 401:
-            raise PiClientError("PI returned HTTP 401; authentication failed")
+        if resp.status_code in {401, 403}:
+            raise PiClientError("PI source authentication or authorization failed", failure_code=SourceFailureCode.AUTH_FAILED)
         if resp.status_code == 410:
-            raise PiGoneError("PI returned HTTP 410 Gone for PI resource")
+            raise PiGoneError("PI returned HTTP 410 Gone for PI resource", failure_code=SourceFailureCode.HTTP_ERROR)
         if resp.status_code < 200 or resp.status_code >= 300:
-            raise PiClientError(f"PI returned HTTP {resp.status_code} for PI resource")
+            raise PiClientError(f"PI returned HTTP {resp.status_code} for PI resource", failure_code=SourceFailureCode.HTTP_ERROR)
         try:
             payload = resp.json()
         except (TypeError, ValueError) as error:
-            raise PiClientError("PI returned invalid JSON") from None
+            raise PiClientError("PI returned invalid JSON", failure_code=SourceFailureCode.CONTRACT_INVALID) from None
         if not isinstance(payload, dict):
-            raise PiClientError("PI returned an unexpected JSON shape")
+            raise PiClientError("PI returned an unexpected JSON shape", failure_code=SourceFailureCode.CONTRACT_INVALID)
         return payload
 
     # -- PI Web API helpers ----------------------------------------------
@@ -360,7 +371,7 @@ class PiClient:
         links = metadata.get("Links")
         link = links.get(relation) if isinstance(links, Mapping) else None
         if not isinstance(link, str) or not link:
-            raise PiClientError(f"AF attribute metadata missing {relation} link")
+            raise PiClientError(f"AF attribute metadata missing {relation} link", failure_code=SourceFailureCode.CONTRACT_INVALID)
         return link
 
     def get_af_attribute_value(self, metadata: Mapping[str, Any]) -> dict:

@@ -262,6 +262,7 @@ def cmd_condition_evidence(args: argparse.Namespace) -> int:
     budget = None
     receipt = None
     handoff_hash = None
+    source_failures = []
     try:
         budget = ConditionGetBudget(args.max_source_gets)
         path = Path(args.plan_file)
@@ -291,7 +292,7 @@ def cmd_condition_evidence(args: argparse.Namespace) -> int:
             with new_session() as session:
                 client = PiClient(PiApiConfig.from_environment(), session=session)
                 budget.install(client)
-                batch = collect_condition_evidence(GovernedSourceBoundary(client), plan)
+                batch = collect_condition_evidence(GovernedSourceBoundary(client), plan, diagnostics=source_failures)
                 encoded = json.dumps(batch, allow_nan=False, indent=2)
                 output.write(encoded)
                 handoff_hash = hashlib.sha256(encoded.encode()).hexdigest()
@@ -303,8 +304,11 @@ def cmd_condition_evidence(args: argparse.Namespace) -> int:
     finally:
         if receipt is not None:
             with receipt:
-                receipt.write(json.dumps({"contract_version": "1.0", "source_gets": budget.used,
-                    "max_source_gets": budget.maximum, "handoff_sha256": handoff_hash}))
+                payload = {"contract_version": "1.0", "source_gets": budget.used,
+                    "max_source_gets": budget.maximum, "handoff_sha256": handoff_hash}
+                if getattr(args, "diagnostics", False):
+                    payload.update(contract_version="1.1", source_failures=source_failures)
+                receipt.write(json.dumps(payload))
                 receipt.flush()
                 os.fsync(receipt.fileno())
 
@@ -327,6 +331,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     worker.set_defaults(func=cmd_worker)
 
     evidence = sub.add_parser("condition-evidence", help="trusted operator plan only; dry-run unless --execute; never HTTP")
+    evidence.add_argument("--diagnostics", action="store_true", help="include allowlisted failure codes in private receipt v1.1; no raw source errors")
     evidence.add_argument("--plan-file", required=True)
     evidence.add_argument("--output", help="new private evidence handoff file; required for --execute")
     evidence.add_argument("--execute", action="store_true")
