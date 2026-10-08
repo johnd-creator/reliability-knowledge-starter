@@ -535,3 +535,19 @@ No source GET, mapping/selection mutation, projection, deployment or restart
 is performed by this task. Next: **NADI-P1-FRESH-001B**, engineering policy
 decisions and separately authorized manual refresh; recurring scheduling stays
 unconfigured. PI_AF_KKS_LOOKUP_UNRESOLVED and BFPT freeze remain in force.
+
+## Component freshness implementation candidate — NADI-P1-FRESH-001B
+
+PR #23/PR #24 are merged; base `4b6ae7d`. [Implementation and deployment runbook](../reliability-cockpit/docs/nadi-p1-freshness-implementation.md) adds five independent
+blank-default policies with exclusive legacy compatibility, API-only runtime
+wiring and a manually invoked one-asset/one-signal refresh coordinator. Private
+journal, shared host lock, existing-Mart advisory lease, Collector-owned five-GET
+cap, chronology/quality gates and read-only replay are implemented in the candidate.
+No candidate code is deployed, no policy is activated and no production refresh
+or mapping/selection mutation occurs. Runtime remains `478cce1`; Phase 1 remains
+CURRENT/PARTIAL and actual readiness UNKNOWN. Threshold 660/660/1800 proposals,
+source/projection policies and one live run require separate accountable approval
+after software review/merge. Next: exact merged-SHA controlled deployment,
+configuration preflight and separately authorized single manual Coal Flow refresh
+plus real replay/API/UI/readiness acceptance. No recurring scheduler is enabled.
+PI_AF_KKS_LOOKUP_UNRESOLVED and BFPT freeze remain unchanged.

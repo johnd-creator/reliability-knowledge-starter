@@ -1,7 +1,9 @@
 """Operator-only selected evidence writer; query API uses MartDatabase instead."""
 from __future__ import annotations
 from datetime import datetime, timezone
-from sqlalchemy import select
+from sqlalchemy import select, text
+from contextlib import contextmanager
+import hashlib
 from sqlalchemy.orm import Session
 from src.domain.condition_evidence import (EvidenceBatch, EvidenceSources, PiLineage, ProjectionPlan, SignalSelection, MAX_SIGNALS)
 from src.repositories.condition_models import ConditionSignalSelectionMart, ConditionEvidenceLatestMart, ConditionProjectionStateMart
@@ -48,6 +50,25 @@ class ConditionCommandStore:
             af_database_ref=mapping.af_database_ref, af_element_ref=mapping.af_element_ref,
             mapping_role=mapping.mapping_role, mapping_status=mapping.mapping_status)
         return mapping, EvidenceSources(pi=lineage)
+
+    @contextmanager
+    def refresh_lease(self, asset_id):
+        """Serializes manual refreshes across journal paths against the same Mart."""
+        if self.engine.dialect.name != "postgresql":
+            # Hermetic SQLite runner still has its exclusive shared host file lock.
+            yield
+            return
+        key = int.from_bytes(hashlib.sha256(("nadi-condition-refresh:"+asset_id).encode()).digest()[:8], "big", signed=True)
+        with self.engine.connect() as connection:
+            owned = connection.scalar(text("SELECT pg_try_advisory_lock(:key)"), {"key":key})
+            connection.commit()
+            if not owned:
+                raise ProjectionGateError("REFRESH_LEASE_BUSY")
+            try:
+                yield
+            finally:
+                connection.execute(text("SELECT pg_advisory_unlock(:key)"), {"key":key})
+                connection.commit()
 
     def approve_signal(self, definition: SignalSelection):
         """Explicit local approval, never registry inference; immutable definition IDs."""
@@ -100,7 +121,7 @@ class ConditionCommandStore:
         with Session(self.engine) as session:
             return self._plan(session, asset_id)
 
-    def project(self, batch: EvidenceBatch, *, now=None):
+    def project(self, batch: EvidenceBatch, *, now=None, replay_only=False):
         now = now or datetime.now(timezone.utc)
         if now.tzinfo is None:
             raise ValueError("aware projection clock required")
@@ -112,6 +133,21 @@ class ConditionCommandStore:
             batch = EvidenceBatch.model_validate(batch.model_dump(mode="json"))
             if any(r.evidence and r.evidence.collected_at > now for r in batch.results):
                 raise ProjectionGateError("FUTURE_COLLECTION")
+            if replay_only:
+                # Replay cannot create evidence or clear a later failure state.
+                if len(batch.results) != len(current.signals):
+                    raise ProjectionGateError("REPLAY_NOT_ACCEPTED")
+                for result in batch.results:
+                    e = result.evidence
+                    row = session.get(ConditionEvidenceLatestMart, result.signal_id)
+                    if e is None or row is None or row.evidence != e.model_dump(mode="json"):
+                        raise ProjectionGateError("REPLAY_NOT_ACCEPTED")
+                    projected = row.projected_at
+                    if projected.tzinfo is None:
+                        projected = projected.replace(tzinfo=timezone.utc)
+                    if projected < e.collected_at or projected > now:
+                        raise ProjectionGateError("REPLAY_NOT_ACCEPTED")
+                return {"status": "REPLAYED", "written": 0}
             state_row = session.get(ConditionProjectionStateMart, current.canonical_asset_id, with_for_update=True)
             # Older handoffs must not move attempt/currentness backwards.
             attempt_at = max((r.evidence.collected_at for r in batch.results if r.evidence), default=now)

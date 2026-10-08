@@ -76,7 +76,7 @@ class ConditionQueryService:
                         or e.provenance.selection_approved_by != signal.approved_by
                         or e.provenance.selection_approved_at != signal.approved_at):
                         raise ValueError("stored evidence differs from active selection")
-                    source_state = self.policy.state("SOURCE", e.source_timestamp, now)
+                    source_state = self.policy.state("SOURCE", e.source_timestamp, now, component="PI_CONDITION_PROJECTION")
                     item_statuses = {e.evidence_status}
                     if source_state == "SOURCE_STALE":
                         item_statuses.add("SOURCE_STALE")
@@ -85,8 +85,8 @@ class ConditionQueryService:
                     if projected_at.tzinfo is None:
                         projected_at = projected_at.replace(tzinfo=timezone.utc)
                     items.append(ConditionEvidenceItem(evidence=e, projected_at=projected_at,
-                        freshness=EvidenceFreshness(collector=self.policy.state("COLLECTOR", last_success, now),
-                            source=source_state, projection=self.policy.state("PROJECTION", projected_at, now), mapping="MAPPING_VERIFIED"),
+                        freshness=EvidenceFreshness(collector=self.policy.state("COLLECTOR", last_success, now, component="PI_COLLECTOR"),
+                            source=source_state, projection=self.policy.state("PROJECTION", projected_at, now, component="PI_CONDITION_PROJECTION"), mapping="MAPPING_VERIFIED"),
                         statuses=tuple(sorted(item_statuses))))
                 if len(items) < len(plan.signals):
                     statuses.add("PARTIAL_SIGNAL_SET")

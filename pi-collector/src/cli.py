@@ -257,7 +257,13 @@ def cmd_condition_evidence(args: argparse.Namespace) -> int:
     import os
     from pathlib import Path
     from src.services.condition_evidence import collect_condition_evidence, validate_plan
+    from src.services.condition_budget import ConditionGetBudget
+    import hashlib
+    budget = None
+    receipt = None
+    handoff_hash = None
     try:
+        budget = ConditionGetBudget(args.max_source_gets)
         path = Path(args.plan_file)
         if path.stat().st_size > 262144:
             raise ValueError("bounded plan exceeds 256 KiB")
@@ -268,22 +274,39 @@ def cmd_condition_evidence(args: argparse.Namespace) -> int:
             return 0
         if not args.output:
             raise ValueError("private output path required")
+        if args.report_file:
+            if Path(args.report_file).resolve() == Path(args.output).resolve():
+                raise ValueError("distinct receipt and handoff paths required")
+            receipt = os.fdopen(os.open(args.report_file, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600), "w")
         # Open exclusive output BEFORE PI calls; a bad path never causes source load.
         fd = os.open(args.output, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
         with os.fdopen(fd, "w") as output:
             from src.adapters.pi.client import PiClient
             from src.config import PiApiConfig
+            if args.source_env_file:
+                from src.services.condition_budget import load_managed_source_environment
+                load_managed_source_environment(args.source_env_file)
             from src.services.governed_source import GovernedSourceBoundary
             from src.adapters.pi.client import new_session
             with new_session() as session:
                 client = PiClient(PiApiConfig.from_environment(), session=session)
+                budget.install(client)
                 batch = collect_condition_evidence(GovernedSourceBoundary(client), plan)
-                output.write(json.dumps(batch, allow_nan=False, indent=2))
+                encoded = json.dumps(batch, allow_nan=False, indent=2)
+                output.write(encoded)
+                handoff_hash = hashlib.sha256(encoded.encode()).hexdigest()
         print(json.dumps({"status": "EVIDENCE_DOCUMENT_CREATED", "selected_signals": len(plan["signals"])}))
         return 0
     except Exception:
         print("Governed evidence handoff failed closed; no source details are exposed", file=sys.stderr)
         return 2
+    finally:
+        if receipt is not None:
+            with receipt:
+                receipt.write(json.dumps({"contract_version": "1.0", "source_gets": budget.used,
+                    "max_source_gets": budget.maximum, "handoff_sha256": handoff_hash}))
+                receipt.flush()
+                os.fsync(receipt.fileno())
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(prog="picollector", description=__doc__)
@@ -307,6 +330,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     evidence.add_argument("--plan-file", required=True)
     evidence.add_argument("--output", help="new private evidence handoff file; required for --execute")
     evidence.add_argument("--execute", action="store_true")
+    evidence.add_argument("--max-source-gets", type=int, default=25, help="hard handoff GET budget; one-signal refresh requires 5")
+    evidence.add_argument("--report-file", help="exclusive private count/hash receipt for controlled refresh")
+    evidence.add_argument("--source-env-file", help="Collector-only private .env.platform authority; explicit source keys only")
     evidence.set_defaults(func=cmd_condition_evidence)
 
     load = sub.add_parser("load-registry", help="load verified attributes from pi-knowledge YAML")

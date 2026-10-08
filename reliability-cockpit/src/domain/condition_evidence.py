@@ -206,21 +206,60 @@ class EvidenceBatch(EvidenceModel):
         return self
 
 class FreshnessPolicy(EvidenceModel):
-    # None deliberately means UNKNOWN. These are operator policies, not product SLAs.
+    """Legacy explicit mode OR component mode; unset never inherits another policy."""
     collector_max_age_seconds: float | None = Field(default=None, gt=0, allow_inf_nan=False)
     source_max_age_seconds: float | None = Field(default=None, gt=0, allow_inf_nan=False)
     projection_max_age_seconds: float | None = Field(default=None, gt=0, allow_inf_nan=False)
+    maximo_wo_max_age_seconds: float | None = Field(default=None, gt=0, allow_inf_nan=False)
+    mart_factual_projection_max_age_seconds: float | None = Field(default=None, gt=0, allow_inf_nan=False)
+    pi_collector_max_age_seconds: float | None = Field(default=None, gt=0, allow_inf_nan=False)
+    condition_source_max_age_seconds: float | None = Field(default=None, gt=0, allow_inf_nan=False)
+    condition_projection_max_age_seconds: float | None = Field(default=None, gt=0, allow_inf_nan=False)
+
+    @field_validator("*", mode="before")
+    @classmethod
+    def not_boolean_policy(cls, value):
+        if isinstance(value, bool):
+            raise ValueError("numeric policy required, not boolean")
+        return value
+
+    @model_validator(mode="after")
+    def exclusive_modes(self):
+        legacy = (self.collector_max_age_seconds, self.source_max_age_seconds, self.projection_max_age_seconds)
+        if any(v is not None for v in legacy) and self.component_mode:
+            raise ValueError("legacy and component freshness policies cannot be mixed")
+        return self
+
+    @property
+    def component_mode(self):
+        return any(getattr(self, f) is not None for f in type(self).model_fields
+                   if f not in {"collector_max_age_seconds", "source_max_age_seconds", "projection_max_age_seconds"})
 
     @classmethod
     def from_environment(cls):
         import os
+        # Whitespace is not a blank policy; invalid values fail at model validation.
         return cls(**{f: os.getenv("NADI_" + f.upper()) or None for f in cls.model_fields})
 
-    def state(self, dimension: str, timestamp: datetime | None, now: datetime):
-        threshold = getattr(self, dimension.lower() + "_max_age_seconds")
+    def threshold(self, dimension, component=None):
+        dimension = dimension.upper()
+        if dimension not in {"COLLECTOR", "SOURCE", "PROJECTION"}:
+            raise ValueError("unknown freshness dimension")
+        fields = {("MAXIMO", "COLLECTOR"): "maximo_wo_max_age_seconds",
+                  ("RELIABILITY_MART", "PROJECTION"): "mart_factual_projection_max_age_seconds",
+                  ("PI_COLLECTOR", "COLLECTOR"): "pi_collector_max_age_seconds",
+                  ("PI_CONDITION_PROJECTION", "SOURCE"): "condition_source_max_age_seconds",
+                  ("PI_CONDITION_PROJECTION", "PROJECTION"): "condition_projection_max_age_seconds"}
+        if self.component_mode:
+            field = fields.get((component, dimension))
+            return getattr(self, field) if field else None
+        return getattr(self, dimension.lower() + "_max_age_seconds")
+
+    def state(self, dimension: str, timestamp: datetime | None, now: datetime, *, component=None):
+        threshold = self.threshold(dimension, component)
         if timestamp is None or threshold is None:
             return dimension + "_UNKNOWN"
-        # SQLite fixtures may lose tz information on persisted indexed columns.
+        # SQLite indexed columns lose offsets; canonical handoff rejects naive times.
         if timestamp.tzinfo is None:
             timestamp = timestamp.replace(tzinfo=timezone.utc)
         age = (now - timestamp).total_seconds()
