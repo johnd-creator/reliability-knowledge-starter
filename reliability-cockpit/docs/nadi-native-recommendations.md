@@ -17,3 +17,5 @@ Every command uses expected revision and actor-scoped request identity. Record c
 Enterprise identity, approved team/PIC directory, application provisioning/migration review, retention and UX validation remain prerequisites. Confirm priority semantics, follow-up responsibility, target-date meaning, and how existing WO links are reviewed. This bundle invents no maintenance thresholds, recommendations, Maximo endpoints or live collection.
 
 Candidate application migration 004 is additive to the existing application DB, independent of the similarly numbered Mart migration. Rollback disables candidate APIs and revokes writer/session access; preserve record and audit tables. No live migration is executed.
+
+The candidate `engineering-recommendation.schema.json` is distinct from the existing generic `recommendation.schema.json`; the existing contract is preserved unchanged.
