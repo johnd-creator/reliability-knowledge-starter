@@ -8,10 +8,14 @@ kemampuan `main`.
 
 ## Current Phase-1 acceptance — 2026-10-08
 
-Read [Phase-1 acceptance](NADI-PHASE-1-ACCEPTANCE.md) for the overnight candidate
-from unmerged PR19 HEAD211faec. Software candidate PASS, product BLOCKED; human
-crosswalk plus runtime/policy/signal/evidence acceptance remain outstanding.
-Phase1 stays CURRENT/PARTIAL. The earlier checkpoint paragraphs below are historical.
+Read [Phase-1 acceptance](NADI-PHASE-1-ACCEPTANCE.md) and
+[operational report](../reliability-cockpit/docs/nadi-phase1-runtime-acceptance-001.md).
+PR20 merged main c2fb0fc is deployed; existing Mart004/reader grants, local PI
+observation and NADI integration-status/UI/readiness are ACCEPTED. Product remains
+BLOCKED: HUMAN_CROSSWALK_REQUIRED, FRESHNESS_POLICY_PENDING and subsequent
+signal/canary/real-evidence acceptance. Production mapping0/0, signals0/evidence0;
+Phase1 stays CURRENT/PARTIAL. Historical paragraphs below retain their dated
+scope, not current candidate/absent-schema status.
 
 ## Baca dalam urutan ini
 

@@ -1,5 +1,12 @@
 # Existing Reliability Mart governance operations
 
+Current runtime:002/003/004 APPLIED in existing Maximo-owned Mart, all three
+condition relations empty, reader SELECT-only. Exact c2fb0fc consumer deployment
+accepted; [runtime report](nadi-phase1-runtime-acceptance-001.md) records backup,
+ACL, overrides and non-secret Next build proxy configuration. Historical operator
+sequence below still requires explicit status/backup before any missing migration;
+never rerun a legacy initializer or recreate a DB because schema is already ready.
+
 Mart belongs to existing `maximo-db/maximo_collector`. Legacy Cockpit
 `DATABASE_URL` and canonical reader `RELIABILITY_MART_DATABASE_URL` are distinct.
 No new operational database, source request, mapping seed or legacy fallback.
@@ -20,13 +27,14 @@ The runner requires existing Collector/Mart anchors and canonical PKs. It will
 not initialize missing stores, adopt untracked governance tables, or replay
 legacy `001_init.sql`. Package path is explicit in the Docker image;
 standalone uses repository SQL files. Only canonical Cockpit migrations
-`002_asset_af_mapping.sql` and `003_asset_af_mapping_provenance.sql` are allowed.
+`002_asset_af_mapping.sql`, `003_asset_af_mapping_provenance.sql` and
+`004_condition_evidence.sql` are allowed.
 Their checksums are recorded in `nadi_mart_schema_migration`. Drift, unknown or
 out-of-order ledger, missing model columns, FK/index/lifecycle constraints,
 unvalidated constraints, or wrong target fail closed.
 
 Status is SELECT-only and creates no ledger/table. Apply takes a local advisory
-transaction lease, uses 5s lock/30s statement timeouts and one atomic 002/003
+transaction lease, uses 5s lock/30s statement timeouts and one atomic missing-migration
 transaction. Short SHARE locks on all 17 existing tables compare count/content
 fingerprints before/after, including WO cursor/recovery evidence. No collector
 stop, bootstrap, registry reload or historical recollection is required.
@@ -62,7 +70,7 @@ API/projector image) or the accepted PI override when operating this project.
    `RELIABILITY_MART_READER_PASSWORD` supplies at least 24 private characters
    for first creation. Status/default never creates a role. Existing privileged
    attributes, memberships, ownership or table-write grants are rejected.
-   Only CONNECT/schema USAGE and SELECT on nine named Mart tables are granted;
+   Only CONNECT/schema USAGE and SELECT on twelve named Mart tables (including the three condition relations) are granted;
    `default_transaction_read_only=on`, no memberships/owner/source credentials.
    Future table grants require explicit review; no blanket default privileges.
    PostgreSQL PUBLIC privileges remain unchanged; this is a SELECT-only Mart

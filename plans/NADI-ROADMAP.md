@@ -1,6 +1,39 @@
 # NADI product roadmap — main quest
 
-## Current overnight bundle checkpoint — 2026-10-08
+## Current Phase-1 runtime acceptance — 2026-10-08
+
+PR20 MERGED; exact main `c2fb0fc686396e79c19f42af46694673827493a9` deployed
+for PI API, NADI API and UI. Existing control checkout/accepted overrides,
+workers, projector and DB volumes remain preserved. See
+[operational acceptance](../reliability-cockpit/docs/nadi-phase1-runtime-acceptance-001.md)
+and [authoritative Phase-1 matrix](NADI-PHASE-1-ACCEPTANCE.md).
+
+**PHASE 1 SOFTWARE RUNTIME FOUNDATION: ACCEPTED.**
+**PHASE 1 PRODUCT ACCEPTANCE: BLOCKED.** Phase 1 stays **CURRENT / PARTIAL**.
+Existing Mart canonical002/003/004 ready; validated private full backup and
+17 locked factual count/content comparisons passed. nadi_mart_reader remains
+SELECT-only, including three empty condition relations. PI local stored-data
+observation and NADI integration-status/Data Trust/Asset condition panels live.
+Readiness: governance/condition-schema/status PASS; collection/projection freshness
+UNKNOWN because **FRESHNESS_POLICY_PENDING**; identity/selection/projection BLOCKED
+with **HUMAN_CROSSWALK_REQUIRED**. Registry845, PI active433, mapping0/0,
+approved signals0 and projected evidence0. Technical BAD_QUALITY18 remains visible;
+a complete collector cycle does not prove source freshness or equipment health.
+
+NADI-IDN-002 human crosswalk remains BLOCKED / EXTERNAL; BFPT remains
+REJECTED / FROZEN / DO NOT VERIFY. Runtime is ready for NADI-IDN-002B **when a
+controlled human MATCH becomes available**, then attributable human verification
+and separately authorized bounded governed canary. Approved signal semantics,
+engineering freshness/quality policy and real bounded projection remain subsequent
+product prerequisites. No production source GET/mapping/signal/projection was
+initiated by runtime acceptance. Documentation/evidence PR remains OPEN/UNMERGED.
+
+GitHub already marked PR19 MERGED separately; this differs from expected
+superseded/unmerged metadata. Its211faec commit is already an ancestor of required
+main; executor merged neither PR and did not deploy PR19 separately.
+Older checkpoints below preserve historical evidence and do not override this state.
+
+## Historical overnight bundle checkpoint — 2026-10-08
 
 NADI-PHASE1-OVERNIGHT-BUNDLE-01 branches from exact unmerged PR #19 HEAD
 `211faec4b0916361491d3ca8bc01ada2f0072284`, with authoritative main unchanged at
