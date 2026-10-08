@@ -371,6 +371,34 @@ class EngineeringPostgresTest(EngineeringTest):
             self.assertEqual({c.name for c in table.columns},{c["name"] for c in tables.get_columns(table.name)})
 
 
+    def test_concurrent_edit_compare_and_swap(self):
+        from concurrent.futures import ThreadPoolExecutor
+        from threading import Barrier
+        barrier = Barrier(2)
+        original_get = self.repo.get
+        def simultaneous_read(connection, case_id):
+            case = original_get(connection, case_id)
+            barrier.wait(timeout=10)
+            return case
+        self.repo.get = simultaneous_read
+        def edit(number):
+            try:
+                return self.service.command(AUTHOR, "NOTE", {"text": f"Concurrent synthetic note {number}"},
+                    f"race-{number}", case_id=self.case.case_id, expected_revision=1).revision
+            except EngineeringError as exc:
+                return exc.code
+        try:
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                outcomes = list(pool.map(edit, (1, 2)))
+        finally:
+            self.repo.get = original_get
+        self.assertCountEqual(outcomes, [2, "REVISION_CONFLICT"])
+        persisted = self.service.get(AUTHOR, self.case.case_id)
+        self.assertEqual((persisted.revision, len(persisted.notes)), (2, 1))
+        with self.engine.connect() as connection:
+            self.assertEqual(len(connection.execute(select(EventRow)).all()), 2)
+            self.assertEqual(len(connection.execute(select(ReceiptRow)).all()), 2)
+
     def test_candidate_writer_cannot_tamper_with_audit(self):
         from sqlalchemy.exc import DBAPIError
         with self.engine.begin() as c:
@@ -400,6 +428,11 @@ class EngineeringFixtureContractTest(unittest.TestCase):
             EngineeringCase.model_validate(document)
             Draft202012Validator(schema,format_checker=FormatChecker()).validate(document)
         EvidenceReference.model_validate(fixture["available_evidence"])
+
+    def test_generated_json_contract_has_no_model_drift(self):
+        schema=json.loads((ROOT.parent/"reliability-data-contracts/schemas/engineering-case.schema.json").read_text())
+        generated=EngineeringCase.model_json_schema()
+        self.assertEqual({key:value for key,value in schema.items() if key not in {"$schema","$id"}}, generated)
 
     def test_auth_disabled_nav_and_demo_development_only(self):
         source=(ROOT/"web/lib/engineering.ts").read_text()
