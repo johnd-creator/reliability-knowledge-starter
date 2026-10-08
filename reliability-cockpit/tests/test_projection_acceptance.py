@@ -56,6 +56,60 @@ class AcceptanceCases:
                 self.assertTrue(all(c["state"]=="CURRENT" for c in status["components"]))
                 code,_=asyncio.run(asgi_request(app,path,"POST"));self.assertEqual(code,405)
 
+    def test_full_attribute_reference_survives_selection_handoff_mart_and_http(self):
+        from jsonschema import Draft202012Validator, FormatChecker
+        self.store.retire_signal("synthetic-current")
+        previous = None
+        for length in (203, 512):
+            with self.subTest(length=length):
+                if previous:
+                    self.store.retire_signal(previous)
+                reference = "F1Ab" + "x" * (length - 4)  # Synthetic, never a source identity.
+                identity = "synthetic-long-" + str(length)
+                definition = SignalSelection(signal_id=identity, mapping_id=self.mapping_id,
+                    sources={"pi": {"attribute_ref": reference}}, semantic_name="coal_flow",
+                    approval_status="APPROVED", approved_by="synthetic-reviewer", approved_at=NOW,
+                    evidence_ref="synthetic-long-reference-acceptance")
+                self.store.approve_signal(definition)
+                with self.assertRaisesRegex(ProjectionGateError, "SIGNAL_SELECTION_CONFLICT"):
+                    self.store.approve_signal(definition)
+                self.assertEqual(len(self.store.plan(ASSET_ID).signals), 1)
+                document = self.source_document()
+                EvidenceBatch.model_validate(document)
+                for name, data in (("condition-evidence-batch", document),
+                    ("condition-projection-plan", document["plan"]),
+                    ("condition-signal-selection", document["plan"]["signals"][0]),
+                    ("condition-evidence", document["results"][0]["evidence"])):
+                    schema = json.loads((ROOT.parent / "reliability-data-contracts/schemas" / (name + ".schema.json")).read_text())
+                    Draft202012Validator(schema, format_checker=FormatChecker()).validate(data)
+                self.assertEqual(self.project(document)["written"], 1)
+                first = self.read().model_dump(mode="json")
+                self.assertEqual(first["items"][0]["evidence"]["sources"]["pi"]["attribute_ref"], reference)
+                self.assertEqual(self.project(document)["written"], 0)
+                self.assertEqual(self.read().model_dump(mode="json"), first)
+                service = self.service()
+                with patch.object(api, "get_mart_database", return_value=service.database):
+                    code, payload = asyncio.run(asgi_request(create_app(), "/v1/reliability/assets/" + ASSET_ID + "/condition-evidence"))
+                self.assertEqual(code, 200)
+                self.assertEqual(payload["items"][0]["evidence"]["sources"]["pi"]["attribute_ref"], reference)
+                previous = identity
+
+    def test_oversized_attribute_reference_rejected_by_models_and_all_contracts(self):
+        from jsonschema import Draft202012Validator, FormatChecker
+        document = self.source_document()
+        oversized = "F1Ab" + "x" * 509
+        document["plan"]["signals"][0]["sources"]["pi"]["attribute_ref"] = oversized
+        document["results"][0]["evidence"]["sources"]["pi"]["attribute_ref"] = oversized
+        for name, model, data in (("condition-evidence-batch", EvidenceBatch, document),
+            ("condition-projection-plan", ProjectionPlan, document["plan"]),
+            ("condition-signal-selection", SignalSelection, document["plan"]["signals"][0]),
+            ("condition-evidence", ConditionEvidence, document["results"][0]["evidence"])):
+            with self.subTest(contract=name):
+                with self.assertRaises(ValueError):
+                    model.model_validate(data)
+                schema = json.loads((ROOT.parent / "reliability-data-contracts/schemas" / (name + ".schema.json")).read_text())
+                self.assertTrue(list(Draft202012Validator(schema, format_checker=FormatChecker()).iter_errors(data)))
+
     def test_all_typed_values_and_bad_quality_cross_handoff_storage_query_status(self):
         for identity,semantic in (("text","running_status"),("digital","digital_status"),("boolean","interlock_status"),("null","outlet_temperature")):
             self.approve(identity,semantic)
