@@ -1,0 +1,456 @@
+{
+  "$defs": {
+    "AttachmentMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "attachment_ref": {
+          "pattern": "^attachment:[A-Za-z0-9_.:-]{1,90}$",
+          "title": "Attachment Ref",
+          "type": "string"
+        },
+        "filename": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Filename",
+          "type": "string"
+        },
+        "content_type": {
+          "enum": [
+            "application/pdf",
+            "image/png",
+            "image/jpeg",
+            "text/csv",
+            "text/plain"
+          ],
+          "title": "Content Type",
+          "type": "string"
+        },
+        "size_bytes": {
+          "maximum": 10485760,
+          "minimum": 0,
+          "title": "Size Bytes",
+          "type": "integer"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sha256"
+        },
+        "status": {
+          "const": "METADATA_ONLY_NOT_UPLOADED",
+          "default": "METADATA_ONLY_NOT_UPLOADED",
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "attachment_ref",
+        "filename",
+        "content_type",
+        "size_bytes"
+      ],
+      "title": "AttachmentMetadata",
+      "type": "object"
+    },
+    "CaseStatus": {
+      "enum": [
+        "DRAFT",
+        "IN_REVIEW",
+        "APPROVED",
+        "REJECTED"
+      ],
+      "title": "CaseStatus",
+      "type": "string"
+    },
+    "InspectionMethod": {
+      "enum": [
+        "VIBRATION",
+        "IR_THERMOGRAPHY",
+        "MCSA",
+        "TRIBOLOGY",
+        "DGA",
+        "OTHER"
+      ],
+      "title": "InspectionMethod",
+      "type": "string"
+    },
+    "ManualMeasurement": {
+      "additionalProperties": false,
+      "properties": {
+        "quantity": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Quantity",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "maxLength": 40,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "measured_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Measured At"
+        },
+        "point_ref": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Point Ref"
+        },
+        "quality": {
+          "default": "UNKNOWN",
+          "enum": [
+            "UNKNOWN",
+            "INSPECTOR_REPORTED"
+          ],
+          "title": "Quality",
+          "type": "string"
+        },
+        "provenance": {
+          "const": "HUMAN_ENTERED_MEASUREMENT",
+          "default": "HUMAN_ENTERED_MEASUREMENT",
+          "title": "Provenance",
+          "type": "string"
+        }
+      },
+      "required": [
+        "quantity"
+      ],
+      "title": "ManualMeasurement",
+      "type": "object"
+    },
+    "ReviewDecision": {
+      "additionalProperties": false,
+      "properties": {
+        "reviewer": {
+          "title": "Reviewer",
+          "type": "string"
+        },
+        "decision": {
+          "enum": [
+            "APPROVED",
+            "REJECTED"
+          ],
+          "title": "Decision",
+          "type": "string"
+        },
+        "rationale": {
+          "maxLength": 6000,
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "decided_at": {
+          "format": "date-time",
+          "title": "Decided At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "reviewer",
+        "decision",
+        "rationale",
+        "decided_at"
+      ],
+      "title": "ReviewDecision",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Contract Version",
+      "type": "string"
+    },
+    "record_id": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Record Id",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/CaseStatus",
+      "default": "DRAFT"
+    },
+    "created_by": {
+      "maxLength": 160,
+      "minLength": 1,
+      "title": "Created By",
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "submitted_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Submitted At"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "contributors": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 100,
+      "title": "Contributors",
+      "type": "array"
+    },
+    "review": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ReviewDecision"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "approval_scope": {
+      "const": "NADI_RECORD_REVIEW_ONLY",
+      "default": "NADI_RECORD_REVIEW_ONLY",
+      "title": "Approval Scope",
+      "type": "string"
+    },
+    "canonical_asset_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "title": "Canonical Asset Id",
+      "type": "string"
+    },
+    "method": {
+      "$ref": "#/$defs/InspectionMethod"
+    },
+    "method_version": {
+      "maxLength": 80,
+      "minLength": 1,
+      "title": "Method Version",
+      "type": "string"
+    },
+    "inspector_ref": {
+      "maxLength": 160,
+      "minLength": 1,
+      "title": "Inspector Ref",
+      "type": "string"
+    },
+    "inspected_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Inspected At"
+    },
+    "operating_context": {
+      "anyOf": [
+        {
+          "maxLength": 6000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Operating Context"
+    },
+    "measurements": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ManualMeasurement"
+      },
+      "maxItems": 100,
+      "title": "Measurements",
+      "type": "array"
+    },
+    "observations": {
+      "default": [],
+      "items": {
+        "maxLength": 2000,
+        "minLength": 1,
+        "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+        "type": "string"
+      },
+      "maxItems": 20,
+      "title": "Observations",
+      "type": "array"
+    },
+    "interpretations": {
+      "default": [],
+      "items": {
+        "maxLength": 2000,
+        "minLength": 1,
+        "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+        "type": "string"
+      },
+      "maxItems": 20,
+      "title": "Interpretations",
+      "type": "array"
+    },
+    "attachments": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/AttachmentMetadata"
+      },
+      "maxItems": 10,
+      "title": "Attachments",
+      "type": "array"
+    },
+    "case_refs": {
+      "default": [],
+      "items": {
+        "maxLength": 100,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9_.:-]+$",
+        "type": "string"
+      },
+      "maxItems": 10,
+      "title": "Case Refs",
+      "type": "array"
+    },
+    "method_extension": {
+      "maxProperties": 20,
+      "patternProperties": {
+        "^[A-Za-z][A-Za-z0-9_]{0,79}$": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "title": "Method Extension",
+      "type": "object"
+    },
+    "provenance": {
+      "const": "NADI_MANUAL_INSPECTION",
+      "default": "NADI_MANUAL_INSPECTION",
+      "title": "Provenance",
+      "type": "string"
+    },
+    "field_approval": {
+      "const": "ENGINEER_FIELDS_PENDING",
+      "default": "ENGINEER_FIELDS_PENDING",
+      "title": "Field Approval",
+      "type": "string"
+    },
+    "assessment": {
+      "const": "NOT_ASSESSED",
+      "default": "NOT_ASSESSED",
+      "title": "Assessment",
+      "type": "string"
+    }
+  },
+  "required": [
+    "record_id",
+    "created_by",
+    "created_at",
+    "updated_at",
+    "revision",
+    "canonical_asset_id",
+    "method",
+    "method_version",
+    "inspector_ref"
+  ],
+  "title": "ManualInspection",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nadi.example/schema/manual-inspection/v1.0",
+  "description": "Human-entered inspection envelope; method fields pending engineering approval. Review does not assert equipment health."
+}
