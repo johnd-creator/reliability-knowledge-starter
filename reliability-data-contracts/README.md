@@ -104,3 +104,13 @@ They preserve numeric/text/digital/boolean/null and explicit quality/timestamps;
 source identifiers stay under `sources.pi`. They do not replace the legacy
 technical `condition-reading` contract, imply production mappings, or define
 health/reliability scores. See [foundation acceptance](../reliability-cockpit/docs/nadi-ing-pi-001a.md).
+
+### Engineering Case candidate contract (Phase 2)
+
+[engineering-case.schema.json](schemas/engineering-case.schema.json) is generated
+from the typed EngineeringCase v1.0 model. It describes attributed human
+investigation, independent review, revisions and bounded canonical evidence
+references. Hypotheses and human priority are not source facts or risk scores.
+Condition snapshots reuse the canonical condition-evidence shape with PI identity
+under sources.pi. Fixtures are synthetic; no production case migration or write
+endpoint is activated. See [Engineering ADR](../reliability-cockpit/docs/adr/006-engineering-workspace.md).
