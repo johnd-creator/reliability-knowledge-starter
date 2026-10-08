@@ -123,3 +123,19 @@ class ComposeRuntimeTest(unittest.TestCase):
             with patch.dict(os.environ, blank, clear=True):
                 self.assertIsNone(FreshnessPolicy.from_environment().source_max_age_seconds)
             self.assertFalse({"PI_USERNAME","PI_PASSWORD","PI_TOKEN","MAXIMO_PASSWORD"} & api_env.keys())
+
+    def test_component_values_go_only_to_api_managed_and_external(self):
+        values={"NADI_MAXIMO_WO_MAX_AGE_SECONDS":"660","NADI_MART_FACTUAL_PROJECTION_MAX_AGE_SECONDS":"660",
+                "NADI_PI_COLLECTOR_MAX_AGE_SECONDS":"1800","NADI_CONDITION_SOURCE_MAX_AGE_SECONDS":"",
+                "NADI_CONDITION_PROJECTION_MAX_AGE_SECONDS":""}
+        for mode in ("compose.yaml","compose.external.yaml"):
+            services=self.config(mode,policy=values);api=services["cockpit-api"]["environment"]
+            self.assertEqual({k:api[k] for k in values},values)
+            with patch.dict(os.environ,api,clear=True):
+                policy=FreshnessPolicy.from_environment()
+                self.assertEqual(policy.threshold("COLLECTOR","MAXIMO"),660)
+                self.assertEqual(policy.threshold("COLLECTOR","PI_COLLECTOR"),1800)
+                self.assertIsNone(policy.threshold("SOURCE","PI_CONDITION_PROJECTION"))
+                self.assertIsNone(policy.threshold("PROJECTION","PI_CONDITION_PROJECTION"))
+            for name,service in services.items():
+                if name!="cockpit-api":self.assertFalse(values.keys() & service.get("environment",{}).keys())
