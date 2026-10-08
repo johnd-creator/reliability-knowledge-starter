@@ -1,5 +1,26 @@
 # NADI Phase 1 acceptance
 
+## Latest pilot checkpoint — NADI-IDN-002B (8 October 2026)
+
+[Coal Feeder A evidence](../reliability-cockpit/docs/nadi-idn-002b-coal-feeder-a.md)
+records **PARTIAL**: one BSR/IP CS01 Coal Feeder A mapping is VERIFIED via
+canonical dry-run → PROPOSED → explicit human-review transition.
+`verified_by=Fauzi`; technical reviewer Hidayat, System Owner Boiler / Senior
+Engineer, in-person verbal MATCH reported by operator on 2026-10-08.
+No signed artifact or direct engineer authentication is claimed.
+Production PROPOSED=0 / VERIFIED=1, ambiguity=0, approved signals=0, condition evidence=0.
+**SIGNAL_APPROVAL_PENDING**: exact local Coal Flow A reference identified,
+accountable meaning/use approval pending; canary/projection not run, source GET=0.
+Identity gate PASS for this pilot; signal/projection BLOCKED NO_APPROVED_SIGNALS.
+Maximo/Mart/PI freshness UNKNOWN with blank policy; governance/schema/status PASS.
+**PHASE 1 PRODUCT ACCEPTANCE: BLOCKED**, Phase 1 CURRENT/PARTIAL.
+HUMAN_CROSSWALK_REQUIRED is resolved for this one asset only; other identities
+remain unverified. PI_AF_KKS_LOOKUP_UNRESOLVED is separate and unchanged;
+BFPT REJECTED/FROZEN/DO NOT VERIFY. No runtime redeploy/DDL or source changes.
+Next: one accountable signal approval → bounded governed canary → accepted
+handoff/idempotent projection, plus approved freshness policy and actual readiness.
+Older checkpoint populations below are historical as of their respective audits.
+
 ## Current accepted runtime — NADI-PHASE1-RUNTIME-ACCEPTANCE-001
 
 8 October 2026 Jakarta. Exact merged main
