@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "smoke:routes": "node scripts/route-smoke.mjs",
-    "check:product-safety": "node scripts/product-safety-check.mjs"
+    "check:product-safety": "node scripts/product-safety-check.mjs",
+    "check:engineering": "node scripts/engineering-check.mjs"
   },
   "dependencies": {
     "next": "^15.5.9",
