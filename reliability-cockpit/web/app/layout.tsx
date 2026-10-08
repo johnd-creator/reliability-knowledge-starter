@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./engineering.css";
 import { AppShell } from "../components/ui";
 
 export const metadata: Metadata = {
@@ -11,7 +12,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="id">
       <body>
-        <AppShell>{children}</AppShell>
+        <AppShell engineeringVisible={process.env.NADI_ENGINEERING_WORKSPACE_ENABLED === "true"}>{children}</AppShell>
       </body>
     </html>
   );

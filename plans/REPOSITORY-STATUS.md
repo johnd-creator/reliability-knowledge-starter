@@ -1,5 +1,25 @@
 # Repository status and debt — PLATFORM-ROADMAP-001
 
+## Current development checkpoint — overnight Engineering bundle 01
+
+Baseline PR28 MERGED, main `e67c641e23214bf8851a05d312e1426c1e471ec3`.
+**Phase 1 CURRENT/PARTIAL; Phase 2 IN DEVELOPMENT; Phase 3 DESIGN READY.**
+Source-free candidate adds typed human cases, attributed independent review,
+transactional audit/idempotency/concurrency, bounded local canonical references,
+disabled isolated API contracts and an explicitly synthetic development-only UI.
+Production write routes remain unmounted: trusted application identity/RBAC/session
+and application writer/migration provisioning are BLOCKED, not simulated as users.
+RCFA identity/Data Trust provider and operational UAT remain explicit gaps.
+
+[Morning acceptance](../reliability-cockpit/docs/nadi-phase2-overnight-bundle-01.md)
+and [Phase 3 design](../reliability-cockpit/docs/nadi-phase3-diagnostic-foundation.md)
+record exact available tests and readiness. No source request, operational DB write,
+deployment, worker/env/grant change or new operational database. Accepted R3 evidence,
+GOV-03 policies/checkpoints/expiry and Phase-1 semantics remain untouched. This
+checkpoint authorizes development reporting only; historical runtime evidence below
+is not replaced by a new observation. Next: **NADI-PH2-02 — Trusted Engineering
+Identity & Activation Contracts**. Do not mark Phase 2 COMPLETE or diagnostics live.
+
 ## Current runtime checkpoint — NADI-P1-FRESH-GOV-03 (8 October 2026)
 
 **PASS — temporary internal monitoring ACTIVE; Phase 1 CURRENT/PARTIAL.**

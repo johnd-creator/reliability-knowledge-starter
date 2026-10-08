@@ -1,0 +1,336 @@
+{
+  "synthetic": true,
+  "cases": [
+    {
+      "title": "Synthetic feeder flow investigation",
+      "problem_statement": "Investigate a synthetic flow observation without inferring equipment health.",
+      "canonical_asset_id": "asset:SYNTHETIC:FEEDER-A",
+      "category": "CONDITION",
+      "priority": "NORMAL",
+      "assigned_engineer": null,
+      "investigation": {
+        "observed_symptoms": [
+          "Synthetic observation only"
+        ],
+        "operating_context": "",
+        "hypotheses": [
+          "Possible operating-context explanation \u2014 unconfirmed"
+        ],
+        "observations": [],
+        "open_questions": [
+          "Which operating context explains the synthetic observation?"
+        ],
+        "proposed_next_checks": [
+          "Human review of evidence semantics"
+        ]
+      },
+      "contract_version": "1.0",
+      "case_id": "case:synthetic-flow-a",
+      "status": "DRAFT",
+      "created_at": "2026-10-08T12:00:00Z",
+      "updated_at": "2026-10-08T12:00:00Z",
+      "created_by": "engineer-fixture",
+      "contributors": [
+        "engineer-fixture"
+      ],
+      "revision": 1,
+      "provenance": "HUMAN_ENGINEERING_RECORD",
+      "notes": [],
+      "evidence": [
+        {
+          "reference_id": "ref:synthetic-coal-flow",
+          "record_id": "signal:synthetic-coal-flow",
+          "canonical_asset_id": "asset:SYNTHETIC:FEEDER-A",
+          "kind": "CONDITION",
+          "source": "NADI_CONDITION",
+          "mode": "FROZEN_SNAPSHOT",
+          "stable_version": "synthetic-fixture-v1",
+          "source_timestamp": "2026-10-07T12:00:00Z",
+          "observed_at": "2026-10-08T12:00:00Z",
+          "linked_at": "2026-10-08T12:00:00Z",
+          "linked_by": "engineer-fixture",
+          "identity_status": "VERIFIED",
+          "signal_approval": "APPROVED",
+          "freshness": "UNKNOWN",
+          "freshness_policy_ref": null,
+          "unit": "Ton/h",
+          "quality_good": true,
+          "quality_questionable": false,
+          "quality_substituted": false,
+          "quality_annotated": false,
+          "snapshot": {
+            "label": "Synthetic Coal Flow A",
+            "summary": null,
+            "condition": {
+              "contract_version": "1.0",
+              "canonical_asset_id": "asset:SYNTHETIC:FEEDER-A",
+              "mapping_id": "mapping-verified-af_element_test_001",
+              "signal_id": "signal:synthetic-coal-flow",
+              "semantic_name": "coal_flow",
+              "sources": {
+                "pi": {
+                  "pi_source_id": "CENTRAL_PI",
+                  "af_server_ref": "AF_SERVER_TEST",
+                  "af_database_ref": "AF_DATABASE_TEST",
+                  "af_element_ref": "AF_ELEMENT_TEST_001",
+                  "mapping_role": "PRIMARY_EQUIPMENT",
+                  "mapping_status": "VERIFIED",
+                  "attribute_ref": "SYNTHETIC-ATTRIBUTE-synthetic-current",
+                  "attribute_name": "Synthetic Coal Flow A"
+                }
+              },
+              "value_type": "NUMERIC",
+              "value": 42.25,
+              "unit": "Ton/h",
+              "source_timestamp": "2026-10-07T12:00:00Z",
+              "collected_at": "2026-10-07T12:00:00Z",
+              "quality_good": true,
+              "quality_questionable": false,
+              "quality_substituted": false,
+              "quality_annotated": false,
+              "evidence_status": "EVIDENCE_AVAILABLE",
+              "provenance": {
+                "source_boundary": "GOVERNED_PI_SOURCE",
+                "selection_evidence_ref": "synthetic-only-selection",
+                "selection_approved_by": "synthetic-signal-reviewer",
+                "selection_approved_at": "2026-10-07T12:00:00Z"
+              }
+            },
+            "availability": "AVAILABLE"
+          }
+        }
+      ],
+      "review": null
+    },
+    {
+      "title": "Synthetic investigation 2",
+      "problem_statement": "Investigate a synthetic flow observation without inferring equipment health.",
+      "canonical_asset_id": "asset:SYNTHETIC:FEEDER-A",
+      "category": "INVESTIGATION",
+      "priority": "LOW",
+      "assigned_engineer": null,
+      "investigation": {
+        "observed_symptoms": [
+          "Synthetic observation only"
+        ],
+        "operating_context": "",
+        "hypotheses": [
+          "Possible operating-context explanation \u2014 unconfirmed"
+        ],
+        "observations": [],
+        "open_questions": [
+          "Which operating context explains the synthetic observation?"
+        ],
+        "proposed_next_checks": [
+          "Human review of evidence semantics"
+        ]
+      },
+      "contract_version": "1.0",
+      "case_id": "case:synthetic-2",
+      "status": "DRAFT",
+      "created_at": "2026-10-08T12:00:00Z",
+      "updated_at": "2026-10-08T12:00:00Z",
+      "created_by": "engineer-fixture",
+      "contributors": [
+        "engineer-fixture"
+      ],
+      "revision": 1,
+      "provenance": "HUMAN_ENGINEERING_RECORD",
+      "notes": [],
+      "evidence": [],
+      "review": null
+    },
+    {
+      "title": "Synthetic investigation 3",
+      "problem_statement": "Investigate a synthetic flow observation without inferring equipment health.",
+      "canonical_asset_id": "asset:SYNTHETIC:FEEDER-A",
+      "category": "INVESTIGATION",
+      "priority": "HIGH",
+      "assigned_engineer": null,
+      "investigation": {
+        "observed_symptoms": [
+          "Synthetic observation only"
+        ],
+        "operating_context": "",
+        "hypotheses": [
+          "Possible operating-context explanation \u2014 unconfirmed"
+        ],
+        "observations": [],
+        "open_questions": [
+          "Which operating context explains the synthetic observation?"
+        ],
+        "proposed_next_checks": [
+          "Human review of evidence semantics"
+        ]
+      },
+      "contract_version": "1.0",
+      "case_id": "case:synthetic-3",
+      "status": "DRAFT",
+      "created_at": "2026-10-08T12:00:00Z",
+      "updated_at": "2026-10-08T12:00:00Z",
+      "created_by": "engineer-fixture",
+      "contributors": [
+        "engineer-fixture"
+      ],
+      "revision": 1,
+      "provenance": "HUMAN_ENGINEERING_RECORD",
+      "notes": [],
+      "evidence": [],
+      "review": null
+    },
+    {
+      "title": "Synthetic investigation 4",
+      "problem_statement": "Investigate a synthetic flow observation without inferring equipment health.",
+      "canonical_asset_id": "asset:SYNTHETIC:FEEDER-A",
+      "category": "INVESTIGATION",
+      "priority": "LOW",
+      "assigned_engineer": null,
+      "investigation": {
+        "observed_symptoms": [
+          "Synthetic observation only"
+        ],
+        "operating_context": "",
+        "hypotheses": [
+          "Possible operating-context explanation \u2014 unconfirmed"
+        ],
+        "observations": [],
+        "open_questions": [
+          "Which operating context explains the synthetic observation?"
+        ],
+        "proposed_next_checks": [
+          "Human review of evidence semantics"
+        ]
+      },
+      "contract_version": "1.0",
+      "case_id": "case:synthetic-4",
+      "status": "DRAFT",
+      "created_at": "2026-10-08T12:00:00Z",
+      "updated_at": "2026-10-08T12:00:00Z",
+      "created_by": "engineer-fixture",
+      "contributors": [
+        "engineer-fixture"
+      ],
+      "revision": 1,
+      "provenance": "HUMAN_ENGINEERING_RECORD",
+      "notes": [],
+      "evidence": [],
+      "review": null
+    }
+  ],
+  "history": [
+    {
+      "case_id": "case:synthetic-flow-a",
+      "revision": 1,
+      "previous_revision": 0,
+      "actor": "engineer-fixture",
+      "action": "CREATE",
+      "occurred_at": "2026-10-08T12:00:00Z",
+      "changed_fields": [
+        "title",
+        "problem_statement"
+      ],
+      "reason": "Synthetic fixture only"
+    },
+    {
+      "case_id": "case:synthetic-2",
+      "revision": 1,
+      "previous_revision": 0,
+      "actor": "engineer-fixture",
+      "action": "CREATE",
+      "occurred_at": "2026-10-08T12:00:00Z",
+      "changed_fields": [
+        "title",
+        "problem_statement"
+      ],
+      "reason": "Synthetic fixture only"
+    },
+    {
+      "case_id": "case:synthetic-3",
+      "revision": 1,
+      "previous_revision": 0,
+      "actor": "engineer-fixture",
+      "action": "CREATE",
+      "occurred_at": "2026-10-08T12:00:00Z",
+      "changed_fields": [
+        "title",
+        "problem_statement"
+      ],
+      "reason": "Synthetic fixture only"
+    },
+    {
+      "case_id": "case:synthetic-4",
+      "revision": 1,
+      "previous_revision": 0,
+      "actor": "engineer-fixture",
+      "action": "CREATE",
+      "occurred_at": "2026-10-08T12:00:00Z",
+      "changed_fields": [
+        "title",
+        "problem_statement"
+      ],
+      "reason": "Synthetic fixture only"
+    }
+  ],
+  "available_evidence": {
+    "reference_id": "ref:synthetic-coal-flow",
+    "record_id": "signal:synthetic-coal-flow",
+    "canonical_asset_id": "asset:SYNTHETIC:FEEDER-A",
+    "kind": "CONDITION",
+    "source": "NADI_CONDITION",
+    "mode": "FROZEN_SNAPSHOT",
+    "stable_version": "synthetic-fixture-v1",
+    "source_timestamp": "2026-10-07T12:00:00Z",
+    "observed_at": "2026-10-08T12:00:00Z",
+    "linked_at": "2026-10-08T12:00:00Z",
+    "linked_by": "engineer-fixture",
+    "identity_status": "VERIFIED",
+    "signal_approval": "APPROVED",
+    "freshness": "UNKNOWN",
+    "freshness_policy_ref": null,
+    "unit": "Ton/h",
+    "quality_good": true,
+    "quality_questionable": false,
+    "quality_substituted": false,
+    "quality_annotated": false,
+    "snapshot": {
+      "label": "Synthetic Coal Flow A",
+      "summary": null,
+      "condition": {
+        "contract_version": "1.0",
+        "canonical_asset_id": "asset:SYNTHETIC:FEEDER-A",
+        "mapping_id": "mapping-verified-af_element_test_001",
+        "signal_id": "signal:synthetic-coal-flow",
+        "semantic_name": "coal_flow",
+        "sources": {
+          "pi": {
+            "pi_source_id": "CENTRAL_PI",
+            "af_server_ref": "AF_SERVER_TEST",
+            "af_database_ref": "AF_DATABASE_TEST",
+            "af_element_ref": "AF_ELEMENT_TEST_001",
+            "mapping_role": "PRIMARY_EQUIPMENT",
+            "mapping_status": "VERIFIED",
+            "attribute_ref": "SYNTHETIC-ATTRIBUTE-synthetic-current",
+            "attribute_name": "Synthetic Coal Flow A"
+          }
+        },
+        "value_type": "NUMERIC",
+        "value": 42.25,
+        "unit": "Ton/h",
+        "source_timestamp": "2026-10-07T12:00:00Z",
+        "collected_at": "2026-10-07T12:00:00Z",
+        "quality_good": true,
+        "quality_questionable": false,
+        "quality_substituted": false,
+        "quality_annotated": false,
+        "evidence_status": "EVIDENCE_AVAILABLE",
+        "provenance": {
+          "source_boundary": "GOVERNED_PI_SOURCE",
+          "selection_evidence_ref": "synthetic-only-selection",
+          "selection_approved_by": "synthetic-signal-reviewer",
+          "selection_approved_at": "2026-10-07T12:00:00Z"
+        }
+      },
+      "availability": "AVAILABLE"
+    }
+  }
+}
