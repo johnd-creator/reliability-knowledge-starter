@@ -33,6 +33,7 @@ class Priority(StrEnum):
 class Role(StrEnum):
     AUTHOR = "AUTHOR"
     REVIEWER = "REVIEWER"
+    ADMIN = "ADMIN"
 
 
 class Principal(EvidenceModel):
