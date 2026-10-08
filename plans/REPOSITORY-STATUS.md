@@ -1,6 +1,57 @@
 # Repository status and debt — PLATFORM-ROADMAP-001
 
-## Latest R1 checkpoint — signal approved, runtime contract repair pending (8 October 2026)
+## Latest runtime promotion — NADI-IDN-002B-R1-FIX-01 (8 October 2026)
+
+**PASS — bounded first real Coal Flow A evidence pilot.** PR22 MERGED;
+authoritative source `478cce1958ab5800ce21d7b1e93b83ff43c1ac19` deployed to
+Cockpit API/operator tooling only. No application repair or unmerged code was
+needed. Existing control checkout, private configuration and all accepted
+worker/PI/web/DB images remain preserved. Image ID plus serving-source checksum
+prove the reviewed 512-character contract; actual 203 and synthetic 512 accepted,
+513 rejected. Historical Compose revision label is not the image source SHA.
+
+Fauzi's existing 2026-10-08 approval for precisely Coal Flow A / `coal_flow`
+is now persisted through canonical administration. Exactly one approved signal,
+one latest condition evidence and one projection state; VERIFIED mapping 1 /
+PROPOSED 0 unchanged. No new identity review or approval was requested.
+Five guarded current-source GETs (six cumulative including R1 identity GET)
+produced NUMERIC evidence with original `Ton/h`, time/quality/lineage; four
+canonical schema/model checks passed. Real replay writes 0 and preserves every
+condition row, source/projection timestamp, state and API document.
+
+[Operational evidence](../reliability-cockpit/docs/nadi-idn-002b-coal-feeder-a.md#r1-fix-01--reviewed-runtime-promotion-and-first-real-evidence)
+records backup, immutable image, counts, actual response, replay, API/UI and
+all nine gates. Coverage 845 registered / 1 VERIFIED / 1 approved-signal asset /
+1 projected asset. Source policy remains blank; Good is signal quality only.
+Actual readiness: governance/schema/identity/selection/status PASS; three
+collector/Mart freshness gates UNKNOWN; projection gate UNKNOWN due
+UNKNOWN_SOURCE_OR_PROJECTION_FRESHNESS. Overall UNKNOWN, require-pass exit 2.
+The measured real projection is accepted; freshness-qualified readiness is not.
+
+**PHASE 1 SOFTWARE RUNTIME FOUNDATION: ACCEPTED.**
+**BOUNDED REAL PILOT: ACCEPTED.**
+**PHASE 1 PRODUCT ACCEPTANCE: NOT PASS — FRESHNESS_POLICY_PENDING.**
+Phase 1 remains CURRENT/PARTIAL. Identity approval, signal approval, bounded
+canary, controlled handoff and real replay are complete for this one asset only.
+Other equipment identities remain unverified. The live technical inventory
+remains 433 active; technical BAD_QUALITY 18 and epoch timestamps are independent
+of this Good pilot evidence. PI_AF_KKS_LOOKUP_UNRESOLVED remains open;
+BFPT stays REJECTED/FROZEN/DO NOT VERIFY.
+
+Task-attributable mutations: one signal selection and one evidence/state batch;
+replay 0 writes, mapping mutations 0, source writes 0. Collector/web restarts,
+DDL/history/discovery/registry/reset/volume recreation/new operational DB,
+CEMS/NK changes and credential exposure 0. Only cockpit-api replaced once;
+22 other existing container identities remain unchanged. No recurring condition
+projection was enabled. No unnecessary repair PR; documentation checkpoint
+is separate from deployed source. Earlier checkpoints below are historical.
+
+Next: approve defensible collector/source/projection freshness policies and
+controlled refresh/acceptance procedure, then rerun actual readiness without
+weakening gates. No new mapping, broader signal selection or health scoring
+is implied by this successful one-signal pilot.
+
+## Historical R1 checkpoint — signal approved, runtime contract repair pending (8 October 2026)
 
 **PARTIAL — CODE_ACCEPTANCE_REQUIRED.** Fauzi directly approved exactly one
 Coal Flow A / `coal_flow` signal on 2026-10-08, evidence reference
