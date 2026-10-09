@@ -25,6 +25,18 @@ class ExistingWorkOrderReference(EvidenceModel):
     source_changed_at: datetime | None = None
     collected_at: datetime | None = None
     projected_at: datetime | None = None
+    actual_start: datetime | None = None
+    actual_finish: datetime | None = None
+    failure_code: StrictStr | None = Field(default=None, max_length=200)
+    problem_code: StrictStr | None = None
+    cause_code: StrictStr | None = None
+    remedy_code: StrictStr | None = None
+    preventive_maintenance_ref: StrictStr | None = None
+    job_plan_ref: StrictStr | None = None
+    chronology_timestamp: datetime | None = None
+    chronology_basis: Literal["ACTUAL_START", "SOURCE_CHANGE", "UNKNOWN"] = "UNKNOWN"
+    quality: Literal["UNKNOWN"] = "UNKNOWN"
+    provenance: Literal["CANONICAL_MART_LOCAL_COPY"] = "CANONICAL_MART_LOCAL_COPY"
     sources: MaintenanceSources
     informational_only: Literal[True] = True
     interpretation: Literal["SOURCE_FACT"] = "SOURCE_FACT"

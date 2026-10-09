@@ -4,7 +4,7 @@ No source client, acquisition trigger, source credentials or writes.
 """
 
 from datetime import datetime
-from sqlalchemy import select
+from sqlalchemy import select, func
 from src.domain.engineering import Principal, EngineeringError
 from src.domain.maintenance_context import (
     ExistingWorkOrderReference,
@@ -45,6 +45,10 @@ class LocalMaintenanceIntelligence:
             source_changed_at=aware(row.source_changed_at),
             collected_at=collected,
             projected_at=aware(row.mart_updated_at),
+            actual_start=aware(row.actual_start), actual_finish=aware(row.actual_finish),
+            failure_code=row.failure_code,
+            chronology_timestamp=aware(row.actual_start or row.source_changed_at),
+            chronology_basis="ACTUAL_START" if row.actual_start else ("SOURCE_CHANGE" if row.source_changed_at else "UNKNOWN"),
             sources=MaintenanceSources(
                 maximo=MaximoWorkOrderIdentity(source_record_ref=row.work_order_id)
             ),
@@ -58,7 +62,7 @@ class LocalMaintenanceIntelligence:
             MaintenanceEventMart.work_order_id.is_not(None),
         )
 
-    def work_orders(self, actor, asset, *, offset=0, limit=25):
+    def work_orders(self, actor, asset, *, offset=0, limit=25, sort="identity"):
         self.gate(actor, asset)
         if (
             type(offset) is not int
@@ -67,11 +71,15 @@ class LocalMaintenanceIntelligence:
             or not 1 <= limit <= 100
         ):
             raise EngineeringError("INVALID_PAGINATION", 422)
+        if sort not in {"identity", "chronology_desc"}:
+            raise EngineeringError("INVALID_SORT", 422)
+        order = ([func.coalesce(MaintenanceEventMart.actual_start, MaintenanceEventMart.source_changed_at).desc().nulls_last(), MaintenanceEventMart.canonical_id]
+                 if sort == "chronology_desc" else [MaintenanceEventMart.canonical_id])
         with self.database.read_session() as s:
             rows = list(
                 s.scalars(
                     self.query(asset)
-                    .order_by(MaintenanceEventMart.canonical_id)
+                    .order_by(*order)
                     .offset(offset)
                     .limit(limit + 1)
                 )

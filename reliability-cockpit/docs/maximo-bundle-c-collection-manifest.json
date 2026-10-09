@@ -1,0 +1,20 @@
+{
+  "version": "1.0",
+  "mode": "PROPOSAL_ONLY_NO_EXECUTION",
+  "scope": {"site": "BSR", "organization": "IP", "canonical_asset_required": true},
+  "source_methods": ["GET"],
+  "work_order_mutations": "PROHIBITED",
+  "approval_required": true,
+  "domains": [
+    {"domain":"asset_hierarchy","classification":"AVAILABLE_AND_COLLECTED","existing_object":"MXASSET","local_relation":"asset_master","canonical_fields":["canonical_id","source_asset_number","location_ref","parent_asset_ref","asset_type"],"gap":"Asset type is not a controlled classification/specification master","execution_allowed":false},
+    {"domain":"work_order_execution","classification":"AVAILABLE_AND_COLLECTED","existing_object":"MXWODETAIL","local_relation":"maintenance_event","canonical_fields":["work_order_id","status","actual_start","actual_finish","source_changed_at","failure_code"],"gap":"Current records are not a complete source status-transition ledger","execution_allowed":false},
+    {"domain":"problem_cause_remedy","classification":"AVAILABLE_NOT_COLLECTED","existing_object":"MXWODETAIL","local_relation":null,"canonical_fields":[],"gap":"Some problemcode discovery exists; authoritative field/relationship semantics and projection are pending","execution_allowed":false},
+    {"domain":"equipment_specification","classification":"ENDPOINT_UNVERIFIED","existing_object":null,"local_relation":null,"canonical_fields":[],"gap":"No approved richer specification resource/relationship","execution_allowed":false},
+    {"domain":"pm_jobplan","classification":"ENDPOINT_UNVERIFIED","existing_object":null,"local_relation":null,"canonical_fields":[],"gap":"Documented master candidates do not prove current permission; WO reference fields not canonically projected","execution_allowed":false},
+    {"domain":"operator_logsheet","classification":"AVAILABLE_NOT_COLLECTED","existing_object":"DMD_OPLOGABN","local_relation":null,"canonical_fields":[],"gap":"Prior bounded knowledge evidence; canonical contract and business identity join pending","execution_allowed":false}
+  ],
+  "future_preconditions": ["owner_read_authorization", "exact_verified_endpoint_and_fields", "identity_and_scope_review", "pagination_and_cursor_contract", "explicit_request_budget", "engineer_semantic_approval", "separate_execution_authorization"],
+  "new_source_request_budget": null,
+  "cursor_policy": "Preserve existing bounded WO changedate cursor and recovery floor; no new watermark inferred",
+  "stop_conditions": ["401_or_403", "identity_ambiguity", "contract_drift", "budget_exhausted"]
+}

@@ -80,7 +80,7 @@ class AssetContextService:
             identity_state = Availability.UNAVAILABLE
         except (ValidationError, ValueError, TypeError):
             identity_state = Availability.INVALID_RECORD
-        maintenance = self.page(lambda: self.maintenance.work_orders(actor, asset, offset=offset, limit=limit), offset=offset, limit=limit)
+        maintenance = self.page(lambda: self.maintenance.work_orders(actor, asset, offset=offset, limit=limit, sort="chronology_desc"), offset=offset, limit=limit)
         condition = None
         condition_state = Availability.UNAVAILABLE
         try:
