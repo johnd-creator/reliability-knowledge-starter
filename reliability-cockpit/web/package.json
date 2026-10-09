@@ -11,7 +11,9 @@
     "check:engineering": "node scripts/engineering-check.mjs",
     "check:phase2": "node scripts/phase2-check.mjs",
     "check:workflow": "node scripts/workflow-check.mjs",
-    "check:http-qa": "node scripts/http-qa-check.mjs"
+    "check:http-qa": "node scripts/http-qa-check.mjs",
+    "check:bounded-http": "node scripts/bounded-http-check.mjs",
+    "check:bounded-proxy": "node scripts/bounded-proxy-check.mjs"
   },
   "dependencies": {
     "next": "^15.5.9",
