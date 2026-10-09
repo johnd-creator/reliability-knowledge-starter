@@ -1,7 +1,7 @@
 # Application migration and recovery candidate
 
 ApplicationMigrator is explicit/injected, status read-only, apply transactional
-and advisory-locked. Canonical002→003→004 checksummed ledger refuses untracked
+and advisory-locked. Canonical002→003→004→005 checksummed ledger refuses untracked
 relations, checksum/order drift, missing tables and wrong database/Mart anchors.
 Existing operational schemas without this ledger require reviewed reconciliation;
 never auto-adopt them. It is not called by startup/init-db/mart-migrate.

@@ -1,5 +1,46 @@
 # Repository status and debt — PLATFORM-ROADMAP-001
 
+## Bundle D final integration review — NADI-D-INTEGRATION-01
+
+Baseline main e836710 unchanged. Stack44→50 remains OPEN; no merge/deployment.
+Session cancellation finding corrected6f66ecd in PR48; normal forward merges
+preserve ancestry. Final implementation c03e57c; final documents at PR50 head.
+Local acceptance Cockpit610/Maximo181/PI191/contracts14,11Timescale, HTTP11,
+browser25 +proxy8, frontend110/type/build/safety PASS. Corrected scoped CI run
+37892980855 SUCCESS; final PR50 CI must match its exact head before merge.
+**Merge candidate READY pending explicit operator authorization.**
+**Phase1 CURRENT/PARTIAL; Phase2 QA CANDIDATE/PARTIAL; operational activation BLOCKED.**
+PUBLIC/default/schema-owner privilege audit, enterprise identity/deadlines,
+attachment storage/recovery/scanner, PdM field approval and operational UAT remain
+activation gates. QA proxy streaming caps are a non-operational follow-up.
+[Final review, findings and controlled merge plan](../reliability-cockpit/docs/nadi-d-integration-01.md). Older checkpoints
+retain historical evidence; no source/production/Phase1 mutation or new acquisition.
+
+## Current development checkpoint — Phase 2 Bundle D
+
+Baseline main `e836710d1984af7a4bfb739bad0bfbbb96d544ca`, Bundle C PR37–43 MERGED.
+Tested implementation `ee20307a2664e7ca64737c3f43f1256f26cdf9f6`.
+**Development/test acceptance PASS; operational activation BLOCKED.**
+**Phase1 CURRENT/PARTIAL; Phase2 integrated QA CANDIDATE/PARTIAL.**
+D1–D7 stack adds enterprise identity adapter/session bootstrap, deliberate
+application migration ledger/writer grants, private attachment service and real
+HTTP/PostgreSQL/frontend workflow. Operational Engineering routes remain unmounted.
+No production/source/Phase1 mutation; Maximo/PI strictly READ-ONLY, NADI never
+creates or changes Maximo WO. Original accepted runtime is unchanged.
+
+Final local Cockpit600, Maximo181, PI191, contracts14 PASS;11 formerly skipped
+Timescale tests now executed in disposable fixtures. HTTP11/browser25/frontend110,
+29 safety files/typecheck/build/diff-check PASS. D6 actual GitHub backend/frontend
+jobs SUCCESS, run37887690942. Security diff review found no concrete reportable
+issue in15 changed source/config surfaces; production IdP/storage not certified.
+Real enterprise IdP/directory, existing-store provisioning/privilege approval,
+secure storage/scanning, PdM engineer field sign-off and operational UI/UAT remain
+external activation gates. QA command editor is not final engineering form UX.
+[Bundle D acceptance and activation manifest](../reliability-cockpit/docs/nadi-phase2-bundle-d.md) records the exact stack,
+recovery proposal, test evidence and limits. Next: senior stack review, then
+separately authorized identity/provisioning/field UAT. Older checkpoints below
+retain historical measured evidence; they are not re-certified by this bundle.
+
 ## Current development checkpoint — Phase 2 Bundle C
 
 Verified main `7a846ef2c7e25306f23da99dd011e1d54aa8f4a4`, BundleB PR30–36 MERGED.
