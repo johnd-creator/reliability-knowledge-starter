@@ -1,5 +1,13 @@
 # Bundle E — governed QA preparation and NO-GO handoff
 
+
+**NADI-E-INTEGRATION-02 selection:** local username/password is initial QA auth.
+Enterprise SSO/Entra/OIDC registration is an optional future path, not an initial
+activation prerequisite. Local account custody/onboarding and existing host/DB/
+TLS/storage/PdM/UAT/explicit deployment gates remain. See local-authentication-v1
+and the final integration report; historical enterprise-specific evidence below
+remains reusable, not initial-QA authorization.
+
 ## Verdict and exact baseline
 
 **Preparation foundations PASS; overall PARTIAL; real QA NO-GO.**
@@ -161,8 +169,9 @@ real QA host/TLS/UAT and actual image build NOT RUN, not claimed passing suites.
 
 **NO-GO** until:
 1. Approved actual host/DNS/network/TLS/private ingress and release image provenance.
-2. Selected enterprise IdP, registration, reviewed verifier/callback/logout,
-   durable versioned directory and grant/revocation/deprovisioning audit.
+2. Selected local account provider, approved private administrator custody/onboarding,
+   password/session policy and grant/revocation/deprovisioning audit. Enterprise
+   registration/verifier is optional future work, not an initial QA gate.
 3. Approved dedicated DB and separate owner/capability/LOGIN credentials;
    on-host migration/permission/backup audit, no production reuse.
 4. Reviewed real QA startup/frontend integration; never relax existing dev gates.

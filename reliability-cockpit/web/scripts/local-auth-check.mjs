@@ -1,0 +1,18 @@
+import assert from "node:assert/strict";
+import {readFileSync} from "node:fs";
+const read=p=>readFileSync(p,"utf8");let count=0;
+const check=(name,ok)=>{assert.ok(ok,name);count++;console.log("PASS "+name);};
+const login=read("components/LocalLogin.tsx"),workspace=read("components/EngineeringQa.tsx"),app=read("../src/api/app.py");
+check("real backend login contract",login.includes('engineeringRequest("auth/login","POST"'));
+check("server directory metadata",login.includes('engineeringRequest("session")')&&!login.includes('principal_id:'));
+check("no browser authority fields",!login.includes('roles: [')&&!login.includes('asset_ids: ['));
+check("no auth browser storage",![login,workspace].some(s=>/localStorage|sessionStorage/.test(s)));
+check("credential inputs bounded",login.includes('maxLength={64}')&&login.includes('maxLength={256}'));
+check("password visibility accessible",login.includes('aria-pressed={show}')&&login.includes('autoComplete="current-password"'));
+check("generic feedback",login.includes('Unable to sign in. Check your credentials.'));
+check("loading and no automatic retry",login.includes('disabled={busy')&&login.includes('no automatic retry'));
+check("logout and expired behavior",workspace.includes('Log out')&&login.includes('session expired or was revoked'));
+check("unsaved workspace retained",workspace.includes('beforeunload')&&workspace.includes('setDirty'));
+for(const route of ["app/login/page.tsx","app/engineering/local/page.tsx"]){const source=read(route);check("development opt-in "+route,source.includes('NODE_ENV!=="development"')&&source.includes('NADI_ENGINEERING_QA_ENABLED'));}
+check("no operational login mount",!app.includes('local_authentication')&&!app.includes('create_qa_app'));
+console.log("Local login frontend checks passed: "+count);

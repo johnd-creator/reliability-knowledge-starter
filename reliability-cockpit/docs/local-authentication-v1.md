@@ -51,7 +51,7 @@ shared limit can degrade availability under attack; separately reviewed ingress
 rate limiting is required for real QA. No retries or source calls.
 
 Secure HttpOnly SameSite=strict __Host cookie, explicit idle/absolute session policy,
-CSRF token in memory, trusted HTTPS Origin and application/json mutations. Login
+CSRF token in memory (GET local session resumes its stable session-bound HMAC token after navigation/reload), trusted HTTPS Origin and application/json mutations. Login
 uses strict origin/JSON protection before an authenticated session exists; no
 cross-origin form or permissive origin fallback. Existing session endpoint exposes
 only current server-authoritative directory metadata. Logout revokes the session.
@@ -85,9 +85,9 @@ private operator procedure; no automatic account recovery/SQL shortcut is suppli
 Example shape only (supply private DSN outside argv, never substitute secrets in docs):
 
 ```sh
-python -m src.qa.users --expected-database <approved_application_db> \
+python -m src.qa.users bootstrap --expected-database <approved_application_db> \
   --operator-ref <accountable_operator> --acknowledge-private-administration \
-  --username <chosen_username> --assets <approved_canonical_asset> bootstrap
+  --username <chosen_username> --assets <approved_canonical_asset>
 ```
 
 User creation/admin functionality has no public HTTP mutation endpoint or large admin

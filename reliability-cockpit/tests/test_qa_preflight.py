@@ -71,3 +71,15 @@ class QaPreflightTest(unittest.TestCase):
             with self.assertRaises(ValueError):read_private_config(p)
             link=Path(root)/"link";link.symlink_to(p)
             with self.assertRaises(OSError):read_private_config(link)
+
+    def test_local_auth_selected_without_enterprise_registration(self):
+        r=self.complete();r.update(identity_provider="local",issuer="",client_id="",redirect_uri="",logout_uri="",
+            algorithms=[],provider_timeout_seconds=None,identity_secret_ref=None,
+            local_auth_approval_ref="fixture-account-policy")
+        result=assess_configuration(r,actual_sha=self.sha,clean=True)
+        self.assertEqual(result["preparation"],"PASS")
+        self.assertEqual(result["real_qa_readiness"],"NO_GO")
+        self.assertNotIn("ENTERPRISE",str(result))
+        for field,value in (("local_password_minimum",11),("local_login_attempts",0),("local_auth_approval_ref",None)):
+            changed={**r,field:value}
+            self.assertEqual(assess_configuration(changed,actual_sha=self.sha,clean=True)["preparation"],"BLOCKED")

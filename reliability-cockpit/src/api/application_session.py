@@ -1,11 +1,12 @@
 """Explicit isolated factory only; never imported by operational create_app."""
+from src.services.application_identity import csrf_for_session
 from fastapi import APIRouter, Request, Response, HTTPException
 from pydantic import Field
 from src.domain.condition_evidence import EvidenceModel
 from src.domain.engineering import EngineeringError
 class SessionProof(EvidenceModel):
     proof: str = Field(min_length=1,max_length=8192)
-def build_session_router(authority,*,enabled=False):
+def build_session_router(authority,*,enabled=False,resume_csrf=False):
     router=APIRouter(prefix='/v1/engineering/session')
     if not enabled:return router
     def fail(error):raise HTTPException(error.status,detail={'code':error.code}) from None
@@ -20,9 +21,13 @@ def build_session_router(authority,*,enabled=False):
     @router.get('')
     def current(request:Request,response:Response):
         try:
-            with authority.lease(request.cookies.get(authority.COOKIE)) as actor:
+            token=request.cookies.get(authority.COOKIE)
+            csrf=csrf_for_session(token) if resume_csrf and isinstance(token,str) and 40<=len(token)<=128 else None
+            with authority.lease(token,renew_csrf=csrf) as actor:
                 response.headers['Cache-Control']='no-store'
-                return {'subject':actor.principal_id,'roles':sorted(actor.roles),'asset_ids':sorted(actor.asset_ids)}
+                result={'subject':actor.principal_id,'roles':sorted(actor.roles),'asset_ids':sorted(actor.asset_ids)}
+                if resume_csrf:result['csrf_token']=csrf
+                return result
         except EngineeringError as error:fail(error)
     @router.post('/logout')
     def logout(request:Request,response:Response):

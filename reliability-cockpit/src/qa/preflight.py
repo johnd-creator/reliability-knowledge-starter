@@ -3,7 +3,8 @@ import argparse, json, os, re, stat, subprocess
 from pathlib import Path
 from typing import Literal
 from pydantic import BaseModel, ConfigDict, StrictBool, StrictInt, StrictStr
-from src.services.identity_configuration import OidcTrustConfiguration, SessionRuntimePolicy
+from src.services.identity_configuration import OidcTrustConfiguration, SessionRuntimePolicy, exact_https_url
+from src.services.local_authentication import PasswordPolicy
 
 REQUIRED = "REQUIRED_OPERATOR_INPUT"
 ROOT = Path(__file__).resolve().parents[3]
@@ -36,6 +37,13 @@ class QaConfiguration(BaseModel):
     orphan_grace_seconds: StrictInt | None
     retention_days: StrictInt | None
     operator_approval_ref: StrictStr | None
+    local_password_minimum: StrictInt | None = None
+    local_login_attempts: StrictInt | None = None
+    local_login_window_seconds: StrictInt | None = None
+    local_account_failures: StrictInt | None = None
+    local_lock_seconds: StrictInt | None = None
+    local_hashing_capacity: StrictInt | None = None
+    local_auth_approval_ref: StrictStr | None = None
     engineering_enabled: StrictBool
     source_collection_enabled: StrictBool
     factual_data_mode: Literal["fixtures", "approved_select_only"]
@@ -66,14 +74,22 @@ def assess_configuration(raw, *, actual_sha, clean):
     gate("DATABASE_NAMES", len(set(names)) == 4 and all(re.fullmatch(r"[a-z][a-z0-9_]{2,62}", n) for n in names),
          "EXPLICIT_DISTINCT_QA_DATABASE_ROLES_REQUIRED")
     try:
-        OidcTrustConfiguration(config.issuer, config.client_id, config.redirect_uri,
-            config.logout_uri, config.origin, tuple(config.algorithms), config.provider_timeout_seconds)
-        valid_identity = config.identity_provider in {"oidc", "gateway"}
-        # Placeholder DNS is intentionally not a real approved origin/issuer.
-        valid_identity = valid_identity and ".invalid" not in config.origin and ".invalid" not in config.issuer
+        if config.identity_provider == "local":
+            exact_https_url(config.origin,origin=True)
+            PasswordPolicy(minimum_length=config.local_password_minimum,
+                attempts_per_window=config.local_login_attempts,window_seconds=config.local_login_window_seconds,
+                account_failures=config.local_account_failures,lock_seconds=config.local_lock_seconds,
+                hashing_capacity=config.local_hashing_capacity)
+            valid_identity = ".invalid" not in config.origin
+        else:
+            OidcTrustConfiguration(config.issuer, config.client_id, config.redirect_uri,
+                config.logout_uri, config.origin, tuple(config.algorithms), config.provider_timeout_seconds)
+            valid_identity = (config.identity_provider in {"oidc", "gateway"}
+                and ".invalid" not in config.origin and ".invalid" not in config.issuer)
     except Exception:
         valid_identity = False
-    gate("IDENTITY_TRUST", valid_identity, "ENTERPRISE_TRUST_AND_REAL_HTTPS_ORIGIN_REQUIRED")
+    gate("IDENTITY_TRUST", valid_identity, "LOCAL_ACCOUNT_POLICY_AND_REAL_HTTPS_ORIGIN_REQUIRED"
+         if config.identity_provider == "local" else "FUTURE_ENTERPRISE_TRUST_REQUIRED")
     try:
         SessionRuntimePolicy(config.session_idle_seconds, config.session_absolute_seconds,
             config.pool_size, config.pool_timeout_seconds, config.lease_capacity)
@@ -87,7 +103,8 @@ def assess_configuration(raw, *, actual_sha, clean):
                and type(config.orphan_grace_seconds) is int and config.orphan_grace_seconds > 0
                and type(config.retention_days) is int and config.retention_days > 0)
     gate("PRIVATE_STORAGE_POLICY", storage, "STORAGE_QUOTA_RETENTION_INPUT_REQUIRED")
-    refs = (config.operator_approval_ref, config.database_secret_ref, config.identity_secret_ref,
+    refs = (config.operator_approval_ref, config.database_secret_ref,
+            config.local_auth_approval_ref if config.identity_provider == "local" else config.identity_secret_ref,
             config.scanner_approval_ref, config.directory_approval_ref,
             config.infrastructure_approval_ref, config.backup_recovery_approval_ref)
     gate("DECLARED_APPROVAL_REFERENCES", all(isinstance(v,str) and v.strip() and REQUIRED not in v for v in refs),
@@ -96,7 +113,7 @@ def assess_configuration(raw, *, actual_sha, clean):
             "real_qa_readiness": "NO_GO", "gates": gates,
             "attestations": "DECLARED_NOT_VERIFIED",
             "remaining": ["ONHOST_IDENTITY_PRIVILEGE_STORAGE_TLS_UAT_AUDIT",
-                          "REVIEWED_ENTERPRISE_AND_FRONTEND_STARTUP_INTEGRATION"],
+                          "REVIEWED_SELECTED_AUTH_AND_FRONTEND_STARTUP_INTEGRATION"],
             "source_gets": 0, "writes": 0}
 
 

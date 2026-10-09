@@ -208,3 +208,19 @@ class LocalAuthTest(unittest.TestCase):
                     c.exec_driver_sql("SET LOCAL ROLE nadi_local_audit_fixture")
                     c.exec_driver_sql(sql)
             self.assertEqual(error.exception.orig.sqlstate,"42501")
+
+    def test_operator_cli_authenticated_admin_create_and_no_secret_output(self):
+        import io
+        from contextlib import redirect_stdout
+        from src.qa.users import main
+        output=io.StringIO();temporary=secrets.token_urlsafe(24)
+        with patch.dict(os.environ,{"NADI_APPLICATION_ADMIN_DSN":self.engine.url.render_as_string(hide_password=False)}), \
+                patch("sys.stdin.isatty",return_value=True), \
+                patch("getpass.getpass",side_effect=[self.secret,temporary,temporary]), redirect_stdout(output):
+            result=main(["create","--expected-database",self.engine.url.database,"--operator-ref","fixture-operator",
+                "--acknowledge-private-administration","--admin-username","fixture-admin","--username","cli-engineer",
+                "--roles","AUTHOR","--assets","asset:SYNTHETIC:A"])
+        self.assertEqual(result,0)
+        self.assertNotIn(self.secret,output.getvalue());self.assertNotIn(temporary,output.getvalue())
+        with self.engine.connect() as c:
+            self.assertTrue(c.scalar(select(ACCOUNT.c.password_change_required).where(ACCOUNT.c.username=="cli-engineer")))

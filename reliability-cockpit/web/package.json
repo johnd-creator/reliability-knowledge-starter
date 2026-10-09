@@ -13,7 +13,8 @@
     "check:workflow": "node scripts/workflow-check.mjs",
     "check:http-qa": "node scripts/http-qa-check.mjs",
     "check:bounded-http": "node scripts/bounded-http-check.mjs",
-    "check:bounded-proxy": "node scripts/bounded-proxy-check.mjs"
+    "check:bounded-proxy": "node scripts/bounded-proxy-check.mjs",
+    "check:local-auth": "node scripts/local-auth-check.mjs"
   },
   "dependencies": {
     "next": "^15.5.9",
