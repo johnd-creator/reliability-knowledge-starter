@@ -1,5 +1,23 @@
 # 05 — Roadmap Implementasi dan Backlog
 
+## Bundle D merged / Bundle E QA preparation — 2026-10-09
+
+PR44–50 MERGED via merge commits; authoritative main
+eda3595a9b8d86726dd0d89192ebf4657b66d27e. Older OPEN/candidate statements below
+are historical. Bundle E stack51→59 is OPEN/UNMERGED, preparation only.
+Dedicated QA architecture, enterprise trust contracts, fail-closed privilege
+audit, attachment integrity/recovery, bounded HTTP, source-free preflight, exact
+artifact binding and disposable restart/restore rehearsal validated.
+Final Cockpit661/Maximo181/PI191/contracts14,11Timescale, frontend127/type/build/
+safety and browser25 PASS. No real QA UAT or operational activation.
+**Phase1 CURRENT/PARTIAL; Phase2 QA preparation CANDIDATE/PARTIAL; real QA NO-GO.**
+Operator allowed naming; actual host/IdP/DB role provisioning/storage/scanner,
+reviewed real-QA startup/frontend integration, PdM fields/UAT and explicit
+deployment authority remain required. No new production source request/write,
+WO changes, DB DDL, deployment or Phase1 mutation.
+[Bundle E handoff](../../reliability-cockpit/docs/nadi-phase2-bundle-e.md).
+
+
 ## Bundle D final integration review — NADI-D-INTEGRATION-01
 
 Baseline main e836710 unchanged. Stack44→50 remains OPEN; no merge/deployment.
