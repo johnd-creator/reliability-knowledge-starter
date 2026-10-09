@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "source_sha": "REQUIRED_EXACT_REVIEWED_SHA",
+  "image_digest": "REQUIRED_OPERATOR_INPUT",
+  "environment": "qa",
+  "deployment_authorized": false,
+  "authorization_ref": null,
+  "config_sha256": "REQUIRED_PRIVATE_NONSECRET_CONFIG_MANIFEST",
+  "identity_adapter_review": null,
+  "directory_review": null,
+  "database_audit": null,
+  "storage_scanner_review": null,
+  "frontend_callback_transport_review": null,
+  "backup_restore_evidence": null,
+  "uat_review": null
+}
