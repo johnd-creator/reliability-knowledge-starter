@@ -142,3 +142,25 @@ Evidence: [original report](https://github.com/johnd-creator/reliability-knowled
 - **Next Action:** Reconcile without dropping R/Q/M gates; no parser or source acquisition
 
 Evidence: [original report](https://github.com/johnd-creator/reliability-knowledge-starter/blob/89cfa0e50dbdaa1fa158558c890cc512c049b60f/reliability-cockpit/docs/nadi-pdm-requirements-01.md). Current merge reconciliation: [audit](docs/NADI-DOC-FOUNDATION-01.md).
+
+## NADI-DOC-FOUNDATION-01 — documentation delivery checkpoint
+
+- **Date:** 2026-10-10, Asia/Jakarta.
+- **Task ID:** NADI-DOC-FOUNDATION-01.
+- **Objective:** Establish permanent product context, requirements, design specifications and development governance without runtime changes.
+- **Branch:** codex/nadi-doc-foundation-01, separate documentation worktree.
+- **Commit SHA:** `80bd3cb7e5aa2d4c1f817cb00b1bf39be0ebf7b4` implements the documentation foundation; this appended delivery record follows it. Base main: `f54643f3510bf505628a1400024784faab46e496`.
+- **PR:** [#64](https://github.com/johnd-creator/reliability-knowledge-starter/pull/64).
+- **Implementation Status:** IMPLEMENTED — 14 Markdown files; context, PRD, design system, 11 page specs, reference manifest, authority/audit, UX track and onboarding. No application implementation.
+- **Test Status:** TESTED — relative links/page-section completeness, historical-content and AGENTS preservation, Markdown diff checks PASS; all 18 baseline NADI/fixture container IDs/start times, development PIDs/status and XLS hash retained. No new runtime/browser/DB mutation tests.
+- **CI Status:** PENDING at this checkpoint; explicit existing source-free GitHub workflow dispatch follows the final documentation commit. Exact head/result remains visible in PR64 checks; prior main/PR62/PR63 SUCCESS is separate evidence.
+- **Merge Status:** OPEN / UNMERGED; no automatic merge.
+- **Development Visibility:** Documents visible on PR64; documentation branch is not the running frontend. HTTPS3000 remains clean PR62 head `0bfea1273f97ce96a08ef147b44f804aecb428d1` with factual and isolated QA backends AVAILABLE.
+- **Product Owner Acceptance:** PENDING — no new PO visual sign-off or actual engineer UAT claimed.
+- **Remaining Blockers:** Three original screenshots missing; detailed design/token/navigation acceptance; PR63 engineer validation; operational activation gates; Phase1 review outcomes UNKNOWN. Task continuation after truncated section12 unavailable.
+- **Next Action:** Review PR64 and exact-head CI; obtain original reference files and record approvals; reconcile PR62/63 when separately authorized, following the preservation plan.
+
+Evidence: [foundation audit and reconciliation](docs/NADI-DOC-FOUNDATION-01.md),
+[reference manifest](docs/design/references/README.md),
+[official roadmap](plans/NADI-ROADMAP.md). This is documentation delivery, not
+completion of UX-02–09 implementation or operational deployment.
