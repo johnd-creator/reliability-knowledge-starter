@@ -9,6 +9,7 @@ MIGRATIONS={
  '002_engineering_workspace.sql':{'engineering_case','engineering_case_event','engineering_case_receipt'},
  '003_application_identity.sql':{'nadi_application_session','nadi_security_activity'},
  '004_human_records.sql':{'nadi_human_record','nadi_human_record_revision','nadi_human_record_receipt'},
+ '005_private_attachments.sql':{'nadi_attachment','nadi_attachment_event'},
 }
 CURRENT={'engineering_case','nadi_application_session','nadi_human_record'}
 LEDGER='nadi_application_migration'
