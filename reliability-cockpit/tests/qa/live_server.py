@@ -103,7 +103,7 @@ def create_live_app():
             raise RuntimeError("EXPLICIT_FIXTURE_ACCOUNT_RECOVERY_REQUIRED")
     fixture.wire(provider)
     fixture.authority = SessionAuthority(fixture.store, provider,
-        origins={"https://localhost:13035"}, idle_seconds=1800, absolute_seconds=28800)
+        origins={"https://localhost:3000"}, idle_seconds=1800, absolute_seconds=28800)
     app = create_qa_app(authority=fixture.authority, cases=fixture.cases,
         inspections=fixture.inspections, recommendations=fixture.recommendations,
         context=fixture.context, environment="development")
@@ -120,7 +120,8 @@ def create_live_app():
         except Exception:
             raise HTTPException(503, detail={"code": "DEVELOPMENT_DATABASE_UNAVAILABLE"}) from None
         return {"environment": "DEVELOPMENT", "source_sha": sha,
-                "database": "DISPOSABLE_TEST", "engineering": True,
+                "database": "DISPOSABLE_TEST", "database_identity": "nadi_live_dev_test",
+                "engineering": True,
                 "source": "SYNTHETIC_FIXTURES", "reload_probe": "baseline"}
 
     app.state.fixture = fixture  # Keep synthetic engine/context alive for the process.

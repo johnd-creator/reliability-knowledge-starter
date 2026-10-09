@@ -1,5 +1,10 @@
 # NADI-DEV-LIVE-01 — Persistent laptop development
 
+**Superseded startup/address:** use [NADI-DEV-RESET-01](nadi-dev-reset-01.md)
+for the single HTTPS frontend on port 3000, explicit branch preview, and rollback.
+The acceptance results below describe the preserved original PR #62 run on 13035.
+Do not start a second frontend using the historical commands below.
+
 Candidate foundation based on reviewed main `f54643f3510bf505628a1400024784faab46e496`.
 No operational deployment or Engineering API activation. The original workspace,
 its untracked spreadsheet, operational services and accepted Phase-1 evidence are preserved.
