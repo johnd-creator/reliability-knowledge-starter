@@ -1,5 +1,30 @@
 # 05 — Roadmap Implementasi dan Backlog
 
+## Current development checkpoint — Phase 2 Bundle D
+
+Baseline main `e836710d1984af7a4bfb739bad0bfbbb96d544ca`, Bundle C PR37–43 MERGED.
+Tested implementation `ee20307a2664e7ca64737c3f43f1256f26cdf9f6`.
+**Development/test acceptance PASS; operational activation BLOCKED.**
+**Phase1 CURRENT/PARTIAL; Phase2 integrated QA CANDIDATE/PARTIAL.**
+D1–D7 stack adds enterprise identity adapter/session bootstrap, deliberate
+application migration ledger/writer grants, private attachment service and real
+HTTP/PostgreSQL/frontend workflow. Operational Engineering routes remain unmounted.
+No production/source/Phase1 mutation; Maximo/PI strictly READ-ONLY, NADI never
+creates or changes Maximo WO. Original accepted runtime is unchanged.
+
+Final local Cockpit600, Maximo181, PI191, contracts14 PASS;11 formerly skipped
+Timescale tests now executed in disposable fixtures. HTTP11/browser25/frontend110,
+29 safety files/typecheck/build/diff-check PASS. D6 actual GitHub backend/frontend
+jobs SUCCESS, run37887690942. Security diff review found no concrete reportable
+issue in15 changed source/config surfaces; production IdP/storage not certified.
+Real enterprise IdP/directory, existing-store provisioning/privilege approval,
+secure storage/scanning, PdM engineer field sign-off and operational UI/UAT remain
+external activation gates. QA command editor is not final engineering form UX.
+[Bundle D acceptance and activation manifest](../../reliability-cockpit/docs/nadi-phase2-bundle-d.md) records the exact stack,
+recovery proposal, test evidence and limits. Next: senior stack review, then
+separately authorized identity/provisioning/field UAT. Older checkpoints below
+retain historical measured evidence; they are not re-certified by this bundle.
+
 ## Current development checkpoint — Phase 2 Bundle C
 
 Verified main `7a846ef2c7e25306f23da99dd011e1d54aa8f4a4`, BundleB PR30–36 MERGED.

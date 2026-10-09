@@ -24,5 +24,7 @@ not deployment. Temporary preview/database resources are stopped after tests.
 
 CI candidate has read-only GitHub permission, pinned actions, bounded timeouts,
 no production secrets, development application fixtures and a frontend job.
-CI is not PASS until actual GitHub checks complete. Browser/TImescale execution
-is local acceptance; this bounded workflow does not claim those CI jobs exist.
+D6 GitHub run37887690942 completed SUCCESS for backend-fixtures and frontend.
+See https://github.com/johnd-creator/reliability-knowledge-starter/actions/runs/37887690942.
+Browser/Timescale execution is local acceptance; this bounded workflow does not
+claim those CI jobs exist. Later documentation PR checks are reported separately.
