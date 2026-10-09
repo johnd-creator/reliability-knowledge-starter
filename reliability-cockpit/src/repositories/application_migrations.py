@@ -10,8 +10,9 @@ MIGRATIONS={
  '003_application_identity.sql':{'nadi_application_session','nadi_security_activity'},
  '004_human_records.sql':{'nadi_human_record','nadi_human_record_revision','nadi_human_record_receipt'},
  '005_private_attachments.sql':{'nadi_attachment','nadi_attachment_event'},
+ '006_local_authentication.sql':{'nadi_local_account','nadi_local_login_budget','nadi_local_security_event'},
 }
-CURRENT={'engineering_case','nadi_application_session','nadi_human_record'}
+CURRENT={'engineering_case','nadi_application_session','nadi_human_record','nadi_local_account','nadi_local_login_budget'}
 LEDGER='nadi_application_migration'
 class ApplicationMigrator:
     def __init__(self,engine,*,expected_database,isolated=False,dedicated=False):
