@@ -65,4 +65,3 @@ class RecommendationWorkflowTest(RecommendationTest):
             "stable_version": "changed", "linked_by": "reviewer", "linked_at": self.now.replace(second=self.now.second + 1)})):
             self.code("EVIDENCE_VERSION_CHANGED", lambda: self.change(row, "REVIEW", {"decision": "APPROVED", "reason": "x"}, self.reviewer))
         self.assertEqual(self.service.get(self.author, row.record_id), row)
-

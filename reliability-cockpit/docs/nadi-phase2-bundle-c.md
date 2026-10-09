@@ -67,7 +67,7 @@ activation BLOCKED. Phase1 remains CURRENT/PARTIAL, not re-certified or closed.
 
 Authoritative main remains `7a846ef2c7e25306f23da99dd011e1d54aa8f4a4`.
 Final tested application checkpoint: `b42c1da84bb3ba5e9ed8cb14e873bb5f11c25636`.
-C7 is a documentation-only descendant; its exact delivery HEAD is reported after
+C7 adds documentation and a nonfunctional trailing-blank fixture cleanup; its exact delivery HEAD is reported after
 publication and can be resolved from the final PR head. None of these PRs is merged.
 
 | PR | Checkpoint / branch | Exact head | Depends on |
