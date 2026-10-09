@@ -11,6 +11,8 @@ from src.domain.engineering import (
     Principal,
     Role,
     EngineeringError,
+    EngineeringCase,
+    ReviewDecision,
 )
 from src.domain.recommendation import RecommendationDraft
 from src.domain.maintenance_context import (
@@ -28,6 +30,13 @@ from fastapi.testclient import TestClient
 
 
 class Catalog(FixtureCatalog):
+    def validate_case(self, actor, asset, case):
+        super().validate_case(actor, asset, case)
+        return EngineeringCase(case_id=case, canonical_asset_id=asset,
+            title="Synthetic reviewed finding", problem_statement="Local fixture", investigation={"hypotheses": ["Human hypothesis"]},
+            created_by="case-author", contributors=("case-author",), created_at=NOW, updated_at=NOW,
+            revision=3, status="APPROVED", review=ReviewDecision(reviewer="case-reviewer",
+            decision="APPROVED", rationale="Fixture", decided_at=NOW))
     def resolve(self, asset, kind, record, mode, actor, now):
         if kind != EvidenceKind.ASSET or record != ASSET:
             raise EngineeringError("EVIDENCE_NOT_FOUND", 404)

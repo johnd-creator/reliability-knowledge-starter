@@ -242,7 +242,7 @@ class ReviewedRecordService:
                 elif action == "SUBMIT":
                     if payload or current.status != CaseStatus.DRAFT:
                         raise EngineeringError("INVALID_TRANSITION", 409)
-                    self.validate_submission(actor, current)
+                    data.update(self.validate_submission(actor, current) or {})
                     data.update(status=self.submission_status, submitted_at=now)
                 elif action == "REVIEW":
                     if (

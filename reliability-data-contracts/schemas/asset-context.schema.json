@@ -360,6 +360,52 @@
       "title": "Category",
       "type": "string"
     },
+    "CompletionVerification": {
+      "additionalProperties": false,
+      "properties": {
+        "reviewer": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Reviewer",
+          "type": "string"
+        },
+        "verified_at": {
+          "format": "date-time",
+          "title": "Verified At",
+          "type": "string"
+        },
+        "reason": {
+          "maxLength": 6000,
+          "minLength": 1,
+          "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+          "title": "Reason",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceReference"
+          },
+          "maxItems": 20,
+          "minItems": 1,
+          "title": "Evidence",
+          "type": "array"
+        },
+        "scope": {
+          "const": "NADI_LOCAL_FOLLOW_UP_ONLY",
+          "default": "NADI_LOCAL_FOLLOW_UP_ONLY",
+          "title": "Scope",
+          "type": "string"
+        }
+      },
+      "required": [
+        "reviewer",
+        "verified_at",
+        "reason",
+        "evidence"
+      ],
+      "title": "CompletionVerification",
+      "type": "object"
+    },
     "ConditionEvidence": {
       "additionalProperties": false,
       "properties": {
@@ -1647,7 +1693,8 @@
         "PLANNED",
         "IN_PROGRESS",
         "COMPLETED",
-        "CANCELLED"
+        "CANCELLED",
+        "VERIFIED"
       ],
       "title": "FollowUpStatus",
       "type": "string"
@@ -2485,6 +2532,28 @@
           "default": null,
           "title": "Existing Work Order Ref"
         },
+        "reviewed_case": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ReviewedCaseLink"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "completion_verification": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CompletionVerification"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "supporting_evidence": {
           "default": [],
           "items": {
@@ -2576,6 +2645,48 @@
         "decided_at"
       ],
       "title": "ReviewDecision",
+      "type": "object"
+    },
+    "ReviewedCaseLink": {
+      "additionalProperties": false,
+      "properties": {
+        "case_id": {
+          "maxLength": 240,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Case Id",
+          "type": "string"
+        },
+        "revision": {
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        },
+        "stable_version": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Stable Version",
+          "type": "string"
+        },
+        "reviewer": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Reviewer",
+          "type": "string"
+        },
+        "reviewed_at": {
+          "format": "date-time",
+          "title": "Reviewed At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "case_id",
+        "revision",
+        "stable_version",
+        "reviewer",
+        "reviewed_at"
+      ],
+      "title": "ReviewedCaseLink",
       "type": "object"
     },
     "ReviewedInspectionEvidence": {
