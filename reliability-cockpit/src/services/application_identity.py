@@ -86,7 +86,8 @@ class SessionAuthority:
         origins,
         idle_seconds,
         absolute_seconds,
-        clock=None
+        clock=None,
+        lease_capacity=8,
     ):
         if (
             type(idle_seconds) is not int
@@ -112,6 +113,10 @@ class SessionAuthority:
             idle_seconds,
             absolute_seconds,
         )
+        if type(lease_capacity) is not int or not 1 <= lease_capacity <= 64:
+            raise ValueError("bounded session lease capacity required")
+        from threading import BoundedSemaphore
+        self._lease_slots = BoundedSemaphore(lease_capacity)
         self.clock = clock or (lambda: datetime.now(timezone.utc))
 
     def audit(self, c, grant, action, outcome):
@@ -247,21 +252,62 @@ class SessionAuthority:
             raise
         except SQLAlchemyError:
             raise EngineeringError("IDENTITY_STORE_UNAVAILABLE", 503) from None
+        except HTTPException:
+            raise
+        except Exception:
+            raise EngineeringError("IDENTITY_PROVIDER_UNAVAILABLE", 503) from None
 
     def dependency(self):
         async def trusted(request: Request):
+            # Every lease remains thread-affine, including cancellation cleanup.
+            # Admission is bounded; cancellation cannot abandon a running entry.
+            import asyncio
+            import sys
+            from concurrent.futures import ThreadPoolExecutor
+            from functools import partial
+            if not self._lease_slots.acquire(blocking=False):
+                raise HTTPException(503, detail={"code": "SESSION_CAPACITY_EXCEEDED"})
+            executor = None
+            entry = None
+            loop = asyncio.get_running_loop()
+            lease = self.lease(
+                request.cookies.get(self.COOKIE), method=request.method,
+                origin=request.headers.get("origin"),
+                csrf=request.headers.get("x-csrf-token"),
+                content_type=request.headers.get("content-type"),
+            )
             try:
-                with self.lease(
-                    request.cookies.get(self.COOKIE),
-                    method=request.method,
-                    origin=request.headers.get("origin"),
-                    csrf=request.headers.get("x-csrf-token"),
-                    content_type=request.headers.get("content-type"),
-                ) as principal:
-                    yield principal
+                executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="nadi-session")
+                entry = loop.run_in_executor(executor, lease.__enter__)
+                principal = await asyncio.shield(entry)
+                yield principal
             except EngineeringError as error:
                 raise HTTPException(error.status, detail={"code": error.code}) from None
-
+            finally:
+                error = sys.exc_info()
+                async def finish():
+                    try:
+                        if entry is not None:
+                            try:
+                                await entry
+                            except BaseException:
+                                return  # __enter__ failed: no successful lease to exit.
+                            await loop.run_in_executor(executor, partial(lease.__exit__, *error))
+                    finally:
+                        if executor is not None:
+                            executor.shutdown(wait=False)
+                        self._lease_slots.release()
+                cleanup = asyncio.create_task(finish())
+                cancelled = None
+                while True:
+                    try:
+                        await asyncio.shield(cleanup)
+                        break
+                    except asyncio.CancelledError as caught:
+                        # A second cancellation must not interrupt rollback/guard release.
+                        cancelled = caught
+                if cancelled is not None:
+                    raise cancelled
         return trusted
 
     def set_cookie(self, response, token):
