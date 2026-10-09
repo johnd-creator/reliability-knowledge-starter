@@ -9,7 +9,8 @@
     "smoke:routes": "node scripts/route-smoke.mjs",
     "check:product-safety": "node scripts/product-safety-check.mjs",
     "check:engineering": "node scripts/engineering-check.mjs",
-    "check:phase2": "node scripts/phase2-check.mjs"
+    "check:phase2": "node scripts/phase2-check.mjs",
+    "check:workflow": "node scripts/workflow-check.mjs"
   },
   "dependencies": {
     "next": "^15.5.9",
