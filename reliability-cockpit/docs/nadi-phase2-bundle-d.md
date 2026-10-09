@@ -1,5 +1,14 @@
 # Phase 2 Bundle D — development acceptance and activation manifest
 
+## Final integration-review checkpoint
+
+[NADI-D-INTEGRATION-01](nadi-d-integration-01.md) supersedes merge-readiness
+claims below: reproduced session cancellation defect corrected in PR48/6f66ecd;
+forward merges preserve stack; current implementation c03e57c and final PR50 head.
+Cockpit610/Maximo181/PI191/contracts14 final PASS,11Timescale executed, browser25
+and real proxy8 PASS. Activation remains BLOCKED. Historical counts below retain
+original measured acceptance. Merge requires new explicit operator authorization.
+
 ## Verdict and exact baseline
 
 **PASS for disposable development/test acceptance. Operational activation BLOCKED.**

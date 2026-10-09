@@ -28,3 +28,20 @@ D6 GitHub run37887690942 completed SUCCESS for backend-fixtures and frontend.
 See https://github.com/johnd-creator/reliability-knowledge-starter/actions/runs/37887690942.
 Browser/Timescale execution is local acceptance; this bounded workflow does not
 claim those CI jobs exist. Later documentation PR checks are reported separately.
+
+## NADI-D-INTEGRATION-01 revalidation after review correction
+
+Final Cockpit610/Maximo181/PI191/contracts14 PASS,0FAIL/0SKIP in full runs.
+All PostgreSQL fixture DSNs use explicit `postgresql+psycopg://`.
+Cockpit uses `PYTHONPATH=.:tests:<testdeps>` plus managed config, Compose fixture
+flag and NADI_APPLICATION_TEST_DSN /NADI_ENGINEERING_TEST_DSN /NADI_MART_TEST_DSN
+pointing only to isolated loopback *_test stores; command unchanged above.
+Targeted `python -m unittest test_session_cleanup -v` runs10new checks.
+PI uses `PI_MIGRATION_TEST_DSN=postgresql+psycopg://<disposable fixture>` and
+compatible local API dependencies; all11Timescale tests execute.
+Browser command above repeated25PASS; real Next proxy negatives8PASS.
+Frontend commands above repeated110PASS/typecheck/build/product safety.
+Scoped corrected PR49 run37892980855 SUCCESS at c03e57c; includes session cleanup.
+The600-count and old run IDs above remain historical pre-correction evidence.
+Initial implicit-driver fixture failures were corrected, not counted as skips.
+See [senior review and merge plan](nadi-d-integration-01.md).

@@ -1,5 +1,21 @@
 # NADI product roadmap — main quest
 
+## Bundle D final integration review — NADI-D-INTEGRATION-01
+
+Baseline main e836710 unchanged. Stack44→50 remains OPEN; no merge/deployment.
+Session cancellation finding corrected6f66ecd in PR48; normal forward merges
+preserve ancestry. Final implementation c03e57c; final documents at PR50 head.
+Local acceptance Cockpit610/Maximo181/PI191/contracts14,11Timescale, HTTP11,
+browser25 +proxy8, frontend110/type/build/safety PASS. Corrected scoped CI run
+37892980855 SUCCESS; final PR50 CI must match its exact head before merge.
+**Merge candidate READY pending explicit operator authorization.**
+**Phase1 CURRENT/PARTIAL; Phase2 QA CANDIDATE/PARTIAL; operational activation BLOCKED.**
+PUBLIC/default/schema-owner privilege audit, enterprise identity/deadlines,
+attachment storage/recovery/scanner, PdM field approval and operational UAT remain
+activation gates. QA proxy streaming caps are a non-operational follow-up.
+[Final review, findings and controlled merge plan](../reliability-cockpit/docs/nadi-d-integration-01.md). Older checkpoints
+retain historical evidence; no source/production/Phase1 mutation or new acquisition.
+
 ## Current development checkpoint — Phase 2 Bundle D
 
 Baseline main `e836710d1984af7a4bfb739bad0bfbbb96d544ca`, Bundle C PR37–43 MERGED.
