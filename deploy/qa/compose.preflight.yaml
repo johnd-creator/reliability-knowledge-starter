@@ -1,0 +1,19 @@
+# PREPARATION ONLY: default-off profile; never an operational Engineering server.
+services:
+  qa-preflight:
+    profiles: [qa-preflight]
+    image: ${NADI_QA_REVIEWED_IMAGE:?REQUIRED_OPERATOR_INPUT}
+    command: [python, -m, src.qa.preflight, --config, /run/qa/config.json]
+    read_only: true
+    user: "10001:10001"
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    network_mode: none
+    restart: "no"
+    volumes:
+      - type: bind
+        source: ${NADI_QA_PRIVATE_CONFIG:?REQUIRED_OPERATOR_INPUT}
+        target: /run/qa/config.json
+        read_only: true
+    tmpfs: [/tmp]
+# No ports, database, IdP, source credentials, schedules or runtime activation.
