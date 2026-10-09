@@ -81,6 +81,10 @@ For a later merged-main refresh or another reviewed branch:
    Engineering backend and exact fixture DB. A source/backend SHA mismatch is an alert.
 
 UI edits use Fast Refresh without rebuilds. Dirty edits are visible in the banner.
+Next may regenerate only the cache-path reference in tracked `web/next-env.d.ts`.
+Inspect that diff explicitly: it is still a real dirty state. Before a clean cutover,
+restore only that verified generated reference to the selected commit; never reset
+other edits or suppress the banner's dirty state.
 For commit-only SHA changes, reload the development API so its loaded release SHA
 matches. Never use operational services to solve a development SHA mismatch.
 
@@ -132,3 +136,15 @@ Factual screens read stored operational data; HTTP success is not a freshness cl
 Engineering context and demos remain **SYNTHETIC**, assessment **NOT ASSESSED**.
 This is development acceptance, not real QA activation, operational approval, or
 new PdM functionality. Phase1 remains CURRENT/PARTIAL; real QA remains NO_GO.
+
+### Consolidation validation — 2026-10-09
+
+Local regression: 707 backend tests, 484 PASS / 223 optional SKIP / 0 failures;
+20 launcher lifecycle tests included. Frontend: 143 assertions, TypeScript,
+product-safety checks (33 UI files), and production build PASS. Browser: 69 checks
+PASS covering 15 rendered routes, HTTPS login, trusted Origin/CSRF, independent
+reviewed inspection/case/recommendation workflow, session and record persistence,
+390/768/1365 layouts, accurate status, component HMR and restored source bytes.
+CI backend/frontend passed for the implementation commit. Final exact release SHA,
+rollback/re-cutover and retained-row/container comparisons are recorded in the
+private `reset-01/acceptance-report.json` when the controlled cutover completes.
