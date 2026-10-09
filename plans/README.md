@@ -1,5 +1,18 @@
 # Platform roadmap — mulai di sini
 
+## Current onboarding — 2026-10-10
+
+Start with [NADI Context](../NADI-CONTEXT.md), [PRD](../PRD.md),
+[Design System](../DESIGN-SYSTEM.md), [UI specification](../docs/design/NADI-UI-SPEC.md),
+[official product roadmap](NADI-ROADMAP.md), [Repository Status](REPOSITORY-STATUS.md)
+and [append-only DEV-LOG](../DEV-LOG.md). Root/scoped AGENTS safety rules apply first.
+Verified main f54643f3510bf505628a1400024784faab46e496 includes Engineering foundations;
+PR62/63 remain open. Primary development frontend is https://localhost:3000 on
+explicit PR62 preview; documentation work does not switch it.
+
+The paragraphs below preserve the 7–8 October audit sequence. Their “current” and
+“next” labels are historical; use the linked latest roadmap/status checkpoint.
+
 **Power Plant Data Platform** memiliki shared data foundation, **NADI sebagai
 main quest**, dan **NK sebagai child roadmap**. Audit PLATFORM-ROADMAP-001
 menggunakan `origin/main` pada `ef07a263b122d30e7dbec451e6094f9016b603c3`,

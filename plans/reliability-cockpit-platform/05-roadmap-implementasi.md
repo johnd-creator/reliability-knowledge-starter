@@ -1,5 +1,16 @@
 # 05 — Roadmap Implementasi dan Backlog
 
+## Documentation continuity — 2026-10-10
+
+M0–M8 remains the technical implementation roadmap under the single
+[official NADI product roadmap](../NADI-ROADMAP.md), which now owns the UX-01–09
+track. Requirements/design are [PRD](../../PRD.md) and
+[UI specification](../../docs/design/NADI-UI-SPEC.md). Main f54643f includes merged
+PR29–61; older OPEN statements below are dated history. PR62 single frontend and
+PR63 PdM requirements remain OPEN; preserve both through the
+[explicit reconciliation plan](../../docs/NADI-DOC-FOUNDATION-01.md#pr62--pr63-reconciliation-plan).
+No implementation sequence or operational acceptance is completed by this docs task.
+
 ## NADI-E-INTEGRATION-02 — local authentication and final audit — 2026-10-09
 
 Main `eda3595a9b8d86726dd0d89192ebf4657b66d27e` unchanged. Bundle E PR51–59 preserved;

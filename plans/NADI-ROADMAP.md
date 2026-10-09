@@ -1,5 +1,70 @@
 # NADI product roadmap — main quest
 
+## Current product checkpoint — NADI-DOC-FOUNDATION-01 — 2026-10-10
+
+This is the **official product roadmap**. Phase 0–5 remains intact; the UX track
+below complements it. Verified main `f54643f3510bf505628a1400024784faab46e496`
+contains merged Engineering PR29–61. PR62/63 remain OPEN, with exact heads and CI
+in [Repository Status](REPOSITORY-STATUS.md). Older checkpoint language below,
+including “current”, “OPEN” and the original phase table, is dated historical
+evidence and does not override this reconciliation. No runtime/PO acceptance is
+inferred from merge or documentation approval.
+
+| Phase | Current status | Evidence and remaining scope |
+|---|---|---|
+| 0 — Factual Foundation | **COMPLETE within accepted factual scope** | PR1/release v0.1.0-rc.1; preserve factual semantics |
+| 1 — Evidence Expansion | **CURRENT / PARTIAL** | Bounded governed pilot and provisional monitoring; condition freshness and independent reviews remain gates |
+| 2 — Collaborative Engineering Workspace | **FOUNDATION MERGED / OPERATIONAL PARTIAL** | PR29–61; persisted isolated QA is not operational activation or actual engineer UAT |
+| 3 — Diagnostic & PdM Intelligence | **DESIGN READY / NOT OPERATIONAL** | Existing diagnostic design; approved data, methods, thresholds and ground truth still required |
+| 4 — Recommendation Action Loop | **LOCAL FOUNDATION / OPERATIONAL PARTIAL** | Reviewed NADI-owned recommendation/follow-up foundation; effectiveness/operational acceptance pending |
+| 5 — Organizational Learning | **PLANNED** | Evidence and accepted outcome history prerequisites |
+
+[PRD](../PRD.md) owns product requirements, [UI spec](../docs/design/NADI-UI-SPEC.md)
+owns page design, and [M0–M8](reliability-cockpit-platform/05-roadmap-implementasi.md)
+retains scoped engineering sequencing. No completion percentages are inferred.
+
+### Product UI/UX Development track
+
+| Task | Scope | Development status | Merge / acceptance boundary |
+|---|---|---|---|
+| UX-01 | Single Development Environment | **Development acceptance PASS** | PR62 OPEN at 0bfea1273f97ce96a08ef147b44f804aecb428d1; HTTPS3000 visible; PO/operational acceptance separate |
+| UX-02 | NADI Design System V1 | **PLANNED** | Candidate documentation exists; token/contrast/visual review and UI implementation pending |
+| UX-03 | Sidebar Information Architecture | **PLANNED** | Proposed map only; preserve existing routes; PO review pending |
+| UX-04 | Executive Overview Visual Polish | **PLANNED** | Existing factual dashboard retained; design reference missing |
+| UX-05 | Asset Health List & Detail UI | **PLANNED** | Existing factual list/detail retained; six-section target and visual acceptance pending |
+| UX-06 | PdM Center UI | **PLANNED** | Existing DEMO/inspection foundation is not new method/trend UI acceptance; PR63 gates apply |
+| UX-07 | Recommendations & Action Board UI | **PLANNED** | Local lifecycle exists; complete product UI/UAT pending |
+| UX-08 | Global Login Page Design Only | **PLANNED** | Specification candidate; no global enforcement; existing QA gates unchanged |
+| UX-09 | UI Regression & Visual Acceptance | **PLANNED** | Actual originals, responsive/accessibility checks and separate PO decision required |
+
+UX-02/03 design review precedes visual implementation; UX-04/05 preserve accepted
+factual functionality. UX-06/07 depend on engineer contracts and reviewed evidence.
+UX-08 can be designed independently and grants no authentication activation.
+UX-09 evaluates exact implementation SHA and original references. A specification
+created by this task does not mark these delivery tasks complete.
+
+### PdM and Phase1 continuity
+
+PR63's [pinned requirements](https://github.com/johnd-creator/reliability-knowledge-starter/blob/89cfa0e50dbdaa1fa158558c890cc512c049b60f/reliability-cockpit/docs/nadi-pdm-requirements-01.md)
+remain candidate R01–R08 with Q01–Q10 PENDING_ENGINEER_VALIDATION. Preserve M01–M07:
+engineer samples/terminology → approved point/instrument contracts → irregular
+measurement history → controlled import/diagnostic evidence → independent review
+→ existing-WO/local recommendation linkage → engineer UAT. Portable events are
+not continuous/daily; no portable/DCS/PI combination without approved comparability;
+PD is not assumed DGA; “30% acr” remains undefined. No source write or new PdM
+functionality is introduced. [Conflict reconciliation](../docs/NADI-DOC-FOUNDATION-01.md#pr62--pr63-reconciliation-plan)
+preserves both open PRs without automatic merge.
+
+[Phase1 acceptance](NADI-PHASE-1-ACCEPTANCE.md) retains its independent 24h/72h
+reviews, 12 October20:00 WIB checkpoint and **13 October2026 00:00 WIB hard expiry**.
+Operator review outcomes are UNKNOWN in available evidence. This task does not
+activate, extend, reset or roll back any policy. Current operational readiness is
+not re-certified by documentation or a successful frontend status response.
+
+### Historical checkpoints and original phase backlog
+
+All following checkpoints retain their original evidence, dates and limitations.
+
 ## NADI-E-INTEGRATION-02 — local authentication and final audit — 2026-10-09
 
 Main `eda3595a9b8d86726dd0d89192ebf4657b66d27e` unchanged. Bundle E PR51–59 preserved;

@@ -1,5 +1,35 @@
 # Repository status and debt — PLATFORM-ROADMAP-001
 
+## Current audit — NADI-DOC-FOUNDATION-01 — 2026-10-10
+
+Latest fetched `origin/main`: **f54643f3510bf505628a1400024784faab46e496**.
+PR29–61 are MERGED, including local authentication and Engineering QA UI.
+Earlier OPEN/candidate wording below is historical, not current GitHub state.
+
+| Candidate | Exact head | GitHub / CI | Runtime |
+|---|---|---|---|
+| [PR62](https://github.com/johnd-creator/reliability-knowledge-starter/pull/62), codex/nadi-dev-live-01 | `0bfea1273f97ce96a08ef147b44f804aecb428d1` | OPEN; backend/frontend SUCCESS run37940329956 | Clean active HTTPS3000 preview; isolated QA; development acceptance PASS |
+| [PR63](https://github.com/johnd-creator/reliability-knowledge-starter/pull/63), codex/nadi-pdm-req-01 | `89cfa0e50dbdaa1fa158558c890cc512c049b60f` | OPEN; backend/frontend SUCCESS run37932325576 | Documentation only; no new PdM runtime |
+
+Main/PR61 backend/frontend SUCCESS run37921470470. Exact run links, process ownership,
+worktree/XLS preservation, scoped audit limitations and PR conflict plan are in the
+[foundation audit](../docs/NADI-DOC-FOUNDATION-01.md). Documentation branch
+`codex/nadi-doc-foundation-01` starts from the exact main above and is separate from
+the active source. No main/runtime/PR62/PR63 switch or merge is performed.
+
+Current phase status belongs to [the official roadmap](NADI-ROADMAP.md);
+requirements/design to [PRD](../PRD.md)/[UI spec](../docs/design/NADI-UI-SPEC.md);
+independent milestone history to [DEV-LOG](../DEV-LOG.md). Development acceptance
+is not actual engineer UAT or operational activation. Outstanding: original three
+screenshots, PO visual/token/navigation review, PR63 Q01–Q10, operational application
+provisioning/storage/security/UAT, and UNKNOWN Phase1 operator-review outcomes.
+The original Phase1 expiry and accepted factual evidence remain unchanged.
+
+### Historical status records
+
+The dated records below are preserved in full. Use their original scope/date;
+older “current”/“next” statements are not the latest task sequence.
+
 ## NADI-E-INTEGRATION-02 — local authentication and final audit — 2026-10-09
 
 Main `eda3595a9b8d86726dd0d89192ebf4657b66d27e` unchanged. Bundle E PR51–59 preserved;
