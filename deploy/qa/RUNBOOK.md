@@ -1,7 +1,15 @@
 # E6 — operator-controlled QA deployment and recovery plan
 
+
+**NADI-E-INTEGRATION-02 selection:** local username/password is initial QA auth.
+Enterprise SSO/Entra/OIDC registration is an optional future path, not an initial
+activation prerequisite. Local account custody/onboarding and existing host/DB/
+TLS/storage/PdM/UAT/explicit deployment gates remain. See local-authentication-v1
+and the final integration report; historical enterprise-specific evidence below
+remains reusable, not initial-QA authorization.
+
 Names proposed by operator-authorized naming: nadi-qa / nadi_qa_application /
-nadi_qa_owner / nadi_qa_writer / nadi_qa_runtime. Real host, DNS, TLS, IdP,
+nadi_qa_owner / nadi_qa_writer / nadi_qa_runtime. Real host, DNS, TLS, local administrator custody,
 storage/scanner, network and accounts remain REQUIRED_OPERATOR_INPUT.
 No deployment/provisioning is executed. Config template is NO-GO.
 
@@ -30,8 +38,8 @@ provenance must still be independently reviewed. No image build/start executed.
 1. Platform owner approves exact QA host, ingress/network, pinned SHA/image digest,
    approvals scope and release manifest. Verify main/candidate provenance and
    clean dedicated release checkout before building or selecting any image.
-2. Security/identity owner approves enterprise verifier, redirect/logout,
-   directory/onboarding/revocation, private QA-only secret references. No fixture
+2. Security/identity owner approves local account policy, private administrator
+   provisioning, directory/onboarding/revocation and private QA-only DB references. No fixture
    verifier or disposable test server in real QA.
 3. DBA approves exact dedicated DB/roles and executes reviewed E3 provisioning,
    private backup/catalog/checksum and migration status/apply. No Mart fallback.
@@ -39,7 +47,7 @@ provenance must still be independently reviewed. No image build/start executed.
    bounded protocol/deadlines, quota/retention/legal-hold and orphan recovery.
 5. Independently audited runtime credentials pass canonical privilege audit.
    Factual fixtures default; real Mart reader separately SELECT-only approved.
-6. Review real QA server factory and frontend callback/proxy integration before
+6. Review real QA server factory and frontend login/proxy integration before
    start. Existing operational public server does not mount Engineering, and
    existing QA frontend is dev-only; do not relax NODE_ENV gates as a shortcut.
 7. Explicit approval authorizes only reviewed QA start command on approved host.
@@ -48,7 +56,7 @@ provenance must still be independently reviewed. No image build/start executed.
 8. Smoke health/TLS/session/scopes/CSRF/inspection/review/CAS/recommendation/
    follow-up/revocation and revision/audit persistence using named UAT accounts.
    No WO mutation API and no source acquisition permitted.
-9. Operator signs QA acceptance with actual host/DB/storage/IdP evidence. Until
+9. Operator signs QA acceptance with actual host/DB/storage/local authentication evidence. Until
    then configuration declarations and disposable drills cannot produce GO.
 
 ## Stop and rollback
@@ -64,8 +72,8 @@ ledger and history and deny missing/corrupt content before re-opening.
 
 ## Secrets inventory (names/references only)
 
-QA runtime DB credential; separate migration administrator; IdP client assertion/
-secret/private key if selected; approved private storage and scanner identities;
+QA runtime DB credential; separate migration administrator; optional future IdP client assertion/
+secret/private key only if later selected; approved private storage and scanner identities;
 TLS private key; directory-service authority. Values remain in approved private
 secret manager/files. No Maximo/PI/CEMS source keys or production reuse.
 No browser secrets, passwords in command lines, raw cookies/proofs or DSNs in logs.

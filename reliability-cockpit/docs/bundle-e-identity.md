@@ -1,5 +1,13 @@
 # E2 — enterprise identity decision and trust readiness
 
+
+**NADI-E-INTEGRATION-02 selection:** local username/password is initial QA auth.
+Enterprise SSO/Entra/OIDC registration is an optional future path, not an initial
+activation prerequisite. Local account custody/onboarding and existing host/DB/
+TLS/storage/PdM/UAT/explicit deployment gates remain. See local-authentication-v1
+and the final integration report; historical enterprise-specific evidence below
+remains reusable, not initial-QA authorization.
+
 No provider is selected or contacted. No registrations, credentials or accounts
 are created. Test proofs belong only to fixtures. Production identity readiness
 remains REQUIRED_OPERATOR_INPUT.

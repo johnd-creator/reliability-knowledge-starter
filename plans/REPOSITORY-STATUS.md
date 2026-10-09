@@ -1,5 +1,26 @@
 # Repository status and debt — PLATFORM-ROADMAP-001
 
+## NADI-E-INTEGRATION-02 — local authentication and final audit — 2026-10-09
+
+Main `eda3595a9b8d86726dd0d89192ebf4657b66d27e` unchanged. Bundle E PR51–59 preserved;
+E9 PR60 and E10 PR61 extend the OPEN/UNMERGED stack. Local username/password is the
+selected initial-QA identity path; enterprise SSO is optional future work.
+Tested implementation `1ec149de2d1acd4113987364e1f96c790bfaf63e`.
+Argon2id accounts, private operator admin, versioned sessions/RBAC, actual HTTPS
+login/workflow and disposable migration006 validated. Audit LOW stale-response
+finding repaired; Compose preflight argv and migration docs corrected.
+Cockpit687/Maximo181/PI191/contracts14 PASS,0FAIL/0SKIP including11 Timescale;
+frontend143/browser40 +legacy25/type/build/32-file safety PASS. Actual source-free
+preflight remains NO_GO with unapproved host/policy/storage references.
+**Development acceptance PASS; merge READY pending explicit authorization/exact-head CI.**
+**Phase1 CURRENT/PARTIAL; Phase2 CANDIDATE/PARTIAL; real QA NO_GO; activation OFF.**
+Actual host/TLS, application DB/roles, admin custody/onboarding, reviewed startup and
+secure frontend transport, password/session/resource policy, storage/scanner,
+PdM fields/UAT and per-action deployment authority remain required. No SSO gate.
+No production source GET/write, WO mutation, DB DDL, deployment or Phase1 mutation.
+Older test counts/checkpoints below are historical.
+[Final audit, tests, activation blockers and merge plan](../reliability-cockpit/docs/nadi-e-integration-02.md).
+
 ## Bundle D merged / Bundle E QA preparation — 2026-10-09
 
 PR44–50 MERGED via merge commits; authoritative main

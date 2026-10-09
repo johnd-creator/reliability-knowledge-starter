@@ -8,7 +8,7 @@ from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 from enum import StrEnum
 from hashlib import sha256
-from hmac import compare_digest
+from hmac import compare_digest, new as hmac_new
 import secrets
 from typing import Protocol
 from urllib.parse import urlsplit
@@ -69,6 +69,11 @@ class SecurityRow(IdentityBase):
     outcome = Column(String(40), nullable=False)
     occurred_at = Column(String(40), nullable=False)
     asset_ids = Column(JSON, nullable=False)
+
+
+def csrf_for_session(token):
+    # Stable session-bound CSRF avoids concurrent reload/GET rotation races.
+    return hmac_new(token.encode(),b"nadi-session-csrf-v1",sha256).hexdigest()
 
 
 def _hash(token):
@@ -155,7 +160,8 @@ class SessionAuthority:
             or len(grant.principal.asset_ids) > 1000
         ):
             raise EngineeringError("AUTHENTICATION_REQUIRED", 401)
-        token, csrf = secrets.token_urlsafe(32), secrets.token_urlsafe(32)
+        token = secrets.token_urlsafe(32)
+        csrf = csrf_for_session(token)
         with self.provider.guard(
             grant.principal.principal_id, grant.version
         ), self.engine.begin() as c:
@@ -198,7 +204,7 @@ class SessionAuthority:
             raise EngineeringError("IDENTITY_STORE_UNAVAILABLE", 503) from None
 
     @contextmanager
-    def lease(self, token, *, method="GET", origin=None, csrf=None, content_type=None):
+    def lease(self, token, *, method="GET", origin=None, csrf=None, content_type=None, renew_csrf=None):
         if not isinstance(token, str) or not 40 <= len(token) <= 128:
             self.denial("AUTHENTICATION_REQUIRED")
             raise EngineeringError("AUTHENTICATION_REQUIRED", 401)
@@ -245,10 +251,15 @@ class SessionAuthority:
                             raise EngineeringError("CSRF_DENIED", 403)
                         if content_type != "application/json":
                             raise EngineeringError("CONTENT_TYPE_DENIED", 415)
+                    changes = {"last_seen_at":now.isoformat()}
+                    if renew_csrf is not None:
+                        if method != "GET" or not isinstance(renew_csrf,str) or not 40 <= len(renew_csrf) <= 128:
+                            raise EngineeringError("CSRF_DENIED",403)
+                        changes["csrf_hash"] = _hash(renew_csrf)
                     c.execute(
                         update(SessionRow)
                         .where(SessionRow.token_hash == row["token_hash"])
-                        .values(last_seen_at=now.isoformat())
+                        .values(**changes)
                     )
                     self.audit(c, grant, SecurityAction.ACCESS_GRANTED, "PASS")
                     yield grant.principal

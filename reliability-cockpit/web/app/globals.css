@@ -384,3 +384,10 @@ td strong { color: var(--text); font-weight: 650; }
 @media (max-width: 980px) { .asset-facts { grid-template-columns: repeat(3, minmax(0, 1fr)); } .asset-overview-grid, .asset-bottom-grid, .fmea-distribution-grid-wide, .rcfa-distribution-grid-wide, .overhaul-workspace-grid { grid-template-columns: 1fr; } .asset-stat-grid, .asset-health-stat-grid, .fmea-stat-grid, .rcfa-stat-grid, .overhaul-stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .health-status-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .fmea-filter-grid, .rcfa-filter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px) { .asset-identity-main { display: block; } .asset-identity-main > .status-badge { margin-top: 12px; } .asset-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); } .asset-tabs { overflow-x: auto; } .asset-tab { flex: 0 0 auto; padding: 8px 11px; } .asset-stat-grid, .fmea-stat-grid, .rcfa-stat-grid, .overhaul-stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .asset-record { grid-template-columns: 1fr; gap: 5px; } .asset-record > .status-badge { justify-self: start; } .fmea-distribution-grid, .rcfa-distribution-grid, .overhaul-distribution-grid { grid-template-columns: 1fr; } .fmea-filter-grid, .rcfa-filter-grid { grid-template-columns: 1fr; } .overhaul-facts { grid-template-columns: 1fr; } }
 @media (max-width: 640px) { .health-status-grid { grid-template-columns: 1fr; } }
+
+.nadi-local-login { max-width: 34rem; margin-inline: auto; color: var(--text); }
+.nadi-local-login form { display: grid; gap: .75rem; }
+.nadi-password-field { display: flex; gap: .5rem; align-items: center; }
+.nadi-password-field input { flex: 1; min-width: 0; }
+.nadi-local-login button { min-height: 44px; }
+@media (max-width: 520px) { .nadi-password-field { flex-direction: column; align-items: stretch; } }

@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
   "baseline_sha": "eda3595a9b8d86726dd0d89192ebf4657b66d27e",
-  "implementation_sha": "d3a7d43f55a619440f758ec6ef21ae6c2156422d",
-  "final_candidate": "PR59 exact reviewed HEAD",
+  "implementation_sha": "1ec149de2d1acd4113987364e1f96c790bfaf63e",
+  "final_candidate": "PR61 exact reviewed HEAD (resolved before operator merge authorization)",
   "pr_order": [
     51,
     52,
@@ -12,9 +12,11 @@
     56,
     57,
     58,
-    59
+    59,
+    60,
+    61
   ],
-  "preparation": "ISOLATED_FOUNDATIONS_VALIDATED",
+  "preparation": "LOCAL_AUTH_AND_DISPOSABLE_WORKFLOW_VALIDATED",
   "real_qa_readiness": "NO_GO",
   "deployment_authorized": false,
   "operator_names": {
@@ -26,7 +28,7 @@
   },
   "required_operator_input": [
     "host_dns_tls_network",
-    "identity_provider_registration_verifier_directory",
+    "local_admin_custody_account_onboarding_and_policy",
     "database_role_credentials_and_onhost_audit",
     "private_storage_scanner_retention",
     "engineer_reviewer_admin_onboarding",
@@ -38,5 +40,7 @@
   "rollback": "Disable approved QA ingress/runtime authority; preserve records/files; no Mart/source reset",
   "production_gets": 0,
   "production_writes": 0,
-  "real_deployments": 0
+  "real_deployments": 0,
+  "selected_authentication": "local_username_password",
+  "future_authentication": "enterprise_sso_optional"
 }

@@ -1,5 +1,13 @@
 # Bundle E — governed QA preparation (E0/E1)
 
+
+**NADI-E-INTEGRATION-02 selection:** local username/password is initial QA auth.
+Enterprise SSO/Entra/OIDC registration is an optional future path, not an initial
+activation prerequisite. Local account custody/onboarding and existing host/DB/
+TLS/storage/PdM/UAT/explicit deployment gates remain. See local-authentication-v1
+and the final integration report; historical enterprise-specific evidence below
+remains reusable, not initial-QA authorization.
+
 Baseline: eda3595a9b8d86726dd0d89192ebf4657b66d27e; PR44–50 MERGED.
 No real QA or production deployment is authorized. This is preparation, not UAT.
 Original workspace and other worktrees are preserved. No open overlapping PR
@@ -33,7 +41,8 @@ flowchart LR
   E[Approved engineers and independent reviewers] --> TLS[Approved TLS reverse proxy]
   TLS --> WEB[QA frontend with reviewed transport]
   TLS --> APP[Dedicated QA application runtime]
-  IDP[Selected enterprise IdP] --> V[Reviewed assertion verifier]
+  LOCAL[Selected local Argon2id account provider] --> APP
+  IDP[Optional future enterprise IdP] -.-> V[Future reviewed assertion verifier]
   DIR[Scoped authoritative role directory] --> APP
   V --> APP
   APP --> DB[Dedicated approved QA application PostgreSQL]
@@ -59,7 +68,8 @@ E3 will provide an explicit dedicated-store mode with wrong-DB/Mart guards.
 | QA host/server and runtime capacity | Platform owner; no guessed host path/IP |
 | DNS, HTTPS origin, TLS/private key authority | Network/security owner |
 | Exact pinned release/image digests | Reviewed candidate and image build provenance |
-| IdP/issuer/client/redirect/logout | Identity owner and application registration |
+| Local account/bootstrap/password policy | Security owner and accountable private operator |
+| Optional future IdP/issuer/client/redirect/logout | Future identity owner approval only if selected |
 | Durable role directory, independent reviewers/asset grants | Reliability + security owners |
 | QA DB name, owner, capability and LOGIN role names | DBA; separate credentials and grant audit |
 | Allowed factual-data scope | Data owner; fixtures by default |
@@ -76,7 +86,7 @@ Do not run platform Compose, operational init-db/mart-migrate, or discovery.
 
 QA preparation cannot self-approve infrastructure, manufacture real identities,
 or turn the fixture QA page into operational authority. Startup integration,
-enterprise verifier/directory, frontend trusted callback and final UAT stay
+local account provisioning/directory, frontend trusted login integration and final UAT stay
 NO-GO until their real adapters are reviewed and exact config approved.
 
 Rollback: disable QA routes and revoke QA runtime authority; preserve application

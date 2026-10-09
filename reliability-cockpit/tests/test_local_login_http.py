@@ -124,3 +124,16 @@ class LocalLoginHttpTest(unittest.TestCase):
         self.assertEqual(self.client.request("GET","/v1/engineering/session").status_code,401)
         response=self.login(password={"nested":self.password});self.assertEqual(response.status_code,422)
         self.assertNotIn(self.password,response.text)
+
+    def test_session_resume_csrf_stable_binding_and_no_credential_echo(self):
+        response=self.login();initial=response.json()["csrf_token"]
+        current=self.client.request("GET","/v1/engineering/session")
+        self.assertEqual(current.status_code,200)
+        renewed=current.json()["csrf_token"]
+        self.assertEqual(initial,renewed)
+        response=self.client.request("POST","/v1/engineering/session/logout",json={},
+            headers={"Origin":"https://nadi.example.invalid","X-CSRF-Token":"invalid-token"})
+        self.assertEqual(response.status_code,403)
+        response=self.client.request("POST","/v1/engineering/session/logout",json={},
+            headers={"Origin":"https://nadi.example.invalid","X-CSRF-Token":renewed})
+        self.assertEqual(response.status_code,200)
