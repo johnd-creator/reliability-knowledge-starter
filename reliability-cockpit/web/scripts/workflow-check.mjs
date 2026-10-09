@@ -39,6 +39,7 @@ try{
  finding=w.findingAction(finding,row,2,"APPROVED",now,"demo-reviewer");
  const fields={action:"Propose further human inspection",priority:"NORMAL",pic:"team:demo",target:"2026-10-08",wo:"maintenance:SYNTHETIC:WO-A"};
  test("unapproved case cannot seed proposal",()=>assert.throws(()=>w.proposalDraft({...finding,status:"DRAFT"},"x",now,fields)));
+ test("invalid calendar date denied",()=>assert.throws(()=>w.proposalDraft(finding,"x",now,{...fields,target:"2026-02-31"})));
  test("existing WO exact reference only",()=>assert.throws(()=>w.proposalDraft(finding,"x",now,{...fields,wo:"invented"})));
  test("WO cross-asset blocked",()=>assert.throws(()=>w.proposalDraft({...finding,asset:"asset:SYNTHETIC:B"},"x",now,fields)));
  let p=w.proposalDraft(finding,"recommendation:synthetic",now,fields);
@@ -53,6 +54,7 @@ try{
  test("completion needs independent reviewer and evidence",()=>{assert.throws(()=>w.proposalAction(p,finding,p.revision,"VERIFIED",now));assert.throws(()=>w.proposalAction(p,finding,p.revision,"VERIFIED",now,"demo-reviewer"));});
  p=w.proposalAction(p,finding,p.revision,"VERIFIED",now,"demo-reviewer",row);
  test("WO ref remains informational unchanged",()=>assert.equal(p.wo,fields.wo));
+ test("explicit review rationale retained",()=>{const draft=w.proposalDraft(finding,"p2",now,fields);const submitted=w.proposalAction(draft,finding,1,"SUBMIT",now);const reviewed=w.proposalAction(submitted,finding,2,"APPROVED",now,"demo-reviewer",null,"Explicit human demo reason");assert.equal(reviewed.history[2].reason,"Explicit human demo reason");});
  test("history retained",()=>assert.equal(p.history.length,7));
  const view=readFileSync("components/EngineeringWorkflow.tsx","utf8"),route=readFileSync("app/engineering/workflow/page.tsx","utf8");
  test("no API calls or browser authority",()=>assert.ok(!/fetch\(|axios|localStorage|Authorization|dangerouslySetInnerHTML/.test(view)));

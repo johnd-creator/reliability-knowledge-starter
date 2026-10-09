@@ -23,8 +23,10 @@ from src.services.human_records import ReviewedRecordService
 class RecommendationService(ReviewedRecordService):
     extra_reviewer_actions = {"VERIFY_COMPLETION"}
 
-    def case_link(self, actor, current):
-        case = self.catalog.validate_case(actor, current.canonical_asset_id, current.case_ref)
+    def case_link(self, actor, current, connection=None):
+        case = (self.catalog.guard_case(connection, actor, current.canonical_asset_id, current.case_ref)
+                if connection is not None and hasattr(self.catalog, "guard_case")
+                else self.catalog.validate_case(actor, current.canonical_asset_id, current.case_ref))
         if not isinstance(case, EngineeringCase) or case.status != CaseStatus.APPROVED or not case.review:
             raise EngineeringError("REVIEWED_CASE_REQUIRED", 409)
         case = EngineeringCase.model_validate(case.model_dump(mode="json"))
@@ -34,18 +36,20 @@ class RecommendationService(ReviewedRecordService):
             stable_version=sha256(case.model_dump_json().encode()).hexdigest(),
             reviewer=case.review.reviewer, reviewed_at=case.review.decided_at)
 
-    def validate_submission(self, actor, current):
+    def validate_submission(self, actor, current, connection=None):
         if not current.supporting_evidence:
             raise EngineeringError("SUPPORTING_EVIDENCE_REQUIRED", 422)
-        self.check_evidence(actor, current, current.supporting_evidence)
-        return {"reviewed_case": self.case_link(actor, current)}
+        self.check_evidence(actor, current, current.supporting_evidence, connection)
+        return {"reviewed_case": self.case_link(actor, current, connection)}
 
-    def validate_review(self, actor, current):
-        if not current.reviewed_case or self.case_link(actor, current) != current.reviewed_case:
+    def validate_review(self, actor, current, connection=None):
+        if not current.reviewed_case or self.case_link(actor, current, connection) != current.reviewed_case:
             raise EngineeringError("REVIEWED_CASE_CHANGED", 409)
-        self.check_evidence(actor, current, current.supporting_evidence)
+        self.check_evidence(actor, current, current.supporting_evidence, connection)
 
-    def check_evidence(self, actor, current, refs):
+    def check_evidence(self, actor, current, refs, connection=None):
+        if connection is not None and hasattr(self.catalog, "guard_evidence"):
+            self.catalog.guard_evidence(connection, actor, current.canonical_asset_id, refs)
         # Re-resolve identity/version before approval or follow-up; never replace frozen history.
         for ref in refs:
             latest = self.resolve_selection(actor, current.canonical_asset_id,
@@ -107,11 +111,11 @@ class RecommendationService(ReviewedRecordService):
         )
         return data
 
-    def extra_transition(self, actor, action, payload, current, data):
+    def extra_transition(self, actor, action, payload, current, data, connection=None):
         if action == "VERIFY_COMPLETION":
             if current.status != CaseStatus.APPROVED or current.follow_up_status != FollowUpStatus.COMPLETED or set(payload) != {"reason", "evidence_selections"}:
                 raise EngineeringError("INVALID_TRANSITION", 409)
-            self.validate_review(actor, current)
+            self.validate_review(actor, current, connection)
             selections = payload["evidence_selections"]
             if not isinstance(selections, list) or not 1 <= len(selections) <= 20:
                 raise EngineeringError("COMPLETION_EVIDENCE_REQUIRED", 422)
@@ -119,6 +123,7 @@ class RecommendationService(ReviewedRecordService):
             if len({(x.kind, x.record_id) for x in selected}) != len(selected) or any(x.mode != "FROZEN_SNAPSHOT" for x in selected):
                 raise EngineeringError("COMPLETION_EVIDENCE_REQUIRED", 422)
             refs = [self.resolve_selection(actor, current.canonical_asset_id, x) for x in selected]
+            self.check_evidence(actor, current, refs, connection)
             data.update(follow_up_status=FollowUpStatus.VERIFIED,
                 completion_verification=CompletionVerification(reviewer=actor.principal_id,
                 verified_at=self.clock(), reason=payload["reason"], evidence=tuple(refs)))
@@ -129,7 +134,7 @@ class RecommendationService(ReviewedRecordService):
             or current.status != CaseStatus.APPROVED
         ):
             raise EngineeringError("INVALID_TRANSITION", 409)
-        self.validate_review(actor, current)
+        self.validate_review(actor, current, connection)
         reason = payload["reason"]
         if not isinstance(reason, str) or not reason.strip() or len(reason) > 6000:
             raise EngineeringError("INVALID_CONTRACT", 422)

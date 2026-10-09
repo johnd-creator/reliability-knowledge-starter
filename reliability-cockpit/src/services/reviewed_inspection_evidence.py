@@ -1,6 +1,8 @@
 """Operator-injected current directory and local application reads; no source calls."""
 from hashlib import sha256
 from uuid import uuid4
+from sqlalchemy import select
+from src.repositories.human_records import RecordRow
 from src.domain.engineering import (Principal, EvidenceKind, EvidenceReference,
     EvidenceSnapshot, EngineeringError)
 from src.domain.reviewed_inspection import ReviewedInspectionEvidence
@@ -32,3 +34,15 @@ class ReviewedInspectionCatalog:
             observed_at=row.updated_at,linked_at=linked_at,linked_by=actor_id,
             identity_status='REGISTERED',signal_approval='NOT_APPLICABLE',
             snapshot=EvidenceSnapshot(label='Reviewed human inspection',availability='AVAILABLE',reviewed_inspection=human))
+
+    def guard_evidence(self, connection, actor, asset, refs):
+        if connection.engine is not self.inspections.repo.engine:
+            raise EngineeringError("APPLICATION_STORE_IDENTITY_MISMATCH", 503)
+        for ref in sorted(refs, key=lambda x: (x.kind, x.record_id)):
+            if ref.kind != EvidenceKind.MANUAL_INSPECTION:
+                continue
+            raw = connection.scalar(select(RecordRow.document).where(
+                RecordRow.kind == "INSPECTION", RecordRow.record_id == ref.record_id).with_for_update())
+            row = self.inspections.visible(actor, raw)
+            if row.canonical_asset_id != asset or row.status != "APPROVED" or sha256(row.model_dump_json().encode()).hexdigest() != ref.stable_version:
+                raise EngineeringError("EVIDENCE_VERSION_CHANGED", 409)

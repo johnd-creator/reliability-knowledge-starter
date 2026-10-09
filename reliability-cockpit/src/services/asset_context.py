@@ -5,7 +5,10 @@ from sqlalchemy.exc import SQLAlchemyError
 from src.domain.asset_context import (AssetIdentityContext, AssetSourceIdentity,
     ContextAvailability as Availability, ContextPage, UnifiedAssetContext)
 from src.domain.condition_evidence import FreshnessPolicy
-from src.domain.engineering import Principal, CaseStatus, EngineeringError
+from src.domain.engineering import Principal, CaseStatus, EngineeringError, EngineeringCase
+from src.domain.manual_inspection import ManualInspection
+from src.domain.recommendation import Recommendation
+from src.domain.maintenance_context import ExistingWorkOrderReference
 from src.repositories.mart_reader import MartQueryRepository
 from src.services.condition_query import ConditionQueryService
 from src.services.engineering_evidence import aware
@@ -40,13 +43,16 @@ class AssetContextService:
         if asset not in actor.asset_ids:
             raise EngineeringError("NOT_FOUND", 404)
 
-    def page(self, operation, *, offset, limit):
+    def page(self, operation, *, asset, model, offset, limit):
         if operation is None:
             return ContextPage(availability=Availability.NOT_CONFIGURED, offset=offset, limit=limit)
         try:
             result = operation()
+            rows = [model.model_validate(x.model_dump(mode="json") if hasattr(x, "model_dump") else x) for x in result["items"]]
+            if len(rows) > limit or any(x.canonical_asset_id != asset for x in rows):
+                raise ValueError("invalid bounded asset lineage")
             return ContextPage(availability=Availability.AVAILABLE if result["items"] else Availability.EMPTY,
-                items=tuple(result["items"]), total=result.get("total"), offset=offset,
+                items=tuple(rows), total=result.get("total"), offset=offset,
                 limit=limit, has_more=result["has_more"])
         except EngineeringError as error:
             if error.status != 503:
@@ -68,6 +74,8 @@ class AssetContextService:
             row = self.assets.get_asset(asset)
             if row is None:
                 raise EngineeringError("NOT_FOUND", 404)
+            if row.canonical_id != asset:
+                raise ValueError("invalid asset identity")
             identity = AssetIdentityContext(canonical_asset_id=asset, description=row.description,
                 location_ref=row.location_ref, parent_asset_ref=row.parent_asset_ref,
                 equipment_type=row.asset_type, unit_ref=row.unit,
@@ -80,22 +88,27 @@ class AssetContextService:
             identity_state = Availability.UNAVAILABLE
         except (ValidationError, ValueError, TypeError):
             identity_state = Availability.INVALID_RECORD
-        maintenance = self.page(lambda: self.maintenance.work_orders(actor, asset, offset=offset, limit=limit, sort="chronology_desc"), offset=offset, limit=limit)
+        maintenance = self.page(lambda: self.maintenance.work_orders(actor, asset, offset=offset, limit=limit, sort="chronology_desc"), asset=asset, model=ExistingWorkOrderReference, offset=offset, limit=limit)
         condition = None
         condition_state = Availability.UNAVAILABLE
         try:
             condition = self.conditions.asset_evidence(asset)
+            if condition and condition.canonical_asset_id != asset:
+                condition = None
+                raise ValueError("invalid condition identity")
             condition_state = Availability.AVAILABLE if condition is not None else Availability.EMPTY
             if condition and "PROJECTION_ERROR" in condition.statuses:
                 condition_state = Availability.UNAVAILABLE
         except SQLAlchemyError:
             pass
+        except (ValidationError, ValueError, TypeError):
+            condition_state = Availability.INVALID_RECORD
         pages = {}
         for name in ("cases", "inspections", "recommendations"):
             service = getattr(self, name)
             pages[name] = self.page(
                 (lambda service=service: service.list(actor, asset_id=asset, offset=offset, limit=limit)) if service else None,
-                offset=offset, limit=limit)
+                asset=asset, model={"cases": EngineeringCase, "inspections": ManualInspection, "recommendations": Recommendation}[name], offset=offset, limit=limit)
         return UnifiedAssetContext(canonical_asset_id=asset, read_at=now,
             identity=identity, identity_availability=identity_state, maintenance=maintenance,
             condition=condition, condition_availability=condition_state, **pages,
