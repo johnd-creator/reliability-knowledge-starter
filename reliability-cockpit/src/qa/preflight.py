@@ -130,13 +130,19 @@ def audit_disposable_database(engine, config):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", required=True, help="private owner-only JSON; never dotenv")
+    parser.add_argument("--release-manifest",help="private exact-code manifest for a Git-free image")
     parser.add_argument("--audit-disposable-db", action="store_true",
                         help="explicit loopback *_test read-only audit using NADI_APPLICATION_TEST_DSN")
     args = parser.parse_args(argv)
     try:
         raw = read_private_config(args.config)
-        sha = subprocess.check_output(["git", "-C", str(ROOT), "rev-parse", "HEAD"], text=True).strip()
-        clean = not subprocess.check_output(["git", "-C", str(ROOT), "status", "--porcelain"], text=True).strip()
+        if args.release_manifest:
+            from src.qa.release import verify_release, APP_ROOT
+            sha = verify_release(read_private_config(args.release_manifest), APP_ROOT)
+            clean = True
+        else:
+            sha = subprocess.check_output(["git", "-C", str(ROOT), "rev-parse", "HEAD"], text=True).strip()
+            clean = not subprocess.check_output(["git", "-C", str(ROOT), "status", "--porcelain"], text=True).strip()
         result = assess_configuration(raw, actual_sha=sha, clean=clean)
         if args.audit_disposable_db:
             from sqlalchemy import create_engine

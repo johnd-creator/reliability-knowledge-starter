@@ -7,8 +7,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 COPY reliability-cockpit/pyproject.toml ./
 COPY reliability-cockpit/src ./src
 COPY reliability-cockpit/application-migrations ./application-migrations
+COPY --chown=10001:10001 deploy/qa/.qa-release.json ./.qa-release.json
 RUN pip install --no-cache-dir . && addgroup --gid 10001 app && adduser --uid 10001 --gid 10001 --disabled-password --gecos "" app
 USER 10001:10001
 ENTRYPOINT ["python", "-m", "src.qa.preflight"]
-# Git evidence absent from image must be provided via reviewed release manifest.
-# This preparation image intentionally returns NO-GO until release binding reviewed.
+# Pass --release-manifest /app/.qa-release.json with the private config.
+# Image digest/provenance and activation still require accountable approval.

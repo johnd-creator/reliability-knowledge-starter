@@ -3,7 +3,7 @@ services:
   qa-preflight:
     profiles: [qa-preflight]
     image: ${NADI_QA_REVIEWED_IMAGE:?REQUIRED_OPERATOR_INPUT}
-    command: [python, -m, src.qa.preflight, --config, /run/qa/config.json]
+    command: [python, -m, src.qa.preflight, --config, /run/qa/config.json, --release-manifest, /app/.qa-release.json]
     read_only: true
     user: "10001:10001"
     cap_drop: [ALL]
