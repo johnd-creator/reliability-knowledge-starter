@@ -1,0 +1,161 @@
+{
+  "$defs": {
+    "MaintenanceSources": {
+      "additionalProperties": false,
+      "properties": {
+        "maximo": {
+          "$ref": "#/$defs/MaximoWorkOrderIdentity"
+        }
+      },
+      "required": [
+        "maximo"
+      ],
+      "title": "MaintenanceSources",
+      "type": "object"
+    },
+    "MaximoWorkOrderIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "source_object": {
+          "const": "MXWODETAIL",
+          "default": "MXWODETAIL",
+          "title": "Source Object",
+          "type": "string"
+        },
+        "source_record_ref": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Source Record Ref",
+          "type": "string"
+        },
+        "site": {
+          "const": "BSR",
+          "default": "BSR",
+          "title": "Site",
+          "type": "string"
+        },
+        "organization": {
+          "const": "IP",
+          "default": "IP",
+          "title": "Organization",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_record_ref"
+      ],
+      "title": "MaximoWorkOrderIdentity",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "canonical_asset_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Canonical Asset Id",
+      "type": "string"
+    },
+    "canonical_record_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Canonical Record Id",
+      "type": "string"
+    },
+    "record_status": {
+      "anyOf": [
+        {
+          "maxLength": 80,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Record Status"
+    },
+    "work_type": {
+      "anyOf": [
+        {
+          "maxLength": 80,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Work Type"
+    },
+    "source_changed_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Changed At"
+    },
+    "collected_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Collected At"
+    },
+    "projected_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Projected At"
+    },
+    "sources": {
+      "$ref": "#/$defs/MaintenanceSources"
+    },
+    "informational_only": {
+      "const": true,
+      "default": true,
+      "title": "Informational Only",
+      "type": "boolean"
+    },
+    "interpretation": {
+      "const": "SOURCE_FACT",
+      "default": "SOURCE_FACT",
+      "title": "Interpretation",
+      "type": "string"
+    },
+    "freshness": {
+      "const": "UNKNOWN",
+      "default": "UNKNOWN",
+      "title": "Freshness",
+      "type": "string"
+    }
+  },
+  "required": [
+    "canonical_asset_id",
+    "canonical_record_id",
+    "sources"
+  ],
+  "title": "ExistingWorkOrderReference",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.example.invalid/nadi/existing-work-order-reference/1.0"
+}
