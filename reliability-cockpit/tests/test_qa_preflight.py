@@ -83,3 +83,21 @@ class QaPreflightTest(unittest.TestCase):
         for field,value in (("local_password_minimum",11),("local_login_attempts",0),("local_auth_approval_ref",None)):
             changed={**r,field:value}
             self.assertEqual(assess_configuration(changed,actual_sha=self.sha,clean=True)["preparation"],"BLOCKED")
+
+    def test_compose_command_extends_image_entrypoint_and_cli_remains_source_free(self):
+        import ast, re, subprocess, sys
+        docker=(ROOT/"deploy/qa/Dockerfile.preflight").read_text()
+        compose=(ROOT/"deploy/qa/compose.preflight.yaml").read_text()
+        entrypoint=json.loads(re.search(r"^ENTRYPOINT (.+)$",docker,re.M).group(1))
+        command=ast.literal_eval(re.search(r"^    command: (.+)$",compose,re.M).group(1))
+        self.assertEqual(entrypoint,["python","-m","src.qa.preflight"])
+        with tempfile.TemporaryDirectory() as private:
+            config=Path(private)/"config.json";config.write_text(json.dumps(self.raw));config.chmod(0o600)
+            manifest=Path(private)/"release.json";manifest.write_text("{}");manifest.chmod(0o600)
+            args=[str(config) if v=="/run/qa/config.json" else str(manifest) if v=="/app/.qa-release.json" else v for v in command]
+            result=subprocess.run([sys.executable,*entrypoint[1:],*args],cwd=ROOT/"reliability-cockpit",
+                env={"PATH":os.environ.get("PATH","/usr/bin:/bin"),"PYTHONPATH":"."},capture_output=True,text=True,timeout=10)
+        self.assertEqual(result.returncode,2)
+        output=json.loads(result.stdout)  # argparse duplication produces no JSON, so fails here.
+        self.assertEqual(output["real_qa_readiness"],"NO_GO")
+        self.assertEqual((output["source_gets"],output["writes"]),(0,0))

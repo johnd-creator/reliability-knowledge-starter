@@ -28,7 +28,7 @@ No credentials in CLI argv, examples, shell history or reports.
    permissions. Restore into a separate loopback *_test database and compare
    ledger, current/revision/audit/receipt/file-manifest fingerprints.
 5. Canonical ApplicationMigrator status; checksums/order/anchors must pass.
-   Apply only reviewed pending002→003→004→005 using approved owner. No startup DDL.
+   Apply only reviewed pending002→003→004→005→006 using approved owner. No startup DDL.
 6. Canonical grant_writer fails closed on unsafe PUBLIC/default/schema/DB/table
    ownership or inherited capabilities. Grant ledger SELECT separately to
    capability. Runtime membership exactly capability; no admin/owner membership.
