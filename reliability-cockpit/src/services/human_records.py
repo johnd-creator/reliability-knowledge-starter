@@ -65,7 +65,7 @@ class ReviewedRecordService:
             lambda c: self.visible(actor, self.repo.get(c, self.kind, record_id))
         )
 
-    def list(self, actor, *, offset=0, limit=25):
+    def list(self, actor, *, asset_id=None, offset=0, limit=25):
         self.gate(actor)
         if (
             type(offset) is not int
@@ -75,6 +75,9 @@ class ReviewedRecordService:
         ):
             raise EngineeringError("INVALID_PAGINATION", 422)
 
+        if asset_id is not None and asset_id not in actor.asset_ids:
+            raise EngineeringError("NOT_FOUND", 404)
+
         def read(c):
             doc = RecordRow.document
             where = [
@@ -83,6 +86,8 @@ class ReviewedRecordService:
             ]
             if Role.REVIEWER not in actor.roles:
                 where.append(doc["created_by"].as_string() == actor.principal_id)
+            if asset_id is not None:
+                where.append(doc["canonical_asset_id"].as_string() == asset_id)
             total = c.scalar(select(func.count()).select_from(RecordRow).where(*where))
             rows = c.scalars(
                 select(doc)

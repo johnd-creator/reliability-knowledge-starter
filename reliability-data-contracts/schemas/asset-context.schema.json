@@ -1,0 +1,2453 @@
+{
+  "$defs": {
+    "AssetConditionEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "canonical_asset_id": {
+          "title": "Canonical Asset Id",
+          "type": "string"
+        },
+        "mapping_readiness": {
+          "title": "Mapping Readiness",
+          "type": "string"
+        },
+        "statuses": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Statuses",
+          "type": "array"
+        },
+        "expected_signals": {
+          "default": 0,
+          "title": "Expected Signals",
+          "type": "integer"
+        },
+        "latest_attempt_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Latest Attempt At"
+        },
+        "collector_last_success_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Collector Last Success At"
+        },
+        "items": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ConditionEvidenceItem"
+          },
+          "maxItems": 5,
+          "title": "Items",
+          "type": "array"
+        }
+      },
+      "required": [
+        "canonical_asset_id",
+        "mapping_readiness",
+        "statuses"
+      ],
+      "title": "AssetConditionEvidence",
+      "type": "object"
+    },
+    "AssetIdentityContext": {
+      "additionalProperties": false,
+      "properties": {
+        "canonical_asset_id": {
+          "title": "Canonical Asset Id",
+          "type": "string"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        },
+        "location_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Location Ref"
+        },
+        "parent_asset_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Asset Ref"
+        },
+        "equipment_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Equipment Type"
+        },
+        "classification_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Classification Ref"
+        },
+        "unit_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit Ref"
+        },
+        "source_identity": {
+          "$ref": "#/$defs/AssetSourceIdentity"
+        },
+        "source_timestamp": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Timestamp"
+        },
+        "collected_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Collected At"
+        },
+        "projected_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Projected At"
+        },
+        "source_freshness": {
+          "const": "UNKNOWN",
+          "default": "UNKNOWN",
+          "title": "Source Freshness",
+          "type": "string"
+        },
+        "projection_freshness": {
+          "default": "UNKNOWN",
+          "enum": [
+            "CURRENT",
+            "STALE",
+            "UNKNOWN"
+          ],
+          "title": "Projection Freshness",
+          "type": "string"
+        },
+        "source_quality": {
+          "const": "UNKNOWN",
+          "default": "UNKNOWN",
+          "title": "Source Quality",
+          "type": "string"
+        },
+        "provenance": {
+          "const": "CANONICAL_MART_SOURCE_FACT",
+          "default": "CANONICAL_MART_SOURCE_FACT",
+          "title": "Provenance",
+          "type": "string"
+        },
+        "identity_basis": {
+          "const": "REGISTERED_CANONICAL_ASSET",
+          "default": "REGISTERED_CANONICAL_ASSET",
+          "title": "Identity Basis",
+          "type": "string"
+        }
+      },
+      "required": [
+        "canonical_asset_id",
+        "source_identity"
+      ],
+      "title": "AssetIdentityContext",
+      "type": "object"
+    },
+    "AssetSourceIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "system": {
+          "const": "MAXIMO",
+          "default": "MAXIMO",
+          "title": "System",
+          "type": "string"
+        },
+        "record_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Record Ref"
+        },
+        "site": {
+          "const": "BSR",
+          "default": "BSR",
+          "title": "Site",
+          "type": "string"
+        },
+        "organization": {
+          "const": "IP",
+          "default": "IP",
+          "title": "Organization",
+          "type": "string"
+        }
+      },
+      "title": "AssetSourceIdentity",
+      "type": "object"
+    },
+    "AttachmentMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "attachment_ref": {
+          "pattern": "^attachment:[A-Za-z0-9_.:-]{1,90}$",
+          "title": "Attachment Ref",
+          "type": "string"
+        },
+        "filename": {
+          "allOf": [
+            {
+              "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]"
+            },
+            {
+              "not": {
+                "enum": [
+                  ".",
+                  ".."
+                ]
+              }
+            }
+          ],
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[^/\\\\]+$",
+          "title": "Filename",
+          "type": "string"
+        },
+        "content_type": {
+          "enum": [
+            "application/pdf",
+            "image/png",
+            "image/jpeg",
+            "text/csv",
+            "text/plain"
+          ],
+          "title": "Content Type",
+          "type": "string"
+        },
+        "size_bytes": {
+          "maximum": 10485760,
+          "minimum": 0,
+          "title": "Size Bytes",
+          "type": "integer"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sha256"
+        },
+        "status": {
+          "const": "METADATA_ONLY_NOT_UPLOADED",
+          "default": "METADATA_ONLY_NOT_UPLOADED",
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "attachment_ref",
+        "filename",
+        "content_type",
+        "size_bytes"
+      ],
+      "title": "AttachmentMetadata",
+      "type": "object"
+    },
+    "CaseStatus": {
+      "enum": [
+        "DRAFT",
+        "IN_REVIEW",
+        "APPROVED",
+        "REJECTED"
+      ],
+      "title": "CaseStatus",
+      "type": "string"
+    },
+    "Category": {
+      "enum": [
+        "INVESTIGATION",
+        "MAINTENANCE",
+        "CONDITION"
+      ],
+      "title": "Category",
+      "type": "string"
+    },
+    "ConditionEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "canonical_asset_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Canonical Asset Id",
+          "type": "string"
+        },
+        "mapping_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Mapping Id",
+          "type": "string"
+        },
+        "signal_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Signal Id",
+          "type": "string"
+        },
+        "semantic_name": {
+          "pattern": "^[a-z][a-z0-9_]{0,79}$",
+          "title": "Semantic Name",
+          "type": "string"
+        },
+        "sources": {
+          "$ref": "#/$defs/EvidenceAttributeSources"
+        },
+        "value_type": {
+          "enum": [
+            "NUMERIC",
+            "TEXT",
+            "DIGITAL_STATE",
+            "BOOLEAN",
+            "NULL"
+          ],
+          "title": "Value Type",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/$defs/DigitalState"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "maxLength": 40,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        },
+        "source_timestamp": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Source Timestamp"
+        },
+        "collected_at": {
+          "format": "date-time",
+          "title": "Collected At",
+          "type": "string"
+        },
+        "quality_good": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Quality Good"
+        },
+        "quality_questionable": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Quality Questionable"
+        },
+        "quality_substituted": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Quality Substituted"
+        },
+        "quality_annotated": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Quality Annotated"
+        },
+        "evidence_status": {
+          "enum": [
+            "EVIDENCE_AVAILABLE",
+            "BAD_QUALITY",
+            "UNKNOWN_VALUE",
+            "UNKNOWN_QUALITY"
+          ],
+          "title": "Evidence Status",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/EvidenceProvenance"
+        }
+      },
+      "required": [
+        "canonical_asset_id",
+        "mapping_id",
+        "signal_id",
+        "semantic_name",
+        "sources",
+        "value_type",
+        "value",
+        "unit",
+        "source_timestamp",
+        "collected_at",
+        "quality_good",
+        "quality_questionable",
+        "quality_substituted",
+        "quality_annotated",
+        "evidence_status",
+        "provenance"
+      ],
+      "title": "ConditionEvidence",
+      "type": "object"
+    },
+    "ConditionEvidenceItem": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "$ref": "#/$defs/ConditionEvidence"
+        },
+        "projected_at": {
+          "format": "date-time",
+          "title": "Projected At",
+          "type": "string"
+        },
+        "freshness": {
+          "$ref": "#/$defs/EvidenceFreshness"
+        },
+        "statuses": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Statuses",
+          "type": "array"
+        }
+      },
+      "required": [
+        "evidence",
+        "projected_at",
+        "freshness",
+        "statuses"
+      ],
+      "title": "ConditionEvidenceItem",
+      "type": "object"
+    },
+    "ContextAvailability": {
+      "enum": [
+        "AVAILABLE",
+        "EMPTY",
+        "UNAVAILABLE",
+        "INVALID_RECORD",
+        "NOT_CONFIGURED"
+      ],
+      "title": "ContextAvailability",
+      "type": "string"
+    },
+    "ContextPage_EngineeringCase_": {
+      "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "$ref": "#/$defs/ContextAvailability"
+        },
+        "items": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/EngineeringCase"
+          },
+          "maxItems": 100,
+          "title": "Items",
+          "type": "array"
+        },
+        "total": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Total"
+        },
+        "offset": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Offset",
+          "type": "integer"
+        },
+        "limit": {
+          "default": 25,
+          "maximum": 100,
+          "minimum": 1,
+          "title": "Limit",
+          "type": "integer"
+        },
+        "has_more": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Has More"
+        }
+      },
+      "required": [
+        "availability"
+      ],
+      "title": "ContextPage[EngineeringCase]",
+      "type": "object"
+    },
+    "ContextPage_ExistingWorkOrderReference_": {
+      "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "$ref": "#/$defs/ContextAvailability"
+        },
+        "items": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ExistingWorkOrderReference"
+          },
+          "maxItems": 100,
+          "title": "Items",
+          "type": "array"
+        },
+        "total": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Total"
+        },
+        "offset": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Offset",
+          "type": "integer"
+        },
+        "limit": {
+          "default": 25,
+          "maximum": 100,
+          "minimum": 1,
+          "title": "Limit",
+          "type": "integer"
+        },
+        "has_more": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Has More"
+        }
+      },
+      "required": [
+        "availability"
+      ],
+      "title": "ContextPage[ExistingWorkOrderReference]",
+      "type": "object"
+    },
+    "ContextPage_ManualInspection_": {
+      "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "$ref": "#/$defs/ContextAvailability"
+        },
+        "items": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ManualInspection"
+          },
+          "maxItems": 100,
+          "title": "Items",
+          "type": "array"
+        },
+        "total": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Total"
+        },
+        "offset": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Offset",
+          "type": "integer"
+        },
+        "limit": {
+          "default": 25,
+          "maximum": 100,
+          "minimum": 1,
+          "title": "Limit",
+          "type": "integer"
+        },
+        "has_more": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Has More"
+        }
+      },
+      "required": [
+        "availability"
+      ],
+      "title": "ContextPage[ManualInspection]",
+      "type": "object"
+    },
+    "ContextPage_Recommendation_": {
+      "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "$ref": "#/$defs/ContextAvailability"
+        },
+        "items": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Recommendation"
+          },
+          "maxItems": 100,
+          "title": "Items",
+          "type": "array"
+        },
+        "total": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Total"
+        },
+        "offset": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Offset",
+          "type": "integer"
+        },
+        "limit": {
+          "default": 25,
+          "maximum": 100,
+          "minimum": 1,
+          "title": "Limit",
+          "type": "integer"
+        },
+        "has_more": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Has More"
+        }
+      },
+      "required": [
+        "availability"
+      ],
+      "title": "ContextPage[Recommendation]",
+      "type": "object"
+    },
+    "DigitalState": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "anyOf": [
+            {
+              "maxLength": 4096,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "code": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Code"
+        },
+        "is_system": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Is System"
+        }
+      },
+      "title": "DigitalState",
+      "type": "object"
+    },
+    "EngineeringCase": {
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "problem_statement": {
+          "maxLength": 12000,
+          "minLength": 1,
+          "title": "Problem Statement",
+          "type": "string"
+        },
+        "canonical_asset_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9_.:-]+$",
+          "title": "Canonical Asset Id",
+          "type": "string"
+        },
+        "category": {
+          "$ref": "#/$defs/Category",
+          "default": "INVESTIGATION"
+        },
+        "priority": {
+          "$ref": "#/$defs/Priority",
+          "default": "NORMAL"
+        },
+        "assigned_engineer": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Assigned Engineer"
+        },
+        "investigation": {
+          "$ref": "#/$defs/Investigation"
+        },
+        "contract_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "case_id": {
+          "title": "Case Id",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/CaseStatus",
+          "default": "DRAFT"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "created_by": {
+          "title": "Created By",
+          "type": "string"
+        },
+        "contributors": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Contributors",
+          "type": "array"
+        },
+        "revision": {
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        },
+        "provenance": {
+          "const": "HUMAN_ENGINEERING_RECORD",
+          "default": "HUMAN_ENGINEERING_RECORD",
+          "title": "Provenance",
+          "type": "string"
+        },
+        "notes": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/InvestigationNote"
+          },
+          "maxItems": 100,
+          "title": "Notes",
+          "type": "array"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/EvidenceReference"
+          },
+          "maxItems": 30,
+          "title": "Evidence",
+          "type": "array"
+        },
+        "review": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ReviewDecision"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "title",
+        "problem_statement",
+        "canonical_asset_id",
+        "case_id",
+        "created_at",
+        "updated_at",
+        "created_by",
+        "revision"
+      ],
+      "title": "EngineeringCase",
+      "type": "object"
+    },
+    "EvidenceAttributeSources": {
+      "additionalProperties": false,
+      "properties": {
+        "pi": {
+          "$ref": "#/$defs/PiAttributeLineage"
+        }
+      },
+      "required": [
+        "pi"
+      ],
+      "title": "EvidenceAttributeSources",
+      "type": "object"
+    },
+    "EvidenceFreshness": {
+      "additionalProperties": false,
+      "properties": {
+        "collector": {
+          "title": "Collector",
+          "type": "string"
+        },
+        "source": {
+          "title": "Source",
+          "type": "string"
+        },
+        "projection": {
+          "title": "Projection",
+          "type": "string"
+        },
+        "mapping": {
+          "title": "Mapping",
+          "type": "string"
+        }
+      },
+      "required": [
+        "collector",
+        "source",
+        "projection",
+        "mapping"
+      ],
+      "title": "EvidenceFreshness",
+      "type": "object"
+    },
+    "EvidenceKind": {
+      "enum": [
+        "ASSET",
+        "MAINTENANCE",
+        "WORK_ORDER",
+        "FMEA",
+        "RCFA",
+        "CONDITION",
+        "DATA_TRUST"
+      ],
+      "title": "EvidenceKind",
+      "type": "string"
+    },
+    "EvidenceProvenance": {
+      "additionalProperties": false,
+      "properties": {
+        "source_boundary": {
+          "const": "GOVERNED_PI_SOURCE",
+          "default": "GOVERNED_PI_SOURCE",
+          "title": "Source Boundary",
+          "type": "string"
+        },
+        "selection_evidence_ref": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Selection Evidence Ref",
+          "type": "string"
+        },
+        "selection_approved_by": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Selection Approved By",
+          "type": "string"
+        },
+        "selection_approved_at": {
+          "format": "date-time",
+          "title": "Selection Approved At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "selection_evidence_ref",
+        "selection_approved_by",
+        "selection_approved_at"
+      ],
+      "title": "EvidenceProvenance",
+      "type": "object"
+    },
+    "EvidenceReference": {
+      "additionalProperties": false,
+      "properties": {
+        "reference_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Reference Id",
+          "type": "string"
+        },
+        "record_id": {
+          "maxLength": 240,
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9_.:-]+$",
+          "title": "Record Id",
+          "type": "string"
+        },
+        "canonical_asset_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Canonical Asset Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/EvidenceKind"
+        },
+        "source": {
+          "enum": [
+            "CANONICAL_MART",
+            "NADI_CONDITION",
+            "NADI_DATA_TRUST"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "LIVE_REFERENCE",
+            "FROZEN_SNAPSHOT"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "stable_version": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Stable Version",
+          "type": "string"
+        },
+        "source_timestamp": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Timestamp"
+        },
+        "observed_at": {
+          "format": "date-time",
+          "title": "Observed At",
+          "type": "string"
+        },
+        "linked_at": {
+          "format": "date-time",
+          "title": "Linked At",
+          "type": "string"
+        },
+        "linked_by": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Linked By",
+          "type": "string"
+        },
+        "identity_status": {
+          "const": "VERIFIED",
+          "title": "Identity Status",
+          "type": "string"
+        },
+        "signal_approval": {
+          "enum": [
+            "APPROVED",
+            "NOT_APPLICABLE"
+          ],
+          "title": "Signal Approval",
+          "type": "string"
+        },
+        "freshness": {
+          "default": "UNKNOWN",
+          "enum": [
+            "CURRENT",
+            "STALE",
+            "UNKNOWN"
+          ],
+          "title": "Freshness",
+          "type": "string"
+        },
+        "freshness_policy_ref": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Freshness Policy Ref"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "maxLength": 40,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "quality_good": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Quality Good"
+        },
+        "quality_questionable": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Quality Questionable"
+        },
+        "quality_substituted": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Quality Substituted"
+        },
+        "quality_annotated": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Quality Annotated"
+        },
+        "snapshot": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceSnapshot"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "reference_id",
+        "record_id",
+        "canonical_asset_id",
+        "kind",
+        "source",
+        "mode",
+        "stable_version",
+        "observed_at",
+        "linked_at",
+        "linked_by",
+        "identity_status",
+        "signal_approval"
+      ],
+      "title": "EvidenceReference",
+      "type": "object"
+    },
+    "EvidenceSelection": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/EvidenceKind"
+        },
+        "record_id": {
+          "maxLength": 240,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Record Id",
+          "type": "string"
+        },
+        "mode": {
+          "default": "FROZEN_SNAPSHOT",
+          "enum": [
+            "LIVE_REFERENCE",
+            "FROZEN_SNAPSHOT"
+          ],
+          "title": "Mode",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "record_id"
+      ],
+      "title": "EvidenceSelection",
+      "type": "object"
+    },
+    "EvidenceSnapshot": {
+      "additionalProperties": false,
+      "description": "Allowlisted canonical facts, never raw vendor payloads or source URLs.",
+      "properties": {
+        "label": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "summary": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Summary"
+        },
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ConditionEvidence"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "availability": {
+          "default": "UNKNOWN",
+          "enum": [
+            "AVAILABLE",
+            "PARTIAL",
+            "UNKNOWN"
+          ],
+          "title": "Availability",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label"
+      ],
+      "title": "EvidenceSnapshot",
+      "type": "object"
+    },
+    "ExistingWorkOrderReference": {
+      "additionalProperties": false,
+      "properties": {
+        "canonical_asset_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Canonical Asset Id",
+          "type": "string"
+        },
+        "canonical_record_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Canonical Record Id",
+          "type": "string"
+        },
+        "record_status": {
+          "anyOf": [
+            {
+              "maxLength": 80,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Record Status"
+        },
+        "work_type": {
+          "anyOf": [
+            {
+              "maxLength": 80,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Work Type"
+        },
+        "source_changed_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Changed At"
+        },
+        "collected_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Collected At"
+        },
+        "projected_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Projected At"
+        },
+        "sources": {
+          "$ref": "#/$defs/MaintenanceSources"
+        },
+        "informational_only": {
+          "const": true,
+          "default": true,
+          "title": "Informational Only",
+          "type": "boolean"
+        },
+        "interpretation": {
+          "const": "SOURCE_FACT",
+          "default": "SOURCE_FACT",
+          "title": "Interpretation",
+          "type": "string"
+        },
+        "freshness": {
+          "const": "UNKNOWN",
+          "default": "UNKNOWN",
+          "title": "Freshness",
+          "type": "string"
+        }
+      },
+      "required": [
+        "canonical_asset_id",
+        "canonical_record_id",
+        "sources"
+      ],
+      "title": "ExistingWorkOrderReference",
+      "type": "object"
+    },
+    "FollowUpStatus": {
+      "enum": [
+        "PROPOSED",
+        "PLANNED",
+        "IN_PROGRESS",
+        "COMPLETED",
+        "CANCELLED"
+      ],
+      "title": "FollowUpStatus",
+      "type": "string"
+    },
+    "InspectionMethod": {
+      "enum": [
+        "VIBRATION",
+        "IR_THERMOGRAPHY",
+        "MCSA",
+        "TRIBOLOGY",
+        "DGA",
+        "OTHER"
+      ],
+      "title": "InspectionMethod",
+      "type": "string"
+    },
+    "Investigation": {
+      "additionalProperties": false,
+      "properties": {
+        "observed_symptoms": {
+          "default": [],
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Observed Symptoms",
+          "type": "array"
+        },
+        "operating_context": {
+          "default": "",
+          "maxLength": 6000,
+          "title": "Operating Context",
+          "type": "string"
+        },
+        "hypotheses": {
+          "default": [],
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Hypotheses",
+          "type": "array"
+        },
+        "observations": {
+          "default": [],
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Observations",
+          "type": "array"
+        },
+        "open_questions": {
+          "default": [],
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Open Questions",
+          "type": "array"
+        },
+        "proposed_next_checks": {
+          "default": [],
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Proposed Next Checks",
+          "type": "array"
+        }
+      },
+      "title": "Investigation",
+      "type": "object"
+    },
+    "InvestigationNote": {
+      "additionalProperties": false,
+      "properties": {
+        "note_id": {
+          "title": "Note Id",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 12000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "actor": {
+          "title": "Actor",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "note_id",
+        "text",
+        "actor",
+        "created_at"
+      ],
+      "title": "InvestigationNote",
+      "type": "object"
+    },
+    "MaintenanceSources": {
+      "additionalProperties": false,
+      "properties": {
+        "maximo": {
+          "$ref": "#/$defs/MaximoWorkOrderIdentity"
+        }
+      },
+      "required": [
+        "maximo"
+      ],
+      "title": "MaintenanceSources",
+      "type": "object"
+    },
+    "ManualInspection": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "record_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Record Id",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/CaseStatus",
+          "default": "DRAFT"
+        },
+        "created_by": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Created By",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "submitted_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Submitted At"
+        },
+        "revision": {
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        },
+        "contributors": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Contributors",
+          "type": "array"
+        },
+        "review": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ReviewDecision"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "approval_scope": {
+          "const": "NADI_RECORD_REVIEW_ONLY",
+          "default": "NADI_RECORD_REVIEW_ONLY",
+          "title": "Approval Scope",
+          "type": "string"
+        },
+        "canonical_asset_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Canonical Asset Id",
+          "type": "string"
+        },
+        "method": {
+          "$ref": "#/$defs/InspectionMethod"
+        },
+        "method_version": {
+          "maxLength": 80,
+          "minLength": 1,
+          "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+          "title": "Method Version",
+          "type": "string"
+        },
+        "inspector_ref": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+          "title": "Inspector Ref",
+          "type": "string"
+        },
+        "inspected_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Inspected At"
+        },
+        "operating_context": {
+          "anyOf": [
+            {
+              "maxLength": 6000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Operating Context"
+        },
+        "measurements": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ManualMeasurement"
+          },
+          "maxItems": 100,
+          "title": "Measurements",
+          "type": "array"
+        },
+        "observations": {
+          "default": [],
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Observations",
+          "type": "array"
+        },
+        "interpretations": {
+          "default": [],
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Interpretations",
+          "type": "array"
+        },
+        "attachments": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/AttachmentMetadata"
+          },
+          "maxItems": 10,
+          "title": "Attachments",
+          "type": "array"
+        },
+        "case_refs": {
+          "default": [],
+          "items": {
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "type": "string"
+          },
+          "maxItems": 10,
+          "title": "Case Refs",
+          "type": "array"
+        },
+        "method_extension": {
+          "additionalProperties": false,
+          "maxProperties": 20,
+          "patternProperties": {
+            "^[A-Za-z][A-Za-z0-9_]{0,79}$": {
+              "anyOf": [
+                {
+                  "maxLength": 2000,
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "title": "Method Extension",
+          "type": "object"
+        },
+        "provenance": {
+          "const": "NADI_MANUAL_INSPECTION",
+          "default": "NADI_MANUAL_INSPECTION",
+          "title": "Provenance",
+          "type": "string"
+        },
+        "field_approval": {
+          "const": "ENGINEER_FIELDS_PENDING",
+          "default": "ENGINEER_FIELDS_PENDING",
+          "title": "Field Approval",
+          "type": "string"
+        },
+        "assessment": {
+          "const": "NOT_ASSESSED",
+          "default": "NOT_ASSESSED",
+          "title": "Assessment",
+          "type": "string"
+        }
+      },
+      "required": [
+        "record_id",
+        "created_by",
+        "created_at",
+        "updated_at",
+        "revision",
+        "canonical_asset_id",
+        "method",
+        "method_version",
+        "inspector_ref"
+      ],
+      "title": "ManualInspection",
+      "type": "object"
+    },
+    "ManualMeasurement": {
+      "additionalProperties": false,
+      "properties": {
+        "quantity": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+          "title": "Quantity",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "maxLength": 40,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "measured_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Measured At"
+        },
+        "point_ref": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Point Ref"
+        },
+        "quality": {
+          "default": "UNKNOWN",
+          "enum": [
+            "UNKNOWN",
+            "INSPECTOR_REPORTED"
+          ],
+          "title": "Quality",
+          "type": "string"
+        },
+        "provenance": {
+          "const": "HUMAN_ENTERED_MEASUREMENT",
+          "default": "HUMAN_ENTERED_MEASUREMENT",
+          "title": "Provenance",
+          "type": "string"
+        }
+      },
+      "required": [
+        "quantity"
+      ],
+      "title": "ManualMeasurement",
+      "type": "object"
+    },
+    "MaximoWorkOrderIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "source_object": {
+          "const": "MXWODETAIL",
+          "default": "MXWODETAIL",
+          "title": "Source Object",
+          "type": "string"
+        },
+        "source_record_ref": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Source Record Ref",
+          "type": "string"
+        },
+        "site": {
+          "const": "BSR",
+          "default": "BSR",
+          "title": "Site",
+          "type": "string"
+        },
+        "organization": {
+          "const": "IP",
+          "default": "IP",
+          "title": "Organization",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_record_ref"
+      ],
+      "title": "MaximoWorkOrderIdentity",
+      "type": "object"
+    },
+    "PiAttributeLineage": {
+      "additionalProperties": false,
+      "properties": {
+        "pi_source_id": {
+          "const": "CENTRAL_PI",
+          "title": "Pi Source Id",
+          "type": "string"
+        },
+        "af_server_ref": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Af Server Ref",
+          "type": "string"
+        },
+        "af_database_ref": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Af Database Ref",
+          "type": "string"
+        },
+        "af_element_ref": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Af Element Ref",
+          "type": "string"
+        },
+        "mapping_role": {
+          "const": "PRIMARY_EQUIPMENT",
+          "title": "Mapping Role",
+          "type": "string"
+        },
+        "mapping_status": {
+          "const": "VERIFIED",
+          "title": "Mapping Status",
+          "type": "string"
+        },
+        "attribute_ref": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Attribute Ref",
+          "type": "string"
+        },
+        "attribute_name": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Attribute Name"
+        }
+      },
+      "required": [
+        "pi_source_id",
+        "af_server_ref",
+        "af_database_ref",
+        "af_element_ref",
+        "mapping_role",
+        "mapping_status",
+        "attribute_ref"
+      ],
+      "title": "PiAttributeLineage",
+      "type": "object"
+    },
+    "Priority": {
+      "enum": [
+        "LOW",
+        "NORMAL",
+        "HIGH"
+      ],
+      "title": "Priority",
+      "type": "string"
+    },
+    "Recommendation": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "record_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Record Id",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/CaseStatus",
+          "default": "DRAFT"
+        },
+        "created_by": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Created By",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "submitted_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Submitted At"
+        },
+        "revision": {
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        },
+        "contributors": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Contributors",
+          "type": "array"
+        },
+        "review": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ReviewDecision"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "approval_scope": {
+          "const": "NADI_RECORD_REVIEW_ONLY",
+          "default": "NADI_RECORD_REVIEW_ONLY",
+          "title": "Approval Scope",
+          "type": "string"
+        },
+        "canonical_asset_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Canonical Asset Id",
+          "type": "string"
+        },
+        "case_ref": {
+          "maxLength": 240,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Case Ref",
+          "type": "string"
+        },
+        "evidence_selections": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/EvidenceSelection"
+          },
+          "maxItems": 20,
+          "title": "Evidence Selections",
+          "type": "array"
+        },
+        "rationale": {
+          "maxLength": 6000,
+          "minLength": 1,
+          "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+          "title": "Rationale",
+          "type": "string"
+        },
+        "proposed_action": {
+          "maxLength": 6000,
+          "minLength": 1,
+          "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+          "title": "Proposed Action",
+          "type": "string"
+        },
+        "priority": {
+          "$ref": "#/$defs/Priority",
+          "default": "NORMAL"
+        },
+        "responsible_team_ref": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "pattern": "^[A-Za-z0-9_.:@-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Responsible Team Ref"
+        },
+        "responsible_person_ref": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "pattern": "^[A-Za-z0-9_.:@-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Responsible Person Ref"
+        },
+        "target_date": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Date"
+        },
+        "existing_work_order_ref": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Existing Work Order Ref"
+        },
+        "supporting_evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/EvidenceReference"
+          },
+          "maxItems": 20,
+          "title": "Supporting Evidence",
+          "type": "array"
+        },
+        "existing_work_order": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ExistingWorkOrderReference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "follow_up_status": {
+          "$ref": "#/$defs/FollowUpStatus",
+          "default": "PROPOSED"
+        },
+        "provenance": {
+          "const": "NADI_ENGINEERING_RECOMMENDATION",
+          "default": "NADI_ENGINEERING_RECOMMENDATION",
+          "title": "Provenance",
+          "type": "string"
+        },
+        "action_authorization": {
+          "const": "NOT_A_MAINTENANCE_AUTHORIZATION",
+          "default": "NOT_A_MAINTENANCE_AUTHORIZATION",
+          "title": "Action Authorization",
+          "type": "string"
+        },
+        "follow_up_scope": {
+          "const": "NADI_LOCAL_FOLLOW_UP_ONLY",
+          "default": "NADI_LOCAL_FOLLOW_UP_ONLY",
+          "title": "Follow Up Scope",
+          "type": "string"
+        }
+      },
+      "required": [
+        "record_id",
+        "created_by",
+        "created_at",
+        "updated_at",
+        "revision",
+        "canonical_asset_id",
+        "case_ref",
+        "rationale",
+        "proposed_action"
+      ],
+      "title": "Recommendation",
+      "type": "object"
+    },
+    "ReviewDecision": {
+      "additionalProperties": false,
+      "properties": {
+        "reviewer": {
+          "title": "Reviewer",
+          "type": "string"
+        },
+        "decision": {
+          "enum": [
+            "APPROVED",
+            "REJECTED"
+          ],
+          "title": "Decision",
+          "type": "string"
+        },
+        "rationale": {
+          "maxLength": 6000,
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "decided_at": {
+          "format": "date-time",
+          "title": "Decided At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "reviewer",
+        "decision",
+        "rationale",
+        "decided_at"
+      ],
+      "title": "ReviewDecision",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Contract Version",
+      "type": "string"
+    },
+    "canonical_asset_id": {
+      "title": "Canonical Asset Id",
+      "type": "string"
+    },
+    "read_at": {
+      "format": "date-time",
+      "title": "Read At",
+      "type": "string"
+    },
+    "consistency": {
+      "const": "BOUNDED_LOCAL_READS",
+      "default": "BOUNDED_LOCAL_READS",
+      "title": "Consistency",
+      "type": "string"
+    },
+    "identity": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/AssetIdentityContext"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "identity_availability": {
+      "$ref": "#/$defs/ContextAvailability"
+    },
+    "maintenance": {
+      "$ref": "#/$defs/ContextPage_ExistingWorkOrderReference_"
+    },
+    "condition": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/AssetConditionEvidence"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "condition_availability": {
+      "$ref": "#/$defs/ContextAvailability"
+    },
+    "cases": {
+      "$ref": "#/$defs/ContextPage_EngineeringCase_"
+    },
+    "inspections": {
+      "$ref": "#/$defs/ContextPage_ManualInspection_"
+    },
+    "recommendations": {
+      "$ref": "#/$defs/ContextPage_Recommendation_"
+    },
+    "reviewed_inspections": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ManualInspection"
+      },
+      "maxItems": 100,
+      "title": "Reviewed Inspections",
+      "type": "array"
+    },
+    "assessment": {
+      "const": "NOT_ASSESSED",
+      "default": "NOT_ASSESSED",
+      "title": "Assessment",
+      "type": "string"
+    },
+    "review_scope": {
+      "const": "HUMAN_RECORD_REVIEW_NOT_SOURCE_VERIFICATION",
+      "default": "HUMAN_RECORD_REVIEW_NOT_SOURCE_VERIFICATION",
+      "title": "Review Scope",
+      "type": "string"
+    }
+  },
+  "required": [
+    "canonical_asset_id",
+    "read_at",
+    "identity_availability",
+    "maintenance",
+    "condition_availability",
+    "cases",
+    "inspections",
+    "recommendations"
+  ],
+  "title": "UnifiedAssetContext",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nadi.example/schema/asset-context/v1.0",
+  "description": "Bounded authorized local asset context; not equipment health or atomic cross-store history."
+}
