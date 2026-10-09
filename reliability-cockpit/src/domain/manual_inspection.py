@@ -27,34 +27,23 @@ class InspectionMethod(StrEnum):
     OTHER = "OTHER"
 
 
-ExtensionScalar = (
-    Annotated[StrictStr, Field(max_length=2000)]
-    | StrictInt
-    | StrictFloat
-    | StrictBool
-    | None
-)
+from src.domain.inspection_measurement import ExtensionScalar, ManualMeasurement
 ExtensionKey = Annotated[StrictStr, Field(pattern=r"^[A-Za-z][A-Za-z0-9_]{0,79}$")]
 
+class InspectionStatus(StrEnum):
+    DRAFT = "DRAFT"
+    SUBMITTED = "SUBMITTED"
+    UNDER_REVIEW = "UNDER_REVIEW"
+    IN_REVIEW = "IN_REVIEW"  # Legacy accepted record, not a new submission state.
+    APPROVED = "APPROVED"
+    RETURNED = "RETURNED"
+    REJECTED = "REJECTED"
 
-class ManualMeasurement(EvidenceModel):
-    quantity: StrictStr = Field(
-        min_length=1, max_length=120, pattern=NONBLANK_TEXT_PATTERN
-    )
-    value: ExtensionScalar = None
-    unit: StrictStr | None = Field(default=None, max_length=40)
-    measured_at: datetime | None = None
-    point_ref: StrictStr | None = Field(default=None, max_length=200)
-    quality: Literal["UNKNOWN", "INSPECTOR_REPORTED"] = "UNKNOWN"
-    provenance: Literal["HUMAN_ENTERED_MEASUREMENT"] = "HUMAN_ENTERED_MEASUREMENT"
-
-    @field_validator("value")
-    @classmethod
-    def finite(cls, value):
-        if isinstance(value, float) and not math.isfinite(value):
-            raise ValueError("nonfinite measurement")
-        return value
-
+class InspectionReview(EvidenceModel):
+    reviewer: StrictStr
+    decision: Literal["APPROVED", "RETURNED", "REJECTED"]
+    rationale: StrictStr = Field(min_length=1,max_length=6000,pattern=NONBLANK_TEXT_PATTERN)
+    decided_at: datetime
 
 class AttachmentMetadata(EvidenceModel):
     attachment_ref: StrictStr = Field(pattern=r"^attachment:[A-Za-z0-9_.:-]{1,90}$")
@@ -129,6 +118,34 @@ class InspectionDraft(EvidenceModel):
 
 
 class ManualInspection(InspectionDraft, HumanRecord):
+    contract_version: Literal["1.0", "1.1"] = "1.1"
+    status: InspectionStatus = InspectionStatus.DRAFT
+    review: InspectionReview | None = None
+    review_started_by: StrictStr | None = None
+    review_started_at: datetime | None = None
+
+    @model_validator(mode="after")
+    def lifecycle(self):
+        terminal = self.status in {InspectionStatus.APPROVED, InspectionStatus.RETURNED, InspectionStatus.REJECTED}
+        if terminal != (self.review is not None):
+            raise ValueError("review decision/status mismatch")
+        if self.updated_at < self.created_at or (self.submitted_at and not self.created_at <= self.submitted_at <= self.updated_at):
+            raise ValueError("inspection chronology invalid")
+        if self.status != InspectionStatus.DRAFT and self.submitted_at is None:
+            raise ValueError("submitted revision required")
+        if (self.review_started_at is None) != (self.review_started_by is None):
+            raise ValueError("review start identity/time required together")
+        excluded = {self.created_by, *self.contributors, self.inspector_ref}
+        if self.status == InspectionStatus.UNDER_REVIEW and self.review_started_at is None:
+            raise ValueError("review must start explicitly")
+        if self.review_started_at and (not self.submitted_at or not self.submitted_at <= self.review_started_at <= self.updated_at or self.review_started_by in excluded):
+            raise ValueError("independent review start required")
+        if self.review and (self.review.decision != self.status or self.review.reviewer in excluded or not self.submitted_at <= self.review.decided_at <= self.updated_at):
+            raise ValueError("independent review/chronology required")
+        if self.review and self.review_started_by and (self.review.reviewer != self.review_started_by or self.review.decided_at < self.review_started_at):
+            raise ValueError("review assigned to another reviewer")
+        return self
+
     provenance: Literal["NADI_MANUAL_INSPECTION"] = "NADI_MANUAL_INSPECTION"
     field_approval: Literal["ENGINEER_FIELDS_PENDING"] = "ENGINEER_FIELDS_PENDING"
     assessment: Literal["NOT_ASSESSED"] = "NOT_ASSESSED"

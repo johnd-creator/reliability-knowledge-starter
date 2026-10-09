@@ -1057,7 +1057,8 @@
         "FMEA",
         "RCFA",
         "CONDITION",
-        "DATA_TRUST"
+        "DATA_TRUST",
+        "MANUAL_INSPECTION"
       ],
       "title": "EvidenceKind",
       "type": "string"
@@ -1126,7 +1127,8 @@
           "enum": [
             "CANONICAL_MART",
             "NADI_CONDITION",
-            "NADI_DATA_TRUST"
+            "NADI_DATA_TRUST",
+            "NADI_REVIEWED_INSPECTION"
           ],
           "title": "Source",
           "type": "string"
@@ -1175,7 +1177,10 @@
           "type": "string"
         },
         "identity_status": {
-          "const": "VERIFIED",
+          "enum": [
+            "VERIFIED",
+            "REGISTERED"
+          ],
           "title": "Identity Status",
           "type": "string"
         },
@@ -1357,6 +1362,17 @@
           "anyOf": [
             {
               "$ref": "#/$defs/ConditionEvidence"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "reviewed_inspection": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ReviewedInspectionEvidence"
             },
             {
               "type": "null"
@@ -1648,6 +1664,57 @@
       "title": "InspectionMethod",
       "type": "string"
     },
+    "InspectionReview": {
+      "additionalProperties": false,
+      "properties": {
+        "reviewer": {
+          "title": "Reviewer",
+          "type": "string"
+        },
+        "decision": {
+          "enum": [
+            "APPROVED",
+            "RETURNED",
+            "REJECTED"
+          ],
+          "title": "Decision",
+          "type": "string"
+        },
+        "rationale": {
+          "maxLength": 6000,
+          "minLength": 1,
+          "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+          "title": "Rationale",
+          "type": "string"
+        },
+        "decided_at": {
+          "format": "date-time",
+          "title": "Decided At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "reviewer",
+        "decision",
+        "rationale",
+        "decided_at"
+      ],
+      "title": "InspectionReview",
+      "type": "object"
+    },
+    "InspectionStatus": {
+      "enum": [
+        "DRAFT",
+        "SUBMITTED",
+        "UNDER_REVIEW",
+        "IN_REVIEW",
+        "APPROVED",
+        "RETURNED",
+        "REJECTED"
+      ],
+      "title": "InspectionStatus",
+      "type": "string"
+    },
     "Investigation": {
       "additionalProperties": false,
       "properties": {
@@ -1770,8 +1837,11 @@
       "additionalProperties": false,
       "properties": {
         "contract_version": {
-          "const": "1.0",
-          "default": "1.0",
+          "default": "1.1",
+          "enum": [
+            "1.0",
+            "1.1"
+          ],
           "title": "Contract Version",
           "type": "string"
         },
@@ -1782,7 +1852,7 @@
           "type": "string"
         },
         "status": {
-          "$ref": "#/$defs/CaseStatus",
+          "$ref": "#/$defs/InspectionStatus",
           "default": "DRAFT"
         },
         "created_by": {
@@ -1831,7 +1901,7 @@
         "review": {
           "anyOf": [
             {
-              "$ref": "#/$defs/ReviewDecision"
+              "$ref": "#/$defs/InspectionReview"
             },
             {
               "type": "null"
@@ -1976,6 +2046,31 @@
           },
           "title": "Method Extension",
           "type": "object"
+        },
+        "review_started_by": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Review Started By"
+        },
+        "review_started_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Review Started At"
         },
         "provenance": {
           "const": "NADI_MANUAL_INSPECTION",
@@ -2481,6 +2576,127 @@
         "decided_at"
       ],
       "title": "ReviewDecision",
+      "type": "object"
+    },
+    "ReviewedInspectionEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "canonical_asset_id": {
+          "title": "Canonical Asset Id",
+          "type": "string"
+        },
+        "record_id": {
+          "title": "Record Id",
+          "type": "string"
+        },
+        "revision": {
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        },
+        "stable_version": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Stable Version",
+          "type": "string"
+        },
+        "inspector_ref": {
+          "title": "Inspector Ref",
+          "type": "string"
+        },
+        "inspected_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Inspected At"
+        },
+        "method": {
+          "title": "Method",
+          "type": "string"
+        },
+        "method_version": {
+          "title": "Method Version",
+          "type": "string"
+        },
+        "measurements": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ManualMeasurement"
+          },
+          "maxItems": 100,
+          "title": "Measurements",
+          "type": "array"
+        },
+        "observations": {
+          "default": [],
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Observations",
+          "type": "array"
+        },
+        "interpretations": {
+          "default": [],
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Interpretations",
+          "type": "array"
+        },
+        "reviewer": {
+          "title": "Reviewer",
+          "type": "string"
+        },
+        "reviewed_at": {
+          "format": "date-time",
+          "title": "Reviewed At",
+          "type": "string"
+        },
+        "decision": {
+          "const": "APPROVED",
+          "default": "APPROVED",
+          "title": "Decision",
+          "type": "string"
+        },
+        "interpretation": {
+          "const": "REVIEWED_HUMAN_EVIDENCE",
+          "default": "REVIEWED_HUMAN_EVIDENCE",
+          "title": "Interpretation",
+          "type": "string"
+        },
+        "assessment": {
+          "const": "NOT_ASSESSED",
+          "default": "NOT_ASSESSED",
+          "title": "Assessment",
+          "type": "string"
+        }
+      },
+      "required": [
+        "canonical_asset_id",
+        "record_id",
+        "revision",
+        "stable_version",
+        "inspector_ref",
+        "method",
+        "method_version",
+        "reviewer",
+        "reviewed_at"
+      ],
+      "title": "ReviewedInspectionEvidence",
       "type": "object"
     }
   },

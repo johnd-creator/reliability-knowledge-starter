@@ -90,6 +90,8 @@ class InspectionTest(unittest.TestCase):
         return self.service.command(self.author, "CREATE", self.draft, request)
 
     def change(self, row, action, payload, actor=None, request=None):
+        if action == "REVIEW" and row.status == "SUBMITTED":
+            row = self.change(row, "BEGIN_REVIEW", {"reason": "Start independent review"}, actor, "begin-review:" + str(row.revision))
         self.now += timedelta(seconds=1)
         return self.service.command(
             actor or self.author,
@@ -150,9 +152,9 @@ class InspectionTest(unittest.TestCase):
         self.assertEqual(reviewed.status, "APPROVED")
         self.assertEqual(reviewed.approval_scope, "NADI_RECORD_REVIEW_ONLY")
         history = self.service.history(self.author, row.record_id)
-        self.assertEqual([x["revision"] for x in history], [1, 2, 3])
+        self.assertEqual([x["revision"] for x in history], [1, 2, 3, 4])
         self.assertEqual(history[0]["snapshot"]["status"], "DRAFT")
-        self.assertEqual(history[2]["actor"], "reviewer")
+        self.assertEqual(history[3]["actor"], "reviewer")
 
     def test_creator_even_with_reviewer_role_cannot_review(self):
         submitted = self.change(self.create(), "SUBMIT", {})

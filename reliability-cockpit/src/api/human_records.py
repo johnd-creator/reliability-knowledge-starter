@@ -15,7 +15,8 @@ def build_record_router(
     draft_model,
     enabled=False,
     trusted_principal_dependency=None,
-    extra_actions=None
+    extra_actions=None,
+    review_request_model=ReviewRequest
 ):
     router = APIRouter(prefix=prefix, tags=["human-record-candidate"])
     if not enabled or not service.enabled or trusted_principal_dependency is None:
@@ -108,7 +109,7 @@ def build_record_router(
 
     actions = {
         "SUBMIT": Change,
-        "REVIEW": ReviewRequest,
+        "REVIEW": review_request_model,
         "REVISE": ReasonRequest,
         "REOPEN": ReasonRequest,
     }
@@ -121,10 +122,15 @@ def build_record_router(
 
 
 def build_inspection_router(service, **kwargs):
+    from typing import Literal
+    inspection_review = create_model("InspectionReviewRequest", __base__=ReasonRequest,
+        decision=(Literal["APPROVED", "RETURNED", "REJECTED"], ...))
     return build_record_router(
         service,
         prefix="/v1/engineering/inspections",
         draft_model=InspectionDraft,
+        extra_actions={"BEGIN_REVIEW": ReasonRequest},
+        review_request_model=inspection_review,
         **kwargs
     )
 
