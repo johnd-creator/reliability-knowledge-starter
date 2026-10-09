@@ -45,7 +45,8 @@ class Principal(EvidenceModel):
 
 # Explicit Python str.strip whitespace set, portable to JSON Schema and JavaScript.
 # Keep the semantic validator below as an independent domain safeguard.
-NONBLANK_TEXT_PATTERN = r"[^\u0009-\u000d\u001c-\u0020\u0085\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000]"
+from src.domain.text import NONBLANK_TEXT_PATTERN
+from src.domain.reviewed_inspection import ReviewedInspectionEvidence
 InvestigationItem = Annotated[str, Field(
     strict=True, min_length=1, max_length=2000,
     pattern=NONBLANK_TEXT_PATTERN,
@@ -93,6 +94,7 @@ class EvidenceKind(StrEnum):
     RCFA = "RCFA"
     CONDITION = "CONDITION"
     DATA_TRUST = "DATA_TRUST"
+    MANUAL_INSPECTION = "MANUAL_INSPECTION"
 
 
 class EvidenceSnapshot(EvidenceModel):
@@ -100,6 +102,7 @@ class EvidenceSnapshot(EvidenceModel):
     label: str = Field(min_length=1, max_length=240)
     summary: str | None = Field(default=None, max_length=2000)
     condition: ConditionEvidence | None = None
+    reviewed_inspection: ReviewedInspectionEvidence | None = None
     availability: Literal["AVAILABLE", "PARTIAL", "UNKNOWN"] = "UNKNOWN"
 
 
@@ -108,14 +111,14 @@ class EvidenceReference(EvidenceModel):
     record_id: str = Field(min_length=1, max_length=240, pattern=r"^[a-zA-Z0-9_.:-]+$")
     canonical_asset_id: str = Field(min_length=1, max_length=200)
     kind: EvidenceKind
-    source: Literal["CANONICAL_MART", "NADI_CONDITION", "NADI_DATA_TRUST"]
+    source: Literal["CANONICAL_MART", "NADI_CONDITION", "NADI_DATA_TRUST", "NADI_REVIEWED_INSPECTION"]
     mode: Literal["LIVE_REFERENCE", "FROZEN_SNAPSHOT"]
     stable_version: str = Field(min_length=1, max_length=160)
     source_timestamp: datetime | None = None
     observed_at: datetime
     linked_at: datetime
     linked_by: str = Field(min_length=1, max_length=160)
-    identity_status: Literal["VERIFIED"]
+    identity_status: Literal["VERIFIED", "REGISTERED"]
     signal_approval: Literal["APPROVED", "NOT_APPLICABLE"]
     freshness: Literal["CURRENT", "STALE", "UNKNOWN"] = "UNKNOWN"
     freshness_policy_ref: str | None = Field(default=None, max_length=200)
@@ -130,7 +133,14 @@ class EvidenceReference(EvidenceModel):
     def canonical_shape(self):
         if (self.mode == "FROZEN_SNAPSHOT") != (self.snapshot is not None):
             raise ValueError("only frozen references contain snapshots")
-        if self.kind == EvidenceKind.CONDITION:
+        if self.kind == EvidenceKind.MANUAL_INSPECTION:
+            if self.source != "NADI_REVIEWED_INSPECTION" or self.signal_approval != "NOT_APPLICABLE" or self.identity_status != "REGISTERED" or self.mode != "FROZEN_SNAPSHOT":
+                raise ValueError("reviewed human evidence cannot assert source verification")
+        elif self.identity_status != "VERIFIED":
+            raise ValueError("canonical source identity must remain verified")
+        if self.kind == EvidenceKind.MANUAL_INSPECTION:
+            pass
+        elif self.kind == EvidenceKind.CONDITION:
             if self.source != "NADI_CONDITION" or self.signal_approval != "APPROVED":
                 raise ValueError("condition identity and signal approval required")
         elif self.kind == EvidenceKind.DATA_TRUST:
@@ -141,6 +151,11 @@ class EvidenceReference(EvidenceModel):
         if self.snapshot:
             if len(self.snapshot.model_dump_json().encode()) > 16384:
                 raise ValueError("canonical snapshot exceeds 16KiB")
+            human = self.snapshot.reviewed_inspection
+            if (self.kind == EvidenceKind.MANUAL_INSPECTION) != (human is not None):
+                raise ValueError("reviewed inspection snapshot required only for human evidence")
+            if human and (human.canonical_asset_id, human.record_id, human.stable_version, human.inspected_at) != (self.canonical_asset_id, self.record_id, self.stable_version, self.source_timestamp):
+                raise ValueError("human snapshot lineage mismatch")
             condition = self.snapshot.condition
             if self.kind == EvidenceKind.CONDITION and condition is None:
                 raise ValueError("condition snapshot requires canonical evidence")

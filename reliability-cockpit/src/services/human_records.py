@@ -17,6 +17,18 @@ from src.domain.manual_inspection import InspectionDraft, ManualInspection
 
 
 class ReviewedRecordService:
+    submission_status = "IN_REVIEW"
+    reviewable_statuses = {"IN_REVIEW"}
+    revisable_statuses = {"REJECTED"}
+    review_decision_model = ReviewDecision
+    extra_reviewer_actions = set()
+
+    def validate_submission(self, actor, current):
+        pass
+
+    def validate_review(self, actor, current):
+        pass
+
     def __init__(
         self,
         repo,
@@ -54,7 +66,7 @@ class ReviewedRecordService:
             raise EngineeringError("NOT_FOUND", 404)
         row = self.record_model.model_validate(raw)
         if row.canonical_asset_id not in actor.asset_ids or (
-            Role.REVIEWER not in actor.roles and row.created_by != actor.principal_id
+            Role.REVIEWER not in actor.roles and row.created_by != actor.principal_id and row.status != "APPROVED"
         ):
             raise EngineeringError("NOT_FOUND", 404)
         return row
@@ -85,7 +97,7 @@ class ReviewedRecordService:
                 doc["canonical_asset_id"].as_string().in_(actor.asset_ids),
             ]
             if Role.REVIEWER not in actor.roles:
-                where.append(doc["created_by"].as_string() == actor.principal_id)
+                where.append((doc["created_by"].as_string() == actor.principal_id) | (doc["status"].as_string() == "APPROVED"))
             if asset_id is not None:
                 where.append(doc["canonical_asset_id"].as_string() == asset_id)
             total = c.scalar(select(func.count()).select_from(RecordRow).where(*where))
@@ -178,7 +190,7 @@ class ReviewedRecordService:
             asset = draft.canonical_asset_id if draft else current.canonical_asset_id
             if asset not in actor.asset_ids:
                 raise EngineeringError("NOT_FOUND", 404)
-            reviewer = action in {"REVIEW", "REOPEN"}
+            reviewer = action in ({"REVIEW", "REOPEN"} | self.extra_reviewer_actions)
             excluded = (
                 {
                     current.created_by,
@@ -230,16 +242,18 @@ class ReviewedRecordService:
                 elif action == "SUBMIT":
                     if payload or current.status != CaseStatus.DRAFT:
                         raise EngineeringError("INVALID_TRANSITION", 409)
-                    data.update(status="IN_REVIEW", submitted_at=now)
+                    self.validate_submission(actor, current)
+                    data.update(status=self.submission_status, submitted_at=now)
                 elif action == "REVIEW":
                     if (
                         set(payload) != {"decision", "reason"}
-                        or current.status != CaseStatus.IN_REVIEW
+                        or current.status not in self.reviewable_statuses
                         or not isinstance(reason, str)
                         or not reason.strip()
                     ):
                         raise EngineeringError("INVALID_TRANSITION", 409)
-                    decision = ReviewDecision(
+                    self.validate_review(actor, current)
+                    decision = self.review_decision_model(
                         reviewer=actor.principal_id,
                         decision=payload["decision"],
                         rationale=reason,
@@ -252,15 +266,12 @@ class ReviewedRecordService:
                         or not isinstance(reason, str)
                         or not reason.strip()
                         or len(reason) > 6000
-                        or current.status
-                        != (
-                            CaseStatus.REJECTED
-                            if action == "REVISE"
-                            else CaseStatus.APPROVED
-                        )
+                        or current.status not in (self.revisable_statuses if action == "REVISE" else {"APPROVED"})
                     ):
                         raise EngineeringError("INVALID_TRANSITION", 409)
                     data.update(status="DRAFT", submitted_at=None, review=None)
+                    if self.kind == "INSPECTION":
+                        data.update(review_started_at=None, review_started_by=None)
                 else:
                     self.extra_transition(actor, action, payload, current, data)
                 if not reviewer:
@@ -285,6 +296,25 @@ class ReviewedRecordService:
 
 
 class InspectionService(ReviewedRecordService):
+    submission_status = "SUBMITTED"
+    reviewable_statuses = {"UNDER_REVIEW", "IN_REVIEW"}
+    revisable_statuses = {"RETURNED", "REJECTED"}
+    extra_reviewer_actions = {"BEGIN_REVIEW"}
+
+    def validate_submission(self, actor, current):
+        if not current.measurements and not current.observations:
+            raise EngineeringError("INSPECTION_EVIDENCE_REQUIRED", 422)
+
+    def validate_review(self, actor, current):
+        if current.review_started_by and current.review_started_by != actor.principal_id:
+            raise EngineeringError("REVIEWER_MISMATCH", 403)
+
+    def extra_transition(self, actor, action, payload, current, data):
+        reason = payload.get("reason")
+        if action != "BEGIN_REVIEW" or current.status != "SUBMITTED" or set(payload) != {"reason"} or not isinstance(reason, str) or not reason.strip() or len(reason) > 6000:
+            raise EngineeringError("INVALID_TRANSITION", 409)
+        data.update(status="UNDER_REVIEW", review_started_by=actor.principal_id, review_started_at=data["updated_at"])
+
     def __init__(self, repo, catalog, **kwargs):
         super().__init__(
             repo,
@@ -294,6 +324,11 @@ class InspectionService(ReviewedRecordService):
             record_model=ManualInspection,
             **kwargs
         )
+
+    @property
+    def review_decision_model(self):
+        from src.domain.manual_inspection import InspectionReview
+        return InspectionReview
 
     def draft_data(self, actor, draft):
         if draft.inspector_ref != actor.principal_id:

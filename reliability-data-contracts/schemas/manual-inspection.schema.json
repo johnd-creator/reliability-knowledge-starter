@@ -74,16 +74,6 @@
       "title": "AttachmentMetadata",
       "type": "object"
     },
-    "CaseStatus": {
-      "enum": [
-        "DRAFT",
-        "IN_REVIEW",
-        "APPROVED",
-        "REJECTED"
-      ],
-      "title": "CaseStatus",
-      "type": "string"
-    },
     "InspectionMethod": {
       "enum": [
         "VIBRATION",
@@ -94,6 +84,57 @@
         "OTHER"
       ],
       "title": "InspectionMethod",
+      "type": "string"
+    },
+    "InspectionReview": {
+      "additionalProperties": false,
+      "properties": {
+        "reviewer": {
+          "title": "Reviewer",
+          "type": "string"
+        },
+        "decision": {
+          "enum": [
+            "APPROVED",
+            "RETURNED",
+            "REJECTED"
+          ],
+          "title": "Decision",
+          "type": "string"
+        },
+        "rationale": {
+          "maxLength": 6000,
+          "minLength": 1,
+          "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+          "title": "Rationale",
+          "type": "string"
+        },
+        "decided_at": {
+          "format": "date-time",
+          "title": "Decided At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "reviewer",
+        "decision",
+        "rationale",
+        "decided_at"
+      ],
+      "title": "InspectionReview",
+      "type": "object"
+    },
+    "InspectionStatus": {
+      "enum": [
+        "DRAFT",
+        "SUBMITTED",
+        "UNDER_REVIEW",
+        "IN_REVIEW",
+        "APPROVED",
+        "RETURNED",
+        "REJECTED"
+      ],
+      "title": "InspectionStatus",
       "type": "string"
     },
     "ManualMeasurement": {
@@ -188,49 +229,16 @@
       ],
       "title": "ManualMeasurement",
       "type": "object"
-    },
-    "ReviewDecision": {
-      "additionalProperties": false,
-      "properties": {
-        "reviewer": {
-          "title": "Reviewer",
-          "type": "string"
-        },
-        "decision": {
-          "enum": [
-            "APPROVED",
-            "REJECTED"
-          ],
-          "title": "Decision",
-          "type": "string"
-        },
-        "rationale": {
-          "maxLength": 6000,
-          "minLength": 1,
-          "title": "Rationale",
-          "type": "string"
-        },
-        "decided_at": {
-          "format": "date-time",
-          "title": "Decided At",
-          "type": "string"
-        }
-      },
-      "required": [
-        "reviewer",
-        "decision",
-        "rationale",
-        "decided_at"
-      ],
-      "title": "ReviewDecision",
-      "type": "object"
     }
   },
   "additionalProperties": false,
   "properties": {
     "contract_version": {
-      "const": "1.0",
-      "default": "1.0",
+      "default": "1.1",
+      "enum": [
+        "1.0",
+        "1.1"
+      ],
       "title": "Contract Version",
       "type": "string"
     },
@@ -241,7 +249,7 @@
       "type": "string"
     },
     "status": {
-      "$ref": "#/$defs/CaseStatus",
+      "$ref": "#/$defs/InspectionStatus",
       "default": "DRAFT"
     },
     "created_by": {
@@ -290,7 +298,7 @@
     "review": {
       "anyOf": [
         {
-          "$ref": "#/$defs/ReviewDecision"
+          "$ref": "#/$defs/InspectionReview"
         },
         {
           "type": "null"
@@ -436,6 +444,31 @@
       "title": "Method Extension",
       "type": "object"
     },
+    "review_started_by": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Review Started By"
+    },
+    "review_started_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Review Started At"
+    },
     "provenance": {
       "const": "NADI_MANUAL_INSPECTION",
       "default": "NADI_MANUAL_INSPECTION",
@@ -469,6 +502,6 @@
   "title": "ManualInspection",
   "type": "object",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://nadi.example/schema/manual-inspection/v1.0",
+  "$id": "https://nadi.example/schema/manual-inspection/v1.1",
   "description": "Human-entered inspection envelope; method fields pending engineering approval. Review does not assert equipment health."
 }
