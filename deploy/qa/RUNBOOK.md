@@ -16,10 +16,14 @@ It prints only gate/reason codes, no config values. No dotenv/default DSNs.
 Optional `--audit-disposable-db` accepts only explicitly provided loopback *_test
 DSN and SELECT-only catalog audit; no migration/grants. Never point at real QA.
 
-The current preparation container cannot prove source checkout SHA from inside
-an image without a signed/bound release manifest; it stays NO-GO. Source checkout
-preflight is the accepted path. Building/start commands below are operator-gated,
-not executed automatically. No image is represented as an activated server.
+For a Git-free preparation image, generate the ignored public-code binding only
+from a clean exact-SHA checkout: `python -m src.qa.release --output
+<private/.qa-release.json>`. Operator-approved image build copies it via the
+ignored deploy/qa/.qa-release.json path. Preflight uses explicit
+`--release-manifest /app/.qa-release.json` and checks the complete Python/SQL/
+package artifact inventory/checksums. Extra/missing/tampered code is denied.
+Checksum binding is not a signature or deployment approval: image digest/build
+provenance must still be independently reviewed. No image build/start executed.
 
 ## Approval-required real-environment sequence — NOT EXECUTED
 
