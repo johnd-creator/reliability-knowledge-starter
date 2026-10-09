@@ -3,11 +3,11 @@ from enum import StrEnum
 from hashlib import sha256
 from pathlib import Path
 from uuid import uuid4
-import os,re
+import os,re,stat
 from datetime import datetime,timezone
 from typing import Protocol
 from pydantic import Field
-from sqlalchemy import Column,String,Integer,JSON,select
+from sqlalchemy import Column,String,Integer,JSON,select,func
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.exc import SQLAlchemyError
 from src.domain.condition_evidence import EvidenceModel
@@ -41,26 +41,47 @@ class AttachmentAudit(AttachmentBase):
 class PrivateStorage(Protocol):
  def put(self,key:str,data:bytes):...
  def get(self,key:str)->bytes:...
+ def get_bounded(self,key:str,max_bytes:int)->bytes:...
  def discard(self,key:str):...
 class DisposableFileStorage:
  """Development fixture implementation; production storage requires separate review."""
  def __init__(self,root):
-  self.root=Path(root).resolve();self.root.mkdir(mode=0o700,parents=True,exist_ok=True)
-  if self.root.stat().st_mode & 0o077:raise ValueError('private storage permissions required')
+  original=Path(root).absolute()
+  if any(p.is_symlink() for p in (original,*original.parents)):raise ValueError('private root symlinks forbidden')
+  self.root=original.resolve();self.root.mkdir(mode=0o700,parents=True,exist_ok=True)
+  if self.root.stat().st_uid!=os.geteuid() or self.root.stat().st_mode & 0o077:raise ValueError('private storage permissions required')
  def path(self,key):
   if not re.fullmatch(r'[a-f0-9]{32}',key):raise EngineeringError('ATTACHMENT_KEY_INVALID',422)
   return self.root/key
  def put(self,key,data):
-  fd=os.open(self.path(key),os.O_CREAT|os.O_EXCL|os.O_WRONLY|os.O_NOFOLLOW,0o600)
-  with os.fdopen(fd,'wb') as f:f.write(data)
- def get(self,key):
+  target=self.path(key);stage=self.root/('.stage-'+uuid4().hex)
+  fd=os.open(stage,os.O_CREAT|os.O_EXCL|os.O_WRONLY|os.O_NOFOLLOW,0o600)
+  try:
+   with os.fdopen(fd,'wb') as f:
+    f.write(data);f.flush();os.fsync(f.fileno())
+   os.link(stage,target,follow_symlinks=False)
+   directory=os.open(self.root,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW)
+   try:os.fsync(directory)
+   finally:os.close(directory)
+  finally:stage.unlink(missing_ok=True)
+ def get_bounded(self,key,max_bytes):
+  if type(max_bytes)!=int or not 1<=max_bytes<=20*1024*1024:raise EngineeringError('ATTACHMENT_SIZE_INVALID',422)
   fd=os.open(self.path(key),os.O_RDONLY|os.O_NOFOLLOW)
-  with os.fdopen(fd,'rb') as f:return f.read()
+  with os.fdopen(fd,'rb') as f:
+   info=os.fstat(f.fileno())
+   if not stat.S_ISREG(info.st_mode) or info.st_mode&0o077 or info.st_size>max_bytes:
+    raise EngineeringError('ATTACHMENT_STORAGE_UNSAFE',409)
+   data=f.read(max_bytes+1)
+   if len(data)>max_bytes:raise EngineeringError('ATTACHMENT_SIZE_INVALID',409)
+   return data
+ def get(self,key):return self.get_bounded(key,20*1024*1024)
  def discard(self,key):self.path(key).unlink(missing_ok=True)
 class AttachmentService:
  TYPES={'application/pdf':b'%PDF-','image/png':b'\x89PNG\r\n\x1a\n','image/jpeg':b'\xff\xd8\xff'}
- def __init__(self,store,storage,assets,*,max_bytes,scanner=None,clock=None):
+ def __init__(self,store,storage,assets,*,max_bytes,scanner=None,clock=None,asset_quota_bytes=None):
   if type(max_bytes)!=int or not 1<=max_bytes<=20*1024*1024:raise ValueError('explicit bounded size required')
+  if asset_quota_bytes is not None and (type(asset_quota_bytes)!=int or asset_quota_bytes<max_bytes):raise ValueError('explicit asset quota required')
+  self.asset_quota_bytes=asset_quota_bytes
   self.engine,self.storage,self.assets=store.engine,storage,assets
   self.limit,self.scanner=max_bytes,scanner;self.clock=clock or (lambda:datetime.now(timezone.utc))
  def authorize(self,actor,asset,*,write=False):
@@ -77,11 +98,20 @@ class AttachmentService:
    raise EngineeringError('ATTACHMENT_CONTENT_INVALID',422)
   key=uuid4().hex
   try:
-   status=ScanStatus.CLEAN if self.scanner and self.scanner(data,content_type) is True else ScanStatus.QUARANTINED
+   try:clean=self.scanner is not None and self.scanner(data,content_type) is True
+   except Exception:clean=False
+   status=ScanStatus.CLEAN if clean else ScanStatus.QUARANTINED
    metadata=AttachmentMetadata(attachment_id=key,canonical_asset_id=asset,owner_ref=actor.principal_id,filename=filename,content_type=content_type,size=len(data),checksum=sha256(data).hexdigest(),scan_status=status,created_at=self.clock())
    self.storage.put(key,data)
    try:
     with self.engine.begin() as c:
+     if self.asset_quota_bytes is not None:
+      from sqlalchemy import text
+      if self.engine.dialect.name=='postgresql':
+       lock=int.from_bytes(sha256(asset.encode()).digest()[:8],'big',signed=True)
+       c.execute(text('SELECT pg_advisory_xact_lock(:lock)'),{'lock':lock})
+      used=c.scalar(select(func.coalesce(func.sum(AttachmentRow.document['size'].as_integer()),0)).where(AttachmentRow.document['canonical_asset_id'].as_string()==asset))
+      if used+len(data)>self.asset_quota_bytes:raise EngineeringError('ATTACHMENT_QUOTA_EXCEEDED',409)
      c.execute(AttachmentRow.__table__.insert().values(attachment_id=key,document=metadata.model_dump(mode='json')));self.audit(c,actor,key,'UPLOAD')
    except Exception:
     self.storage.discard(key);raise
@@ -96,7 +126,7 @@ class AttachmentService:
     metadata=AttachmentMetadata.model_validate(raw);self.authorize(actor,metadata.canonical_asset_id)
     if actor.principal_id!=metadata.owner_ref and not ({Role.REVIEWER,Role.ADMIN}&actor.roles):raise EngineeringError('FORBIDDEN',403)
     if metadata.scan_status!=ScanStatus.CLEAN:raise EngineeringError('ATTACHMENT_QUARANTINED',409)
-    data=self.storage.get(key)
+    data=self.storage.get_bounded(key,min(metadata.size,self.limit))
     if len(data)!=metadata.size or sha256(data).hexdigest()!=metadata.checksum:raise EngineeringError('ATTACHMENT_INTEGRITY_FAILED',409)
     self.audit(c,actor,key,'RETRIEVE');return metadata,data
   except EngineeringError:raise
