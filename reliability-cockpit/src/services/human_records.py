@@ -23,10 +23,10 @@ class ReviewedRecordService:
     review_decision_model = ReviewDecision
     extra_reviewer_actions = set()
 
-    def validate_submission(self, actor, current):
+    def validate_submission(self, actor, current, connection=None):
         pass
 
-    def validate_review(self, actor, current):
+    def validate_review(self, actor, current, connection=None):
         pass
 
     def __init__(
@@ -149,7 +149,7 @@ class ReviewedRecordService:
     def draft_data(self, actor, draft):
         return draft.model_dump(mode="json")
 
-    def extra_transition(self, actor, action, payload, current, data):
+    def extra_transition(self, actor, action, payload, current, data, connection=None):
         raise EngineeringError("INVALID_TRANSITION", 409)
 
     def command(
@@ -242,7 +242,7 @@ class ReviewedRecordService:
                 elif action == "SUBMIT":
                     if payload or current.status != CaseStatus.DRAFT:
                         raise EngineeringError("INVALID_TRANSITION", 409)
-                    data.update(self.validate_submission(actor, current) or {})
+                    data.update(self.validate_submission(actor, current, c) or {})
                     data.update(status=self.submission_status, submitted_at=now)
                 elif action == "REVIEW":
                     if (
@@ -252,7 +252,7 @@ class ReviewedRecordService:
                         or not reason.strip()
                     ):
                         raise EngineeringError("INVALID_TRANSITION", 409)
-                    self.validate_review(actor, current)
+                    self.validate_review(actor, current, c)
                     decision = self.review_decision_model(
                         reviewer=actor.principal_id,
                         decision=payload["decision"],
@@ -273,7 +273,7 @@ class ReviewedRecordService:
                     if self.kind == "INSPECTION":
                         data.update(review_started_at=None, review_started_by=None)
                 else:
-                    self.extra_transition(actor, action, payload, current, data)
+                    self.extra_transition(actor, action, payload, current, data, c)
                 if not reviewer:
                     data["contributors"] = tuple(
                         dict.fromkeys((*current.contributors, actor.principal_id))
@@ -301,15 +301,15 @@ class InspectionService(ReviewedRecordService):
     revisable_statuses = {"RETURNED", "REJECTED"}
     extra_reviewer_actions = {"BEGIN_REVIEW"}
 
-    def validate_submission(self, actor, current):
+    def validate_submission(self, actor, current, connection=None):
         if not current.measurements and not current.observations:
             raise EngineeringError("INSPECTION_EVIDENCE_REQUIRED", 422)
 
-    def validate_review(self, actor, current):
+    def validate_review(self, actor, current, connection=None):
         if current.review_started_by and current.review_started_by != actor.principal_id:
             raise EngineeringError("REVIEWER_MISMATCH", 403)
 
-    def extra_transition(self, actor, action, payload, current, data):
+    def extra_transition(self, actor, action, payload, current, data, connection=None):
         reason = payload.get("reason")
         if action != "BEGIN_REVIEW" or current.status != "SUBMITTED" or set(payload) != {"reason"} or not isinstance(reason, str) or not reason.strip() or len(reason) > 6000:
             raise EngineeringError("INVALID_TRANSITION", 409)
