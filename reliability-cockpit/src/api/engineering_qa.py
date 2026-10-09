@@ -16,6 +16,16 @@ def create_qa_app(*,authority,cases,inspections,recommendations,context,environm
  from src.api.qa_limits import QaIngressLimits
  app=FastAPI(title='NADI disposable Engineering QA',docs_url=None,redoc_url=None)
  app.add_middleware(QaIngressLimits,max_bytes=1024*1024,deadline_seconds=15)
+ from src.services.local_authentication import LocalIdentityProvider
+ from src.api.local_authentication import build_local_login_router
+ from fastapi.exceptions import RequestValidationError
+ from fastapi.responses import JSONResponse
+ @app.exception_handler(RequestValidationError)
+ async def invalid_input(request,error):
+  # FastAPI's default errors echo request inputs (possibly login passwords).
+  return JSONResponse(status_code=422,content={'detail':{'code':'INVALID_REQUEST'}})
+ if isinstance(authority.provider,LocalIdentityProvider):
+  app.include_router(build_local_login_router(authority,enabled=True))
  dep=authority.dependency()
  for router in (build_session_router(authority,enabled=True),build_router(cases,enabled=True,trusted_principal_dependency=dep),build_inspection_router(inspections,enabled=True,trusted_principal_dependency=dep),build_recommendation_router(recommendations,enabled=True,trusted_principal_dependency=dep),build_asset_context_router(context,enabled=True,trusted_principal_dependency=dep)):app.include_router(router)
  @app.get('/health/live')
