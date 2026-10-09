@@ -1,0 +1,14 @@
+# Source-free readiness image only; not an Engineering activation image.
+FROM python:3.12-slim
+ARG NADI_RELEASE_SHA
+LABEL org.opencontainers.image.revision=$NADI_RELEASE_SHA
+WORKDIR /app
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+COPY reliability-cockpit/pyproject.toml ./
+COPY reliability-cockpit/src ./src
+COPY reliability-cockpit/application-migrations ./application-migrations
+RUN pip install --no-cache-dir . && addgroup --gid 10001 app && adduser --uid 10001 --gid 10001 --disabled-password --gecos "" app
+USER 10001:10001
+ENTRYPOINT ["python", "-m", "src.qa.preflight"]
+# Git evidence absent from image must be provided via reviewed release manifest.
+# This preparation image intentionally returns NO-GO until release binding reviewed.
