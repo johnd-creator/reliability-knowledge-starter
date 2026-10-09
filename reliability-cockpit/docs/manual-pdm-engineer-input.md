@@ -1,5 +1,15 @@
 # PH2-03A — manual PdM envelope and engineer validation packet
 
+## Current requirements reconciliation — 2026-10-09
+
+The foundation is merged at main `f54643f3510bf505628a1400024784faab46e496`;
+operational field approval and UAT remain pending. Earlier candidate wording below
+records historical checkpoints. See the [engineer voice and validation register](nadi-pdm-requirements-01.md)
+for episodic measurement history, point/instrument requirements and M01–M07 backlog.
+All method-field proposals remain NOT_APPROVED / PENDING_ENGINEER_VALIDATION.
+Reported PD is unresolved; the existing DGA enum does not establish PD = DGA.
+No daily cadence, acceptance threshold or installed-sensor accuracy conclusion is approved.
+
 Candidate, isolated only. Existing application store, never Reliability Mart.
 Measurements retain original value/type/unit, nullable unknown, measured time;
 inspection/submission/record times are separate. Observations and interpretations
