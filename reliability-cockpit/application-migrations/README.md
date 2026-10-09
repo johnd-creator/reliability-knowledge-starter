@@ -15,3 +15,11 @@ prerequisite, not implemented production tooling in this bundle.
 
 
 Bundle B adds candidate `003_application_identity.sql` and `004_human_records.sql` after 002. Disposable PostgreSQL acceptance validates all three in order while retaining an existing factual application relation. The files are deliberately not idempotent raw scripts: a future reviewed checksum/ledger runner is required before operational use. No runtime migration runner/initializer mounts these tables. Proposed runtime grants: session and current human record SELECT/INSERT/UPDATE; security activity, revisions and receipts SELECT/INSERT only. Roles must not own schema/relations or gain source/Mart writer privileges. Disable/revoke candidate capabilities for rollback, preserving audit history. This is a proposal, not executed provisioning.
+
+## Local authentication candidate006
+
+006_local_authentication.sql is additive/application-only. Explicit reviewed migration
+owner applies it after backup/identity/checksum preflight; never startup, Mart or
+production during this task. Account/login-budget are mutable current state; security
+event is SELECT/INSERT-only immutable history. Local authentication is the initial QA
+choice; see ../docs/local-authentication-v1.md. No account is seeded by the migration.

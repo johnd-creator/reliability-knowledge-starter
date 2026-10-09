@@ -137,41 +137,46 @@ class SessionAuthority:
             grant = self.provider.verify_assertion(assertion)
             if not isinstance(grant, IdentityGrant):
                 raise EngineeringError("AUTHENTICATION_REQUIRED", 401)
-            grant = IdentityGrant.model_validate(grant.model_dump())
-            now = self.clock()
-            if (
-                grant.valid_until <= now
-                or not grant.principal.roles
-                or len(grant.principal.asset_ids) > 1000
-            ):
-                raise EngineeringError("AUTHENTICATION_REQUIRED", 401)
-            token, csrf = secrets.token_urlsafe(32), secrets.token_urlsafe(32)
-            with self.provider.guard(
-                grant.principal.principal_id, grant.version
-            ), self.engine.begin() as c:
-                current = self.provider.current_grant(grant.principal.principal_id)
-                if current != grant:
-                    raise EngineeringError("IDENTITY_REVOKED", 401)
-                c.execute(
-                    SessionRow.__table__.insert().values(
-                        token_hash=_hash(token),
-                        csrf_hash=_hash(csrf),
-                        subject=grant.principal.principal_id,
-                        grant_version=grant.version,
-                        created_at=now.isoformat(),
-                        last_seen_at=now.isoformat(),
-                        expires_at=min(
-                            now + timedelta(seconds=self.absolute), grant.valid_until
-                        ).isoformat(),
-                    )
-                )
-                self.audit(c, grant, SecurityAction.SESSION_ESTABLISHED, "PASS")
-            return token, csrf
+            return self.establish_verified(grant)
         except EngineeringError:
             raise
         except Exception:
             raise EngineeringError("AUTHENTICATION_UNAVAILABLE", 503) from None
 
+    def establish_verified(self, grant):
+        """Trusted server adapter handoff only; never accepts request-supplied grants."""
+        if not isinstance(grant, IdentityGrant):
+            raise EngineeringError("AUTHENTICATION_REQUIRED", 401)
+        grant = IdentityGrant.model_validate(grant.model_dump())
+        now = self.clock()
+        if (
+            grant.valid_until <= now
+            or not grant.principal.roles
+            or len(grant.principal.asset_ids) > 1000
+        ):
+            raise EngineeringError("AUTHENTICATION_REQUIRED", 401)
+        token, csrf = secrets.token_urlsafe(32), secrets.token_urlsafe(32)
+        with self.provider.guard(
+            grant.principal.principal_id, grant.version
+        ), self.engine.begin() as c:
+            current = self.provider.current_grant(grant.principal.principal_id)
+            if current != grant:
+                raise EngineeringError("IDENTITY_REVOKED", 401)
+            c.execute(
+                SessionRow.__table__.insert().values(
+                    token_hash=_hash(token),
+                    csrf_hash=_hash(csrf),
+                    subject=grant.principal.principal_id,
+                    grant_version=grant.version,
+                    created_at=now.isoformat(),
+                    last_seen_at=now.isoformat(),
+                    expires_at=min(
+                        now + timedelta(seconds=self.absolute), grant.valid_until
+                    ).isoformat(),
+                )
+            )
+            self.audit(c, grant, SecurityAction.SESSION_ESTABLISHED, "PASS")
+        return token, csrf
     def denial(self, code):
         allowed = {
             "AUTHENTICATION_REQUIRED",

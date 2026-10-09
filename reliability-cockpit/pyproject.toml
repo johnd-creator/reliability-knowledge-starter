@@ -8,6 +8,7 @@ version = "0.1.0"
 description = "Reliability Cockpit — knowledge consumer sidecar (read-only Maximo/PI sync + vendor-neutral API)"
 requires-python = ">=3.11"
 dependencies = [
+    "argon2-cffi>=25.1,<26",
     "requests>=2.32,<3.0",
     "SQLAlchemy>=2.0,<3.0",
     "psycopg[binary]>=3.1,<4.0",

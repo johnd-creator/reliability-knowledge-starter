@@ -16,8 +16,8 @@ class ApplicationMigrationTest(unittest.TestCase):
   self.runner=ApplicationMigrator(self.engine,expected_database=url.database,isolated=True)
  def tearDown(self):self.engine.dispose()
  def test_order_idempotency_preservation_and_grants(self):
-  self.assertEqual([s['status'] for s in self.runner.status()],['PENDING']*4)
-  self.assertEqual([s['status'] for s in self.runner.apply()],['APPLIED']*4)
+  self.assertEqual([s['status'] for s in self.runner.status()],['PENDING']*5)
+  self.assertEqual([s['status'] for s in self.runner.apply()],['APPLIED']*5)
   self.assertEqual(self.runner.apply(),self.runner.status())
   with self.engine.begin() as c:
    self.assertEqual(c.scalar(text('SELECT count(*) FROM legacy_fixture')),1)
