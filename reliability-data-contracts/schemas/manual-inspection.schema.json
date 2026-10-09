@@ -409,6 +409,7 @@
       "type": "array"
     },
     "method_extension": {
+      "additionalProperties": false,
       "maxProperties": 20,
       "patternProperties": {
         "^[A-Za-z][A-Za-z0-9_]{0,79}$": {

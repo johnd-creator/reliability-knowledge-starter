@@ -109,7 +109,8 @@ class InspectionDraft(EvidenceModel):
         ...,
     ] = Field(default=(), max_length=10)
     method_extension: dict[ExtensionKey, ExtensionScalar] = Field(
-        default_factory=dict, max_length=20
+        default_factory=dict, max_length=20,
+        json_schema_extra={"additionalProperties": False},
     )
 
     @field_validator("method_version", "inspector_ref")

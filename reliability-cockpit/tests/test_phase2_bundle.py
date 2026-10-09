@@ -9,6 +9,7 @@ from unittest.mock import patch
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from jsonschema import Draft202012Validator, FormatChecker
+from pydantic import ValidationError
 from sqlalchemy import create_engine, select, text, inspect
 from sqlalchemy.engine import make_url
 from src.domain.engineering import Principal, Role, EngineeringError
@@ -87,6 +88,52 @@ class BundleContractTest(unittest.TestCase):
                     )
             finally:
                 fixture.tearDown()
+
+    def test_method_extension_keys_and_values_match_domain_constraints(self):
+        fixture = manual.InspectionTest()
+        fixture.setUp()
+        try:
+            document = fixture.create().model_dump(mode="json")
+            validator = Draft202012Validator(
+                json.loads(
+                    (ROOT.parent / "reliability-data-contracts/schemas/manual-inspection.schema.json").read_text()
+                ),
+                format_checker=FormatChecker(),
+            )
+            # Preserve allowed scalar types, empty extensions and exact limits.
+            for extension in (
+                {},
+                {"sample_id": "synthetic", "value": 0, "decimal": 1.25, "flag": False, "unknown": None},
+                {"A" + "a" * 79: "x" * 2000},
+                {f"field_{i}": None for i in range(20)},
+            ):
+                with self.subTest(valid_extension=extension):
+                    candidate = {**document, "method_extension": extension}
+                    validator.validate(candidate)
+                    self.assertEqual(
+                        ManualInspection.model_validate(candidate).method_extension,
+                        extension,
+                    )
+            # Invalid keys must not bypass scalar validation via additionalProperties.
+            for extension in (
+                {"unsafe-key": 1},
+                {"unsafe-key": {"nested": "bypass"}},
+                {"": None},
+                {"1field": "invalid"},
+                {"white space": True},
+                {"A" + "a" * 80: 0},
+                {"sample_id": {"nested": "invalid"}},
+                {"sample_id": [1]},
+                {"sample_id": "x" * 2001},
+                {f"field_{i}": None for i in range(21)},
+            ):
+                with self.subTest(invalid_extension=extension):
+                    candidate = {**document, "method_extension": extension}
+                    self.assertTrue(list(validator.iter_errors(candidate)))
+                    with self.assertRaises(ValidationError):
+                        ManualInspection.model_validate(candidate)
+        finally:
+            fixture.tearDown()
 
     def test_public_routes_unmounted_and_candidate_metadata_isolated(self):
         from src.api.app import create_app
