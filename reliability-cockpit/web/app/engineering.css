@@ -62,3 +62,12 @@ button.engineering-primary {background:var(--cyan);color:var(--button-text);font
 .phase2-grid details {margin-top:12px;}
 @media(max-width:1050px){.phase2-grid {grid-template-columns:minmax(0,1fr);}}
 @media(max-width:520px){.phase2-form-row {grid-template-columns:minmax(0,1fr);}.phase2-tabs button {flex:1 1 40%;}.phase2-grid>.section-card {padding:15px;}}
+
+/* Isolated HTTP QA workbench uses the existing NADI theme and responsive fields. */
+.engineering-qa {display:grid;gap:18px;min-width:0}
+.engineering-qa label {display:block;color:var(--muted);margin:12px 0 6px;font-weight:600}
+.engineering-qa input,.engineering-qa select,.engineering-qa textarea {display:block;box-sizing:border-box;width:100%;max-width:100%;margin-top:6px;font:inherit;border:1px solid var(--line-strong);background:var(--surface-2);color:var(--text);border-radius:7px;padding:10px}
+.engineering-qa button {font:inherit;background:var(--cyan);color:var(--button-text);border:1px solid var(--line-strong);border-radius:7px;padding:9px 12px;margin:8px 8px 0 0;cursor:pointer}
+.engineering-qa button:disabled {opacity:.55;cursor:default}
+.engineering-qa h2 {margin:0 0 12px}.engineering-qa pre {font-size:13px}.engineering-qa [role=alert] {color:var(--red)}
+.engineering-qa input:focus-visible,.engineering-qa select:focus-visible,.engineering-qa textarea:focus-visible,.engineering-qa button:focus-visible {outline:2px solid var(--cyan);outline-offset:3px}

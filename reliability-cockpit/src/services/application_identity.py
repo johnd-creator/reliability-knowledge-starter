@@ -250,18 +250,33 @@ class SessionAuthority:
 
     def dependency(self):
         async def trusted(request: Request):
+            # SQL/provider leases are blocking and thread-affine. Enter and exit
+            # on one dedicated worker; never block the ASGI event loop while
+            # another request waits for the same session row or directory guard.
+            import asyncio
+            import sys
+            from concurrent.futures import ThreadPoolExecutor
+            from functools import partial
+            loop = asyncio.get_running_loop()
+            lease = self.lease(
+                request.cookies.get(self.COOKIE), method=request.method,
+                origin=request.headers.get("origin"),
+                csrf=request.headers.get("x-csrf-token"),
+                content_type=request.headers.get("content-type"),
+            )
+            executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="nadi-session")
+            entered = False
             try:
-                with self.lease(
-                    request.cookies.get(self.COOKIE),
-                    method=request.method,
-                    origin=request.headers.get("origin"),
-                    csrf=request.headers.get("x-csrf-token"),
-                    content_type=request.headers.get("content-type"),
-                ) as principal:
-                    yield principal
+                principal = await loop.run_in_executor(executor, lease.__enter__)
+                entered = True
+                yield principal
             except EngineeringError as error:
                 raise HTTPException(error.status, detail={"code": error.code}) from None
-
+            finally:
+                if entered:
+                    error = sys.exc_info()
+                    await asyncio.shield(loop.run_in_executor(executor, partial(lease.__exit__, *error)))
+                executor.shutdown(wait=True)
         return trusted
 
     def set_cookie(self, response, token):
