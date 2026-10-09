@@ -39,6 +39,21 @@ with sync_playwright() as p:
     page.get_by_label("Canonical asset",exact=True).fill(asset)
     with page.expect_response(lambda r:"asset-context" in r.url) as reply:page.get_by_role("button",name="Read asset context").click()
     assert reply.value.status==200;results.append("authorized asset context")
+    page.get_by_label("Record ID (empty to create)").fill("previous-subject-record")
+    page.get_by_label("Canonical command JSON").fill('{"private_previous_subject":"fixture"}')
+    # Only expiry is mocked. Both subjects authenticate against the real backend.
+    def expired(route):route.fulfill(status=401,content_type="application/json",body='{"detail":"UNAUTHORIZED"}')
+    page.route("**/api/engineering-qa/inspections?*",expired)
+    page.get_by_role("button",name="Load records",exact=True).click()
+    page.get_by_role("heading",name="Sign in to NADI",exact=True).wait_for()
+    assert page.locator("pre").count()==0;results.append("expiry clears prior response")
+    assert page.get_by_label("Record ID (empty to create)").input_value()==""
+    assert page.get_by_label("Canonical command JSON").input_value()=="{}"
+    results.append("expiry clears prior subject draft")
+    page.unroute("**/api/engineering-qa/inspections?*",expired)
+    login("reviewer")
+    assert page.locator("pre").count()==0;results.append("new subject cannot see prior response")
+    login("engineer")
     def command(module,record,action,body):
         page.get_by_label("Module",exact=True).select_option(module)
         page.get_by_label("Record ID (empty to create)").fill(record)
