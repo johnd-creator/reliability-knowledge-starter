@@ -14,8 +14,8 @@ MIGRATIONS={
 CURRENT={'engineering_case','nadi_application_session','nadi_human_record'}
 LEDGER='nadi_application_migration'
 class ApplicationMigrator:
-    def __init__(self,engine,*,expected_database,isolated=False):
-        self.store=ApplicationStore(engine,expected_database=expected_database,isolated=isolated)
+    def __init__(self,engine,*,expected_database,isolated=False,dedicated=False):
+        self.store=ApplicationStore(engine,expected_database=expected_database,isolated=isolated,dedicated=dedicated)
         if engine.dialect.name!='postgresql':raise EngineeringError('POSTGRESQL_REQUIRED',503)
     def _status(self,c):
         tables=set(inspect(c).get_table_names())
@@ -49,6 +49,9 @@ class ApplicationMigrator:
         # Provision an existing NOLOGIN role, never credentials or role creation.
         with self.store.engine.begin() as c:
             if any(r['status']!='APPLIED' for r in self._status(c)):raise EngineeringError('APPLICATION_SCHEMA_NOT_READY',503)
+            from src.repositories.application_access import assert_writer_capability, assert_no_public_application_grants
+            assert_writer_capability(c,role)
+            assert_no_public_application_grants(c,set().union(*MIGRATIONS.values())|{LEDGER})
             row=c.execute(text('SELECT rolcanlogin,rolsuper,rolcreatedb,rolcreaterole,rolbypassrls FROM pg_roles WHERE rolname=:role'),{'role':role}).first()
             if row is None or any(row):raise EngineeringError('APPLICATION_WRITER_ROLE_UNSAFE',503)
             if c.scalar(text('SELECT count(*) FROM pg_auth_members m JOIN pg_roles r ON r.oid=m.member WHERE r.rolname=:role'),{'role':role}):raise EngineeringError('APPLICATION_WRITER_ROLE_UNSAFE',503)
@@ -60,3 +63,6 @@ class ApplicationMigrator:
                     c.exec_driver_sql(f'REVOKE ALL ON TABLE {table} FROM {q}')
                     privileges='SELECT, INSERT, UPDATE' if table in CURRENT else 'SELECT, INSERT'
                     c.exec_driver_sql(f'GRANT {privileges} ON TABLE {table} TO {q}')
+
+            c.exec_driver_sql(f'REVOKE ALL ON TABLE {LEDGER} FROM {q}')
+            c.exec_driver_sql(f'GRANT SELECT ON TABLE {LEDGER} TO {q}')

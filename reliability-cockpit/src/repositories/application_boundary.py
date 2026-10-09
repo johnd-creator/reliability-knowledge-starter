@@ -5,7 +5,7 @@ from src.domain.engineering import EngineeringError
 
 
 class ApplicationStore:
-    def __init__(self, engine, *, expected_database: str, isolated=False):
+    def __init__(self, engine, *, expected_database: str, isolated=False, dedicated=False):
         if not expected_database or engine.dialect.name not in {"sqlite", "postgresql"}:
             raise EngineeringError("APPLICATION_STORE_IDENTITY_REQUIRED", 503)
         if engine.dialect.name == "sqlite" and not isolated:
@@ -25,7 +25,7 @@ class ApplicationStore:
                 ):
                     raise EngineeringError("APPLICATION_STORE_IDENTITY_MISMATCH", 503)
             if (
-                not isolated
+                not isolated and not dedicated
                 and not {"equipment", "work_order", "sync_cursor"} <= tables
             ):
                 raise EngineeringError("APPLICATION_SCHEMA_ANCHORS_REQUIRED", 503)
