@@ -1,5 +1,30 @@
 # NADI product roadmap — main quest
 
+## Current development checkpoint — Phase 2 Bundle C
+
+Verified main `7a846ef2c7e25306f23da99dd011e1d54aa8f4a4`, BundleB PR30–36 MERGED.
+**Phase1 CURRENT/PARTIAL; Phase2 CANDIDATE/PARTIAL; operational activation OFF.**
+Stacked C1–C7 candidates add same-asset local context/maintenance chronology,
+reviewed manual inspection evidence, case-linked recommendations and independent
+local completion verification, integrated development-only concept screens and
+trusted-session/PostgreSQL acceptance. Maximo/PI remain strictly source READ-ONLY;
+NADI recommendations never create/update/close/approve/cancel Maximo WOs.
+
+Local validation: Cockpit532 PASS (all disposable PG/Compose), Maximo181 PASS,
+contracts14 PASS/35schemas, PI180 PASS/11 isolated Timescale SKIP;100 frontend
+assertions,27 safety files,40 browser assertions, TypeScript/build/diff-check PASS.
+No production access, DB/DDL, deployment, source acquisition or Phase1 mutation.
+Enterprise identity/bootstrap, deliberate application provisioning/migration ledger,
+PdM engineer fields, secure storage and operational UI integration/UAT remain BLOCKED.
+Candidate UI is browser-memory DEMO only; no operational writer route is mounted.
+Do not mark Phase1 or Phase2 COMPLETE. Historical operational evidence, GOV03 policy
+approvals/checkpoints/expiry and accepted condition evidence are unchanged and not
+re-certified by this software task.
+[Bundle C report, stack and handoff](../reliability-cockpit/docs/nadi-phase2-bundle-c.md)
+Next: trusted enterprise bootstrap/provisioning contracts → engineer field approval
+→ operational UAT. New Maximo coverage requires separate collection authorization.
+
+
 ## Current development checkpoint — Phase 2 Bundle B
 
 Main `02e887c56057611f112b7b652ba9a9aee8b382ea`, corrected PR29 MERGED.

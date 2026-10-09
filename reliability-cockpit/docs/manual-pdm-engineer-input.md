@@ -34,7 +34,9 @@ no file fetch/upload/URL, claim of scanning or downloadable content. Actual secu
 upload, antivirus/content verification, private object ownership and retention
 are separate activation work. Metadata checksum does not prove file authenticity.
 
-Draft → IN_REVIEW → APPROVED/REJECTED; independent review excludes creator,
+Bundle C candidate: DRAFT → SUBMITTED → UNDER_REVIEW → APPROVED/RETURNED/REJECTED;
+legacy1.0 IN_REVIEW remains readable. See [inspection workflow](manual-inspection-workflow.md).
+Independent review excludes creator,
 inspector and all contributors. Revisions/CAS/receipts are transactional;
 approved snapshots persist in immutable history. Source evidence links resolve
 exactly through local catalogs; manual measurements need canonical asset identity,
