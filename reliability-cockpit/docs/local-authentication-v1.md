@@ -54,7 +54,9 @@ Secure HttpOnly SameSite=strict __Host cookie, explicit idle/absolute session po
 CSRF token in memory (GET local session resumes its stable session-bound HMAC token after navigation/reload), trusted HTTPS Origin and application/json mutations. Login
 uses strict origin/JSON protection before an authenticated session exists; no
 cross-origin form or permissive origin fallback. Existing session endpoint exposes
-only current server-authoritative directory metadata. Logout revokes the session.
+only current server-authoritative directory metadata. Logout revokes the session. Local expiry/logout/re-login clears prior-account
+responses and unsaved scoped input; pending responses from an old identity are ignored.
+Unsaved-change protection remains within an active session.
 
 Disable/reactivate, role/scope changes, password reset/change and explicit session
 revocation increment grant_version; old sessions never revive. Directory guard
@@ -112,3 +114,6 @@ Remaining: reviewed real QA startup/frontend integration, host/TLS/network, dedi
 DB/roles and least-privilege admin credential custody, session/password policy/capacity
 approval, storage/scanner, authorized account onboarding, PdM fields, backup/rollback,
 UAT and explicit deployment approval. OIDC registration is not in this list.
+
+[Final integrated acceptance and review](nadi-e-integration-02.md) records current
+test counts, the scoped UI correction and the controlled merge/activation gates.

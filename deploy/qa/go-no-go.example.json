@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
   "baseline_sha": "eda3595a9b8d86726dd0d89192ebf4657b66d27e",
-  "implementation_sha": "d3a7d43f55a619440f758ec6ef21ae6c2156422d",
-  "final_candidate": "final local-authentication integration PR exact reviewed HEAD",
+  "implementation_sha": "1ec149de2d1acd4113987364e1f96c790bfaf63e",
+  "final_candidate": "PR61 exact reviewed HEAD (resolved before operator merge authorization)",
   "pr_order": [
     51,
     52,
@@ -12,9 +12,11 @@
     56,
     57,
     58,
-    59
+    59,
+    60,
+    61
   ],
-  "preparation": "ISOLATED_FOUNDATIONS_VALIDATED",
+  "preparation": "LOCAL_AUTH_AND_DISPOSABLE_WORKFLOW_VALIDATED",
   "real_qa_readiness": "NO_GO",
   "deployment_authorized": false,
   "operator_names": {
