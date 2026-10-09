@@ -1,6 +1,6 @@
 """NADI-owned engineering proposals, never source work-order commands."""
 
-from datetime import date
+from datetime import date, datetime
 from enum import StrEnum
 from typing import Annotated, Literal
 from pydantic import Field, StrictStr, field_validator, model_validator
@@ -32,6 +32,7 @@ class FollowUpStatus(StrEnum):
     IN_PROGRESS = "IN_PROGRESS"
     COMPLETED = "COMPLETED"
     CANCELLED = "CANCELLED"
+    VERIFIED = "VERIFIED"
 
 
 class RecommendationDraft(EvidenceModel):
@@ -73,7 +74,25 @@ class RecommendationDraft(EvidenceModel):
         return self
 
 
+class ReviewedCaseLink(EvidenceModel):
+    case_id: RecordRef
+    revision: int = Field(ge=1, strict=True)
+    stable_version: StrictStr = Field(pattern=r"^[a-f0-9]{64}$")
+    reviewer: StrictStr = Field(min_length=1, max_length=160)
+    reviewed_at: datetime
+
+
+class CompletionVerification(EvidenceModel):
+    reviewer: StrictStr = Field(min_length=1, max_length=160)
+    verified_at: datetime
+    reason: StrictStr = Field(min_length=1, max_length=6000, pattern=NONBLANK_TEXT_PATTERN)
+    evidence: tuple[EvidenceReference, ...] = Field(min_length=1, max_length=20)
+    scope: Literal["NADI_LOCAL_FOLLOW_UP_ONLY"] = "NADI_LOCAL_FOLLOW_UP_ONLY"
+
+
 class Recommendation(RecommendationDraft, HumanRecord):
+    reviewed_case: ReviewedCaseLink | None = None
+    completion_verification: CompletionVerification | None = None
     supporting_evidence: tuple[EvidenceReference, ...] = Field(
         default=(), max_length=20
     )
@@ -106,6 +125,18 @@ class Recommendation(RecommendationDraft, HumanRecord):
             != self.existing_work_order_ref
         ):
             raise ValueError("exact existing WO reference required")
+        if self.reviewed_case and self.reviewed_case.case_id != self.case_ref:
+            raise ValueError("reviewed case identity mismatch")
+        if (self.follow_up_status == FollowUpStatus.VERIFIED) != (self.completion_verification is not None):
+            raise ValueError("completion verification required")
+        if self.completion_verification:
+            v = self.completion_verification
+            if v.reviewer in {self.created_by, *self.contributors, self.responsible_person_ref}:
+                raise ValueError("independent completion reviewer required")
+            if not self.created_at <= v.verified_at <= self.updated_at:
+                raise ValueError("completion chronology invalid")
+            if any(r.canonical_asset_id != self.canonical_asset_id or r.mode != "FROZEN_SNAPSHOT" for r in v.evidence):
+                raise ValueError("exact frozen completion evidence required")
         if (
             self.follow_up_status != FollowUpStatus.PROPOSED
             and self.status != CaseStatus.APPROVED

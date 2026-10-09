@@ -137,17 +137,19 @@ def build_inspection_router(service, **kwargs):
 
 def build_recommendation_router(service, **kwargs):
     from typing import Literal
-    from src.domain.recommendation import RecommendationDraft
+    from src.domain.recommendation import RecommendationDraft, EvidenceSelection
 
     followup = create_model(
         "RecommendationFollowUp",
         __base__=ReasonRequest,
         status=(Literal["PLANNED", "IN_PROGRESS", "COMPLETED", "CANCELLED"], ...),
     )
+    completion = create_model("RecommendationCompletion", __base__=ReasonRequest,
+        evidence_selections=(list[EvidenceSelection], ...))
     return build_record_router(
         service,
         prefix="/v1/engineering/recommendations",
         draft_model=RecommendationDraft,
-        extra_actions={"FOLLOWUP": followup},
+        extra_actions={"FOLLOWUP": followup, "VERIFY_COMPLETION": completion},
         **kwargs
     )
