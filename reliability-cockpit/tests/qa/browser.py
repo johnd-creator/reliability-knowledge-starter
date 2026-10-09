@@ -1,8 +1,10 @@
 """Real browser→Next proxy→fixture backend→PostgreSQL acceptance."""
-import json
+import json,os
 from pathlib import Path
 from playwright.sync_api import sync_playwright
-output=Path('/tmp/nadi-d5-browser');output.mkdir(exist_ok=True)
+output=Path(os.environ.get('NADI_QA_BROWSER_OUTPUT','/tmp/nadi-d5-browser'))
+if output.parent!=Path('/tmp') or not output.name.startswith('nadi-'):raise RuntimeError('disposable browser output only')
+output.mkdir(exist_ok=True)
 asset='asset:MAXIMO:MXASSET:BSR:IP:SYNTHETIC-A'
 # Read exact fixture identity from the canonical test definition, not inferred.
 import ast
