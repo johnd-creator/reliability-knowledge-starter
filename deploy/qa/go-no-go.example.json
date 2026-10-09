@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "baseline_sha": "eda3595a9b8d86726dd0d89192ebf4657b66d27e",
+  "implementation_sha": "d3a7d43f55a619440f758ec6ef21ae6c2156422d",
+  "final_candidate": "PR59 exact reviewed HEAD",
+  "pr_order": [
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59
+  ],
+  "preparation": "ISOLATED_FOUNDATIONS_VALIDATED",
+  "real_qa_readiness": "NO_GO",
+  "deployment_authorized": false,
+  "operator_names": {
+    "environment": "nadi-qa",
+    "database": "nadi_qa_application",
+    "owner": "nadi_qa_owner",
+    "capability": "nadi_qa_writer",
+    "runtime": "nadi_qa_runtime"
+  },
+  "required_operator_input": [
+    "host_dns_tls_network",
+    "identity_provider_registration_verifier_directory",
+    "database_role_credentials_and_onhost_audit",
+    "private_storage_scanner_retention",
+    "engineer_reviewer_admin_onboarding",
+    "pdm_method_fields_uat",
+    "reviewed_real_qa_startup_frontend_integration",
+    "exact_image_provenance",
+    "explicit_per_action_authorization"
+  ],
+  "rollback": "Disable approved QA ingress/runtime authority; preserve records/files; no Mart/source reset",
+  "production_gets": 0,
+  "production_writes": 0,
+  "real_deployments": 0
+}
