@@ -30,7 +30,7 @@ retains scoped engineering sequencing. No completion percentages are inferred.
 | UX-01 | Single Development Environment | **Development acceptance PASS** | PR62 OPEN at 0bfea1273f97ce96a08ef147b44f804aecb428d1; HTTPS3000 visible; PO/operational acceptance separate |
 | UX-02 | NADI Design System V1 | **PLANNED** | Candidate documentation exists; token/contrast/visual review and UI implementation pending |
 | UX-03 | Sidebar Information Architecture | **PLANNED** | Proposed map only; preserve existing routes; PO review pending |
-| UX-04 | Executive Overview Visual Polish | **PLANNED** | Existing factual dashboard retained; design reference missing |
+| UX-04 | Executive Overview Visual Polish | **PLANNED** | Existing factual dashboard retained; official konsep5.png AVAILABLE via FIX-02 |
 | UX-05 | Asset Health List & Detail UI | **PLANNED** | Existing factual list/detail retained; six-section target and visual acceptance pending |
 | UX-06 | PdM Center UI | **PLANNED** | Existing DEMO/inspection foundation is not new method/trend UI acceptance; PR63 gates apply |
 | UX-07 | Recommendations & Action Board UI | **PLANNED** | Local lifecycle exists; complete product UI/UAT pending |

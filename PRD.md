@@ -88,8 +88,9 @@ manual PdM inspections, NADI Engineering records and recommendations. Equipment
 identity must be exact. Broader technical equipment is not automatically registered.
 UNKNOWN means unavailable/unverified; NOT ASSESSED means no supported assessment.
 An empty WO history is not proof of no failures. No fabricated health score,
-criticality or operating status. The original reference file is currently missing;
-layout intent is recorded, visual fidelity remains unverified.
+criticality or operating status. The PO-confirmed official reference is
+[existing konsep4.png](konsep4.png), verified under FIX-02. The six-section layout
+matches the reference; implemented UI fidelity remains a separate acceptance gate.
 
 ## 6. PdM Center — FR-03
 
@@ -197,7 +198,9 @@ tests → exact tested SHA/CI → runtime observation → separately recorded PO
 IMPLEMENTED, TESTED, MERGED, VISIBLE and ACCEPTED are independent, not synonyms.
 Design approval cannot satisfy a runtime or engineering evidence gate.
 
-Open dependencies: three original screenshots; token/contrast and navigation review;
+The five [official PNG references](docs/design/references/README.md) are AVAILABLE
+and their mapping is PO-confirmed under FIX-02; no ZIP/JPG or duplicate is required.
+Open dependencies: token/contrast and navigation review;
 PR #62/#63 merge decisions; Q01–Q10 engineer validation; approved assessment semantics;
 authorized operational identity/application writer/storage/scanner provisioning;
 real engineer UAT; report definitions and product role matrix; measured performance

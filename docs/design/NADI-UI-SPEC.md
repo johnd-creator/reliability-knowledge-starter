@@ -11,13 +11,23 @@ Runtime additionally previews PR #62 at `0bfea1273f97ce96a08ef147b44f804aecb428d
 Current functionality below means bounded source/historical acceptance evidence,
 not new operational UAT. [Audit](../NADI-DOC-FOUNDATION-01.md) records provenance.
 
-Reference inputs: REF-EXEC `references/executive-overview.jpg`, REF-PDM
-`references/pdm-center.jpg`, REF-ASSET `references/asset-health-detail.jpg`.
-All three are MISSING, as recorded in the [relative reference manifest](references/README.md).
-No image embeds imply unavailable files exist. Historical
+FIX-02 reference reconciliation (2026-10-10): Product Owner confirmed the existing
+root PNGs as official references. All five are AVAILABLE and visually verified:
+
+| Reference | Official root PNG | Page |
+|---|---|---|
+| REF-EXEC | [Executive Overview — konsep5.png](../../konsep5.png) | UI-01 |
+| REF-ASSET | [Asset Health Detail — konsep4.png](../../konsep4.png) | UI-03 |
+| REF-PDM | [PdM Center — konsep3.png](../../konsep3.png) | UI-04 |
+| REF-REC | [Recommendations — konsep2.png](../../konsep2.png) | UI-06 |
+| REF-ACTION | [Action Board — konsep1.png](../../konsep1.png) | UI-07 |
+
+The [reference manifest](references/README.md) records SHA256, dimensions, size,
+provenance and visual findings. No ZIP, JPG or duplicate is required. Prior
 [concept alignment](NADI-CONCEPT-ALIGNMENT.md) and
-[Bundle C coverage](NADI-BUNDLE-C-CONCEPT-COVERAGE.md) supplement text requirements;
-they do not replace the actual new Product Owner originals.
+[Bundle C coverage](NADI-BUNDLE-C-CONCEPT-COVERAGE.md) remain historical analyses.
+Reference selection is approved by the PO; implementation fidelity and engineering
+semantics are not approved by that selection.
 
 All pages must preserve exact identity, approved factual semantics, explicit data
 scope and time basis; distinguish source facts, human records and DEMO. UNKNOWN,
@@ -56,7 +66,8 @@ No actual navigation relocation, redirect or new route is implemented by this ta
 
 - **Purpose / users:** factual portfolio orientation for Reliability Managers and
   Engineers; direct attention to evidence needing investigation.
-- **Reference design:** REF-EXEC, missing; written direction and prior concept5 analysis.
+- **Reference design:** [REF-EXEC / konsep5.png](../../konsep5.png), AVAILABLE; portfolio
+  filters, KPI cards, summary/attention panels and historical chart visually verified.
 - **Layout / components:** page context and scope filters; KPI cards; reliability
   overview; maintenance statistics; evidence-backed asset summaries; historical
   activity charts; management attention links with stated rationale.
@@ -106,8 +117,9 @@ No actual navigation relocation, redirect or new route is implemented by this ta
 
 - **Purpose / users:** one asset's factual and human evidence for Reliability,
   Maintenance and PdM Engineers and independent Reviewers.
-- **Reference design:** REF-ASSET is the agreed visual target per Product Owner task
-  text; original unavailable, so image-based comparison is PENDING.
+- **Reference design:** [REF-ASSET / konsep4.png](../../konsep4.png) is the PO-confirmed
+  official target, AVAILABLE; all six layout sections visually verified. Comparison
+  of an implemented UI against this reference remains pending.
 - **Layout sections:** (1) Asset Header with equipment identity/operating status;
   (2) Health Summary Cards with health/criticality and failure/WO indicators only
   when supported; (3) Asset Details technical information; (4) PdM Condition Summary
@@ -138,7 +150,9 @@ No actual navigation relocation, redirect or new route is implemented by this ta
 
 - **Purpose / users:** inspect measurement events, investigate findings and document
   interpretations; PdM Engineers, Reliability Engineers and Reviewers.
-- **Reference design:** REF-PDM missing; historical concept3 analysis is secondary.
+- **Reference design:** [REF-PDM / konsep3.png](../../konsep3.png), AVAILABLE; method tabs,
+  distribution/trend panels and findings table visually verified. Illustrated
+  severity/standard labels do not approve operational thresholds or methods.
 - **Layout / components:** method navigation; asset/point selectors; original value,
   unit and actual measured time; irregular-time history/trend; findings register;
   spectrum/waveform/thermogram reference viewer; interpretation/review context.
@@ -191,7 +205,8 @@ No actual navigation relocation, redirect or new route is implemented by this ta
 
 - **Purpose / users:** translate independently reviewed interpretation into an
   accountable NADI proposal; Engineers, Reviewers and Reliability Managers.
-- **Reference design:** historical concept2 analysis plus Design System; no new image.
+- **Reference design:** [REF-REC / konsep2.png](../../konsep2.png), AVAILABLE; status filters,
+  KPI cards and recommendation register visually verified; Design System applies.
 - **Layout / components:** search/status filters; local recommendation register;
   reviewed finding/case reference; rationale, responsibility/target date; review and
   follow-up history; optional existing WO reference and effectiveness evidence.
@@ -216,7 +231,9 @@ No actual navigation relocation, redirect or new route is implemented by this ta
 
 - **Purpose / users:** see pending local review and follow-up; Engineers, Reviewers,
   Maintenance Engineers and Reliability Managers.
-- **Reference design:** historical concept1 analysis and Design System; no new image.
+- **Reference design:** [REF-ACTION / konsep1.png](../../konsep1.png), AVAILABLE; attention
+  cards and two detailed tables visually verified. Illustrated risk formula and
+  decision categories remain unapproved engineering/product semantics.
 - **Layout / components:** scoped attention counts; review queue; responsible person,
   target date and local follow-up table; completion verification and outcome evidence.
 - **Navigation:** board items open exact local case/recommendation; back retains filters;

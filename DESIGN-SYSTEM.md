@@ -4,8 +4,9 @@ Updated: 2026-10-10 · UX-02 design candidate · implementation PLANNED.
 This is a proposed specification, not CSS implementation or visual acceptance.
 Product Owner direction: professional industrial reliability platform, navy sidebar,
 green active navigation, light content, white cards and clear information hierarchy.
-The three original screenshots are [unavailable](docs/design/references/README.md);
-exact visual comparison and final token approval remain pending.
+The five existing root PNGs are [official, AVAILABLE references](docs/design/references/README.md)
+confirmed by the Product Owner in FIX-02. Their visual mapping and original bytes
+are verified; implemented UI comparison and final token approval remain pending.
 
 ## Tokens
 
@@ -44,7 +45,7 @@ all-cap paragraphs and long identifiers as primary labels; allow copy/inspection
 
 Spacing scale: 4, 8, 12, 16, 24, 32, 48px. Desktop page padding 24–32px,
 mobile 16px; card padding 16–24px; grid gaps 16–24px. These are proposals rather
-than dimensions recovered from missing screenshots.
+than exact font/interaction specifications inferred from flattened screenshots.
 
 ## Shell and navigation
 

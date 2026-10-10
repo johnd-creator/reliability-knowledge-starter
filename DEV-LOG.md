@@ -164,3 +164,26 @@ Evidence: [foundation audit and reconciliation](docs/NADI-DOC-FOUNDATION-01.md),
 [reference manifest](docs/design/references/README.md),
 [official roadmap](plans/NADI-ROADMAP.md). This is documentation delivery, not
 completion of UX-02–09 implementation or operational deployment.
+
+
+## NADI-DOC-FOUNDATION-01-FIX-02 — official reference reconciliation
+
+- **Date:** 2026-10-10, Asia/Jakarta.
+- **Task ID:** NADI-DOC-FOUNDATION-01-FIX-02.
+- **Objective:** Use the PO-confirmed existing root PNGs as official references without duplication.
+- **Branch:** codex/nadi-doc-foundation-01, existing clean documentation worktree.
+- **Commit SHA:** Base `dc07ab9015b5b7214941a5739cc7765269f680e3`; this entry's introducing commit records FIX-02, with final exact HEAD in PR64.
+- **PR:** [#64](https://github.com/johnd-creator/reliability-knowledge-starter/pull/64), same PR.
+- **Implementation Status:** IMPLEMENTED documentation correction; all five reference mappings AVAILABLE, no image bytes changed or added.
+- **Test Status:** Five visual mappings, PNG signatures/chunk CRCs/decompression, dimensions, byte sizes and SHA256 verified against tracked main; documentation link/diff checks recorded in PR64 handoff.
+- **CI Status:** Previous exact-head run38006800506 SUCCESS; FIX-02 exact-head workflow is dispatched after push and linked in PR64 (workflow_dispatch may leave PR check rollup empty).
+- **Merge Status:** PR64 OPEN / UNMERGED; PR62/63 independently rechecked OPEN at unchanged heads.
+- **Development Visibility:** Documentation update only; no application/browser or runtime acceptance claimed or changed.
+- **Product Owner Acceptance:** Explicit FIX-02 approval of existing PNG references and mapping; not acceptance of implemented UI, engineering semantics or UAT.
+- **Remaining Blockers:** No image/ZIP blocker remains. Token/contrast review, implemented UI visual acceptance, engineer-validation and operational gates remain.
+- **Next Action:** Review updated PR64 and exact-head CI; use existing PNG links for later UI tasks; no automatic merge.
+
+Evidence: [official reference manifest](docs/design/references/README.md),
+[page specifications](docs/design/NADI-UI-SPEC.md). The earlier missing-JPG and
+FIX-01 ZIP requirement is superseded by the Product Owner's explicit FIX-02
+instruction; earlier log checkpoints remain unchanged.

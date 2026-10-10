@@ -20,8 +20,9 @@ the active source. No main/runtime/PR62/PR63 switch or merge is performed.
 Current phase status belongs to [the official roadmap](NADI-ROADMAP.md);
 requirements/design to [PRD](../PRD.md)/[UI spec](../docs/design/NADI-UI-SPEC.md);
 independent milestone history to [DEV-LOG](../DEV-LOG.md). Development acceptance
-is not actual engineer UAT or operational activation. Outstanding: original three
-screenshots, PO visual/token/navigation review, PR63 Q01–Q10, operational application
+is not actual engineer UAT or operational activation. FIX-02 verifies the five existing root PNGs as
+[official references](../docs/design/references/README.md); no additional images
+are required. Outstanding: PO implementation visual/token/navigation review, PR63 Q01–Q10, operational application
 provisioning/storage/security/UAT, and UNKNOWN Phase1 operator-review outcomes.
 The original Phase1 expiry and accepted factual evidence remain unchanged.
 

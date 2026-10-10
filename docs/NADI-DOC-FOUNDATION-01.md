@@ -1,5 +1,23 @@
 # NADI-DOC-FOUNDATION-01 — documentation audit and governance
 
+## FIX-02 superseding reference checkpoint — 2026-10-10
+
+The Product Owner confirms the existing root PNGs as official references:
+konsep1 Action Board, konsep2 Recommendations, konsep3 PdM Center, konsep4 Asset
+Health Detail, konsep5 Executive Overview. All five were visually inspected and
+matched to tracked main bytes; the [manifest](design/references/README.md) records
+format, size and unchanged SHA256. No ZIP/JPG or duplication is required.
+This resolves the image-availability limitation and D03 provenance gap recorded
+below. Earlier MISSING statements describe the initial foundation audit only;
+its acceptance evidence remains preserved. UI implementation acceptance, token/
+contrast review and engineer-validation gates are still separate.
+
+PR64 remains OPEN on codex/nadi-doc-foundation-01; PR62/63 were rechecked OPEN at
+the same exact heads shown below. Main remains f54643f3510bf505628a1400024784faab46e496.
+This follow-up changes documentation only; no source, runtime or database action.
+
+## Historical foundation audit (before FIX-02)
+
 Audit date: 2026-10-10, Asia/Jakarta. Scope: documentation only.
 Branch: `codex/nadi-doc-foundation-01`, separate clean worktree from verified main.
 No active checkout switch, runtime restart, source request, DB write or policy change.
