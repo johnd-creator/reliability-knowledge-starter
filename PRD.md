@@ -228,3 +228,33 @@ Operational APIs/identity/writer activation, approved method/point/comparability
 attachment custody and engineer UAT are still dependencies. UI completion grants no
 engineering approval. Commands reuse existing authorized Engineering workflows;
 there is no new Maximo action, risk metric or global login enforcement.
+
+## Engineering Advisory & Distribution — binding PO scope, 2026-10-11
+
+NADI-ENG-BUNDLE-A adds FR-11 structured Case Management (ENG-UX-01/02), FR-12
+reviewed immutable advisory publication (ADV-01), FR-13 authenticated scoped
+recipient readability/acknowledgement (ADV-02), and FR-14 existing local follow-up
+traceability (ADV-03). ADV-04 real distribution remains future gated work.
+Operations and Maintenance are audience categories, not fabricated operational
+accounts/roles. Browser inputs cannot grant roles or choose their own audience.
+
+Acceptance: exact asset access on list/detail/history/mutation; trusted server
+identity and independent version-bound review/publication; source observations,
+hypotheses, conclusion, evidence limitations and recommended follow-up remain
+separate. Idempotency, stale-revision recovery, immutable snapshots, withdrawal,
+explicit acknowledgement audit and denied-access tests must pass. In-app availability
+is not delivery; acknowledgement is not recommendation acceptance or authorization.
+Local planned/completed/independently verified follow-up never proves physical work.
+No Maximo mutation, real notification, source request, global login or operational DB
+migration is authorized. Delivery is SYNTHETIC QA pending PO/engineer UAT and rollout.
+The [official track](plans/NADI-ROADMAP.md#engineering-delivery-track--nadi-eng-bundle-a--2026-10-11)
+owns statuses and dependencies.
+
+FR-11–FR-14 implementation candidate: structured Cases, reviewed version-bound
+Advisories, QA recipient receipt and existing Recommendation/Action Board controls
+are implemented on `codex/nadi-eng-bundle-a`. The source decision requires an
+approved same-asset Case AND Recommendation. QA audience exercise policy is
+server-owned and does not represent plant organizational grants. An explicit
+QA-only schema prerequisite broadens the existing human-record constraint;
+operational migration/activation remains gated. See
+[Engineering implementation decision](reliability-cockpit/docs/nadi-eng-bundle-a.md).

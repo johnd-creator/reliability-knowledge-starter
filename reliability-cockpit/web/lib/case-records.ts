@@ -1,0 +1,7 @@
+import type {Review} from './product-records';
+export interface Investigation {observed_symptoms:string[];operating_context:string;hypotheses:string[];observations:string[];open_questions:string[];proposed_next_checks:string[];}
+export interface CaseDraft {title:string;problem_statement:string;canonical_asset_id:string;category:string;priority:string;assigned_engineer:string|null;investigation:Investigation;}
+export interface CaseRecord extends CaseDraft {case_id:string;status:string;revision:number;created_by:string;updated_at:string;review:Review|null;evidence:{reference_id:string;kind:string;record_id:string;mode:string;stable_version:string;source_timestamp:string|null;snapshot:{label:string;availability:string}|null}[];notes:{text:string;actor?:string}[];}
+export const investigationFields=['observed_symptoms','hypotheses','observations','open_questions','proposed_next_checks'] as const;
+export function emptyDraft(asset:string):CaseDraft {return {title:'',problem_statement:'',canonical_asset_id:asset,category:'INVESTIGATION',priority:'NORMAL',assigned_engineer:null,investigation:{observed_symptoms:[],operating_context:'',hypotheses:[],observations:[],open_questions:[],proposed_next_checks:[]}};}
+export function caseDraft(row:CaseRecord):CaseDraft {const {title,problem_statement,canonical_asset_id,category,priority,assigned_engineer,investigation}=row;return {title,problem_statement,canonical_asset_id,category,priority,assigned_engineer,investigation};}

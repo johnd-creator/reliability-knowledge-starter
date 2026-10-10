@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "original_containers": 35,
+  "original_record_rows_unchanged": 481,
+  "original_sessions_retained": 39,
+  "account_invariants": "separate backup comparison PASS; normal sign-in updated_at only",
+  "persistent_schema": "UNCHANGED; advisory kinds still forbidden",
+  "workbook_sha256": "aa0bd8fd22275aea3ecf8654ee37878106123b7dbdf58135fb783e853ee66a5f",
+  "image_sha256": {
+    "konsep1.png": "b204566e4fc9e07512898ceca89d4e75c420cef9defc70755c3a6543d262f666",
+    "konsep2.png": "1b3686be9700257f9eb53b1c2fe1073215d7dc09dc96487b9b547033d6f2b2ee",
+    "konsep3.png": "77270507fe975b883b9317a46b0580462fd9e06f248920722bea6f2cc8f17b60",
+    "konsep4.png": "31082400dc1a501d7924ddd7be4c7865413ae7a9c125290587a979b39f293d57",
+    "konsep5.png": "a6e57d1ca29400b8e62f372b819c3f9875f7949cae2dde1736e874f32583f1ec"
+  }
+}

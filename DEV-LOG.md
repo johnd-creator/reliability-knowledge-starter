@@ -253,3 +253,40 @@ Evidence: [implementation/self-review](reliability-cockpit/docs/nadi-ux-bundle-b
 [responsive screenshots](docs/design/ux-bundle-b/README.md),
 [official roadmap](plans/NADI-ROADMAP.md). Original images/workbook, records,
 all operational services, prior worktrees and rollback resources remain preserved.
+
+## NADI-ENG-BUNDLE-A — B0 governance/baseline — 2026-10-11
+
+- **Date:** 2026-10-11, Asia/Jakarta.
+- **Task ID:** NADI-ENG-BUNDLE-A / B0.
+- **Objective:** PO-directed Case UX and Engineering Advisory/Distribution traceability before implementation.
+- **Branch:** codex/nadi-eng-bundle-a; separate clean worktree.
+- **Commit SHA:** Base main cc90fc73bea6ae399383d8538035c6454dc7e65a; introducing governance commit in Git history.
+- **PR:** New integrated Engineering PR to be opened; PR67 remains independently OPEN.
+- **Implementation Status:** PLANNED ENG-UX-01/02, ADV-01/02/03; ADV-04 FUTURE/GATED.
+- **Test Status:** Baseline ownership/fixture/clean source verified; feature tests pending.
+- **CI Status:** PR67 exact-head backend/frontend SUCCESS; Engineering CI pending, not inferred.
+- **Merge Status:** Engineering UNMERGED.
+- **Development Visibility:** Existing PR67 preview remains at 8658c2fbd00bb78f1d8ee2b4462ccece4200a30e, clean; new work not yet visible.
+- **Product Owner Acceptance:** Binding requirement authorization from supplied NADI-ENG-BUNDLE-A task; implementation acceptance PENDING.
+- **Remaining Blockers:** Inspect eligible upstream review, storage reuse and trusted recipient policy before delivery; operational channels/UAT remain gated.
+- **Next Action:** Implement bounded authenticated SYNTHETIC QA flow and verify security/regression.
+
+Phase 2/4 PARTIAL; freshness review/checkpoint/expiry remain separate unchanged tasks.
+
+## 2026-10-11 — NADI-ENG-BUNDLE-A delivery / autonomous review
+
+Date: 2026-10-11 (Asia/Jakarta)
+Task ID: NADI-ENG-BUNDLE-A
+Objective: structured Engineering Cases and governed QA advisory recipient experience.
+Branch: codex/nadi-eng-bundle-a
+Commit SHA: implementation `2a7678d82f6f0e8769a03ca09857c59f2f37f338`; delivery docs may advance PR HEAD.
+PR: [#68](https://github.com/johnd-creator/reliability-knowledge-starter/pull/68)
+Implementation Status: IMPLEMENTED — ENG-UX-01/02, ADV-01/02/03; ADV-04 PLANNED.
+Test Status: TESTED — 161 disposable PostgreSQL backend/HTTPS tests, zero skips; frontend assertions, TypeScript/lint/build; 31 Engineering + 102 Bundle A + 129 Bundle B browser checks. Initial SQLite 97 pass/58 skip is distinct. Advisory browser fixtures are DEMO; durable backend acceptance is disposable-only.
+CI Status: backend/frontend PASS on exact implementation `2a7678d82f6f0e8769a03ca09857c59f2f37f338` ([run](https://github.com/johnd-creator/reliability-knowledge-starter/actions/runs/38072796251)); final delivery-document PR exact-head status verified independently at handoff.
+Merge Status: NOT MERGED; PR #67 remains independent OPEN.
+Development Visibility: VISIBLE Case/Recommendation/Action Board QA on HTTPS 3000. Advisory persistence/inbox BLOCKED_SCHEMA_PREREQUISITE in unchanged persistent QA store. New APIs and controls fail closed; fixture screenshots are not runtime persistence proof.
+Product Owner Acceptance: PENDING; engineer UAT/operational distribution PENDING.
+Remaining Blockers: automatic approval review denied persistent QA constraint expansion; organizational recipient identity and real distribution remain future gated.
+Next Action: explicit authorization decision for the existing QA constraint, followed by persistent advisory publication/receipt UAT; no operational activation.
+Evidence: [implementation/self-review](reliability-cockpit/docs/nadi-eng-bundle-a.md), [responsive evidence](reliability-cockpit/docs/evidence/nadi-eng-bundle-a/README.md). Official backup and rollback to `8658c2fbd00bb78f1d8ee2b4462ccece4200a30e` verified. All 35 original container IDs/start times, 481 non-account rows, 39 original sessions, three account grants/credentials, workbook and PNG hashes preserved; normal login timestamp changes are documented.

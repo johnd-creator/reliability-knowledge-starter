@@ -1,0 +1,7 @@
+import type {HumanRecord,Review} from './product-records';
+export interface AdvisoryDraft {canonical_asset_id:string;recommendation_ref:string;summary:string;finding:string;evidence_caveat:string;audiences:string[];replaces:string|null;}
+export interface Upstream {case_id:string;case_revision:number;case_sha256:string;recommendation_id:string;recommendation_revision:number;recommendation_sha256:string;case_reviewer:string;recommendation_reviewer:string;recommended_action:string;rationale:string;responsible_person_ref:string|null;responsible_team_ref:string|null;target_date:string|null;existing_work_order_ref:string|null;evidence:{kind:string;record_id:string;stable_version:string;mode:string;source_timestamp:string|null}[];}
+export interface PublishedSnapshot {record_id:string;canonical_asset_id:string;summary:string;finding:string;evidence_caveat:string;audiences:string[];replaces:string|null;created_by:string;review:Review;scope:string;upstream:Upstream;}
+export interface Publication {version:number;published_at:string;published_by:string;snapshot:PublishedSnapshot;}
+export interface Advisory extends HumanRecord,AdvisoryDraft {upstream:Upstream;publication:Publication|null;availability:string;}
+export interface InboxItem extends Publication {availability:string;current_revision:number;acknowledgement:{actor:string;updated_at:string;status:string;meaning:string}|null;follow_up_status:string;viewed_status:string;}

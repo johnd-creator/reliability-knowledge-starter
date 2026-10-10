@@ -1,5 +1,29 @@
 # NADI product roadmap — main quest
 
+## Engineering delivery track — NADI-ENG-BUNDLE-A — 2026-10-11
+
+Product Owner directive NADI-ENG-BUNDLE-A explicitly requests reviewed Engineering
+analysis usable by authorized Operations/Maintenance consumers. This extends Phase 4
+and depends on Phase 2 cases and NADI-owned recommendations; it is not permission
+for actual operational distribution. Main `cc90fc73bea6ae399383d8538035c6454dc7e65a`
+is verified. PR67 remains independently OPEN at `8658c2fbd00bb78f1d8ee2b4462ccece4200a30e`.
+
+| Phase / ID | Required capability | Current milestone | Acceptance / dependencies |
+|---|---|---|---|
+| 2 / ENG-UX-01 | Scoped case register, structured create/edit/detail | PLANNED | Existing server pagination, CaseDraft, idempotency/CAS, no raw JSON input |
+| 2 / ENG-UX-02 | Evidence, revision and independent reviewer workflow | PLANNED | Exact asset/evidence references, trusted identity, independent review/history |
+| 4 / ADV-01 | Versioned advisory draft/review/in-app QA publication | PLANNED | Reviewed immutable eligible upstream version; independent publication; audit |
+| 4 / ADV-02 | Scoped recipient inbox and explicit acknowledgement | PLANNED | Trusted server audience/asset grants; durable events; never claims delivery/work approval |
+| 4 / ADV-03 | Existing Action Board/follow-up traceability | PLANNED | Exact case/recommendation/advisory links; reuse local lifecycle, no competing tracker |
+| 4 / ADV-04 | Real channels and operational rollout | FUTURE / GATED | Approved identities/consumers, rollout authority, custody and real UAT; no external sending in this bundle |
+
+Phase 2 and Phase 4 remain PARTIAL. Planned, implemented, tested, merged, visible,
+PO accepted and operationally accepted remain independent. Isolated authenticated
+SYNTHETIC QA is the delivery boundary; no fictitious severity/health/approval.
+Phase 1 independent 72h review (11 Oct21:45:26.619585 WIB), owner checkpoint
+(12 Oct20:00 WIB) and hard expiry (13 Oct00:00 WIB) remain separate and unchanged.
+Existing Phase 0–5 and historical checkpoints below remain authoritative.
+
 ## Current product checkpoint — NADI UX Bundle B — 2026-10-10
 
 This is the **official product roadmap**. Phase 0–5 remains intact; the UX track
@@ -739,3 +763,24 @@ after software review/merge. Next: exact merged-SHA controlled deployment,
 configuration preflight and separately authorized single manual Coal Flow refresh
 plus real replay/API/UI/readiness acceptance. No recurring scheduler is enabled.
 PI_AF_KKS_LOOKUP_UNRESOLVED and BFPT freeze remain unchanged.
+
+### NADI-ENG-BUNDLE-A implementation checkpoint — 2026-10-11
+
+Evidence: [Engineering delivery report](../reliability-cockpit/docs/nadi-eng-bundle-a.md),
+[PR #68](https://github.com/johnd-creator/reliability-knowledge-starter/pull/68).
+Baseline `cc90fc73bea6ae399383d8538035c6454dc7e65a`; reviewed implementation
+`2a7678d82f6f0e8769a03ca09857c59f2f37f338`. PR #67 remains independent OPEN.
+
+| Official task | Implementation / tests | Persistent preview / acceptance |
+| --- | --- | --- |
+| ENG-UX-01 | IMPLEMENTED / TESTED: structured register/create/edit/detail, server scope/filter/pagination | VISIBLE in isolated QA; PO/engineer acceptance PENDING |
+| ENG-UX-02 | IMPLEMENTED / TESTED: frozen evidence, notes, CAS/retry, independent review, immutable history | VISIBLE in isolated QA; operational activation PENDING |
+| ADV-01 | IMPLEMENTED / TESTED in disposable PostgreSQL: approved Case + Recommendation, review/publication/withdrawal, immutable snapshots | BLOCKED_SCHEMA_PREREQUISITE in persistent QA; no DDL performed |
+| ADV-02 | IMPLEMENTED / TESTED in disposable PostgreSQL: fixed server QA audience + asset scope, durable receipt | Persistent inbox/acknowledgement BLOCKED; DEMO UI evidence only |
+| ADV-03 | IMPLEMENTED / TESTED: source links and existing Recommendation/Action Board local workflow | Local workflow VISIBLE; durable recipient handoff BLOCKED |
+| ADV-04 | PLANNED / FUTURE GATED | Real identity/distribution/UAT/operational activation NOT APPROVED |
+
+Overall bundle PARTIAL. No merge or Product Owner acceptance is inferred from
+self-review/CI. Phase 2 and Phase 4 remain PARTIAL; Phase 0–5 definitions and all
+historical evidence remain unchanged. Phase-1 independent review/checkpoint/expiry
+are still 11 Oct 21:45 / 12 Oct 20:00 / 13 Oct 00:00 WIB; this bundle changes no policy.
