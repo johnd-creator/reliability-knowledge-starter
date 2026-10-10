@@ -249,3 +249,12 @@ No Maximo mutation, real notification, source request, global login or operation
 migration is authorized. Delivery is SYNTHETIC QA pending PO/engineer UAT and rollout.
 The [official track](plans/NADI-ROADMAP.md#engineering-delivery-track--nadi-eng-bundle-a--2026-10-11)
 owns statuses and dependencies.
+
+FR-11–FR-14 implementation candidate: structured Cases, reviewed version-bound
+Advisories, QA recipient receipt and existing Recommendation/Action Board controls
+are implemented on `codex/nadi-eng-bundle-a`. The source decision requires an
+approved same-asset Case AND Recommendation. QA audience exercise policy is
+server-owned and does not represent plant organizational grants. An explicit
+QA-only schema prerequisite broadens the existing human-record constraint;
+operational migration/activation remains gated. See
+[Engineering implementation decision](reliability-cockpit/docs/nadi-eng-bundle-a.md).

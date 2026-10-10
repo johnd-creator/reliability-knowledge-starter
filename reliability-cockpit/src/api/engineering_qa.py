@@ -27,6 +27,11 @@ def create_qa_app(*,authority,cases,inspections,recommendations,context,environm
  if isinstance(authority.provider,LocalIdentityProvider):
   app.include_router(build_local_login_router(authority,enabled=True))
  dep=authority.dependency()
+ from src.services.advisory import AdvisoryService
+ from src.api.advisory import build_advisory_router, build_inbox_router
+ advisories=AdvisoryService(recommendations,enabled=True)
+ app.include_router(build_advisory_router(advisories,enabled=True,trusted_principal_dependency=dep))
+ app.include_router(build_inbox_router(advisories,enabled=True,trusted_principal_dependency=dep))
  for router in (build_session_router(authority,enabled=True,resume_csrf=isinstance(authority.provider,LocalIdentityProvider)),build_router(cases,enabled=True,trusted_principal_dependency=dep),build_inspection_router(inspections,enabled=True,trusted_principal_dependency=dep),build_recommendation_router(recommendations,enabled=True,trusted_principal_dependency=dep),build_asset_context_router(context,enabled=True,trusted_principal_dependency=dep)):app.include_router(router)
  @app.get('/health/live')
  def live():return {'status':'LIVE','scope':'DISPOSABLE_QA'}

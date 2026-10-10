@@ -403,3 +403,16 @@ Publication must bind an eligible reviewed immutable source version on the same
 asset. A read is not VIEWED/delivered without an explicit attributable event;
 acknowledgement is not plant-work approval. Real channels, operational accounts and
 activation remain gated. This specification records requirements, not completed UAT.
+
+### Engineering product route implementation checkpoint
+
+The Engineering candidate implements `/engineering/cases`,
+`/engineering/advisories` and `/engineering/inbox` as authenticated SYNTHETIC QA
+product routes. Existing `/engineering/local` diagnostics remain available.
+Case observations and hypotheses, approved recommendation content, advisory
+statement/evidence caveats, publication availability, receipt and local follow-up
+are visually distinct. Acknowledgement is receipt only. The QA audience exercise
+policy is server-owned; it does not provision organizational roles. See
+[implementation and security decisions](../../reliability-cockpit/docs/nadi-eng-bundle-a.md).
+These are implementation milestones, not merge, Product Owner visual acceptance,
+engineer UAT or operational distribution acceptance.

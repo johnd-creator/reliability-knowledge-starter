@@ -36,7 +36,7 @@ jobs:
         working-directory: reliability-cockpit
         env:
           PYTHONPATH: '.:tests'
-        run: python -m unittest test_application_identity test_identity_adapter.AdapterTest test_application_migrations test_attachments test_session_cleanup test_bundle_d_http.RealHttpQaTest test_identity_configuration test_application_access test_attachment_readiness test_qa_limits test_qa_preflight test_qa_release test_bundle_e_rehearsal test_local_authentication test_local_login_http test_live_development -v
+        run: python -m unittest test_application_identity test_identity_adapter.AdapterTest test_application_migrations test_attachments test_session_cleanup test_bundle_d_http.RealHttpQaTest test_identity_configuration test_application_access test_attachment_readiness test_qa_limits test_qa_preflight test_qa_release test_bundle_e_rehearsal test_local_authentication test_local_login_http test_live_development test_advisory.AdvisoryTest test_advisory_http.AdvisoryHttpTest test_qa_advisory_schema -v
       - name: Canonical contracts
         working-directory: reliability-data-contracts
         run: python -m unittest discover -s tests -v
@@ -53,7 +53,7 @@ jobs:
           node-version: '22'
       - run: npm ci
       - run: npm run check:engineering && npm run check:phase2 && npm run check:workflow && npm run check:http-qa && npm run check:bounded-http && npm run check:bounded-proxy && npm run check:local-auth && npm run check:product-safety
-      - run: npm run check:ux && npm run lint
+      - run: npm run check:ux && npm run check:eng-product && npm run lint
       - run: npx tsc --noEmit
       - run: npm run build
         env:

@@ -507,3 +507,14 @@ td strong { color: var(--text); font-weight: 650; }
 .asset-reference-grid .asset-facts, .product-record-detail .asset-facts { grid-template-columns:minmax(0,1fr); }
 .asset-reference-grid .asset-facts > div, .product-record-detail .asset-facts > div { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr); gap:var(--space-3); }
 .asset-reference-grid .asset-facts dd, .product-record-detail .asset-facts dd { white-space:normal; text-overflow:clip; overflow:visible; min-width:0; }
+
+/* Engineering product forms reuse Design System V1 surfaces and tokens. */
+.engineering-form { display:grid;gap:var(--space-4,16px);margin-block:20px; }
+.engineering-form fieldset { min-width:0;border:1px solid var(--line);border-radius:var(--radius);padding:16px;display:grid;gap:16px; }
+.engineering-form legend { font-weight:700;padding-inline:8px; }
+.engineering-form label { display:grid;gap:8px;font-weight:600;min-width:0; }
+.engineering-form textarea { width:100%;min-height:112px;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--text);font:inherit;resize:vertical; }
+.engineering-form input[type=checkbox] { width:20px;height:20px; }
+.engineering-actions { display:flex;gap:12px;flex-wrap:wrap;margin-block:16px; }
+.engineering-prose { white-space:pre-wrap;overflow-wrap:anywhere; }
+.product-workspace .identifier { overflow-wrap:anywhere;word-break:break-word; }
