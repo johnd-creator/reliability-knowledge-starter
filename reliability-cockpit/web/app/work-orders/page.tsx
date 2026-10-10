@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { TableFrame } from "../../components/ui";
 import { useEffect, useState } from "react";
 import { cockpitApi, type WorkOrderPage } from "../../lib/api";
 
@@ -67,7 +68,7 @@ export default function WorkOrdersPage() {
   };
 
   return (
-    <main>
+    <section className="legacy-content" aria-label="Work Orders">
       <section className="card">
         <h2>Work Orders (all equipment)</h2>
         <div className="filters" aria-label="Work order filters">
@@ -89,7 +90,7 @@ export default function WorkOrdersPage() {
           <div className="empty">Belum ada data. Jalankan <code>cockpit sync</code> terlebih dahulu.</div>
         )}
         {!loading && !error && page && page.items.length > 0 && (
-          <table>
+          <TableFrame label="Work Orders data"><table>
             <thead>
               <tr>
                 <th>ID</th>
@@ -124,7 +125,7 @@ export default function WorkOrdersPage() {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table></TableFrame>
         )}
         {!loading && !error && total > 0 && (
           <div className="pagination-bar" aria-label="Work order pagination">
@@ -158,6 +159,6 @@ export default function WorkOrdersPage() {
           </div>
         )}
       </section>
-    </main>
+    </section>
   );
 }

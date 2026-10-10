@@ -144,8 +144,8 @@ td strong { color: var(--text); font-weight: 650; }
 .legend-dot.unresolved { background: var(--amber); }
 
 /* Legacy Cockpit routes remain available while NADI becomes the canonical shell. */
-.nadi-main > main { max-width: 1100px; margin: 0 auto; }
-.nadi-main > main a { color: var(--cyan); }
+.nadi-main > .legacy-content { max-width: 1100px; margin: 0 auto; }
+.nadi-main > .legacy-content a { color: var(--cyan); }
 .card { margin-bottom: 1.5rem; padding: 1rem; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
 .card h2 { margin: 0 0 .75rem; color: var(--muted); font-size: 1rem; text-transform: uppercase; letter-spacing: .04em; }
 .error { padding: .75rem 1rem; border: 1px solid rgba(238,156,145,.28); border-radius: 8px; color: var(--red); background: rgba(238,156,145,.08); }
@@ -467,3 +467,7 @@ td strong { color: var(--text); font-weight: 650; }
 .activity-expand { align-self: flex-start; margin-top: var(--space-3); font-size: 12px; }
 .sidebar-footer strong, .sidebar-footer small { display: block; margin-top: var(--space-1); }
 .sidebar-footer small { font-size: 11px; }
+
+.pagination-bar, .pagination-controls { flex-wrap: wrap; }
+.kv dd { min-width: 0; overflow-wrap: anywhere; }
+.legacy-content { min-width: 0; }

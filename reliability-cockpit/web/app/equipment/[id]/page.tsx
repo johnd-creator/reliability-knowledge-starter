@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { TableFrame } from "../../../components/ui";
 import { use, useEffect, useState } from "react";
 import { cockpitApi, KPI_METRICS, type EquipmentView, type ReliabilityKpiView, type WorkOrderPage } from "../../../lib/api";
 
@@ -29,32 +30,32 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
 
   if (error) {
     return (
-      <main>
+      <section className="legacy-content" aria-label="Equipment context">
         <div className="error">{error}</div>
-      </main>
+      </section>
     );
   }
 
   if (equipment === null) {
     return (
-      <main>
+      <section className="legacy-content" aria-label="Equipment context">
         <div className="empty">Loading…</div>
-      </main>
+      </section>
     );
   }
 
   if (!equipment) {
     return (
-      <main>
+      <section className="legacy-content" aria-label="Equipment context">
         <div className="empty">
           Equipment not found. <Link href="/">Back to equipment list</Link>
         </div>
-      </main>
+      </section>
     );
   }
 
   return (
-    <main>
+    <section className="legacy-content" aria-label="Equipment context">
       <p>
         <Link href="/">← All equipment</Link>
       </p>
@@ -106,7 +107,7 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
         {workOrders === null && <div className="empty">Loading…</div>}
         {workOrders && workOrders.items.length === 0 && <div className="empty">No work orders for this equipment.</div>}
         {workOrders && workOrders.items.length > 0 && (
-          <table>
+          <TableFrame label="Equipment context data"><table>
             <thead>
               <tr>
                 <th>ID</th>
@@ -133,9 +134,9 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table></TableFrame>
         )}
       </section>
-    </main>
+    </section>
   );
 }

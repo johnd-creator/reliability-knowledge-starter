@@ -28,6 +28,11 @@ try {
   });
   test("unknown raw source status stays neutral", () => assert.match(render(ui.StatusBadge, { value: "UNKNOWN", mode: "raw-neutral" }), /neutral[^>]*>UNKNOWN/));
   test("raw CLOSED source status is not a health classification", () => assert.match(render(ui.StatusBadge, { value: "CLOSED", mode: "raw-neutral" }), /neutral/));
+  test("legacy pages keep one main landmark and contained tables", () => {
+    for(const path of ["app/work-orders/page.tsx", "app/equipment/[id]/page.tsx"]) {
+      const source=readFileSync(path,"utf8"); assert.ok(!source.includes("<main>")); assert.ok(source.includes("<TableFrame"));
+    }
+  });
   test("button does not submit a form accidentally", () => assert.match(render(ui.Button, { children: "Review" }), /type="button"/));
   test("breadcrumb declares exactly one current page", () => assert.equal((render(ui.Breadcrumbs, {items:[{label:"NADI"},{label:"Overview"}]}).match(/aria-current="page"/g) ?? []).length, 1));
   test("input has persistent associated label", () => assert.match(render(ui.InputControl, { id: "scope", label: "Scope" }), /for="scope"/));

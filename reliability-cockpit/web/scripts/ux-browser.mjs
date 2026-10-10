@@ -26,7 +26,8 @@ try {
     const onResponse = response => { if (response.url().includes("/api/cockpit/")) responses.push(response.status()); };
     page.on("response", onResponse);
     const response = await page.goto(base+path, {waitUntil:"networkidle"});
-    check(`render ${path}`, response.status() === 200 && await page.locator("main").isVisible());
+    check(`render ${path}`, response.status() === 200 && await page.locator("#main-content").isVisible());
+    check(`one main landmark ${path}`,await page.getByRole("main").count()===1);
     check(`factual requests ${path}`, responses.every(code => code === 200));
     check(`visible status ${path}`, (await page.getByRole("complementary",{name:"Development environment status"}).innerText()).includes(status.sha));
     page.off("response", onResponse);
@@ -35,7 +36,7 @@ try {
   if (assets.items.length) {
     const id = assets.items[0].canonical_id;
     check("asset detail deep link", (await page.goto(`${base}/assets/${encodeURIComponent(id)}`,{waitUntil:"networkidle"})).status() === 200);
-    check("asset detail exact canonical identity", (await page.locator("main").innerText()).includes(id));
+    check("asset detail exact canonical identity", (await page.locator("#main-content").innerText()).includes(id));
     check("asset detail activates Asset Health", await page.getByRole("button",{name:"Asset Health",exact:true}).getAttribute("aria-expanded") === "true");
   }
   const equipment = await (await context.request.get(`${base}/api/cockpit/equipment?limit=1`)).json();
@@ -50,6 +51,7 @@ try {
     const expected = [data.summary.registered_assets, data.summary.maintenance_activity_7d, data.summary.maintenance_activity_30d, data.summary.assets_active_30d, data.summary.maintenance_activity_90d, data.record_availability.asset_health_records].map(x => x.value.toLocaleString("id-ID"));
     check(`factual KPI values unchanged ${days}d`, JSON.stringify(values) === JSON.stringify(expected));
   }
+  if(await page.getByRole("button",{name:"System Integration",exact:true}).getAttribute("aria-expanded")==="true") await page.getByRole("button",{name:"System Integration",exact:true}).click();
   await page.getByRole("button",{name:"System Integration",exact:true}).focus();
   await page.keyboard.press("Enter");
   check("keyboard submenu expands", await page.getByRole("button",{name:"System Integration",exact:true}).getAttribute("aria-expanded") === "true");
