@@ -61,9 +61,14 @@ rows, original migrations/checksums, privileges and identities. Unexpected
 constraints fail closed. Disposable PostgreSQL tests exercise expansion, retry,
 rollback and refusal to discard new QA records.
 
-Before any persistent QA preview: use the official launcher backup, capture
-original row hashes and inspect the exact target identity. Operational DDL is
-forbidden. Schema rollback refuses while advisory records exist; do not delete
+Constraint expansion was executed only in disposable PostgreSQL tests. Automatic
+approval review rejected applying it to the persistent `nadi_live_dev_test` store,
+because the task limits migration execution to disposable QA. No persistent DDL
+was performed. The authenticated capability endpoint reports
+`BLOCKED_SCHEMA_PREREQUISITE`; advisory and inbox routers remain unmounted and
+write controls remain disabled in that preview. A separate explicit approval is
+required before changing that store. Original row hashes and an official private
+backup are retained. Operational DDL is forbidden. Schema rollback refuses while advisory records exist; do not delete
 records to force it. Frontend/API rollback to the retained previous SHA remains
 compatible with the expanded constraint because old services select their own
 record kinds. Keep the new QA records and the original private backup.

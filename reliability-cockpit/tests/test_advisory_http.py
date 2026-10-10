@@ -8,10 +8,14 @@ from src.domain.engineering import Principal, Role
 class AdvisoryHttpTest(unittest.TestCase):
     def setUp(self):
         self.fx=legacy.RealHttpQaTest(methodName='test_records_survive_connection_reopen_and_conflict')
+        original_engine=self.fx.application_engine
+        def ready_engine():
+            engine=original_engine()
+            if engine.url.database != 'nadi_application_test':raise RuntimeError('disposable CI database only')
+            change_qa_advisory_schema(engine,expected_database='nadi_application_test',acknowledgement='isolated-advisory-qa-only')
+            return engine
+        self.fx.application_engine=ready_engine
         self.fx.setUp()
-        if self.fx.engine.url.database != 'nadi_application_test':
-            raise RuntimeError('disposable CI database only')
-        change_qa_advisory_schema(self.fx.engine,expected_database='nadi_application_test',acknowledgement='isolated-advisory-qa-only')
     def tearDown(self):self.fx.tearDown()
     def published(self):
         f=self.fx
@@ -46,3 +50,17 @@ class AdvisoryHttpTest(unittest.TestCase):
         f.provider.grants['author']=grant.model_copy(update={'version':grant.version+1,'principal':Principal(principal_id='author',roles={Role.AUTHOR},asset_ids={'asset:FOREIGN'})})
         f.call('GET','inbox/'+row['record_id'],expected=401)
         f.call('GET','advisories/'+row['record_id']+'/history',expected=401)
+
+@unittest.skipUnless(os.getenv('NADI_APPLICATION_TEST_DSN'), 'disposable PostgreSQL required')
+class AdvisorySchemaGateTest(unittest.TestCase):
+    def test_original_schema_keeps_advisory_routes_disabled(self):
+        f=legacy.RealHttpQaTest(methodName='test_records_survive_connection_reopen_and_conflict')
+        f.setUp()
+        try:
+            f.client.cookies.clear()
+            self.assertEqual(f.client.request('GET','/v1/engineering/advisory-capability').status_code,401)
+            self.assertEqual(f.call('GET','advisory-capability')['persistence'],'BLOCKED_SCHEMA_PREREQUISITE')
+            f.call('GET','inbox',expected=404)
+            f.call('POST','advisories',{},expected=404)
+            self.assertEqual(f.call('GET','cases')['total'],0)
+        finally:f.tearDown()

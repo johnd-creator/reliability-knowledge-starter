@@ -30,3 +30,10 @@ def change_qa_advisory_schema(engine, *, expected_database, acknowledgement, rol
             raise EngineeringError('QA_SCHEMA_DRIFT', 503)
         c.exec_driver_sql("ALTER TABLE nadi_human_record DROP CONSTRAINT nadi_human_record_kind_check, ADD CONSTRAINT nadi_qa_advisory_kind_check CHECK(kind IN ('INSPECTION','RECOMMENDATION','ADVISORY','ADVISORY_ACK'))")
         return 'READY'
+
+
+def qa_advisory_schema_ready(engine):
+    """Read-only capability probe; never changes a constraint."""
+    with engine.connect() as c:
+        definitions = c.execute(text("SELECT pg_get_constraintdef(oid) FROM pg_constraint WHERE conrelid='nadi_human_record'::regclass AND conname='nadi_qa_advisory_kind_check' AND contype='c'")).scalars().all()
+        return len(definitions) == 1 and re.findall(r"'([^']*)'", definitions[0]) == ['INSPECTION','RECOMMENDATION','ADVISORY','ADVISORY_ACK']
