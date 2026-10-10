@@ -208,3 +208,25 @@ instruction; earlier log checkpoints remain unchanged.
 
 Evidence: [reconciliation audit](docs/NADI-DOC-FOUNDATION-01.md),
 [official roadmap](plans/NADI-ROADMAP.md), [repository status](plans/REPOSITORY-STATUS.md).
+
+
+## NADI UX Bundle A — DEV-SYNC / UX-02 / UX-03 / UX-04 / REVIEW-01
+
+- **Date:** 2026-10-10, Asia/Jakarta.
+- **Task ID:** NADI UX Bundle A.
+- **Objective:** Implement one integrated frontend foundation, compatible navigation and factual Executive Overview, then self-review and correct regressions.
+- **Branch:** codex/nadi-ux-bundle-a; isolated worktree from verified main.
+- **Commit SHA:** Main `963e7a8bf0b2a7cf62b1ee8a5661c95d62df7108`; previous serving `0bfea1273f97ce96a08ef147b44f804aecb428d1`; functional candidate `ab089a88a2a4be6cffb58857fbf30e8b56b84d3e`. Final introducing documentation/test-harness HEAD is recorded in the PR/exact runtime handoff.
+- **PR:** One integrated PR against main; final URL/checks in the task handoff.
+- **Implementation Status:** IMPLEMENTED UX-02/03/04; existing frontend/contracts preserved. Review corrections include table containment, landmarks, breadcrumb, density, development-indicator overlap and honest legacy loading/identity behavior.
+- **Test Status:** TESTED — TypeScript/scoped lint/build/safety,143 existing frontend assertions,33 new UX checks,707 backend discovered/484PASS/223 optional SKIP,105 browser checks and18 HMR/source-rollback checks. Exact public screenshots use synthetic browser fixtures.
+- **CI Status:** PENDING at this introducing entry; final exact release HEAD results are maintained in the PR check rollup and task handoff, independently of local tests/runtime visibility.
+- **Merge Status:** PR62/63/64 MERGED; Bundle A candidate remains UNMERGED pending review.
+- **Development Visibility:** VISIBLE at https://localhost:3000 through the supported source-selection launcher; accurate detached source/full SHA/dirty/backend/fixture status. Source rollback to reviewed main and re-selection preserve HTTPS session and exact old QA records.
+- **Product Owner Acceptance:** PENDING final visual, token and Engineering placement review; implementation authorization/reference selection is not UI acceptance.
+- **Remaining Blockers:** No implementation-critical finding remains; PO review/merge decision, existing engineering validation/operational activation and UNKNOWN Phase1 operator-review outcomes remain separate gates.
+- **Next Action:** Review exact-head PR/CI and visible candidate, record PO decision; no automatic merge or UX-05–09 expansion.
+
+Evidence: [Bundle A implementation/review](reliability-cockpit/docs/nadi-ux-bundle-a.md),
+[official roadmap](plans/NADI-ROADMAP.md), [development source/rollback runbook](reliability-cockpit/docs/nadi-dev-reset-01.md).
+Original images/workbook, persistent records and all operational services remain preserved.

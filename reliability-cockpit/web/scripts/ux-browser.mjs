@@ -29,6 +29,7 @@ try {
     check(`render ${path}`, response.status() === 200 && await page.locator("#main-content").isVisible());
     check(`one main landmark ${path}`,await page.getByRole("main").count()===1);
     check(`factual requests ${path}`, responses.every(code => code === 200));
+    await page.getByRole("complementary",{name:"Development environment status"}).filter({hasText:status.sha}).waitFor();
     check(`visible status ${path}`, (await page.getByRole("complementary",{name:"Development environment status"}).innerText()).includes(status.sha));
     page.off("response", onResponse);
   }

@@ -30,12 +30,12 @@ Primary frontend: **https://localhost:3000**. One address serves factual screens
 and development-only Engineering. Explicit, controlled branch previews may use
 that same address; do not create permanent parallel NADI frontends.
 
-FIX-03 verified merged main `0cb26882c870185a54282df3af4a136f31702b67`, including
-MERGED PR62 and PR63. The last recorded runtime source is
-`0bfea1273f97ce96a08ef147b44f804aecb428d1`; merging documentation does not switch
-that source. Follow the [merged development runbook](reliability-cockpit/docs/nadi-dev-reset-01.md)
-for separately authorized source selection. Current runtime visibility must be checked
-independently rather than inferred from Git merge status.
+Bundle A verified merged main `963e7a8bf0b2a7cf62b1ee8a5661c95d62df7108`,
+including PR62/63/64. The development baseline was synchronized through the existing
+launcher, then the integrated `codex/nadi-ux-bundle-a` candidate was explicitly
+selected on the same HTTPS address. Source selection uses detached HEAD; the banner
+accurately reports that state and the full serving SHA. Runtime evidence and rollback
+are recorded in the [Bundle A review](reliability-cockpit/docs/nadi-ux-bundle-a.md).
 The [audit and development runbook links](docs/NADI-DOC-FOUNDATION-01.md)
 record the verified source, secure login boundary and startup authority.
 Read the banner's full SHA, dirty state, backend availability and fixture identity
@@ -45,14 +45,14 @@ before reviewing changes. A documentation branch is not automatically visible th
 
 | Module | Verified scope / target |
 |---|---|
-| Executive Overview | Implemented factual dashboard; visual polish planned |
+| Executive Overview | Factual dashboard and Bundle A visual candidate implemented; PO acceptance pending |
 | Asset Health | Factual register/detail and assessment records exist; integrated asset workspace planned |
 | PdM Center | Synthetic concepts and inspection foundation exist; engineer-approved measurement UI planned |
 | Engineering Workspace | Merged case/review/audit foundation; persisted isolated QA visible; operational activation partial |
 | Recommendations | Merged NADI-owned lifecycle and isolated QA; final operational UI pending |
 | Action Board | Synthetic concept and local follow-up foundation; operational board pending |
 | Reports | Product module planned; no claim of a complete reporting product |
-| System Integration | Data Trust/integration evidence exists; consolidated navigation planned |
+| System Integration | Data Trust/technical navigation consolidated in Bundle A; PI/CEMS product projections remain planned |
 | Administration | Private bounded account administration exists; product administration UI planned |
 
 The [official roadmap](plans/NADI-ROADMAP.md) owns Phase 0–5 and the Product UI/UX

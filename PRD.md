@@ -207,3 +207,14 @@ authorized operational identity/application writer/storage/scanner provisioning;
 real engineer UAT; report definitions and product role matrix; measured performance
 targets; global authentication activation task. Phase 1 operator-review results are
 UNKNOWN where no result is available, with the existing expiry preserved.
+
+## Bundle A delivery checkpoint — 2026-10-10
+
+FR-01, FR-07, FR-10 and NFR-01/02/03/06 have a frontend implementation candidate
+against merged main963e7a8. [Bundle A review](reliability-cockpit/docs/nadi-ux-bundle-a.md)
+records its bounded regression and runtime evidence. FR-01 preserves the same
+Decision Overview contract and 7/30/90-day filters; query-as-of is explicitly distinct
+from source freshness. No portfolio health/risk calculation or global authentication
+activation is introduced. The sidebar exposes planned modules honestly; Engineering
+placement and actual visual acceptance require Product Owner review. UX-05–09 and
+PR63 engineer-validation gates retain their existing scope/status.

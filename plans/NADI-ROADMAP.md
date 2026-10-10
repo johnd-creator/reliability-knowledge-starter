@@ -1,10 +1,10 @@
 # NADI product roadmap — main quest
 
-## Current product checkpoint — NADI-DOC-FOUNDATION-FIX-03 — 2026-10-10
+## Current product checkpoint — NADI UX Bundle A — 2026-10-10
 
 This is the **official product roadmap**. Phase 0–5 remains intact; the UX track
-below complements it. Verified main `0cb26882c870185a54282df3af4a136f31702b67`
-contains merged Engineering PR29–61, PR62 and PR63. Their merge commits and CI are
+below complements it. Verified main `963e7a8bf0b2a7cf62b1ee8a5661c95d62df7108`
+contains merged Engineering PR29–61, PR62, PR63 and PR64. Their merge commits and CI are
 in [Repository Status](REPOSITORY-STATUS.md). Older checkpoint language below,
 including “current”, “OPEN” and the original phase table, is dated historical
 evidence and does not override this reconciliation. No runtime/PO acceptance is
@@ -28,16 +28,16 @@ retains scoped engineering sequencing. No completion percentages are inferred.
 | Task | Scope | Development status | Merge / acceptance boundary |
 |---|---|---|---|
 | UX-01 | Single Development Environment | **Development acceptance PASS** | PR62 MERGED via 72b7ec55acbb3d5d9562102c3eaf721d4dda714b; historical HTTPS3000 acceptance retained; PO/operational acceptance separate |
-| UX-02 | NADI Design System V1 | **PLANNED** | Candidate documentation exists; token/contrast/visual review and UI implementation pending |
-| UX-03 | Sidebar Information Architecture | **PLANNED** | Proposed map only; preserve existing routes; PO review pending |
-| UX-04 | Executive Overview Visual Polish | **PLANNED** | Existing factual dashboard retained; official konsep5.png AVAILABLE via FIX-02 |
+| UX-02 | NADI Design System V1 | **IMPLEMENTED / TESTED candidate** | Shared V1 tokens/primitives and scoped contrast/accessibility regression; OPEN candidate, PO acceptance pending |
+| UX-03 | Sidebar Information Architecture | **IMPLEMENTED / TESTED candidate** | Compatible product navigation, desktop collapse and modal drawer; Engineering placement/PO review pending |
+| UX-04 | Executive Overview Visual Polish | **IMPLEMENTED / TESTED candidate** | REF-EXEC hierarchy with supported facts; development review in Bundle A, final PO visual acceptance pending |
 | UX-05 | Asset Health List & Detail UI | **PLANNED** | Existing factual list/detail retained; six-section target and visual acceptance pending |
 | UX-06 | PdM Center UI | **PLANNED** | Existing DEMO/inspection foundation is not new method/trend UI acceptance; PR63 gates apply |
 | UX-07 | Recommendations & Action Board UI | **PLANNED** | Local lifecycle exists; complete product UI/UAT pending |
 | UX-08 | Global Login Page Design Only | **PLANNED** | Specification candidate; no global enforcement; existing QA gates unchanged |
 | UX-09 | UI Regression & Visual Acceptance | **PLANNED** | Actual originals, responsive/accessibility checks and separate PO decision required |
 
-UX-02/03 design review precedes visual implementation; UX-04/05 preserve accepted
+UX-02/03/04 implementation evidence is in the [Bundle A review](../reliability-cockpit/docs/nadi-ux-bundle-a.md); PO visual acceptance remains separate. UX-04/05 preserve accepted
 factual functionality. UX-06/07 depend on engineer contracts and reviewed evidence.
 UX-08 can be designed independently and grants no authentication activation.
 UX-09 evaluates exact implementation SHA and original references. A specification
@@ -50,7 +50,7 @@ owns R01–R08, Q01–Q10 and M01–M07; the preserved dated checkpoint below re
 Phase2/3 alignment. Engineer field approval, episodic measurement semantics and
 portable/DCS/PI comparability gates remain unchanged. The single frontend uses the
 [merged development runbook](../reliability-cockpit/docs/nadi-dev-reset-01.md).
-FIX-03 reconciles documentation only and grants no runtime or PdM activation.
+Bundle A selects a frontend development preview through that launcher. This grants no operational or PdM activation.
 
 [Phase1 acceptance](NADI-PHASE-1-ACCEPTANCE.md) retains its independent 24h/72h
 reviews, 12 October20:00 WIB checkpoint and **13 October2026 00:00 WIB hard expiry**.
