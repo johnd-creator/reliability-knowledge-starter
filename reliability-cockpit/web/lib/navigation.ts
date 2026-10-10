@@ -7,9 +7,9 @@ export const navigation: NavItem[] = [
     { href: "/assets", label: "Asset Register" },
     { href: "/asset-health", label: "Assessment Records" },
   ] },
-  { id: "pdm", label: "PdM Center", icon: "chart", planned: true },
-  { id: "recommendations", label: "Recommendations", icon: "idea", planned: true },
-  { id: "actions", label: "Action Board", icon: "board", planned: true },
+  { id: "pdm", href: "/pdm", label: "PdM Center", icon: "chart" },
+  { id: "recommendations", href: "/recommendations", label: "Recommendations", icon: "idea" },
+  { id: "actions", href: "/action-board", label: "Action Board", icon: "board" },
   { id: "reports", label: "Reports", icon: "report", planned: true },
   { id: "integration", label: "System Integration", icon: "integration", children: [
     { href: "/data-quality", label: "Data Trust Center" },

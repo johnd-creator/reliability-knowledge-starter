@@ -11,7 +11,7 @@ const temp = mkdtempSync(join(tmpdir(), "nadi-ux-"));
 let checks = 0;
 const test = (label, fn) => { fn(); checks++; console.log(`PASS ${label}`); };
 try {
-  const files = ["components/ui.tsx", "lib/navigation.ts", "lib/overview.ts", "components/ExecutiveOverview.tsx"].filter(existsSync);
+  const files = ["components/ui.tsx", "lib/navigation.ts", "lib/overview.ts", "lib/product-records.ts", "components/ExecutiveOverview.tsx", "components/AssetHealthSummary.tsx", "components/InspectionDetail.tsx", "components/RecommendationDetail.tsx"].filter(existsSync);
   execFileSync(process.execPath, ["node_modules/typescript/bin/tsc", ...files, "--outDir", temp, "--rootDir", ".", "--module", "commonjs", "--target", "ES2022", "--jsx", "react-jsx", "--esModuleInterop", "--skipLibCheck"], { stdio: "pipe" });
   symlinkSync(resolve("node_modules"), join(temp, "node_modules"));
   const ui = require(join(temp, "components/ui.js"));
@@ -40,6 +40,21 @@ try {
   test("button does not submit a form accidentally", () => assert.match(render(ui.Button, { children: "Review" }), /type="button"/));
   test("breadcrumb declares exactly one current page", () => assert.equal((render(ui.Breadcrumbs, {items:[{label:"NADI"},{label:"Overview"}]}).match(/aria-current="page"/g) ?? []).length, 1));
   test("input has persistent associated label", () => assert.match(render(ui.InputControl, { id: "scope", label: "Scope" }), /for="scope"/));
+  const records=require(join(temp,"lib/product-records.js"));
+  test("original measurement preserves zero false and unknown distinctly",()=>{assert.equal(records.originalValue(0),"0");assert.equal(records.originalValue(false),"false");assert.equal(records.originalValue(null),"UNKNOWN");});
+  test("page filters use exact canonical identity and local status",()=>{const row={canonical_asset_id:"asset:A",status:"APPROVED"};assert.equal(records.recordMatches(row,"asset:A","APPROVED","sample","Sample"),true);assert.equal(records.recordMatches(row,"asset:B","","",""),false);assert.equal(records.recordMatches(row,"","DRAFT","",""),false);});
+  test("page counts reconcile with only provided authorized records",()=>{assert.deepEqual(records.pageCounts([{status:"DRAFT"},{status:"APPROVED"},{status:"DRAFT"}]),{DRAFT:2,APPROVED:1});assert.deepEqual(records.pageCounts([]),{});});
+  test("record links encode identity and exclude commands",()=>{assert.equal(records.qaRecordLink("cases","case:A"),"/engineering/local?resource=cases&record=case%3AA");assert.ok(!records.validRecordId("../other"));assert.ok(records.validRecordId("inspection:1"));});
+  test("candidate methods never equate PD and DGA",()=>assert.deepEqual(records.candidateMethods.map(x=>x.id),["VIBRATION","IR_THERMOGRAPHY","MCSA","TRIBOLOGY"]));
+  const fixture=JSON.parse(readFileSync("fixtures/ux-bundle-b.json","utf8"));
+  const AssetSummary=require(join(temp,"components/AssetHealthSummary.js")).default;
+  const InspectionDetail=require(join(temp,"components/InspectionDetail.js")).default;
+  const RecommendationDetail=require(join(temp,"components/RecommendationDetail.js")).default;
+  test("asset summary renders reference sections with unsupported scores explicit",()=>{const html=render(AssetSummary,{asset:fixture.asset,context:null,maintenanceCount:null,assessmentCount:0,onMaintenance(){}});for(const name of ["Technical Details","PdM Condition Summary","Maintenance / Work Order History","Recommendations / Actions","NOT ASSESSED","UNKNOWN"])assert.ok(html.includes(name));assert.ok(html.includes("Operational recommendation linkage UNAVAILABLE"));});
+  test("inspection keeps original sample context, time, units and review separate",()=>{const html=render(InspectionDetail,{row:fixture.inspections[0]});for(const x of ["mm/s","2026-10-01T07:00:00Z","point:DEMO-DE","Observations","Engineering interpretation","Independent review","METADATA_ONLY_NOT_UPLOADED"])assert.ok(html.includes(x));assert.ok(!html.includes('href="attachment:'));});
+  test("recommendation completion never becomes verified effectiveness",()=>{const html=render(RecommendationDetail,{row:fixture.recommendations[2]});assert.ok(html.includes("NOT VERIFIED"));assert.ok(html.includes("NOT LINKED"));assert.ok(html.includes("Record review" )||html.includes("Independent record review"));});
+  test("engineering text is escaped, not rendered as executable HTML",()=>{const html=render(RecommendationDetail,{row:{...fixture.recommendations[0],rationale:'<script>alert(1)</script>'}});assert.ok(html.includes("&lt;script&gt;"));assert.ok(!html.includes("<script>"));});
+  test("production product routes cannot request isolated QA records",()=>{for(const path of ["app/pdm/page.tsx","app/recommendations/page.tsx","app/action-board/page.tsx"])assert.ok(readFileSync(path,"utf8").includes('process.env.NODE_ENV==="development"&&process.env.NADI_ENGINEERING_QA_ENABLED==="true"'));});
   const css = readFileSync("app/design-tokens.css", "utf8");
   const luminance = hex => {
     const rgb = hex.match(/\w\w/g).map(x => parseInt(x, 16) / 255).map(x => x <= .04045 ? x / 12.92 : ((x + .055) / 1.055) ** 2.4);

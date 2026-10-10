@@ -3,6 +3,7 @@
 import Link from "next/link";
 import IntegrationStatusPanel from "@/components/IntegrationStatusPanel";
 import ConditionEvidencePanel from "@/components/ConditionEvidencePanel";
+import AssetHealthSummary from "@/components/AssetHealthSummary";
 import { use, useEffect, useState } from "react";
 import {
   ApiError,
@@ -46,10 +47,10 @@ const tabs: Array<{ id: Tab; label: string }> = [
 ];
 
 interface AssetCounts {
-  maintenance: number;
-  fmea: number;
-  health: number;
-  overhaul: number;
+  maintenance: number | null;
+  fmea: number | null;
+  health: number | null;
+  overhaul: number | null;
 }
 
 function routeAssetId(parts: string[]): string {
@@ -81,18 +82,6 @@ function CopyCanonicalId({ value }: { value: string }) {
     }
   }
   return <button className="copy-button" type="button" onClick={copy}>{copied ? "Copied" : "Copy"}</button>;
-}
-
-function AssetFacts({ asset }: { asset: AssetView }) {
-  return <dl className="asset-facts">
-    <div><dt>Status</dt><dd><StatusBadge value={asset.status} mode="raw-neutral" /></dd></div>
-    <div><dt>Location</dt><dd>{asset.location_ref ?? "—"}</dd></div>
-    <div><dt>Asset type</dt><dd>{asset.asset_type ?? "—"}</dd></div>
-    <div><dt>Plant</dt><dd>{asset.plant ?? "—"}</dd></div>
-    <div><dt>Unit</dt><dd>{asset.unit ?? "—"}</dd></div>
-    <div><dt>Last source update</dt><dd>{formatDate(asset.source_updated_at)}</dd></div>
-    <div><dt>Scope</dt><dd>{asset.site_code} / {asset.organization_code}</dd></div>
-  </dl>;
 }
 
 function RecentMaintenance({ rows }: { rows: MaintenanceEventView[] }) {
@@ -153,6 +142,8 @@ export default function AssetDetailPage({ params }: { params: Promise<{ canonica
   const [detailLoading, setDetailLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [detailError, setDetailError] = useState<string | null>(null);
+  const [refresh, setRefresh] = useState(0);
+  const [contextUnavailable, setContextUnavailable] = useState(false);
   const [tab, setTab] = useState<Tab>("overview");
   const [tabOffset, setTabOffset] = useState(0);
   const [tabLoading, setTabLoading] = useState(false);
@@ -182,12 +173,13 @@ export default function AssetDetailPage({ params }: { params: Promise<{ canonica
     setNotFound(false);
     setDetailError(null);
     setDetailLoading(true);
+    setContextUnavailable(false);
     async function loadOverview() {
       try {
         const currentAsset = await reliabilityApi.asset(canonicalId);
         if (cancelled) return;
         setAsset(currentAsset);
-        const [nextContext, maintenanceCount, fmeaCount, healthCount, overhaulCount, nextLatestHealth] = await Promise.all([
+        const [nextContext, maintenanceCount, fmeaCount, healthCount, overhaulCount, nextLatestHealth] = await Promise.allSettled([
           reliabilityApi.assetContext(canonicalId),
           reliabilityApi.maintenance({ asset_ref: canonicalId, limit: 1 }),
           reliabilityApi.fmea({ asset_ref: canonicalId, limit: 1 }),
@@ -199,9 +191,10 @@ export default function AssetDetailPage({ params }: { params: Promise<{ canonica
           }),
         ]);
         if (cancelled) return;
-        setContext(nextContext);
-        setCounts({ maintenance: maintenanceCount.meta.total, fmea: fmeaCount.meta.total, health: healthCount.meta.total, overhaul: overhaulCount.meta.total });
-        setLatestHealth(nextLatestHealth);
+        setContext(nextContext.status === "fulfilled" ? nextContext.value : null);
+        setContextUnavailable(nextContext.status !== "fulfilled");
+        setCounts({ maintenance: maintenanceCount.status === "fulfilled" ? maintenanceCount.value.meta.total : null, fmea: fmeaCount.status === "fulfilled" ? fmeaCount.value.meta.total : null, health: healthCount.status === "fulfilled" ? healthCount.value.meta.total : null, overhaul: overhaulCount.status === "fulfilled" ? overhaulCount.value.meta.total : null });
+        setLatestHealth(nextLatestHealth.status === "fulfilled" ? nextLatestHealth.value : null);
       } catch (reason: unknown) {
         if (cancelled) return;
         if (reason instanceof ApiError && reason.status === 404) setNotFound(true);
@@ -212,7 +205,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ canonica
     }
     loadOverview();
     return () => { cancelled = true; };
-  }, [canonicalId]);
+  }, [canonicalId, refresh]);
 
   useEffect(() => {
     if (!asset || tab === "overview") return;
@@ -231,7 +224,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ canonica
             : reliabilityApi.overhauls({ asset_ref: canonicalId, ...page }).then((next) => { if (!cancelled) setOverhaul(next); });
     load.catch((reason: unknown) => { if (!cancelled) setTabError(errorMessage(reason)); }).finally(() => { if (!cancelled) setTabLoading(false); });
     return () => { cancelled = true; };
-  }, [asset, canonicalId, tab, tabOffset]);
+  }, [asset, canonicalId, tab, tabOffset, refresh]);
 
   function selectTab(next: Tab) {
     setTab(next);
@@ -246,20 +239,22 @@ export default function AssetDetailPage({ params }: { params: Promise<{ canonica
 
   if (detailLoading) return <><PageHeader eyebrow="Asset Reliability" title="Asset Detail" description="Memuat identitas dan konteks Reliability Mart…" actions={<Link className="text-link" href="/assets">← Back to Asset Reliability</Link>} /><LoadingState /></>;
   if (notFound) return <><PageHeader eyebrow="Asset Reliability" title="Asset not found" description="Aset yang diminta tidak ditemukan pada Reliability Mart saat ini." actions={<Link className="text-link" href="/assets">← Back to Asset Reliability</Link>} /><ErrorState message="Asset not found" /></>;
-  if (detailError || !asset) return <><PageHeader eyebrow="Asset Reliability" title="Asset Detail" description="Detail Asset tidak dapat dimuat." actions={<Link className="text-link" href="/assets">← Back to Asset Reliability</Link>} /><ErrorState message={detailError ?? "Reliability Mart unavailable"} /></>;
+  if (detailError || !asset) return <><PageHeader eyebrow="Asset Reliability" title="Asset Detail" description="Detail Asset tidak dapat dimuat." actions={<Link className="text-link" href="/assets">← Back to Asset Reliability</Link>} /><ErrorState message="Asset detail unavailable" onRetry={() => setRefresh(value => value + 1)} /></>;
 
   return <>
     <PageHeader eyebrow="Asset Reliability / Asset Detail" title={asset.source_asset_number ?? "Asset Detail"} description={asset.description ?? "Registered Asset reliability workspace"} actions={<Link className="text-link" href="/assets">← Back to Asset Reliability</Link>} />
-    <SectionCard className="asset-identity-card"><div className="asset-identity-main"><div><p className="eyebrow">Current asset identity</p><h2>{asset.source_asset_number ?? <Identifier value={asset.canonical_id} />}</h2><p className="asset-description">{asset.description ?? "No description available"}</p></div><StatusBadge value={asset.status} mode="raw-neutral" /></div><AssetFacts asset={asset} /><div className="canonical-identity"><span><small>Technical Asset reference</small><Identifier value={asset.canonical_id} /></span><CopyCanonicalId value={asset.canonical_id} /></div></SectionCard>
-    <nav className="asset-tabs" aria-label="Asset workspace tabs">{tabs.map((item) => <button key={item.id} type="button" className={tab === item.id ? "asset-tab active" : "asset-tab"} onClick={() => selectTab(item.id)}>{item.label}</button>)}</nav>
+    <SectionCard className="asset-identity-card"><div className="asset-identity-main"><div><p className="eyebrow">Current asset identity</p><h2>{asset.source_asset_number ?? <Identifier value={asset.canonical_id} />}</h2><p className="asset-description">{asset.description ?? "No description available"}</p></div><StatusBadge value={asset.status} mode="raw-neutral" /></div><div className="canonical-identity"><span><small>Technical Asset reference</small><Identifier value={asset.canonical_id} /></span><CopyCanonicalId value={asset.canonical_id} /></div></SectionCard>
+    <nav className="asset-tabs" aria-label="Asset workspace tabs">{tabs.map((item) => <button key={item.id} type="button" aria-current={tab === item.id ? "page" : undefined} className={tab === item.id ? "asset-tab active" : "asset-tab"} onClick={() => selectTab(item.id)}>{item.label}</button>)}</nav>
 
-    {tab === "overview" && context && counts && <>
+    {tab === "overview" && <><AssetHealthSummary asset={asset} context={context} maintenanceCount={counts?.maintenance ?? null} assessmentCount={counts?.health ?? null} onMaintenance={() => selectTab("maintenance")} /><ConditionEvidencePanel canonicalId={canonicalId}/></>}
+    {tab === "overview" && contextUnavailable && <ErrorState message="Additional asset context unavailable" onRetry={() => setRefresh(value => value + 1)} />}
+    {tab === "overview" && context && counts && <details className="section-card advanced-evidence"><summary>Additional factual evidence — FMEA, assessments, overhaul and integration</summary>
       <section className="stat-grid asset-stat-grid"><StatCard label="Maintenance Events" value={formatNumber(counts.maintenance)} detail="Asset-scoped Mart total" tone="accent" /><StatCard label="FMEA Assessments" value={formatNumber(counts.fmea)} detail="Asset-scoped Mart total" /><StatCard label="Asset Health" value={formatNumber(counts.health)} detail="Asset-scoped Mart total" /><StatCard label="Overhauls" value={formatNumber(counts.overhaul)} detail="Resolved Asset relationship" tone="muted" /></section>
       <div className="asset-overview-grid"><SectionCard><div className="section-heading"><div><p className="eyebrow">Recent context</p><h2>Recent Maintenance</h2></div><button className="text-link-button" onClick={() => selectTab("maintenance")}>View all →</button></div><RecentMaintenance rows={context.maintenance} /></SectionCard><SectionCard><div className="section-heading"><div><p className="eyebrow">Recent context</p><h2>Recent FMEA</h2></div><button className="text-link-button" onClick={() => selectTab("fmea")}>View all →</button></div><RecentFmea rows={context.fmea} /></SectionCard><SectionCard><div className="section-heading"><div><p className="eyebrow">Recent context</p><h2>Recent Asset Health</h2></div><button className="text-link-button" onClick={() => selectTab("health")}>View all →</button></div><RecentHealth rows={context.health} /></SectionCard><SectionCard><div className="section-heading"><div><p className="eyebrow">Recent context</p><h2>Recent Overhaul</h2></div><button className="text-link-button" onClick={() => selectTab("overhaul")}>View all →</button></div><RecentOverhaul rows={context.overhauls} /></SectionCard></div>
-      <ConditionEvidencePanel canonicalId={canonicalId} /><IntegrationStatusPanel canonicalId={canonicalId} />
+      <IntegrationStatusPanel canonicalId={canonicalId} />
       <div className="asset-bottom-grid"><SectionCard><div className="section-heading"><div><p className="eyebrow">Latest available evidence</p><h2>Latest Asset Health</h2></div></div>{latestHealth ? <div className="latest-health"><span className="status-badge neutral">{latestHealth.lifecycle_status ?? "UNKNOWN"}</span><strong>{latestHealth.source_record_id ?? "Asset Health assessment"}</strong><p>{latestHealth.description ?? latestHealth.function_description ?? "No description available"}</p><small>Revision {latestHealth.revision ?? "—"} · Assessment record date {formatDate(latestHealth.assessment_record_date ?? latestHealth.source_updated_at ?? latestHealth.status_changed_at)} · {latestHealth.assessment_age_days == null ? "Age unavailable" : `${latestHealth.assessment_age_days.toFixed(0)} days since record`}</small></div> : <EmptyState title="No Asset Health assessment available in the current Mart data." />}</SectionCard><SectionCard><div className="section-heading"><div><p className="eyebrow">Relationship boundary</p><h2>Reference health</h2></div></div><div className="neutral-note"><span className="state-symbol">i</span>RCFA relationship is not mapped in Contract v1.</div><p className="section-note">Mart Reference Health: {context.relationship_health.asset_refs_resolved} of {context.relationship_health.asset_refs_total} Asset references resolved. This is a Mart-level aggregate, not an Asset health score.</p></SectionCard></div>
-    </>}
+    </details>}
 
-    {tab !== "overview" && <SectionCard className="data-section asset-tab-panel"><div className="section-heading"><div><p className="eyebrow">Asset-scoped reliability records</p><h2>{tabs.find((item) => item.id === tab)?.label}</h2></div><span className="dataset-badge compact">Controlled Mart population</span></div>{tabLoading && <LoadingState />}{!tabLoading && tabError && <ErrorState message={tabError} />}{!tabLoading && !tabError && tab === "timeline" && timeline && <TimelinePanel page={timeline} onChange={changeTabPage} />}{!tabLoading && !tabError && tab === "maintenance" && maintenance && <MaintenancePanel page={maintenance} onChange={changeTabPage} />}{!tabLoading && !tabError && tab === "fmea" && fmea && <FmeaPanel page={fmea} onChange={changeTabPage} />}{!tabLoading && !tabError && tab === "health" && health && <HealthPanel page={health} onChange={changeTabPage} />}{!tabLoading && !tabError && tab === "overhaul" && overhaul && <OverhaulPanel page={overhaul} onChange={changeTabPage} />}</SectionCard>}
+    {tab !== "overview" && <SectionCard className="data-section asset-tab-panel"><div className="section-heading"><div><p className="eyebrow">Asset-scoped reliability records</p><h2>{tabs.find((item) => item.id === tab)?.label}</h2></div><span className="dataset-badge compact">Controlled Mart population</span></div>{tabLoading && <LoadingState />}{!tabLoading && tabError && <ErrorState message="Asset records unavailable" onRetry={() => setRefresh(value => value + 1)} />}{!tabLoading && !tabError && tab === "timeline" && timeline && <TimelinePanel page={timeline} onChange={changeTabPage} />}{!tabLoading && !tabError && tab === "maintenance" && maintenance && <MaintenancePanel page={maintenance} onChange={changeTabPage} />}{!tabLoading && !tabError && tab === "fmea" && fmea && <FmeaPanel page={fmea} onChange={changeTabPage} />}{!tabLoading && !tabError && tab === "health" && health && <HealthPanel page={health} onChange={changeTabPage} />}{!tabLoading && !tabError && tab === "overhaul" && overhaul && <OverhaulPanel page={overhaul} onChange={changeTabPage} />}</SectionCard>}
   </>;
 }

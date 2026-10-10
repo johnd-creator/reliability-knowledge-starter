@@ -364,3 +364,26 @@ shows existing weekly event counts with an accessible full-period table. No sear
 unit selector, alert feed or healthy/warning/critical distribution is fabricated.
 UI-02–11 functional scope is unchanged except shared shell/primitives and legacy
 semantic/scroll fixes. The original five reference PNGs retain their SHA256/provenance.
+
+## Bundle B implementation checkpoint — 2026-10-10
+
+Baseline main160737b includes MERGED PR65. [Bundle B review and responsive evidence](../../reliability-cockpit/docs/nadi-ux-bundle-b.md) implements UI-02/03/04/06/07 using
+REF-ASSET, REF-PDM, REF-REC and REF-ACTION. `/assets`, canonical detail and
+`/asset-health` remain factual. `/pdm`, `/recommendations`, `/action-board` are
+working product layouts with server-gated authenticated QA reads only in development.
+Outside that gate they disclose unavailable operational integration and request no QA
+records. Candidate method controls are not operational-method approval.
+
+Asset detail follows six sections; legacy tabs and governed PI Condition Evidence
+remain. PdM exposes original episodic sample/unit/time/point, observations,
+interpretations, review and metadata-only references; comparability/trends and
+attachment custody remain gated. Recommendations expose exact local state, case,
+provenance/history and responsibility; Action Board counts only filtered authorized
+page records. Existing controlled commands remain in the original Engineering
+workspace with server revision/independence/CSRF checks. No new product-page write
+control, Maximo mutation, risk ranking or global authentication policy is introduced.
+
+Known reference deviations are deliberate: no illustrative health scores, risk
+colors/formula, diagnosis thresholds, interpolated trend or execution/budget
+categories. Operational readiness, Q01–Q10 validation, PO visual approval and UX-09
+acceptance remain separate pending gates. Original PNG assets/hashes are unchanged.

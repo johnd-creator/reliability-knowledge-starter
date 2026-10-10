@@ -218,3 +218,13 @@ from source freshness. No portfolio health/risk calculation or global authentica
 activation is introduced. The sidebar exposes planned modules honestly; Engineering
 placement and actual visual acceptance require Product Owner review. UX-05–09 and
 PR63 engineer-validation gates retain their existing scope/status.
+
+## Bundle B delivery checkpoint — 2026-10-10
+
+FR-02/03/05 now have a [Bundle B frontend implementation candidate](reliability-cockpit/docs/nadi-ux-bundle-b.md) on main160737b / MERGED PR65. Asset identity and factual
+APIs remain unchanged. The working PdM, Recommendation and Action Board surfaces
+reuse authenticated isolated QA contracts; their data is explicitly SYNTHETIC.
+Operational APIs/identity/writer activation, approved method/point/comparability,
+attachment custody and engineer UAT are still dependencies. UI completion grants no
+engineering approval. Commands reuse existing authorized Engineering workflows;
+there is no new Maximo action, risk metric or global login enforcement.

@@ -180,3 +180,15 @@ explicitly synthetic screenshots. Optional `NADI_QA_ACCOUNT_FILE` and
 The script does not create/reset a database or run source collection. Exact source
 SHA comes from the actual development status endpoint; detached source is reported
 accurately rather than inventing a branch name.
+
+## Bundle B preview — 2026-10-10
+
+PR65 is MERGED into main160737b. Bundle B uses the same backup → stop → switch →
+start sequence above with explicit `codex/nadi-ux-bundle-b`. Verify full source,
+backend and launch SHA, clean state and existing fixture after selecting the tested
+commit. No controller/configuration/schema/dependency migration is required. Read
+[Bundle B source/rollback evidence](nadi-ux-bundle-b.md). Original main, Bundle A
+source/worktree, private fixture backups and operational container rollback remain.
+Browser checks: `web/scripts/ux-bundle-b-browser.mjs`, with the same private account,
+Playwright and output variables as Bundle A. Synthetic screenshots use isolated
+response interception and a DEMO fixture identity; actual preview status remains real.
