@@ -22,5 +22,6 @@ try{
  check('all new routes require development plus QA opt-in',()=>{for(const x of ['cases','advisories','inbox'])assert.ok(readFileSync('app/engineering/'+x+'/page.tsx','utf8').includes("process.env.NODE_ENV==='development'&&process.env.NADI_ENGINEERING_QA_ENABLED==='true'"));});
  check('failed intent retains idempotency ID and has no browser storage',()=>{const s=readFileSync('components/useQaCommand.ts','utf8');assert.ok(s.includes('pending.current?.key!==key'));assert.ok(s.includes('request_id:pending.current.id'));assert.ok(!/localStorage|sessionStorage/.test(s));assert.ok(s.includes('e.status===409'));});
  check('advisory recipient has no external channel or attachment download',()=>{const s=readFileSync('components/AdvisoryWorkspace.tsx','utf8');assert.ok(s.includes('Acknowledge receipt only'));assert.ok(!/mailto:|tel:|whatsapp|dangerouslySetInnerHTML|download=/.test(s));assert.ok(s.includes("item.availability!=='IN_APP_QA_AVAILABLE'"));});
+ check('full provenance hashes are not ellipsized in product workspaces',()=>{const css=readFileSync('app/globals.css','utf8');assert.ok(css.includes('white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere'));});
  console.log('Engineering product UI checks passed: '+count);
 }finally{rmSync(temp,{recursive:true,force:true});}

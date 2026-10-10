@@ -517,4 +517,4 @@ td strong { color: var(--text); font-weight: 650; }
 .engineering-form input[type=checkbox] { width:20px;height:20px; }
 .engineering-actions { display:flex;gap:12px;flex-wrap:wrap;margin-block:16px; }
 .engineering-prose { white-space:pre-wrap;overflow-wrap:anywhere; }
-.product-workspace .identifier { overflow-wrap:anywhere;word-break:break-word; }
+.product-workspace .identifier { max-width:100%;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;word-break:break-word; }
