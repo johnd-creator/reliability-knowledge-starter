@@ -1,14 +1,17 @@
 "use client";
-import {FormEvent,useState} from "react";
+import {FormEvent,useEffect,useId,useRef,useState} from "react";
 import {useRouter} from "next/navigation";
 import {engineeringRequest,EngineeringHttpError} from "../lib/engineering-http";
-import {SectionCard} from "./ui";
+import {Button,SectionCard} from "./ui";
 
 type Session = {subject:string;roles:string[];asset_ids:string[];csrf_token:string};
 export default function LocalLogin({onAuthenticated,expired=false}:{onAuthenticated?:(who:Session)=>void;expired?:boolean}) {
  const router=useRouter();
+ const id=useId(),errorRef=useRef<HTMLParagraphElement>(null);
+ const usernameId=id+"-username",passwordId=id+"-password",newPasswordId=id+"-new-password",helpId=id+"-help",errorId=id+"-error";
  const [username,setUsername]=useState(""),[password,setPassword]=useState(""),[newPassword,setNewPassword]=useState("");
  const [show,setShow]=useState(false),[change,setChange]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState("");
+ useEffect(()=>{if(error)errorRef.current?.focus();},[error]);
  async function submit(event:FormEvent<HTMLFormElement>){
   event.preventDefault();if(busy)return;setBusy(true);setError("");
   try {
@@ -27,14 +30,23 @@ export default function LocalLogin({onAuthenticated,expired=false}:{onAuthentica
    else setError("Sign-in is unavailable. Try later.");
   }finally{setBusy(false);}
  }
- return <SectionCard><div className="nadi-local-login"><h2>Sign in to NADI</h2>
- <p>Local authentication · development / disposable QA. Access is assigned by an authorized administrator.</p>
- {expired&&<p role="status">Your session expired or was revoked. Sign in again.</p>}
- <form onSubmit={submit} aria-busy={busy}>
- <label htmlFor="nadi-login-username">Username</label><input id="nadi-login-username" name="username" autoComplete="username" maxLength={64} required value={username} onChange={e=>setUsername(e.target.value)} disabled={busy}/>
- <label htmlFor="nadi-login-password">Password</label><div className="nadi-password-field"><input id="nadi-login-password" name="password" type={show?"text":"password"} autoComplete="current-password" maxLength={256} required value={password} onChange={e=>setPassword(e.target.value)} disabled={busy}/>
- <button type="button" aria-controls="nadi-login-password" aria-pressed={show} onClick={()=>setShow(!show)}>{show?"Hide password":"Show password"}</button></div>
- {change&&<><label htmlFor="nadi-login-new-password">New password</label><input id="nadi-login-new-password" type="password" autoComplete="new-password" maxLength={256} required value={newPassword} onChange={e=>setNewPassword(e.target.value)} disabled={busy}/></>}
- {error&&<p role="alert">{error}</p>}<button type="submit" disabled={busy||!username||!password||(change&&!newPassword)}>{busy?"Signing in…":change?"Change password and sign in":"Sign in"}</button>
- </form><p>No self-registration. Contact the approved operator for account or access changes.</p></div></SectionCard>;
+ return <SectionCard className="login-card"><div className="nadi-local-login">
+  <p className="eyebrow">WELCOME TO NADI</p><h2>Sign in to NADI</h2>
+  <p className="login-introduction">Use your assigned account to access isolated Engineering QA.</p>
+  {expired&&<p className="feedback login-expired" role="status">Your session expired or was revoked. Sign in again.</p>}
+  <form onSubmit={submit} aria-label="NADI sign-in" aria-busy={busy} aria-describedby={error?`${helpId} ${errorId}`:helpId}>
+    <p id={helpId} className="login-form-help">Username and password are required.</p>
+    <div className="login-field"><label htmlFor={usernameId}>Username <span aria-hidden="true">*</span></label>
+      <input className="input-control" id={usernameId} name="username" autoComplete="username" maxLength={64} required value={username} onChange={e=>setUsername(e.target.value)} disabled={busy}/></div>
+    <div className="login-field"><label htmlFor={passwordId}>Password <span aria-hidden="true">*</span></label>
+      <div className="nadi-password-field"><input className="input-control" id={passwordId} name="password" type={show?"text":"password"} autoComplete="current-password" maxLength={256} required value={password} onChange={e=>setPassword(e.target.value)} disabled={busy}/>
+        <Button aria-controls={passwordId} aria-pressed={show} disabled={busy} onClick={()=>setShow(!show)}>{show?"Hide password":"Show password"}</Button></div></div>
+    {change&&<div className="login-field"><label htmlFor={newPasswordId}>New password <span aria-hidden="true">*</span></label>
+      <input className="input-control" id={newPasswordId} type="password" autoComplete="new-password" maxLength={256} required value={newPassword} onChange={e=>setNewPassword(e.target.value)} disabled={busy}/></div>}
+    {error&&<p className="feedback error login-feedback" id={errorId} role="alert" tabIndex={-1} ref={errorRef}>{error}</p>}
+    <Button className="login-submit" type="submit" variant="primary" disabled={busy||!username||!password||(change&&!newPassword)}>{busy?<><span className="spinner" aria-hidden="true"/>Signing in…</>:change?"Change password and sign in":"Sign in"}</Button>
+    {busy&&<p className="sr-only" role="status">Signing in. Please wait.</p>}
+  </form>
+  <p className="login-account-help">No self-registration. Contact the approved operator for account or access changes.</p>
+ </div></SectionCard>;
 }
