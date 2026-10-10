@@ -852,3 +852,23 @@ PR #67 remains OPEN/independent; no production or source activation, engineering
 UAT, PO acceptance or operational delivery is claimed. The single frontend remains
 HTTPS 3000 under the existing launcher. All collectors, operational APIs/stores,
 original PNGs and workbook are preserved. Phase 2/4 remain PARTIAL.
+
+## Persistent Engineering QA authorization — verified 2026-10-11
+
+[FIX-01](../reliability-cockpit/docs/nadi-eng-bundle-a-fix-01.md) supersedes the
+schema blocker in the historical delivery above. PO-authorized existing QA-only
+CHECK expansion is complete; B2/B3/B4 now persistent SYNTHETIC QA PASS, with
+51 real-browser assertions and verified DB audit/preservation. Three original QA
+records, all51 original sessions, account invariants, ledger and operational
+containers are retained. Both private backups restored into temporary clones.
+
+Main remains `cc90fc73bea6ae399383d8538035c6454dc7e65a`; the clean HTTPS3000
+serving/backend/launch SHA remains `01434fb26a29ba726fe59f663ca96d95bfd43c01`.
+Only the QA API was reloaded through the official controller; primary frontend
+process was not restarted. This update adds test/evidence/docs to PR #68 without
+application-source changes; final delivery HEAD/CI is independently checked in
+[PR #68](https://github.com/johnd-creator/reliability-knowledge-starter/pull/68).
+PR #67 remains independently OPEN. Neither PR is merged by this task.
+Operational/UAT/real recipient/external delivery gates remain pending; Phase2/4
+PARTIAL and Phase1 deadlines remain unchanged. This is Persistent QA Acceptance,
+not Production Acceptance.

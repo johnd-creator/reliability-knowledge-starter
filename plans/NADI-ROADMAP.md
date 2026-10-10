@@ -784,3 +784,25 @@ Overall bundle PARTIAL. No merge or Product Owner acceptance is inferred from
 self-review/CI. Phase 2 and Phase 4 remain PARTIAL; Phase 0–5 definitions and all
 historical evidence remain unchanged. Phase-1 independent review/checkpoint/expiry
 are still 11 Oct 21:45 / 12 Oct 20:00 / 13 Oct 00:00 WIB; this bundle changes no policy.
+
+### NADI-ENG-BUNDLE-A-FIX-01 — persistent QA checkpoint — 2026-10-11
+
+This supersedes only the earlier persistent-schema blocker; the historical
+checkpoint above remains accurate for its original execution. The PO authorized
+narrow QA-only DDL on existing `nadi_live_dev_test`; operational scope is unchanged.
+Evidence: [FIX-01 report](../reliability-cockpit/docs/nadi-eng-bundle-a-fix-01.md),
+[actual persistent QA screenshots/results](../reliability-cockpit/docs/evidence/nadi-eng-bundle-a-fix-01/README.md),
+[unmerged PR #68](https://github.com/johnd-creator/reliability-knowledge-starter/pull/68).
+
+| Official task | Current development gate | Separate acceptance gate |
+| --- | --- | --- |
+| ENG-UX-01/02 | VISIBLE / TESTED, original Case workflow preserved | Actual engineer UAT and PO review PENDING |
+| ADV-01 / B2 | PERSISTENT SYNTHETIC QA PASS; independently reviewed publication and preserved withdrawal | Operational distribution NOT APPROVED |
+| ADV-02 / B3 | PERSISTENT SYNTHETIC QA PASS; trusted QA recipient, durable ACK, reload/reconnect, security rejection | Real organizational recipients/privileges PENDING |
+| ADV-03 / B4 | QA PASS; existing local Action Board plus version-bound recipient handoff | Physical completion/effectiveness/UAT remain separate |
+| ADV-04 | FUTURE / GATED | No email/push/operational activation authorized |
+
+The original Phase0–5 roadmap, Phase2/4 PARTIAL, PdM engineer-validation gates and
+Phase1 review/checkpoint/expiry are unchanged. QA execution PASS does not infer
+merge, PO visual acceptance, real engineer UAT or production acceptance. PR #67
+remains independent OPEN. No new roadmap phase or deadline extension.

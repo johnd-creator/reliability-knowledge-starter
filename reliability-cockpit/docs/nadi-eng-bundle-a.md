@@ -1,5 +1,9 @@
 # NADI-ENG-BUNDLE-A — Engineering Case Management & Advisory Distribution
 
+Current persistent QA status: **FIX-01 PASS** after explicit PO authorization.
+See [the FIX-01 checkpoint](nadi-eng-bundle-a-fix-01.md). The earlier blocked
+delivery below is retained as historical evidence.
+
 Scope: authenticated **SYNTHETIC QA only**. Operational distribution, engineer UAT,
 plant instructions and external notification remain pending. Phase 2 and Phase 4
 remain PARTIAL. PR #67 login polish is independent and is not included or merged.

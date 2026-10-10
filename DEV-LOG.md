@@ -290,3 +290,21 @@ Product Owner Acceptance: PENDING; engineer UAT/operational distribution PENDING
 Remaining Blockers: automatic approval review denied persistent QA constraint expansion; organizational recipient identity and real distribution remain future gated.
 Next Action: explicit authorization decision for the existing QA constraint, followed by persistent advisory publication/receipt UAT; no operational activation.
 Evidence: [implementation/self-review](reliability-cockpit/docs/nadi-eng-bundle-a.md), [responsive evidence](reliability-cockpit/docs/evidence/nadi-eng-bundle-a/README.md). Official backup and rollback to `8658c2fbd00bb78f1d8ee2b4462ccece4200a30e` verified. All 35 original container IDs/start times, 481 non-account rows, 39 original sessions, three account grants/credentials, workbook and PNG hashes preserved; normal login timestamp changes are documented.
+
+## 2026-10-11 — NADI-ENG-BUNDLE-A-FIX-01 / persistent QA authorization
+
+Date: 2026-10-11 (Asia/Jakarta)
+Task ID: NADI-ENG-BUNDLE-A-FIX-01
+Objective: execute PO-authorized existing QA CHECK expansion and prove persistent Advisory/recipient workflow.
+Branch: codex/nadi-eng-bundle-a
+Commit SHA: executed helper/runtime `01434fb26a29ba726fe59f663ca96d95bfd43c01`; introducing evidence/test commit advances PR HEAD without application-source changes.
+PR: [#68](https://github.com/johnd-creator/reliability-knowledge-starter/pull/68)
+Implementation Status: IMPLEMENTED — approved original QA helper replaces only kind CHECK; no operational migration or code change.
+Test Status: TESTED — 51 actual persistent browser assertions, 18 HTTPS route checks, 161 disposable PostgreSQL backend tests/zero skips; frontend assertions/safety/lint/TypeScript/syntax; nine1440/768/390 screenshots; two private backup clone restores and previous-reader compatibility PASS.
+CI Status: baseline01434fb backend/frontend PASS; final evidence-head backend/frontend/build/contracts are independently verified after push in PR checks and final handoff.
+Merge Status: NOT MERGED; PR #67 independently OPEN and unchanged.
+Development Visibility: VISIBLE at HTTPS3000, clean source/backend/launch01434fb; affected QA API only reloaded, original frontend process preserved. Advisory/inbox capability READY; actual publication/ACK retained after reload/reconnect and deliberate withdrawal.
+Product Owner Acceptance: limited conditional schema/execution authority given by PO; Persistent QA Acceptance execution PASS. Actual engineer UAT, PO visual review and operational/production acceptance PENDING.
+Remaining Blockers: no persistent-QA schema blocker remains. Organizational recipients/identity, real channels/custody/UAT and operational rollout still separately gated.
+Next Action: senior/PO review of unmerged PR #68 and QA evidence; retain expanded CHECK and all records on application rollback. No merge or operational activation without further approval.
+Evidence: [FIX-01 report](reliability-cockpit/docs/nadi-eng-bundle-a-fix-01.md), [actual persistent evidence](reliability-cockpit/docs/evidence/nadi-eng-bundle-a-fix-01/README.md). Immediately post-DDL919rows/51sessions unchanged; after E2E864immutable originals/51session rows/three accepted records and account invariants preserved. All35original containers/start times and five PNG/workbook hashes unchanged. Original blocked checkpoint is preserved above; the new explicit authorization resolves that earlier restriction. Phase1 policy/deadlines untouched.

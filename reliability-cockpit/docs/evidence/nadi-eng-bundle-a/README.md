@@ -1,5 +1,9 @@
 # Engineering QA evidence — 11 October 2026
 
+New checkpoint: [FIX-01 actual persistent QA evidence](../nadi-eng-bundle-a-fix-01/README.md)
+supersedes the former schema blocker. This earlier DEMO/blocked evidence remains
+historical and is not relabeled as persistent acceptance.
+
 Implementation source: `2a7678d82f6f0e8769a03ca09857c59f2f37f338`, based on main
 `cc90fc73bea6ae399383d8538035c6454dc7e65a`. Delivery docs may advance the PR HEAD;
 exact final CI and serving SHA must be checked independently. No PO acceptance.
