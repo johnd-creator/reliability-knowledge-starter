@@ -48,3 +48,6 @@ cookies/
 
 # Generated exact-code QA release binding; never configuration/secrets
 /deploy/qa/.qa-release.json
+
+# Primary development frontend cache (isolated during controlled cutover)
+.next-primary-dev/

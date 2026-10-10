@@ -1,10 +1,10 @@
 # NADI product roadmap — main quest
 
-## Current product checkpoint — NADI-DOC-FOUNDATION-01 — 2026-10-10
+## Current product checkpoint — NADI-DOC-FOUNDATION-FIX-03 — 2026-10-10
 
 This is the **official product roadmap**. Phase 0–5 remains intact; the UX track
-below complements it. Verified main `f54643f3510bf505628a1400024784faab46e496`
-contains merged Engineering PR29–61. PR62/63 remain OPEN, with exact heads and CI
+below complements it. Verified main `0cb26882c870185a54282df3af4a136f31702b67`
+contains merged Engineering PR29–61, PR62 and PR63. Their merge commits and CI are
 in [Repository Status](REPOSITORY-STATUS.md). Older checkpoint language below,
 including “current”, “OPEN” and the original phase table, is dated historical
 evidence and does not override this reconciliation. No runtime/PO acceptance is
@@ -27,7 +27,7 @@ retains scoped engineering sequencing. No completion percentages are inferred.
 
 | Task | Scope | Development status | Merge / acceptance boundary |
 |---|---|---|---|
-| UX-01 | Single Development Environment | **Development acceptance PASS** | PR62 OPEN at 0bfea1273f97ce96a08ef147b44f804aecb428d1; HTTPS3000 visible; PO/operational acceptance separate |
+| UX-01 | Single Development Environment | **Development acceptance PASS** | PR62 MERGED via 72b7ec55acbb3d5d9562102c3eaf721d4dda714b; historical HTTPS3000 acceptance retained; PO/operational acceptance separate |
 | UX-02 | NADI Design System V1 | **PLANNED** | Candidate documentation exists; token/contrast/visual review and UI implementation pending |
 | UX-03 | Sidebar Information Architecture | **PLANNED** | Proposed map only; preserve existing routes; PO review pending |
 | UX-04 | Executive Overview Visual Polish | **PLANNED** | Existing factual dashboard retained; official konsep5.png AVAILABLE via FIX-02 |
@@ -45,15 +45,12 @@ created by this task does not mark these delivery tasks complete.
 
 ### PdM and Phase1 continuity
 
-PR63's [pinned requirements](https://github.com/johnd-creator/reliability-knowledge-starter/blob/89cfa0e50dbdaa1fa158558c890cc512c049b60f/reliability-cockpit/docs/nadi-pdm-requirements-01.md)
-remain candidate R01–R08 with Q01–Q10 PENDING_ENGINEER_VALIDATION. Preserve M01–M07:
-engineer samples/terminology → approved point/instrument contracts → irregular
-measurement history → controlled import/diagnostic evidence → independent review
-→ existing-WO/local recommendation linkage → engineer UAT. Portable events are
-not continuous/daily; no portable/DCS/PI combination without approved comparability;
-PD is not assumed DGA; “30% acr” remains undefined. No source write or new PdM
-functionality is introduced. [Conflict reconciliation](../docs/NADI-DOC-FOUNDATION-01.md#pr62--pr63-reconciliation-plan)
-preserves both open PRs without automatic merge.
+PR63 is MERGED. The [PdM requirements packet](../reliability-cockpit/docs/nadi-pdm-requirements-01.md)
+owns R01–R08, Q01–Q10 and M01–M07; the preserved dated checkpoint below records
+Phase2/3 alignment. Engineer field approval, episodic measurement semantics and
+portable/DCS/PI comparability gates remain unchanged. The single frontend uses the
+[merged development runbook](../reliability-cockpit/docs/nadi-dev-reset-01.md).
+FIX-03 reconciles documentation only and grants no runtime or PdM activation.
 
 [Phase1 acceptance](NADI-PHASE-1-ACCEPTANCE.md) retains its independent 24h/72h
 reviews, 12 October20:00 WIB checkpoint and **13 October2026 00:00 WIB hard expiry**.
@@ -64,6 +61,37 @@ not re-certified by documentation or a successful frontend status response.
 ### Historical checkpoints and original phase backlog
 
 All following checkpoints retain their original evidence, dates and limitations.
+
+## Historical NADI-PDM-REQ-01 — requirements reconciliation — 2026-10-09
+
+Verified main: `f54643f3510bf505628a1400024784faab46e496`, including merged PR61.
+Older candidate/open-PR checkpoints below retain historical evidence and are not
+current merge-state claims. No runtime acceptance or fresh operational audit is implied.
+
+| Phase | Current checkpoint |
+|---|---|
+| 0 | COMPLETE for accepted factual scope |
+| 1 | CURRENT / PARTIAL; existing evidence gates remain |
+| 2 | Foundations MERGED; operational acceptance / engineer UAT PARTIAL |
+| 3 | DESIGN READY; not operational |
+| 4 | Recommendation foundation implemented; operational acceptance pending |
+| 5 | PLANNED |
+
+Phase 2 **PdM Measurement & Investigation** is an explicit candidate backlog:
+M01 engineer samples/terminology → M02 approved method/point/instrument contracts
+→ M03 irregular-time history → M04 controlled Excel/diagnostic evidence workflow
+→ M05 independent interpretation review → M06 informational WO/local recommendation
+→ M07 engineer UAT. Secure storage, trusted operational identity and application
+provisioning remain dependencies. Field proposals are NOT approved.
+
+Portable measurements are episodic, not assumed daily/24-hour telemetry. Installed
+DCS/PI and portable series cannot be combined without approved comparability.
+PD is unresolved and must not be equated with DGA; “30% acr” is undefined.
+All ten engineer decisions remain PENDING_ENGINEER_VALIDATION. No automatic
+threshold, traffic light, score or source write is authorized.
+
+[Engineer statements, requirement traceability, acceptance criteria and validation register](../reliability-cockpit/docs/nadi-pdm-requirements-01.md).
+Documentation only; active LiveDev and operational/Phase1 evidence remain unchanged.
 
 ## NADI-E-INTEGRATION-02 — local authentication and final audit — 2026-10-09
 

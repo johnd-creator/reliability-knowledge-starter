@@ -6,8 +6,9 @@ Delivery sequence: [official roadmap](../../plans/NADI-ROADMAP.md).
 
 ## Evidence and shared acceptance
 
-Current source baseline: main `f54643f3510bf505628a1400024784faab46e496`.
-Runtime additionally previews PR #62 at `0bfea1273f97ce96a08ef147b44f804aecb428d1`.
+FIX-03 source baseline: main `0cb26882c870185a54282df3af4a136f31702b67`, including merged
+PR62/63. Last recorded runtime source: `0bfea1273f97ce96a08ef147b44f804aecb428d1`;
+documentation merge does not change runtime visibility.
 Current functionality below means bounded source/historical acceptance evidence,
 not new operational UAT. [Audit](../NADI-DOC-FOUNDATION-01.md) records provenance.
 

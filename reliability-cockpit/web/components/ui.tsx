@@ -17,7 +17,7 @@ const navigation = [
   { href: "/data-quality", label: "Data Trust", icon: "✓" },
 ];
 
-export function AppShell({ children, engineeringVisible = false }: { children: ReactNode; engineeringVisible?: boolean }) {
+export function AppShell({ children, engineeringVisible = false, liveDevelopment = false }: { children: ReactNode; engineeringVisible?: boolean; liveDevelopment?: boolean }) {
   const pathname = usePathname();
   const [theme, setTheme] = useState<"light" | "dark">("light");
 
@@ -44,7 +44,7 @@ export function AppShell({ children, engineeringVisible = false }: { children: R
         <div className="sidebar-context"><span className="pulse-dot" /> Platform Analitik Keandalan Aset Pembangkit</div>
         <nav className="nadi-nav" aria-label="NADI navigation">
           <p className="nav-label">Reliability workspace</p>
-          {(engineeringVisible ? [...navigation, { href: "/engineering", label: "Engineering", icon: "◇" }] : navigation).map((item) => {
+          {(engineeringVisible ? [...navigation, { href: liveDevelopment ? "/engineering/local" : "/engineering", label: "Engineering", icon: "◇" }] : navigation).map((item) => {
             const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
             return <Link key={item.href} href={item.href} className={active ? "nav-link active" : "nav-link"}><span className="nav-icon">{item.icon}</span>{item.label}</Link>;
           })}

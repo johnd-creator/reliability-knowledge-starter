@@ -100,7 +100,8 @@ spectrum/waveform references and IR thermograms, independent review and linked
 recommendations. Candidate methods: Vibration, IR Thermography, MCSA, Tribology;
 other methods require engineering validation.
 
-Preserve the pending [NADI-PDM-REQ-01 requirements at PR #63's audited head](https://github.com/johnd-creator/reliability-knowledge-starter/blob/89cfa0e50dbdaa1fa158558c890cc512c049b60f/reliability-cockpit/docs/nadi-pdm-requirements-01.md).
+Preserve the [merged NADI-PDM-REQ-01 requirements](reliability-cockpit/docs/nadi-pdm-requirements-01.md)
+from PR63. Merge does not approve the candidate method fields or thresholds.
 R01–R08 cover episodic events, point/instrument context, original values/units/times,
 diagnostic references, separated interpretation/review, controlled Excel mapping,
 existing-WO context and comparability. Q01–Q10 all remain PENDING_ENGINEER_VALIDATION:
@@ -201,7 +202,7 @@ Design approval cannot satisfy a runtime or engineering evidence gate.
 The five [official PNG references](docs/design/references/README.md) are AVAILABLE
 and their mapping is PO-confirmed under FIX-02; no ZIP/JPG or duplicate is required.
 Open dependencies: token/contrast and navigation review;
-PR #62/#63 merge decisions; Q01–Q10 engineer validation; approved assessment semantics;
+PR #62/#63 are merged; remaining gates include Q01–Q10 engineer validation; approved assessment semantics;
 authorized operational identity/application writer/storage/scanner provisioning;
 real engineer UAT; report definitions and product role matrix; measured performance
 targets; global authentication activation task. Phase 1 operator-review results are

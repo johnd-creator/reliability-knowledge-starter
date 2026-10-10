@@ -6,9 +6,9 @@ Start with [NADI Context](../NADI-CONTEXT.md), [PRD](../PRD.md),
 [Design System](../DESIGN-SYSTEM.md), [UI specification](../docs/design/NADI-UI-SPEC.md),
 [official product roadmap](NADI-ROADMAP.md), [Repository Status](REPOSITORY-STATUS.md)
 and [append-only DEV-LOG](../DEV-LOG.md). Root/scoped AGENTS safety rules apply first.
-Verified main f54643f3510bf505628a1400024784faab46e496 includes Engineering foundations;
-PR62/63 remain open. Primary development frontend is https://localhost:3000 on
-explicit PR62 preview; documentation work does not switch it.
+FIX-03 verified main 0cb26882c870185a54282df3af4a136f31702b67 includes Engineering
+foundations and MERGED PR62/63. Primary development frontend is https://localhost:3000;
+merging documentation does not switch its running source.
 
 The paragraphs below preserve the 7–8 October audit sequence. Their “current” and
 “next” labels are historical; use the linked latest roadmap/status checkpoint.

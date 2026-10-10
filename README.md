@@ -11,9 +11,10 @@ onboarding, [PRD](PRD.md) for requirements, [Design System](DESIGN-SYSTEM.md) an
 [Repository Status](plans/REPOSITORY-STATUS.md) · [DEV-LOG](DEV-LOG.md) ·
 [Agent safety and onboarding](AGENTS.md).
 
-Primary development frontend: **https://localhost:3000**. At the 2026-10-10 audit,
-main is f54643f3510bf505628a1400024784faab46e496 and the active source is explicit
-PR62 preview0bfea1273f97ce96a08ef147b44f804aecb428d1, not merged main.
+Primary development frontend: **https://localhost:3000**. FIX-03 verified main
+0cb26882c870185a54282df3af4a136f31702b67 with PR62/63 MERGED. The last recorded runtime
+source is 0bfea1273f97ce96a08ef147b44f804aecb428d1; documentation reconciliation
+does not switch the running frontend.
 See [verified audit and startup authority](docs/NADI-DOC-FOUNDATION-01.md).
 No global login enforcement is introduced by the documentation foundation.
 

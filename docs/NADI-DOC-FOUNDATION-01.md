@@ -1,5 +1,33 @@
 # NADI-DOC-FOUNDATION-01 — documentation audit and governance
 
+## FIX-03 current merge reconciliation — 2026-10-10
+
+Verified main `0cb26882c870185a54282df3af4a136f31702b67`; PR62 merged via
+`72b7ec55acbb3d5d9562102c3eaf721d4dda714b`, PR63 merged via latest main above.
+PR64 previous HEAD `403cad8cea1a4d1606484e71136f8843abd4ab96` was clean before merge.
+Actual conflicts: `plans/NADI-ROADMAP.md`, `plans/REPOSITORY-STATUS.md` and
+`plans/reliability-cockpit-platform/05-roadmap-implementasi.md`.
+
+Resolution combines product phases/UX track with PdM requirements and developer
+runbooks. One current product phase table remains authoritative; the dated PR63
+checkpoint stays in the roadmap, while repository status links to its owning packet
+instead of repeating its backlog. The technical roadmap retains PR62's historical
+startup/acceptance checkpoint beneath the updated merge status. Historic test and
+acceptance text is preserved; stale OPEN statements below are dated observations.
+
+PR62 launcher/source code/runtime config and all PR63 packet/manual-PdM/Phase3
+files are byte-identical to latest main. Product requirements, Design System,
+11 UI specs, five PNG references/provenance and documentation governance remain.
+No original image, XLS, runtime, collector or database is modified. New PR64 HEAD
+and CI evidence are in its handoff. PR64 is not automatically merged.
+
+Current local authorities: [single-frontend runbook](../reliability-cockpit/docs/nadi-dev-reset-01.md)
+and [PdM requirements/gates](../reliability-cockpit/docs/nadi-pdm-requirements-01.md).
+The pinned links and reconciliation plan below retain historical provenance; their
+unmerged status wording does not override this checkpoint.
+
+## Historical FIX-02 and foundation checkpoints
+
 ## FIX-02 superseding reference checkpoint — 2026-10-10
 
 The Product Owner confirms the existing root PNGs as official references:

@@ -187,3 +187,24 @@ Evidence: [official reference manifest](docs/design/references/README.md),
 [page specifications](docs/design/NADI-UI-SPEC.md). The earlier missing-JPG and
 FIX-01 ZIP requirement is superseded by the Product Owner's explicit FIX-02
 instruction; earlier log checkpoints remain unchanged.
+
+
+## NADI-DOC-FOUNDATION-FIX-03 — latest-main conflict reconciliation
+
+- **Date:** 2026-10-10, Asia/Jakarta.
+- **Task ID:** NADI-DOC-FOUNDATION-FIX-03.
+- **Objective:** Resolve PR64 conflicts while preserving PR62/63 and product documentation.
+- **Branch:** codex/nadi-doc-foundation-01; clean separate documentation worktree before merge.
+- **Commit SHA:** Previous `403cad8cea1a4d1606484e71136f8843abd4ab96`; merged main `0cb26882c870185a54282df3af4a136f31702b67`; introducing merge commit recorded in PR64.
+- **PR:** [#64](https://github.com/johnd-creator/reliability-knowledge-starter/pull/64).
+- **Implementation Status:** Documentation reconciliation in three actual conflicting roadmap/status files, with current onboarding/PRD references updated. Main's application/runtime bytes preserved.
+- **Test Status:** Conflict-marker, diff, relative-link, PNG integrity/provenance, eleven-page and phase/UX/PdM continuity checks in the PR handoff.
+- **CI Status:** New exact-HEAD backend/frontend CI follows push; run/results linked in PR64. Prior runs remain historical.
+- **Merge Status:** PR62/63 MERGED; main merged into PR64 branch; PR64 stays OPEN pending review.
+- **Development Visibility:** No runtime source switch, configuration change, restart or database action.
+- **Product Owner Acceptance:** Reconciliation authorized by FIX-03; no new UI/UAT or operational acceptance inferred.
+- **Remaining Blockers:** PR64 review and CI/mergeability verification; existing engineering/visual activation gates unchanged.
+- **Next Action:** Review exact-HEAD CI and mergeability; no automatic merge of PR64.
+
+Evidence: [reconciliation audit](docs/NADI-DOC-FOUNDATION-01.md),
+[official roadmap](plans/NADI-ROADMAP.md), [repository status](plans/REPOSITORY-STATUS.md).

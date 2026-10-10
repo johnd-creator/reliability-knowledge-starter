@@ -30,9 +30,12 @@ Primary frontend: **https://localhost:3000**. One address serves factual screens
 and development-only Engineering. Explicit, controlled branch previews may use
 that same address; do not create permanent parallel NADI frontends.
 
-At the audit, merged main is `f54643f3510bf505628a1400024784faab46e496`;
-the active, clean preview is PR #62 at
-`0bfea1273f97ce96a08ef147b44f804aecb428d1`. PR #62 is OPEN, not merged.
+FIX-03 verified merged main `0cb26882c870185a54282df3af4a136f31702b67`, including
+MERGED PR62 and PR63. The last recorded runtime source is
+`0bfea1273f97ce96a08ef147b44f804aecb428d1`; merging documentation does not switch
+that source. Follow the [merged development runbook](reliability-cockpit/docs/nadi-dev-reset-01.md)
+for separately authorized source selection. Current runtime visibility must be checked
+independently rather than inferred from Git merge status.
 The [audit and development runbook links](docs/NADI-DOC-FOUNDATION-01.md)
 record the verified source, secure login boundary and startup authority.
 Read the banner's full SHA, dirty state, backend availability and fixture identity

@@ -1,21 +1,25 @@
 # Repository status and debt — PLATFORM-ROADMAP-001
 
-## Current audit — NADI-DOC-FOUNDATION-01 — 2026-10-10
+## Current audit — NADI-DOC-FOUNDATION-FIX-03 — 2026-10-10
 
-Latest fetched `origin/main`: **f54643f3510bf505628a1400024784faab46e496**.
-PR29–61 are MERGED, including local authentication and Engineering QA UI.
-Earlier OPEN/candidate wording below is historical, not current GitHub state.
+Latest fetched `origin/main`: **0cb26882c870185a54282df3af4a136f31702b67**. PR29–63 are MERGED.
+PR64 remains OPEN on codex/nadi-doc-foundation-01. FIX-03 merges latest main into
+this clean documentation worktree; no active development worktree is switched.
 
-| Candidate | Exact head | GitHub / CI | Runtime |
-|---|---|---|---|
-| [PR62](https://github.com/johnd-creator/reliability-knowledge-starter/pull/62), codex/nadi-dev-live-01 | `0bfea1273f97ce96a08ef147b44f804aecb428d1` | OPEN; backend/frontend SUCCESS run37940329956 | Clean active HTTPS3000 preview; isolated QA; development acceptance PASS |
-| [PR63](https://github.com/johnd-creator/reliability-knowledge-starter/pull/63), codex/nadi-pdm-req-01 | `89cfa0e50dbdaa1fa158558c890cc512c049b60f` | OPEN; backend/frontend SUCCESS run37932325576 | Documentation only; no new PdM runtime |
+| Merged work | Merge commit | Preserved authority |
+|---|---|---|
+| [PR62](https://github.com/johnd-creator/reliability-knowledge-starter/pull/62) | `72b7ec55acbb3d5d9562102c3eaf721d4dda714b` | [Persistent single HTTPS3000 frontend/runbook](../reliability-cockpit/docs/nadi-dev-reset-01.md) |
+| [PR63](https://github.com/johnd-creator/reliability-knowledge-starter/pull/63) | `0cb26882c870185a54282df3af4a136f31702b67` | [PdM R01–R08, Q01–Q10 and M01–M07](../reliability-cockpit/docs/nadi-pdm-requirements-01.md) |
 
-Main/PR61 backend/frontend SUCCESS run37921470470. Exact run links, process ownership,
-worktree/XLS preservation, scoped audit limitations and PR conflict plan are in the
-[foundation audit](../docs/NADI-DOC-FOUNDATION-01.md). Documentation branch
-`codex/nadi-doc-foundation-01` starts from the exact main above and is separate from
-the active source. No main/runtime/PR62/PR63 switch or merge is performed.
+Prior source-head CI results remain historical: main/PR61 run37921470470,
+PR62 run37940329956, PR63 run37932325576. FIX-03 CI must match the new PR64 HEAD;
+its result is linked in the PR handoff. [Foundation audit](../docs/NADI-DOC-FOUNDATION-01.md)
+retains earlier inventories and the superseding conflict-resolution checkpoint.
+
+PR63's phase summary and measurement/investigation backlog are preserved in the
+[official roadmap](NADI-ROADMAP.md) and owning packet rather than duplicated here.
+Historical acceptance reports, manual-PdM clarifications and Phase3 addendum remain
+unchanged from latest main. No runtime/collector/database action is performed.
 
 Current phase status belongs to [the official roadmap](NADI-ROADMAP.md);
 requirements/design to [PRD](../PRD.md)/[UI spec](../docs/design/NADI-UI-SPEC.md);
