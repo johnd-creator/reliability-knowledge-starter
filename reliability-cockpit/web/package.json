@@ -15,7 +15,7 @@
     "check:bounded-http": "node scripts/bounded-http-check.mjs",
     "check:bounded-proxy": "node scripts/bounded-proxy-check.mjs",
     "check:local-auth": "node scripts/local-auth-check.mjs",
-    "lint": "eslint components/ui.tsx components/AppNavigation.tsx components/ExecutiveOverview.tsx lib/navigation.ts lib/overview.ts app/page.tsx --no-error-on-unmatched-pattern",
+    "lint": "eslint components/ui.tsx components/AppNavigation.tsx components/ExecutiveOverview.tsx lib/navigation.ts lib/overview.ts app/page.tsx app/work-orders/page.tsx \"app/equipment/*/page.tsx\"",
     "check:ux": "node scripts/ux-check.mjs"
   },
   "dependencies": {

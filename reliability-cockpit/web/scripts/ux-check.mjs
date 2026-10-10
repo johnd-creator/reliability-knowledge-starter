@@ -33,6 +33,10 @@ try {
       const source=readFileSync(path,"utf8"); assert.ok(!source.includes("<main>")); assert.ok(source.includes("<TableFrame"));
     }
   });
+  test("legacy equipment protects identity from late responses and unknown totals", () => {
+    const source=readFileSync("app/equipment/[id]/page.tsx","utf8");
+    assert.match(source,/if \(!active\) return/); assert.ok(source.includes('workOrders?.total ?? "UNKNOWN"')); assert.ok(source.includes('if (loading)'));
+  });
   test("button does not submit a form accidentally", () => assert.match(render(ui.Button, { children: "Review" }), /type="button"/));
   test("breadcrumb declares exactly one current page", () => assert.equal((render(ui.Breadcrumbs, {items:[{label:"NADI"},{label:"Overview"}]}).match(/aria-current="page"/g) ?? []).length, 1));
   test("input has persistent associated label", () => assert.match(render(ui.InputControl, { id: "scope", label: "Scope" }), /for="scope"/));

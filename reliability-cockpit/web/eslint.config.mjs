@@ -4,7 +4,7 @@ import a11y from "eslint-plugin-jsx-a11y";
 
 // Bundle A's presentation surfaces. Existing Engineering checks retain their own scope.
 export default tseslint.config({
-  files: ["components/ui.tsx", "components/AppNavigation.tsx", "components/ExecutiveOverview.tsx", "lib/navigation.ts", "lib/overview.ts", "app/page.tsx"],
+  files: ["components/ui.tsx", "components/AppNavigation.tsx", "components/ExecutiveOverview.tsx", "lib/navigation.ts", "lib/overview.ts", "app/page.tsx", "app/work-orders/page.tsx", "app/equipment/*/page.tsx"],
   extends: [...tseslint.configs.recommended],
   plugins: { "react-hooks": hooks, "jsx-a11y": a11y },
   rules: { ...hooks.configs.recommended.rules, ...a11y.configs.recommended.rules, "jsx-a11y/no-noninteractive-tabindex": ["error", { roles: ["region"] }] },

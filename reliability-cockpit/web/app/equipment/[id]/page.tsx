@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { TableFrame } from "../../../components/ui";
+import { ErrorState, LoadingState, TableFrame } from "../../../components/ui";
 import { use, useEffect, useState } from "react";
 import { cockpitApi, KPI_METRICS, type EquipmentView, type ReliabilityKpiView, type WorkOrderPage } from "../../../lib/api";
 
@@ -10,36 +10,42 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
   const [equipment, setEquipment] = useState<EquipmentView | null>(null);
   const [kpis, setKpis] = useState<Record<string, ReliabilityKpiView | null>>({});
   const [workOrders, setWorkOrders] = useState<WorkOrderPage | null>(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let active = true;
+    setLoading(true);
     setEquipment(null);
     setKpis({});
     setWorkOrders(null);
     setError(null);
-    Promise.all([
-      cockpitApi.getEquipment(id).then(setEquipment).catch(() => null),
-      cockpitApi.listWorkOrders(id, 0, 200).then(setWorkOrders).catch(() => null),
-      Promise.all(
-        KPI_METRICS.map((m) =>
-          cockpitApi.getKpi(id, m).then((k) => [m, k] as const).catch(() => [m, null] as const),
-        ),
-      ).then((entries) => setKpis(Object.fromEntries(entries))),
-    ]).catch((err) => setError(String(err)));
+    cockpitApi.getEquipment(id).then(nextEquipment => {
+      if (!active) return;
+      setEquipment(nextEquipment);
+    }).catch(() => { if (active) setError("Equipment data unavailable"); })
+      .finally(() => { if (active) setLoading(false); });
+    cockpitApi.listWorkOrders(id, 0, 200).then(nextWorkOrders => {
+      if (active) setWorkOrders(nextWorkOrders);
+    }).catch(() => undefined);
+    Promise.all(KPI_METRICS.map(metric =>
+      cockpitApi.getKpi(id, metric).then(value => [metric, value] as const).catch(() => [metric, null] as const),
+    )).then(entries => { if (active) setKpis(Object.fromEntries(entries)); });
+    return () => { active = false; };
   }, [id]);
 
   if (error) {
     return (
       <section className="legacy-content" aria-label="Equipment context">
-        <div className="error">{error}</div>
+        <ErrorState message={error} />
       </section>
     );
   }
 
-  if (equipment === null) {
+  if (loading) {
     return (
       <section className="legacy-content" aria-label="Equipment context">
-        <div className="empty">Loading…</div>
+        <LoadingState label="Reading equipment context…" />
       </section>
     );
   }
@@ -48,7 +54,7 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
     return (
       <section className="legacy-content" aria-label="Equipment context">
         <div className="empty">
-          Equipment not found. <Link href="/">Back to equipment list</Link>
+          Equipment not found. <Link href="/">Back to overview</Link>
         </div>
       </section>
     );
@@ -57,7 +63,7 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
   return (
     <section className="legacy-content" aria-label="Equipment context">
       <p>
-        <Link href="/">← All equipment</Link>
+        <Link href="/">← Executive Overview</Link>
       </p>
       <section className="card">
         <h2>{equipment.id}</h2>
@@ -103,8 +109,8 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
       </section>
 
       <section className="card">
-        <h2>Work Orders ({workOrders?.total ?? 0})</h2>
-        {workOrders === null && <div className="empty">Loading…</div>}
+        <h2>Work Orders ({workOrders?.total ?? "UNKNOWN"})</h2>
+        {workOrders === null && <LoadingState label="Reading equipment context…" />}
         {workOrders && workOrders.items.length === 0 && <div className="empty">No work orders for this equipment.</div>}
         {workOrders && workOrders.items.length > 0 && (
           <TableFrame label="Equipment context data"><table>

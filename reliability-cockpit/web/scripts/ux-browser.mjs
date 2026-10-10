@@ -139,12 +139,15 @@ try {
   mode="empty"; await vp.reload({waitUntil:"networkidle"});
   check("empty results preserve evidence caveat",await vp.getByText("An empty activity series does not establish equipment condition.").isVisible());
   mode="error"; await vp.reload({waitUntil:"networkidle"});
-  check("safe error and retry remain usable",await vp.getByRole("alert").isVisible());
+  check("safe error and retry remain usable",await vp.getByRole("alert").filter({hasText:"Reliability Mart unavailable"}).isVisible());
   mode="data"; await vp.getByRole("button",{name:"Try again",exact:true}).click();await vp.locator(".executive-summary-grid").waitFor();
   check("retry recovers supported factual view",true);
   mode="loading"; await vp.reload({waitUntil:"domcontentloaded"}); await vp.getByRole("status").filter({hasText:"Reading Executive Overview"}).waitFor();
   check("loading has no temporary KPI zero",await vp.locator(".stat-card").count()===0);
   mode="data";pending?.();await vp.locator(".executive-summary-grid").waitFor();
+  await vp.route("**/api/cockpit/**", route => route.fulfill({status:503,json:{detail:"UNAVAILABLE"}}));
+  await vp.goto(base+"/equipment/UI-REGRESSION-UNKNOWN",{waitUntil:"networkidle"});
+  check("equipment API failure resolves to explicit error, never endless loading",await vp.getByRole("alert").filter({hasText:"Equipment data unavailable"}).isVisible() && await vp.locator(".loading-state").count()===0);
   await visual.close();
   writeFileSync(resolve(out,"browser-report.json"),JSON.stringify({status:"PASS",sha:status.sha,checks,errors,screenshots:"SYNTHETIC browser fixtures; no operational data"},null,2));
   console.log(`Browser checks passed: ${checks.length}`);

@@ -81,8 +81,8 @@ export default function WorkOrdersPage() {
           </label>
         </div>
         <p className="muted">
-          All-status total: <strong>{allStatusTotal.toLocaleString()}</strong>
-          {statusFilter !== "ALL" && <> · Filtered ({statusFilter}): <strong>{total.toLocaleString()}</strong></>}
+          All-status total: <strong>{!loading && !error && page ? allStatusTotal.toLocaleString() : "UNKNOWN"}</strong>
+          {statusFilter !== "ALL" && <> · Filtered ({statusFilter}): <strong>{!loading && !error && page ? total.toLocaleString() : "UNKNOWN"}</strong></>}
         </p>
         {error && <div className="error">{error}</div>}
         {loading && <div className="empty">Loading…</div>}
