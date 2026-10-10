@@ -109,3 +109,18 @@ readiness assessment are complete without inventing an unapproved threshold.
 Related: [Engineering ADR](adr/006-engineering-workspace.md),
 [threat model](engineering-workspace-threat-model.md),
 [bundle acceptance](nadi-phase2-overnight-bundle-01.md).
+
+## NADI-PDM-REQ-01 — portable measurement dependencies
+
+Current main reconciliation is documented in the [engineer requirements packet](nadi-pdm-requirements-01.md).
+Historical baseline evidence above remains unchanged. Phase 3 remains DESIGN READY,
+not operational. Separate continuous/periodic DCS/PI acquisition, episodic portable
+inspection events and human diagnostic interpretation. Actual irregular timestamps
+and missing intervals must remain visible; no implicit daily readings or interpolation.
+
+Combining series requires engineer-approved method/quantity, point/orientation,
+unit, bandwidth/procedure and operating-context compatibility. Instrument/mounting
+concerns need evidence; bearing-housing sensors are not inherently classified inaccurate.
+PD/DGA and “30% acr” remain unresolved. Q01–Q10 are PENDING_ENGINEER_VALIDATION;
+M01–M07 establish Phase 2 field/history/review prerequisites. Diagnostics, alerts,
+scoring and ML retain the existing identity, data, policy and ground-truth gates.

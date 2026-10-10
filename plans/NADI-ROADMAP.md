@@ -1,5 +1,36 @@
 # NADI product roadmap — main quest
 
+## NADI-PDM-REQ-01 — current requirements reconciliation — 2026-10-09
+
+Verified main: `f54643f3510bf505628a1400024784faab46e496`, including merged PR61.
+Older candidate/open-PR checkpoints below retain historical evidence and are not
+current merge-state claims. No runtime acceptance or fresh operational audit is implied.
+
+| Phase | Current checkpoint |
+|---|---|
+| 0 | COMPLETE for accepted factual scope |
+| 1 | CURRENT / PARTIAL; existing evidence gates remain |
+| 2 | Foundations MERGED; operational acceptance / engineer UAT PARTIAL |
+| 3 | DESIGN READY; not operational |
+| 4 | Recommendation foundation implemented; operational acceptance pending |
+| 5 | PLANNED |
+
+Phase 2 **PdM Measurement & Investigation** is an explicit candidate backlog:
+M01 engineer samples/terminology → M02 approved method/point/instrument contracts
+→ M03 irregular-time history → M04 controlled Excel/diagnostic evidence workflow
+→ M05 independent interpretation review → M06 informational WO/local recommendation
+→ M07 engineer UAT. Secure storage, trusted operational identity and application
+provisioning remain dependencies. Field proposals are NOT approved.
+
+Portable measurements are episodic, not assumed daily/24-hour telemetry. Installed
+DCS/PI and portable series cannot be combined without approved comparability.
+PD is unresolved and must not be equated with DGA; “30% acr” is undefined.
+All ten engineer decisions remain PENDING_ENGINEER_VALIDATION. No automatic
+threshold, traffic light, score or source write is authorized.
+
+[Engineer statements, requirement traceability, acceptance criteria and validation register](../reliability-cockpit/docs/nadi-pdm-requirements-01.md).
+Documentation only; active LiveDev and operational/Phase1 evidence remain unchanged.
+
 ## NADI-E-INTEGRATION-02 — local authentication and final audit — 2026-10-09
 
 Main `eda3595a9b8d86726dd0d89192ebf4657b66d27e` unchanged. Bundle E PR51–59 preserved;
