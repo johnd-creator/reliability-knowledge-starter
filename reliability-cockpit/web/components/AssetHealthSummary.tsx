@@ -2,7 +2,6 @@
 import Link from "next/link";
 import type { AssetView, ContextView } from "../lib/api";
 import { formatDate } from "../lib/format";
-import ConditionEvidencePanel from "./ConditionEvidencePanel";
 import { EmptyState, SectionCard, StatCard, StatusBadge, TableFrame } from "./ui";
 
 export default function AssetHealthSummary({asset, context, maintenanceCount, assessmentCount, onMaintenance}: {asset:AssetView; context:ContextView|null; maintenanceCount:number|null; assessmentCount:number|null; onMaintenance:()=>void}) {
@@ -32,6 +31,5 @@ export default function AssetHealthSummary({asset, context, maintenanceCount, as
     <p className="section-note">Recommendations remain NADI-owned. Existing Maximo WOs are informational read-only references.</p>
    </SectionCard>
   </div>
-  <ConditionEvidencePanel canonicalId={asset.canonical_id} />
  </div>;
 }

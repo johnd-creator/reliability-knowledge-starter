@@ -1,0 +1,339 @@
+{
+  "label": "DEMO \u00b7 SYNTHETIC UI REGRESSION; NOT PLANT EVIDENCE",
+  "asset": {
+    "canonical_id": "asset:DEMO-001",
+    "contract_version": "1.0",
+    "source_asset_number": "DEMO Motor 1",
+    "description": "DEMO \u00b7 SYNTHETIC UI REGRESSION",
+    "status": "DEMO_SOURCE_STATUS",
+    "location_ref": "DEMO location",
+    "parent_asset_ref": null,
+    "site_code": "BSR",
+    "organization_code": "IP",
+    "asset_type": "DEMO",
+    "plant": "DEMO plant",
+    "unit": "DEMO unit",
+    "source_updated_at": "2026-10-02T07:00:00Z"
+  },
+  "maintenance": [
+    {
+      "canonical_id": "maintenance:DEMO-001",
+      "contract_version": "1.0",
+      "id": "maintenance:DEMO-001",
+      "equipment_id": "asset:DEMO-001",
+      "work_order_id": "WO-DEMO-001",
+      "event_type": "DEMO maintenance",
+      "status": "DEMO_SOURCE_STATUS",
+      "actual_start": "2026-10-01T06:00:00Z",
+      "actual_finish": null,
+      "duration_hours": null,
+      "labor_hours": null,
+      "downtime_hours": null,
+      "failure_code": null,
+      "source_changed_at": "2026-10-01T06:00:00Z",
+      "site_code": "BSR",
+      "organization_code": "IP"
+    }
+  ],
+  "inspections": [
+    {
+      "canonical_asset_id": "asset:DEMO-001",
+      "revision": 3,
+      "status": "APPROVED",
+      "created_at": "2026-10-01T07:00:00Z",
+      "updated_at": "2026-10-03T09:00:00Z",
+      "created_by": "demo-engineer",
+      "review": {
+        "reviewer": "demo-reviewer",
+        "decision": "APPROVED",
+        "decided_at": "2026-10-03T09:00:00Z",
+        "rationale": "Synthetic independent record review; not equipment condition."
+      },
+      "record_id": "inspection:DEMO-001",
+      "method": "VIBRATION",
+      "method_version": "candidate-v1",
+      "inspector_ref": "demo-engineer",
+      "inspected_at": "2026-10-01T07:00:00Z",
+      "operating_context": "DEMO operating context; not plant evidence",
+      "measurements": [
+        {
+          "quantity": "Demo velocity",
+          "value": 0,
+          "unit": "mm/s",
+          "measured_at": "2026-10-01T07:00:00Z",
+          "point_ref": "point:DEMO-DE",
+          "quality": "INSPECTOR_REPORTED",
+          "provenance": "HUMAN_ENTERED_MEASUREMENT"
+        },
+        {
+          "quantity": "Demo observation",
+          "value": null,
+          "unit": null,
+          "measured_at": null,
+          "point_ref": null,
+          "quality": "UNKNOWN",
+          "provenance": "HUMAN_ENTERED_MEASUREMENT"
+        }
+      ],
+      "observations": [
+        "DEMO episodic observation"
+      ],
+      "interpretations": [
+        "DEMO interpretation pending engineer validation"
+      ],
+      "attachments": [
+        {
+          "attachment_ref": "attachment:DEMO-001",
+          "filename": "demo-spectrum.png",
+          "content_type": "image/png",
+          "size_bytes": 1024,
+          "status": "METADATA_ONLY_NOT_UPLOADED",
+          "sha256": null
+        }
+      ],
+      "case_refs": [
+        "case:DEMO-001"
+      ],
+      "field_approval": "ENGINEER_FIELDS_PENDING",
+      "assessment": "NOT_ASSESSED",
+      "provenance": "NADI_MANUAL_INSPECTION"
+    },
+    {
+      "canonical_asset_id": "asset:DEMO-001",
+      "revision": 3,
+      "status": "DRAFT",
+      "created_at": "2026-10-01T07:00:00Z",
+      "updated_at": "2026-10-03T09:00:00Z",
+      "created_by": "demo-engineer",
+      "review": null,
+      "record_id": "inspection:DEMO-002",
+      "method": "IR_THERMOGRAPHY",
+      "method_version": "candidate-v1",
+      "inspector_ref": "demo-engineer",
+      "inspected_at": "2026-10-01T07:00:00Z",
+      "operating_context": "DEMO operating context; not plant evidence",
+      "measurements": [],
+      "observations": [],
+      "interpretations": [],
+      "attachments": [
+        {
+          "attachment_ref": "attachment:DEMO-001",
+          "filename": "demo-spectrum.png",
+          "content_type": "image/png",
+          "size_bytes": 1024,
+          "status": "METADATA_ONLY_NOT_UPLOADED",
+          "sha256": null
+        }
+      ],
+      "case_refs": [
+        "case:DEMO-001"
+      ],
+      "field_approval": "ENGINEER_FIELDS_PENDING",
+      "assessment": "NOT_ASSESSED",
+      "provenance": "NADI_MANUAL_INSPECTION"
+    },
+    {
+      "canonical_asset_id": "asset:DEMO-002",
+      "revision": 3,
+      "status": "APPROVED",
+      "created_at": "2026-10-01T07:00:00Z",
+      "updated_at": "2026-10-03T09:00:00Z",
+      "created_by": "demo-engineer",
+      "review": {
+        "reviewer": "demo-reviewer",
+        "decision": "APPROVED",
+        "decided_at": "2026-10-03T09:00:00Z",
+        "rationale": "Synthetic independent record review; not equipment condition."
+      },
+      "record_id": "inspection:DEMO-003",
+      "method": "TRIBOLOGY",
+      "method_version": "candidate-v1",
+      "inspector_ref": "demo-engineer",
+      "inspected_at": "2026-10-01T07:00:00Z",
+      "operating_context": "DEMO operating context; not plant evidence",
+      "measurements": [],
+      "observations": [
+        "DEMO episodic observation"
+      ],
+      "interpretations": [
+        "DEMO interpretation pending engineer validation"
+      ],
+      "attachments": [
+        {
+          "attachment_ref": "attachment:DEMO-001",
+          "filename": "demo-spectrum.png",
+          "content_type": "image/png",
+          "size_bytes": 1024,
+          "status": "METADATA_ONLY_NOT_UPLOADED",
+          "sha256": null
+        }
+      ],
+      "case_refs": [
+        "case:DEMO-001"
+      ],
+      "field_approval": "ENGINEER_FIELDS_PENDING",
+      "assessment": "NOT_ASSESSED",
+      "provenance": "NADI_MANUAL_INSPECTION"
+    }
+  ],
+  "recommendations": [
+    {
+      "canonical_asset_id": "asset:DEMO-001",
+      "revision": 3,
+      "status": "APPROVED",
+      "created_at": "2026-10-01T07:00:00Z",
+      "updated_at": "2026-10-03T09:00:00Z",
+      "created_by": "demo-engineer",
+      "review": {
+        "reviewer": "demo-reviewer",
+        "decision": "APPROVED",
+        "decided_at": "2026-10-03T09:00:00Z",
+        "rationale": "Synthetic independent record review; not equipment condition."
+      },
+      "record_id": "recommendation:DEMO-001",
+      "case_ref": "case:DEMO-001",
+      "rationale": "DEMO reviewed evidence; no engineering severity implied.",
+      "proposed_action": "Investigate a synthetic inspection event",
+      "priority": "NORMAL",
+      "responsible_team_ref": "team:DEMO",
+      "responsible_person_ref": null,
+      "target_date": null,
+      "follow_up_status": "PLANNED",
+      "existing_work_order_ref": null,
+      "reviewed_case": {
+        "case_id": "case:DEMO-001",
+        "revision": 2,
+        "stable_version": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "reviewer": "demo-reviewer",
+        "reviewed_at": "2026-10-03T08:00:00Z"
+      },
+      "completion_verification": null,
+      "supporting_evidence": [
+        {
+          "kind": "MANUAL_INSPECTION",
+          "record_id": "inspection:DEMO-001",
+          "stable_version": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "source_timestamp": "2026-10-01T07:00:00Z",
+          "mode": "FROZEN_SNAPSHOT"
+        }
+      ],
+      "provenance": "NADI_ENGINEERING_RECOMMENDATION"
+    },
+    {
+      "canonical_asset_id": "asset:DEMO-001",
+      "revision": 3,
+      "status": "IN_REVIEW",
+      "created_at": "2026-10-01T07:00:00Z",
+      "updated_at": "2026-10-03T09:00:00Z",
+      "created_by": "demo-engineer",
+      "review": null,
+      "record_id": "recommendation:DEMO-002",
+      "case_ref": "case:DEMO-001",
+      "rationale": "DEMO reviewed evidence; no engineering severity implied.",
+      "proposed_action": "Investigate a synthetic inspection event",
+      "priority": "NORMAL",
+      "responsible_team_ref": null,
+      "responsible_person_ref": null,
+      "target_date": null,
+      "follow_up_status": "PROPOSED",
+      "existing_work_order_ref": null,
+      "reviewed_case": {
+        "case_id": "case:DEMO-001",
+        "revision": 2,
+        "stable_version": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "reviewer": "demo-reviewer",
+        "reviewed_at": "2026-10-03T08:00:00Z"
+      },
+      "completion_verification": null,
+      "supporting_evidence": [
+        {
+          "kind": "MANUAL_INSPECTION",
+          "record_id": "inspection:DEMO-001",
+          "stable_version": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "source_timestamp": "2026-10-01T07:00:00Z",
+          "mode": "FROZEN_SNAPSHOT"
+        }
+      ],
+      "provenance": "NADI_ENGINEERING_RECOMMENDATION"
+    },
+    {
+      "canonical_asset_id": "asset:DEMO-001",
+      "revision": 3,
+      "status": "APPROVED",
+      "created_at": "2026-10-01T07:00:00Z",
+      "updated_at": "2026-10-03T09:00:00Z",
+      "created_by": "demo-engineer",
+      "review": {
+        "reviewer": "demo-reviewer",
+        "decision": "APPROVED",
+        "decided_at": "2026-10-03T09:00:00Z",
+        "rationale": "Synthetic independent record review; not equipment condition."
+      },
+      "record_id": "recommendation:DEMO-003",
+      "case_ref": "case:DEMO-001",
+      "rationale": "DEMO reviewed evidence; no engineering severity implied.",
+      "proposed_action": "Investigate a synthetic inspection event",
+      "priority": "NORMAL",
+      "responsible_team_ref": "team:DEMO",
+      "responsible_person_ref": "demo-owner",
+      "target_date": "2026-10-15",
+      "follow_up_status": "COMPLETED",
+      "existing_work_order_ref": null,
+      "reviewed_case": {
+        "case_id": "case:DEMO-001",
+        "revision": 2,
+        "stable_version": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "reviewer": "demo-reviewer",
+        "reviewed_at": "2026-10-03T08:00:00Z"
+      },
+      "completion_verification": null,
+      "supporting_evidence": [
+        {
+          "kind": "MANUAL_INSPECTION",
+          "record_id": "inspection:DEMO-001",
+          "stable_version": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "source_timestamp": "2026-10-01T07:00:00Z",
+          "mode": "FROZEN_SNAPSHOT"
+        }
+      ],
+      "provenance": "NADI_ENGINEERING_RECOMMENDATION"
+    },
+    {
+      "canonical_asset_id": "asset:DEMO-002",
+      "revision": 3,
+      "status": "DRAFT",
+      "created_at": "2026-10-01T07:00:00Z",
+      "updated_at": "2026-10-03T09:00:00Z",
+      "created_by": "demo-engineer",
+      "review": null,
+      "record_id": "recommendation:DEMO-004",
+      "case_ref": "case:DEMO-001",
+      "rationale": "DEMO reviewed evidence; no engineering severity implied.",
+      "proposed_action": "Investigate a synthetic inspection event",
+      "priority": "NORMAL",
+      "responsible_team_ref": "team:DEMO",
+      "responsible_person_ref": null,
+      "target_date": null,
+      "follow_up_status": "PROPOSED",
+      "existing_work_order_ref": null,
+      "reviewed_case": {
+        "case_id": "case:DEMO-001",
+        "revision": 2,
+        "stable_version": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "reviewer": "demo-reviewer",
+        "reviewed_at": "2026-10-03T08:00:00Z"
+      },
+      "completion_verification": null,
+      "supporting_evidence": [
+        {
+          "kind": "MANUAL_INSPECTION",
+          "record_id": "inspection:DEMO-001",
+          "stable_version": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "source_timestamp": "2026-10-01T07:00:00Z",
+          "mode": "FROZEN_SNAPSHOT"
+        }
+      ],
+      "provenance": "NADI_ENGINEERING_RECOMMENDATION"
+    }
+  ]
+}

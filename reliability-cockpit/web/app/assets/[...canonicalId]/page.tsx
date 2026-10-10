@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import IntegrationStatusPanel from "@/components/IntegrationStatusPanel";
+import ConditionEvidencePanel from "@/components/ConditionEvidencePanel";
 import AssetHealthSummary from "@/components/AssetHealthSummary";
 import { use, useEffect, useState } from "react";
 import {
@@ -245,7 +246,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ canonica
     <SectionCard className="asset-identity-card"><div className="asset-identity-main"><div><p className="eyebrow">Current asset identity</p><h2>{asset.source_asset_number ?? <Identifier value={asset.canonical_id} />}</h2><p className="asset-description">{asset.description ?? "No description available"}</p></div><StatusBadge value={asset.status} mode="raw-neutral" /></div><div className="canonical-identity"><span><small>Technical Asset reference</small><Identifier value={asset.canonical_id} /></span><CopyCanonicalId value={asset.canonical_id} /></div></SectionCard>
     <nav className="asset-tabs" aria-label="Asset workspace tabs">{tabs.map((item) => <button key={item.id} type="button" aria-current={tab === item.id ? "page" : undefined} className={tab === item.id ? "asset-tab active" : "asset-tab"} onClick={() => selectTab(item.id)}>{item.label}</button>)}</nav>
 
-    {tab === "overview" && <AssetHealthSummary asset={asset} context={context} maintenanceCount={counts?.maintenance ?? null} assessmentCount={counts?.health ?? null} onMaintenance={() => selectTab("maintenance")} />}
+    {tab === "overview" && <><AssetHealthSummary asset={asset} context={context} maintenanceCount={counts?.maintenance ?? null} assessmentCount={counts?.health ?? null} onMaintenance={() => selectTab("maintenance")} /><ConditionEvidencePanel canonicalId={canonicalId}/></>}
     {tab === "overview" && contextUnavailable && <ErrorState message="Additional asset context unavailable" onRetry={() => setRefresh(value => value + 1)} />}
     {tab === "overview" && context && counts && <details className="section-card advanced-evidence"><summary>Additional factual evidence — FMEA, assessments, overhaul and integration</summary>
       <section className="stat-grid asset-stat-grid"><StatCard label="Maintenance Events" value={formatNumber(counts.maintenance)} detail="Asset-scoped Mart total" tone="accent" /><StatCard label="FMEA Assessments" value={formatNumber(counts.fmea)} detail="Asset-scoped Mart total" /><StatCard label="Asset Health" value={formatNumber(counts.health)} detail="Asset-scoped Mart total" /><StatCard label="Overhauls" value={formatNumber(counts.overhaul)} detail="Resolved Asset relationship" tone="muted" /></section>
