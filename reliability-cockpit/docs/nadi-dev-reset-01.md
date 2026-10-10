@@ -2,11 +2,13 @@
 
 NADI review address: **https://localhost:3000/**. This updates PR #62's existing
 launcher and isolated Engineering implementation; it does not create another app.
-PR #62 remains an explicit feature preview until merged. PR #63 is unchanged.
+PR #62, #63 and #64 are merged as verified on 2026-10-10. Bundle A uses main
+963e7a8 as its baseline and an explicit `codex/nadi-ux-bundle-a` development preview.
+See [Bundle A source/rollback evidence](nadi-ux-bundle-a.md).
 The deployment's existing `cockpit-web` container is retained stopped for rollback.
 Never run a broad Compose `up`, restart, or recreate while this frontend owns 3000.
 
-## Baseline and comparison
+## Historical consolidation baseline and comparison — 2026-10-09
 
 Verified `origin/main`: `f54643f3510bf505628a1400024784faab46e496`.
 Before consolidation, port 3000 was the production Next frontend image at
@@ -64,9 +66,8 @@ starts, replaces, or migrates an operational store.
 Default baseline is **origin/main**: `start`, `reload`, and `cutover` without
 `--preview-ref` require that checkout's HEAD equal the locally verified main SHA.
 A mismatch fails before stopping anything. Fetch and inspect main explicitly;
-there is no hidden pull, merge, reset, or dirty-file discard. Until #62 is merged,
-main lacks the launcher foundation, so the reviewed candidate must be explicit.
-This does not authorize merging #62/#63 or overlaying candidate files onto main.
+there is no hidden pull, merge, reset, or dirty-file discard. Main now contains the merged launcher foundation. An active feature candidate
+still requires explicit `--preview-ref`; no hidden merge or file overlay occurs.
 
 For a later merged-main refresh or another reviewed branch:
 
@@ -148,3 +149,34 @@ reviewed inspection/case/recommendation workflow, session and record persistence
 CI backend/frontend passed for the implementation commit. Final exact release SHA,
 rollback/re-cutover and retained-row/container comparisons are recorded in the
 private `reset-01/acceptance-report.json` when the controlled cutover completes.
+
+## Bundle A source preview and rollback — 2026-10-10
+
+Main refresh and feature selection use the retained private controller. Record the
+full serving SHA and inspect a clean working tree before each source switch:
+
+```sh
+./.nadi-dev/nadi-dev status
+./.nadi-dev/nadi-dev backup
+./.nadi-dev/nadi-dev stop
+./.nadi-dev/nadi-dev switch codex/nadi-ux-bundle-a
+./.nadi-dev/nadi-dev start --preview-ref codex/nadi-ux-bundle-a
+# Verify exact SHA, both backends, fixture identity, rendered pages and secure login.
+```
+
+Source rollback uses the same controls: `stop`, `switch origin/main`, `start`.
+The reviewed main must still match its recorded SHA; fetch/review any new main
+before selecting it. A recorded immutable previous SHA can be selected explicitly
+with `switch <sha>` and `start --preview-ref <sha>` after compatibility review.
+Do not force a dirty/running switch. Keep fixture backups, old worktrees and the
+retained production frontend container. This development source rollback differs
+from the historical container rollback above and preserves HTTPS Engineering access.
+
+Reproducible UI browser regression is `web/scripts/ux-browser.mjs`, run from `web/`
+with an installed Playwright module (optional `NADI_PLAYWRIGHT_MODULE`).
+`NADI_BROWSER_OUTPUT` must be private unless it contains only the generated,
+explicitly synthetic screenshots. Optional `NADI_QA_ACCOUNT_FILE` and
+`NADI_PERSISTED_RECORD_FILE` point to existing private fixtures; never commit them.
+The script does not create/reset a database or run source collection. Exact source
+SHA comes from the actual development status endpoint; detached source is reported
+accurately rather than inventing a branch name.

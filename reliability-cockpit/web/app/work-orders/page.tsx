@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { TableFrame } from "../../components/ui";
 import { useEffect, useState } from "react";
 import { cockpitApi, type WorkOrderPage } from "../../lib/api";
 
@@ -67,7 +68,7 @@ export default function WorkOrdersPage() {
   };
 
   return (
-    <main>
+    <section className="legacy-content" aria-label="Work Orders">
       <section className="card">
         <h2>Work Orders (all equipment)</h2>
         <div className="filters" aria-label="Work order filters">
@@ -80,8 +81,8 @@ export default function WorkOrdersPage() {
           </label>
         </div>
         <p className="muted">
-          All-status total: <strong>{allStatusTotal.toLocaleString()}</strong>
-          {statusFilter !== "ALL" && <> · Filtered ({statusFilter}): <strong>{total.toLocaleString()}</strong></>}
+          All-status total: <strong>{!loading && !error && page ? allStatusTotal.toLocaleString() : "UNKNOWN"}</strong>
+          {statusFilter !== "ALL" && <> · Filtered ({statusFilter}): <strong>{!loading && !error && page ? total.toLocaleString() : "UNKNOWN"}</strong></>}
         </p>
         {error && <div className="error">{error}</div>}
         {loading && <div className="empty">Loading…</div>}
@@ -89,7 +90,7 @@ export default function WorkOrdersPage() {
           <div className="empty">Belum ada data. Jalankan <code>cockpit sync</code> terlebih dahulu.</div>
         )}
         {!loading && !error && page && page.items.length > 0 && (
-          <table>
+          <TableFrame label="Work Orders data"><table>
             <thead>
               <tr>
                 <th>ID</th>
@@ -124,7 +125,7 @@ export default function WorkOrdersPage() {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table></TableFrame>
         )}
         {!loading && !error && total > 0 && (
           <div className="pagination-bar" aria-label="Work order pagination">
@@ -158,6 +159,6 @@ export default function WorkOrdersPage() {
           </div>
         )}
       </section>
-    </main>
+    </section>
   );
 }

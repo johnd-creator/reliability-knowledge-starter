@@ -1,66 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState, type ReactNode } from "react";
+import { type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode } from "react";
 import type { PageMeta } from "../lib/api";
 import { shortIdentifier } from "../lib/format";
 
-const navigation = [
-  { href: "/", label: "Overview", icon: "◈" },
-  { href: "/assets", label: "Asset Reliability", icon: "◌" },
-  { href: "/maintenance", label: "Maintenance", icon: "↻" },
-  { href: "/fmea", label: "FMEA", icon: "△" },
-  { href: "/rcfa", label: "RCFA", icon: "⌁" },
-  { href: "/asset-health", label: "Asset Health", icon: "◒" },
-  { href: "/overhauls", label: "Overhaul", icon: "◫" },
-  { href: "/data-quality", label: "Data Trust", icon: "✓" },
-];
-
-export function AppShell({ children, engineeringVisible = false, liveDevelopment = false }: { children: ReactNode; engineeringVisible?: boolean; liveDevelopment?: boolean }) {
-  const pathname = usePathname();
-  const [theme, setTheme] = useState<"light" | "dark">("light");
-
-  useEffect(() => {
-    const saved = window.localStorage.getItem("nadi-theme");
-    const nextTheme = saved === "dark" ? "dark" : "light";
-    setTheme(nextTheme);
-    document.documentElement.dataset.theme = nextTheme;
-  }, []);
-
-  function toggleTheme() {
-    const nextTheme = theme === "light" ? "dark" : "light";
-    setTheme(nextTheme);
-    document.documentElement.dataset.theme = nextTheme;
-    window.localStorage.setItem("nadi-theme", nextTheme);
-  }
-
-  return (
-    <div className="nadi-shell">
-      <aside className="nadi-sidebar">
-        <Link href="/" className="nadi-brand" aria-label="NADI Overview">
-          <img className="nadi-logo" src="/logo_nadi.png" alt="NADI — Platform Analitik Keandalan Aset Pembangkit" />
-        </Link>
-        <div className="sidebar-context"><span className="pulse-dot" /> Platform Analitik Keandalan Aset Pembangkit</div>
-        <nav className="nadi-nav" aria-label="NADI navigation">
-          <p className="nav-label">Reliability workspace</p>
-          {(engineeringVisible ? [...navigation, { href: liveDevelopment ? "/engineering/local" : "/engineering", label: "Engineering", icon: "◇" }] : navigation).map((item) => {
-            const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
-            return <Link key={item.href} href={item.href} className={active ? "nav-link active" : "nav-link"}><span className="nav-icon">{item.icon}</span>{item.label}</Link>;
-          })}
-        </nav>
-        <div className="sidebar-footer"><span className="scope-label">OPERATING SCOPE</span><strong>BSR / IP</strong><small>Controlled Reliability Mart</small></div>
-      </aside>
-      <div className="nadi-content">
-        <header className="nadi-topbar">
-          <div><span className="topbar-kicker">NADI / RELIABILITY COCKPIT</span><span className="topbar-title">Asset reliability workspace</span></div>
-          <div className="topbar-actions"><div className="topbar-status"><span className="pulse-dot" /> Mart read-only <span className="scope-chip">BSR / IP</span></div><button className="theme-toggle" type="button" onClick={toggleTheme} aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`} aria-pressed={theme === "dark"}>{theme === "light" ? "☾" : "☀"}<span>{theme === "light" ? "Dark" : "Light"}</span></button></div>
-        </header>
-        <main className="nadi-main">{children}</main>
-      </div>
-    </div>
-  );
-}
+export { AppShell } from "./AppNavigation";
 
 export function PageHeader({ eyebrow, title, description, actions }: { eyebrow: string; title: string; description: string; actions?: ReactNode }) {
   return <div className="page-header"><div><p className="eyebrow">{eyebrow}</p><h1>{title}</h1><p className="page-description">{description}</p></div>{actions && <div className="page-actions">{actions}</div>}</div>;
@@ -87,15 +32,15 @@ export function Identifier({ value }: { value: string | null | undefined }) {
 }
 
 export function LoadingState({ label = "Memuat data Reliability Mart…" }: { label?: string }) {
-  return <div className="state-card loading-state"><span className="spinner" />{label}</div>;
+  return <div className="state-card loading-state" role="status" aria-live="polite"><span className="spinner" aria-hidden="true" />{label}</div>;
 }
 
 export function EmptyState({ title = "Belum ada data Reliability Mart untuk tampilan ini.", detail }: { title?: string; detail?: string }) {
   return <div className="state-card empty-state"><span className="state-symbol">∅</span><strong>{title}</strong>{detail && <p>{detail}</p>}</div>;
 }
 
-export function ErrorState({ message = "Reliability Mart unavailable" }: { message?: string }) {
-  return <div className="state-card error-state"><span className="state-symbol">!</span><strong>{message}</strong><p>Data Reliability Mart belum dapat dibaca. Coba muat ulang beberapa saat lagi.</p></div>;
+export function ErrorState({ message = "Reliability Mart unavailable", onRetry }: { message?: string; onRetry?: () => void }) {
+  return <div className="state-card error-state" role="alert"><span className="state-symbol">!</span><strong>{message}</strong><p>Data Reliability Mart belum dapat dibaca. Coba muat ulang beberapa saat lagi.</p>{onRetry && <Button onClick={onRetry}>Try again</Button>}</div>;
 }
 
 export function Pagination({ meta, onChange }: { meta: PageMeta; onChange: (offset: number) => void }) {
@@ -104,10 +49,26 @@ export function Pagination({ meta, onChange }: { meta: PageMeta; onChange: (offs
   return <div className="pagination"><span>{first}–{last} dari {meta.total.toLocaleString("id-ID")}</span><div><button className="icon-button" type="button" aria-label="Previous page" disabled={meta.offset === 0} onClick={() => onChange(Math.max(0, meta.offset - meta.limit))}>←</button><span className="page-number" aria-live="polite">{Math.floor(meta.offset / meta.limit) + 1}</span><button className="icon-button" type="button" aria-label="Next page" disabled={!meta.has_more} onClick={() => onChange(meta.offset + meta.limit)}>→</button></div></div>;
 }
 
-export function TableFrame({ children, minWidth = 900 }: { children: ReactNode; minWidth?: number }) {
-  return <div className="table-frame" style={{ minWidth }}>{children}</div>;
+export function TableFrame({ children, minWidth = 900, label = "Data table, scroll horizontally for additional columns" }: { children: ReactNode; minWidth?: number; label?: string }) {
+  return <div className="table-frame" role="region" aria-label={label} tabIndex={0}><div className="table-content" style={{ minWidth }}>{children}</div></div>;
 }
 
 export function SectionCard({ children, className = "" }: { children: ReactNode; className?: string }) {
   return <section className={`section-card ${className}`}>{children}</section>;
+}
+
+export function Button({ variant = "secondary", className = "", type = "button", ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "secondary" | "destructive" }) {
+  return <button {...props} type={type} className={`button ${variant} ${className}`} />;
+}
+
+export function InputControl({ label, id, ...props }: InputHTMLAttributes<HTMLInputElement> & { label: string; id: string }) {
+  return <label htmlFor={id}>{label}<input {...props} id={id} className="input-control" /></label>;
+}
+
+export function Breadcrumbs({ items }: { items: { label: string; href?: string }[] }) {
+  return <nav aria-label="Breadcrumb"><ol className="breadcrumbs">{items.map((item, index) => <li key={`${item.label}-${index}`}>{item.href ? <Link href={item.href}>{item.label}</Link> : <span aria-current={index === items.length - 1 ? "page" : undefined}>{item.label}</span>}</li>)}</ol></nav>;
+}
+
+export function Feedback({ children, error = false }: { children: ReactNode; error?: boolean }) {
+  return <div className={`feedback ${error ? "error" : ""}`} role={error ? "alert" : "status"}>{children}</div>;
 }

@@ -1,6 +1,6 @@
 # NADI UI specification V1
 
-Updated: 2026-10-10 · NADI-DOC-FOUNDATION-01 · design candidate, no UI changes.
+Updated: 2026-10-10 · NADI-DOC-FOUNDATION-01 · design specification with Bundle A implementation checkpoint.
 Requirements: [PRD](../../PRD.md). Components: [Design System](../../DESIGN-SYSTEM.md).
 Delivery sequence: [official roadmap](../../plans/NADI-ROADMAP.md).
 
@@ -61,7 +61,7 @@ final navigation access point needs PO review and cannot remove existing access.
 Candidate technical submenus: Data Trust Center; Maximo (Maintenance, Work Orders,
 FMEA, RCFA, Overhaul); PI System; CEMS. PI/CEMS submenu proposals do not prove NADI
 projections exist. Asset Detail is a drilldown, not necessarily a sidebar entry.
-No actual navigation relocation, redirect or new route is implemented by this task.
+Bundle A implements this placement using existing routes. Engineering is a supplemental authorized link pending PO review; unavailable top-level modules and PI/CEMS remain Planned. No route rewrite or global authentication activation occurs.
 
 ## UI-01 — Executive Overview
 
@@ -79,7 +79,8 @@ No actual navigation relocation, redirect or new route is implemented by this ta
   approved rules and reviewed records.
 - **Implemented:** factual dashboard, Maintenance Activity and bounded distributions/
   trends; existing release semantics. No accepted numerical health/risk portfolio.
-- **Planned:** UX-04 visual polish and approved assessment aggregation when eligible.
+- **Bundle A implemented candidate:** REF-EXEC hierarchy, six factual KPI cards, three summary panels and a full-width weekly activity chart; all existing record, distribution and integrity evidence remains accessible.
+- **Planned:** PO visual acceptance and approved assessment aggregation when eligible.
 - **Unknown data behavior:** show unavailable/unknown scope and dates explicitly;
   missing condition evidence cannot count as healthy, zero failures or zero risk.
 - **Security constraints:** stored-data reads only; no PII/source credentials; preserve
@@ -351,3 +352,15 @@ No actual navigation relocation, redirect or new route is implemented by this ta
 - **Acceptance criteria:** design reviewed with error/loading/expiry states; mockups
   clearly nonfunctional; existing QA login/security and factual access unchanged;
   no global enforcement claimed until separate approved implementation and UAT.
+
+## Bundle A review evidence
+
+UX-02/03/04 are implementation candidates, independent of merge and PO acceptance.
+[Review and responsive screenshots](../../reliability-cockpit/docs/nadi-ux-bundle-a.md)
+compare the actual UI with REF-EXEC. Screenshots use explicitly labeled synthetic
+browser fixtures; the application keeps its factual API path. Missing health scores
+are NOT ASSESSED, attention reflects exact unresolved relationships, and the chart
+shows existing weekly event counts with an accessible full-period table. No search,
+unit selector, alert feed or healthy/warning/critical distribution is fabricated.
+UI-02–11 functional scope is unchanged except shared shell/primitives and legacy
+semantic/scroll fixes. The original five reference PNGs retain their SHA256/provenance.

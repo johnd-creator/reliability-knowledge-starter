@@ -14,7 +14,9 @@
     "check:http-qa": "node scripts/http-qa-check.mjs",
     "check:bounded-http": "node scripts/bounded-http-check.mjs",
     "check:bounded-proxy": "node scripts/bounded-proxy-check.mjs",
-    "check:local-auth": "node scripts/local-auth-check.mjs"
+    "check:local-auth": "node scripts/local-auth-check.mjs",
+    "lint": "eslint components/ui.tsx components/AppNavigation.tsx components/ExecutiveOverview.tsx lib/navigation.ts lib/overview.ts app/page.tsx app/work-orders/page.tsx \"app/equipment/*/page.tsx\"",
+    "check:ux": "node scripts/ux-check.mjs"
   },
   "dependencies": {
     "next": "^15.5.9",
@@ -24,6 +26,10 @@
   "devDependencies": {
     "@types/node": "^26.2.0",
     "@types/react": "^19.2.18",
-    "typescript": "^5.9.3"
+    "eslint": "^9.39.5",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.71.1"
   }
 }

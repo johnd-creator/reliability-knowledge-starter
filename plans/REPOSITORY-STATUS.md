@@ -1,6 +1,17 @@
 # Repository status and debt — PLATFORM-ROADMAP-001
 
-## Current audit — NADI-DOC-FOUNDATION-FIX-03 — 2026-10-10
+## Current development checkpoint — NADI UX Bundle A — 2026-10-10
+
+Verified main: **963e7a8bf0b2a7cf62b1ee8a5661c95d62df7108**; PR62/63/64 MERGED.
+The integrated branch `codex/nadi-ux-bundle-a` implements UX-02/03/04 and bounded
+self-review. Development preview is selected explicitly through the same launcher
+at https://localhost:3000. [Implementation/review evidence](../reliability-cockpit/docs/nadi-ux-bundle-a.md)
+records source selection, tests, screenshots and rollback. Merge and final Product
+Owner visual acceptance remain separate pending gates. UX-05–09 stay PLANNED.
+No operational source/data/collector or Phase1 policy changes are introduced.
+Phase1 operator-review evidence remains UNKNOWN; existing deadlines still apply.
+
+## Historical audit — NADI-DOC-FOUNDATION-FIX-03 — 2026-10-10
 
 Latest fetched `origin/main`: **0cb26882c870185a54282df3af4a136f31702b67**. PR29–63 are MERGED.
 PR64 remains OPEN on codex/nadi-doc-foundation-01. FIX-03 merges latest main into

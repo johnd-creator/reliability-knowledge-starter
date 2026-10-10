@@ -1,0 +1,37 @@
+/* NADI Design System V1. Color is presentation, never an equipment assessment. */
+:root {
+  --font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body: 14px; --font-label: 12px; --font-small: 11px;
+  --font-heading: 32px; --font-section: 17px; --font-kpi: 30px;
+  --nav-active: #0b7437; --nav-edge: #86efac; --nav-border: #466073;
+  --nav-hover: #1b364b; --nav-focus: #93c5fd; --nav-on-active: #ffffff;
+  --nav-emblem-border: #4ade80; --drawer-shade: #00000080;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-6: 24px; --space-8: 32px; --space-12: 48px;
+  --radius-sm: 6px; --radius: 12px; --radius-pill: 999px;
+  --sidebar-width: 248px; --sidebar-collapsed-width: 72px; --topbar-height: 64px;
+  --bg: #f8fafc; --surface: #ffffff; --surface-2: #f1f5f9; --surface-3: #e2e8f0;
+  --line: #e2e8f0; --line-strong: #94a3b8;
+  --text: #0f172a; --heading: #0f172a; --cell: #334155;
+  --muted: #475569; --muted-2: #526277;
+  --primary: #0b7437; --active-green: #118c45; --accent-green: #16a34a;
+  --cyan: var(--primary); --cyan-strong: #085c2c; --cyan-soft: #edf8f1;
+  --green: #166534; --amber: #92400e; --red: #b91c1c; --blue: #1d4ed8;
+  --chart: #3b82f6; --focus: #1d4ed8;
+  --shadow: 0 2px 8px rgba(16,37,54,.06);
+  --sidebar: #102536; --sidebar-text: #e2e8f0; --sidebar-muted: #bbcbd6;
+  --topbar: #ffffff; --hover: #f1f5f9; --banner: #f1f5f9;
+  --table-head: #f8fafc; --button-text: #ffffff; --logo-surface: #ffffff;
+}
+:root[data-theme="dark"] {
+  --bg: #0b1520; --surface: #142334; --surface-2: #1b2d40; --surface-3: #2a4055;
+  --line: #31465d; --line-strong: #64748b;
+  --text: #edf2f7; --heading: #f8fafc; --cell: #d8e3ed;
+  --muted: #bfccd9; --muted-2: #aabccd;
+  --primary: #8ce0ac; --cyan-strong: #b7f3ce; --cyan-soft: #173a2d;
+  --green: #8ce0ac; --amber: #fcd68d; --red: #fca5a5; --blue: #93c5fd;
+  --chart: #60a5fa; --focus: #93c5fd;
+  --shadow: 0 2px 8px rgba(0,0,0,.18);
+  --topbar: #142334; --hover: #1b2d40; --banner: #1b2d40;
+  --table-head: #1b2d40; --button-text: #102536;
+}

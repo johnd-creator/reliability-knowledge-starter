@@ -1,12 +1,12 @@
 # NADI Design System V1
 
-Updated: 2026-10-10 · UX-02 design candidate · implementation PLANNED.
-This is a proposed specification, not CSS implementation or visual acceptance.
+Updated: 2026-10-10 · UX-02 implementation candidate — NADI UX Bundle A.
+V1 tokens and compatible primitives are implemented; Product Owner visual acceptance remains pending.
 Product Owner direction: professional industrial reliability platform, navy sidebar,
 green active navigation, light content, white cards and clear information hierarchy.
 The five existing root PNGs are [official, AVAILABLE references](docs/design/references/README.md)
 confirmed by the Product Owner in FIX-02. Their visual mapping and original bytes
-are verified; implemented UI comparison and final token approval remain pending.
+are verified; responsive comparison is recorded in the [Bundle A review](reliability-cockpit/docs/nadi-ux-bundle-a.md); final token/visual approval remains pending.
 
 ## Tokens
 
@@ -106,3 +106,35 @@ keyboard/focus and screen-reader labels checked, charts understandable without c
 no horizontal page overflow, screenshot comparison against actual approved originals,
 factual routes unchanged, and PO visual decision recorded against the tested SHA.
 Approval of this specification alone does not complete UX-02 or UX-09.
+
+## Bundle A implementation decisions
+
+The existing frontend now imports [V1 tokens](reliability-cockpit/web/app/design-tokens.css)
+from its existing global stylesheet. Existing token names remain aliases so factual
+and Engineering components share the same system. No runtime dependency was added.
+Scoped ESLint/TypeScript/React hooks/accessibility tooling is development-only.
+
+Implemented primary action green is **#0B7437**, replacing proposed #16A34A for
+white-text actions. Automated luminance checks require ≥4.5:1 for normal text:
+primary/white, light and dark text/surface, muted/surface, warning/surface and
+sidebar text/navy. Navy remains #102536; green active navigation uses the darker
+action shade with a visible green edge. Information badges do not classify health.
+
+Spacing, radii, sidebar widths, topbar height, shadows and focus colors use tokens.
+`ui.tsx` retains existing primitives and adds Button, InputControl, Breadcrumbs and
+Feedback. TableFrame contains minimum width inside a keyboard-focusable labeled
+scroll region. Loading/error states announce their purpose; raw statuses stay neutral.
+The current dark theme is retained. This bounded review is not an accessibility
+certification of all legacy Engineering forms.
+
+Desktop navigation is 248px with an optional 72px collapse; below 1024px it is a
+modal drawer with focus containment, Escape, focus return and background inertness.
+The eight product entries follow the specified order. Unimplemented product modules
+and PI/CEMS integrations are labeled Planned; no unrelated redirects are introduced.
+Engineering remains a separate authorized link pending PO placement review.
+
+Measured token pairs (WCAG relative luminance, rounded): white/#0B7437 **5.89:1**;
+sidebar #E2E8F0/#102536 **12.71:1**; sidebar muted #BBCBD6/#102536 **9.42:1**;
+light secondary #526277/#F1F5F9 **5.68:1**; dark text #EDF2F7/#142334 **14.13:1**;
+dark secondary #BFCCD9/#142334 **9.74:1**. Typography sizes/family and navigation
+hover/edge/border/focus colors are tokens alongside the spacing/shape palette.
