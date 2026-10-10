@@ -1,5 +1,23 @@
 # Power Plant Data Platform
 
+## NADI — start here
+
+**NADI — Reliability Data Platform**, supporting PLTU Banten 1 Suralaya within the
+Power Plant Data Platform. Read [NADI-CONTEXT.md](NADI-CONTEXT.md) for concise
+onboarding, [PRD](PRD.md) for requirements, [Design System](DESIGN-SYSTEM.md) and
+[UI specification](docs/design/NADI-UI-SPEC.md) for proposed design.
+
+[Official product roadmap](plans/NADI-ROADMAP.md) ·
+[Repository Status](plans/REPOSITORY-STATUS.md) · [DEV-LOG](DEV-LOG.md) ·
+[Agent safety and onboarding](AGENTS.md).
+
+Primary development frontend: **https://localhost:3000**. FIX-03 verified main
+0cb26882c870185a54282df3af4a136f31702b67 with PR62/63 MERGED. The last recorded runtime
+source is 0bfea1273f97ce96a08ef147b44f804aecb428d1; documentation reconciliation
+does not switch the running frontend.
+See [verified audit and startup authority](docs/NADI-DOC-FOUNDATION-01.md).
+No global login enforcement is introduced by the documentation foundation.
+
 Monorepo untuk fondasi data pembangkit yang dipakai bersama oleh aplikasi
 engineering dan analitik. Nama repository tetap `reliability-knowledge-starter`;
 visi produknya telah berkembang menjadi **Power Plant Data Platform**.
@@ -22,7 +40,9 @@ Collector memiliki akuisisi sumber, pengaturan cadence, kualitas sumber, dan
 penyimpanan lokal. Aplikasi memakai kemampuan collector atau kontrak yang
 dikelola; aplikasi tidak melakukan discovery produksi sendiri.
 
-## Posisi saat kembali ke repository
+## Historical position — audit 7 Oktober 2026
+
+Snapshot berikut dipertahankan sebagai histori; status aktif ada di tautan di atas.
 
 Audit **7 Oktober 2026**, baseline `main`:
 [`ef07a26`](https://github.com/johnd-creator/reliability-knowledge-starter/commit/ef07a263b122d30e7dbec451e6094f9016b603c3)

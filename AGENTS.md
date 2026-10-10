@@ -224,3 +224,47 @@ and mostly hermetic unittest suite; Mart tests can use temporary SQLite. Inspect
 web package.json for relevant checks. Do not start operational DBs or call
 production to run tests. Documentation-only work uses Markdown/reference checks,
 `git diff --check` and a docs-only diff gate; no runtime restart is necessary.
+
+
+## 11. NADI documentation onboarding and continuity
+
+Before implementing a NADI task, read in order:
+
+1. This `AGENTS.md`, then relevant scoped `AGENTS.md` and any available `CONTEXT.md`.
+2. [NADI-CONTEXT.md](NADI-CONTEXT.md) for concise product/runtime context.
+3. [PRD.md](PRD.md) for product requirements and acceptance boundaries.
+4. [DESIGN-SYSTEM.md](DESIGN-SYSTEM.md) and [UI specification](docs/design/NADI-UI-SPEC.md)
+   for proposed tokens, page requirements and reference availability.
+5. [Official roadmap](plans/NADI-ROADMAP.md), [Repository Status](plans/REPOSITORY-STATUS.md)
+   and [DEV-LOG.md](DEV-LOG.md) for current priorities and independent milestones.
+6. Scoped ADRs, contracts, semantic/acceptance reports and the task's exact PR diff.
+
+Verify latest main, open/merged PRs, exact-head CI, active runtime source/dirty state
+and data ownership; never infer current status from an old “current” heading.
+`plans/NADI-ROADMAP.md` is the sole product roadmap. M0–M8 remains its technical
+implementation roadmap; domain documents retain their own authority.
+
+Record requirement IDs and evidence in each task/PR. Treat IMPLEMENTED, TESTED,
+MERGED, VISIBLE and ACCEPTED independently, with date, exact SHA and scope. CI
+cannot prove runtime visibility or Product Owner/engineer UAT. Record actual PO
+decisions separately from proposals; do not infer method/threshold approval from
+schema enums, screenshots, design approval or test success. UNKNOWN remains explicit.
+
+Update the owning PRD/design/roadmap/status documents when their scope changes and
+append DEV-LOG events at material milestones. Preserve historical evidence and
+append corrections instead of rewriting prior log entries. Cite pending PRs at
+immutable heads; reconcile overlap without dropping their requirements. Never
+silently merge a candidate or create a duplicate implementation/roadmap.
+
+For documentation-only tasks, use a separate clean worktree when the running source
+is active. Do not switch it, restart services, modify env/data/collectors or delete
+untracked files. Preserve `23496711.xls` and existing isolated Engineering records.
+The primary development address is https://localhost:3000; follow the reviewed
+single-frontend launcher runbook for separately authorized runtime work. Do not
+create another permanent NADI frontend. Existing HTTPS/session/CSRF/RBAC protections
+remain intact. Global login design grants no authority to enforce it globally.
+
+Missing design originals must be reported and tracked; never regenerate/substitute
+images or claim files were committed without the actual supplied bytes. Design
+metrics are illustrative and cannot become engineering evidence. Phase1 review
+checkpoints/expiry and accepted facts stay independent of UI/documentation work.

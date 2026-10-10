@@ -1,35 +1,39 @@
 # Repository status and debt — PLATFORM-ROADMAP-001
 
-## NADI-PDM-REQ-01 — current requirements reconciliation — 2026-10-09
+## Current audit — NADI-DOC-FOUNDATION-FIX-03 — 2026-10-10
 
-Verified main: `f54643f3510bf505628a1400024784faab46e496`, including merged PR61.
-Older candidate/open-PR checkpoints below retain historical evidence and are not
-current merge-state claims. No runtime acceptance or fresh operational audit is implied.
+Latest fetched `origin/main`: **0cb26882c870185a54282df3af4a136f31702b67**. PR29–63 are MERGED.
+PR64 remains OPEN on codex/nadi-doc-foundation-01. FIX-03 merges latest main into
+this clean documentation worktree; no active development worktree is switched.
 
-| Phase | Current checkpoint |
-|---|---|
-| 0 | COMPLETE for accepted factual scope |
-| 1 | CURRENT / PARTIAL; existing evidence gates remain |
-| 2 | Foundations MERGED; operational acceptance / engineer UAT PARTIAL |
-| 3 | DESIGN READY; not operational |
-| 4 | Recommendation foundation implemented; operational acceptance pending |
-| 5 | PLANNED |
+| Merged work | Merge commit | Preserved authority |
+|---|---|---|
+| [PR62](https://github.com/johnd-creator/reliability-knowledge-starter/pull/62) | `72b7ec55acbb3d5d9562102c3eaf721d4dda714b` | [Persistent single HTTPS3000 frontend/runbook](../reliability-cockpit/docs/nadi-dev-reset-01.md) |
+| [PR63](https://github.com/johnd-creator/reliability-knowledge-starter/pull/63) | `0cb26882c870185a54282df3af4a136f31702b67` | [PdM R01–R08, Q01–Q10 and M01–M07](../reliability-cockpit/docs/nadi-pdm-requirements-01.md) |
 
-Phase 2 **PdM Measurement & Investigation** is an explicit candidate backlog:
-M01 engineer samples/terminology → M02 approved method/point/instrument contracts
-→ M03 irregular-time history → M04 controlled Excel/diagnostic evidence workflow
-→ M05 independent interpretation review → M06 informational WO/local recommendation
-→ M07 engineer UAT. Secure storage, trusted operational identity and application
-provisioning remain dependencies. Field proposals are NOT approved.
+Prior source-head CI results remain historical: main/PR61 run37921470470,
+PR62 run37940329956, PR63 run37932325576. FIX-03 CI must match the new PR64 HEAD;
+its result is linked in the PR handoff. [Foundation audit](../docs/NADI-DOC-FOUNDATION-01.md)
+retains earlier inventories and the superseding conflict-resolution checkpoint.
 
-Portable measurements are episodic, not assumed daily/24-hour telemetry. Installed
-DCS/PI and portable series cannot be combined without approved comparability.
-PD is unresolved and must not be equated with DGA; “30% acr” is undefined.
-All ten engineer decisions remain PENDING_ENGINEER_VALIDATION. No automatic
-threshold, traffic light, score or source write is authorized.
+PR63's phase summary and measurement/investigation backlog are preserved in the
+[official roadmap](NADI-ROADMAP.md) and owning packet rather than duplicated here.
+Historical acceptance reports, manual-PdM clarifications and Phase3 addendum remain
+unchanged from latest main. No runtime/collector/database action is performed.
 
-[Engineer statements, requirement traceability, acceptance criteria and validation register](../reliability-cockpit/docs/nadi-pdm-requirements-01.md).
-Documentation only; active LiveDev and operational/Phase1 evidence remain unchanged.
+Current phase status belongs to [the official roadmap](NADI-ROADMAP.md);
+requirements/design to [PRD](../PRD.md)/[UI spec](../docs/design/NADI-UI-SPEC.md);
+independent milestone history to [DEV-LOG](../DEV-LOG.md). Development acceptance
+is not actual engineer UAT or operational activation. FIX-02 verifies the five existing root PNGs as
+[official references](../docs/design/references/README.md); no additional images
+are required. Outstanding: PO implementation visual/token/navigation review, PR63 Q01–Q10, operational application
+provisioning/storage/security/UAT, and UNKNOWN Phase1 operator-review outcomes.
+The original Phase1 expiry and accepted factual evidence remain unchanged.
+
+### Historical status records
+
+The dated records below are preserved in full. Use their original scope/date;
+older “current”/“next” statements are not the latest task sequence.
 
 ## NADI-E-INTEGRATION-02 — local authentication and final audit — 2026-10-09
 

@@ -1,6 +1,18 @@
 # 05 — Roadmap Implementasi dan Backlog
 
-## NADI-DEV-RESET-01 — single development address — 2026-10-09
+## Documentation continuity — 2026-10-10
+
+M0–M8 remains the technical implementation roadmap under the single
+[official NADI product roadmap](../NADI-ROADMAP.md), which now owns the UX-01–09
+track. Requirements/design are [PRD](../../PRD.md) and
+[UI specification](../../docs/design/NADI-UI-SPEC.md). Main 0cb26882c870185a54282df3af4a136f31702b67 includes merged
+PR29–63. PR62 supplies the persistent single frontend; PR63 supplies PdM requirements
+and engineer-validation gates. Older OPEN statements below are dated history.
+[FIX-03 reconciliation evidence](../../docs/NADI-DOC-FOUNDATION-01.md) records the
+merge into PR64; no runtime source selection or restart is performed.
+No implementation sequence or operational acceptance is completed by this docs task.
+
+## Historical NADI-DEV-RESET-01 — single development address — 2026-10-09
 
 Review current development at **https://localhost:3000/** using the existing PR #62
 launcher/isolated fixture. Latest verified main baseline: `f54643f3510bf505628a1400024784faab46e496`.
@@ -11,7 +23,6 @@ after primary browser acceptance. Full SHA/branch/dirty state, both backends and
 fixture identity are visible. Operational factual routes remain reads of existing
 stored data; Engineering records remain isolated and SYNTHETIC. Phase1
 CURRENT/PARTIAL and real QA NO_GO remain. No new PdM capability in this task.
-
 
 ## NADI-E-INTEGRATION-02 — local authentication and final audit — 2026-10-09
 

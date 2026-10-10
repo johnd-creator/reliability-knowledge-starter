@@ -1,5 +1,14 @@
 # Power Plant Data Platform — vision dan batas arsitektur
 
+> Reconciliation, 2026-10-10: ownership below remains authoritative. Earlier
+> PENDING/absent-wiring statements are historical deployment checkpoints. A bounded
+> governed PI pilot and later Engineering foundations are now recorded in the
+> [official roadmap](NADI-ROADMAP.md) and [Phase1 acceptance](NADI-PHASE-1-ACCEPTANCE.md).
+> Broad condition/diagnostic acceptance and CEMS NADI projection remain gated.
+> Human Engineering records belong to the existing Cockpit application owner;
+> current persisted development uses an isolated test fixture, not an operational
+> writer activation. See [NADI Context](../NADI-CONTEXT.md) and [ADR007](../reliability-cockpit/docs/adr/007-source-read-only-application-boundary.md).
+
 Status: **CURRENT architectural direction**. Baseline dan branch exceptions
 ada di [Repository Status](REPOSITORY-STATUS.md). Repository tidak perlu
 berganti nama untuk menjalankan visi ini.
