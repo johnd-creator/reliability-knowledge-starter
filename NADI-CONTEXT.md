@@ -41,16 +41,18 @@ record the verified source, secure login boundary and startup authority.
 Read the banner's full SHA, dirty state, backend availability and fixture identity
 before reviewing changes. A documentation branch is not automatically visible there.
 
+Bundle A is now MERGED via PR65 in verified main `160737b3bfaeac94f4e8093b8566ca0e5d3585c9`. Bundle B implements the next product surfaces in `codex/nadi-ux-bundle-b`, selected explicitly through the same launcher; [Bundle B evidence](reliability-cockpit/docs/nadi-ux-bundle-b.md) distinguishes implementation from operational readiness and PO approval.
+
 ## Modules and current scope
 
 | Module | Verified scope / target |
 |---|---|
 | Executive Overview | Factual dashboard and Bundle A visual candidate implemented; PO acceptance pending |
-| Asset Health | Factual register/detail and assessment records exist; integrated asset workspace planned |
-| PdM Center | Synthetic concepts and inspection foundation exist; engineer-approved measurement UI planned |
+| Asset Health | Factual register/detail and assessment records retained; six-section Bundle B detail implemented |
+| PdM Center | Bundle B authenticated QA event/detail/history UI implemented; operational method/trend approval pending |
 | Engineering Workspace | Merged case/review/audit foundation; persisted isolated QA visible; operational activation partial |
-| Recommendations | Merged NADI-owned lifecycle and isolated QA; final operational UI pending |
-| Action Board | Synthetic concept and local follow-up foundation; operational board pending |
+| Recommendations | Bundle B NADI-owned QA register/detail/history implemented; operational activation pending |
+| Action Board | Bundle B authorized QA review/follow-up board implemented; operational acceptance pending |
 | Reports | Product module planned; no claim of a complete reporting product |
 | System Integration | Data Trust/technical navigation consolidated in Bundle A; PI/CEMS product projections remain planned |
 | Administration | Private bounded account administration exists; product administration UI planned |

@@ -1,6 +1,19 @@
 # Repository status and debt — PLATFORM-ROADMAP-001
 
-## Current development checkpoint — NADI UX Bundle A — 2026-10-10
+## Current development checkpoint — NADI UX Bundle B — 2026-10-10
+
+Verified main: **160737b3bfaeac94f4e8093b8566ca0e5d3585c9**; PR65 MERGED.
+`codex/nadi-ux-bundle-b` implements UX-05/06/07 on the existing V1 shell. Asset
+Register/detail/assessment routes retain factual contracts. PdM, Recommendations
+and Action Board use only the authenticated development QA read contracts and
+explicit SYNTHETIC labels; operational activation and engineer UAT remain pending.
+[Implementation/self-review evidence](../reliability-cockpit/docs/nadi-ux-bundle-b.md)
+records exact functional source, visual evidence, regressions, corrections and
+launcher rollback. Final HEAD/CI and serving SHA are independently verified in the
+PR/task handoff. UX-08/09 remain PLANNED; no global enforcement or operational policy
+change. PR63 Q01–Q10 and original Phase1 reviews/expiry remain intact.
+
+## Historical Bundle A delivery checkpoint — 2026-10-10
 
 Verified main: **963e7a8bf0b2a7cf62b1ee8a5661c95d62df7108**; PR62/63/64 MERGED.
 The integrated branch `codex/nadi-ux-bundle-a` implements UX-02/03/04 and bounded

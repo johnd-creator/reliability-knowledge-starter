@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "candidate": "0df4b47b951013aa03ae1bb97fad7e4167bb474e",
+  "rollback_main": "160737b3bfaeac94f4e8093b8566ca0e5d3585c9",
+  "checks": [
+    "actual UI Fast Refresh without document reload",
+    "HMR retains filter state",
+    "own UI edit reports dirty truthfully",
+    "source restored after HMR",
+    "candidate retained inspections",
+    "candidate retained cases",
+    "candidate retained recommendations",
+    "rollback selects verified main",
+    "main factual UI restored",
+    "same Secure session survives source rollback",
+    "main rollback retained inspections",
+    "main rollback retained cases",
+    "main rollback retained recommendations",
+    "candidate UI restored",
+    "candidate restored retained inspections",
+    "candidate restored retained cases",
+    "candidate restored retained recommendations",
+    "final matching clean source"
+  ],
+  "hmr_source_restored": true
+}

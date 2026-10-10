@@ -230,3 +230,26 @@ Evidence: [reconciliation audit](docs/NADI-DOC-FOUNDATION-01.md),
 Evidence: [Bundle A implementation/review](reliability-cockpit/docs/nadi-ux-bundle-a.md),
 [official roadmap](plans/NADI-ROADMAP.md), [development source/rollback runbook](reliability-cockpit/docs/nadi-dev-reset-01.md).
 Original images/workbook, persistent records and all operational services remain preserved.
+
+
+## NADI UX Bundle B — B0 / UX-05 / UX-06 / UX-07 / B4
+
+- **Date:** 2026-10-10, Asia/Jakarta.
+- **Task ID:** NADI UX Bundle B.
+- **Objective:** Implement Asset Health, PdM Center, Recommendations and Action Board using existing contracts, then review, repair and prepare the single frontend preview.
+- **Branch:** codex/nadi-ux-bundle-b, clean isolated implementation worktree.
+- **Commit SHA:** Verified main `160737b3bfaeac94f4e8093b8566ca0e5d3585c9`; prior serving `23b6a413f6d4f9e91afbcc631d4ab7d3d10d1858`; functional candidate `0df4b47b951013aa03ae1bb97fad7e4167bb474e`. This introducing evidence commit follows it; final exact release HEAD is in the PR/task handoff.
+- **PR:** One integrated Bundle B PR against main; URL/exact-head checks in final delivery handoff.
+- **Implementation Status:** IMPLEMENTED UX-05/06/07 — six-section factual detail and authenticated synthetic QA product registers/detail/history/board, with existing gated commands reused.
+- **Test Status:** TESTED — TypeScript/lint/build/safety,143 existing frontend +43 UX checks,707 backend discovered/484PASS/223 optional SKIP,14 contracts,105 Bundle A browser,129 Bundle B browser and18 HMR/rollback checks; fifteen sanitized screenshots inspected.
+- **CI Status:** Local checks PASS; final exact release HEAD CI follows push and is verified independently in PR checks/task handoff. This entry does not infer CI from local/runtime checks.
+- **Merge Status:** PR65 MERGED; Bundle B UNMERGED pending senior/PO review. No automatic merge.
+- **Development Visibility:** VISIBLE at https://localhost:3000 through supported launcher, matching clean source/backend/launch SHA; rollback to main and candidate re-selection preserve existing Secure session and exact persisted records. Final release serving SHA is verified in handoff.
+- **Product Owner Acceptance:** PENDING — self-review and implementation authorization do not establish visual approval or engineer UAT.
+- **Remaining Blockers:** No known critical/high implementation finding remains within the scoped review. Q01–Q10, operational methods/writer/identity/custody/linkage, actual engineer UAT and PO review remain separate gates. Phase1 operator-review outcomes UNKNOWN; original deadlines unchanged.
+- **Next Action:** Senior/PO review of PR/CI/preview; bounded engineer validation before operational PdM activation; no automatic global login or merge.
+
+Evidence: [implementation/self-review](reliability-cockpit/docs/nadi-ux-bundle-b.md),
+[responsive screenshots](docs/design/ux-bundle-b/README.md),
+[official roadmap](plans/NADI-ROADMAP.md). Original images/workbook, records,
+all operational services, prior worktrees and rollback resources remain preserved.
