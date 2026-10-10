@@ -101,3 +101,45 @@ Phase-1 independent review remains separate: 11 October 2026 21:45 WIB review,
 12 October 20:00 decision checkpoint and 13 October 00:00 hard expiry. This bundle
 does not extend/reset those gates. Actual departmental identity, real distribution,
 engineer UAT and operational activation are **PENDING**.
+
+### Delivery checkpoint
+
+[PR #68](https://github.com/johnd-creator/reliability-knowledge-starter/pull/68)
+contains the integrated implementation. B0/B1 PASS; B2/B3 implemented and tested in
+disposable QA, persistent preview BLOCKED by schema prerequisite; B4 local workflow
+PASS with recipient runtime handoff gated; B5 review/tests/PR PASS, full persistent
+end-to-end preview PARTIAL. Overall delivery **PARTIAL**, not operational acceptance.
+
+Local validation: 161 PostgreSQL backend/security/real-HTTPS tests, zero skips;
+all existing frontend assertion scripts (37/25/38/10/8/9/16/43 assertions), eight
+new Engineering assertions, product safety, TypeScript, lint and production build.
+A separate initial SQLite run had 97 pass/58 skip; those skips were not counted as
+passes. Exact-head GitHub backend/frontend CI passed on implementation `2a7678d`
+([run](https://github.com/johnd-creator/reliability-knowledge-starter/actions/runs/38072796251)); final delivery
+checks are the PR's exact head, independently verified at handoff.
+
+Browser: 31 Engineering assertions, 102 Bundle A and 129 Bundle B assertions.
+Actual Case -> independently reviewed Recommendation -> existing Action Board
+local planning works. Advisory UI has sanitized DEMO fixture evidence; actual
+HTTPS persistence/receipt runs in the disposable tests. PR #67's unmerged login
+presentation is not integrated or claimed as tested on this main-based branch;
+its secure login was verified during exact-SHA rollback. No auth policy changed.
+
+Review repairs: canonical product Case links retain diagnostics separately;
+selection survives reload through the URL; new/edit forms cannot overlap; failed
+intent IDs are retained; invalid blank lines reach backend validation; source
+SHA256 values wrap fully instead of ellipsis. Backend revalidation, scope and
+independent publication/acknowledgement tests pass. No critical/high finding is
+left silently open. The persistent-schema prerequisite is explicit and fail-closed.
+
+See [responsive screenshots, reports and preservation evidence](evidence/nadi-eng-bundle-a/README.md).
+Original private backup: `backup-20261011-002620.dump`. Rollback to PR #67 source
+`8658c2fbd00bb78f1d8ee2b4462ccece4200a30e` was demonstrated without DB restore,
+collector/API restart or schema change; the Engineering candidate was reselected
+through the same launcher. The exact delivery HEAD appears in the development
+status banner; no permanent second frontend exists.
+
+Next bounded task: explicitly authorize or decline the QA-only constraint change
+for the preserved `nadi_live_dev_test` store, then perform persistent advisory
+publication/receipt UAT there. Real organizational identity, external distribution,
+engineer UAT and operational activation still require their own approvals.

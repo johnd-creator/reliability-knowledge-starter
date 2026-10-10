@@ -763,3 +763,24 @@ after software review/merge. Next: exact merged-SHA controlled deployment,
 configuration preflight and separately authorized single manual Coal Flow refresh
 plus real replay/API/UI/readiness acceptance. No recurring scheduler is enabled.
 PI_AF_KKS_LOOKUP_UNRESOLVED and BFPT freeze remain unchanged.
+
+### NADI-ENG-BUNDLE-A implementation checkpoint — 2026-10-11
+
+Evidence: [Engineering delivery report](../reliability-cockpit/docs/nadi-eng-bundle-a.md),
+[PR #68](https://github.com/johnd-creator/reliability-knowledge-starter/pull/68).
+Baseline `cc90fc73bea6ae399383d8538035c6454dc7e65a`; reviewed implementation
+`2a7678d82f6f0e8769a03ca09857c59f2f37f338`. PR #67 remains independent OPEN.
+
+| Official task | Implementation / tests | Persistent preview / acceptance |
+| --- | --- | --- |
+| ENG-UX-01 | IMPLEMENTED / TESTED: structured register/create/edit/detail, server scope/filter/pagination | VISIBLE in isolated QA; PO/engineer acceptance PENDING |
+| ENG-UX-02 | IMPLEMENTED / TESTED: frozen evidence, notes, CAS/retry, independent review, immutable history | VISIBLE in isolated QA; operational activation PENDING |
+| ADV-01 | IMPLEMENTED / TESTED in disposable PostgreSQL: approved Case + Recommendation, review/publication/withdrawal, immutable snapshots | BLOCKED_SCHEMA_PREREQUISITE in persistent QA; no DDL performed |
+| ADV-02 | IMPLEMENTED / TESTED in disposable PostgreSQL: fixed server QA audience + asset scope, durable receipt | Persistent inbox/acknowledgement BLOCKED; DEMO UI evidence only |
+| ADV-03 | IMPLEMENTED / TESTED: source links and existing Recommendation/Action Board local workflow | Local workflow VISIBLE; durable recipient handoff BLOCKED |
+| ADV-04 | PLANNED / FUTURE GATED | Real identity/distribution/UAT/operational activation NOT APPROVED |
+
+Overall bundle PARTIAL. No merge or Product Owner acceptance is inferred from
+self-review/CI. Phase 2 and Phase 4 remain PARTIAL; Phase 0–5 definitions and all
+historical evidence remain unchanged. Phase-1 independent review/checkpoint/expiry
+are still 11 Oct 21:45 / 12 Oct 20:00 / 13 Oct 00:00 WIB; this bundle changes no policy.
