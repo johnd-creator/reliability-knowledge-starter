@@ -387,3 +387,19 @@ Known reference deviations are deliberate: no illustrative health scores, risk
 colors/formula, diagnosis thresholds, interpolated trend or execution/budget
 categories. Operational readiness, Q01–Q10 validation, PO visual approval and UX-09
 acceptance remain separate pending gates. Original PNG assets/hashes are unchanged.
+
+## Engineering product flow — ENG-UX-01/02 and ADV-01/02/03
+
+Extend UI-05 with a permitted-asset case register, server pagination and structured
+create/edit/detail forms. Present problem, observations versus hypotheses, evidence,
+workflow, revisions and independent reviewer actions; retain `/engineering/local`
+for diagnostics. Errors preserve local unsaved input and explain revision conflicts.
+Extend UI-06/07 with advisory draft/review/publication, readable scoped recipient
+inbox/detail and explicit authenticated acknowledgement where durable identity is
+proven. Reuse the existing Action Board and NADI-owned recommendation lifecycle.
+Every screen carries SYNTHETIC QA scope, unknown/empty/error states, exact identities,
+V1 components, keyboard labels/focus, and 1440/768/390px responsive acceptance.
+Publication must bind an eligible reviewed immutable source version on the same
+asset. A read is not VIEWED/delivered without an explicit attributable event;
+acknowledgement is not plant-work approval. Real channels, operational accounts and
+activation remain gated. This specification records requirements, not completed UAT.

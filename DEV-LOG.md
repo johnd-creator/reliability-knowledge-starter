@@ -253,3 +253,22 @@ Evidence: [implementation/self-review](reliability-cockpit/docs/nadi-ux-bundle-b
 [responsive screenshots](docs/design/ux-bundle-b/README.md),
 [official roadmap](plans/NADI-ROADMAP.md). Original images/workbook, records,
 all operational services, prior worktrees and rollback resources remain preserved.
+
+## NADI-ENG-BUNDLE-A — B0 governance/baseline — 2026-10-11
+
+- **Date:** 2026-10-11, Asia/Jakarta.
+- **Task ID:** NADI-ENG-BUNDLE-A / B0.
+- **Objective:** PO-directed Case UX and Engineering Advisory/Distribution traceability before implementation.
+- **Branch:** codex/nadi-eng-bundle-a; separate clean worktree.
+- **Commit SHA:** Base main cc90fc73bea6ae399383d8538035c6454dc7e65a; introducing governance commit in Git history.
+- **PR:** New integrated Engineering PR to be opened; PR67 remains independently OPEN.
+- **Implementation Status:** PLANNED ENG-UX-01/02, ADV-01/02/03; ADV-04 FUTURE/GATED.
+- **Test Status:** Baseline ownership/fixture/clean source verified; feature tests pending.
+- **CI Status:** PR67 exact-head backend/frontend SUCCESS; Engineering CI pending, not inferred.
+- **Merge Status:** Engineering UNMERGED.
+- **Development Visibility:** Existing PR67 preview remains at 8658c2fbd00bb78f1d8ee2b4462ccece4200a30e, clean; new work not yet visible.
+- **Product Owner Acceptance:** Binding requirement authorization from supplied NADI-ENG-BUNDLE-A task; implementation acceptance PENDING.
+- **Remaining Blockers:** Inspect eligible upstream review, storage reuse and trusted recipient policy before delivery; operational channels/UAT remain gated.
+- **Next Action:** Implement bounded authenticated SYNTHETIC QA flow and verify security/regression.
+
+Phase 2/4 PARTIAL; freshness review/checkpoint/expiry remain separate unchanged tasks.

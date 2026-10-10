@@ -1,5 +1,29 @@
 # NADI product roadmap — main quest
 
+## Engineering delivery track — NADI-ENG-BUNDLE-A — 2026-10-11
+
+Product Owner directive NADI-ENG-BUNDLE-A explicitly requests reviewed Engineering
+analysis usable by authorized Operations/Maintenance consumers. This extends Phase 4
+and depends on Phase 2 cases and NADI-owned recommendations; it is not permission
+for actual operational distribution. Main `cc90fc73bea6ae399383d8538035c6454dc7e65a`
+is verified. PR67 remains independently OPEN at `8658c2fbd00bb78f1d8ee2b4462ccece4200a30e`.
+
+| Phase / ID | Required capability | Current milestone | Acceptance / dependencies |
+|---|---|---|---|
+| 2 / ENG-UX-01 | Scoped case register, structured create/edit/detail | PLANNED | Existing server pagination, CaseDraft, idempotency/CAS, no raw JSON input |
+| 2 / ENG-UX-02 | Evidence, revision and independent reviewer workflow | PLANNED | Exact asset/evidence references, trusted identity, independent review/history |
+| 4 / ADV-01 | Versioned advisory draft/review/in-app QA publication | PLANNED | Reviewed immutable eligible upstream version; independent publication; audit |
+| 4 / ADV-02 | Scoped recipient inbox and explicit acknowledgement | PLANNED | Trusted server audience/asset grants; durable events; never claims delivery/work approval |
+| 4 / ADV-03 | Existing Action Board/follow-up traceability | PLANNED | Exact case/recommendation/advisory links; reuse local lifecycle, no competing tracker |
+| 4 / ADV-04 | Real channels and operational rollout | FUTURE / GATED | Approved identities/consumers, rollout authority, custody and real UAT; no external sending in this bundle |
+
+Phase 2 and Phase 4 remain PARTIAL. Planned, implemented, tested, merged, visible,
+PO accepted and operationally accepted remain independent. Isolated authenticated
+SYNTHETIC QA is the delivery boundary; no fictitious severity/health/approval.
+Phase 1 independent 72h review (11 Oct21:45:26.619585 WIB), owner checkpoint
+(12 Oct20:00 WIB) and hard expiry (13 Oct00:00 WIB) remain separate and unchanged.
+Existing Phase 0–5 and historical checkpoints below remain authoritative.
+
 ## Current product checkpoint — NADI UX Bundle B — 2026-10-10
 
 This is the **official product roadmap**. Phase 0–5 remains intact; the UX track
