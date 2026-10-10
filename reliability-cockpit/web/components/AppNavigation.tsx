@@ -83,7 +83,7 @@ export function AppShell({ children, engineeringVisible = false, liveDevelopment
     else setExpanded(current => ({ ...current, [id]: !current[id] }));
   }
 
-  return <div className={`nadi-shell${collapsed ? " sidebar-collapsed" : ""}${drawer ? " drawer-open" : ""}`}>
+  return <div className={`nadi-shell${liveDevelopment ? " development-shell" : ""}${collapsed ? " sidebar-collapsed" : ""}${drawer ? " drawer-open" : ""}`}>
     <a className="skip-link" href="#main-content">Skip to content</a>
     {drawer && <button type="button" className="drawer-backdrop" aria-label="Close navigation" onClick={() => setDrawer(false)} />}
     <aside ref={sidebar} id="nadi-sidebar" className="nadi-sidebar" role={drawer ? "dialog" : undefined} aria-modal={drawer ? true : undefined} aria-label="NADI navigation panel">

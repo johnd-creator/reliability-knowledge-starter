@@ -36,8 +36,8 @@ try {
   if (assets.items.length) {
     const id = assets.items[0].canonical_id;
     check("asset detail deep link", (await page.goto(`${base}/assets/${encodeURIComponent(id)}`,{waitUntil:"networkidle"})).status() === 200);
-    check("asset detail exact canonical identity", (await page.locator("#main-content").innerText()).includes(id));
-    check("asset detail activates Asset Health", await page.getByRole("button",{name:"Asset Health",exact:true}).getAttribute("aria-expanded") === "true");
+    check("asset detail exact canonical identity", await page.locator(".identifier").evaluateAll((nodes, id) => nodes.some(node => node.title === id), id));
+    check("asset detail activates Asset Health", await page.getByRole("navigation",{name:"NADI navigation",exact:true}).getByRole("button",{name:"Asset Health",exact:true}).getAttribute("aria-expanded") === "true");
   }
   const equipment = await (await context.request.get(`${base}/api/cockpit/equipment?limit=1`)).json();
   const equipmentRows = Array.isArray(equipment) ? equipment : equipment.items ?? [];
@@ -56,6 +56,7 @@ try {
   await page.keyboard.press("Enter");
   check("keyboard submenu expands", await page.getByRole("button",{name:"System Integration",exact:true}).getAttribute("aria-expanded") === "true");
   await page.getByRole("link",{name:"Maintenance Investigation",exact:true}).click();
+  await page.waitForURL(base+"/maintenance/investigation");
   check("most specific route active", await page.getByRole("link",{name:"Maintenance Investigation",exact:true}).getAttribute("aria-current") === "page" && await page.getByRole("link",{name:"Maintenance",exact:true}).getAttribute("aria-current") === null);
   await page.getByRole("button",{name:"Collapse sidebar",exact:true}).click();
   check("collapsed navigation retains names", await page.getByRole("link",{name:"Executive Overview",exact:true}).isVisible());
@@ -96,6 +97,11 @@ try {
       }
     }
   }
+  await page.getByRole("button",{name:"Switch to dark theme"}).click();
+  check("dark theme retained",await page.evaluate(()=>document.documentElement.dataset.theme==="dark"));
+  await page.reload({waitUntil:"networkidle"});
+  check("theme preference persists",await page.evaluate(()=>document.documentElement.dataset.theme==="dark"));
+  await page.getByRole("button",{name:"Switch to light theme"}).click();
   check("no uncaught browser exceptions", errors.length===0);
   // Separate context: only this browser intercepts reads for deterministic, publicly shareable screenshots.
   const visual=await browser.newContext({ignoreHTTPSErrors:true});

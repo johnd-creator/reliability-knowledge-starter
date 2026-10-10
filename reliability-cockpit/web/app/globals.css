@@ -471,3 +471,6 @@ td strong { color: var(--text); font-weight: 650; }
 .pagination-bar, .pagination-controls { flex-wrap: wrap; }
 .kv dd { min-width: 0; overflow-wrap: anywhere; }
 .legacy-content { min-width: 0; }
+
+/* Keep the supported Next development indicator clear of sidebar controls. */
+.development-shell .sidebar-collapse { margin-bottom: var(--space-12); }
