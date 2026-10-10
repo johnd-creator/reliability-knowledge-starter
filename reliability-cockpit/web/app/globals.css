@@ -501,3 +501,9 @@ td strong { color: var(--text); font-weight: 650; }
 .product-workspace h3 { font-size:var(--font-body); margin-top:var(--space-6); }
 @media(max-width:900px) { .product-stat-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .product-context-grid {grid-template-columns:minmax(0,1fr);} }
 @media(max-width:600px) { .product-stat-grid { grid-template-columns:minmax(0,1fr); } }
+/* B4 visual correction: full technical fields and consistent accessible selectors. */
+.product-workspace .filter-grid label { display:flex; flex-direction:column; gap:var(--space-2); }
+.product-workspace .filter-grid select { width:100%; min-width:0; min-height:44px; padding:var(--space-3); border:1px solid var(--line-strong); border-radius:var(--radius-sm); background:var(--surface-2); color:var(--text); font:inherit; }
+.asset-reference-grid .asset-facts, .product-record-detail .asset-facts { grid-template-columns:minmax(0,1fr); }
+.asset-reference-grid .asset-facts > div, .product-record-detail .asset-facts > div { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr); gap:var(--space-3); }
+.asset-reference-grid .asset-facts dd, .product-record-detail .asset-facts dd { white-space:normal; text-overflow:clip; overflow:visible; min-width:0; }
