@@ -36,12 +36,12 @@ export default function LocalLogin({onAuthenticated,expired=false}:{onAuthentica
   {expired&&<p className="feedback login-expired" role="status">Your session expired or was revoked. Sign in again.</p>}
   <form onSubmit={submit} aria-label="NADI sign-in" aria-busy={busy} aria-describedby={error?`${helpId} ${errorId}`:helpId}>
     <p id={helpId} className="login-form-help">Username and password are required.</p>
-    <div className="login-field"><label htmlFor={usernameId}>Username <span aria-hidden="true">*</span></label>
+    <div className="login-field"><label htmlFor={usernameId}>Username</label>
       <input className="input-control" id={usernameId} name="username" autoComplete="username" maxLength={64} required value={username} onChange={e=>setUsername(e.target.value)} disabled={busy}/></div>
-    <div className="login-field"><label htmlFor={passwordId}>Password <span aria-hidden="true">*</span></label>
+    <div className="login-field"><label htmlFor={passwordId}>Password</label>
       <div className="nadi-password-field"><input className="input-control" id={passwordId} name="password" type={show?"text":"password"} autoComplete="current-password" maxLength={256} required value={password} onChange={e=>setPassword(e.target.value)} disabled={busy}/>
         <Button aria-controls={passwordId} aria-pressed={show} disabled={busy} onClick={()=>setShow(!show)}>{show?"Hide password":"Show password"}</Button></div></div>
-    {change&&<div className="login-field"><label htmlFor={newPasswordId}>New password <span aria-hidden="true">*</span></label>
+    {change&&<div className="login-field"><label htmlFor={newPasswordId}>New password</label>
       <input className="input-control" id={newPasswordId} type="password" autoComplete="new-password" maxLength={256} required value={newPassword} onChange={e=>setNewPassword(e.target.value)} disabled={busy}/></div>}
     {error&&<p className="feedback error login-feedback" id={errorId} role="alert" tabIndex={-1} ref={errorRef}>{error}</p>}
     <Button className="login-submit" type="submit" variant="primary" disabled={busy||!username||!password||(change&&!newPassword)}>{busy?<><span className="spinner" aria-hidden="true"/>Signing in…</>:change?"Change password and sign in":"Sign in"}</Button>
