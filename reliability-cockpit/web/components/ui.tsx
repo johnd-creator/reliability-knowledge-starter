@@ -1,66 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState, type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode } from "react";
+import { type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode } from "react";
 import type { PageMeta } from "../lib/api";
 import { shortIdentifier } from "../lib/format";
 
-const navigation = [
-  { href: "/", label: "Overview", icon: "◈" },
-  { href: "/assets", label: "Asset Reliability", icon: "◌" },
-  { href: "/maintenance", label: "Maintenance", icon: "↻" },
-  { href: "/fmea", label: "FMEA", icon: "△" },
-  { href: "/rcfa", label: "RCFA", icon: "⌁" },
-  { href: "/asset-health", label: "Asset Health", icon: "◒" },
-  { href: "/overhauls", label: "Overhaul", icon: "◫" },
-  { href: "/data-quality", label: "Data Trust", icon: "✓" },
-];
-
-export function AppShell({ children, engineeringVisible = false, liveDevelopment = false }: { children: ReactNode; engineeringVisible?: boolean; liveDevelopment?: boolean }) {
-  const pathname = usePathname();
-  const [theme, setTheme] = useState<"light" | "dark">("light");
-
-  useEffect(() => {
-    const saved = window.localStorage.getItem("nadi-theme");
-    const nextTheme = saved === "dark" ? "dark" : "light";
-    setTheme(nextTheme);
-    document.documentElement.dataset.theme = nextTheme;
-  }, []);
-
-  function toggleTheme() {
-    const nextTheme = theme === "light" ? "dark" : "light";
-    setTheme(nextTheme);
-    document.documentElement.dataset.theme = nextTheme;
-    window.localStorage.setItem("nadi-theme", nextTheme);
-  }
-
-  return (
-    <div className="nadi-shell">
-      <aside className="nadi-sidebar">
-        <Link href="/" className="nadi-brand" aria-label="NADI Overview">
-          <img className="nadi-logo" src="/logo_nadi.png" alt="NADI — Platform Analitik Keandalan Aset Pembangkit" />
-        </Link>
-        <div className="sidebar-context"><span className="pulse-dot" /> Platform Analitik Keandalan Aset Pembangkit</div>
-        <nav className="nadi-nav" aria-label="NADI navigation">
-          <p className="nav-label">Reliability workspace</p>
-          {(engineeringVisible ? [...navigation, { href: liveDevelopment ? "/engineering/local" : "/engineering", label: "Engineering", icon: "◇" }] : navigation).map((item) => {
-            const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
-            return <Link key={item.href} href={item.href} className={active ? "nav-link active" : "nav-link"}><span className="nav-icon">{item.icon}</span>{item.label}</Link>;
-          })}
-        </nav>
-        <div className="sidebar-footer"><span className="scope-label">OPERATING SCOPE</span><strong>BSR / IP</strong><small>Controlled Reliability Mart</small></div>
-      </aside>
-      <div className="nadi-content">
-        <header className="nadi-topbar">
-          <div><span className="topbar-kicker">NADI / RELIABILITY COCKPIT</span><span className="topbar-title">Asset reliability workspace</span></div>
-          <div className="topbar-actions"><div className="topbar-status"><span className="pulse-dot" /> Mart read-only <span className="scope-chip">BSR / IP</span></div><button className="theme-toggle" type="button" onClick={toggleTheme} aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`} aria-pressed={theme === "dark"}>{theme === "light" ? "☾" : "☀"}<span>{theme === "light" ? "Dark" : "Light"}</span></button></div>
-        </header>
-        <main className="nadi-main">{children}</main>
-      </div>
-    </div>
-  );
-}
+export { AppShell } from "./AppNavigation";
 
 export function PageHeader({ eyebrow, title, description, actions }: { eyebrow: string; title: string; description: string; actions?: ReactNode }) {
   return <div className="page-header"><div><p className="eyebrow">{eyebrow}</p><h1>{title}</h1><p className="page-description">{description}</p></div>{actions && <div className="page-actions">{actions}</div>}</div>;
