@@ -1,5 +1,18 @@
 # 05 — Roadmap Implementasi dan Backlog
 
+## NADI-DEV-RESET-01 — single development address — 2026-10-09
+
+Review current development at **https://localhost:3000/** using the existing PR #62
+launcher/isolated fixture. Latest verified main baseline: `f54643f3510bf505628a1400024784faab46e496`.
+Default selection is merged main; the unmerged foundation requires explicit feature
+preview. No automatic merge of #62/#63. Follow the [startup, cutover and rollback
+runbook](../../reliability-cockpit/docs/nadi-dev-reset-01.md); 13035 is retired only
+after primary browser acceptance. Full SHA/branch/dirty state, both backends and exact
+fixture identity are visible. Operational factual routes remain reads of existing
+stored data; Engineering records remain isolated and SYNTHETIC. Phase1
+CURRENT/PARTIAL and real QA NO_GO remain. No new PdM capability in this task.
+
+
 ## NADI-E-INTEGRATION-02 — local authentication and final audit — 2026-10-09
 
 Main `eda3595a9b8d86726dd0d89192ebf4657b66d27e` unchanged. Bundle E PR51–59 preserved;
