@@ -15,7 +15,7 @@
     "check:bounded-http": "node scripts/bounded-http-check.mjs",
     "check:bounded-proxy": "node scripts/bounded-proxy-check.mjs",
     "check:local-auth": "node scripts/local-auth-check.mjs",
-    "lint": "eslint components/ui.tsx components/AppNavigation.tsx components/ExecutiveOverview.tsx lib/navigation.ts lib/overview.ts app/page.tsx app/work-orders/page.tsx \"app/equipment/*/page.tsx\" components/AssetHealthSummary.tsx app/assets/page.tsx \"app/assets/*/page.tsx\" app/asset-health/page.tsx components/useQaRecords.ts components/QaProductBoundary.tsx components/QaRecordReader.tsx components/InspectionDetail.tsx components/PdmCenter.tsx lib/product-records.ts app/pdm/page.tsx",
+    "lint": "eslint components/ui.tsx components/AppNavigation.tsx components/ExecutiveOverview.tsx lib/navigation.ts lib/overview.ts app/page.tsx app/work-orders/page.tsx \"app/equipment/*/page.tsx\" components/AssetHealthSummary.tsx app/assets/page.tsx \"app/assets/*/page.tsx\" app/asset-health/page.tsx components/useQaRecords.ts components/QaProductBoundary.tsx components/QaRecordReader.tsx components/InspectionDetail.tsx components/PdmCenter.tsx lib/product-records.ts app/pdm/page.tsx components/RecommendationDetail.tsx components/RecommendationWorkspace.tsx app/recommendations/page.tsx app/action-board/page.tsx",
     "check:ux": "node scripts/ux-check.mjs"
   },
   "dependencies": {
