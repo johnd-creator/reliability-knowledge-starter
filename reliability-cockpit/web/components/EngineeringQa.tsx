@@ -10,6 +10,7 @@ export default function EngineeringQa({localAuthentication=false}:{localAuthenti
  const [resource,setResource]=useState('inspections'),[record,setRecord]=useState(''),[action,setAction]=useState(''),[payload,setPayload]=useState('{}');
  const [result,setResult]=useState<unknown>(null),[error,setError]=useState(''),[busy,setBusy]=useState(false),[dirty,setDirty]=useState(false),[offset,setOffset]=useState(0);
  const identityEpoch=useRef(0);
+ useEffect(()=>{const query=new URLSearchParams(window.location.search);const requested=query.get('resource'),id=query.get('record');if(requested&&['inspections','cases','recommendations'].includes(requested))setResource(requested);if(id&&/^[A-Za-z0-9_.:-]{1,100}$/.test(id))setRecord(id);},[]);
  function clearIdentityState(){identityEpoch.current++;setSession(null);setCsrf('');setProof('');setAsset('');setRecord('');setAction('');setPayload('{}');setResult(null);setError('');setDirty(false);setOffset(0);}
  useEffect(()=>{const warn=(e:BeforeUnloadEvent)=>{if(dirty)e.preventDefault();};window.addEventListener('beforeunload',warn);return()=>window.removeEventListener('beforeunload',warn);},[dirty]);
  useEffect(()=>{if(localAuthentication)engineeringRequest('session').then(value=>{const who=value as Document;setSession(who);setCsrf(String(who.csrf_token));}).catch(()=>{});},[localAuthentication]);

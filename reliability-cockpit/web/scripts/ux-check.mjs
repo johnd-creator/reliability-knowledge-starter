@@ -11,7 +11,7 @@ const temp = mkdtempSync(join(tmpdir(), "nadi-ux-"));
 let checks = 0;
 const test = (label, fn) => { fn(); checks++; console.log(`PASS ${label}`); };
 try {
-  const files = ["components/ui.tsx", "lib/navigation.ts", "lib/overview.ts", "components/ExecutiveOverview.tsx"].filter(existsSync);
+  const files = ["components/ui.tsx", "lib/navigation.ts", "lib/overview.ts", "lib/product-records.ts", "components/ExecutiveOverview.tsx"].filter(existsSync);
   execFileSync(process.execPath, ["node_modules/typescript/bin/tsc", ...files, "--outDir", temp, "--rootDir", ".", "--module", "commonjs", "--target", "ES2022", "--jsx", "react-jsx", "--esModuleInterop", "--skipLibCheck"], { stdio: "pipe" });
   symlinkSync(resolve("node_modules"), join(temp, "node_modules"));
   const ui = require(join(temp, "components/ui.js"));
@@ -40,6 +40,12 @@ try {
   test("button does not submit a form accidentally", () => assert.match(render(ui.Button, { children: "Review" }), /type="button"/));
   test("breadcrumb declares exactly one current page", () => assert.equal((render(ui.Breadcrumbs, {items:[{label:"NADI"},{label:"Overview"}]}).match(/aria-current="page"/g) ?? []).length, 1));
   test("input has persistent associated label", () => assert.match(render(ui.InputControl, { id: "scope", label: "Scope" }), /for="scope"/));
+  const records=require(join(temp,"lib/product-records.js"));
+  test("original measurement preserves zero false and unknown distinctly",()=>{assert.equal(records.originalValue(0),"0");assert.equal(records.originalValue(false),"false");assert.equal(records.originalValue(null),"UNKNOWN");});
+  test("page filters use exact canonical identity and local status",()=>{const row={canonical_asset_id:"asset:A",status:"APPROVED"};assert.equal(records.recordMatches(row,"asset:A","APPROVED","sample","Sample"),true);assert.equal(records.recordMatches(row,"asset:B","","",""),false);assert.equal(records.recordMatches(row,"","DRAFT","",""),false);});
+  test("page counts reconcile with only provided authorized records",()=>{assert.deepEqual(records.pageCounts([{status:"DRAFT"},{status:"APPROVED"},{status:"DRAFT"}]),{DRAFT:2,APPROVED:1});assert.deepEqual(records.pageCounts([]),{});});
+  test("record links encode identity and exclude commands",()=>{assert.equal(records.qaRecordLink("cases","case:A"),"/engineering/local?resource=cases&record=case%3AA");assert.ok(!records.validRecordId("../other"));assert.ok(records.validRecordId("inspection:1"));});
+  test("candidate methods never equate PD and DGA",()=>assert.deepEqual(records.candidateMethods.map(x=>x.id),["VIBRATION","IR_THERMOGRAPHY","MCSA","TRIBOLOGY"]));
   const css = readFileSync("app/design-tokens.css", "utf8");
   const luminance = hex => {
     const rgb = hex.match(/\w\w/g).map(x => parseInt(x, 16) / 255).map(x => x <= .04045 ? x / 12.92 : ((x + .055) / 1.055) ** 2.4);

@@ -1,0 +1,14 @@
+// Existing isolated Engineering read contracts, never operational plant measurements.
+export interface QaSession { subject:string; roles:string[]; asset_ids:string[]; csrf_token:string; }
+export interface Review {reviewer:string; decision:string; rationale?:string; decided_at:string;}
+export interface HumanRecord {record_id:string; canonical_asset_id:string; revision:number; status:string; created_at:string; updated_at:string; created_by:string; review:Review|null;}
+export interface Measurement { quantity:string; value:string|number|boolean|null; unit:string|null; measured_at:string|null; point_ref:string|null; quality:string; provenance:string; }
+export interface Inspection extends HumanRecord { method:string; method_version:string; inspector_ref:string; inspected_at:string|null; operating_context:string|null; measurements:Measurement[]; observations:string[]; interpretations:string[]; attachments:{attachment_ref:string; filename:string; content_type:string; size_bytes:number; status:string; sha256:string|null}[]; case_refs:string[]; field_approval:string; assessment:string; provenance:string; }
+export interface Recommendation extends HumanRecord {case_ref:string; rationale:string; proposed_action:string; priority:string; responsible_team_ref:string|null; responsible_person_ref:string|null; target_date:string|null; follow_up_status:string; existing_work_order_ref:string|null; reviewed_case:{case_id:string;revision:number;stable_version:string;reviewer:string;reviewed_at:string}|null; completion_verification:{reviewer:string;verified_at:string;reason:string;scope:string}|null; supporting_evidence:{kind:string;record_id:string;stable_version:string;source_timestamp:string|null;mode:string}[]; provenance:string;}
+export interface QaPage<T> {items:T[];total:number;offset:number;limit:number;has_more:boolean;}
+export const candidateMethods=[{id:"VIBRATION",label:"Vibration"},{id:"IR_THERMOGRAPHY",label:"IR Thermography"},{id:"MCSA",label:"MCSA"},{id:"TRIBOLOGY",label:"Tribology"}];
+export function originalValue(value:Measurement["value"]):string {return value === null ? "UNKNOWN" : String(value);}
+export function recordMatches(row:HumanRecord,asset:string,status:string,search:string,text:string):boolean {return (!asset||row.canonical_asset_id===asset)&&(!status||row.status===status)&&(!search.trim()||text.toLowerCase().includes(search.trim().toLowerCase()));}
+export function pageCounts<T extends HumanRecord>(rows:T[]) {return rows.reduce<Record<string,number>>((out,row)=>{out[row.status]=(out[row.status]??0)+1;return out;},{});}
+export function qaRecordLink(resource:string,id:string) {return `/engineering/local?resource=${encodeURIComponent(resource)}&record=${encodeURIComponent(id)}`;}
+export function validRecordId(value:string|null):value is string {return !!value&&/^[A-Za-z0-9_.:-]{1,100}$/.test(value);}

@@ -1,0 +1,30 @@
+"use client";
+import {useCallback,useEffect,useState} from "react";
+import type {Inspection} from "../lib/product-records";
+import {candidateMethods,validRecordId} from "../lib/product-records";
+import {useQaRecords} from "./useQaRecords";
+import QaProductBoundary from "./QaProductBoundary";
+import QaRecordReader from "./QaRecordReader";
+import InspectionDetail from "./InspectionDetail";
+import {Button,EmptyState,PageHeader,Pagination,SectionCard,StatCard,StatusBadge,TableFrame} from "./ui";
+export default function PdmCenter({qaEnabled}:{qaEnabled:boolean}) {
+ const [offset,setOffset]=useState(0),[method,setMethod]=useState(""),[asset,setAsset]=useState(""),[point,setPoint]=useState(""),[selected,setSelected]=useState<string|null>(null);
+ const {state,page,session,reload}=useQaRecords<Inspection>("inspections",qaEnabled,offset);
+ useEffect(()=>{const id=new URLSearchParams(window.location.search).get("record");setSelected(validRecordId(id)?id:null);},[]);
+ const invalidate=useCallback(()=>reload(),[reload]);
+ const rows=page?.items.filter(row=>(!method||row.method===method)&&(!asset||row.canonical_asset_id===asset)&&(!point||row.measurements.some(m=>m.point_ref===point)))??[];
+ const assets=[...new Set(page?.items.map(row=>row.canonical_asset_id)??[])];
+ const points=[...new Set((page?.items??[]).filter(row=>(!method||row.method===method)&&(!asset||row.canonical_asset_id===asset)).flatMap(row=>row.measurements.map(m=>m.point_ref).filter((p):p is string=>!!p)))];
+ function selectRecord(id:string|null){setSelected(id);const params=new URLSearchParams();if(id)params.set("record",id);window.history.replaceState({},"",`/pdm${id?"?"+params:""}`);}
+ return <div className="product-workspace"><PageHeader eyebrow="Measurement & investigation" title="PdM Center" description="Episodic inspections, original measurements and independent engineering review. Operational method definitions remain pending."/>
+  <QaProductBoundary state={state} reload={reload}/>
+  <section className="stat-grid product-stat-grid"><StatCard label="Authorized inspections" value={page?page.total:"UNKNOWN"} detail="Synthetic QA server-visible population"/><StatCard label="Inspections on this page" value={page?rows.length:"UNKNOWN"} detail="After current page method/asset/point filters"/><StatCard label="Method approval" value="PENDING" detail="PR63 Q01–Q10 engineer validation"/><StatCard label="Condition assessment" value="NOT ASSESSED" detail="Review status is not equipment condition"/></section>
+  <nav className="product-methods" aria-label="Candidate inspection methods"><Button aria-pressed={!method} onClick={()=>{setMethod("");setPoint("");}}>All methods</Button>{candidateMethods.map(item=><Button key={item.id} aria-pressed={method===item.id} onClick={()=>{setMethod(item.id);setPoint("");}}>{item.label}</Button>)}<Button aria-pressed={method==="OTHER"} onClick={()=>{setMethod("OTHER");setPoint("");}}>Other recorded methods</Button></nav>
+  <p className="section-note">Candidate method navigation filters the loaded QA page. DGA is not an alias for PD; use All methods to inspect unchanged existing records.</p>
+  {state==="ready"&&session&&page&&<><SectionCard className="filter-card"><div className="filter-grid"><label>QA asset on this page<select value={asset} onChange={e=>{setAsset(e.target.value);setPoint("");}}><option value="">All authorized page assets</option>{assets.map(id=><option key={id}>{id}</option>)}</select></label><label>Measurement point on this page<select value={point} onChange={e=>setPoint(e.target.value)}><option value="">All recorded points</option>{points.map(id=><option key={id}>{id}</option>)}</select></label><Button onClick={()=>{setAsset("");setPoint("");setMethod("");}}>Clear page filters</Button></div></SectionCard>
+   <div className="product-context-grid"><SectionCard><h2>Method / point context</h2><p>{method||"All recorded methods"} · {asset||"All authorized QA assets"} · {point||"Point not selected"}</p><p>Original units and timestamps are shown per event. Unknown point/unit/time stays UNKNOWN.</p></SectionCard><SectionCard><h2>Measurement history / trend</h2><EmptyState title="Comparable trend NOT AVAILABLE" detail="Generic inspection records do not establish approved instrument, bandwidth, operating regime or series comparability. Original samples remain visible below; no interpolation or portable/PI joining."/></SectionCard></div>
+   <SectionCard><div className="section-heading"><h2>Inspection / finding register</h2><span className="dataset-badge compact">SYNTHETIC QA · page filters</span></div>{rows.length?<TableFrame minWidth={950} label="Authorized inspection event register"><table><thead><tr><th>Inspection</th><th>QA asset</th><th>Method / version</th><th>Actual inspected at</th><th>Observation / interpretation</th><th>Independent review</th></tr></thead><tbody>{rows.map(row=><tr key={row.record_id}><td><a className="asset-row-link" href={`/pdm?record=${encodeURIComponent(row.record_id)}`} onClick={e=>{e.preventDefault();selectRecord(row.record_id);}}>{row.record_id}</a><small className="table-subtext">Revision {row.revision}</small></td><td>{row.canonical_asset_id}</td><td>{row.method}<small className="table-subtext">{row.method_version}</small></td><td>{row.inspected_at??"UNKNOWN"}</td><td>{row.observations[0]??"UNKNOWN"}<small className="table-subtext">Interpretation: {row.interpretations[0]??"NOT ASSESSED"}</small></td><td><StatusBadge value={row.status} mode="raw-neutral"/></td></tr>)}</tbody></table></TableFrame>:<EmptyState title="No inspections match this page context." detail="Empty records do not establish normal equipment condition."/>}<Pagination meta={page} onChange={next=>{setOffset(next);setSelected(null);setAsset("");setPoint("");}}/></SectionCard>
+   {selected&&<><Button onClick={()=>selectRecord(null)}>Close inspection detail</Button><QaRecordReader<Inspection> key={`${session.subject}:${selected}`} resource="inspections" id={selected} render={row=><InspectionDetail row={row}/>} onInvalid={invalidate}/></>}
+  </>}
+ </div>;
+}
