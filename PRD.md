@@ -47,7 +47,7 @@ lives in [the roadmap](plans/NADI-ROADMAP.md) and [development log](DEV-LOG.md).
 | FR-06 | Governed reports with explicit scope and provenance | UI-08 | PLANNED; report definitions and export policy |
 | FR-07 | Integration trust and technical navigation | UI-09 | UX-03; preserve factual routes and ownership |
 | FR-08 | Bounded administration | UI-10 | PLANNED; approved product role mapping |
-| FR-09 | Future authenticated access to application pages | UI-11 | UX-08 DESIGN ONLY; enforcement needs separate approved task |
+| FR-09 | Future authenticated access to application pages | UI-11 | UX-08 QA login presentation only; global enforcement needs separate approved task |
 | FR-10 | One primary HTTPS development address with accurate status | Shared shell | UX-01; PR #62 development acceptance, independent merge state |
 
 The corresponding [page specs](docs/design/NADI-UI-SPEC.md) give testable behavior.
@@ -228,3 +228,20 @@ Operational APIs/identity/writer activation, approved method/point/comparability
 attachment custody and engineer UAT are still dependencies. UI completion grants no
 engineering approval. Commands reuse existing authorized Engineering workflows;
 there is no new Maximo action, risk metric or global login enforcement.
+
+
+## Bundle C — login presentation and development acceptance — 2026-10-10
+
+The Product Owner's Bundle C directive grants provisional development acceptance
+for Bundle B / PR66 and schedules final visual review for Monday, 12 October 2026.
+PR66 is MERGED into main `cc90fc73bea6ae399383d8538035c6454dc7e65a`; existing
+features, QA records/session and operational infrastructure passed main synchronization.
+Final visual polish can be corrected; no operational PdM acceptance is inferred.
+
+UX-08 implements presentation polish of the existing `/login` and reusable QA
+sign-in form: original NADI logo, navy/green V1 layout, required-field guidance,
+loading/error/expiry/password-change visuals and keyboard accessibility. FR-09 global
+access remains a future requirement; no global redirect/enforcement, backend/cookie/
+CSRF/RBAC/session-policy change, account provisioning or default credentials.
+UX-09 is preparation/regression evidence, not final Product Owner acceptance.
+See [Bundle C implementation/readiness](reliability-cockpit/docs/nadi-ux-bundle-c.md).

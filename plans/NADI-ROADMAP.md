@@ -1,10 +1,10 @@
 # NADI product roadmap — main quest
 
-## Current product checkpoint — NADI UX Bundle B — 2026-10-10
+## Current product checkpoint — NADI UX Bundle C — 2026-10-10
 
 This is the **official product roadmap**. Phase 0–5 remains intact; the UX track
-below complements it. Verified main `160737b3bfaeac94f4e8093b8566ca0e5d3585c9`
-contains merged Engineering PR29–61, PR62, PR63, PR64 and Bundle A PR65. Their merge commits and CI are
+below complements it. Verified main `cc90fc73bea6ae399383d8538035c6454dc7e65a`
+contains merged Engineering PR29–61, PR62, PR63, PR64, Bundle A PR65 and Bundle B PR66. Their merge commits and CI are
 in [Repository Status](REPOSITORY-STATUS.md). Older checkpoint language below,
 including “current”, “OPEN” and the original phase table, is dated historical
 evidence and does not override this reconciliation. No runtime/PO acceptance is
@@ -31,11 +31,17 @@ retains scoped engineering sequencing. No completion percentages are inferred.
 | UX-02 | NADI Design System V1 | **IMPLEMENTED / TESTED candidate** | Shared V1 tokens/primitives and scoped contrast/accessibility regression; PR65 MERGED; PO acceptance pending |
 | UX-03 | Sidebar Information Architecture | **IMPLEMENTED / TESTED candidate** | Compatible product navigation, desktop collapse and modal drawer; Engineering placement/PO review pending |
 | UX-04 | Executive Overview Visual Polish | **IMPLEMENTED / TESTED candidate** | REF-EXEC hierarchy with supported facts; development review in Bundle A, final PO visual acceptance pending |
-| UX-05 | Asset Health List & Detail UI | **IMPLEMENTED / TESTED candidate** | Registry filters/page search, six-section canonical detail; original factual evidence/tabs retained; PO acceptance pending |
-| UX-06 | PdM Center UI | **IMPLEMENTED / TESTED candidate** | Authorized synthetic QA inspection event/detail/history UI; operational methods/trends NOT ACTIVATED; PR63 Q01–Q10 pending |
-| UX-07 | Recommendations & Action Board UI | **IMPLEMENTED / TESTED candidate** | Authorized local registers, exact details/history, review/follow-up queues; existing gated commands reused, operational UAT pending |
-| UX-08 | Global Login Page Design Only | **PLANNED** | Specification candidate; no global enforcement; existing QA gates unchanged |
-| UX-09 | UI Regression & Visual Acceptance | **PLANNED** | Actual originals, responsive/accessibility checks and separate PO decision required |
+| UX-05 | Asset Health List & Detail UI | **MERGED / DEVELOPMENT ACCEPTED provisionally** | Registry filters/page search, six-section canonical detail; original factual evidence/tabs retained; PR66 MERGED; final visual review 12 Oct pending |
+| UX-06 | PdM Center UI | **MERGED / DEVELOPMENT ACCEPTED provisionally** | Authorized synthetic QA inspection event/detail/history UI; PR66 MERGED; operational methods/trends NOT ACTIVATED; PR63 Q01–Q10 pending |
+| UX-07 | Recommendations & Action Board UI | **MERGED / DEVELOPMENT ACCEPTED provisionally** | Authorized local registers, exact details/history, review/follow-up queues; PR66 MERGED; existing gated commands reused, operational UAT pending |
+| UX-08 | Login Page Design Only | **IMPLEMENTED / TESTED candidate** | Existing QA login presentation polished; global enforcement absent; separate Bundle C PR/PO review |
+| UX-09 | UI Regression & Visual Acceptance | **PREPARATION / TESTED candidate** | Responsive/state/accessibility and A/B regression evidence; final senior/PO visual acceptance still PENDING |
+
+The Product Owner's Bundle C directive gives provisional development acceptance to
+PR66, with final visual review Monday, 12 October 2026. Main synchronization preserved
+sessions, fixture records and collectors. [Bundle C readiness](../reliability-cockpit/docs/nadi-ux-bundle-c.md)
+records UX-08 implementation and UX-09 preparation; final visual polish remains
+correctable and no global authentication or Phase 3 intelligence is activated.
 
 Bundle B source, contract limits, responsive evidence and independent milestone states are in the [Bundle B review](../reliability-cockpit/docs/nadi-ux-bundle-b.md). Implementation does not activate operational PdM or approve method rules.
 
