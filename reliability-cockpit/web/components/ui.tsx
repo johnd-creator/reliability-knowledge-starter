@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState, type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode } from "react";
 import type { PageMeta } from "../lib/api";
 import { shortIdentifier } from "../lib/format";
 
@@ -87,15 +87,15 @@ export function Identifier({ value }: { value: string | null | undefined }) {
 }
 
 export function LoadingState({ label = "Memuat data Reliability Mart…" }: { label?: string }) {
-  return <div className="state-card loading-state"><span className="spinner" />{label}</div>;
+  return <div className="state-card loading-state" role="status" aria-live="polite"><span className="spinner" aria-hidden="true" />{label}</div>;
 }
 
 export function EmptyState({ title = "Belum ada data Reliability Mart untuk tampilan ini.", detail }: { title?: string; detail?: string }) {
   return <div className="state-card empty-state"><span className="state-symbol">∅</span><strong>{title}</strong>{detail && <p>{detail}</p>}</div>;
 }
 
-export function ErrorState({ message = "Reliability Mart unavailable" }: { message?: string }) {
-  return <div className="state-card error-state"><span className="state-symbol">!</span><strong>{message}</strong><p>Data Reliability Mart belum dapat dibaca. Coba muat ulang beberapa saat lagi.</p></div>;
+export function ErrorState({ message = "Reliability Mart unavailable", onRetry }: { message?: string; onRetry?: () => void }) {
+  return <div className="state-card error-state" role="alert"><span className="state-symbol">!</span><strong>{message}</strong><p>Data Reliability Mart belum dapat dibaca. Coba muat ulang beberapa saat lagi.</p>{onRetry && <Button onClick={onRetry}>Try again</Button>}</div>;
 }
 
 export function Pagination({ meta, onChange }: { meta: PageMeta; onChange: (offset: number) => void }) {
@@ -104,10 +104,26 @@ export function Pagination({ meta, onChange }: { meta: PageMeta; onChange: (offs
   return <div className="pagination"><span>{first}–{last} dari {meta.total.toLocaleString("id-ID")}</span><div><button className="icon-button" type="button" aria-label="Previous page" disabled={meta.offset === 0} onClick={() => onChange(Math.max(0, meta.offset - meta.limit))}>←</button><span className="page-number" aria-live="polite">{Math.floor(meta.offset / meta.limit) + 1}</span><button className="icon-button" type="button" aria-label="Next page" disabled={!meta.has_more} onClick={() => onChange(meta.offset + meta.limit)}>→</button></div></div>;
 }
 
-export function TableFrame({ children, minWidth = 900 }: { children: ReactNode; minWidth?: number }) {
-  return <div className="table-frame" style={{ minWidth }}>{children}</div>;
+export function TableFrame({ children, minWidth = 900, label = "Data table, scroll horizontally for additional columns" }: { children: ReactNode; minWidth?: number; label?: string }) {
+  return <div className="table-frame" role="region" aria-label={label} tabIndex={0}><div className="table-content" style={{ minWidth }}>{children}</div></div>;
 }
 
 export function SectionCard({ children, className = "" }: { children: ReactNode; className?: string }) {
   return <section className={`section-card ${className}`}>{children}</section>;
+}
+
+export function Button({ variant = "secondary", className = "", type = "button", ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "secondary" | "destructive" }) {
+  return <button {...props} type={type} className={`button ${variant} ${className}`} />;
+}
+
+export function InputControl({ label, id, ...props }: InputHTMLAttributes<HTMLInputElement> & { label: string; id: string }) {
+  return <label htmlFor={id}>{label}<input {...props} id={id} className="input-control" /></label>;
+}
+
+export function Breadcrumbs({ items }: { items: { label: string; href?: string }[] }) {
+  return <nav aria-label="Breadcrumb"><ol className="breadcrumbs">{items.map((item, index) => <li key={`${item.label}-${index}`}>{item.href ? <Link href={item.href}>{item.label}</Link> : <span aria-current="page">{item.label}</span>}</li>)}</ol></nav>;
+}
+
+export function Feedback({ children, error = false }: { children: ReactNode; error?: boolean }) {
+  return <div className={`feedback ${error ? "error" : ""}`} role={error ? "alert" : "status"}>{children}</div>;
 }
