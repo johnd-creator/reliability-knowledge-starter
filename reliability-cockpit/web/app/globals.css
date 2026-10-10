@@ -311,13 +311,6 @@ td strong { color: var(--text); font-weight: 650; }
 @media (max-width: 640px) { .asset-identity-main { display: block; } .asset-identity-main > .status-badge { margin-top: 12px; } .asset-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); } .asset-tabs { overflow-x: auto; } .asset-tab { flex: 0 0 auto; padding: 8px 11px; } .asset-stat-grid, .fmea-stat-grid, .rcfa-stat-grid, .overhaul-stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .asset-record { grid-template-columns: 1fr; gap: 5px; } .asset-record > .status-badge { justify-self: start; } .fmea-distribution-grid, .rcfa-distribution-grid, .overhaul-distribution-grid { grid-template-columns: 1fr; } .fmea-filter-grid, .rcfa-filter-grid { grid-template-columns: 1fr; } .overhaul-facts { grid-template-columns: 1fr; } }
 @media (max-width: 640px) { .health-status-grid { grid-template-columns: 1fr; } }
 
-.nadi-local-login { max-width: 34rem; margin-inline: auto; color: var(--text); }
-.nadi-local-login form { display: grid; gap: .75rem; }
-.nadi-password-field { display: flex; gap: .5rem; align-items: center; }
-.nadi-password-field input { flex: 1; min-width: 0; }
-.nadi-local-login button { min-height: 44px; }
-@media (max-width: 520px) { .nadi-password-field { flex-direction: column; align-items: stretch; } }
-
 /* Shared V1 primitives: compatible with existing factual and Engineering pages. */
 .section-card, .stat-card, .card { border-radius: var(--radius); box-shadow: var(--shadow); }
 .section-card { padding: var(--space-6); }
@@ -507,3 +500,58 @@ td strong { color: var(--text); font-weight: 650; }
 .asset-reference-grid .asset-facts, .product-record-detail .asset-facts { grid-template-columns:minmax(0,1fr); }
 .asset-reference-grid .asset-facts > div, .product-record-detail .asset-facts > div { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr); gap:var(--space-3); }
 .asset-reference-grid .asset-facts dd, .product-record-detail .asset-facts dd { white-space:normal; text-overflow:clip; overflow:visible; min-width:0; }
+
+/* UX-08: existing QA login presentation; all access gates remain unchanged. */
+.nadi-login-page { max-width:1100px; margin-inline:auto; }
+.login-page-heading { display:flex; align-items:center; justify-content:space-between; gap:var(--space-4); margin-bottom:var(--space-6); }
+.login-page-heading h1 { font-size:var(--font-heading); line-height:1.2; margin:0; }
+.login-page-heading .eyebrow { margin-bottom:var(--space-2); }
+.login-page-heading .button { flex-shrink:0; }
+.login-surface { display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); box-shadow:var(--shadow); }
+.login-brand-panel { display:flex; flex-direction:column; padding:var(--space-12) var(--space-8); background:var(--sidebar); color:var(--sidebar-text); border-radius:var(--radius) 0 0 var(--radius); border-top:4px solid var(--nav-edge); }
+.login-logo-surface { width:min(100%,264px); padding:var(--space-4); background:var(--logo-surface); border-radius:var(--radius-sm); }
+.login-logo-surface img { display:block; width:100%; height:auto; }
+.login-brand-eyebrow { margin:var(--space-8) 0 var(--space-3); font-size:var(--font-small); font-weight:700; letter-spacing:.1em; color:var(--nav-edge); }
+.login-brand-panel h2 { margin:0; font-size:clamp(23px,2.2vw,30px); line-height:1.3; letter-spacing:-.025em; color:var(--sidebar-text); }
+.login-brand-copy { color:var(--sidebar-muted); margin:var(--space-4) 0 var(--space-8); line-height:1.7; }
+.login-brand-context { margin-top:auto; border-top:1px solid var(--nav-border); padding-top:var(--space-6); }
+.login-brand-context span { display:block; color:var(--sidebar-muted); font-size:var(--font-small); letter-spacing:.08em; }
+.login-brand-context strong { display:block; margin-top:var(--space-2); }
+.login-brand-context p { margin-bottom:0; color:var(--sidebar-muted); font-size:var(--font-label); }
+.login-form-panel { padding:var(--space-12) var(--space-8); min-width:0; }
+.login-form-panel .login-card { margin:0; padding:0; border:0; box-shadow:none; }
+.nadi-local-login { max-width:34rem; margin-inline:auto; color:var(--text); }
+.nadi-local-login h2 { font-size:26px; line-height:1.3; letter-spacing:-.02em; margin:0; }
+.login-introduction { margin:var(--space-3) 0 var(--space-6); color:var(--muted); }
+.nadi-local-login form { display:grid; gap:var(--space-4); }
+.login-form-help { margin:0; color:var(--muted); font-size:var(--font-label); }
+.login-field { display:grid; gap:var(--space-2); }
+.login-field label { font-weight:600; }
+.login-field label span { color:var(--muted); }
+.nadi-password-field { display:flex; gap:var(--space-2); align-items:center; }
+.nadi-password-field input { flex:1; min-width:0; }
+.nadi-password-field .button { flex-shrink:0; white-space:nowrap; }
+.nadi-local-login .input-control { min-height:48px; border-radius:var(--radius-sm); border-color:var(--muted-2); }
+.nadi-local-login .button:not(.primary) { border-color:var(--muted-2); }
+.nadi-local-login .input-control:user-invalid { border-color:var(--red); }
+.nadi-local-login button { min-height:48px; }
+.login-submit { width:100%; margin-top:var(--space-2); }
+.login-submit .spinner { width:16px; height:16px; border-color:currentColor; border-top-color:transparent; }
+.login-feedback { margin:0; overflow-wrap:anywhere; border-color:var(--red); }
+.login-expired { margin:0 0 var(--space-4); border-left:3px solid var(--amber); }
+.login-account-help { padding-top:var(--space-4); margin-top:var(--space-6); border-top:1px solid var(--line); color:var(--muted); font-size:var(--font-label); }
+.login-page-note { margin:var(--space-4) 0; color:var(--muted); font-size:var(--font-label); }
+@media(max-width:1100px) { .login-brand-panel { padding:var(--space-8) var(--space-6); } .login-form-panel { padding:var(--space-8) var(--space-6); } }
+@media(max-width:800px) { .login-surface { grid-template-columns:minmax(0,1fr); } .login-brand-panel { border-radius:var(--radius) var(--radius) 0 0; } .login-brand-panel h2 br { display:none; } .login-brand-copy { margin-bottom:var(--space-4); } .login-brand-eyebrow { margin-top:var(--space-6); } .login-brand-context { padding-top:var(--space-4); } }
+@media(max-width:520px) { .login-page-heading { align-items:flex-start; flex-direction:column; } .login-brand-panel,.login-form-panel { padding:var(--space-6) var(--space-4); } .login-brand-panel h2 { font-size:24px; } .login-logo-surface { width:220px; } .nadi-password-field { flex-direction:column; align-items:stretch; } .nadi-local-login h2 { font-size:24px; } }
+
+/* Prioritize the credential form on tablet/mobile; only decorative brand copy is omitted. */
+@media(max-width:800px) {
+ .login-brand-panel { display:grid; grid-template-columns:minmax(0,220px) minmax(0,1fr); gap:var(--space-3) var(--space-6); align-items:center; padding:var(--space-6); }
+ .login-logo-surface { grid-column:1; grid-row:1 / 3; width:100%; }
+ .login-brand-panel h2,.login-brand-copy { display:none; }
+ .login-brand-eyebrow { grid-column:2; margin:0; align-self:end; }
+ .login-brand-context { grid-column:2; padding:0; border:0; margin:0; align-self:start; }
+ .login-brand-context p { margin-top:var(--space-2); }
+}
+@media(max-width:520px) { .login-brand-panel { grid-template-columns:minmax(0,140px) minmax(0,1fr); gap:var(--space-2) var(--space-3); padding:var(--space-4); } .login-brand-eyebrow { font-size:10px; } }
