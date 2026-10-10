@@ -18,6 +18,7 @@ export default function AssetHealthPage() {
   const [filters, setFilters] = useState<HealthFilters>({ limit: LIMIT });
   const [draft, setDraft] = useState({ asset_number: "", description: "", lifecycle_status: "" });
   const [loading, setLoading] = useState(true);
+  const [refresh, setRefresh] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -29,7 +30,7 @@ export default function AssetHealthPage() {
       if (!cancelled) setError(reason instanceof Error ? reason.message : "Reliability Mart unavailable");
     }).finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
-  }, [filters]);
+  }, [filters, refresh]);
 
   function applyFilters() {
     setFilters({ asset_number: draft.asset_number || undefined, description: draft.description || undefined, lifecycle_status: draft.lifecycle_status || undefined, limit: LIMIT, offset: 0 });
@@ -37,11 +38,11 @@ export default function AssetHealthPage() {
 
   const maxStatusCount = overview ? Math.max(...overview.status_distribution.map((item) => item.count.value), 1) : 1;
   return <>
-    <PageHeader eyebrow="Controlled Mart population" title="Asset Health" description="Assessment records for Registered Reliability Assets. No numerical health score is inferred." actions={<span className="scope-chip">BSR / IP</span>} />
+    <PageHeader eyebrow="Controlled Mart population" title="Asset Health" description="Assessment records for Registered Reliability Assets. No numerical health score is inferred." actions={<Link className="button secondary" href="/assets">Asset Register →</Link>} />
     <div className="scope-banner trust-strip"><DataMaturity state="CONTROLLED MART POPULATION" detail="Current Asset Health records are a controlled Mart population." /><DataMaturity state="ASSESSMENT RECORDS" /><DataMaturity state="NO VERIFIED HEALTH SCORE" /><span className="muted-label">Registry-scoped normal view</span></div>
     <SectionCard className="neutral-note"><strong>Assessment recency indicates when the latest assessment record was updated; it does not indicate Asset condition.</strong></SectionCard>
     {loading && <LoadingState label="Reading Asset Health assessment aggregates…" />}
-    {!loading && error && <ErrorState message={error} />}
+    {!loading && error && <ErrorState message="Assessment records unavailable" onRetry={() => setRefresh(value => value + 1)} />}
     {!loading && !error && overview && page && <>
       <section className="stat-grid asset-health-stat-grid"><StatCard label="Assessment Records" value={formatNumber(overview.summary.assessment_records)} detail="Current controlled Mart population · VERIFIED" tone="accent" /><StatCard label="Registered Assets Represented" value={formatNumber(overview.summary.registered_assets_represented)} detail="Representation in current population · DERIVED_SAFE" /><StatCard label="Assets with Multiple Records" value={formatNumber(overview.summary.assets_with_multiple_records)} detail="Observed record count · DERIVED_SAFE" /><StatCard label="Latest Assessment Record" value={formatDate(overview.record_recency.latest_record_at)} detail="Record date, not condition date · DERIVED_SAFE" /></section>
       <SectionCard className="health-status-card"><div className="section-heading"><div><p className="eyebrow">Source lifecycle status</p><h2>Status distribution</h2></div><span className="muted-label">Raw source values · VERIFIED</span></div><div className="health-status-grid">{overview.status_distribution.map((item) => <div className="health-status-item" key={item.value}><div><SourceStatus value={item.value} /><strong>{formatNumber(item.count.value)}</strong></div><div className="health-status-track"><span style={{ width: `${Math.max((item.count.value / maxStatusCount) * 100, 2)}%` }} /></div></div>)}</div></SectionCard>
