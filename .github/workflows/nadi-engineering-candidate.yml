@@ -53,6 +53,7 @@ jobs:
           node-version: '22'
       - run: npm ci
       - run: npm run check:engineering && npm run check:phase2 && npm run check:workflow && npm run check:http-qa && npm run check:bounded-http && npm run check:bounded-proxy && npm run check:local-auth && npm run check:product-safety
+      - run: npm run check:ux && npm run lint
       - run: npx tsc --noEmit
       - run: npm run build
         env:
