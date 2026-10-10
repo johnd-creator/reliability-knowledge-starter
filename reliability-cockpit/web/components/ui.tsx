@@ -66,7 +66,7 @@ export function InputControl({ label, id, ...props }: InputHTMLAttributes<HTMLIn
 }
 
 export function Breadcrumbs({ items }: { items: { label: string; href?: string }[] }) {
-  return <nav aria-label="Breadcrumb"><ol className="breadcrumbs">{items.map((item, index) => <li key={`${item.label}-${index}`}>{item.href ? <Link href={item.href}>{item.label}</Link> : <span aria-current="page">{item.label}</span>}</li>)}</ol></nav>;
+  return <nav aria-label="Breadcrumb"><ol className="breadcrumbs">{items.map((item, index) => <li key={`${item.label}-${index}`}>{item.href ? <Link href={item.href}>{item.label}</Link> : <span aria-current={index === items.length - 1 ? "page" : undefined}>{item.label}</span>}</li>)}</ol></nav>;
 }
 
 export function Feedback({ children, error = false }: { children: ReactNode; error?: boolean }) {

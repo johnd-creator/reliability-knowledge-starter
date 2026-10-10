@@ -1,0 +1,290 @@
+{
+  "_fixture": "SYNTHETIC UI REGRESSION ONLY \u2014 no plant facts",
+  "scope": {
+    "site_code": "BSR",
+    "organization_code": "IP",
+    "registry_scope": "UI_REGRESSION_FIXTURE",
+    "maintenance_source": "SYNTHETIC_TEST_ONLY",
+    "date_basis": "actual_start else source_changed_at"
+  },
+  "window_days": 30,
+  "window_start": "2026-09-10T00:00:00Z",
+  "as_of": "2026-10-10T00:00:00Z",
+  "data_maturity": {
+    "asset_maintenance": "SYNTHETIC TEST FIXTURE",
+    "controlled_domains": "SYNTHETIC TEST FIXTURE",
+    "rcfa_relationship": "UNRESOLVED",
+    "technical_context": "SEPARATE POPULATION"
+  },
+  "summary": {
+    "registered_assets": {
+      "value": 12,
+      "evidence_class": "DERIVED_SAFE"
+    },
+    "maintenance_activity_7d": {
+      "value": 8,
+      "evidence_class": "DERIVED_SAFE"
+    },
+    "maintenance_activity_30d": {
+      "value": 20,
+      "evidence_class": "DERIVED_SAFE"
+    },
+    "maintenance_activity_90d": {
+      "value": 42,
+      "evidence_class": "DERIVED_SAFE"
+    },
+    "assets_active_7d": {
+      "value": 3,
+      "evidence_class": "DERIVED_SAFE"
+    },
+    "assets_active_30d": {
+      "value": 7,
+      "evidence_class": "DERIVED_SAFE"
+    },
+    "assets_active_90d": {
+      "value": 9,
+      "evidence_class": "DERIVED_SAFE"
+    }
+  },
+  "record_availability": {
+    "fmea_records": {
+      "value": 4,
+      "evidence_class": "DERIVED_SAFE"
+    },
+    "fmea_assets_represented": {
+      "value": 3,
+      "evidence_class": "DERIVED_SAFE"
+    },
+    "asset_health_records": {
+      "value": 2,
+      "evidence_class": "DERIVED_SAFE"
+    },
+    "asset_health_assets_represented": {
+      "value": 2,
+      "evidence_class": "DERIVED_SAFE"
+    },
+    "rcfa_records": {
+      "value": 1,
+      "evidence_class": "DERIVED_SAFE"
+    },
+    "overhaul_records": {
+      "value": 1,
+      "evidence_class": "DERIVED_SAFE"
+    }
+  },
+  "integrity": {
+    "asset_refs_total": 20,
+    "asset_refs_resolved": 17,
+    "asset_refs_unresolved": 3,
+    "workorder_refs_total": 10,
+    "workorder_refs_resolved": 8,
+    "workorder_refs_unresolved": 2,
+    "technical_asset_context_total": 25,
+    "registered_assets_total": 12,
+    "registered_assets_resolved": 12,
+    "registered_assets_unresolved": 0,
+    "maintenance_registered_total": 42
+  },
+  "maintenance_activity": [
+    {
+      "period_start": "2026-07-20T00:00:00Z",
+      "period_end": "2026-07-27T00:00:00Z",
+      "event_count": {
+        "value": 0,
+        "evidence_class": "DERIVED_SAFE"
+      }
+    },
+    {
+      "period_start": "2026-07-27T00:00:00Z",
+      "period_end": "2026-08-03T00:00:00Z",
+      "event_count": {
+        "value": 3,
+        "evidence_class": "DERIVED_SAFE"
+      }
+    },
+    {
+      "period_start": "2026-08-03T00:00:00Z",
+      "period_end": "2026-08-10T00:00:00Z",
+      "event_count": {
+        "value": 5,
+        "evidence_class": "DERIVED_SAFE"
+      }
+    },
+    {
+      "period_start": "2026-08-10T00:00:00Z",
+      "period_end": "2026-08-17T00:00:00Z",
+      "event_count": {
+        "value": 2,
+        "evidence_class": "DERIVED_SAFE"
+      }
+    },
+    {
+      "period_start": "2026-08-17T00:00:00Z",
+      "period_end": "2026-08-24T00:00:00Z",
+      "event_count": {
+        "value": 6,
+        "evidence_class": "DERIVED_SAFE"
+      }
+    },
+    {
+      "period_start": "2026-08-24T00:00:00Z",
+      "period_end": "2026-08-31T00:00:00Z",
+      "event_count": {
+        "value": 1,
+        "evidence_class": "DERIVED_SAFE"
+      }
+    },
+    {
+      "period_start": "2026-08-31T00:00:00Z",
+      "period_end": "2026-09-07T00:00:00Z",
+      "event_count": {
+        "value": 4,
+        "evidence_class": "DERIVED_SAFE"
+      }
+    },
+    {
+      "period_start": "2026-09-07T00:00:00Z",
+      "period_end": "2026-09-14T00:00:00Z",
+      "event_count": {
+        "value": 7,
+        "evidence_class": "DERIVED_SAFE"
+      }
+    },
+    {
+      "period_start": "2026-09-14T00:00:00Z",
+      "period_end": "2026-09-21T00:00:00Z",
+      "event_count": {
+        "value": 2,
+        "evidence_class": "DERIVED_SAFE"
+      }
+    },
+    {
+      "period_start": "2026-09-21T00:00:00Z",
+      "period_end": "2026-09-28T00:00:00Z",
+      "event_count": {
+        "value": 5,
+        "evidence_class": "DERIVED_SAFE"
+      }
+    },
+    {
+      "period_start": "2026-09-28T00:00:00Z",
+      "period_end": "2026-10-05T00:00:00Z",
+      "event_count": {
+        "value": 9,
+        "evidence_class": "DERIVED_SAFE"
+      }
+    },
+    {
+      "period_start": "2026-10-05T00:00:00Z",
+      "period_end": "2026-10-12T00:00:00Z",
+      "event_count": {
+        "value": 4,
+        "evidence_class": "DERIVED_SAFE"
+      }
+    }
+  ],
+  "status_distribution": [
+    {
+      "value": "SOURCE_A",
+      "count": {
+        "value": 12,
+        "evidence_class": "DERIVED_SAFE"
+      }
+    },
+    {
+      "value": "SOURCE_B",
+      "count": {
+        "value": 8,
+        "evidence_class": "DERIVED_SAFE"
+      }
+    }
+  ],
+  "work_type_distribution": [
+    {
+      "value": "TYPE_A",
+      "count": {
+        "value": 14,
+        "evidence_class": "DERIVED_SAFE"
+      }
+    },
+    {
+      "value": "TYPE_B",
+      "count": {
+        "value": 6,
+        "evidence_class": "DERIVED_SAFE"
+      }
+    }
+  ],
+  "activity_concentration": [
+    {
+      "asset_ref": "asset:TEST/0",
+      "source_asset_number": "TEST-000",
+      "description": "SYNTHETIC regression asset",
+      "event_count": {
+        "value": 7,
+        "evidence_class": "DERIVED_SAFE"
+      },
+      "latest_activity": "2026-10-09T00:00:00Z"
+    },
+    {
+      "asset_ref": "asset:TEST/1",
+      "source_asset_number": "TEST-001",
+      "description": "SYNTHETIC regression asset",
+      "event_count": {
+        "value": 6,
+        "evidence_class": "DERIVED_SAFE"
+      },
+      "latest_activity": "2026-10-09T00:00:00Z"
+    },
+    {
+      "asset_ref": "asset:TEST/2",
+      "source_asset_number": "TEST-002",
+      "description": "SYNTHETIC regression asset",
+      "event_count": {
+        "value": 5,
+        "evidence_class": "DERIVED_SAFE"
+      },
+      "latest_activity": "2026-10-09T00:00:00Z"
+    },
+    {
+      "asset_ref": "asset:TEST/3",
+      "source_asset_number": "TEST-003",
+      "description": "SYNTHETIC regression asset",
+      "event_count": {
+        "value": 4,
+        "evidence_class": "DERIVED_SAFE"
+      },
+      "latest_activity": "2026-10-09T00:00:00Z"
+    },
+    {
+      "asset_ref": "asset:TEST/4",
+      "source_asset_number": "TEST-004",
+      "description": "SYNTHETIC regression asset",
+      "event_count": {
+        "value": 3,
+        "evidence_class": "DERIVED_SAFE"
+      },
+      "latest_activity": "2026-10-09T00:00:00Z"
+    },
+    {
+      "asset_ref": "asset:TEST/5",
+      "source_asset_number": "TEST-005",
+      "description": "SYNTHETIC regression asset",
+      "event_count": {
+        "value": 2,
+        "evidence_class": "DERIVED_SAFE"
+      },
+      "latest_activity": "2026-10-09T00:00:00Z"
+    },
+    {
+      "asset_ref": "asset:TEST/6",
+      "source_asset_number": "TEST-006",
+      "description": "SYNTHETIC regression asset",
+      "event_count": {
+        "value": 1,
+        "evidence_class": "DERIVED_SAFE"
+      },
+      "latest_activity": "2026-10-09T00:00:00Z"
+    }
+  ]
+}
