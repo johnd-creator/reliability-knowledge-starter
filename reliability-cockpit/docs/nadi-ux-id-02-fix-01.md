@@ -74,3 +74,61 @@ and workbook are preserved. Phase1 checkpoints/expiry remain independently contr
 
 Product Owner visual review, real engineer UAT and production activation remain separate
 pending gates. This fix grants no real Advisory distribution or global login enforcement.
+
+
+## Actual controlled activation — 2026-10-11, 16:31 WIB
+
+F0/F1/F2/F3/F4 implementation and initial actual activation PASS on
+`b6a4981ab9bbfd8c1bf6dca51ced4e1ed2b7c881`. Backend/source API remains
+`b348235ce6f82c84873a65344ad2ef5fe276987d` at PID1664250 since07:53:34WIB;
+all API cgroup process IDs unchanged. Only frontend PID changed to2018220.
+Frontend/backend are AVAILABLE, source clean, stale=false and compatibility explicitly
+VERIFIED_SOURCE_EQUIVALENT. Installed launcher source is b6a4981; SHA256
+`48f8a2ef5c56dfde699ebd117bb1d0a0dcb3e21c7b972628a2983caa7631fa99`.
+Contract equality digest `d5478750aeba179ff4affd5f6c425f7f76cd1e16eae71e882cf7dab40d9b8368`.
+
+[Exact-head initial CI](https://github.com/johnd-creator/reliability-knowledge-starter/actions/runs/38128497987)
+backend/frontend PASS:184backend tests/zero skips,14canonical contracts, all frontend
+assertions/lint/type/build and370network-isolated browser checks. Actual live browser
+separately PASS106checks/30screenshots, zero page exceptions and no horizontal page
+overflow at1440/768/390. Overview, Asset Health, PdM, Cases, Advisory, Inbox, glossary,
+Recommendations, login and dark mode verified. Glossary search works in the actual
+preview; approved QA Inbox retains receipt-only ACK. Invalid CSRF rejects logout and
+the original trusted session remains valid. No business commands submitted.
+
+Snapshots immediately before/after cutover prove byte-exact database preservation.
+After authenticated UI review: all82original session rows retained exactly; all accepted
+Case/Inspection/Recommendation/Advisory/ACK rows, revisions/receipts/history, migrations,
+grants and constraints exact. Three account identities/roles/scopes/password hashes/
+grant versions/policies compared against private backup COPY output and remain exact.
+Only normal login updated_at advances; sessions and security audits append normally,
+login budget advances. The inspection initially flagged expected audit/account activity;
+comparison was narrowed only after verifying the exact authorization invariants against
+the original backup. No privilege/credential or business-record changes were accepted.
+
+All35original container IDs/start times, unrelated35worktrees, fivePNG/workbook hashes,
+private wrapper and original backups remain unchanged. New implementation/release
+worktrees are additional and retained. Private backup `backup-20261011-162612.dump`,
+SHA256 `78cf4dc6c8ee723aaa876b74e8935a4b34d669f816209b8f5e8679f71927e2d4`,
+passes owner/mode/freshness/archive-list checks. No active restore or DDL performed.
+Official rollback preflight to b348235 PASS; initial recovery record
+`frontend-recovery-6a888b1c1b624ae8b956acdd167b5398.json` is retained privately.
+Hermetic recovery/rollback tests PASS; actual rollback is intentionally not run against
+the successful preview. Expanded Advisory/ACK schema remains on application rollback.
+
+Actual screenshots/reports remain private under state/ux-id-02-fix-01/live; final
+release screenshots under live-final. They are LIVE, not intercepted/synthetic.
+Screenshots cover overview, asset-health, pdm, cases, advisories, inbox, glossary,
+recommendations and login at all3widths, plus3dark overview images. Fixture screenshots
+are separate under /tmp/nadi-fix01-fixture-evidence. No credentials or cookie/token values
+appear in screenshots/reports. Factual screenshots stay private rather than publishing
+operational data to GitHub. Final documentation-only release source is selected through
+the same official controller after independent exact-head CI; its exact SHA and status
+are verified in PR71/final handoff, not inferred from this earlier screenshot checkpoint.
+
+Outstanding UX: the full provenance banner occupies substantial space on mobile; retain
+full hashes for truthful review. Some original QA record titles and raw vendor/contract
+codes remain English by ownership design; translating stored values is outside scope.
+Global enforcement, real recipients/channels, operational PdM and engineer UAT are still
+gated. Phase1 review/PO checkpoint/hard expiry unchanged and require their own operator
+review; runtime availability does not certify source freshness.

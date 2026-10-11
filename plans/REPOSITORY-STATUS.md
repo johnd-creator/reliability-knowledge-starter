@@ -921,3 +921,11 @@ not Production Acceptance.
 ## Frontend-only preview lifecycle — 2026-10-11
 
 [FIX-01](../reliability-cockpit/docs/nadi-ux-id-02-fix-01.md) adds a separate reviewed frontend source, without changing/restarting the pinned QA API or database. PR70 localization is preserved. Implementation/testing and actual runtime activation/PO acceptance are independent; final SHA, CI and live preservation evidence are recorded in the fix PR/task handoff. No automatic merge.
+
+
+FIX-01 visibility update: Indonesian frontend **VISIBLE / development QA PASS** on
+soleHTTPS3000 at b6a4981, separately approved compatible QA backend b348235. API PID1664250
+and children,35containers/start times, original82sessions/business records/schema/
+ledger/account permissions preserved. Normal login adds only session/security activity.
+PR71/PR70 OPEN, no merge. Final evidence-only source/CI verified independently at handoff.
+PO review, real engineer UAT and production activation remain PENDING.

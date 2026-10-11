@@ -863,3 +863,11 @@ hermetic checks are separate from runtime activation and PO acceptance. Exact-he
 actual HTTPS3000 visibility and preservation are final release gates; no new roadmap
 phase, authentication activation, engineering scoring, source acquisition or Phase1
 policy change. [Fix/runbook](../reliability-cockpit/docs/nadi-ux-id-02-fix-01.md).
+
+
+FIX-01 actual activation checkpoint: **frontend-only development preview PASS** at
+b6a4981, pinned backend b348235. Live106checks/30screenshots, exact-head backend/frontend
+CI run38128497987 and preservation/rollback preflight PASS. PR71 remains unmerged,
+stacked on unchanged OPENPR70. Final documentation-only release undergoes independent
+CI/source selection. PO visual/engineer UAT/operational acceptance remain PENDING;
+Phase0–5 and freshness governance unchanged. See the linked actual report above.
