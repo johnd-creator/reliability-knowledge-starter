@@ -205,3 +205,36 @@ same sequence with explicit `codex/nadi-ux-bundle-c`, never another frontend/por
 The merged main and prior candidate/worktrees/backups are preserved for source rollback.
 [Bundle C readiness](nadi-ux-bundle-c.md) records the exact functional source and
 final release handoff. Global enforcement/cookies/CSRF/RBAC/session policies are unchanged.
+
+
+## Frontend-only reviewed preview — NADI-UX-ID-02-FIX-01
+
+Use [frontend-only lifecycle](nadi-ux-id-02-fix-01.md) when frontend presentation
+is compatible with an already-running QA API. The controller must be installed
+with its reviewed companion and private release hash record in the existing state
+directory; the private wrapper remains unchanged. Keep the API checkout pinned.
+
+```bash
+.nadi-dev/nadi-dev backup
+.nadi-dev/nadi-dev frontend-preflight /absolute/managed/worktree --preview-ref EXACT_40_HEX_SHA --backup /absolute/state/backup-YYYYMMDD-HHMMSS.dump
+.nadi-dev/nadi-dev frontend-select /absolute/managed/worktree --preview-ref EXACT_40_HEX_SHA --backup /absolute/state/backup-YYYYMMDD-HHMMSS.dump
+.nadi-dev/nadi-dev status
+.nadi-dev/nadi-dev frontend-rollback /absolute/state/frontend-recovery-TOKEN.json
+```
+
+Commands serialize lifecycle changes. Preflight checks clean exact source, repository
+identity, dependencies, approved contract/source equality, loopback HTTPS ownership,
+both backends, private backup readability, controller hashes and rollback source.
+Only `nadi-primary-web.service` is stopped/started. No API startup, database startup,
+migration helper or DDL is invoked. Failed readiness restores the previous frontend.
+With an active separate frontend pointer, old shared-source lifecycle commands are
+refused; never use them to switch the QA API implicitly.
+
+Next.js can rewrite `web/next-env.d.ts` to its development cache path. The controller
+restores committed bytes only if the entire change is that exact generated reference.
+Any other edit remains dirty and fails readiness. No reset/checkout or source switching
+occurs. Controller approvals record frontend/backend SHA independently, exact reviewed
+launcher source/hash, compatible source digest and backup digest. Unknown/dirty/stale
+or unapproved different SHA still fails closed. A matching GitHub CI alone never proves
+actual runtime visibility. Rollback requires a fresh valid backup and repeats preflight;
+retain the expanded Advisory/ACK schema and every persisted record.
