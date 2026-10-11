@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "previous": "c840d88f360a24263550b665842b42edbded2e07",
+  "main": "cc90fc73bea6ae399383d8538035c6454dc7e65a",
+  "checks": [
+    "pre-switch clean source",
+    "before retains inspections",
+    "before retains cases",
+    "before retains recommendations",
+    "matching merged main and both backends",
+    "clean merged source",
+    "render merged /",
+    "render merged /assets",
+    "render merged /asset-health",
+    "render merged /pdm",
+    "render merged /recommendations",
+    "render merged /action-board",
+    "render merged /maintenance",
+    "render merged /work-orders",
+    "render merged /data-quality",
+    "render merged /engineering/local",
+    "same Secure session survives merge sync",
+    "merged main retains inspections",
+    "merged main retains cases",
+    "merged main retains recommendations",
+    "container identities/start times unchanged"
+  ],
+  "development_acceptance": "PO PROVISIONAL; final visual review 2026-10-12"
+}

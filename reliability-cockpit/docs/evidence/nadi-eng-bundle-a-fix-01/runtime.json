@@ -1,0 +1,50 @@
+{
+  "status": "PASS",
+  "source_sha": "01434fb26a29ba726fe59f663ca96d95bfd43c01",
+  "route_http_200": [
+    "/",
+    "/assets",
+    "/asset-health",
+    "/maintenance",
+    "/maintenance/investigation",
+    "/work-orders",
+    "/fmea",
+    "/rcfa",
+    "/overhauls",
+    "/data-quality",
+    "/pdm",
+    "/recommendations",
+    "/action-board",
+    "/login",
+    "/engineering/local",
+    "/engineering/cases",
+    "/engineering/advisories",
+    "/engineering/inbox"
+  ],
+  "route_count": 18,
+  "certificate": "existing localhost certificate verified using its CA file; no global bypass",
+  "development_status": {
+    "environment": "DEVELOPMENT",
+    "branch": "DETACHED",
+    "sha": "01434fb26a29ba726fe59f663ca96d95bfd43c01",
+    "dirty": false,
+    "backend": "AVAILABLE",
+    "database": "DISPOSABLE_TEST",
+    "engineering": true,
+    "factual_backend": "AVAILABLE",
+    "database_identity": "nadi_live_dev_test",
+    "primary_origin": "https://localhost:3000",
+    "launched_sha": "01434fb26a29ba726fe59f663ca96d95bfd43c01",
+    "backend_sha": "01434fb26a29ba726fe59f663ca96d95bfd43c01",
+    "stale": false,
+    "factual_data": "OPERATIONAL_LOCAL_READ_ONLY",
+    "engineering_data": "SYNTHETIC_FIXTURES"
+  },
+  "unit_pids": {
+    "nadi-primary-web.service": "1370768",
+    "nadi-live-api.service": "1557158"
+  },
+  "frontend_restarted": false,
+  "retired_port_13035": "CLOSED; unit inactive",
+  "backend_source": "QA-only restart via existing official controller; operational API untouched"
+}

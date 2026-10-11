@@ -1,0 +1,43 @@
+{
+  "status": "PASS",
+  "original_rows_exactly_preserved": 1206,
+  "original_sessions": 58,
+  "original_accounts": 3,
+  "original_container_ids_start_times_preserved": 35,
+  "schema_ledger_account_authority_unchanged": true,
+  "session_activity": "all 58 original rows retained; only monotonic last_seen update permitted by existing policy",
+  "workbook_images_unchanged": true,
+  "table_counts_before": {
+    "nadi_application_migration": 5,
+    "engineering_case": 8,
+    "engineering_case_event": 43,
+    "engineering_case_receipt": 43,
+    "nadi_application_session": 58,
+    "nadi_security_activity": 950,
+    "nadi_human_record_revision": 42,
+    "nadi_human_record": 11,
+    "nadi_human_record_receipt": 42,
+    "nadi_attachment": 0,
+    "nadi_attachment_event": 0,
+    "nadi_local_account": 3,
+    "nadi_local_login_budget": 1,
+    "nadi_local_security_event": 62
+  },
+  "table_counts_after": {
+    "nadi_application_migration": 5,
+    "engineering_case": 9,
+    "engineering_case_event": 49,
+    "engineering_case_receipt": 49,
+    "nadi_application_session": 68,
+    "nadi_security_activity": 1220,
+    "nadi_human_record_revision": 52,
+    "nadi_human_record": 14,
+    "nadi_human_record_receipt": 52,
+    "nadi_attachment": 0,
+    "nadi_attachment_event": 0,
+    "nadi_local_account": 3,
+    "nadi_local_login_budget": 1,
+    "nadi_local_security_event": 72
+  },
+  "backup_sha256": "2d25e8fdc6b1502ac6a6093baa5faf32ec3ab74cd8d654171cbbba8486476ce4"
+}

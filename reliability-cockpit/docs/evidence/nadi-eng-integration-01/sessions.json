@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "original_sessions_preserved": 58,
+  "current_sessions": 68,
+  "changed_fields": {
+    "last_seen_at": 1
+  },
+  "only_monotonic_policy_activity": true
+}

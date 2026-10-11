@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "operation": "READY",
+  "database": "nadi_live_dev_test",
+  "helper_sha": "01434fb26a29ba726fe59f663ca96d95bfd43c01",
+  "schema_before": {
+    "nadi_human_record_kind_check": "CHECK (((kind)::text = ANY ((ARRAY['INSPECTION'::character varying, 'RECOMMENDATION'::character varying])::text[])))",
+    "nadi_human_record_revision_check": "CHECK ((revision >= 1))"
+  },
+  "schema_after": {
+    "nadi_human_record_revision_check": "CHECK ((revision >= 1))",
+    "nadi_qa_advisory_kind_check": "CHECK (((kind)::text = ANY ((ARRAY['INSPECTION'::character varying, 'RECOMMENDATION'::character varying, 'ADVISORY'::character varying, 'ADVISORY_ACK'::character varying])::text[])))"
+  },
+  "lock_timeout_seconds": 3,
+  "statement_timeout_seconds": 10,
+  "all_existing_rows_exactly_unchanged": true,
+  "record_rows": 919,
+  "sessions_retained": 51,
+  "migration_ledger_unchanged": true,
+  "privileges_unchanged": true,
+  "other_constraints_unchanged": true,
+  "backup_restore": "PASS; temporary PostgreSQL16 only; exact rows and semantically equivalent constraints match; PostgreSQL dump/restore kind-array cast formatting normalized"
+}

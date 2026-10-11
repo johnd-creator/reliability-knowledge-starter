@@ -1,5 +1,5 @@
 """Dependency-injected disposable QA app. Operational create_app never imports it."""
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from src.api.application_session import build_session_router
 from src.api.engineering import build_router
 from src.api.human_records import build_inspection_router,build_recommendation_router
@@ -27,6 +27,16 @@ def create_qa_app(*,authority,cases,inspections,recommendations,context,environm
  if isinstance(authority.provider,LocalIdentityProvider):
   app.include_router(build_local_login_router(authority,enabled=True))
  dep=authority.dependency()
+ from src.services.advisory import AdvisoryService
+ from src.api.advisory import build_advisory_router, build_inbox_router
+ from src.repositories.qa_advisory_schema import qa_advisory_schema_ready
+ advisory_ready=qa_advisory_schema_ready(authority.engine)
+ advisories=AdvisoryService(recommendations,enabled=advisory_ready)
+ @app.get('/v1/engineering/advisory-capability')
+ def advisory_capability(actor=Depends(dep)):
+  return {'scope':'SYNTHETIC_QA_ONLY','persistence':'READY' if advisory_ready else 'BLOCKED_SCHEMA_PREREQUISITE'}
+ app.include_router(build_advisory_router(advisories,enabled=True,trusted_principal_dependency=dep))
+ app.include_router(build_inbox_router(advisories,enabled=True,trusted_principal_dependency=dep))
  for router in (build_session_router(authority,enabled=True,resume_csrf=isinstance(authority.provider,LocalIdentityProvider)),build_router(cases,enabled=True,trusted_principal_dependency=dep),build_inspection_router(inspections,enabled=True,trusted_principal_dependency=dep),build_recommendation_router(recommendations,enabled=True,trusted_principal_dependency=dep),build_asset_context_router(context,enabled=True,trusted_principal_dependency=dep)):app.include_router(router)
  @app.get('/health/live')
  def live():return {'status':'LIVE','scope':'DISPOSABLE_QA'}

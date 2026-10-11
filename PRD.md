@@ -47,7 +47,7 @@ lives in [the roadmap](plans/NADI-ROADMAP.md) and [development log](DEV-LOG.md).
 | FR-06 | Governed reports with explicit scope and provenance | UI-08 | PLANNED; report definitions and export policy |
 | FR-07 | Integration trust and technical navigation | UI-09 | UX-03; preserve factual routes and ownership |
 | FR-08 | Bounded administration | UI-10 | PLANNED; approved product role mapping |
-| FR-09 | Future authenticated access to application pages | UI-11 | UX-08 DESIGN ONLY; enforcement needs separate approved task |
+| FR-09 | Future authenticated access to application pages | UI-11 | UX-08 QA login presentation only; global enforcement needs separate approved task |
 | FR-10 | One primary HTTPS development address with accurate status | Shared shell | UX-01; PR #62 development acceptance, independent merge state |
 
 The corresponding [page specs](docs/design/NADI-UI-SPEC.md) give testable behavior.
@@ -228,3 +228,59 @@ Operational APIs/identity/writer activation, approved method/point/comparability
 attachment custody and engineer UAT are still dependencies. UI completion grants no
 engineering approval. Commands reuse existing authorized Engineering workflows;
 there is no new Maximo action, risk metric or global login enforcement.
+
+
+## Bundle C — login presentation and development acceptance — 2026-10-10
+
+The Product Owner's Bundle C directive grants provisional development acceptance
+for Bundle B / PR66 and schedules final visual review for Monday, 12 October 2026.
+PR66 is MERGED into main `cc90fc73bea6ae399383d8538035c6454dc7e65a`; existing
+features, QA records/session and operational infrastructure passed main synchronization.
+Final visual polish can be corrected; no operational PdM acceptance is inferred.
+
+UX-08 implements presentation polish of the existing `/login` and reusable QA
+sign-in form: original NADI logo, navy/green V1 layout, required-field guidance,
+loading/error/expiry/password-change visuals and keyboard accessibility. FR-09 global
+access remains a future requirement; no global redirect/enforcement, backend/cookie/
+CSRF/RBAC/session-policy change, account provisioning or default credentials.
+UX-09 is preparation/regression evidence, not final Product Owner acceptance.
+See [Bundle C implementation/readiness](reliability-cockpit/docs/nadi-ux-bundle-c.md).
+
+## Engineering Advisory & Distribution — binding PO scope, 2026-10-11
+
+NADI-ENG-BUNDLE-A adds FR-11 structured Case Management (ENG-UX-01/02), FR-12
+reviewed immutable advisory publication (ADV-01), FR-13 authenticated scoped
+recipient readability/acknowledgement (ADV-02), and FR-14 existing local follow-up
+traceability (ADV-03). ADV-04 real distribution remains future gated work.
+Operations and Maintenance are audience categories, not fabricated operational
+accounts/roles. Browser inputs cannot grant roles or choose their own audience.
+
+Acceptance: exact asset access on list/detail/history/mutation; trusted server
+identity and independent version-bound review/publication; source observations,
+hypotheses, conclusion, evidence limitations and recommended follow-up remain
+separate. Idempotency, stale-revision recovery, immutable snapshots, withdrawal,
+explicit acknowledgement audit and denied-access tests must pass. In-app availability
+is not delivery; acknowledgement is not recommendation acceptance or authorization.
+Local planned/completed/independently verified follow-up never proves physical work.
+No Maximo mutation, real notification, source request, global login or operational DB
+migration is authorized. Delivery is SYNTHETIC QA pending PO/engineer UAT and rollout.
+The [official track](plans/NADI-ROADMAP.md#engineering-delivery-track--nadi-eng-bundle-a--2026-10-11)
+owns statuses and dependencies.
+
+FR-11–FR-14 implementation candidate: structured Cases, reviewed version-bound
+Advisories, QA recipient receipt and existing Recommendation/Action Board controls
+are implemented on `codex/nadi-eng-bundle-a`. The source decision requires an
+approved same-asset Case AND Recommendation. QA audience exercise policy is
+server-owned and does not represent plant organizational grants. An explicit
+QA-only schema prerequisite broadens the existing human-record constraint;
+operational migration/activation remains gated. See
+[Engineering implementation decision](reliability-cockpit/docs/nadi-eng-bundle-a.md).
+
+### Integration-01 development checkpoint — 11 October 2026
+
+PR67 Login presentation and PR68 Case/Advisory/recipient workflow are integrated in
+one QA candidate from latest main, without merging the source PRs. Existing
+requirements and separate global-login/operational/UAT gates are unchanged.
+[Integration evidence](reliability-cockpit/docs/nadi-eng-integration-01.md) verifies
+persistent synthetic workflow, trusted inline login, factual regression and safe
+source rollback. Development QA PASS is separate from final Product Owner acceptance.

@@ -44,7 +44,7 @@ try {
   test("original measurement preserves zero false and unknown distinctly",()=>{assert.equal(records.originalValue(0),"0");assert.equal(records.originalValue(false),"false");assert.equal(records.originalValue(null),"UNKNOWN");});
   test("page filters use exact canonical identity and local status",()=>{const row={canonical_asset_id:"asset:A",status:"APPROVED"};assert.equal(records.recordMatches(row,"asset:A","APPROVED","sample","Sample"),true);assert.equal(records.recordMatches(row,"asset:B","","",""),false);assert.equal(records.recordMatches(row,"","DRAFT","",""),false);});
   test("page counts reconcile with only provided authorized records",()=>{assert.deepEqual(records.pageCounts([{status:"DRAFT"},{status:"APPROVED"},{status:"DRAFT"}]),{DRAFT:2,APPROVED:1});assert.deepEqual(records.pageCounts([]),{});});
-  test("record links encode identity and exclude commands",()=>{assert.equal(records.qaRecordLink("cases","case:A"),"/engineering/local?resource=cases&record=case%3AA");assert.ok(!records.validRecordId("../other"));assert.ok(records.validRecordId("inspection:1"));});
+  test("record links encode identity and exclude commands",()=>{assert.equal(records.qaRecordLink("cases","case:A"),"/engineering/cases?record=case%3AA");assert.ok(!records.validRecordId("../other"));assert.ok(records.validRecordId("inspection:1"));});
   test("candidate methods never equate PD and DGA",()=>assert.deepEqual(records.candidateMethods.map(x=>x.id),["VIBRATION","IR_THERMOGRAPHY","MCSA","TRIBOLOGY"]));
   const fixture=JSON.parse(readFileSync("fixtures/ux-bundle-b.json","utf8"));
   const AssetSummary=require(join(temp,"components/AssetHealthSummary.js")).default;

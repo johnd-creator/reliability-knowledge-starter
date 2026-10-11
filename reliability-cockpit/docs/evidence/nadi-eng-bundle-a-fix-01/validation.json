@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "backend_local_tests": 161,
+  "backend_skips": 0,
+  "frontend_assertions": 194,
+  "product_safety_sources": 52,
+  "typescript": "PASS",
+  "eslint": "PASS",
+  "browser_script_syntax": "PASS",
+  "persistent_browser_assertions": 51,
+  "https_routes": 18,
+  "markdown_relative_targets": 230,
+  "markdown_documents": 13,
+  "public_json_no_private_fields": "PASS",
+  "git_diff_check": "PASS",
+  "ci_baseline_head": "01434fb26a29ba726fe59f663ca96d95bfd43c01",
+  "ci_baseline_run": "https://github.com/johnd-creator/reliability-knowledge-starter/actions/runs/38073054589",
+  "final_ci": "Exact evidence HEAD checked after push; not inferred from runtime SHA",
+  "review": "QA target/constraints/atomicity/preservation/identity/CSRF/audit/rollback PASS; no unresolved critical/high issue within authorized QA scope"
+}

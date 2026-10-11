@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "post_workflow_backup": "backup-20261011-054714.dump",
+  "backup_sha256": "3768dc528782d367517c9458d263e31f076654e03d2c1a5e0bfcb4df8b0de029",
+  "restore_target": "temporary isolated PostgreSQL16; active database never overwritten",
+  "all_rows_schema_sessions_restored": true,
+  "compatible_rollback_sha": "8658c2fbd00bb78f1d8ee2b4462ccece4200a30e",
+  "old_application_migrations": "5 APPLIED, unchanged checksums",
+  "old_case_recommendation_reader": "PASS against restored expanded schema",
+  "advisory_ack_and_audit_retained": true,
+  "live_rollback": "not repeated; primary frontend remains running; prior official source rollback evidence retained",
+  "schema_rollback_policy": "KEEP EXPANDED CONSTRAINT; no deletion or constraint narrowing after advisory records"
+}

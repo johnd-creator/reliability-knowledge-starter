@@ -41,7 +41,7 @@ record the verified source, secure login boundary and startup authority.
 Read the banner's full SHA, dirty state, backend availability and fixture identity
 before reviewing changes. A documentation branch is not automatically visible there.
 
-Bundle A is now MERGED via PR65 in verified main `160737b3bfaeac94f4e8093b8566ca0e5d3585c9`. Bundle B implements the next product surfaces in `codex/nadi-ux-bundle-b`, selected explicitly through the same launcher; [Bundle B evidence](reliability-cockpit/docs/nadi-ux-bundle-b.md) distinguishes implementation from operational readiness and PO approval.
+Bundle A is now MERGED via PR65 in verified main `160737b3bfaeac94f4e8093b8566ca0e5d3585c9`. Bundle B is MERGED via PR66 in main `cc90fc73bea6ae399383d8538035c6454dc7e65a`, provisionally development accepted by the PO; final visual review is 12 October 2026. [Bundle B evidence](reliability-cockpit/docs/nadi-ux-bundle-b.md) distinguishes implementation from operational readiness and PO approval.
 
 ## Modules and current scope
 
@@ -73,7 +73,7 @@ and [DEV-LOG](DEV-LOG.md) distinguish those milestones.
   UNKNOWN, NOT ASSESSED and labeled DEMO have different meanings.
 - Source quality, source/collection/projection time, human review and equipment
   condition are independent. Portable PdM is episodic; PD is not assumed DGA.
-- Global login is a future requirement. This phase specifies its design only;
+- Global login is a future requirement. Bundle C polishes the existing isolated QA sign-in presentation only;
   factual development access and existing HTTPS Engineering security remain intact.
 
 ## How work continues
@@ -85,3 +85,5 @@ exact-head CI. Verify runtime visibility separately. Record Product Owner decisi
 with scope/evidence; proposals are not approvals. Append a development-log entry at
 each material milestone. GitHub reviewed documents are the persistent knowledge
 source; chat decisions become durable only when their provenance is recorded.
+
+Bundle C login presentation and UX-09 preparation are recorded in the [readiness report](reliability-cockpit/docs/nadi-ux-bundle-c.md). Global enforcement and operational engineer acceptance remain separate.
