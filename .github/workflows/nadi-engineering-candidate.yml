@@ -42,7 +42,7 @@ jobs:
         run: python -m unittest discover -s tests -v
   frontend:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     defaults:
       run:
         working-directory: reliability-cockpit/web
@@ -59,3 +59,8 @@ jobs:
         env:
           COCKPIT_API_BASE: http://127.0.0.1:9
           NEXT_TELEMETRY_DISABLED: '1'
+      - name: Indonesian candidate browser regression (network-isolated fixtures)
+        run: |
+          npm install --prefix "$RUNNER_TEMP/nadi-browser" --no-audit --no-fund --ignore-scripts playwright@1.62.1
+          node "$RUNNER_TEMP/nadi-browser/node_modules/playwright/cli.js" install --with-deps chromium
+          NADI_PLAYWRIGHT_MODULE="$RUNNER_TEMP/nadi-browser/node_modules/playwright/index.mjs" node scripts/localization-browser.mjs

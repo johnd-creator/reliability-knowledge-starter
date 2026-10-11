@@ -13,7 +13,7 @@ check('no redirects',proxy.includes("redirect:'error'"));
 check('no actor/roles forwarded',!proxy.includes("'x-actor'")&&!proxy.includes("'authorization'"));
 check('secure-session and CSRF transport',transport.includes("credentials:'same-origin'")&&transport.includes('X-CSRF-Token'));
 check('no browser source credentials',!transport.includes('PI_PASSWORD')&&!transport.includes('MAXIMO_READ_ONLY_TOKEN'));
-check('unsaved protection',ui.includes('beforeunload')&&ui.includes('Input retained'));
+check('unsaved protection',ui.includes('beforeunload')&&ui.includes('Isian dipertahankan'));
 check('explicit unknown/nonoperational meaning',ui.includes('UNKNOWN')&&ui.includes('not operational plant evidence')&&ui.includes('NOT ASSESSED'));
 check('production API never mounts QA',!app.includes('create_qa_app')&&!app.includes('build_session_router'));
 console.log(`HTTP QA frontend checks passed: ${count}`);

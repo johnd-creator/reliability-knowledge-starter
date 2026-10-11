@@ -1,5 +1,6 @@
 "use client";
 
+import { idText } from "../lib/id-copy";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
@@ -84,30 +85,30 @@ export function AppShell({ children, engineeringVisible = false, liveDevelopment
   }
 
   return <div className={`nadi-shell${liveDevelopment ? " development-shell" : ""}${collapsed ? " sidebar-collapsed" : ""}${drawer ? " drawer-open" : ""}`}>
-    <a className="skip-link" href="#main-content">Skip to content</a>
-    {drawer && <button type="button" className="drawer-backdrop" aria-label="Close navigation" onClick={() => setDrawer(false)} />}
-    <aside ref={sidebar} id="nadi-sidebar" className="nadi-sidebar" role={drawer ? "dialog" : undefined} aria-modal={drawer ? true : undefined} aria-label="NADI navigation panel">
-      <div className="sidebar-brand-row"><Link href="/" className="nadi-brand" aria-label="NADI Executive Overview"><span className="brand-emblem" aria-hidden="true">N</span><span className="nav-copy"><strong>NADI</strong><small>Reliability Data Platform</small></span></Link><button type="button" className="drawer-close" aria-label="Close navigation" onClick={() => setDrawer(false)}>×</button></div>
-      <nav className="nadi-nav" aria-label="NADI navigation">
+    <a className="skip-link" href="#main-content">{idText("Skip to content")}</a>
+    {drawer && <button type="button" className="drawer-backdrop" aria-label={idText("Close navigation")} onClick={() => setDrawer(false)} />}
+    <aside ref={sidebar} id="nadi-sidebar" className="nadi-sidebar" role={drawer ? "dialog" : undefined} aria-modal={drawer ? true : undefined} aria-label={idText("NADI navigation panel")}>
+      <div className="sidebar-brand-row"><Link href="/" className="nadi-brand" aria-label={idText("NADI Executive Overview")}><span className="brand-emblem" aria-hidden="true">N</span><span className="nav-copy"><strong>NADI</strong><small>{idText("Reliability Data Platform")}</small></span></Link><button type="button" className="drawer-close" aria-label={idText("Close navigation")} onClick={() => setDrawer(false)}>×</button></div>
+      <nav className="nadi-nav" aria-label={idText("NADI navigation")}>
         {navigation.map(item => {
           const active = group === item.id;
           const open = expanded[item.id] && !collapsed;
           const currentLink = activeLink(pathname, item.children ?? []);
           const contents = <><NavIcon name={item.icon} /><span className="nav-copy">{item.label}</span></>;
           return <div key={item.id} className="nav-item">
-            {item.planned ? <div className="nav-link planned" aria-disabled="true" title={`${item.label} — planned`}><span className="sr-only">{collapsed ? `${item.label} — planned` : ""}</span>{contents}<span className="planned-tag nav-copy">Planned</span></div>
+            {item.planned ? <div className="nav-link planned" aria-disabled="true" title={`${item.label} — direncanakan`}><span className="sr-only">{collapsed ? `${item.label} — direncanakan` : ""}</span>{contents}<span className="planned-tag nav-copy">{idText("Planned")}</span></div>
               : item.href ? <Link href={item.href} className={`nav-link${active ? " active" : ""}`} aria-current={active ? "page" : undefined} aria-label={collapsed ? item.label : undefined} title={collapsed ? item.label : undefined}>{contents}</Link>
                 : <button type="button" className={`nav-link nav-group${active ? " active" : ""}`} onClick={() => toggleGroup(item.id)} aria-expanded={!!open} aria-controls={`nav-${item.id}`} aria-label={collapsed ? item.label : undefined} title={collapsed ? item.label : undefined}>{contents}<span className="nav-copy nav-chevron" aria-hidden="true">{open ? "−" : "+"}</span></button>}
-            {item.children && <div id={`nav-${item.id}`} className="nav-submenu" hidden={!open}>{item.children.map((link, index) => <div key={link.href}>{link.section && link.section !== item.children?.[index - 1]?.section && <p className="nav-section-label">{link.section}</p>}<Link className={`nav-sublink${currentLink === link.href ? " active" : ""}`} href={link.href} aria-current={currentLink === link.href ? "page" : undefined}>{link.label}</Link></div>)}{item.id === "integration" && <div className="nav-planned-domains"><span>PI System · Planned</span><span>CEMS · Planned</span></div>}</div>}
+            {item.children && <div id={`nav-${item.id}`} className="nav-submenu" hidden={!open}>{item.children.map((link, index) => <div key={link.href}>{link.section && link.section !== item.children?.[index - 1]?.section && <p className="nav-section-label">{link.section}</p>}<Link className={`nav-sublink${currentLink === link.href ? " active" : ""}`} href={link.href} aria-current={currentLink === link.href ? "page" : undefined}>{link.label}</Link></div>)}{item.id === "integration" && <div className="nav-planned-domains"><span>{idText("PI System · Planned")}</span><span>{idText("CEMS · Planned")}</span></div>}</div>}
           </div>;
         })}
-        {engineeringVisible && <div className="engineering-nav"><Link className={`nav-link${routeMatches(pathname, "/engineering") ? " active" : ""}`} href={liveDevelopment ? "/engineering/cases" : "/engineering"} aria-label={collapsed ? "Engineering Workspace" : undefined} title="Engineering Workspace"><NavIcon name="engineering" /><span className="nav-copy">Engineering Workspace</span></Link><small className="nav-copy">{liveDevelopment ? "Isolated development QA" : "Authorized workspace"}</small></div>}
+        {engineeringVisible && <div className="engineering-nav"><Link className={`nav-link${routeMatches(pathname, "/engineering") ? " active" : ""}`} href={liveDevelopment ? "/engineering/cases" : "/engineering"} aria-label={collapsed ? idText("Engineering Workspace") : undefined} title={idText("Engineering Workspace")}><NavIcon name="engineering" /><span className="nav-copy">{idText("Engineering Workspace")}</span></Link><small className="nav-copy">{liveDevelopment ? idText("Isolated development QA") : idText("Authorized workspace")}</small></div>}
       </nav>
-      <div className="sidebar-footer"><span className="nav-copy scope-label">OPERATING SCOPE</span><strong>BSR / IP</strong><small className="nav-copy">Controlled Reliability Mart</small></div>
-      <button type="button" className="sidebar-collapse" onClick={() => setCollapsed(!collapsed)} aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"} aria-expanded={!collapsed}><span aria-hidden="true">{collapsed ? "»" : "«"}</span><span className="nav-copy">Collapse sidebar</span></button>
+      <div className="sidebar-footer"><span className="nav-copy scope-label">{idText("OPERATING SCOPE")}</span><strong>BSR / IP</strong><small className="nav-copy">{idText("Controlled Reliability Mart")}</small></div>
+      <button type="button" className="sidebar-collapse" onClick={() => setCollapsed(!collapsed)} aria-label={collapsed ? idText("Expand sidebar") : idText("Collapse sidebar")} aria-expanded={!collapsed}><span aria-hidden="true">{collapsed ? "»" : "«"}</span><span className="nav-copy">{idText("Collapse sidebar")}</span></button>
     </aside>
     <div className="nadi-content" inert={drawer ? true : undefined}>
-      <header className="nadi-topbar"><div className="topbar-context"><button ref={menuButton} type="button" className="menu-toggle icon-button" aria-label="Open navigation" aria-expanded={drawer} aria-controls="nadi-sidebar" onClick={() => { setCollapsed(false); setDrawer(true); }}>☰</button><div><span className="topbar-kicker">NADI / RELIABILITY PLATFORM</span><span className="topbar-title">PLTU Banten 1 Suralaya</span></div></div><div className="topbar-actions"><span className="topbar-status">Mart read-only <span className="scope-chip">BSR / IP</span></span><button className="theme-toggle" type="button" onClick={toggleTheme} aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`} aria-pressed={theme === "dark"}>{theme === "light" ? "☾ Dark" : "☀ Light"}</button></div></header>
+      <header className="nadi-topbar"><div className="topbar-context"><button ref={menuButton} type="button" className="menu-toggle icon-button" aria-label={idText("Open navigation")} aria-expanded={drawer} aria-controls="nadi-sidebar" onClick={() => { setCollapsed(false); setDrawer(true); }}>☰</button><div><span className="topbar-kicker">{idText("NADI / RELIABILITY PLATFORM")}</span><span className="topbar-title">PLTU Banten 1 Suralaya</span></div></div><div className="topbar-actions"><span className="topbar-status">{idText("Mart read-only")} <span className="scope-chip">BSR / IP</span></span><button className="theme-toggle" type="button" onClick={toggleTheme} aria-label={`Ganti ke tema ${theme === "light" ? "gelap" : "terang"}`} aria-pressed={theme === "dark"}>{theme === "light" ? idText("☾ Dark") : idText("☀ Light")}</button></div></header>
       <main id="main-content" tabIndex={-1} className="nadi-main">{children}</main>
     </div>
   </div>;

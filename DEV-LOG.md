@@ -368,3 +368,21 @@ Product Owner Acceptance: QA integration/testing authorization; final visual, se
 Remaining Blockers: no QA schema prerequisite; operational identity/recipients/channels/UAT still gated; Phase1 review/checkpoint/expiry remain independent unchanged.
 Next Action: senior/PO review integration PR and exact-head CI; no automatic merge or global authentication/Phase3 activation.
 Evidence: [integration/self-review](reliability-cockpit/docs/nadi-eng-integration-01.md), [fresh screenshots/results](reliability-cockpit/docs/evidence/nadi-eng-integration-01/README.md). All58original sessions retained with policy-normal monotonic last_seen only,1206immutable baseline rows exact,3accounts,35containers/start times, expanded Advisory/ACK schema, ledger, workbook and five original PNGs preserved. Official private backup fully restored only into a disposable clone; source rollback01434fb demonstrated without DB restoration or deletion.
+
+## 2026-10-11 — NADI-UX-ID-01
+
+Date: 2026-10-11 (Asia/Jakarta)
+Task ID: NADI-UX-ID-01 / L0–L5
+Objective: Bahasa Indonesia utama tanpa perubahan perilaku/kontrak, plus panduan istilah.
+Branch: codex/nadi-ux-id-01; worktree terisolasi `.nadi-dev/ux-id-01`.
+Commit SHA: base 09b6d6308a6cc70818292eb71f79733255dcf823; implementation 2abbe61a0973d2cd8ce1d788e7fad525cb0173b6; final delivery HEAD pada PR handoff.
+PR: PR baru lokalisasi terhadap main; final number/URL pada task handoff, tidak auto-merge. PR #69 MERGED terverifikasi terpisah.
+Implementation Status: IMPLEMENTED L1/L2 — dictionary presentation, seluruh keluarga halaman NADI, status-code mapping, glosarium 41 entri dan contextual help. API/enum/URL/data tersimpan tetap asli.
+Test Status: TESTED — TypeScript, lint seluruh presentation (0 errors; 1 existing intentional pinned-editor dependency warning), build, frontend/security assertions,14 contracts; browser komponen terisolasi 1440/768/390, Case→Recommendation→Advisory→Inbox/ACK dan retry/CAS. Local backend 150 tests: 94 pass / 56 PostgreSQL skips, tidak menggantikan PostgreSQL CI.
+CI Status: exact-head backend/frontend termasuk PostgreSQL acceptance dan fixture browser diverifikasi setelah push pada PR handoff; tidak diartikan sebagai runtime deployment.
+Merge Status: NOT MERGED.
+Development Visibility: kandidat belum dipilih; HTTPS 3000 existing tetap bersih di b348235ce6f82c84873a65344ad2ef5fe276987d. Screenshot kandidat adalah QA SINTETIS network-isolated, bukan deployment atau persistence acceptance baru.
+Product Owner Acceptance: arah bahasa disetujui dalam task; final wording/visual/senior review dan engineer UAT PENDING.
+Remaining Blockers: official launcher switch memerlukan penghentian web+QA API; task ini melarang perubahan layanan/data/deployment QA. Definisi metode/threshold dan operational identity/channel/UAT tetap gated; Phase 1 deadlines unchanged.
+Next Action: review PR/screenshot/istilah; source selection hanya melalui mekanisme resmi yang aman pada task runtime terpisah. Tidak merge atau aktivasi operasional otomatis.
+Evidence: [implementation/self-review](reliability-cockpit/docs/nadi-ux-id-01.md), [matrix/screenshots](reliability-cockpit/docs/evidence/nadi-ux-id-01/README.md). Read-only before/after fingerprints membuktikan semua rekam/session/schema/grants tepat sama,82 sessions / 3 accounts, 35 container IDs/start times, 34 other worktrees plus this candidate, 5 PNG dan workbook. Existing private backup list readable; historical clone restore evidence referenced, no new restore/DDL.

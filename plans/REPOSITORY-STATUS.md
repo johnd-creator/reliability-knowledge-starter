@@ -1,5 +1,19 @@
 # Repository status and debt — PLATFORM-ROADMAP-001
 
+## Current checkpoint — NADI-UX-ID-01 — 2026-10-11
+
+Latest merged main `09b6d6308a6cc70818292eb71f79733255dcf823` dan PR69 MERGED
+terverifikasi. Branch `codex/nadi-ux-id-01` menambahkan interface Indonesia serta
+`/panduan/istilah`; implementation commit `2abbe61a0973d2cd8ce1d788e7fad525cb0173b6`.
+Dokumentasi/evidence delivery dapat memajukan HEAD; exact-head CI dan URL PR dicatat
+pada handoff. Status: implementation/testing kandidat PASS; live localization
+visibility PARTIAL karena frontend existing b348235 dan API QA tetap berjalan.
+Tidak ada merge kandidat, perubahan database/collector, enforcement login global
+atau engineer/PO acceptance baru. Seluruh checkpoint sebelumnya adalah bukti bertanggal.
+
+[Laporan](../reliability-cockpit/docs/nadi-ux-id-01.md) ·
+[Evidence](../reliability-cockpit/docs/evidence/nadi-ux-id-01/README.md).
+
 ## Current checkpoint — NADI-ENG-INTEGRATION-01 — 2026-10-11
 
 Latest main `cc90fc73bea6ae399383d8538035c6454dc7e65a` is unchanged. Exact unmerged

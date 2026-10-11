@@ -1,5 +1,6 @@
 "use client";
 
+import { idText, statusLabel } from "../../lib/id-copy";
 import Link from "next/link";
 import { TableFrame } from "../../components/ui";
 import { useEffect, useState } from "react";
@@ -68,39 +69,39 @@ export default function WorkOrdersPage() {
   };
 
   return (
-    <section className="legacy-content" aria-label="Work Orders">
+    <section className="legacy-content" aria-label={idText("Work Orders")}>
       <section className="card">
-        <h2>Work Orders (all equipment)</h2>
-        <div className="filters" aria-label="Work order filters">
+        <h2>{idText("Work Orders (all equipment)")}</h2>
+        <div className="filters" aria-label={idText("Work order filters")}>
           <label>
             Status{" "}
             <select value={statusFilter} onChange={(event) => changeStatus(event.target.value)}>
-              <option value="ALL">All statuses</option>
-              {statuses.map((status) => <option key={status} value={status}>{status}</option>)}
+              <option value="ALL">{idText("All statuses")}</option>
+              {statuses.map((status) => <option key={status} value={status}>{statusLabel(status)}</option>)}
             </select>
           </label>
         </div>
         <p className="muted">
-          All-status total: <strong>{!loading && !error && page ? allStatusTotal.toLocaleString() : "UNKNOWN"}</strong>
-          {statusFilter !== "ALL" && <> · Filtered ({statusFilter}): <strong>{!loading && !error && page ? total.toLocaleString() : "UNKNOWN"}</strong></>}
+          {idText("All-status total:")} <strong>{!loading && !error && page ? allStatusTotal.toLocaleString() : statusLabel("UNKNOWN")}</strong>
+          {statusFilter !== "ALL" && <>  {idText("· Filtered (")}{statusFilter}): <strong>{!loading && !error && page ? total.toLocaleString() : statusLabel("UNKNOWN")}</strong></>}
         </p>
         {error && <div className="error">{error}</div>}
-        {loading && <div className="empty">Loading…</div>}
+        {loading && <div className="empty">{idText("Loading…")}</div>}
         {!loading && !error && total === 0 && (
           <div className="empty">Belum ada data. Jalankan <code>cockpit sync</code> terlebih dahulu.</div>
         )}
         {!loading && !error && page && page.items.length > 0 && (
-          <TableFrame label="Work Orders data"><table>
+          <TableFrame label={idText("Work Orders data")}><table>
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Equipment</th>
-                <th>Type</th>
+                <th>{idText("Equipment")}</th>
+                <th>{idText("Type")}</th>
                 <th>Status</th>
-                <th>Description</th>
-                <th>Reported</th>
-                <th>Downtime (h)</th>
-                <th>Failure</th>
+                <th>{idText("Description")}</th>
+                <th>{idText("Reported")}</th>
+                <th>{idText("Downtime (h)")}</th>
+                <th>{idText("Failure")}</th>
               </tr>
             </thead>
             <tbody>
@@ -128,7 +129,7 @@ export default function WorkOrdersPage() {
           </table></TableFrame>
         )}
         {!loading && !error && total > 0 && (
-          <div className="pagination-bar" aria-label="Work order pagination">
+          <div className="pagination-bar" aria-label={idText("Work order pagination")}>
             <div>
               Menampilkan <strong>{start.toLocaleString()}</strong>–<strong>{end.toLocaleString()}</strong> dari{" "}
               <strong>{total.toLocaleString()}</strong> Work Order

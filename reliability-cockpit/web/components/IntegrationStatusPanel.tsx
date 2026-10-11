@@ -1,4 +1,5 @@
 "use client";
+import { idText } from "../lib/id-copy";
 import { useEffect, useState } from "react";
 import { reliabilityApi, type IntegrationStatus } from "@/lib/api";
 import { LoadingState, EmptyState, SectionCard } from "@/components/ui";
@@ -13,7 +14,7 @@ export default function IntegrationStatusPanel({ canonicalId }: { canonicalId?: 
       .catch(() => { if (!cancelled) setData(null); }).finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled=true; };
   },[canonicalId]);
-  return <SectionCard><div className="section-heading"><h2>Integration Status</h2></div>
-    {loading ? <LoadingState /> : data ? <IntegrationStatusView data={data} /> : <EmptyState title="Integration status UNKNOWN." detail="Local evidence cannot be read. Equipment condition remains unknown." />}
+  return <SectionCard><div className="section-heading"><h2>{idText("Integration Status")}</h2></div>
+    {loading ? <LoadingState /> : data ? <IntegrationStatusView data={data} /> : <EmptyState title={idText("Integration status UNKNOWN.")} detail={idText("Local evidence cannot be read. Equipment condition remains unknown.")} />}
   </SectionCard>;
 }

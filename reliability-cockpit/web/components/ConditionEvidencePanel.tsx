@@ -1,5 +1,6 @@
 "use client";
 
+import { idText } from "../lib/id-copy";
 import ConditionEvidenceView from "./ConditionEvidenceView";
 import { useEffect, useState } from "react";
 import { reliabilityApi, type AssetConditionEvidence } from "@/lib/api";
@@ -17,8 +18,8 @@ export default function ConditionEvidencePanel({ canonicalId }: { canonicalId: s
     return () => { cancelled = true; };
   }, [canonicalId]);
   return <SectionCard>
-    <div className="section-heading"><div><p className="eyebrow">Selected signal evidence</p><h2>Condition Evidence</h2></div></div>
-    {loading ? <LoadingState /> : !data ? <EmptyState title="Condition evidence unavailable." detail="Equipment condition remains unknown." /> : <>
+    <div className="section-heading"><div><p className="eyebrow">{idText("Selected signal evidence")}</p><h2>{idText("Condition Evidence")}</h2></div></div>
+    {loading ? <LoadingState /> : !data ? <EmptyState title={idText("Condition evidence unavailable.")} detail={idText("Equipment condition remains unknown.")} /> : <>
       <ConditionEvidenceView data={data} />
     </>}
   </SectionCard>;

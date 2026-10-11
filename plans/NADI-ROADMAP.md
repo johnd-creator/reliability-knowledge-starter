@@ -827,3 +827,29 @@ The original Phase0–5 roadmap, Phase2/4 PARTIAL, PdM engineer-validation gates
 Phase1 review/checkpoint/expiry are unchanged. QA execution PASS does not infer
 merge, PO visual acceptance, real engineer UAT or production acceptance. PR #67
 remains independent OPEN. No new roadmap phase or deadline extension.
+
+### NADI-UX-ID-01 — Indonesian localization checkpoint — 2026-10-11
+
+Track UI/UX yang sama; Phase 0–5 dan UX-01–09 tidak diganti atau diperluas.
+PR #69 telah MERGED pada main `09b6d6308a6cc70818292eb71f79733255dcf823`,
+terverifikasi 11 Oktober. Bukti historis integration/source PR tetap dipertahankan.
+
+| Milestone | Status kandidat | Gate terpisah |
+|---|---|---|
+| L0 — Audit/baseline | PASS; PR #69 merged, branch/worktree terisolasi dari latest main | Runtime existing b348235 dipertahankan |
+| L1 — Indonesian interface | IMPLEMENTED / TESTED | PO wording/visual acceptance pending |
+| L2 — Panduan & istilah | IMPLEMENTED / TESTED; 41 istilah dan pencarian | Definisi kandidat engineering menunggu engineer |
+| L3 — V1 responsive | TESTED 1440/768/390; dark mode/logo/token tetap | Bukan sertifikasi aksesibilitas penuh |
+| L4 — Regression/review | Local frontend/contract PASS; exact-head CI dicatat pada PR handoff | Browser workflow adalah fixture; bukan UAT persisten baru |
+| L5 — Delivery | Dokumentasi/evidence dan PR terpisah; no auto-merge | Kandidat belum dipilih pada preview aktif |
+
+[Laporan dan preservasi](../reliability-cockpit/docs/nadi-ux-id-01.md) serta
+[matriks/screenshot](../reliability-cockpit/docs/evidence/nadi-ux-id-01/README.md)
+memisahkan implemented/tested/merged/visible/accepted. Launcher source selection saat
+ini menghentikan web + API QA; tugas lokalisasi tidak menjalankannya. Backend,
+collector, database, session dan schema Advisory/ACK tidak diubah.
+
+72-hour Phase 1 review **11 Oct 21:45:26 WIB**, checkpoint PO **12 Oct 20:00 WIB**
+dan hard expiry **13 Oct 00:00 WIB** tetap berlaku; hasil review operator UNKNOWN
+bila belum ada bukti terpisah. Task ini tidak menjalankan, memperpanjang atau mereset
+kebijakan/monitoring tersebut. Global login dan operational engineering tetap gated.

@@ -150,3 +150,22 @@ meaning. Tablet/mobile collapse decorative copy and preserve accessible form ord
 [Readiness evidence](reliability-cockpit/docs/nadi-ux-bundle-c.md) records comparison
 and tests. This is a visual candidate, not global authentication activation or final
 brand/token/PO accessibility certification.
+
+## Indonesian presentation — NADI-UX-ID-01
+
+V1 mempertahankan token navy/hijau, logo asli, tema terang/gelap, ukuran navigasi,
+state fokus dan makna warna. Copy memakai Bahasa Indonesia; dictionary source-key
+bertipe `idText` dan mapping `statusLabel` berada di `web/lib/id-copy.ts` serta
+`id-messages.json`. Jangan gunakan label terjemahan sebagai key tab, value form,
+URL, API command atau isi rekam. Option memiliki value asli yang terpisah dari label.
+Kode yang tidak dikenal dan nilai sumber/pengguna tetap verbatim.
+
+Kalimat panjang harus membungkus secara wajar; filter/action dapat wrap. Tabel
+integrasi memakai TableFrame yang dapat discroll dengan keyboard, bukan memperlebar
+halaman. Glosarium memakai grid responsif dengan label Inggris eksplisit dan
+anchor istilah. Bantuan contextual menjelaskan persetujuan rekam ≠ izin pekerjaan.
+
+[Evidence 1440/768/390](reliability-cockpit/docs/evidence/nadi-ux-id-01/README.md)
+memakai komponen kandidat dan fixture bertanda QA SINTETIS, tanpa server kedua.
+Pengujian kontras V1 dan nama aksesibel tidak merupakan sertifikasi aksesibilitas
+menyeluruh. Pilihan padanan bahasa dan kepadatan halaman tetap menunggu review PO.
