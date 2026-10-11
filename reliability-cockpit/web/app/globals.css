@@ -555,3 +555,14 @@ td strong { color: var(--text); font-weight: 650; }
  .login-brand-context p { margin-top:var(--space-2); }
 }
 @media(max-width:520px) { .login-brand-panel { grid-template-columns:minmax(0,140px) minmax(0,1fr); gap:var(--space-2) var(--space-3); padding:var(--space-4); } .login-brand-eyebrow { font-size:10px; } }
+
+/* Engineering product forms reuse Design System V1 surfaces and tokens. */
+.engineering-form { display:grid;gap:var(--space-4,16px);margin-block:20px; }
+.engineering-form fieldset { min-width:0;border:1px solid var(--line);border-radius:var(--radius);padding:16px;display:grid;gap:16px; }
+.engineering-form legend { font-weight:700;padding-inline:8px; }
+.engineering-form label { display:grid;gap:8px;font-weight:600;min-width:0; }
+.engineering-form textarea { width:100%;min-height:112px;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--text);font:inherit;resize:vertical; }
+.engineering-form input[type=checkbox] { width:20px;height:20px; }
+.engineering-actions { display:flex;gap:12px;flex-wrap:wrap;margin-block:16px; }
+.engineering-prose { white-space:pre-wrap;overflow-wrap:anywhere; }
+.product-workspace .identifier { max-width:100%;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;word-break:break-word; }

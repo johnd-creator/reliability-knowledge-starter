@@ -10,5 +10,5 @@ export const candidateMethods=[{id:"VIBRATION",label:"Vibration"},{id:"IR_THERMO
 export function originalValue(value:Measurement["value"]):string {return value === null ? "UNKNOWN" : String(value);}
 export function recordMatches(row:HumanRecord,asset:string,status:string,search:string,text:string):boolean {return (!asset||row.canonical_asset_id===asset)&&(!status||row.status===status)&&(!search.trim()||text.toLowerCase().includes(search.trim().toLowerCase()));}
 export function pageCounts<T extends HumanRecord>(rows:T[]) {return rows.reduce<Record<string,number>>((out,row)=>{out[row.status]=(out[row.status]??0)+1;return out;},{});}
-export function qaRecordLink(resource:string,id:string) {return `/engineering/local?resource=${encodeURIComponent(resource)}&record=${encodeURIComponent(id)}`;}
+export function qaRecordLink(resource:string,id:string) {if(resource==="cases")return `/engineering/cases?record=${encodeURIComponent(id)}`;return `/engineering/local?resource=${encodeURIComponent(resource)}&record=${encodeURIComponent(id)}`;}
 export function validRecordId(value:string|null):value is string {return !!value&&/^[A-Za-z0-9_.:-]{1,100}$/.test(value);}

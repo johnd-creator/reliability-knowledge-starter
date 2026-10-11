@@ -1,0 +1,45 @@
+{
+  "status": "PASS",
+  "database": "nadi_live_dev_test",
+  "owner": "nadi_dev_fixture",
+  "host": "127.0.0.1",
+  "port": 15443,
+  "all_tables_application_owned": true,
+  "grant_rows": 98,
+  "table_counts": {
+    "engineering_case": 6,
+    "engineering_case_event": 31,
+    "engineering_case_receipt": 31,
+    "nadi_application_migration": 5,
+    "nadi_application_session": 51,
+    "nadi_attachment": 0,
+    "nadi_attachment_event": 0,
+    "nadi_human_record": 7,
+    "nadi_human_record_receipt": 28,
+    "nadi_human_record_revision": 28,
+    "nadi_local_account": 3,
+    "nadi_local_login_budget": 1,
+    "nadi_local_security_event": 55,
+    "nadi_security_activity": 673
+  },
+  "sessions": 51,
+  "schema_before": {
+    "nadi_human_record_kind_check": "CHECK (((kind)::text = ANY ((ARRAY['INSPECTION'::character varying, 'RECOMMENDATION'::character varying])::text[])))",
+    "nadi_human_record_revision_check": "CHECK ((revision >= 1))"
+  },
+  "lock_risks": 0,
+  "backup_file": "backup-20261011-054012.dump",
+  "backup_sha256": "d7bb0e58a672f92b7a9348202600f53de50d17e65a87c38d89233ff15b5477d3",
+  "backup_restore": "PASS; temporary PostgreSQL16 only; exact rows and semantically equivalent constraints match; PostgreSQL dump/restore kind-array cast formatting normalized",
+  "rollback": "retain expanded schema once Advisory/ACK exist; compatible source rollback, no record deletion",
+  "sha": "01434fb26a29ba726fe59f663ca96d95bfd43c01",
+  "existing_qa_owner_role_flags": {
+    "rolname": "nadi_dev_fixture",
+    "rolsuper": true,
+    "rolcreatedb": true,
+    "rolcreaterole": true,
+    "rolreplication": true,
+    "rolbypassrls": true
+  },
+  "owner_role_note": "Existing isolated container QA bootstrap role; elevated flags unchanged. Not an operational least-privilege writer readiness claim."
+}

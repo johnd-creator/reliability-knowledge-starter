@@ -409,3 +409,32 @@ records responsive/error/loading/expiry evidence and retained A/B regressions.
 distinguish local tests, exact-head CI, runtime visibility and Product Owner review.
 PO provisional development acceptance of PR66 is separate from Monday, 12 October 2026
 final visual review. Operational engineer validation and Phase 1 governance remain intact.
+
+## Engineering product flow — ENG-UX-01/02 and ADV-01/02/03
+
+Extend UI-05 with a permitted-asset case register, server pagination and structured
+create/edit/detail forms. Present problem, observations versus hypotheses, evidence,
+workflow, revisions and independent reviewer actions; retain `/engineering/local`
+for diagnostics. Errors preserve local unsaved input and explain revision conflicts.
+Extend UI-06/07 with advisory draft/review/publication, readable scoped recipient
+inbox/detail and explicit authenticated acknowledgement where durable identity is
+proven. Reuse the existing Action Board and NADI-owned recommendation lifecycle.
+Every screen carries SYNTHETIC QA scope, unknown/empty/error states, exact identities,
+V1 components, keyboard labels/focus, and 1440/768/390px responsive acceptance.
+Publication must bind an eligible reviewed immutable source version on the same
+asset. A read is not VIEWED/delivered without an explicit attributable event;
+acknowledgement is not plant-work approval. Real channels, operational accounts and
+activation remain gated. This specification records requirements, not completed UAT.
+
+### Engineering product route implementation checkpoint
+
+The Engineering candidate implements `/engineering/cases`,
+`/engineering/advisories` and `/engineering/inbox` as authenticated SYNTHETIC QA
+product routes. Existing `/engineering/local` diagnostics remain available.
+Case observations and hypotheses, approved recommendation content, advisory
+statement/evidence caveats, publication availability, receipt and local follow-up
+are visually distinct. Acknowledgement is receipt only. The QA audience exercise
+policy is server-owned; it does not provision organizational roles. See
+[implementation and security decisions](../../reliability-cockpit/docs/nadi-eng-bundle-a.md).
+These are implementation milestones, not merge, Product Owner visual acceptance,
+engineer UAT or operational distribution acceptance.

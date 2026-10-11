@@ -295,3 +295,58 @@ Original logs above remain historical; this entry records the later PO decision 
 Evidence: [readiness report](reliability-cockpit/docs/nadi-ux-bundle-c.md),
 [responsive/state screenshots](docs/design/ux-bundle-c/README.md),
 [official roadmap](plans/NADI-ROADMAP.md).
+
+## NADI-ENG-BUNDLE-A — B0 governance/baseline — 2026-10-11
+
+- **Date:** 2026-10-11, Asia/Jakarta.
+- **Task ID:** NADI-ENG-BUNDLE-A / B0.
+- **Objective:** PO-directed Case UX and Engineering Advisory/Distribution traceability before implementation.
+- **Branch:** codex/nadi-eng-bundle-a; separate clean worktree.
+- **Commit SHA:** Base main cc90fc73bea6ae399383d8538035c6454dc7e65a; introducing governance commit in Git history.
+- **PR:** New integrated Engineering PR to be opened; PR67 remains independently OPEN.
+- **Implementation Status:** PLANNED ENG-UX-01/02, ADV-01/02/03; ADV-04 FUTURE/GATED.
+- **Test Status:** Baseline ownership/fixture/clean source verified; feature tests pending.
+- **CI Status:** PR67 exact-head backend/frontend SUCCESS; Engineering CI pending, not inferred.
+- **Merge Status:** Engineering UNMERGED.
+- **Development Visibility:** Existing PR67 preview remains at 8658c2fbd00bb78f1d8ee2b4462ccece4200a30e, clean; new work not yet visible.
+- **Product Owner Acceptance:** Binding requirement authorization from supplied NADI-ENG-BUNDLE-A task; implementation acceptance PENDING.
+- **Remaining Blockers:** Inspect eligible upstream review, storage reuse and trusted recipient policy before delivery; operational channels/UAT remain gated.
+- **Next Action:** Implement bounded authenticated SYNTHETIC QA flow and verify security/regression.
+
+Phase 2/4 PARTIAL; freshness review/checkpoint/expiry remain separate unchanged tasks.
+
+## 2026-10-11 — NADI-ENG-BUNDLE-A delivery / autonomous review
+
+Date: 2026-10-11 (Asia/Jakarta)
+Task ID: NADI-ENG-BUNDLE-A
+Objective: structured Engineering Cases and governed QA advisory recipient experience.
+Branch: codex/nadi-eng-bundle-a
+Commit SHA: implementation `2a7678d82f6f0e8769a03ca09857c59f2f37f338`; delivery docs may advance PR HEAD.
+PR: [#68](https://github.com/johnd-creator/reliability-knowledge-starter/pull/68)
+Implementation Status: IMPLEMENTED — ENG-UX-01/02, ADV-01/02/03; ADV-04 PLANNED.
+Test Status: TESTED — 161 disposable PostgreSQL backend/HTTPS tests, zero skips; frontend assertions, TypeScript/lint/build; 31 Engineering + 102 Bundle A + 129 Bundle B browser checks. Initial SQLite 97 pass/58 skip is distinct. Advisory browser fixtures are DEMO; durable backend acceptance is disposable-only.
+CI Status: backend/frontend PASS on exact implementation `2a7678d82f6f0e8769a03ca09857c59f2f37f338` ([run](https://github.com/johnd-creator/reliability-knowledge-starter/actions/runs/38072796251)); final delivery-document PR exact-head status verified independently at handoff.
+Merge Status: NOT MERGED; PR #67 remains independent OPEN.
+Development Visibility: VISIBLE Case/Recommendation/Action Board QA on HTTPS 3000. Advisory persistence/inbox BLOCKED_SCHEMA_PREREQUISITE in unchanged persistent QA store. New APIs and controls fail closed; fixture screenshots are not runtime persistence proof.
+Product Owner Acceptance: PENDING; engineer UAT/operational distribution PENDING.
+Remaining Blockers: automatic approval review denied persistent QA constraint expansion; organizational recipient identity and real distribution remain future gated.
+Next Action: explicit authorization decision for the existing QA constraint, followed by persistent advisory publication/receipt UAT; no operational activation.
+Evidence: [implementation/self-review](reliability-cockpit/docs/nadi-eng-bundle-a.md), [responsive evidence](reliability-cockpit/docs/evidence/nadi-eng-bundle-a/README.md). Official backup and rollback to `8658c2fbd00bb78f1d8ee2b4462ccece4200a30e` verified. All 35 original container IDs/start times, 481 non-account rows, 39 original sessions, three account grants/credentials, workbook and PNG hashes preserved; normal login timestamp changes are documented.
+
+## 2026-10-11 — NADI-ENG-BUNDLE-A-FIX-01 / persistent QA authorization
+
+Date: 2026-10-11 (Asia/Jakarta)
+Task ID: NADI-ENG-BUNDLE-A-FIX-01
+Objective: execute PO-authorized existing QA CHECK expansion and prove persistent Advisory/recipient workflow.
+Branch: codex/nadi-eng-bundle-a
+Commit SHA: executed helper/runtime `01434fb26a29ba726fe59f663ca96d95bfd43c01`; introducing evidence/test commit advances PR HEAD without application-source changes.
+PR: [#68](https://github.com/johnd-creator/reliability-knowledge-starter/pull/68)
+Implementation Status: IMPLEMENTED — approved original QA helper replaces only kind CHECK; no operational migration or code change.
+Test Status: TESTED — 51 actual persistent browser assertions, 18 HTTPS route checks, 161 disposable PostgreSQL backend tests/zero skips; frontend assertions/safety/lint/TypeScript/syntax; nine1440/768/390 screenshots; two private backup clone restores and previous-reader compatibility PASS.
+CI Status: baseline01434fb backend/frontend PASS; final evidence-head backend/frontend/build/contracts are independently verified after push in PR checks and final handoff.
+Merge Status: NOT MERGED; PR #67 independently OPEN and unchanged.
+Development Visibility: VISIBLE at HTTPS3000, clean source/backend/launch01434fb; affected QA API only reloaded, original frontend process preserved. Advisory/inbox capability READY; actual publication/ACK retained after reload/reconnect and deliberate withdrawal.
+Product Owner Acceptance: limited conditional schema/execution authority given by PO; Persistent QA Acceptance execution PASS. Actual engineer UAT, PO visual review and operational/production acceptance PENDING.
+Remaining Blockers: no persistent-QA schema blocker remains. Organizational recipients/identity, real channels/custody/UAT and operational rollout still separately gated.
+Next Action: senior/PO review of unmerged PR #68 and QA evidence; retain expanded CHECK and all records on application rollback. No merge or operational activation without further approval.
+Evidence: [FIX-01 report](reliability-cockpit/docs/nadi-eng-bundle-a-fix-01.md), [actual persistent evidence](reliability-cockpit/docs/evidence/nadi-eng-bundle-a-fix-01/README.md). Immediately post-DDL919rows/51sessions unchanged; after E2E864immutable originals/51session rows/three accepted records and account invariants preserved. All35original containers/start times and five PNG/workbook hashes unchanged. Original blocked checkpoint is preserved above; the new explicit authorization resolves that earlier restriction. Phase1 policy/deadlines untouched.
