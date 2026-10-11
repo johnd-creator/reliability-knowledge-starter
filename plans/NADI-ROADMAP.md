@@ -853,3 +853,21 @@ collector, database, session dan schema Advisory/ACK tidak diubah.
 dan hard expiry **13 Oct 00:00 WIB** tetap berlaku; hasil review operator UNKNOWN
 bila belum ada bukti terpisah. Task ini tidak menjalankan, memperpanjang atau mereset
 kebijakan/monitoring tersebut. Global login dan operational engineering tetap gated.
+
+
+### NADI-UX-ID-02-FIX-01 — frontend-only activation checkpoint — 2026-10-11
+
+Official frontend-only lifecycle and explicit frontend/backend SHA approval support a
+separate Indonesian candidate while the QA API remains at b348235. Implementation/
+hermetic checks are separate from runtime activation and PO acceptance. Exact-head CI,
+actual HTTPS3000 visibility and preservation are final release gates; no new roadmap
+phase, authentication activation, engineering scoring, source acquisition or Phase1
+policy change. [Fix/runbook](../reliability-cockpit/docs/nadi-ux-id-02-fix-01.md).
+
+
+FIX-01 actual activation checkpoint: **frontend-only development preview PASS** at
+b6a4981, pinned backend b348235. Live106checks/30screenshots, exact-head backend/frontend
+CI run38128497987 and preservation/rollback preflight PASS. PR71 remains unmerged,
+stacked on unchanged OPENPR70. Final documentation-only release undergoes independent
+CI/source selection. PO visual/engineer UAT/operational acceptance remain PENDING;
+Phase0–5 and freshness governance unchanged. See the linked actual report above.

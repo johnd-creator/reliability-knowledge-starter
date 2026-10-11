@@ -386,3 +386,41 @@ Product Owner Acceptance: arah bahasa disetujui dalam task; final wording/visual
 Remaining Blockers: official launcher switch memerlukan penghentian web+QA API; task ini melarang perubahan layanan/data/deployment QA. Definisi metode/threshold dan operational identity/channel/UAT tetap gated; Phase 1 deadlines unchanged.
 Next Action: review PR/screenshot/istilah; source selection hanya melalui mekanisme resmi yang aman pada task runtime terpisah. Tidak merge atau aktivasi operasional otomatis.
 Evidence: [implementation/self-review](reliability-cockpit/docs/nadi-ux-id-01.md), [matrix/screenshots](reliability-cockpit/docs/evidence/nadi-ux-id-01/README.md). Read-only before/after fingerprints membuktikan semua rekam/session/schema/grants tepat sama,82 sessions / 3 accounts, 35 container IDs/start times, 34 other worktrees plus this candidate, 5 PNG dan workbook. Existing private backup list readable; historical clone restore evidence referenced, no new restore/DDL.
+
+
+## 2026-10-11 — NADI-UX-ID-02-FIX-01 — implementation checkpoint
+
+Date: 2026-10-11 (Asia/Jakarta)
+Task ID: NADI-UX-ID-02-FIX-01 / F0–F4
+Objective: safely preview Indonesian frontend with the existing QA API untouched.
+Branch: codex/nadi-ux-id-02-fix-01, separate clean worktree based on PR70 a08da00.
+Commit SHA: reviewed functional/final release hashes in fix PR and final handoff; backend b348235 remains pinned.
+PR: separate stacked fix PR; PR70 remains independently OPEN.
+Implementation Status: IMPLEMENTED — official frontend-only lifecycle and explicit dual-source provenance.
+Test Status: TESTED — 43 hermetic lifecycle tests; provenance/refusal assertions, static frontend checks and build PASS; final browser/CI evidence verified independently.
+CI Status: PENDING exact-head fix PR checks at this checkpoint.
+Merge Status: NOT MERGED.
+Development Visibility: PENDING controlled activation and actual runtime evidence; build/CI are not visibility proof.
+Product Owner Acceptance: technical activation authorized; visual review, actual engineer UAT and production acceptance PENDING.
+Remaining Blockers: actual preflight/readiness gates must pass before frontend-only selection; no authority for API restart/DDL.
+Next Action: exact-head CI, official frontend-only preflight/cutover, private live screenshots and preservation verification.
+Evidence: [implementation/runbook and evidence boundaries](reliability-cockpit/docs/nadi-ux-id-02-fix-01.md).
+
+
+## 2026-10-11 — NADI-UX-ID-02-FIX-01 — actual preview checkpoint
+
+Date: 2026-10-11, 16:31–16:35 WIB
+Task ID: NADI-UX-ID-02-FIX-01 / F0–F4
+Objective: show Indonesian PR70 safely with the existing QA API preserved.
+Branch: codex/nadi-ux-id-02-fix-01; final evidence sealed in isolated codex/nadi-ux-id-02-fix-01-release worktree, pushed to the same PR71 head.
+Commit SHA: actual functional b6a4981ab9bbfd8c1bf6dca51ced4e1ed2b7c881; final documentation-only release SHA verified separately in PR71/task handoff; backend b348235ce6f82c84873a65344ad2ef5fe276987d.
+PR: [71](https://github.com/johnd-creator/reliability-knowledge-starter/pull/71), stacked on independently OPEN unchangedPR70.
+Implementation Status: IMPLEMENTED.
+Test Status: TESTED —43hermetic lifecycle tests;370fixture browser checks;106actual live checks/30screenshots; rollback preflight PASS.
+CI Status: b6a4981 exact-head backend/frontend PASS, run38128497987; final evidence commit CI verified independently after push.
+Merge Status: NOT MERGED.
+Development Visibility: VISIBLE —soleHTTPS3000, clean approved split source, both backends AVAILABLE; API PID and every cgroup process unchanged.
+Product Owner Acceptance: preview activation authorized and technical QA PASS; PO visual/senior review and actual engineer UAT PENDING.
+Remaining Blockers: no frontend-only activation blocker. Operational identity/Advisory distribution/global login/PdM remain separately gated.
+Next Action: PO localization/visual review; do not merge automatically. Final release source and screenshots reverified through the official frontend-only controller.
+Evidence: [actual activation/preservation report](reliability-cockpit/docs/nadi-ux-id-02-fix-01.md#actual-controlled-activation--2026-10-11-1631-wib). 82original sessions and all business records/schema/ledger/audit history/account privileges retained; normal login sessions/security activity append only;35containers/start times and original assets unchanged. No API restart, migration/DDL or business mutation.
