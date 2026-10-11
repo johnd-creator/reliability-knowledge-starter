@@ -87,3 +87,34 @@ private backup. Keep the immutable recovery JSON emitted by selection. Rollback
 uses `frontend-rollback <recovery-json>` or reviewed `frontend-preflight`/selection
 of the retained former source, touching the frontend only. Do not run rollback just
 to disrupt a passing preview. No merge, production activation or Phase1 policy change.
+
+## Actual acceptance checkpoint — 2026-10-11
+
+Functional source 79dda14ccee487f61452aa599f12d9cc3f0d4c09 passed exact-head
+[backend/frontend CI](https://github.com/johnd-creator/reliability-knowledge-starter/actions/runs/38149741562)
+and official frontend-only preflight/select. Actual live run: 102 PASS, seven images,
+no browser exceptions; invalid-credentials generic feedback separately confirmed.
+The [before/after and light/dark images](evidence/nadi-ux-login-01/README.md#actual-https3000-beforeafter)
+are real captures, distinct from network-intercepted component fixtures.
+
+Only the frontend cycled. API MainPID 1664250 / start 07:53:34 WIB and its complete
+cgroup stayed unchanged. Immediately after cutover all QA rows matched exactly.
+After login checks: all 86 original sessions and all original audit events remain;
+3 account identities/roles/scopes/password hashes/grant versions/policies unchanged;
+10 cases, 17 human records, 62 revisions, schema/grants and five ledger entries exact.
+Session count 86 → 91 reflects ordinary new test logins; one test's current-session
+logout is intentional. There are no case/recommendation/advisory/ACK writes. All 35
+container IDs/start times, original workbook/five PNG hashes, backups/worktrees exact.
+
+Private backup backup-20261011-220417.dump is readable, mode600, archive-list verified,
+SHA256 dfe65323d2173fc64ae28f0f09f7f0680d2f34854d0589927d19086248b4f9d5.
+The first recovery record is frontend-recovery-144893de6a0e4b25a0cc891a83ba444f.json,
+retaining the clean former 5d8b5c0 source. Rollback preflight must be rerun against
+the final serving pair; no disruptive rollback or database restore is required.
+This documentation release is sealed in a separate inactive worktree and then
+selected by the same controller after exact-head CI. Final SHA/CI/preflight is in
+[PR73](https://github.com/johnd-creator/reliability-knowledge-starter/pull/73).
+
+L0–L4 implementation/regression PASS; L5 actual functional preview PASS; L6 delivery
+candidate prepared with final exact-head confirmation independent of the earlier run.
+Product Owner visual approval remains PENDING. Do not merge automatically.

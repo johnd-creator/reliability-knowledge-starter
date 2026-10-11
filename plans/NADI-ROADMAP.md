@@ -878,3 +878,10 @@ Phase0–5 and freshness governance unchanged. See the linked actual report abov
 UX-08 fullscreen QA login/layout separation is IMPLEMENTED / TESTED candidate on latest merged main f8f8f2c. UX-09 remains responsive/regression preparation; final Product Owner visual acceptance is PENDING. No Phase 0–5 scope or freshness review/expiry policy changes. Runtime visibility and exact-head CI are separate gates recorded in the PR handoff.
 
 [Implementation, boundaries and evidence](../reliability-cockpit/docs/nadi-ux-login-01.md).
+
+Fullscreen-login actual checkpoint: functional 79dda14c passed CI and official
+frontend-only activation; 102 actual live checks PASS and credential-free 1440/768/390
+light/dark screenshots retained. Original QA records/sessions/schema/API and collectors
+preserved; final documentation-release head/CI/visibility independently reverified on
+[PR73](https://github.com/johnd-creator/reliability-knowledge-starter/pull/73). Product
+Owner final visual review remains PENDING; UX-09 final acceptance is not inferred.
