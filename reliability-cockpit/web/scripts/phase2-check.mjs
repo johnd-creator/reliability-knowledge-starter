@@ -28,7 +28,7 @@ try{
  test("draft never health claim",()=>{assert.equal(row.assessment,"NOT_ASSESSED");assert.equal(row.status,"DRAFT");});
  test("submit requires revision",()=>assert.throws(()=>submitLocal(row,2,"2026-10-09T12:01:00Z"),/REVISION_CONFLICT/));
  test("submit not approve and history retained",()=>{const next=submitLocal(row,1,"2026-10-09T12:01:00Z");assert.equal(next.status,"IN_REVIEW");assert.equal(next.history.length,2);assert.equal(row.revision,1);});
- const view=readFileSync("components/Phase2Workspace.tsx","utf8"),route=readFileSync("app/engineering/lab/page.tsx","utf8");
+ const view=readFileSync("components/Phase2Workspace.tsx","utf8"),route=readFileSync("app/(workspace)/engineering/lab/page.tsx","utf8");
  test("no operational requests",()=>assert.ok(!/fetch\(|axios|dangerouslySetInnerHTML/.test(view)));
  test("synthetic disclosure",()=>assert.ok(view.includes("SYNTHETIC LOCAL DEMO")&&view.includes("No authentication")));
  test("four shared contextual views",()=>{for(const label of ["PdM Center","Asset Health 360","Recommendations","Action Board"])assert.ok(view.includes(label));});

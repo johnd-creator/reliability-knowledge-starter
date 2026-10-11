@@ -16,6 +16,6 @@ check("unsaved workspace retained",workspace.includes('beforeunload')&&workspace
 check("identity transitions clear scoped response and drafts",workspace.includes("function clearIdentityState()")&&workspace.includes("setResult(null);setError('');setDirty(false)")&&workspace.includes("setPayload('{}')"));
 check("new local login invalidates prior identity",workspace.includes("onAuthenticated={who=>{clearIdentityState();"));
 check("late prior-session response is discarded",workspace.includes("const epoch=identityEpoch.current")&&workspace.includes("if(epoch!==identityEpoch.current)return"));
-for(const route of ["app/login/page.tsx","app/engineering/local/page.tsx"]){const source=read(route);check("development opt-in "+route,source.includes('NODE_ENV!=="development"')&&source.includes('NADI_ENGINEERING_QA_ENABLED'));}
+for(const route of ["app/(authentication)/login/page.tsx","app/(workspace)/engineering/local/page.tsx"]){const source=read(route);check("development opt-in "+route,source.includes('NODE_ENV!=="development"')&&source.includes('NADI_ENGINEERING_QA_ENABLED'));}
 check("no operational login mount",!app.includes('local_authentication')&&!app.includes('create_qa_app'));
 console.log("Local login frontend checks passed: "+count);

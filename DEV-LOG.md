@@ -424,3 +424,41 @@ Product Owner Acceptance: preview activation authorized and technical QA PASS; P
 Remaining Blockers: no frontend-only activation blocker. Operational identity/Advisory distribution/global login/PdM remain separately gated.
 Next Action: PO localization/visual review; do not merge automatically. Final release source and screenshots reverified through the official frontend-only controller.
 Evidence: [actual activation/preservation report](reliability-cockpit/docs/nadi-ux-id-02-fix-01.md#actual-controlled-activation--2026-10-11-1631-wib). 82original sessions and all business records/schema/ledger/audit history/account privileges retained; normal login sessions/security activity append only;35containers/start times and original assets unchanged. No API restart, migration/DDL or business mutation.
+
+
+## 2026-10-11 — NADI-UX-LOGIN-01 — implementation checkpoint
+
+Date: 2026-10-11 (Asia/Jakarta)
+Task ID: NADI-UX-LOGIN-01 / L0–L6
+Objective: separate fullscreen QA authentication from Application Shell without activating global access policy.
+Branch: codex/nadi-ux-login-01, isolated latest-main worktree.
+Commit SHA: exact sealed implementation/release SHA in PR handoff; baseline f8f8f2c9bcf8fc64375c1203b4627ac634dcbe26; QA API b348235ce6f82c84873a65344ad2ef5fe276987d pinned.
+PR: separate fullscreen-login candidate; no auto-merge.
+Implementation Status: IMPLEMENTED — route groups, shared theme, Indonesian fullscreen form, existing local-session redirect behavior.
+Test Status: TESTED — frontend assertions/TypeScript/lint/build, hermetic backend 204 tests (127 PASS / 77 optional SKIP), 14 contracts and responsive actual-component fixture browser; distinct review and corrections documented.
+CI Status: exact-head PR CI verified separately after push; not runtime evidence.
+Merge Status: NOT MERGED.
+Development Visibility: prior clean HTTPS3000 preserved during implementation; controlled frontend-only activation and actual images are separate subsequent handoff gates.
+Product Owner Acceptance: requested direction approved; final visual review, real engineer UAT and production acceptance PENDING.
+Remaining Blockers: no implementation blocker identified; launcher preflight and exact-head CI must pass before preview; no authority for API restart or DDL.
+Next Action: verify CI, official source compatibility/backup/rollback and actual HTTPS login; report exact source and preserve backend/data.
+Evidence: [implementation/self-review](reliability-cockpit/docs/nadi-ux-login-01.md), [screenshot boundaries](reliability-cockpit/docs/evidence/nadi-ux-login-01/README.md).
+
+
+## 2026-10-11 — NADI-UX-LOGIN-01 — actual preview checkpoint
+
+Date: 2026-10-11, approximately 22:06–22:14 WIB
+Task ID: NADI-UX-LOGIN-01 / L5–L6
+Objective: verify standalone Indonesian login on the one official frontend.
+Branch: codex/nadi-ux-login-01; evidence sealed in inactive codex/nadi-ux-login-01-release, pushed to the same PR.
+Commit SHA: functional 79dda14ccee487f61452aa599f12d9cc3f0d4c09; final documentation-release SHA verified separately; backend b348235ce6f82c84873a65344ad2ef5fe276987d unchanged.
+PR: [73](https://github.com/johnd-creator/reliability-knowledge-starter/pull/73).
+Implementation Status: IMPLEMENTED.
+Test Status: TESTED —395 network-isolated component checks;102 actual live checks/7 screenshots; invalid credentials separately PASS; original QA rows and old sessions/account privileges preserved; harness alert/async-layout/caption findings corrected and failed attempts retained privately.
+CI Status: functional exact-head backend/frontend PASS, run38149741562; final documentation-release exact-head independently checked after push.
+Merge Status: NOT MERGED.
+Development Visibility: VISIBLE —sole HTTPS3000; standalone login; authorized workspace navigation/logout, factual dashboard access, theme/keyboard, both backends AVAILABLE and approved accurate split-source provenance.
+Product Owner Acceptance: implementation direction approved; final visual/wording review and operational/engineer UAT PENDING.
+Remaining Blockers: no functional preview blocker. Existing unrelated hook warning; global authentication/operational identity/distribution remain separately gated.
+Next Action: seal/push evidence, verify final exact-head CI and select clean release source using the same frontend-only controller; await PO review without auto-merge.
+Evidence: [actual screenshots and sanitized summary](reliability-cockpit/docs/evidence/nadi-ux-login-01/README.md#actual-https3000-beforeafter). API PID/cgroup and35containers unchanged;86old sessions, all business records, schema/ledger/grants and assets preserved. Normal login/security audit additions only.

@@ -169,3 +169,10 @@ anchor istilah. Bantuan contextual menjelaskan persetujuan rekam ≠ izin pekerj
 memakai komponen kandidat dan fixture bertanda QA SINTETIS, tanpa server kedua.
 Pengujian kontras V1 dan nama aksesibel tidak merupakan sertifikasi aksesibilitas
 menyeluruh. Pilihan padanan bahasa dan kepadatan halaman tetap menunggu review PO.
+
+
+## Fullscreen authentication layout — NADI-UX-LOGIN-01
+
+Login uses a standalone full-viewport navy/surface composition, unchanged logo and Indonesian form. At 768/390 the brand contracts and the form remains primary. ThemeProvider shares the existing light/dark preference with the workspace; the login theme button is independent of its topbar. QA identity stays visible; technical provenance remains on the status endpoint and workspace banner. Form h1, persistent labels, focus feedback, password toggle and 48px controls retain V1 tokens. No global authentication enforcement is introduced.
+
+[Implementation, boundaries and evidence](reliability-cockpit/docs/nadi-ux-login-01.md).

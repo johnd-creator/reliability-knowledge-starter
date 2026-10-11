@@ -56,7 +56,7 @@ try{
  test("WO ref remains informational unchanged",()=>assert.equal(p.wo,fields.wo));
  test("explicit review rationale retained",()=>{const draft=w.proposalDraft(finding,"p2",now,fields);const submitted=w.proposalAction(draft,finding,1,"SUBMIT",now);const reviewed=w.proposalAction(submitted,finding,2,"APPROVED",now,"demo-reviewer",null,"Explicit human demo reason");assert.equal(reviewed.history[2].reason,"Explicit human demo reason");});
  test("history retained",()=>assert.equal(p.history.length,7));
- const view=readFileSync("components/EngineeringWorkflow.tsx","utf8"),route=readFileSync("app/engineering/workflow/page.tsx","utf8");
+ const view=readFileSync("components/EngineeringWorkflow.tsx","utf8"),route=readFileSync("app/(workspace)/engineering/workflow/page.tsx","utf8");
  test("no API calls or browser authority",()=>assert.ok(!/fetch\(|axios|localStorage|Authorization|dangerouslySetInnerHTML/.test(view)));
  test("development-only gate",()=>assert.ok(route.includes('if(mode!=="DEMO")')&&route.includes('notFound()')));
  test("unknown health and clear synthetic labels",()=>assert.ok(view.includes("NOT ASSESSED")&&view.includes("SYNTHETIC LOCAL DEMO")&&view.includes("quality does not prove freshness")));

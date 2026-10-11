@@ -480,3 +480,10 @@ atau NOT ASSESSED; tidak ada skor kondisi/risk yang diciptakan.
 berasal dari browser fixture komponen kandidat, bukan bukti deployment atau
 persistence acceptance baru. [Review](../../reliability-cockpit/docs/nadi-ux-id-01.md)
 menjelaskan keterbatasan runtime dan final gate.
+
+
+## UI-11 fullscreen correction — NADI-UX-LOGIN-01
+
+Root document layout shares only metadata/CSS/theme. `(authentication)` owns fullscreen `/login`; `(workspace)` owns all existing application routes and DevelopmentStatus. URL contracts are unchanged. Navy/white two-column desktop collapses to compact branding and a primary form on tablet/mobile. QA marker remains explicit; full SHA is available through the development endpoint and workspace banner. Test fullscreen/no dashboard navigation, successful QA login, invalid credentials, loading, expiry, logout, history/refresh, theme and keyboard at 1440/768/390. Global factual auth redirects, backend/security policy and recovery features remain outside scope.
+
+[Implementation, boundaries and evidence](../../reliability-cockpit/docs/nadi-ux-login-01.md).

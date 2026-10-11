@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 const proxy=readFileSync('app/api/engineering-qa/[...path]/route.ts','utf8');
-const page=readFileSync('app/engineering/qa/page.tsx','utf8');
+const page=readFileSync('app/(workspace)/engineering/qa/page.tsx','utf8');
 const transport=readFileSync('lib/engineering-http.ts','utf8');
 const ui=readFileSync('components/EngineeringQa.tsx','utf8');
 const app=readFileSync('../src/api/app.py','utf8');
