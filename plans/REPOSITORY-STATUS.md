@@ -916,3 +916,8 @@ PR #67 remains independently OPEN. Neither PR is merged by this task.
 Operational/UAT/real recipient/external delivery gates remain pending; Phase2/4
 PARTIAL and Phase1 deadlines remain unchanged. This is Persistent QA Acceptance,
 not Production Acceptance.
+
+
+## Frontend-only preview lifecycle — 2026-10-11
+
+[FIX-01](../reliability-cockpit/docs/nadi-ux-id-02-fix-01.md) adds a separate reviewed frontend source, without changing/restarting the pinned QA API or database. PR70 localization is preserved. Implementation/testing and actual runtime activation/PO acceptance are independent; final SHA, CI and live preservation evidence are recorded in the fix PR/task handoff. No automatic merge.

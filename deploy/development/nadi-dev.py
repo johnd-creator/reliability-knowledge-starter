@@ -236,6 +236,9 @@ def reload(preview_ref=None):
     start(preview_ref)
 
 def status():
+    if (STATE / "frontend-active.json").exists():
+        print(json.dumps(frontend_controller().status(), indent=2))
+        return
     value = db() or {}
     print(json.dumps({'branch': git('branch', '--show-current') or 'DETACHED',
         'source_sha': git('rev-parse', 'HEAD'), 'main_sha': git('rev-parse', 'origin/main'),
@@ -264,12 +267,47 @@ def backup():
         run(['docker', 'exec', NAME, 'pg_dump', '-U', 'nadi_dev_fixture', '-d', 'nadi_live_dev_test', '-Fc'], stdout=f)
     print('Private development backup created:', target)
 
+def frontend_controller():
+    # The reviewed companion is installed beside the pinned controller, never in the API checkout.
+    import importlib.util
+    from types import SimpleNamespace
+    spec = importlib.util.spec_from_file_location('frontend_preview', Path(__file__).with_name('frontend_preview.py'))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.FrontendPreview(SimpleNamespace(**globals()))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('command', choices=['setup', 'start', 'status', 'logs', 'stop', 'reload', 'switch', 'backup', 'cutover', 'rollback', 'retire-legacy'])
+    parser.add_argument('command', choices=['setup', 'start', 'status', 'logs', 'stop', 'reload', 'switch', 'backup', 'cutover', 'rollback', 'retire-legacy', 'frontend-preflight', 'frontend-select', 'frontend-rollback'])
     parser.add_argument('ref', nargs='?')
     parser.add_argument('--preview-ref', help='Explicit feature ref; must resolve to this checkout HEAD')
+    parser.add_argument('--backup', help='Existing private backup, validated read-only')
     args = parser.parse_args()
+    # Serialize official lifecycle mutations, including old all-service commands.
+    lock_fd = None
+    if STATE.exists() and args.command not in ('status', 'logs', 'frontend-preflight'):
+        import fcntl
+        lock_fd = os.open(STATE / 'frontend-lifecycle.lock', os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
+        try:
+            fcntl.flock(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            os.close(lock_fd)
+            raise RuntimeError('DEVELOPMENT_LIFECYCLE_BUSY')
+    if (STATE / 'frontend-active.json').exists() and args.command in ('start', 'stop', 'reload', 'switch', 'cutover', 'rollback', 'setup'):
+        raise RuntimeError('FRONTEND_ONLY_SELECTION_ACTIVE: use frontend-select/rollback; shared-source lifecycle denied')
+    if args.command.startswith('frontend-'):
+        manager = frontend_controller()
+        if args.command == 'frontend-rollback':
+            manager.rollback(args.ref)
+        elif not args.ref or not args.preview_ref or not args.backup:
+            raise RuntimeError('FRONTEND_SOURCE_SHA_BACKUP_REQUIRED')
+        elif args.command == 'frontend-select':
+            manager.select(Path(args.ref), args.preview_ref, args.backup)
+        else:
+            approval, previous = manager.preflight(Path(args.ref), args.preview_ref, args.backup)
+            print(json.dumps({'preflight': 'PASS', 'approval': approval, 'rollback_source': previous['sha']}, indent=2))
+        return
     if args.command == 'switch':
         switch(args.ref or 'origin/main')
     elif args.command in ('start', 'cutover', 'reload'):

@@ -1,5 +1,6 @@
 import {execFile} from "node:child_process";
 import {promisify} from "node:util";
+import {readApproval,approvedPair} from "../../../../lib/development-provenance";
 import {NextResponse} from "next/server";
 export const dynamic="force-dynamic";
 const run=promisify(execFile);
@@ -22,11 +23,23 @@ export async function GET(){
   const response=await fetch("http://127.0.0.1:8000/health",{cache:"no-store",signal:AbortSignal.timeout(1500),redirect:"error"});
   if(response.ok)factualBackend="AVAILABLE";
  }catch{}
+ const envelope=await readApproval(process.env.NADI_DEV_FRONTEND_MANIFEST,process.cwd());
+ let backendHead="UNKNOWN",backendDirty:boolean|null=null;
+ if(envelope){try{
+  const options={cwd:envelope.approval.backend_root,timeout:1500,maxBuffer:1024*1024};
+  backendHead=(await run("git",["rev-parse","HEAD"],options)).stdout.trim();
+  backendDirty=(await run("git",["status","--porcelain"],options)).stdout.trim().length>0;
+ }catch{}}
  const launchedSha=process.env.NADI_DEV_LAUNCHED_SHA??"UNKNOWN";
+ const equivalent=backend==="AVAILABLE"&&approvedPair(envelope,sha,launchedSha,backendSha,dirty,backendHead,backendDirty);
+ const compatibility=equivalent?"VERIFIED_SOURCE_EQUIVALENT":sha!=="UNKNOWN"&&sha===backendSha?"SAME_SOURCE":"UNVERIFIED";
  return NextResponse.json({environment:"DEVELOPMENT",branch,sha,dirty,backend,database,engineering,
   factual_backend:factualBackend,database_identity:databaseIdentity,primary_origin:"https://localhost:3000",
-  launched_sha:launchedSha,backend_sha:backendSha,
-  stale:sha==="UNKNOWN"||sha!==launchedSha||sha!==backendSha,
+  launched_sha:launchedSha,frontend_sha:sha,backend_sha:backendSha,
+  compatibility,compatibility_approval:equivalent?envelope?.approval_id:null,
+  launcher_source_sha:equivalent?envelope?.approval.launcher_source_sha:null,
+  launcher_sha256:equivalent?envelope?.approval.launcher_sha256:null,
+  stale:sha==="UNKNOWN"||sha!==launchedSha||(sha!==backendSha&&!equivalent),
   factual_data:"OPERATIONAL_LOCAL_READ_ONLY",engineering_data:"SYNTHETIC_FIXTURES"},
   {headers:{"Cache-Control":"no-store"}});
 }
