@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "mode": "after",
+  "database": "nadi_live_dev_test",
+  "table_counts": {
+    "nadi_application_migration": 5,
+    "engineering_case": 10,
+    "engineering_case_event": 55,
+    "engineering_case_receipt": 55,
+    "nadi_application_session": 82,
+    "nadi_security_activity": 1530,
+    "nadi_human_record_revision": 62,
+    "nadi_human_record": 17,
+    "nadi_human_record_receipt": 62,
+    "nadi_attachment": 0,
+    "nadi_attachment_event": 0,
+    "nadi_local_account": 3,
+    "nadi_local_login_budget": 1,
+    "nadi_local_security_event": 86
+  },
+  "schema_advisory_ack_retained": true,
+  "containers_preserved": 35,
+  "services_unchanged": true,
+  "worktrees_preserved": 35,
+  "images_workbook_unchanged": true,
+  "backup_private_readable_list_verified": true,
+  "backup_file": "backup-20261011-102702.dump",
+  "backup_sha256": "045197097bd22a5c633449196c1c02836b6e01b47e5939713a8cf56915866986"
+}

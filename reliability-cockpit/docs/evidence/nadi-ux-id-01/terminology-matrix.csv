@@ -1,0 +1,1345 @@
+English/source presentation key,Indonesian presentation
+(synthetic).,(sintetis).
+) is retained for evidence and is not presented as the Reliability Asset population.,) tetap disimpan sebagai bukti dan tidak ditampilkan sebagai populasi Aset Keandalan.
++ events ·,+ kejadian ·
+. A frozen reviewed record preserves original units and time.,. Rekam beku yang direview mempertahankan satuan dan waktu asli.
+". Collection, source, projection and identity are independent. No policy means UNKNOWN; evidence is not equipment health.",". Pengumpulan, sumber, proyeksi, dan identitas bersifat terpisah. Tanpa kebijakan, status tetap UNKNOWN; bukti bukan kondisi equipment."
+. Date basis:,. Dasar tanggal:
+". Empty, unavailable and permission-denied responses are explicit.",". Hasil kosong, tidak tersedia, dan akses ditolak ditampilkan secara jelas."
+. It is not a condition measurement date. Current population:,. Ini bukan tanggal pengukuran kondisi. Populasi saat ini:
+". It is not a failure date, analysis completion date, investigation start date, or SLA measure. No Asset links are generated.",". Ini bukan tanggal kegagalan, penyelesaian analisis, awal investigasi, atau ukuran SLA. Tidak ada hubungan Aset yang dibuat."
+". It is not an approval date, failure date, or risk review deadline. FMEA item details remain deferred.",". Ini bukan tanggal persetujuan, kegagalan, atau tenggat review risiko. Detail item FMEA masih ditunda."
+. No interpolation or prediction.,. Tanpa interpolasi atau prediksi.
+. No operational engineering approval implied.,. Tidak menyatakan persetujuan engineering operasional.
+. Signal evidence does not determine equipment health.,. Bukti sinyal tidak menentukan kondisi equipment.
+12.5 / NUMERIC • synthetic only,12.5 / NUMERIC • hanya sintetis
+180 days,180 hari
+2+ events,2+ kejadian
+3+ events,3+ kejadian
+30 days,30 hari
+5+ events,5+ kejadian
+90 days,90 hari
+; independent advisory reviewer,; reviewer advisory independen
+"; up to 25 revisions. Exact recorded actor and action, no inferred effectiveness.","; maksimal 25 revisi. Pelaku dan tindakan sesuai rekam, tanpa inferensi efektivitas."
+A capability marked blocked is intentionally withheld because its business semantics or required source evidence are not yet verified. It does not mean the source system is defective.,Kapabilitas berstatus terblokir sengaja dibatasi karena semantik bisnis atau bukti sumber yang diperlukan belum terverifikasi. Ini tidak berarti sistem sumber rusak.
+A hypothesis does not establish evidence.,Hipotesis tidak menetapkan bukti.
+ASSESSMENT RECORDS,REKAM PENILAIAN
+ASSET DERIVED THROUGH WORK ORDER,ASET DITELUSURI MELALUI WORK ORDER
+ASSET RELATIONSHIP UNRESOLVED,HUBUNGAN ASET BELUM TERSELESAIKAN
+ASSET RELATIONSHIP VERIFIED,HUBUNGAN ASET TERVERIFIKASI
+Acknowledge receipt only,Konfirmasi penerimaan saja (ACK)
+Acknowledgement records receipt only. It does not approve this recommendation or authorize plant work. Local COMPLETED is distinct from independently VERIFIED.,ACK hanya mencatat penerimaan. ACK tidak menyetujui rekomendasi atau mengizinkan pekerjaan pembangkit. Status lokal COMPLETED berbeda dari VERIFIED oleh reviewer independen.
+Action,Tindakan
+Action Board,Papan Tindak Lanjut
+Action Board →,Papan Tindak Lanjut →
+Activity concentration ·,Konsentrasi aktivitas ·
+Activity date,Tanggal aktivitas
+"Activity date uses actual start when available, otherwise source change time.","Tanggal aktivitas memakai waktu mulai aktual jika tersedia; jika tidak, waktu perubahan sumber."
+"Activity date uses actual start when available, otherwise source change time. Scope:","Tanggal aktivitas memakai waktu mulai aktual jika tersedia; jika tidak, waktu perubahan sumber. Lingkup:"
+Activity time,Waktu aktivitas
+Activity timestamp,Timestamp aktivitas
+Actor reference,Referensi pelaku
+Actual Finish,Selesai Aktual
+Actual Start,Mulai Aktual
+Actual dates,Tanggal aktual
+Actual duration records,Rekam durasi aktual
+Actual finish,Selesai aktual
+Actual inspected at,Waktu inspeksi aktual
+Actual measured at,Waktu pengukuran aktual
+Actual start,Mulai aktual
+"Actual start, otherwise source changed time","Waktu mulai aktual; jika tidak tersedia, waktu perubahan sumber"
+Add note,Tambah catatan
+Add synthetic note,Tambah catatan sintetis
+Additional asset context unavailable,Konteks aset tambahan tidak tersedia
+"Additional factual evidence — FMEA, assessments, overhaul and integration","Bukti faktual tambahan — FMEA, penilaian, overhaul, dan integrasi"
+Administration,Administrasi
+Advisories →,Advisory →
+Advisory Inbox,Kotak Masuk Advisory
+Advisory evidence provenance,Provenance bukti advisory
+Advisory inbox →,Kotak masuk advisory →
+Advisory persistence BLOCKED — QA schema prerequisite,Persistensi advisory TERBLOKIR — prasyarat schema QA
+Advisory register,Daftar advisory
+Advisory review / publication rationale,Alasan review / publikasi advisory
+Advisory summary,Ringkasan advisory
+Advisory unavailable or access denied. No substitute record.,Advisory tidak tersedia atau akses ditolak. Tidak ada rekam pengganti.
+Advisory workflow,Alur advisory
+Advisory workflow →,Alur advisory →
+After current page method/asset/point filters,Setelah filter metode/aset/titik pada halaman ini
+Age,Umur data
+Age unavailable,Umur data tidak tersedia
+All,Semua
+All authorized QA assets,Semua aset QA berizin
+All authorized page assets,Semua aset berizin pada halaman
+All case states,Semua status kasus
+All follow-up states,Semua status tindak lanjut
+All methods,Semua metode
+All page assets,Semua aset pada halaman
+All permitted assets,Semua aset berizin
+All record states,Semua status rekam
+All recorded methods,Semua metode tercatat
+All recorded points,Semua titik tercatat
+All related Mart events; not open WO or failure count,Semua kejadian Mart terkait; bukan jumlah WO terbuka atau kegagalan
+All statuses,Semua status
+All-status total:,Total semua status:
+An empty activity series does not establish equipment condition.,Deret aktivitas kosong tidak menetapkan kondisi equipment.
+An empty result is not a completion or performance conclusion.,Hasil kosong bukan kesimpulan penyelesaian atau kinerja.
+An independent reviewer decides. Field completeness never approves a case.,Reviewer independen yang memutuskan. Kelengkapan kolom tidak otomatis menyetujui kasus.
+Analytics readiness,Kesiapan analitik
+Application DB:,Database aplikasi:
+Apply filters,Terapkan filter
+Approve advisory,Setujui rekam advisory
+Approve case,Setujui rekam kasus
+Approve recommendation,Setujui rekam rekomendasi
+Approve synthetic case,Setujui rekam kasus sintetis
+Approved local follow-up,Tindak lanjut lokal disetujui
+Approved local follow-up register,Daftar tindak lanjut lokal disetujui
+Approved recommendation on this server page,Rekomendasi disetujui pada halaman server ini
+Approved records,Rekam disetujui
+Approved signal assets,Aset dengan sinyal disetujui
+Assessment,Penilaian
+Assessment / coverage,Penilaian / cakupan
+Assessment Records,Rekam Penilaian
+Assessment description,Deskripsi penilaian
+Assessment filters,Filter penilaian
+Assessment recency indicates when the latest assessment record was updated; it does not indicate Asset condition.,Umur penilaian menunjukkan waktu rekam penilaian terbaru diperbarui; bukan kondisi Aset.
+Assessment record date,Tanggal rekam penilaian
+Assessment record date uses,Tanggal rekam penilaian menggunakan
+Assessment records,Rekam penilaian
+Assessment records for Registered Reliability Assets. No numerical health score is inferred.,Rekam penilaian untuk Aset Keandalan Terdaftar. Tanpa inferensi skor kondisi numerik.
+Assessment records unavailable,Rekam penilaian tidak tersedia
+Assessment remains NOT ASSESSED. Source quality is separate from freshness and equipment health.,Penilaian tetap BELUM DINILAI (NOT ASSESSED). Kualitas sumber terpisah dari kemutakhiran dan kondisi equipment.
+Assessment status,Status penilaian
+Asset,Aset
+Asset Context / Asset Health 360,Konteks Aset / Kondisi Aset 360
+Asset Detail,Detail Aset
+Asset Health,Kondisi Aset
+Asset Health 360,Kondisi Aset 360
+Asset Health Records,Rekam Kondisi Aset
+"Asset Health Wellness, ACR, MPI, and condition semantics","Semantik Asset Health Wellness, ACR, MPI, dan kondisi"
+Asset Health assessment,Penilaian Kondisi Aset
+Asset Health assessment records,Rekam penilaian Kondisi Aset
+Asset Health records · VERIFIED,Rekam Kondisi Aset · TERVERIFIKASI (VERIFIED)
+Asset Register,Daftar Aset
+Asset Register unavailable,Daftar Aset tidak tersedia
+Asset Register →,Daftar Aset →
+Asset Reliability,Keandalan Aset
+Asset Reliability / Asset Detail,Keandalan Aset / Detail Aset
+Asset Reliability and Registry-scoped Maintenance activity,Keandalan Aset dan aktivitas Pemeliharaan dalam lingkup Registry
+Asset and Maintenance ·,Aset dan Pemeliharaan ·
+Asset context,Konteks aset
+"Asset context, engineering evidence and accountable follow-up in one workspace.","Konteks aset, bukti engineering, dan tindak lanjut yang dapat dipertanggungjawabkan dalam satu ruang kerja."
+Asset description,Deskripsi aset
+Asset detail unavailable,Detail aset tidak tersedia
+Asset filters,Filter aset
+Asset identity here is synthetic. No operational health assessment.,Identitas aset di sini sintetis. Tidak ada penilaian kondisi operasional.
+Asset identity remains available; retry or use the Maintenance tab.,Identitas aset tetap tersedia; coba lagi atau gunakan tab Pemeliharaan.
+Asset links appear only when the existing Work Order path resolves to a Registered Reliability Asset. An identified Work Order without local Mart context remains visible and is not treated as invalid.,Tautan Aset hanya muncul jika hubungan Work Order yang ada terselesaikan ke Aset Keandalan Terdaftar. Work Order teridentifikasi tanpa konteks Mart lokal tetap terlihat dan tidak dianggap tidak valid.
+Asset not found,Aset tidak ditemukan
+Asset not resolved through current Work Order context,Aset belum terselesaikan melalui konteks Work Order saat ini
+Asset number,Nomor aset
+Asset path resolved through Work Order,Hubungan aset terselesaikan melalui Work Order
+Asset records unavailable,Rekam aset tidak tersedia
+Asset references,Referensi aset
+"Asset references resolved. This is a Mart-level aggregate, not an Asset health score.","Referensi aset terselesaikan. Ini agregat tingkat Mart, bukan skor kondisi Aset."
+Asset refs,Referensi aset
+Asset relationship unresolved,Hubungan aset belum terselesaikan
+Asset representation means a record points to a registered Asset in the current controlled population; it is not a completion rate.,Keterwakilan Aset berarti rekam mengarah ke Aset terdaftar dalam populasi terkelola saat ini; bukan tingkat penyelesaian.
+Asset type,Tipe aset
+Asset workspace tabs,Tab ruang kerja aset
+Asset-scoped Mart total,Total Mart dalam lingkup aset
+Asset-scoped reliability records,Rekam keandalan dalam lingkup aset
+Assets in result · server-side,Aset pada hasil · dari server
+Assets with 2+ Events,Aset dengan 2+ Kejadian
+Assets with Activity,Aset dengan Aktivitas
+Assets with Activity 30d,Aset dengan Aktivitas 30 hari
+Assets with Multiple FMEA Records,Aset dengan Beberapa Rekam FMEA
+Assets with Multiple Records,Aset dengan Beberapa Rekam
+Assigned engineer reference (optional),Referensi engineer ditugaskan (opsional)
+Attachment filename (metadata only),Nama file lampiran (hanya metadata)
+Attachment references are metadata only; no arbitrary URL is opened.,Referensi lampiran hanya metadata; tidak ada URL sembarang yang dibuka.
+Attachments: metadata contract prepared; secure upload is not enabled.,Lampiran: kontrak metadata disiapkan; unggah aman belum diaktifkan.
+Authentication integration pending.,Integrasi autentikasi belum tersedia.
+Authoritative current business Asset projection used as NADI&apos;s product boundary.,Proyeksi Aset bisnis terkini yang otoritatif digunakan sebagai batas produk NADI.
+Authorized Engineering case register,Daftar kasus Engineering berizin
+Authorized NADI local workflow,Alur lokal NADI berizin
+Authorized advisory inbox,Kotak masuk advisory berizin
+Authorized advisory register,Daftar advisory berizin
+Authorized inspection event register,Daftar kejadian inspeksi berizin
+Authorized inspection workflow →,Alur inspeksi berizin →
+Authorized inspections,Inspeksi berizin
+Authorized local workflow →,Alur lokal berizin →
+Authorized recommendations,Rekomendasi berizin
+Authorized workspace,Ruang kerja berizin
+Availability / receipt,Ketersediaan / penerimaan
+Availability:,Ketersediaan:
+Available Reliability Records,Rekam Keandalan Tersedia
+Available now,Tersedia sekarang
+Awaiting completion verification,Menunggu verifikasi penyelesaian
+Awaiting local review,Menunggu review lokal
+Awaiting recommendation review,Menunggu review rekomendasi
+BUSINESS REGISTRY,REGISTRY BISNIS
+Back to Executive Overview →,Kembali ke Ringkasan Eksekutif →
+Back to Maintenance,Kembali ke Pemeliharaan
+Back to overview,Kembali ke ringkasan
+Boolean requires true or false.,Boolean memerlukan true atau false.
+Bounded activity sequence,Urutan aktivitas terbatas
+Breadcrumb,Jejak navigasi
+Broad local operational source projected without a source-system reread.,Sumber operasional lokal yang lebih luas diproyeksikan tanpa membaca ulang sistem sumber.
+Broader technical Asset context,Konteks Aset teknis yang lebih luas
+Broader technical Equipment population outside normal business Asset scope.,Populasi Equipment teknis yang lebih luas berada di luar lingkup Aset bisnis normal.
+"Browser-memory fixtures. No authentication, operational data, source requests or backend writes.","Fixture dalam memori browser. Tanpa autentikasi, data operasional, permintaan sumber, atau penulisan backend."
+Business Asset scope versus technical context,Lingkup Aset bisnis dan konteks teknis
+Business semantics unverified,Semantik bisnis belum terverifikasi
+CANONICAL FACTS / FROZEN SNAPSHOTS,FAKTA KANONIK / SNAPSHOT BEKU
+CEMS · Planned,CEMS · Direncanakan
+COMP • informational,COMP • hanya informasi
+CONTROLLED MART POPULATION,POPULASI MART TERKELOLA
+CURRENT LOCAL PROJECTION,PROYEKSI LOKAL SAAT INI
+Cancel form,Batalkan formulir
+Cancel local follow-up,Batalkan tindak lanjut lokal
+Candidate definitions await engineer validation. Governed PI source evidence below stays separate from portable PdM.,Definisi kandidat Menunggu Validasi Engineer. Bukti sumber PI terkelola di bawah tetap terpisah dari PdM portabel.
+Candidate inspection methods,Metode inspeksi kandidat
+Candidate method,Metode kandidat
+Candidate method evidence availability,Ketersediaan bukti metode kandidat
+Candidate method navigation filters the loaded QA page. DGA is not an alias for PD; use All methods to inspect unchanged existing records.,Navigasi metode kandidat memfilter halaman QA yang dimuat. DGA bukan padanan PD; gunakan Semua metode untuk memeriksa rekam yang ada tanpa perubahan.
+Candidate validation failed.,Validasi kandidat gagal.
+Canonical QA asset:,Aset QA kanonik:
+Canonical asset,Aset kanonik
+Canonical command JSON,JSON perintah kanonik
+Canonical identity,Identitas kanonik
+Capability,Kapabilitas
+Case,Kasus
+Case / canonical QA asset,Kasus / aset QA kanonik
+Case SHA256,SHA256 kasus
+Case category,Kategori kasus
+Case evidence provenance,Provenance bukti kasus
+Case note,Catatan kasus
+Case reference:,Referensi kasus:
+Case register,Daftar kasus
+Case status filter,Filter status kasus
+Case title,Judul kasus
+Case unavailable or access denied. No substitute record.,Kasus tidak tersedia atau akses ditolak. Tidak ada rekam pengganti.
+Cases →,Kasus →
+"Categories are server-assigned QA exercise memberships, not Operations/Maintenance organizational accounts. No browser-selected audience grant. Withdrawn/stale versions remain attributable and cannot be acknowledged.","Kategori merupakan keanggotaan latihan QA yang ditetapkan server, bukan akun organisasi Operasi/Pemeliharaan. Browser tidak memberikan hak penerima. Versi ditarik atau usang tetap terlacak dan tidak dapat diberi ACK."
+Category,Kategori
+Category distribution,Distribusi kategori
+Change password and sign in,Ganti kata sandi dan masuk
+Changes:,Perubahan:
+Class,Kelas
+Classification,Klasifikasi
+Clear engineering decisions.,Keputusan engineering yang jelas.
+Clear filters,Hapus filter
+Clear page filters,Hapus filter halaman
+Close inspection detail,Tutup detail inspeksi
+Close navigation,Tutup navigasi
+Close recommendation detail,Tutup detail rekomendasi
+Collapse sidebar,Ciutkan menu samping
+Collected / source timestamp,Timestamp pengumpulan / sumber
+Collection,Pengumpulan
+Collector:,Collector:
+Comparable trend NOT AVAILABLE,Tren sebanding TIDAK TERSEDIA (NOT AVAILABLE)
+Completion awaiting verification,Penyelesaian menunggu verifikasi
+Completion verification,Verifikasi penyelesaian
+Component,Komponen
+Condition Evidence,Bukti Kondisi
+Condition assessment,Penilaian kondisi
+Condition evidence,Bukti kondisi
+Condition evidence UNKNOWN. No healthy state inferred.,Bukti kondisi BELUM DIKETAHUI (UNKNOWN). Tidak menyimpulkan kondisi sehat.
+Condition evidence unavailable.,Bukti kondisi tidak tersedia.
+Conflict.,Konflik revisi.
+Controlled Mart population,Populasi Mart terkelola
+Controlled Reliability Mart,Reliability Mart terkelola
+Controlled population,Populasi terkelola
+Controlled record evidence,Bukti rekam terkelola
+Controlled record populations; inspect the evidence and identity before interpretation.,Populasi rekam terkelola; periksa bukti dan identitas sebelum menafsirkan.
+Copied,Tersalin
+Copy,Salin
+Counts below refer only to this asset’s synthetic browser-memory records.,Jumlah di bawah hanya merujuk pada rekam sintetis aset ini dalam memori browser.
+Create / edit draft,Buat / edit draf
+Create Engineering Case,Buat Kasus Engineering
+Create advisory draft,Buat draf advisory
+Create demo Engineering Case,Buat Kasus Engineering demo
+Create linked NADI recommendation,Buat rekomendasi NADI terkait
+Create linked recommendation,Buat rekomendasi terkait
+Created date,Tanggal dibuat
+Current Asset Health records are a controlled Mart population.,Rekam Kondisi Aset saat ini merupakan populasi Mart terkelola.
+Current FMEA records are a controlled Mart population.,Rekam FMEA saat ini merupakan populasi Mart terkelola.
+Current RCFA records are a controlled Mart population.,Rekam RCFA saat ini merupakan populasi Mart terkelola.
+Current asset identity,Identitas aset saat ini
+Current bounded record population,Populasi rekam terbatas saat ini
+Current controlled Mart population · VERIFIED,Populasi Mart terkelola saat ini · VERIFIED
+Current data window,Rentang data saat ini
+Current product boundary,Batas produk saat ini
+Current registry projection,Proyeksi Registry saat ini
+DEMO ACTION SUMMARY,RINGKASAN TINDAK LANJUT DEMO
+DEMO REVIEW DECISIONS,KEPUTUSAN REVIEW DEMO
+DEMO auxiliary area,DEMO area auxiliary
+DEMO boiler area,DEMO area boiler
+DEMO cooling system,DEMO sistem pendingin
+DEMO fuel system,DEMO sistem bahan bakar
+DEMO • NOT OPERATIONAL,DEMO • BUKAN OPERASIONAL
+DEMO • Pump B,DEMO • Pompa B
+DERIVED SAFE,TURUNAN AMAN
+DEVELOPMENT / DISPOSABLE QA,PENGEMBANGAN / QA UJI TERISOLASI
+DEVELOPMENT QA · SYNTHETIC ENGINEERING RECORDS,QA PENGEMBANGAN · REKAM ENGINEERING SINTETIS
+DEVELOPMENT · LIVE PREVIEW,PENGEMBANGAN · PRATINJAU LANGSUNG
+Data Trust,Kepercayaan Data
+Data Trust Center,Pusat Kepercayaan Data
+Data Trust →,Kepercayaan Data →
+Data boundaries,Batas data
+Data maturity,Kematangan data
+Data maturity and source context,Kematangan data dan konteks sumber
+Data maturity legend,Keterangan kematangan data
+"Data table, scroll horizontally for additional columns","Tabel data, gulir ke samping untuk kolom lainnya"
+Date,Tanggal
+Date UNKNOWN,Tanggal belum diketahui (UNKNOWN)
+Date and progress availability,Ketersediaan tanggal dan progress
+Date basis:,Dasar tanggal:
+Date unavailable,Tanggal tidak tersedia
+Demo workflow,Alur demo
+Describe the investigation question.,Jelaskan pertanyaan investigasi.
+Description,Deskripsi
+Description contains,Deskripsi mengandung
+Development candidate • all records are synthetic browser-memory fixtures. No operational authentication or backend writes.,Kandidat pengembangan • semua rekam merupakan fixture sintetis dalam memori browser. Tanpa autentikasi operasional atau penulisan backend.
+Development environment status,Status lingkungan pengembangan
+Development preview navigation,Navigasi pratinjau pengembangan
+Development workspace unavailable.,Ruang kerja pengembangan tidak tersedia.
+Diagnostic QA workbench →,Ruang investigasi QA →
+Discard unsaved form input? Saved synthetic records remain in memory.,Buang isian formulir yang belum disimpan? Rekam sintetis tersimpan tetap ada di memori.
+Discard unsaved inspection input?,Buang isian inspeksi yang belum disimpan?
+Discard unsaved synthetic changes?,Buang perubahan sintetis yang belum disimpan?
+Distinct registered Assets · DERIVED_SAFE,Aset terdaftar unik · DERIVED_SAFE
+Domain maturity,Kematangan domain
+Dominant Work Type,Tipe Pekerjaan Dominan
+Downtime,Downtime
+Downtime (h),Downtime (jam)
+Draft engineering proposal,Draf usulan engineering
+"Draft, independently review and publish a version-bound advisory to an isolated in-app inbox. No external notifications.","Susun draf, lakukan review independen, dan publikasikan advisory terikat versi ke kotak masuk aplikasi terisolasi. Tanpa notifikasi eksternal."
+Duration,Durasi
+EMPTY synthetic maintenance window; source coverage UNKNOWN,Rentang pemeliharaan sintetis KOSONG; cakupan sumber belum diketahui (UNKNOWN)
+ENABLED (fixture only),AKTIF (hanya fixture)
+ENGINEERING DEVELOPMENT ACCESS,AKSES PENGEMBANGAN ENGINEERING
+Edit advisory,Edit advisory
+Edit advisory draft,Edit draf advisory
+Edit case,Edit kasus
+Edit draft case,Edit draf kasus
+Edit inspection draft,Edit draf inspeksi
+Effectiveness NOT VERIFIED,Efektivitas BELUM TERVERIFIKASI (NOT VERIFIED)
+Empty records are not proof of no operational actions or findings.,Rekam kosong bukan bukti bahwa tidak ada tindakan atau temuan operasional.
+Empty records do not establish normal equipment condition.,Rekam kosong tidak menetapkan kondisi equipment normal.
+Engineer observations,Observasi engineer
+Engineering Advisories,Advisory Engineering
+Engineering Cases,Kasus Engineering
+Engineering Data Platform,Platform Data Engineering
+Engineering Workspace,Ruang Kerja Engineering
+Engineering Workspace unavailable.,Ruang Kerja Engineering tidak tersedia.
+Engineering Workspace ↗,Ruang Kerja Engineering ↗
+Engineering backend workspace,Ruang kerja backend Engineering
+Engineering backend:,Backend Engineering:
+Engineering development · isolated QA,Pengembangan Engineering · QA terisolasi
+"Engineering evidence and human proposals, with explicit provenance.","Bukti engineering dan usulan manusia, dengan provenance yang jelas."
+Engineering field approval and trusted operational identity remain pending.,Persetujuan kolom engineering dan identitas operasional terpercaya masih menunggu.
+Engineering finding,Temuan engineering
+Engineering interpretation,Interpretasi engineering
+Engineering rationale,Alasan engineering
+Engineering records UNAVAILABLE,Rekam Engineering TIDAK TERSEDIA (UNAVAILABLE)
+Engineering rules and evidence approval pending,Aturan engineering dan persetujuan bukti masih menunggu
+Engineering workflow screens,Layar alur Engineering
+Engineering workflow unavailable,Alur Engineering tidak tersedia
+Engineering write and review actions are disabled. Factual NADI browsing remains available.,Tindakan penulisan dan review Engineering dinonaktifkan. Penelusuran faktual NADI tetap tersedia.
+Engineering · SYNTHETIC QA,Engineering · QA SINTETIS
+Engineering · SYNTHETIC QA only,Engineering · hanya QA SINTETIS
+Engineering:,Engineering:
+Enter a finite numeric measurement or choose UNKNOWN.,Masukkan angka pengukuran berhingga atau pilih UNKNOWN.
+Enter a reviewer reason before a simulated decision.,Masukkan alasan reviewer sebelum keputusan simulasi.
+Enter bounded action and internal PIC.,Masukkan tindakan sesuai batas dan PIC internal.
+"Enter nonblank proposed action and rationale, at most 6,000 characters each.","Isi usulan tindakan dan alasan, masing-masing maksimal 6.000 karakter dan tidak kosong."
+"Episodic inspections, original measurements and independent engineering review. Operational method definitions remain pending.","Inspeksi episodik, pengukuran asli, dan review engineering independen. Definisi metode operasional Menunggu Validasi Engineer."
+Equipment,Peralatan
+Equipment condition remains a separate population.,Kondisi equipment tetap berada dalam populasi terpisah.
+Equipment condition remains unknown.,Kondisi equipment tetap belum diketahui.
+Equipment condition: NOT ASSESSED by this dashboard,Kondisi equipment: BELUM DINILAI (NOT ASSESSED) oleh dashboard ini
+Equipment context,Konteks equipment
+Equipment context data,Data konteks equipment
+Equipment data unavailable,Data equipment tidak tersedia
+Equipment not found.,Equipment tidak ditemukan.
+Establish session,Bentuk sesi
+Event,Kejadian
+Event / Work type,Kejadian / Tipe Pekerjaan
+"Event count, high to low","Jumlah kejadian, terbanyak dahulu"
+Event filters,Filter kejadian
+Events,Kejadian
+Events beyond the first · DERIVED_SAFE,Kejadian setelah yang pertama · DERIVED_SAFE
+Evidence,Bukti
+Evidence / attachment references,Referensi bukti / lampiran
+Evidence NOT LINKED.,Bukti BELUM TERKAIT (NOT LINKED).
+Evidence class,Kelas bukti
+Evidence class · current status · reason,Kelas bukti · status saat ini · alasan
+Evidence kind,Jenis bukti
+Evidence limits,Batas bukti
+Evidence limits / UNKNOWN context,Batas bukti / konteks belum diketahui (UNKNOWN)
+Evidence missing,Bukti belum tersedia
+Evidence panel,Panel bukti
+Evidence provenance,Provenance bukti
+Evidence references,Referensi bukti
+Evidence scope,Lingkup bukti
+"Evidence, not a health score","Bukti, bukan skor kondisi"
+Exact case →,Kasus persis →
+Exact evidence record reference,Referensi rekam bukti persis
+Exact record unavailable or access denied. No record substituted.,Rekam yang diminta tidak tersedia atau akses ditolak. Tidak ada rekam pengganti.
+Exact synthetic asset identity required.,Identitas aset sintetis persis diperlukan.
+Exact version / source time,Versi persis / waktu sumber
+Execution evidence,Bukti pelaksanaan
+Execution evidence records,Rekam bukti pelaksanaan
+Executive Overview,Ringkasan Eksekutif
+Executive Overview context,Konteks Ringkasan Eksekutif
+Existing Engineering workflow →,Alur Engineering yang tersedia →
+Existing WO,WO yang sudah ada
+Existing WO reference,Referensi WO yang sudah ada
+Existing WO:,WO yang sudah ada:
+Existing integrity evidence,Bukti integritas yang tersedia
+Expand sidebar,Perluas menu samping
+FACTUAL EVIDENCE,BUKTI FAKTUAL
+FMEA Assessments,Penilaian FMEA
+FMEA ITEM DETAILS DEFERRED,DETAIL ITEM FMEA DITUNDA
+FMEA Records,Rekam FMEA
+FMEA filters,Filter FMEA
+FMEA header assessment records,Rekam header penilaian FMEA
+FMEA item semantics and failure-mode details,Semantik item FMEA dan detail mode kegagalan
+FMEA number,Nomor FMEA
+FMEA record,Rekam FMEA
+FMEA record date,Tanggal rekam FMEA
+FMEA record date uses,Tanggal rekam FMEA menggunakan
+FMEA records,Rekam FMEA
+"FMEA records are evidence. Failure-mode item details, severity, occurrence, detectability, and RPN are not available in the current controlled population.","Rekam FMEA merupakan bukti. Detail item mode kegagalan, severity, occurrence, detectability, dan RPN tidak tersedia pada populasi terkelola saat ini."
+FMEA records available for Registered Reliability Assets. Item-level failure-mode details remain outside the current controlled population.,Rekam FMEA tersedia untuk Aset Keandalan Terdaftar. Detail mode kegagalan tingkat item tetap di luar populasi terkelola saat ini.
+FMEA records · VERIFIED,Rekam FMEA · TERVERIFIKASI (VERIFIED)
+FMEA · Asset Health · RCFA · Overhaul,FMEA · Kondisi Aset · RCFA · Overhaul
+Factual KPI overview,Ringkasan KPI faktual
+Factual backend:,Backend faktual:
+Factual browsing remains available. Unsaved demo changes may be lost.,Penelusuran faktual tetap tersedia. Perubahan demo yang belum disimpan dapat hilang.
+Factual counts · VERIFIED / DERIVED_SAFE,Jumlah faktual · VERIFIED / DERIVED_SAFE
+Factual development screens remain accessible. This sign-in opens the existing isolated Engineering workspace.,Layar pengembangan faktual tetap dapat diakses. Masuk di sini membuka Ruang Kerja Engineering terisolasi yang sudah tersedia.
+Factual pages: existing local read-only API. Engineering: SYNTHETIC fixtures; no operational writes.,"Layar faktual: API lokal yang sudah ada, hanya-baca. Engineering: fixture SINTETIS; tidak ada penulisan operasional."
+Factual records,Rekam faktual
+Factual reliability workspace,Ruang kerja keandalan faktual
+Failure,Kegagalan
+Failure Code,Kode Kegagalan
+Failure code,Kode kegagalan
+Feeder A — training fixture,Feeder A — fixture latihan
+Field approval / assessment,Persetujuan kolom / penilaian
+Filter,Filter
+Filter record / asset,Filter rekam / aset
+Filtered page · APPROVED records,Halaman difilter · rekam disetujui (APPROVED)
+Filtered page · IN_REVIEW recommendations,Halaman difilter · rekomendasi dalam review (IN_REVIEW)
+Filtered page · no inferred operational approval,Halaman difilter · tanpa inferensi persetujuan operasional
+Filtered page · unknown context; not urgency,Halaman difilter · konteks belum diketahui; bukan urgensi
+Filters,Filter
+Find a Registered Asset FMEA record,Cari rekam FMEA Aset Terdaftar
+Find a Registered Asset assessment,Cari penilaian Aset Terdaftar
+Find a registered asset,Cari aset terdaftar
+Find an Overhaul record,Cari rekam Overhaul
+Find an RCFA record,Cari rekam RCFA
+Follow-up boundary,Batas tindak lanjut
+Follow-up:,Tindak lanjut:
+Freshness / mapping,Kemutakhiran / pemetaan
+Freshness / policy,Kemutakhiran / kebijakan
+Freshness / quality,Kemutakhiran / kualitas
+Frozen inspection:,Inspeksi beku:
+Frozen reviewed human evidence,Bukti manusia beku yang telah direview
+Function,Fungsi
+Future verification backlog,Backlog verifikasi berikutnya
+GLOBAL ANALYSIS RECORDS,REKAM ANALISIS GLOBAL
+"Generic inspection records do not establish approved instrument, bandwidth, operating regime or series comparability. Original samples remain visible below; no interpolation or portable/PI joining.","Rekam inspeksi umum tidak menetapkan instrumen, bandwidth, kondisi operasi, atau kesebandingan deret yang disetujui. Sampel asli tetap terlihat di bawah; tanpa interpolasi atau penggabungan portabel/PI."
+Global RCFA filters,Filter RCFA global
+Global RCFA records,Rekam RCFA global
+Global analysis records,Rekam analisis global
+Global count · Asset relationship unresolved,Jumlah global · hubungan Aset belum terselesaikan
+Global count · unresolved Asset refs retained,Jumlah global · referensi Aset belum terselesaikan dipertahankan
+Good,Kualitas Good
+Good describes signal quality. Equipment condition is not inferred. UNKNOWN freshness remains unknown.,Good menjelaskan kualitas sinyal. Kondisi equipment tidak disimpulkan. Kemutakhiran UNKNOWN tetap belum diketahui.
+Good true • Questionable false • Substituted false • Annotated false,Good: benar • Questionable: salah • Substituted: salah • Annotated: salah
+Good:,Kualitas Good:
+Governed asset DTO,DTO aset terkelola
+HUMAN ENGINEERING RECORD,REKAM ENGINEERING MANUSIA
+HUMAN HYPOTHESIS,HIPOTESIS MANUSIA
+HUMAN HYPOTHESIS (one per line),HIPOTESIS MANUSIA (satu per baris)
+HUMAN HYPOTHESIS — not source fact,HIPOTESIS MANUSIA — bukan fakta sumber
+HUMAN HYPOTHESIS:,HIPOTESIS MANUSIA:
+HUMAN INTERPRETATION / REVIEW DECISION,INTERPRETASI MANUSIA / KEPUTUSAN REVIEW
+HUMAN MEASUREMENT:,PENGUKURAN MANUSIA:
+HUMAN OBSERVATION / HYPOTHESIS · r,OBSERVASI / HIPOTESIS MANUSIA · r
+HUMAN OBSERVATION — one entry per line,OBSERVASI MANUSIA — satu entri per baris
+HUMAN RATIONALE:,ALASAN MANUSIA:
+Health Summary,Ringkasan Kondisi
+Health score,Skor kondisi
+Hide password,Sembunyikan kata sandi
+Highest Maintenance Activity,Aktivitas Pemeliharaan Terbanyak
+History UNAVAILABLE; no absence claim.,Riwayat TIDAK TERSEDIA (UNAVAILABLE); bukan pernyataan bahwa tidak ada kejadian.
+How to interpret,Cara menafsirkan
+How to read population labels,Cara membaca label populasi
+Human engineering rationale,Alasan engineering manusia
+Human evidence and follow-up,Bukti manusia dan tindak lanjut
+Human observations and investigation context,Observasi manusia dan konteks investigasi
+Human priority,Prioritas manusia
+Human priority (not risk),Prioritas manusia (bukan risiko)
+"Human priority is not risk. No WO create, approve, update, assign or close capability. Independent reviewer and expected revision checks remain server-enforced in the existing workflow.","Prioritas manusia bukan risiko. Tidak ada kapabilitas membuat, menyetujui, memperbarui, menugaskan, atau menutup WO. Reviewer independen dan pemeriksaan revisi tetap ditegakkan server dalam alur yang ada."
+Human-entered measurement. Method fields are proposals; no acceptance limit is applied.,Pengukuran diinput manusia. Kolom metode merupakan usulan; tidak ada batas penerimaan yang diterapkan.
+"Hypotheses — human judgment, not confirmed facts (one per line; at most 20 entries, 2,000 characters each; no blank entries)","Hipotesis — penilaian manusia, bukan fakta terkonfirmasi (satu per baris; maksimal 20 entri, masing-masing 2.000 karakter; tanpa entri kosong)"
+Hypotheses: use at most 20 entries.,Hipotesis: maksimal 20 entri.
+INDEPENDENT_REVIEWER_REQUIRED (synthetic simulation).,REVIEWER INDEPENDEN DIPERLUKAN (INDEPENDENT_REVIEWER_REQUIRED; simulasi sintetis).
+INSPECTOR REPORTED / ENGINEER FIELDS PENDING,DILAPORKAN PEMERIKSA / KOLOM ENGINEER MENUNGGU VALIDASI
+Identified; local Mart reference not available,Teridentifikasi; referensi Mart lokal tidak tersedia
+Identity,Identitas
+Identity / quality,Identitas / kualitas
+Identity here is synthetic.,Identitas di sini sintetis.
+"Identity is verified by the backend adapter. This form supplies an opaque proof, never an actor or role.","Identitas diverifikasi adapter backend. Formulir ini memberikan bukti identitas opaque, bukan pelaku atau peran."
+"Identity, description or location","Identitas, deskripsi, atau lokasi"
+Immutable advisory history,Riwayat advisory tetap
+Immutable case history,Riwayat kasus tetap
+Immutable local demo history (,Riwayat demo lokal tetap (
+Immutable publication,Publikasi tetap
+Immutable revision / audit history,Riwayat revisi / audit tetap
+Immutable revision history,Riwayat revisi tetap
+Immutable version,Versi tetap
+Include request_id and expected_revision for changes. Server enforces review independence and exact same-asset evidence. Recommendations never create or update Maximo WO.,Sertakan request_id dan expected_revision untuk perubahan. Server menegakkan review independen dan bukti dengan identitas aset yang persis sama. Rekomendasi tidak membuat atau memperbarui WO Maximo.
+Independent recommendation review queue,Antrean review rekomendasi independen
+Independent record review,Review rekam independen
+Independent review,Review independen
+Independent review and local follow-up attention. Counts reconcile with the filtered authorized page; no risk ranking or Maximo execution authority.,Perhatian pada review independen dan tindak lanjut lokal. Jumlah sesuai halaman berizin yang difilter; tanpa peringkat risiko atau kewenangan pelaksanaan Maximo.
+Independent review queue,Antrean review independen
+Independent reviewer reason,Alasan reviewer independen
+Independent verification recorded,Verifikasi independen tercatat
+Independently verify local completion evidence,Verifikasi independen bukti penyelesaian lokal
+Informational only,Hanya informasi
+Input retained; reload revision before retrying.,Isian dipertahankan; baca revisi terbaru sebelum mencoba lagi.
+Inspected at (original timestamp),Waktu inspeksi (timestamp asli)
+Inspection,Inspeksi
+Inspection / finding register,Daftar inspeksi / temuan
+Inspection detail & review queue,Detail inspeksi & antrean review
+Inspection method,Metode inspeksi
+Inspection methods,Metode inspeksi
+Inspection number present,Nomor inspeksi tersedia
+Inspection register,Daftar inspeksi
+Inspection requires a non-future timestamp with timezone.,Inspeksi memerlukan timestamp dengan zona waktu dan bukan waktu mendatang.
+Inspection time cannot be in the future.,Waktu inspeksi tidak boleh di masa mendatang.
+Inspection time requires an explicit timezone.,Waktu inspeksi memerlukan zona waktu yang jelas.
+Inspection timestamp (timezone required),Timestamp inspeksi (zona waktu wajib)
+Inspection timestamp with timezone,Timestamp inspeksi dengan zona waktu
+Inspections on this page,Inspeksi pada halaman ini
+Inspections · Cases · Recommendations · Action Board,Inspeksi · Kasus · Rekomendasi · Papan Tindak Lanjut
+Inspector observations (one per line),Observasi pemeriksa (satu per baris)
+Inspector reference,Referensi pemeriksa
+Integrated reviewed inspection workflow ↗,Alur inspeksi terintegrasi yang direview ↗
+Integration Status,Status Integrasi
+Integration evidence matrix,Matriks bukti integrasi
+Integration status UNKNOWN.,Status integrasi BELUM DIKETAHUI (UNKNOWN).
+Internal PIC reference,Referensi PIC internal
+Interpretation,Interpretasi
+Interpretation:,Interpretasi:
+"Intervals are descriptive only. Repeated activity can include planned, inspection, administrative, or cancelled source events; raw source statuses remain unchanged.","Interval hanya deskriptif. Aktivitas berulang dapat mencakup kejadian sumber terencana, inspeksi, administratif, atau dibatalkan; status sumber asli tetap tidak berubah."
+Invalid input or unavailable response.,Isian tidak valid atau respons tidak tersedia.
+Invalid inspection input.,Isian inspeksi tidak valid.
+Investigate repeats →,Investigasi aktivitas berulang →
+Investigation cases,Kasus investigasi
+Investigation from reviewed evidence,Investigasi dari bukti yang direview
+Investigation hypotheses (one per line),Hipotesis investigasi (satu per baris)
+Investigation notes,Catatan investigasi
+Investigation signal only; not a condition or risk score.,Hanya sinyal investigasi; bukan skor kondisi atau risiko.
+Investigation window,Rentang investigasi
+Isolated development QA,QA pengembangan terisolasi
+Kind / record,Jenis / rekam
+LOCAL COLLECTOR PROJECTION,PROYEKSI COLLECTOR LOKAL
+Labor hours,Jam tenaga kerja
+Last 12 weeks,12 minggu terakhir
+Last failure,Kegagalan terakhir
+Last success:,Keberhasilan terakhir:
+Latest Activity,Aktivitas Terbaru
+Latest Assessment Record,Rekam Penilaian Terbaru
+Latest Asset Health,Kondisi Aset Terbaru
+Latest Gap,Jeda Terbaru
+Latest Work Type,Tipe Pekerjaan Terbaru
+Latest activity,Aktivitas terbaru
+"Latest activity, newest",Aktivitas terbaru dahulu
+Latest available evidence,Bukti terbaru tersedia
+Latest available evidence:,Bukti terbaru tersedia:
+"Latest gap, shortest",Jeda terbaru terpendek
+Latest record evidence is not sync freshness,Rekam bukti terbaru bukan kemutakhiran sinkronisasi
+Latest successful collector cycle:,Siklus collector berhasil terakhir:
+Leave unsaved form input?,Tinggalkan isian formulir yang belum disimpan?
+Lifecycle status,Status siklus hidup
+"Lifecycle status remains raw source status. Planned/actual dates are source timestamps; no schedule variance, delay, completion, or performance score is calculated.","Status siklus hidup tetap status sumber asli. Tanggal rencana/aktual merupakan timestamp sumber; tidak ada perhitungan deviasi jadwal, keterlambatan, penyelesaian, atau skor kinerja."
+Link bounded synthetic condition snapshot,Kaitkan snapshot kondisi sintetis terbatas
+Link existing synthetic WO (informational),Kaitkan WO sintetis yang ada (informasi)
+Link frozen evidence,Kaitkan bukti beku
+Linked by,Dikaitkan oleh
+Linked synthetic case,Kasus sintetis terkait
+Live reference,Referensi live
+Load records,Muat rekam
+Loading Engineering Workspace…,Memuat Ruang Kerja Engineering…
+Loading…,Memuat…
+Local Collector projection,Proyeksi Collector lokal
+Local Mart context resolved,Konteks Mart lokal terselesaikan
+Local completion does not prove effectiveness,Penyelesaian lokal tidak membuktikan efektivitas
+Local demo follow-up,Tindak lanjut demo lokal
+Local evidence as of,Waktu bukti lokal
+Local evidence cannot be read. Equipment condition remains unknown.,Bukti lokal tidak dapat dibaca. Kondisi equipment tetap belum diketahui.
+Local follow-up,Tindak lanjut lokal
+Local follow-up / completion verification,Tindak lanjut lokal / verifikasi penyelesaian
+Local follow-up status,Status tindak lanjut lokal
+Local follow-up →,Tindak lanjut lokal →
+Local login,Masuk QA lokal
+Local recommendation drafts:,Draf rekomendasi lokal:
+Local review status,Status review lokal
+Local status,Status lokal
+Local synthetic draft created. Reload discards demo changes.,Draf sintetis lokal dibuat. Muat ulang membuang perubahan demo.
+Local target date,Tanggal target lokal
+Local target date (optional),Tanggal target lokal (opsional)
+Location,Lokasi
+Location / parent,Lokasi / induk
+Log out,Keluar
+MIXED DATA MATURITY,KEMATANGAN DATA CAMPURAN
+Maintenance,Pemeliharaan
+Maintenance / Investigation,Pemeliharaan / Investigasi
+Maintenance / Work Order History,Riwayat Pemeliharaan / Work Order
+Maintenance Activity 30d,Aktivitas Pemeliharaan 30 hari
+Maintenance Activity 7d,Aktivitas Pemeliharaan 7 hari
+Maintenance Activity 90d,Aktivitas Pemeliharaan 90 hari
+Maintenance Activity Trend,Tren Aktivitas Pemeliharaan
+Maintenance Events,Kejadian Pemeliharaan
+Maintenance Investigation,Investigasi Pemeliharaan
+Maintenance activity is not failure identity,Aktivitas pemeliharaan bukan identitas kegagalan
+Maintenance activity window,Rentang aktivitas pemeliharaan
+Maintenance chronology,Kronologi pemeliharaan
+Maintenance context UNAVAILABLE,Konteks pemeliharaan TIDAK TERSEDIA (UNAVAILABLE)
+Maintenance context: existing-WO references are informational. No production records are loaded in this lab.,Konteks pemeliharaan: referensi WO yang ada hanya informasi. Tidak ada rekam produksi yang dimuat di lab ini.
+Maintenance data are projected locally from Collector into the Mart.,Data pemeliharaan diproyeksikan secara lokal dari Collector ke Mart.
+Maintenance failure-code semantics and repeat-failure identity,Semantik kode kegagalan pemeliharaan dan identitas kegagalan berulang
+Maintenance records,Rekam pemeliharaan
+Management attention,Perhatian manajemen
+Manual PdM inspections,Inspeksi PdM manual
+Manual inspection draft,Draf inspeksi manual
+Manual inspection entry,Input inspeksi manual
+Mapping,Pemetaan
+Mapping / signal,Pemetaan / sinyal
+Mart Reference Health:,Integritas Referensi Mart:
+Mart read-only,Mart hanya-baca
+Mart resolution is measured separately,Penyelesaian referensi Mart diukur terpisah
+Matching page records,Rekam cocok pada halaman
+Measurement & investigation,Pengukuran & investigasi
+Measurement history / trend,Riwayat / tren pengukuran
+Measurement must be finite or unknown.,Pengukuran harus berhingga atau belum diketahui.
+Measurement point on this page,Titik pengukuran pada halaman ini
+"Measurement text exceeds 2,000 characters.",Teks pengukuran melebihi 2.000 karakter.
+"Measurements, observations, interpretations and independent review remain separate. NADI records never authorize or mutate Maximo Work Orders.","Pengukuran, observasi, interpretasi, dan review independen tetap terpisah. Rekam NADI tidak memberi izin atau mengubah Work Order Maximo."
+Method / point context,Konteks metode / titik
+Method / version,Metode / versi
+Method approval,Persetujuan metode
+Method evidence coverage,Cakupan bukti metode
+Method version,Versi metode
+Minimum events,Kejadian minimum
+Missing owner or date,Penanggung jawab atau tanggal belum tersedia
+Module,Modul
+NADI / RELIABILITY PLATFORM,NADI / PLATFORM KEANDALAN
+NADI / Trust & governance,NADI / Kepercayaan & tata kelola
+NADI Executive Overview,Ringkasan Eksekutif NADI
+NADI LOCAL FOLLOW-UP ONLY,HANYA TINDAK LANJUT LOKAL NADI
+NADI login,Masuk NADI
+NADI navigation,Navigasi NADI
+NADI navigation panel,Panel navigasi NADI
+NADI product identity,Identitas produk NADI
+NADI proposal only; no maintenance authorization,Hanya usulan NADI; bukan izin pemeliharaan
+NADI recommendation / case,Rekomendasi / kasus NADI
+NADI recommendation draft,Draf rekomendasi NADI
+NADI recommendation register,Daftar rekomendasi NADI
+NADI sign-in,Masuk NADI
+NADI-owned decision records,Rekam keputusan milik NADI
+NADI_CONDITION • frozen demo lineage,NADI_CONDITION • jejak demo beku
+NO APPROVED CASE,BELUM ADA KASUS DISETUJUI
+NO APPROVED INSPECTION,BELUM ADA INSPEKSI DISETUJUI
+NO TRUST SCORE,TANPA SKOR KEPERCAYAAN
+NO VERIFIED HEALTH SCORE,BELUM ADA SKOR KONDISI TERVERIFIKASI
+NOT ASSESSED — no interpretation recorded.,BELUM DINILAI (NOT ASSESSED) — belum ada interpretasi tercatat.
+NOT VERIFIED — local completion is not independently verified effectiveness.,BELUM TERVERIFIKASI (NOT VERIFIED) — penyelesaian lokal bukan efektivitas yang diverifikasi independen.
+Name,Nama
+New advisory,Advisory baru
+New case,Kasus baru
+New note — plain text,Catatan baru — teks biasa
+New password,Kata sandi baru
+New password must meet the configured password policy and differ from the current password.,Kata sandi baru harus memenuhi kebijakan yang dikonfigurasi dan berbeda dari kata sandi saat ini.
+New synthetic case,Kasus sintetis baru
+New synthetic investigation,Investigasi sintetis baru
+Next,Berikutnya
+Next history page,Halaman riwayat berikutnya
+Next page,Halaman berikutnya
+Next recommendation page,Halaman rekomendasi berikutnya
+Next revisions,Revisi berikutnya
+No Asset Health assessment available in the current Mart data.,Penilaian Kondisi Aset belum tersedia pada data Mart saat ini.
+No Asset Health assessments for this Asset.,Belum ada penilaian Kondisi Aset untuk Aset ini.
+No Asset Health records match the current filters.,Tidak ada rekam Kondisi Aset yang cocok dengan filter saat ini.
+No Asset filter by design · Server-side,Tanpa filter Aset sesuai desain · dari server
+No Asset or Work Order join,Tanpa penggabungan data Aset atau Work Order
+No Assets meet this activity threshold in the selected window.,Tidak ada Aset yang memenuhi batas aktivitas dalam rentang dipilih.
+No FMEA assessments for this Asset.,Belum ada penilaian FMEA untuk Aset ini.
+No FMEA record is not a risk conclusion.,Tidak adanya rekam FMEA bukan kesimpulan risiko.
+No FMEA records match the current filters.,Tidak ada rekam FMEA yang cocok dengan filter saat ini.
+No Maintenance events for this Asset.,Belum ada kejadian Pemeliharaan untuk Aset ini.
+"No Maximo WO create, update, approval or closure operation exists in this workspace.","Tidak ada operasi membuat, memperbarui, menyetujui, atau menutup WO Maximo di ruang kerja ini."
+No Overhaul records match the current filters.,Tidak ada rekam Overhaul yang cocok dengan filter saat ini.
+No Overhaul records resolved to this Asset.,Belum ada rekam Overhaul yang terselesaikan ke Aset ini.
+No RCFA record is not a conclusion about failure or completion.,Tidak adanya rekam RCFA bukan kesimpulan kegagalan atau penyelesaian.
+No RCFA records match the current filters.,Tidak ada rekam RCFA yang cocok dengan filter saat ini.
+No Work Order number,Belum ada nomor Work Order
+No accepted evidence linked.,Belum ada bukti diterima yang terkait.
+No approved classification in this contract,Belum ada klasifikasi disetujui dalam kontrak ini
+No approved numerical assessment,Belum ada penilaian numerik disetujui
+No assessment is not a health conclusion.,Tidak adanya penilaian bukan kesimpulan kondisi.
+No attachment metadata. Upload/download custody is not activated.,Belum ada metadata lampiran. Pengelolaan unggah/unduh belum diaktifkan.
+No authorized advisory drafts.,Belum ada draf advisory berizin.
+No authorized cases match the server filters.,Tidak ada kasus berizin yang cocok dengan filter server.
+No authorized recommendations match this page context.,Tidak ada rekomendasi berizin yang cocok dengan konteks halaman ini.
+No browser-controlled reviewer authority is accepted.,Kewenangan reviewer yang ditentukan browser tidak diterima.
+No business status mapping,Belum ada pemetaan status bisnis
+No description available,Deskripsi belum tersedia
+No engineer notes.,Belum ada catatan engineer.
+No evidence loaded. UNKNOWN.,Belum ada bukti dimuat. BELUM DIKETAHUI (UNKNOWN).
+No file is uploaded or stored.,Tidak ada file diunggah atau disimpan.
+No governed condition evidence available. Verified equipment identity and approved signals are required. Equipment condition remains unknown.,Bukti kondisi terkelola belum tersedia. Identitas equipment terverifikasi dan sinyal disetujui diperlukan. Kondisi equipment tetap belum diketahui.
+No hypothesis supplied,Hipotesis belum diberikan
+No inspections match this page context.,Tidak ada inspeksi yang cocok dengan konteks halaman ini.
+No local inspections yet,Belum ada inspeksi lokal
+No maintenance activity in this window.,Belum ada aktivitas pemeliharaan dalam rentang ini.
+No maintenance activity trend available.,Tren aktivitas pemeliharaan belum tersedia.
+No matching demo records,Tidak ada rekam demo yang cocok
+No matching synthetic cases.,Tidak ada kasus sintetis yang cocok.
+No measurements recorded.,Belum ada pengukuran tercatat.
+No operational inspection or recommendation actions are enabled.,Tindakan inspeksi atau rekomendasi operasional belum diaktifkan.
+"No operational inspection, recommendation or review actions enabled.","Tindakan inspeksi, rekomendasi, atau review operasional belum diaktifkan."
+"No operational records, authenticated users or backend writes. Changes exist only in browser memory.","Tanpa rekam operasional, pengguna terautentikasi, atau penulisan backend. Perubahan hanya ada dalam memori browser."
+No performance interpretation,Tanpa interpretasi kinerja
+No private attachment contents or download links. Author,Tanpa isi lampiran privat atau tautan unduh. Penulis
+No published advisories in your authorized QA audience.,Belum ada advisory dipublikasikan untuk kategori penerima QA berizin Anda.
+No reason recorded,Alasan belum tercatat
+No recent Asset Health assessment in the current Mart data.,Belum ada penilaian Kondisi Aset terkini pada data Mart saat ini.
+No recent FMEA assessment in the current Mart data.,Belum ada penilaian FMEA terkini pada data Mart saat ini.
+No recent Overhaul resolved to this Asset.,Belum ada Overhaul terkini yang terselesaikan ke Aset ini.
+No recent maintenance in the current Mart data.,Belum ada pemeliharaan terkini pada data Mart saat ini.
+No recorded degradation,Belum ada degradasi tercatat
+No registered assets match these page filters.,Tidak ada aset terdaftar yang cocok dengan filter halaman ini.
+No related maintenance records returned.,Tidak ada rekam pemeliharaan terkait yang dikembalikan.
+No self-registration. Contact the approved operator for account or access changes.,Pendaftaran mandiri tidak tersedia. Hubungi operator berwenang untuk perubahan akun atau akses.
+No supporting evidence returned; no evidence is fabricated.,Tidak ada bukti pendukung yang dikembalikan; tidak ada bukti yang dikarang.
+No synthetic inspection records.,Belum ada rekam inspeksi sintetis.
+No synthetic recommendations.,Belum ada rekomendasi sintetis.
+No timeline events resolved to this Asset.,Belum ada kejadian linimasa yang terselesaikan ke Aset ini.
+No traffic-light score,Tanpa skor warna kondisi
+No work orders for this equipment.,Belum ada Work Order untuk equipment ini.
+None,Tidak ada
+Not recorded,Belum tercatat
+Notes,Catatan
+OPERATING CONTEXT,KONTEKS OPERASI
+OPERATING SCOPE,LINGKUP OPERASI
+Observation / interpretation,Observasi / interpretasi
+Observation:,Observasi:
+Observations,Observasi
+Observations and hypotheses remain separate human statements. Blank lists are allowed; remove empty lines before saving. No condition score is generated.,Observasi dan hipotesis tetap merupakan pernyataan manusia yang terpisah. Daftar boleh kosong; hapus baris kosong sebelum menyimpan. Tidak ada skor kondisi yang dihasilkan.
+Observed / linked,Diamati / terkait
+Observed record count · DERIVED_SAFE,Jumlah rekam teramati · DERIVED_SAFE
+Observed symptoms,Gejala yang diamati
+Offset,Posisi awal
+Only APPROVED inspections may seed a finding. Review does not turn a hypothesis into source fact.,Hanya inspeksi berstatus APPROVED yang dapat menjadi dasar temuan. Review tidak mengubah hipotesis menjadi fakta sumber.
+Open,Buka
+Open Data Trust Center →,Buka Pusat Kepercayaan Data →
+Open Maintenance Investigation →,Buka Investigasi Pemeliharaan →
+Open PdM Center →,Buka Pusat PdM →
+Open Recommendations →,Buka Rekomendasi →
+Open context,Buka konteks
+Open inspection workflow,Buka alur inspeksi
+Open navigation,Buka navigasi
+Open questions,Pertanyaan terbuka
+Open recommendation follow-up,Buka tindak lanjut rekomendasi
+"Operating condition, manufacturer, rating and serial number are UNKNOWN where absent from the governed contract. Source status does not establish operating condition.","Kondisi operasi, produsen, rating, dan nomor seri tetap UNKNOWN jika tidak tersedia dalam kontrak terkelola. Status sumber tidak menetapkan kondisi operasi."
+Operating context,Konteks operasi
+"Operating context exceeds 6,000 characters.",Konteks operasi melebihi 6.000 karakter.
+Operating scope,Lingkup operasi
+Operational Engineering is BLOCKED.,Engineering operasional TERBLOKIR (BLOCKED).
+Operational action workflow not activated.,Alur tindakan operasional belum diaktifkan.
+Operational application contract UNAVAILABLE,Kontrak aplikasi operasional TIDAK TERSEDIA (UNAVAILABLE)
+Operational case actions require reviewed authentication and application writer provisioning.,Tindakan kasus operasional memerlukan autentikasi direview dan penyediaan writer aplikasi.
+"Operational identity, engineer field approval and provisioning remain pending.","Identitas operasional, persetujuan kolom engineer, dan penyediaan akses masih menunggu."
+Operational integration NOT ACTIVATED,Integrasi operasional BELUM DIAKTIFKAN (NOT ACTIVATED)
+Operational manual measurement contract unavailable,Kontrak pengukuran manual operasional tidak tersedia
+Operational recommendation linkage UNAVAILABLE,Pengaitan rekomendasi operasional TIDAK TERSEDIA (UNAVAILABLE)
+Original episodic measurement values,Nilai pengukuran episodik asli
+Original measurement,Pengukuran asli
+Original measurement value,Nilai pengukuran asli
+Original measurements,Pengukuran asli
+Original unit,Satuan asli
+Original value,Nilai asli
+Other recorded methods,Metode tercatat lainnya
+Overall assessment:,Penilaian keseluruhan:
+Overdue local follow-up,Tindak lanjut lokal melewati target
+Overhaul Records,Rekam Overhaul
+Overhaul execution evidence,Bukti pelaksanaan Overhaul
+"Overhaul execution records available in the current Reliability Mart population. Dates and progress remain factual source evidence, not performance KPIs.","Rekam pelaksanaan Overhaul tersedia pada populasi Reliability Mart saat ini. Tanggal dan progress tetap bukti sumber faktual, bukan KPI kinerja."
+Overhaul filters,Filter Overhaul
+Overhaul number,Nomor Overhaul
+Overhaul records,Rekam Overhaul
+Overhaul records · VERIFIED,Rekam Overhaul · TERVERIFIKASI (VERIFIED)
+"Overhaul status, progress, inspection, and date boundaries","Batas status, progress, inspeksi, dan tanggal Overhaul"
+Overhauls without a proven Asset relationship remain visible only on the global Overhaul view.,Overhaul tanpa hubungan Aset terbukti hanya terlihat pada tampilan Overhaul global.
+Overview,Ringkasan
+PHASE 2 / CANDIDATE,FASE 2 / KANDIDAT
+PHASE 2 / DEVELOPMENT LAB,FASE 2 / LAB PENGEMBANGAN
+PHASE 2 / DEVELOPMENT ONLY,FASE 2 / HANYA PENGEMBANGAN
+PHASE 2 / SYNTHETIC LOCAL DEMO,FASE 2 / DEMO LOKAL SINTETIS
+PI System · Planned,PI System · Direncanakan
+PI condition evidence: UNKNOWN / NOT LOADED. Source quality does not prove freshness or equipment health.,Bukti kondisi PI: BELUM DIKETAHUI / BELUM DIMUAT (UNKNOWN / NOT LOADED). Kualitas sumber tidak membuktikan kemutakhiran atau kondisi equipment.
+PI quality flags,Flag kualitas PI
+PI/DCS model for future PdM,Model PI/DCS untuk PdM mendatang
+PI/DCS/CEMS are not represented as connected live systems in this Trust Center.,PI/DCS/CEMS tidak ditampilkan sebagai sistem live terhubung di Pusat Kepercayaan Data ini.
+PIC/team directory pending. Existing Maximo WO linking is a backend contract; no source action is exposed.,Direktori PIC/tim belum tersedia. Pengaitan WO Maximo yang ada merupakan kontrak backend; tidak ada tindakan ke sumber yang dibuka.
+PR63 Q01–Q10 engineer validation,Validasi engineer PR63 Q01–Q10
+PROPOSAL / NOT MAINTENANCE AUTHORIZATION,USULAN / BUKAN IZIN PEMELIHARAAN
+Page search covers only the loaded server page; no condition conclusion follows.,Pencarian hanya mencakup halaman server yang dimuat; bukan dasar kesimpulan kondisi.
+Password,Kata sandi
+Password change required. Enter your temporary password and a new password.,Penggantian kata sandi diperlukan. Masukkan kata sandi sementara dan kata sandi baru.
+PdM / Asset 360 / Recommendations / Action Board ↗,PdM / Aset 360 / Rekomendasi / Papan Tindak Lanjut ↗
+PdM Center,Pusat PdM
+PdM Condition Summary,Ringkasan Kondisi PdM
+Period end,Akhir periode
+Period start,Awal periode
+Permitted QA asset,Aset QA berizin
+Permitted asset filter,Filter aset berizin
+Persisted Engineering Workspace,Ruang Kerja Engineering Persisten
+Phase 2 workspaces,Ruang kerja Fase 2
+Planned,Direncanakan
+Planned Finish,Rencana Selesai
+Planned Start,Rencana Mulai
+Planned and actual duration are timestamp intervals only. Source Progress is shown without a percentage or completion meaning.,Durasi rencana dan aktual hanya interval timestamp. Progress Sumber ditampilkan tanpa persentase atau makna penyelesaian.
+Planned dates,Tanggal rencana
+Planned duration records,Rekam durasi rencana
+Plant,Pembangkit
+Point,Titik
+Point not selected,Titik belum dipilih
+Population,Populasi
+Population boundary,Batas populasi
+Portfolio health / risk,Kondisi / risiko portofolio
+Preview release mismatch / UNKNOWN. Stop and reconcile the worktree; do not switch branches while running.,Rilis pratinjau tidak cocok / belum diketahui (UNKNOWN). Hentikan dan rekonsiliasi worktree; jangan ganti branch saat berjalan.
+Previous,Sebelumnya
+Previous Activity,Aktivitas Sebelumnya
+Previous history page,Halaman riwayat sebelumnya
+Previous page,Halaman sebelumnya
+Previous r,Revisi sebelumnya r
+Previous recommendation page,Halaman rekomendasi sebelumnya
+Previous revisions,Revisi sebelumnya
+Previously displayed records have been cleared. No automatic retry.,Rekam yang sebelumnya ditampilkan telah dibersihkan dari layar. Tidak ada percobaan ulang otomatis.
+Priority,Prioritas
+Problem statement,Pernyataan masalah
+"Production identity, reviewed provisioning and engineer field approval remain pending.","Identitas produksi, penyediaan akses direview, dan persetujuan kolom engineer masih menunggu."
+Projected condition assets,Aset dengan kondisi diproyeksikan
+Projection,Proyeksi
+Proposal register,Daftar usulan
+Proposed action,Usulan tindakan
+Proposed action / rationale,Usulan tindakan / alasan
+Proposed local action,Usulan tindakan lokal
+Proposed local follow-up,Usulan tindak lanjut lokal
+Proposed next checks,Usulan pemeriksaan berikutnya
+Proposed target date,Usulan tanggal target
+Provenance,Asal bukti
+Publication,Publikasi
+Publication and receipt,Publikasi dan penerimaan
+Publish to QA inbox,Publikasikan ke kotak masuk QA
+QA asset,Aset QA
+QA asset on this page,Aset QA pada halaman ini
+"QA recipient categories (publication scope, not your own membership)","Kategori penerima QA (lingkup publikasi, bukan keanggotaan Anda)"
+Quality,Kualitas
+Quality / provenance,Kualitas / provenance
+Quantity,Besaran
+Query as of · not source freshness,Waktu kueri · bukan kemutakhiran sumber
+RCFA Asset relationship is not used for Asset representation.,Hubungan Aset RCFA tidak digunakan untuk keterwakilan Aset.
+"RCFA Asset, Work Order, root-cause, and action relationships","Hubungan Aset, Work Order, akar penyebab, dan tindakan RCFA"
+RCFA Records,Rekam RCFA
+RCFA number,Nomor RCFA
+RCFA record date,Tanggal rekam RCFA
+RCFA record date uses,Tanggal rekam RCFA menggunakan
+RCFA records,Rekam RCFA
+"RCFA records are global analysis evidence. Asset, Work Order, and Failure Event relationships remain unresolved; no root-cause detail or completion meaning is inferred.","Rekam RCFA merupakan bukti analisis global. Hubungan Aset, Work Order, dan Kejadian Kegagalan belum terselesaikan; detail akar penyebab atau makna penyelesaian tidak disimpulkan."
+RCFA records · VERIFIED,Rekam RCFA · TERVERIFIKASI (VERIFIED)
+RCFA relationship is not mapped in Contract v1.,Hubungan RCFA belum dipetakan dalam Contract v1.
+RELIABILITY DATA PLATFORM,PLATFORM DATA KEANDALAN
+REVIEW DECISION: PENDING. Proposed actions are not approved maintenance actions.,KEPUTUSAN REVIEW: MENUNGGU (PENDING). Usulan tindakan bukan tindakan pemeliharaan yang disetujui.
+REVIEWED FINDING / HUMAN INTERPRETATION,TEMUAN DIREVIEW / INTERPRETASI MANUSIA
+REVISION_CONFLICT: reload; unsaved input retained.,KONFLIK REVISI (REVISION_CONFLICT): muat ulang; isian belum tersimpan dipertahankan.
+REVISION_CONFLICT: reload; your unsaved input is retained.,KONFLIK REVISI (REVISION_CONFLICT): muat ulang; isian Anda yang belum tersimpan dipertahankan.
+Raw category,Kategori asli
+Raw source code,Kode sumber asli
+Raw source status,Status sumber asli
+Raw source value,Nilai sumber asli
+Raw source value present · VERIFIED,Nilai sumber asli tersedia · VERIFIED
+Raw source values,Nilai sumber asli
+Raw source values ·,Nilai sumber asli ·
+Raw source values · DERIVED_SAFE,Nilai sumber asli · DERIVED_SAFE
+Raw source values · VERIFIED,Nilai sumber asli · TERVERIFIKASI (VERIFIED)
+Read advisory history,Baca riwayat advisory
+Read asset context,Baca konteks aset
+Read case history,Baca riwayat kasus
+Read exact record,Baca rekam persis
+Read history,Baca riwayat
+Read immutable history,Baca riwayat tetap
+Read latest advisory,Baca advisory terbaru
+Read latest revision (keep unsaved form),Baca revisi terbaru (pertahankan formulir belum tersimpan)
+"Read reviewed statements and explicitly acknowledge receipt. Availability is not delivery, approval or permission to perform plant work.","Baca pernyataan yang direview dan konfirmasi penerimaan secara eksplisit. Ketersediaan bukan pengiriman, persetujuan, atau izin pekerjaan pembangkit."
+Read the evidence in context,Baca bukti sesuai konteks
+Read-only approved revision • NOT ASSESSED,Revisi disetujui hanya-baca • BELUM DINILAI (NOT ASSESSED)
+Reading Asset Health assessment aggregates…,Membaca agregat penilaian Kondisi Aset…
+Reading Executive Overview aggregates…,Membaca agregat Ringkasan Eksekutif…
+Reading FMEA assessment aggregates…,Membaca agregat penilaian FMEA…
+Reading NADI Data Trust evidence…,Membaca bukti Kepercayaan Data NADI…
+Reading Overhaul execution aggregates…,Membaca agregat pelaksanaan Overhaul…
+Reading RCFA analysis aggregates…,Membaca agregat analisis RCFA…
+Reading authorized advisory…,Membaca advisory berizin…
+Reading authorized case…,Membaca kasus berizin…
+Reading bounded Maintenance Investigation aggregates…,Membaca agregat Investigasi Pemeliharaan terbatas…
+Reading equipment context…,Membaca konteks equipment…
+Reading exact authorized record…,Membaca rekam berizin yang diminta…
+Reading immutable history…,Membaca riwayat tetap…
+Reading trusted session and authorized application records…,Membaca sesi terpercaya dan rekam aplikasi berizin…
+Real HTTP and isolated persisted application records. Fixture source data is not operational plant evidence.,HTTP nyata dan rekam aplikasi persisten terisolasi. Data sumber fixture bukan bukti pembangkit operasional.
+Reason,Alasan
+Recent Asset Health,Kondisi Aset Terkini
+Recent FMEA,FMEA Terkini
+Recent Maintenance,Pemeliharaan Terkini
+Recent Overhaul,Overhaul Terkini
+Recent context,Konteks terkini
+"Recent context only; complete asset-scoped chronology is paginated in the existing tabs. No inferred monthly totals, failure counts or open/closed classification.","Hanya konteks terkini; kronologi lengkap dalam lingkup aset tersedia melalui paginasi pada tab yang ada. Tanpa inferensi total bulanan, jumlah kegagalan, atau klasifikasi terbuka/tertutup."
+Recipient inbox,Kotak masuk penerima
+Recipient inbox →,Kotak masuk penerima →
+Recommendation,Rekomendasi
+Recommendation / QA asset,Rekomendasi / aset QA
+Recommendation SHA256,SHA256 rekomendasi
+Recommendation candidates unavailable. Retry by changing page; no record substituted.,Kandidat rekomendasi tidak tersedia. Coba ganti halaman; tidak ada rekam pengganti.
+Recommendation rationale,Alasan rekomendasi
+Recommendation register,Daftar rekomendasi
+Recommendation review / follow-up rationale,Alasan review / tindak lanjut rekomendasi
+"Recommendation text, source versions and review attribution are frozen by the server. Changes require independent review before publication.","Teks rekomendasi, versi sumber, dan atribusi review dibekukan oleh server. Perubahan memerlukan review independen sebelum publikasi."
+Recommendation →,Rekomendasi →
+Recommendations,Rekomendasi
+Recommendations / Action Board,Rekomendasi / Papan Tindak Lanjut
+Recommendations / Actions,Rekomendasi / Tindak Lanjut
+Recommendations remain NADI-owned. Existing Maximo WOs are informational read-only references.,Rekomendasi tetap milik NADI. WO Maximo yang ada merupakan referensi informasi hanya-baca.
+Recommendations →,Rekomendasi →
+Record,Rekam
+Record / version,Rekam / versi
+Record ID (empty to create),ID rekam (kosongkan untuk membuat)
+Record access unavailable or denied,Akses rekam tidak tersedia atau ditolak
+Record availability does not establish an asset health score or risk classification.,Ketersediaan rekam tidak menetapkan skor kondisi aset atau klasifikasi risiko.
+"Record availability, not condition","Ketersediaan rekam, bukan kondisi"
+"Record date, not condition date · DERIVED_SAFE","Tanggal rekam, bukan tanggal kondisi · DERIVED_SAFE"
+Record is no longer editable.,Rekam tidak lagi dapat diedit.
+Record local,Catat lokal
+Record missing,Rekam belum tersedia
+Record multiplicity only · DERIVED_SAFE,Hanya jumlah rekam berulang · DERIVED_SAFE
+Record recency only,Hanya umur rekam
+Record review,Review rekam
+Record review only; not healthy or effective,Hanya review rekam; bukan sehat atau efektif
+"Record timestamp, not freshness","Timestamp rekam, bukan kemutakhiran"
+Recorded action,Tindakan tercatat
+Recorded at / reason,Waktu tercatat / alasan
+Records with Category,Rekam dengan Kategori
+Records with Failure Code,Rekam dengan Kode Kegagalan
+Records with Request Date,Rekam dengan Tanggal Permintaan
+Records with Revision,Rekam dengan Revisi
+Records with Work Order,Rekam dengan Work Order
+Reference,Referensi
+Reference / method,Referensi / metode
+Reference found in local Mart,Referensi ditemukan di Mart lokal
+Reference health,Integritas referensi
+Reference integrity remains available,Integritas referensi tetap tersedia
+Reference mode,Mode referensi
+Registered Asset,Aset Terdaftar
+Registered Asset projection,Proyeksi Aset Terdaftar
+Registered Asset reliability workspace,Ruang kerja keandalan Aset Terdaftar
+Registered Asset workspace,Ruang kerja Aset Terdaftar
+Registered Assets Represented,Aset Terdaftar Terwakili
+Registered Assets Resolved,Aset Terdaftar Terselesaikan
+Registered Assets represented in current population,Aset Terdaftar yang terwakili pada populasi saat ini
+Registered Reliability Assets,Aset Keandalan Terdaftar
+Registered Reliability Assets / Asset Health,Aset Keandalan Terdaftar / Kondisi Aset
+Registered Reliability Assets / FMEA,Aset Keandalan Terdaftar / FMEA
+"Registered Reliability Assets dari snapshot List of Assets, diperkaya konteks teknis lokal tanpa mengunduh seluruh records.","Aset Keandalan Terdaftar dari snapshot List of Assets, diperkaya konteks teknis lokal tanpa mengunduh seluruh rekam."
+Registered Reliability Assets →,Aset Keandalan Terdaftar →
+Registered assets,Aset terdaftar
+Registered assets and maintenance evidence for the BSR / IP operating scope.,Aset terdaftar dan bukti pemeliharaan untuk lingkup operasi BSR / IP.
+Registered assets with highest maintenance activity,Aset terdaftar dengan aktivitas pemeliharaan terbanyak
+"Registered-asset maintenance events per week · counts, not failures or condition scores","Kejadian pemeliharaan aset terdaftar per minggu · jumlah, bukan kegagalan atau skor kondisi"
+Registry,Registry
+Registry references,Referensi Registry
+Registry-scoped,Dalam lingkup Registry
+Registry-scoped FMEA records,Rekam FMEA dalam lingkup Registry
+Registry-scoped Maintenance,Pemeliharaan dalam lingkup Registry
+Registry-scoped normal view,Tampilan normal dalam lingkup Registry
+Registry-scoped · DERIVED_SAFE,Dalam lingkup Registry · DERIVED_SAFE
+Reject advisory,Tolak rekam advisory
+Reject case,Tolak rekam kasus
+Reject recommendation,Tolak rekam rekomendasi
+Reject synthetic case,Tolak rekam kasus sintetis
+Related maintenance chronology,Kronologi pemeliharaan terkait
+Relationship,Hubungan
+Relationship boundary,Batas hubungan
+Relationship evidence requiring review; no inferred equipment priorities.,Bukti hubungan memerlukan review; tidak ada inferensi prioritas equipment.
+Relationship integrity,Integritas hubungan
+Relationship readiness,Kesiapan hubungan
+Relationship-aware,Memperhatikan hubungan
+Relationship-safe,Menjaga batas hubungan
+Relationships NADI can verify,Hubungan yang dapat diverifikasi NADI
+Reliability Data Platform,Platform Data Keandalan
+Reliability KPIs,KPI keandalan
+Reliability Mart / Global RCFA,Reliability Mart / RCFA Global
+Reliability Mart / Overhaul,Reliability Mart / Overhaul
+Reliability Mart / Registered Assets,Reliability Mart / Aset Terdaftar
+Reliability Mart unavailable,Reliability Mart tidak tersedia
+Reliability event,Kejadian keandalan
+Reliability evidence,Bukti keandalan
+Reopen approved case,Buka ulang kasus disetujui
+Reopen case (invalidates downstream eligibility),Buka ulang kasus (membatalkan kelayakan rekam terkait)
+Repeat Activity Events,Kejadian Aktivitas Berulang
+Repeat Activity candidate · DERIVED_SAFE,Kandidat Aktivitas Berulang · DERIVED_SAFE
+Repeat Activity investigation,Investigasi Aktivitas Berulang
+Repeat Activity means more than one Maintenance Event on the same Asset within the selected period. It does not by itself mean repeat failure.,Aktivitas Berulang berarti lebih dari satu Kejadian Pemeliharaan pada Aset yang sama dalam periode dipilih. Ini sendiri tidak berarti kegagalan berulang.
+Repeated Maintenance Activity,Aktivitas Pemeliharaan Berulang
+Reported,Dilaporkan
+Reported measurement:,Pengukuran dilaporkan:
+Reported quantity,Besaran dilaporkan
+Reports,Laporan
+Representation in current population · DERIVED_SAFE,Keterwakilan pada populasi saat ini · DERIVED_SAFE
+Request unavailable. Retry preserves the same request ID.,Permintaan tidak tersedia. Coba lagi mempertahankan ID permintaan yang sama.
+Requested date,Tanggal permintaan
+Requested date present · VERIFIED,Tanggal permintaan tersedia · VERIFIED
+Requires source or business verification,Memerlukan verifikasi sumber atau bisnis
+Resolved,Terselesaikan
+Resolved Asset relationship,Hubungan Aset terselesaikan
+Resolved references,Referensi terselesaikan
+Response and provenance,Respons dan provenance
+Responsibility / follow-up,Penanggung jawab / tindak lanjut
+Responsibility / target,Penanggung jawab / target
+Responsible person reference,Referensi penanggung jawab
+Responsible person reference (optional),Referensi penanggung jawab (opsional)
+Responsible reference / target date,Referensi penanggung jawab / tanggal target
+Responsible team reference,Referensi tim penanggung jawab
+Responsible team reference (optional),Referensi tim penanggung jawab (opsional)
+Retry authorized access,Coba lagi akses berizin
+Retry record,Muat ulang rekam
+Retry view,Muat ulang tampilan
+Review / publication,Review / publikasi
+Review / revision rationale,Alasan review / revisi
+Review Data Trust →,Review Kepercayaan Data →
+Review decision,Keputusan review
+Review decision NOT AVAILABLE.,Keputusan review TIDAK TERSEDIA (NOT AVAILABLE).
+Review status,Status review
+Review status is not equipment condition,Status review bukan kondisi equipment
+Reviewed case missing,Kasus yang direview belum tersedia
+Reviewed case revision,Revisi kasus yang direview
+Reviewed case:,Kasus yang direview:
+Reviewed evidence references,Referensi bukti yang direview
+Reviewed recommended follow-up,Tindak lanjut rekomendasi yang direview
+Reviewed replacement for withdrawn advisory:,Pengganti advisory ditarik yang telah direview:
+Reviewed statement / QA asset,Pernyataan yang direview / aset QA
+Reviewed upstream and recipient statement,Sumber terkait yang direview dan pernyataan penerima
+Reviewer assignment UNKNOWN. Trusted independent review is not activated.,Penugasan reviewer BELUM DIKETAHUI (UNKNOWN). Review independen terpercaya belum diaktifkan.
+Revise recommendation,Revisi rekomendasi
+Revise rejected advisory,Revisi advisory yang ditolak
+Revise rejected case,Revisi kasus yang ditolak
+Revise returned inspection,Revisi inspeksi yang dikembalikan
+Revision,Revisi
+Revision / updated at,Revisi / waktu diperbarui
+Revision distribution,Distribusi revisi
+Revision history,Riwayat revisi
+Revision timeline,Linimasa revisi
+Revoke session,Cabut sesi
+Root Cause Failure Analysis records available in the current Reliability Mart population. RCFA remains a global analysis dataset while its relationships are unresolved.,Rekam Root Cause Failure Analysis tersedia pada populasi Reliability Mart saat ini. RCFA tetap dataset analisis global selama hubungannya belum terselesaikan.
+Running,Berjalan
+SEMANTICS REQUIRED,SEMANTIK DIPERLUKAN
+SOURCE FACT / LOCAL COPY EXAMPLE,FAKTA SUMBER / CONTOH SALINAN LOKAL
+SOURCE FACT / SYNTHETIC FIXTURE,FAKTA SUMBER / FIXTURE SINTETIS
+SYNTHETIC ACCEPTED EVIDENCE EXAMPLE,CONTOH BUKTI SINTETIS DITERIMA
+SYNTHETIC ASSET CONTEXT,KONTEKS ASET SINTETIS
+SYNTHETIC LOCAL DEMO,DEMO LOKAL SINTETIS
+SYNTHETIC QA ·,QA SINTETIS ·
+SYNTHETIC QA · NADI-owned,QA SINTETIS · milik NADI
+SYNTHETIC QA · NADI-owned ·,QA SINTETIS · milik NADI ·
+SYNTHETIC QA · page filters,QA SINTETIS · filter halaman
+Safe filename only; file storage disabled.,Hanya nama file aman; penyimpanan file dinonaktifkan.
+Save advisory draft,Simpan draf advisory
+Save case,Simpan kasus
+Save demo inspection draft,Simpan draf inspeksi demo
+Save demo recommendation,Simpan rekomendasi demo
+Save inspection revision,Simpan revisi inspeksi
+Save local inspection,Simpan inspeksi lokal
+Save local proposal,Simpan usulan lokal
+Save or clear the unsaved note first.,Simpan atau hapus isian catatan yang belum tersimpan terlebih dahulu.
+Save recommendation draft,Simpan draf rekomendasi
+Save synthetic draft,Simpan draf sintetis
+Saved in SYNTHETIC QA. No operational action authorized.,Tersimpan dalam QA SINTETIS. Tidak memberi izin tindakan operasional.
+Saving…,Menyimpan…
+Scroll horizontally for all,Gulir ke samping untuk semua
+Search,Cari
+Search case / asset,Cari kasus / aset
+Search synthetic cases,Cari kasus sintetis
+Search the maintenance event page,Cari pada halaman kejadian pemeliharaan
+Search this page,Cari pada halaman ini
+Search this recommendation page,Cari pada halaman rekomendasi ini
+Search/filter covers this page only,Pencarian/filter hanya mencakup halaman ini
+See asset evidence,Lihat bukti aset
+Select an inspection method.,Pilih metode inspeksi.
+Select an investigation case.,Pilih kasus investigasi.
+Select reviewed recommendation,Pilih rekomendasi yang direview
+Selected evidence:,Bukti dipilih:
+Selected signal evidence,Bukti sinyal dipilih
+Send controlled command,Kirim perintah terkontrol
+"Server checks identity, independent review, asset scope, exact revision and evidence. Existing WO remains read-only. Local completion does not certify physical maintenance or plant effectiveness.","Server memeriksa identitas, review independen, lingkup aset, revisi persis, dan bukti. WO yang ada tetap hanya-baca. Penyelesaian lokal tidak mengesahkan pemeliharaan fisik atau efektivitas pembangkit."
+Server filters · 50 rows; search this page only,Filter server · 50 baris; pencarian hanya pada halaman ini
+Server role and asset scopes remain authoritative. No fallback identity or public record access.,Peran dan lingkup aset dari server tetap otoritatif. Tidak ada identitas pengganti atau akses rekam publik.
+Server-filtered Registry population,Populasi Registry difilter server
+Server-side · 50 rows,Dari server · 50 baris
+Server-side · human-facing identifiers,Dari server · identitas yang ditampilkan kepada pengguna
+Session expired or revoked. Previous account data and unsaved input cleared.,Sesi berakhir atau dicabut. Data akun sebelumnya dan isian belum tersimpan dibersihkan dari layar.
+Show password,Tampilkan kata sandi
+Show top 5 assets,Tampilkan 5 aset teratas
+Sign in,Masuk
+Sign in to NADI,Masuk ke NADI
+Sign-in is unavailable. Try later.,Layanan masuk tidak tersedia. Coba beberapa saat lagi.
+Sign-in temporarily limited. Try later; no automatic retry.,Percobaan masuk dibatasi sementara. Coba beberapa saat lagi; tanpa percobaan ulang otomatis.
+Signal / original unit,Sinyal / satuan asli
+Signing in. Please wait.,Sedang masuk. Mohon tunggu.
+Signing in…,Sedang masuk…
+Simulate,Simulasikan
+Simulate case,Simulasikan kasus
+Simulate independent completion verification,Simulasikan verifikasi penyelesaian independen
+Simulate independent review start,Simulasikan awal review independen
+Simulate recommendation,Simulasikan rekomendasi
+Simulated actor — not authentication,Pelaku simulasi — bukan autentikasi
+"Simulated independent reviewer controls are presentation fixtures, never browser-controlled authority. Source quality does not prove freshness or equipment health. No Maximo WO create, update, approval or closure. File storage disabled.","Kontrol reviewer independen simulasi merupakan fixture tampilan, bukan kewenangan yang ditentukan browser. Kualitas sumber tidak membuktikan kemutakhiran atau kondisi equipment. Tanpa membuat, memperbarui, menyetujui, atau menutup WO Maximo. Penyimpanan file dinonaktifkan."
+Skip to content,Lewati ke konten
+Snapshot availability,Ketersediaan snapshot
+Sort,Urutkan
+Source,Sumber
+Source / collection timestamp,Timestamp sumber / pengumpulan
+Source / mode,Sumber / mode
+Source Asset number,Nomor Aset sumber
+Source Failure Code,Kode Kegagalan Sumber
+Source Overhaul number,Nomor Overhaul sumber
+Source Progress,Progress Sumber
+Source Progress present,Progress Sumber tersedia
+Source SHA:,SHA source:
+Source Status,Status Sumber
+Source Status ·,Status Sumber ·
+Source Work Order number,Nomor Work Order sumber
+Source Work Type → fallback → UNKNOWN,Tipe Pekerjaan sumber → cadangan → UNKNOWN
+Source asset,Aset sumber
+Source case (separate access check) →,Kasus sumber (pemeriksaan akses terpisah) →
+Source lifecycle status,Status siklus hidup sumber
+Source quality UNKNOWN · freshness UNKNOWN · assessment NOT ASSESSED,Kualitas sumber BELUM DIKETAHUI · kemutakhiran BELUM DIKETAHUI · penilaian BELUM DINILAI
+Source record,Rekam sumber
+Source record unavailable,Rekam sumber tidak tersedia
+Source record updated,Waktu rekam sumber diperbarui
+Source relationship present · VERIFIED,Hubungan sumber tersedia · VERIFIED
+Source status,Status sumber
+Source system:,Sistem sumber:
+Source timestamp,Timestamp sumber
+Source timestamp:,Timestamp sumber:
+Source value,Nilai sumber
+Source-record evidence by domain,Bukti rekam sumber per domain
+Stable version:,Versi stabil:
+State / availability,Status / ketersediaan
+Status distribution,Distribusi status
+Status filter,Filter status
+"Structured investigation, evidence and independent record review. Factual screens remain independently accessible.","Investigasi terstruktur, bukti, dan review rekam independen. Layar faktual tetap dapat diakses terpisah."
+Subject:,Identitas:
+Submit advisory for review,Ajukan advisory untuk review
+Submit case,Ajukan kasus
+Submit case for review,Ajukan kasus untuk review
+Submit for synthetic review,Ajukan review sintetis
+Submit inspection,Ajukan inspeksi
+Submit local review,Ajukan review lokal
+Submit recommendation,Ajukan rekomendasi
+Submit recommendation for review,Ajukan rekomendasi untuk review
+Submitted demo finding,Temuan demo diajukan
+Synthetic QA server-visible population,Populasi QA sintetis terlihat dari server
+Synthetic author,Penulis sintetis
+Synthetic demo screens,Layar demo sintetis
+Synthetic draft,Draf sintetis
+Synthetic draft correction,Koreksi draf sintetis
+Synthetic draft saved locally. NOT ASSESSED; no backend write.,Draf sintetis disimpan lokal. BELUM DINILAI (NOT ASSESSED); tanpa penulisan backend.
+Synthetic fixture decision,Keputusan fixture sintetis
+Synthetic human measurement available,Pengukuran manusia sintetis tersedia
+Synthetic independent reviewer,Reviewer independen sintetis
+Synthetic proposal saved locally. It does not authorize maintenance or create a Maximo WO.,Usulan sintetis disimpan lokal. Tidak memberi izin pemeliharaan atau membuat WO Maximo.
+Synthetic review queued. No approval or source action.,Review sintetis masuk antrean. Tanpa persetujuan atau tindakan sumber.
+System Integration,Integrasi Sistem
+TECHNICAL CONTEXT,KONTEKS TEKNIS
+Target date,Tanggal target
+Technical Asset Context,Konteks Aset Teknis
+Technical Asset reference,Referensi Aset teknis
+Technical Details,Detail Teknis
+Technical PI inventory:,Inventaris PI teknis:
+Technical context,Konteks teknis
+Technical context · not a Registered Reliability Asset,Konteks teknis · bukan Aset Keandalan Terdaftar
+Technical equipment remains a separate population.,Equipment teknis tetap merupakan populasi terpisah.
+Technical equipment remains separate,Equipment teknis tetap terpisah
+The Registry is NADI&apos;s business Asset boundary. The broader technical Asset context (,Registry merupakan batas Aset bisnis NADI. Konteks Aset teknis yang lebih luas (
+The advisory workflow is proven in disposable tests. This persistent QA store has not been migrated; draft/publication/receipt actions stay disabled until a separately authorized schema change.,Alur advisory terbukti dalam pengujian disposable. Store QA persisten ini belum dimigrasi; tindakan draf/publikasi/penerimaan tetap dinonaktifkan sampai perubahan schema diotorisasi terpisah.
+The current NADI-owned application HTTP contract is isolated Engineering QA. Synthetic records are not joined to this factual asset.,Kontrak HTTP aplikasi milik NADI saat ini merupakan QA Engineering terisolasi. Rekam sintetis tidak digabungkan ke aset faktual ini.
+"The current Overhaul population is controlled, not a completeness claim.","Populasi Overhaul saat ini terkelola, bukan klaim kelengkapan."
+"The product layout is implemented. Operational identity, record APIs and engineering acceptance require separate activation; no fixture data is substituted.","Layout produk telah diimplementasikan. Identitas operasional, API rekam, dan penerimaan engineering memerlukan aktivasi terpisah; tanpa penggantian data dengan fixture."
+"These are evidence surfaces, not a claim that every domain has complete historical coverage.","Ini merupakan tampilan bukti, bukan klaim bahwa setiap domain memiliki cakupan riwayat lengkap."
+This does not prove no failures occurred.,Ini tidak membuktikan bahwa tidak ada kegagalan terjadi.
+"This is an empty activity result, not a reliability conclusion.","Ini hasil aktivitas kosong, bukan kesimpulan keandalan."
+Timeline,Linimasa
+"Timeline includes Maintenance, FMEA, Asset Health, and Overhaul records only.","Linimasa hanya mencakup rekam Pemeliharaan, FMEA, Kondisi Aset, dan Overhaul."
+Total downtime,Total downtime
+"Traceable proposals, reviewed cases, responsibility and local follow-up. NADI recommendation review does not approve a Maximo Work Order.","Usulan terlacak, kasus direview, penanggung jawab, dan tindak lanjut lokal. Review rekomendasi NADI tidak menyetujui Work Order Maximo."
+Trust dimensions are shown separately.,Dimensi kepercayaan ditampilkan terpisah.
+"Trust should be explained, not compressed into a score.","Kepercayaan data dijelaskan, bukan dipadatkan menjadi skor."
+Trusted evidence.,Bukti terpercaya.
+Trusted local session,Sesi lokal terpercaya
+Trusted session,Sesi terpercaya
+Try again,Coba lagi
+Type,Tipe
+UNKNOWN / NOT ASSESSED,Belum diketahui (UNKNOWN) / Belum dinilai (NOT ASSESSED)
+UNKNOWN / UNKNOWN,Belum diketahui (UNKNOWN) / Belum diketahui (UNKNOWN)
+UNKNOWN preserves null; blank numeric never becomes zero.,UNKNOWN mempertahankan null; angka kosong tidak pernah berubah menjadi nol.
+UNKNOWN — no inspection submitted,BELUM DIKETAHUI (UNKNOWN) — belum ada inspeksi diajukan
+UNKNOWN — no observation recorded.,BELUM DIKETAHUI (UNKNOWN) — belum ada observasi tercatat.
+UNKNOWN • no fabricated classification,BELUM DIKETAHUI (UNKNOWN) • tanpa klasifikasi buatan
+UNKNOWN • synthetic VERIFIED fixture only,BELUM DIKETAHUI (UNKNOWN) • hanya fixture VERIFIED sintetis
+UNMAPPED / NO APPROVED SIGNALS,BELUM DIPETAKAN / BELUM ADA SINYAL DISETUJUI
+Unable to sign in. Check your credentials.,Tidak dapat masuk. Periksa nama pengguna dan kata sandi Anda.
+Unit,Satuan
+Unit exceeds 40 characters.,Satuan melebihi 40 karakter.
+Unit unknown,Satuan belum diketahui
+Unknown,Belum diketahui (UNKNOWN)
+Unknown digital state,Status digital belum diketahui
+Unresolved,Belum terselesaikan
+Unresolved evidence,Bukti belum terselesaikan
+Unsaved changes,Perubahan belum tersimpan
+Unsaved input has been retained.,Isian belum tersimpan tetap dipertahankan.
+Unsaved input • protected on navigation,Isian belum tersimpan • dilindungi saat navigasi
+"Up to 20 nonblank entries, 2,000 code points each.","Maksimal 20 entri tidak kosong, masing-masing 2.000 code point."
+Use your assigned account to access isolated Engineering QA.,Gunakan akun yang diberikan untuk mengakses QA Engineering terisolasi.
+Username,Nama pengguna
+Username and password are required.,Nama pengguna dan kata sandi wajib diisi.
+Uses this reviewed case and its exact frozen evidence references. Not maintenance authorization.,Menggunakan kasus yang direview ini dan referensi bukti bekunya yang persis. Bukan izin pemeliharaan.
+Value / type,Nilai / tipe
+Value type,Tipe nilai
+Verified bounded dataset; not asserted as complete history.,Dataset terbatas terverifikasi; tidak diklaim sebagai riwayat lengkap.
+Verified mapping assets,Aset dengan pemetaan terverifikasi
+Verified test proof,Bukti uji terverifikasi
+Version,Versi
+Version / context,Versi / konteks
+Version-bound recommendation evidence,Bukti rekomendasi terikat versi
+Version-bound upstream,Sumber terkait terikat versi
+View Asset →,Lihat Aset →
+View all records →,Lihat semua rekam →
+View all →,Lihat semua →
+View exact periods and counts,Lihat periode dan jumlah persis
+View linked synthetic investigation ↗,Lihat investigasi sintetis terkait ↗
+WELCOME TO NADI,SELAMAT DATANG DI NADI
+WORK ORDER RELATIONSHIP VERIFIED,HUBUNGAN WORK ORDER TERVERIFIKASI
+Weekly event count · DERIVED_SAFE,Jumlah kejadian mingguan · DERIVED_SAFE
+"Weekly maintenance activity chart, scroll for all periods","Grafik aktivitas pemeliharaan mingguan, gulir untuk semua periode"
+Weekly maintenance counts,Jumlah pemeliharaan mingguan
+What NADI can safely say,Kesimpulan yang dapat dinyatakan NADI
+What NADI currently has,Data yang saat ini dimiliki NADI
+What was observed / interpreted,Hasil observasi / interpretasi
+"Wide tables scroll horizontally inside their own region. Only the current 25 server-authorized records are searched or counted by status. Pagination remains server-side. Dates are original local target dates, not inferred deadlines or urgency.","Tabel lebar digulir ke samping di wilayahnya sendiri. Pencarian dan jumlah per status hanya mencakup 25 rekam berizin pada halaman server saat ini. Paginasi tetap dari server. Tanggal merupakan target lokal asli, bukan inferensi tenggat atau urgensi."
+Wide tables scroll inside their own region. Original units and timestamps are shown per event. Unknown point/unit/time stays UNKNOWN.,Tabel lebar digulir di wilayahnya sendiri. Satuan dan timestamp asli ditampilkan per kejadian. Titik/satuan/waktu belum diketahui tetap UNKNOWN.
+Withdraw advisory,Tarik advisory
+Withdrawn advisory replaced (optional exact ID),Advisory ditarik yang diganti (ID persis opsional)
+Work Order history yang diproyeksikan lokal dari Collector dan dibatasi ke Registered Reliability Assets.,Riwayat Work Order diproyeksikan lokal dari Collector dalam lingkup Aset Keandalan Terdaftar.
+Work Order identified,Work Order teridentifikasi
+Work Order not provided,Work Order belum diberikan
+Work Order number,Nomor Work Order
+Work Order references,Referensi Work Order
+Work Order refs,Referensi Work Order
+Work Orders,Work Order
+Work Orders (,Work Order (
+Work Orders (all equipment),Work Order (semua equipment)
+Work Orders Resolved Locally,Work Order Terselesaikan Lokal
+Work Orders data,Data Work Order
+Work Type,Tipe Pekerjaan
+Work Type ·,Tipe Pekerjaan ·
+Work order,Work Order
+Work order filters,Filter Work Order
+Work order pagination,Paginasi Work Order
+Work-type distribution,Distribusi tipe pekerjaan
+Workflow,Alur kerja
+Your session expired or was revoked. Sign in again.,Sesi Anda berakhir atau dicabut. Silakan masuk kembali.
+active /,aktif /
+assessment records,rekam penilaian
+asset_master context · factual,Konteks asset_master · faktual
+authorized cases · server-filtered population,kasus berizin · populasi difilter server
+date UNKNOWN,tanggal belum diketahui (UNKNOWN)
+days,hari
+demo cases •,kasus demo •
+demo inspections •,inspeksi demo •
+demo recommendations. These are browser-local counts.,rekomendasi demo. Jumlah ini hanya lokal dalam browser.
+e.g. ACTIVE,mis. ACTIVE
+e.g. COMPLETE,mis. COMPLETE
+e.g. MONITORED,mis. MONITORED
+e.g. PM,mis. PM
+e.g. PRODUCTION,mis. PRODUCTION
+e.g. Unit 1,mis. Unit 1
+e.g. VER-OK,mis. VER-OK
+in progress,berlangsung
+maintenance events,kejadian pemeliharaan
+of,dari
+periods; exact counts are available below.,periode; jumlah persis tersedia di bawah.
+records resolve to Registered Assets; technical/non-Registry records remain outside this normal view.,rekam terselesaikan ke Aset Terdaftar; rekam teknis/non-Registry tetap di luar tampilan normal ini.
+registered Assets represented · DERIVED_SAFE,Aset terdaftar terwakili · DERIVED_SAFE
+registered assets,aset terdaftar
+reported quantity,besaran dilaporkan
+resolved,terselesaikan
+secondary context · VERIFIED,konteks sekunder · VERIFIED
+source statuses,status sumber
+stored snapshots. Technical attributes are not governed Asset signals.,snapshot tersimpan. Atribut teknis bukan sinyal Aset terkelola.
+synthetic inspection records awaiting review.,rekam inspeksi sintetis menunggu review.
+unapproved demo inspections. Freshness policy UNKNOWN. Method-specific engineering fields pending. No health or predictive score.,inspeksi demo belum disetujui. Kebijakan kemutakhiran UNKNOWN. Kolom engineering spesifik metode belum disetujui. Tanpa skor kondisi atau prediksi.
+unit UNKNOWN,satuan belum diketahui (UNKNOWN)
+unresolved,belum terselesaikan
+unresolved in current Mart,belum terselesaikan di Mart saat ini
+work types,tipe pekerjaan
+· Annotated,· Beranotasi (Annotated)
+· Annotated:,· Beranotasi (Annotated):
+· Assessment record date,· Tanggal rekam penilaian
+· Collected:,· Dikumpulkan:
+· Filtered (,· Difilter (
+· Local follow-up:,· Tindak lanjut lokal:
+· Projected:,· Diproyeksikan:
+· Projection:,· Proyeksi:
+· Questionable,· Diragukan (Questionable)
+· Questionable:,· Diragukan (Questionable):
+· Revision,· Revisi
+· Roles:,· Peran:
+· SYNTHETIC QA,· QA SINTETIS
+· SYNTHETIC QA ONLY,· HANYA QA SINTETIS
+· Source:,· Sumber:
+· Substituted,· Diganti (Substituted)
+· Substituted:,· Diganti (Substituted):
+· VIEWED:,· DILIHAT:
+· created by,· dibuat oleh
+· informational only,· hanya informasi
+· inspector,· pemeriksa
+"· one item per line, up to 20","· satu item per baris, maksimal 20"
+· published by,· dipublikasikan oleh
+· responsible team UNKNOWN,· tim penanggung jawab belum diketahui (UNKNOWN)
+· reviewer,· reviewer
+· revision,· revisi
+• follow-up,• tindak lanjut
+• no source mutation,• tanpa perubahan sumber
+• quality UNKNOWN • freshness UNKNOWN,• kualitas belum diketahui • kemutakhiran belum diketahui (UNKNOWN)
+• target,• target
+← Back to Asset Reliability,← Kembali ke Keandalan Aset
+← Executive Overview,← Ringkasan Eksekutif
+☀ Light,☀ Terang
+☾ Dark,☾ Gelap

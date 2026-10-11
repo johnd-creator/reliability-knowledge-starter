@@ -449,3 +449,34 @@ shows actual persistent synthetic Engineering and explicitly labeled Login UI st
 [Integration review](../../reliability-cockpit/docs/nadi-eng-integration-01.md) keeps
 final senior/PO visual approval and real engineer UAT PENDING. No new page contract,
 global enforcement, engineering score or operational distribution is activated.
+
+## Indonesian localization / page 12 — Panduan & Istilah
+
+NADI-UX-ID-01 menerapkan copy Indonesia pada sebelas spesifikasi halaman di atas
+serta rute faktual/teknis dan lab yang sudah tersedia. URL, aturan akses dan
+kontrak data setiap halaman tetap sama. Persetujuan NADI, kondisi belum dinilai,
+kemutakhiran/kualitas data, publikasi QA dan konfirmasi penerimaan tetap terpisah.
+
+`/panduan/istilah` adalah halaman bantuan tambahan, bukan modul engineering atau
+fase roadmap baru. Tujuan: pengguna memahami padanan menu/status tanpa menerjemahkan
+sendiri. Pengguna: seluruh persona NADI. Referensi: V1 tokens dan teks requirement
+repository; tidak membuat referensi gambar baru. Layout: breadcrumb/header,
+pencarian dengan label persisten, jumlah hasil aria-live, kartu istilah (Indonesia,
+Inggris, penjelasan, contoh), empty state dan badge Menunggu Validasi Engineer.
+
+Navigasi: link Panduan & Istilah setelah delapan item produk; Engineering tetap
+tersedia. Anchor `#approved` menjelaskan persetujuan rekam dan izin kerja. Data:
+41 entri lokal yang dapat dicari, tanpa API, upload atau penyimpanan pengguna.
+Keamanan: halaman read-only ini tidak memberi akses rekam QA atau mengaktifkan
+login global. Responsif: grid 1440/768/390, keyboard/fokus, tabel teknis contained.
+
+Implemented/tested kandidat: copy/dictionary, search, exact original form values,
+state akses ditolak dan workflow API unchanged. Planned/pending: persetujuan bahasa
+PO, engineer validation metode/threshold, UAT dan visibility kandidat pada runtime
+persisten setelah mekanisme launcher yang aman tersedia. Unknown data tetap UNKNOWN
+atau NOT ASSESSED; tidak ada skor kondisi/risk yang diciptakan.
+
+[Coverage, matrix dan screenshots](../../reliability-cockpit/docs/evidence/nadi-ux-id-01/README.md)
+berasal dari browser fixture komponen kandidat, bukan bukti deployment atau
+persistence acceptance baru. [Review](../../reliability-cockpit/docs/nadi-ux-id-01.md)
+menjelaskan keterbatasan runtime dan final gate.

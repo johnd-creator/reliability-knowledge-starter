@@ -284,3 +284,24 @@ requirements and separate global-login/operational/UAT gates are unchanged.
 [Integration evidence](reliability-cockpit/docs/nadi-eng-integration-01.md) verifies
 persistent synthetic workflow, trusted inline login, factual regression and safe
 source rollback. Development QA PASS is separate from final Product Owner acceptance.
+
+## FR-15 — Bahasa Indonesia dan panduan istilah (NADI-UX-ID-01)
+
+Bahasa Indonesia menjadi bahasa utama presentation layer NADI, termasuk navigasi,
+form, validasi, state pemuatan/kosong/error, pesan workflow dan label aksesibilitas.
+PdM, FMEA, RCFA, Maximo, PI, Work Order, ACK dan istilah industri yang relevan tetap
+terlihat. `/panduan/istilah` menyediakan pencarian padanan Indonesia/Inggris,
+pengertian sederhana dan contoh dalam NADI, tanpa akses atau mutasi database.
+
+Label bukan nilai kontrak: enum/status API, URL, satuan/timestamp, identitas,
+isi evidence pengguna dan rekam tersimpan tidak diterjemahkan. `APPROVED` tampil
+sebagai **Rekam disetujui**, bukan izin kerja. `ACK` hanya konfirmasi penerimaan;
+`COMPLETED` lokal berbeda dari `VERIFIED`. `UNKNOWN`, `NOT ASSESSED` dan QA sintetis
+harus tetap dapat dibedakan dari bukti faktual. Definisi kandidat metode/batas
+engineering memakai penanda **Menunggu Validasi Engineer**.
+
+Acceptance kandidat: regresi payload/protokol dan workflow, keyboard/kontras,
+responsif 1440/768/390 serta CI exact-head; bahasa/visual PO dan engineer UAT tetap
+merupakan gate terpisah. [Laporan implementasi](reliability-cockpit/docs/nadi-ux-id-01.md)
+memisahkan pengujian komponen terisolasi dari visibility runtime persisten.
+Tidak ada global authentication enforcement atau aktivasi operasional baru.
