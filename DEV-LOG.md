@@ -350,3 +350,21 @@ Product Owner Acceptance: limited conditional schema/execution authority given b
 Remaining Blockers: no persistent-QA schema blocker remains. Organizational recipients/identity, real channels/custody/UAT and operational rollout still separately gated.
 Next Action: senior/PO review of unmerged PR #68 and QA evidence; retain expanded CHECK and all records on application rollback. No merge or operational activation without further approval.
 Evidence: [FIX-01 report](reliability-cockpit/docs/nadi-eng-bundle-a-fix-01.md), [actual persistent evidence](reliability-cockpit/docs/evidence/nadi-eng-bundle-a-fix-01/README.md). Immediately post-DDL919rows/51sessions unchanged; after E2E864immutable originals/51session rows/three accepted records and account invariants preserved. All35original containers/start times and five PNG/workbook hashes unchanged. Original blocked checkpoint is preserved above; the new explicit authorization resolves that earlier restriction. Phase1 policy/deadlines untouched.
+
+## 2026-10-11 — NADI-ENG-INTEGRATION-01
+
+Date: 2026-10-11 (Asia/Jakarta)
+Task ID: NADI-ENG-INTEGRATION-01 / I0–I4
+Objective: integrate unmerged Login67 and Engineering68 in one persistent QA candidate.
+Branch: codex/nadi-eng-integration-01, new clean worktree from verified latest main.
+Commit SHA: base cc90fc73bea6ae399383d8538035c6454dc7e65a; inputs8658c2f/e60ad786; functional browser e4be4d0543b48e730b9f5695573cb2bf4fd6f14f; final release hash in PR/task handoff.
+PR: new integration PR against main; final URL in task handoff. PR67/68 independently OPEN.
+Implementation Status: IMPLEMENTED — exact source merges and semantic conflicts, existing Login plus Case/Advisory/Inbox/ACK retained.
+Test Status: TESTED —203frontend assertions, lint/TypeScript/build,161disposable PostgreSQL tests/zero skips,14contracts; Login96/persistent51/A102/B129 browser checks plus focused inline Login integration, responsive screenshot review and actual source rollback PASS.
+CI Status: local PASS; exact release backend/frontend CI independently verified at new PR HEAD after push.
+Merge Status: NOT MERGED; neither PR67 nor PR68 merged.
+Development Visibility: VISIBLE on soleHTTPS3000 via official launcher. Final source/backend/launch SHA independently checked after release selection; pre-cutover Secure session survives actual rollback and original3QA records remain exact.
+Product Owner Acceptance: QA integration/testing authorization; final visual, senior review and real engineer UAT PENDING. Self-review is not Product Owner acceptance.
+Remaining Blockers: no QA schema prerequisite; operational identity/recipients/channels/UAT still gated; Phase1 review/checkpoint/expiry remain independent unchanged.
+Next Action: senior/PO review integration PR and exact-head CI; no automatic merge or global authentication/Phase3 activation.
+Evidence: [integration/self-review](reliability-cockpit/docs/nadi-eng-integration-01.md), [fresh screenshots/results](reliability-cockpit/docs/evidence/nadi-eng-integration-01/README.md). All58original sessions retained with policy-normal monotonic last_seen only,1206immutable baseline rows exact,3accounts,35containers/start times, expanded Advisory/ACK schema, ledger, workbook and five original PNGs preserved. Official private backup fully restored only into a disposable clone; source rollback01434fb demonstrated without DB restoration or deletion.

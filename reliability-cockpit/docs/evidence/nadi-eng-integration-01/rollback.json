@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "previous_source_sha": "01434fb26a29ba726fe59f663ca96d95bfd43c01",
+  "integration_browser_sha": "e4be4d0543b48e730b9f5695573cb2bf4fd6f14f",
+  "live_rollback": "official stop / switch exact previous SHA / start preview-ref; pre-cutover Secure session remains valid; old fixtures and new advisory readable; both backends AVAILABLE",
+  "database": "nadi_live_dev_test",
+  "ddl_executed": false,
+  "expanded_schema_retained": true,
+  "old_and_new_advisory_ack_audit_preserved": true,
+  "backup_before": "backup-20261011-074536.dump",
+  "backup_sha256": "2d25e8fdc6b1502ac6a6093baa5faf32ec3ab74cd8d654171cbbba8486476ce4",
+  "backup_restore": "full isolated PostgreSQL16 clone matched every row and semantically equivalent CHECK; active DB never overwritten",
+  "backup_after": "backup-20261011-074900.dump",
+  "operational_containers_unchanged": 35,
+  "final_reselection": "exact release HEAD verified separately after evidence commit, in PR/task handoff"
+}

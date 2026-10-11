@@ -438,3 +438,14 @@ policy is server-owned; it does not provision organizational roles. See
 [implementation and security decisions](../../reliability-cockpit/docs/nadi-eng-bundle-a.md).
 These are implementation milestones, not merge, Product Owner visual acceptance,
 engineer UAT or operational distribution acceptance.
+
+### Integration-01 visual readiness — 11 October 2026
+
+Existing Login (page11), Engineering Case and Advisory/Inbox flows now coexist in
+one candidate; inline authentication retains the requested product page. V1 tokens,
+original logo, synthetic disclosure, full provenance wrapping and existing security
+boundaries are preserved. [Fresh1440/768/390 evidence](../../reliability-cockpit/docs/evidence/nadi-eng-integration-01/README.md)
+shows actual persistent synthetic Engineering and explicitly labeled Login UI states.
+[Integration review](../../reliability-cockpit/docs/nadi-eng-integration-01.md) keeps
+final senior/PO visual approval and real engineer UAT PENDING. No new page contract,
+global enforcement, engineering score or operational distribution is activated.

@@ -1,5 +1,20 @@
 # NADI product roadmap — main quest
 
+## Current checkpoint — NADI-ENG-INTEGRATION-01 — 2026-10-11
+
+Latest main `cc90fc73bea6ae399383d8538035c6454dc7e65a` is unchanged. Exact unmerged
+PR67 `8658c2fbd00bb78f1d8ee2b4462ccece4200a30e` and PR68
+`e60ad78620b6f4e34959731090f8f248a35b6414` are integrated in a new candidate,
+`codex/nadi-eng-integration-01`. Login presentation and persistent synthetic Case →
+reviewed Recommendation → Advisory → authorized Inbox/ACK work together on one
+HTTPS3000 preview through the official launcher. QA regression and real source
+rollback PASS; final release/serving SHA and exact-head CI are verified at PR handoff.
+No PR merge, global authentication, operational distribution or PO/UAT acceptance
+is inferred. All existing QA data/schema/session authority and operational services
+are preserved. Earlier entries remain dated historical evidence.
+
+Evidence: [Integration report](../reliability-cockpit/docs/nadi-eng-integration-01.md), [screenshots](../reliability-cockpit/docs/evidence/nadi-eng-integration-01/README.md).
+
 ## Engineering delivery track — NADI-ENG-BUNDLE-A — 2026-10-11
 
 Product Owner directive NADI-ENG-BUNDLE-A explicitly requests reviewed Engineering

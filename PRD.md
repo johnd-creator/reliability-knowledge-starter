@@ -275,3 +275,12 @@ server-owned and does not represent plant organizational grants. An explicit
 QA-only schema prerequisite broadens the existing human-record constraint;
 operational migration/activation remains gated. See
 [Engineering implementation decision](reliability-cockpit/docs/nadi-eng-bundle-a.md).
+
+### Integration-01 development checkpoint — 11 October 2026
+
+PR67 Login presentation and PR68 Case/Advisory/recipient workflow are integrated in
+one QA candidate from latest main, without merging the source PRs. Existing
+requirements and separate global-login/operational/UAT gates are unchanged.
+[Integration evidence](reliability-cockpit/docs/nadi-eng-integration-01.md) verifies
+persistent synthetic workflow, trusted inline login, factual regression and safe
+source rollback. Development QA PASS is separate from final Product Owner acceptance.

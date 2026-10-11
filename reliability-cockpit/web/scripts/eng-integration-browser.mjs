@@ -10,7 +10,14 @@ mkdirSync(out,{recursive:true});
 const accounts=JSON.parse(readFileSync(process.env.NADI_QA_ACCOUNT_FILE,'utf8'));
 const checks=[],errors=[];const browser=await chromium.launch({headless:true});
 function check(name,ok){assert.ok(ok,name);checks.push(name);console.log('PASS '+name);}
+let sha;
 try{
+ const probe=await browser.newContext({ignoreHTTPSErrors:true});
+ try{
+  const status=await(await probe.request.get(base+'/api/development/status')).json();sha=status.sha;
+  check('clean exact frontend/backend/launch source',!status.dirty&&!status.stale&&sha===status.backend_sha&&sha===status.launched_sha&&(!process.env.NADI_EXPECTED_SHA||sha===process.env.NADI_EXPECTED_SHA));
+  check('existing QA fixture and factual backend',status.database_identity==='nadi_live_dev_test'&&status.backend==='AVAILABLE'&&status.factual_backend==='AVAILABLE');
+ }finally{await probe.close();}
  for(const [route,title,ready,who,resource]of[
   ['/engineering/cases','Engineering Cases','Case register','engineer','cases'],
   ['/engineering/advisories','Engineering Advisories','Advisory register','engineer','advisories'],
@@ -33,13 +40,13 @@ try{
    check('credentials removed after login '+route,await page.getByRole('form',{name:'NADI sign-in',exact:true}).count()===0);
    check('Secure HttpOnly Strict session '+route,(await context.cookies()).some(c=>c.secure&&c.httpOnly&&c.sameSite==='Strict'));
    check('authenticated records available '+resource,(await context.request.get(base+'/api/engineering-qa/'+resource)).status()===200);
-   if(who==='reviewer')check('reviewer cannot draft an advisory',await page.getByRole('button',{name:'New advisory',exact:true}).count()===0);
+   if(who==='reviewer')check('Inbox does not expose author draft controls',await page.getByRole('button',{name:'New advisory',exact:true}).count()===0);
    await page.reload({waitUntil:'networkidle'});await page.getByRole('heading',{name:ready,exact:true}).waitFor();
    check('reload retains product and session '+route,new URL(page.url()).pathname===route);
    check('mobile content contained '+route,await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   }finally{await context.close();}
  }
  check('no page errors',errors.length===0);
- writeFileSync(out+'/integration-browser-report.json',JSON.stringify({status:'PASS',checks,actual_qa_authentication:true,response_fixtures:false},null,2));
+ writeFileSync(out+'/integration-browser-report.json',JSON.stringify({status:'PASS',sha,checks,actual_qa_authentication:true,response_fixtures:false},null,2));
  console.log('Integration browser checks passed: '+checks.length);
 }finally{await browser.close();}
