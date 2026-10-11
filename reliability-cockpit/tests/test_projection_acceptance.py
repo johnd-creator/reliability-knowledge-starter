@@ -191,11 +191,11 @@ class ProjectionAcceptanceTest(AcceptanceCases,unittest.TestCase):
         document={"integration":service.status().model_dump(mode="json"),"condition":condition.model_dump(mode="json")}
         result=subprocess.run(["node","scripts/evidence-acceptance.mjs"],cwd=ROOT/"web",input=json.dumps(document),capture_output=True,text=True,check=True)
         rendered=json.loads(result.stdout)
-        self.assertIn("Unknown",rendered["evidence"]);self.assertIn("UNKNOWN",rendered["trust"])
+        self.assertIn("Belum diketahui (UNKNOWN)",rendered["evidence"]);self.assertIn("UNKNOWN",rendered["trust"])
         self.assertNotIn("motor current: 0",rendered["evidence"])
-        for page in ("app/assets/[...canonicalId]/page.tsx","app/data-quality/page.tsx"):
+        for page in ("app/(workspace)/assets/[...canonicalId]/page.tsx","app/(workspace)/data-quality/page.tsx"):
             self.assertIn("IntegrationStatusPanel",(ROOT/"web"/page).read_text())
-        self.assertIn("ConditionEvidencePanel",(ROOT/"web/app/assets/[...canonicalId]/page.tsx").read_text())
+        self.assertIn("ConditionEvidencePanel",(ROOT/"web/app/(workspace)/assets/[...canonicalId]/page.tsx").read_text())
 
 @unittest.skipUnless(os.getenv("NADI_MART_TEST_DSN"),"isolated PostgreSQL fixture not configured")
 class ProjectionPostgresAcceptanceTest(AcceptanceCases,unittest.TestCase):

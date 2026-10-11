@@ -871,3 +871,10 @@ CI run38128497987 and preservation/rollback preflight PASS. PR71 remains unmerge
 stacked on unchanged OPENPR70. Final documentation-only release undergoes independent
 CI/source selection. PO visual/engineer UAT/operational acceptance remain PENDING;
 Phase0–5 and freshness governance unchanged. See the linked actual report above.
+
+
+## NADI-UX-LOGIN-01 checkpoint — 2026-10-11
+
+UX-08 fullscreen QA login/layout separation is IMPLEMENTED / TESTED candidate on latest merged main f8f8f2c. UX-09 remains responsive/regression preparation; final Product Owner visual acceptance is PENDING. No Phase 0–5 scope or freshness review/expiry policy changes. Runtime visibility and exact-head CI are separate gates recorded in the PR handoff.
+
+[Implementation, boundaries and evidence](../reliability-cockpit/docs/nadi-ux-login-01.md).

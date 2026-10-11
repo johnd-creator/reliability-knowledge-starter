@@ -30,12 +30,12 @@ try {
   test("unknown raw source status stays neutral", () => assert.match(render(ui.StatusBadge, { value: "UNKNOWN", mode: "raw-neutral" }), /neutral[^>]*>Belum diketahui \(UNKNOWN\)/));
   test("raw CLOSED source status is not a health classification", () => assert.match(render(ui.StatusBadge, { value: "CLOSED", mode: "raw-neutral" }), /neutral/));
   test("legacy pages keep one main landmark and contained tables", () => {
-    for(const path of ["app/work-orders/page.tsx", "app/equipment/[id]/page.tsx"]) {
+    for(const path of ["app/(workspace)/work-orders/page.tsx", "app/(workspace)/equipment/[id]/page.tsx"]) {
       const source=readFileSync(path,"utf8"); assert.ok(!source.includes("<main>")); assert.ok(source.includes("<TableFrame"));
     }
   });
   test("legacy equipment protects identity from late responses and unknown totals", () => {
-    const source=readFileSync("app/equipment/[id]/page.tsx","utf8");
+    const source=readFileSync("app/(workspace)/equipment/[id]/page.tsx","utf8");
     assert.match(source,/if \(!active\) return/); assert.ok(source.includes('workOrders?.total ?? statusLabel("UNKNOWN")')); assert.ok(source.includes('if (loading)'));
   });
   test("button does not submit a form accidentally", () => assert.match(render(ui.Button, { children: "Review" }), /type="button"/));
@@ -55,7 +55,7 @@ try {
   test("inspection keeps original sample context, time, units and review separate",()=>{const html=render(InspectionDetail,{row:fixture.inspections[0]});for(const x of ["mm/s","2026-10-01T07:00:00Z","point:DEMO-DE","Observasi","Interpretasi engineering","Review independen","METADATA_ONLY_NOT_UPLOADED"])assert.ok(html.includes(x));assert.ok(!html.includes('href="attachment:'));});
   test("recommendation completion never becomes verified effectiveness",()=>{const html=render(RecommendationDetail,{row:fixture.recommendations[2]});assert.ok(html.includes("NOT VERIFIED"));assert.ok(html.includes("NOT LINKED"));assert.ok(html.includes("Review rekam" )||html.includes("Review rekam independen"));});
   test("engineering text is escaped, not rendered as executable HTML",()=>{const html=render(RecommendationDetail,{row:{...fixture.recommendations[0],rationale:'<script>alert(1)</script>'}});assert.ok(html.includes("&lt;script&gt;"));assert.ok(!html.includes("<script>"));});
-  test("production product routes cannot request isolated QA records",()=>{for(const path of ["app/pdm/page.tsx","app/recommendations/page.tsx","app/action-board/page.tsx"])assert.ok(readFileSync(path,"utf8").includes('process.env.NODE_ENV==="development"&&process.env.NADI_ENGINEERING_QA_ENABLED==="true"'));});
+  test("production product routes cannot request isolated QA records",()=>{for(const path of ["app/(workspace)/pdm/page.tsx","app/(workspace)/recommendations/page.tsx","app/(workspace)/action-board/page.tsx"])assert.ok(readFileSync(path,"utf8").includes('process.env.NODE_ENV==="development"&&process.env.NADI_ENGINEERING_QA_ENABLED==="true"'));});
   const css = readFileSync("app/design-tokens.css", "utf8");
   const luminance = hex => {
     const rgb = hex.match(/\w\w/g).map(x => parseInt(x, 16) / 255).map(x => x <= .04045 ? x / 12.92 : ((x + .055) / 1.055) ** 2.4);

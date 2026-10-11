@@ -305,3 +305,10 @@ responsif 1440/768/390 serta CI exact-head; bahasa/visual PO dan engineer UAT te
 merupakan gate terpisah. [Laporan implementasi](reliability-cockpit/docs/nadi-ux-id-01.md)
 memisahkan pengujian komponen terisolasi dari visibility runtime persisten.
 Tidak ada global authentication enforcement atau aktivasi operasional baru.
+
+
+## FR-09 fullscreen Engineering QA entry — NADI-UX-LOGIN-01
+
+`/login` is standalone without AppShell, sidebar, topbar or dashboard links. Successful existing authentication opens `/engineering/local`. Current-session logout and local-workspace expiry return to fullscreen login after clearing prior-user views. Existing factual development access and server QA/security policy remain unchanged. This UX correction is not activation of global authentication, production acceptance or engineer UAT.
+
+[Implementation, boundaries and evidence](reliability-cockpit/docs/nadi-ux-login-01.md).

@@ -6,8 +6,9 @@ import {engineeringRequest,EngineeringHttpError} from "../lib/engineering-http";
 import {Button,SectionCard} from "./ui";
 
 type Session = {subject:string;roles:string[];asset_ids:string[];csrf_token:string};
-export default function LocalLogin({onAuthenticated,expired=false}:{onAuthenticated?:(who:Session)=>void;expired?:boolean}) {
+export default function LocalLogin({onAuthenticated,expired=false,headingLevel=2}:{headingLevel?:1|2;onAuthenticated?:(who:Session)=>void;expired?:boolean}) {
  const router=useRouter();
+ const Heading=headingLevel===1?"h1":"h2";
  const id=useId(),errorRef=useRef<HTMLParagraphElement>(null);
  const usernameId=id+"-username",passwordId=id+"-password",newPasswordId=id+"-new-password",helpId=id+"-help",errorId=id+"-error";
  const [username,setUsername]=useState(""),[password,setPassword]=useState(""),[newPassword,setNewPassword]=useState("");
@@ -32,7 +33,7 @@ export default function LocalLogin({onAuthenticated,expired=false}:{onAuthentica
   }finally{setBusy(false);}
  }
  return <SectionCard className="login-card"><div className="nadi-local-login">
-  <p className="eyebrow">{idText("WELCOME TO NADI")}</p><h2>{idText("Sign in to NADI")}</h2>
+  <p className="eyebrow">{idText("WELCOME TO NADI")}</p><Heading>{idText("Sign in to NADI")}</Heading>
   <p className="login-introduction">{idText("Use your assigned account to access isolated Engineering QA.")}</p>
   {expired&&<p className="feedback login-expired" role="status">{idText("Your session expired or was revoked. Sign in again.")}</p>}
   <form onSubmit={submit} aria-label={idText("NADI sign-in")} aria-busy={busy} aria-describedby={error?`${helpId} ${errorId}`:helpId}>
