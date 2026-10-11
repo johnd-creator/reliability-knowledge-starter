@@ -91,6 +91,7 @@ route is public read-only help; no existing route changes and no global login ga
 | Data Trust table overflow at 768px | Medium UX | Reused keyboard-scrollable TableFrame;370 final checks include all widths |
 | Known translated validation error remapped to generic feedback | Medium UX | Allowlisted known translated errors retained; unknown transport still sanitized; unit coverage |
 | Harness subprocess permission, Next params/optimizer/UTF-8 assumptions | Test tooling | Correct permissions, typed route params, test-only Next adapters and charset; final captures regenerated |
+| CSV export used CRLF and triggered full commit-range whitespace check | Low evidence formatting | Normalized to LF without changing any translation pair; full baseline-to-HEAD check repeated |
 | Existing selected-only editor effect warning | Low maintainability | Kept intentional revision pin; no unsafe state-behavior refactor |
 
 All high/critical implementation findings are resolved. No new runtime dependency
