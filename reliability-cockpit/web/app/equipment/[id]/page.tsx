@@ -1,5 +1,6 @@
 "use client";
 
+import {idText, statusLabel} from "../../../lib/id-copy";
 import Link from "next/link";
 import { ErrorState, LoadingState, TableFrame } from "../../../components/ui";
 import { use, useEffect, useState } from "react";
@@ -23,7 +24,7 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
     cockpitApi.getEquipment(id).then(nextEquipment => {
       if (!active) return;
       setEquipment(nextEquipment);
-    }).catch(() => { if (active) setError("Equipment data unavailable"); })
+    }).catch(() => { if (active) setError(idText("Equipment data unavailable")); })
       .finally(() => { if (active) setLoading(false); });
     cockpitApi.listWorkOrders(id, 0, 200).then(nextWorkOrders => {
       if (active) setWorkOrders(nextWorkOrders);
@@ -36,7 +37,7 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
 
   if (error) {
     return (
-      <section className="legacy-content" aria-label="Equipment context">
+      <section className="legacy-content" aria-label={idText("Equipment context")}>
         <ErrorState message={error} />
       </section>
     );
@@ -44,49 +45,49 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
 
   if (loading) {
     return (
-      <section className="legacy-content" aria-label="Equipment context">
-        <LoadingState label="Reading equipment context…" />
+      <section className="legacy-content" aria-label={idText("Equipment context")}>
+        <LoadingState label={idText("Reading equipment context…")} />
       </section>
     );
   }
 
   if (!equipment) {
     return (
-      <section className="legacy-content" aria-label="Equipment context">
+      <section className="legacy-content" aria-label={idText("Equipment context")}>
         <div className="empty">
-          Equipment not found. <Link href="/">Back to overview</Link>
+          {idText("Equipment not found.")} <Link href="/">{idText("Back to overview")}</Link>
         </div>
       </section>
     );
   }
 
   return (
-    <section className="legacy-content" aria-label="Equipment context">
+    <section className="legacy-content" aria-label={idText("Equipment context")}>
       <p>
-        <Link href="/">← Executive Overview</Link>
+        <Link href="/">{idText("← Executive Overview")}</Link>
       </p>
       <section className="card">
         <h2>{equipment.id}</h2>
         <dl className="kv">
-          <dt>Name</dt>
+          <dt>{idText("Name")}</dt>
           <dd>{equipment.name ?? "—"}</dd>
-          <dt>Unit</dt>
+          <dt>{idText("Unit")}</dt>
           <dd>{equipment.unit ?? "—"}</dd>
-          <dt>Class</dt>
+          <dt>{idText("Class")}</dt>
           <dd>
             <span className="badge">{equipment.equipment_class ?? "—"}</span>
           </dd>
           <dt>Status</dt>
           <dd>{equipment.status_description ?? equipment.status ?? "—"}</dd>
-          <dt>Running</dt>
+          <dt>{idText("Running")}</dt>
           <dd>{equipment.is_running === null ? "—" : equipment.is_running ? "Yes" : "No"}</dd>
-          <dt>Total downtime</dt>
+          <dt>{idText("Total downtime")}</dt>
           <dd>{equipment.downtime_total_hours != null ? `${equipment.downtime_total_hours} h` : "—"}</dd>
         </dl>
       </section>
 
       <section className="card">
-        <h2>Reliability KPIs</h2>
+        <h2>{idText("Reliability KPIs")}</h2>
         <div className="kpi-grid">
           {KPI_METRICS.map((metric) => {
             const kpi = kpis[metric];
@@ -109,20 +110,20 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
       </section>
 
       <section className="card">
-        <h2>Work Orders ({workOrders?.total ?? "UNKNOWN"})</h2>
-        {workOrders === null && <LoadingState label="Reading equipment context…" />}
-        {workOrders && workOrders.items.length === 0 && <div className="empty">No work orders for this equipment.</div>}
+        <h2>{idText("Work Orders (")}{workOrders?.total ?? statusLabel("UNKNOWN")})</h2>
+        {workOrders === null && <LoadingState label={idText("Reading equipment context…")} />}
+        {workOrders && workOrders.items.length === 0 && <div className="empty">{idText("No work orders for this equipment.")}</div>}
         {workOrders && workOrders.items.length > 0 && (
-          <TableFrame label="Equipment context data"><table>
+          <TableFrame label={idText("Equipment context data")}><table>
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Type</th>
+                <th>{idText("Type")}</th>
                 <th>Status</th>
-                <th>Description</th>
-                <th>Reported</th>
-                <th>Downtime (h)</th>
-                <th>Failure</th>
+                <th>{idText("Description")}</th>
+                <th>{idText("Reported")}</th>
+                <th>{idText("Downtime (h)")}</th>
+                <th>{idText("Failure")}</th>
               </tr>
             </thead>
             <tbody>

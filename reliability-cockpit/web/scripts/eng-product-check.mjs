@@ -8,7 +8,7 @@ const require=createRequire(import.meta.url),React=require('react'),{renderToSta
 const temp=mkdtempSync(join(tmpdir(),'nadi-eng-ui-'));let count=0;
 function check(label,fn){fn();count++;console.log('PASS '+label);}
 try{
- execFileSync(process.execPath,['node_modules/typescript/bin/tsc','components/CaseForm.tsx','lib/case-records.ts','--outDir',temp,'--rootDir','.','--module','commonjs','--target','ES2022','--jsx','react-jsx','--esModuleInterop','--skipLibCheck'],{stdio:'pipe'});
+ execFileSync(process.execPath,['node_modules/typescript/bin/tsc','components/CaseForm.tsx','lib/case-records.ts','--outDir',temp,'--rootDir','.','--module','commonjs','--target','ES2022','--jsx','react-jsx','--esModuleInterop','--skipLibCheck','--resolveJsonModule','--moduleResolution','node'],{stdio:'pipe'});
  process.env.NODE_PATH=join(process.cwd(),'node_modules');require('node:module').Module._initPaths();
  const {emptyDraft,caseDraft}=require(join(temp,'lib/case-records.js'));
  const Form=require(join(temp,'components/CaseForm.js')).default;

@@ -40,12 +40,12 @@ for (const file of files) {
 const ui = await readFile(join(webRoot, "components", "ui.tsx"), "utf8");
 const css = await readFile(join(webRoot, "app", "globals.css"), "utf8");
 const navigation = await readFile(join(webRoot, "lib", "navigation.ts"), "utf8");
-if (!navigation.includes('href: "/data-quality", label: "Data Trust Center"')) failures.push("navigation.ts: Data Trust access missing");
+if (!navigation.includes('href: "/data-quality", label: idText("Data Trust Center")')) failures.push("navigation.ts: Data Trust access missing");
 // Active-route compatibility is exercised behaviorally in check:ux, including boundaries.
 if (!ui.includes('mode = "raw-neutral"')) failures.push("ui.tsx: StatusBadge default must be raw-neutral");
 if (!ui.includes("Data Reliability Mart belum dapat dibaca")) failures.push("ui.tsx: user-readable Reliability Mart error copy missing");
 if (ui.includes("Data canonical belum dapat dibaca")) failures.push("ui.tsx: stale canonical error copy remains");
-if (!ui.includes('aria-label="Previous page"') || !ui.includes('aria-label="Next page"')) failures.push("ui.tsx: pagination accessibility labels missing");
+if (!ui.includes('aria-label={idText("Previous page")}') || !ui.includes('aria-label={idText("Next page")}')) failures.push("ui.tsx: pagination accessibility labels missing");
 if (!css.includes(":focus-visible")) failures.push("globals.css: visible keyboard focus treatment missing");
 
 if (failures.length > 0) {

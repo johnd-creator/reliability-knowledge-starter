@@ -12,9 +12,10 @@ let checks = 0;
 const test = (label, fn) => { fn(); checks++; console.log(`PASS ${label}`); };
 try {
   const files = ["components/ui.tsx", "lib/navigation.ts", "lib/overview.ts", "lib/product-records.ts", "components/ExecutiveOverview.tsx", "components/AssetHealthSummary.tsx", "components/InspectionDetail.tsx", "components/RecommendationDetail.tsx"].filter(existsSync);
-  execFileSync(process.execPath, ["node_modules/typescript/bin/tsc", ...files, "--outDir", temp, "--rootDir", ".", "--module", "commonjs", "--target", "ES2022", "--jsx", "react-jsx", "--esModuleInterop", "--skipLibCheck"], { stdio: "pipe" });
+  execFileSync(process.execPath, ["node_modules/typescript/bin/tsc", ...files, "--outDir", temp, "--rootDir", ".", "--module", "commonjs", "--target", "ES2022", "--jsx", "react-jsx", "--esModuleInterop", "--skipLibCheck", "--resolveJsonModule", "--moduleResolution", "node"], { stdio: "pipe" });
   symlinkSync(resolve("node_modules"), join(temp, "node_modules"));
   const ui = require(join(temp, "components/ui.js"));
+  const copy=JSON.parse(readFileSync("lib/id-messages.json","utf8"));
   const render = (component, props) => renderToStaticMarkup(React.createElement(component, props));
   test("scrollable table keeps minimum width inside outer region", () => {
     const html = render(ui.TableFrame, { minWidth: 900, children: React.createElement("table") });
@@ -24,9 +25,9 @@ try {
   test("loading announces progress without a temporary value", () => assert.match(render(ui.LoadingState), /role="status"/));
   test("errors are announced and retry remains optional", () => {
     assert.match(render(ui.ErrorState, { onRetry() {} }), /role="alert"/);
-    assert.match(render(ui.ErrorState, { onRetry() {} }), /Try again/);
+    assert.match(render(ui.ErrorState, { onRetry() {} }), /Coba lagi/);
   });
-  test("unknown raw source status stays neutral", () => assert.match(render(ui.StatusBadge, { value: "UNKNOWN", mode: "raw-neutral" }), /neutral[^>]*>UNKNOWN/));
+  test("unknown raw source status stays neutral", () => assert.match(render(ui.StatusBadge, { value: "UNKNOWN", mode: "raw-neutral" }), /neutral[^>]*>Belum diketahui \(UNKNOWN\)/));
   test("raw CLOSED source status is not a health classification", () => assert.match(render(ui.StatusBadge, { value: "CLOSED", mode: "raw-neutral" }), /neutral/));
   test("legacy pages keep one main landmark and contained tables", () => {
     for(const path of ["app/work-orders/page.tsx", "app/equipment/[id]/page.tsx"]) {
@@ -35,7 +36,7 @@ try {
   });
   test("legacy equipment protects identity from late responses and unknown totals", () => {
     const source=readFileSync("app/equipment/[id]/page.tsx","utf8");
-    assert.match(source,/if \(!active\) return/); assert.ok(source.includes('workOrders?.total ?? "UNKNOWN"')); assert.ok(source.includes('if (loading)'));
+    assert.match(source,/if \(!active\) return/); assert.ok(source.includes('workOrders?.total ?? statusLabel("UNKNOWN")')); assert.ok(source.includes('if (loading)'));
   });
   test("button does not submit a form accidentally", () => assert.match(render(ui.Button, { children: "Review" }), /type="button"/));
   test("breadcrumb declares exactly one current page", () => assert.equal((render(ui.Breadcrumbs, {items:[{label:"NADI"},{label:"Overview"}]}).match(/aria-current="page"/g) ?? []).length, 1));
@@ -50,9 +51,9 @@ try {
   const AssetSummary=require(join(temp,"components/AssetHealthSummary.js")).default;
   const InspectionDetail=require(join(temp,"components/InspectionDetail.js")).default;
   const RecommendationDetail=require(join(temp,"components/RecommendationDetail.js")).default;
-  test("asset summary renders reference sections with unsupported scores explicit",()=>{const html=render(AssetSummary,{asset:fixture.asset,context:null,maintenanceCount:null,assessmentCount:0,onMaintenance(){}});for(const name of ["Technical Details","PdM Condition Summary","Maintenance / Work Order History","Recommendations / Actions","NOT ASSESSED","UNKNOWN"])assert.ok(html.includes(name));assert.ok(html.includes("Operational recommendation linkage UNAVAILABLE"));});
-  test("inspection keeps original sample context, time, units and review separate",()=>{const html=render(InspectionDetail,{row:fixture.inspections[0]});for(const x of ["mm/s","2026-10-01T07:00:00Z","point:DEMO-DE","Observations","Engineering interpretation","Independent review","METADATA_ONLY_NOT_UPLOADED"])assert.ok(html.includes(x));assert.ok(!html.includes('href="attachment:'));});
-  test("recommendation completion never becomes verified effectiveness",()=>{const html=render(RecommendationDetail,{row:fixture.recommendations[2]});assert.ok(html.includes("NOT VERIFIED"));assert.ok(html.includes("NOT LINKED"));assert.ok(html.includes("Record review" )||html.includes("Independent record review"));});
+  test("asset summary renders reference sections with unsupported scores explicit",()=>{const html=render(AssetSummary,{asset:fixture.asset,context:null,maintenanceCount:null,assessmentCount:0,onMaintenance(){}});for(const name of [copy["Technical Details"],copy["PdM Condition Summary"],copy["Maintenance / Work Order History"],copy["Recommendations / Actions"],"NOT ASSESSED","UNKNOWN"])assert.ok(html.includes(name), name);assert.ok(html.includes(copy["Operational recommendation linkage UNAVAILABLE"]));});
+  test("inspection keeps original sample context, time, units and review separate",()=>{const html=render(InspectionDetail,{row:fixture.inspections[0]});for(const x of ["mm/s","2026-10-01T07:00:00Z","point:DEMO-DE","Observasi","Interpretasi engineering","Review independen","METADATA_ONLY_NOT_UPLOADED"])assert.ok(html.includes(x));assert.ok(!html.includes('href="attachment:'));});
+  test("recommendation completion never becomes verified effectiveness",()=>{const html=render(RecommendationDetail,{row:fixture.recommendations[2]});assert.ok(html.includes("NOT VERIFIED"));assert.ok(html.includes("NOT LINKED"));assert.ok(html.includes("Review rekam" )||html.includes("Review rekam independen"));});
   test("engineering text is escaped, not rendered as executable HTML",()=>{const html=render(RecommendationDetail,{row:{...fixture.recommendations[0],rationale:'<script>alert(1)</script>'}});assert.ok(html.includes("&lt;script&gt;"));assert.ok(!html.includes("<script>"));});
   test("production product routes cannot request isolated QA records",()=>{for(const path of ["app/pdm/page.tsx","app/recommendations/page.tsx","app/action-board/page.tsx"])assert.ok(readFileSync(path,"utf8").includes('process.env.NODE_ENV==="development"&&process.env.NADI_ENGINEERING_QA_ENABLED==="true"'));});
   const css = readFileSync("app/design-tokens.css", "utf8");
@@ -94,9 +95,9 @@ try {
     test("chart preserves exact zero, unknown and dated values", () => {
       const rows = [0, null, 12].map((value, i) => ({period_start:`2026-10-0${i+1}T00:00:00Z`, period_end:`2026-10-0${i+2}T00:00:00Z`, event_count:{value,evidence_class:"DERIVED_SAFE"}}));
       const html = render(ActivityChart,{rows});
-      assert.match(html, /UNKNOWN/); assert.match(html, /height:0%/); assert.match(html, /height:100%/); assert.match(html, /View exact periods and counts/);
+      assert.match(html, /UNKNOWN/); assert.match(html, /height:0%/); assert.match(html, /height:100%/); assert.match(html, /Lihat periode dan jumlah persis/);
     });
-    test("empty distributions and trend explain absence", () => { assert.match(render(ActivityChart,{rows:[]}), /does not establish equipment condition/); assert.match(render(Distribution,{title:"statuses", rows:[]}), /No statuses/); });
+    test("empty distributions and trend explain absence", () => { assert.ok(render(ActivityChart,{rows:[]}).includes(copy["An empty activity series does not establish equipment condition."])); assert.match(render(Distribution,{title:"statuses", rows:[]}), /Belum ada statuses/); });
   }
   console.log(`UX checks passed: ${checks}`);
 } finally { rmSync(temp, {recursive:true,force:true}); }

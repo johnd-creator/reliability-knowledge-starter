@@ -1,26 +1,28 @@
+import { idText } from "./id-copy";
 export interface NavLink { href: string; label: string; section?: string; }
 export interface NavItem { id: string; label: string; icon: string; href?: string; children?: NavLink[]; planned?: boolean; }
 
 export const navigation: NavItem[] = [
-  { id: "overview", href: "/", label: "Executive Overview", icon: "overview" },
-  { id: "assets", label: "Asset Health", icon: "assets", children: [
-    { href: "/assets", label: "Asset Register" },
-    { href: "/asset-health", label: "Assessment Records" },
+  { id: "overview", href: "/", label: idText("Executive Overview"), icon: "overview" },
+  { id: "assets", label: idText("Asset Health"), icon: "assets", children: [
+    { href: "/assets", label: idText("Asset Register") },
+    { href: "/asset-health", label: idText("Assessment Records") },
   ] },
-  { id: "pdm", href: "/pdm", label: "PdM Center", icon: "chart" },
-  { id: "recommendations", href: "/recommendations", label: "Recommendations", icon: "idea" },
-  { id: "actions", href: "/action-board", label: "Action Board", icon: "board" },
-  { id: "reports", label: "Reports", icon: "report", planned: true },
-  { id: "integration", label: "System Integration", icon: "integration", children: [
-    { href: "/data-quality", label: "Data Trust Center" },
-    { href: "/maintenance", label: "Maintenance", section: "Maximo" },
-    { href: "/maintenance/investigation", label: "Maintenance Investigation", section: "Maximo" },
-    { href: "/work-orders", label: "Work Orders", section: "Maximo" },
+  { id: "pdm", href: "/pdm", label: idText("PdM Center"), icon: "chart" },
+  { id: "recommendations", href: "/recommendations", label: idText("Recommendations"), icon: "idea" },
+  { id: "actions", href: "/action-board", label: idText("Action Board"), icon: "board" },
+  { id: "reports", label: idText("Reports"), icon: "report", planned: true },
+  { id: "integration", label: idText("System Integration"), icon: "integration", children: [
+    { href: "/data-quality", label: idText("Data Trust Center") },
+    { href: "/maintenance", label: idText("Maintenance"), section: "Maximo" },
+    { href: "/maintenance/investigation", label: idText("Maintenance Investigation"), section: "Maximo" },
+    { href: "/work-orders", label: idText("Work Orders"), section: "Maximo" },
     { href: "/fmea", label: "FMEA", section: "Maximo" },
     { href: "/rcfa", label: "RCFA", section: "Maximo" },
     { href: "/overhauls", label: "Overhaul", section: "Maximo" },
   ] },
-  { id: "administration", label: "Administration", icon: "settings", planned: true },
+  { id: "administration", label: idText("Administration"), icon: "settings", planned: true },
+  { id: "guide", href: "/panduan/istilah", label: "Panduan & Istilah", icon: "report" },
 ];
 
 export function routeMatches(path: string, href: string): boolean {

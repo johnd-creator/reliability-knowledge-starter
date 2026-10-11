@@ -1,3 +1,4 @@
+import { idText } from "./id-copy";
 import type { EvidenceValue, IntegrityView } from "./api";
 import { formatDate, formatNumber } from "./format";
 
@@ -13,8 +14,8 @@ export function overviewDate(value: string | null | undefined): string {
 }
 export function attentionItems(integrity: Pick<IntegrityView, "registered_assets_unresolved" | "asset_refs_unresolved" | "workorder_refs_unresolved">) {
   return [
-    { label: "Registry references", count: integrity.registered_assets_unresolved, href: "/data-quality" },
-    { label: "Asset references", count: integrity.asset_refs_unresolved, href: "/data-quality" },
-    { label: "Work Order references", count: integrity.workorder_refs_unresolved, href: "/data-quality" },
+    { label: idText("Registry references"), count: integrity.registered_assets_unresolved, href: "/data-quality" },
+    { label: idText("Asset references"), count: integrity.asset_refs_unresolved, href: "/data-quality" },
+    { label: idText("Work Order references"), count: integrity.workorder_refs_unresolved, href: "/data-quality" },
   ];
 }

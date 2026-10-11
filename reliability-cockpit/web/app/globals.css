@@ -1,5 +1,16 @@
 @import "./design-tokens.css";
 
+/* Indonesian copy shares the existing V1 tokens and both themes. */
+.glossary-workspace{display:grid;gap:var(--space-6,24px);min-width:0}
+.glossary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:var(--space-4,16px)}
+.glossary-grid article{scroll-margin-top:80px;overflow-wrap:anywhere}
+.glossary-grid h2{font-size:20px;line-height:1.3}
+.glossary-english{color:var(--muted);font-size:14px}
+.nav-copy{overflow-wrap:anywhere;min-width:0}
+.page-actions,.engineering-actions{flex-wrap:wrap}
+.product-data-boundary .page-actions{display:flex;gap:var(--space-3);flex-wrap:wrap}
+.filter-grid>label,.product-context-grid>div{min-width:0}
+
 * { box-sizing: border-box; }
 html { background: var(--bg); }
 body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-family); font-size: var(--font-body); line-height: 1.5; }
