@@ -138,3 +138,15 @@ sidebar #E2E8F0/#102536 **12.71:1**; sidebar muted #BBCBD6/#102536 **9.42:1**;
 light secondary #526277/#F1F5F9 **5.68:1**; dark text #EDF2F7/#142334 **14.13:1**;
 dark secondary #BFCCD9/#142334 **9.74:1**. Typography sizes/family and navigation
 hover/edge/border/focus colors are tokens alongside the spacing/shape palette.
+
+
+## Bundle C login presentation
+
+The existing QA login reuses V1 navy/green, surfaces, spacing, shape, focus, primary
+Button and input styling. Original NADI artwork is rendered on the existing white
+logo-surface token without recoloring or replacement. New form controls target 48 px;
+required guidance, generic error, loading and expired-session states retain textual
+meaning. Tablet/mobile collapse decorative copy and preserve accessible form order.
+[Readiness evidence](reliability-cockpit/docs/nadi-ux-bundle-c.md) records comparison
+and tests. This is a visual candidate, not global authentication activation or final
+brand/token/PO accessibility certification.

@@ -1,6 +1,21 @@
 # Repository status and debt — PLATFORM-ROADMAP-001
 
-## Current development checkpoint — NADI UX Bundle B — 2026-10-10
+## Current checkpoint — NADI UX Bundle C — 2026-10-10
+
+PR66 MERGED at `cc90fc73bea6ae399383d8538035c6454dc7e65a`. Exact prior head
+`c840d88f360a24263550b665842b42edbded2e07` backend/frontend CI SUCCESS was
+rechecked before controlled merge. The merged tree equals that reviewed candidate.
+Official launcher main synchronization retained clean SHA/backend indicators, Secure
+session, prior persisted QA records and operational container IDs/start times.
+PO provisional **development accepted** status permits final polish corrections;
+Monday, 12 October 2026 final visual review remains separate and pending.
+
+Bundle C `codex/nadi-ux-bundle-c` polishes existing QA login only and prepares UX-09
+regression/visual evidence. Global authentication, production/session policy, source
+access and database architecture remain unchanged. [Bundle C report](../reliability-cockpit/docs/nadi-ux-bundle-c.md)
+records final source/CI/runtime gates and outstanding design decisions.
+
+## Historical Bundle B delivery checkpoint — 2026-10-10
 
 Verified main: **160737b3bfaeac94f4e8093b8566ca0e5d3585c9**; PR65 MERGED.
 `codex/nadi-ux-bundle-b` implements UX-05/06/07 on the existing V1 shell. Asset

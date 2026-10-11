@@ -253,3 +253,45 @@ Evidence: [implementation/self-review](reliability-cockpit/docs/nadi-ux-bundle-b
 [responsive screenshots](docs/design/ux-bundle-b/README.md),
 [official roadmap](plans/NADI-ROADMAP.md). Original images/workbook, records,
 all operational services, prior worktrees and rollback resources remain preserved.
+
+
+## NADI UX Bundle C — Stage A / Bundle B development acceptance
+
+- **Date:** 2026-10-10, Asia/Jakarta.
+- **Task ID:** NADI-UX-BUNDLE-C / Stage A.
+- **Objective:** Finalize Bundle B under explicit provisional PO approval and synchronize merged main safely.
+- **Branch:** PR66 codex/nadi-ux-bundle-b; serving checkout detached.
+- **Commit SHA:** Verified PR head `c840d88f360a24263550b665842b42edbded2e07`; merged main `cc90fc73bea6ae399383d8538035c6454dc7e65a`.
+- **PR:** [#66](https://github.com/johnd-creator/reliability-knowledge-starter/pull/66).
+- **Implementation Status:** Existing Bundle B implemented; merge metadata changes only, identical tree.
+- **Test Status:** Exact-head backend/frontend CI rechecked SUCCESS; 21 main-synchronization checks PASS, including same Secure session, retained exact records and unchanged container identities/start times.
+- **CI Status:** [38026443639](https://github.com/johnd-creator/reliability-knowledge-starter/actions/runs/38026443639) SUCCESS at PR head; merged tree equals that candidate.
+- **Merge Status:** MERGED 2026-10-10T08:59:19Z; match-head controlled merge authorized by the Product Owner's Bundle C directive. Branch/worktrees preserved.
+- **Development Visibility:** Merged main VISIBLE at https://localhost:3000 through official launcher before starting Bundle C; matching source/backend/launch SHA, clean and both backends AVAILABLE.
+- **Product Owner Acceptance:** DEVELOPMENT ACCEPTED provisionally; final visual review Monday, 12 October 2026, with polish corrections allowed. No operational method/UAT acceptance inferred.
+- **Remaining Blockers:** No merge/synchronization blocker; final visual decisions, Q01–Q10 and operational UAT remain separate pending gates.
+- **Next Action:** Existing QA login presentation polish and UX-09 readiness; no global authentication or Phase 3 activation.
+
+Evidence: [Bundle C readiness](reliability-cockpit/docs/nadi-ux-bundle-c.md).
+Original logs above remain historical; this entry records the later PO decision and merge.
+
+## NADI UX Bundle C — UX-08 implementation / UX-09 preparation
+
+- **Date:** 2026-10-10, Asia/Jakarta.
+- **Task ID:** NADI-UX-BUNDLE-C / Stages B–C.
+- **Objective:** Polish the existing QA login with NADI identity, V1 tokens and accessible responsive states; prepare visual review evidence.
+- **Branch:** codex/nadi-ux-bundle-c, isolated worktree from verified merged main.
+- **Commit SHA:** Base `cc90fc73bea6ae399383d8538035c6454dc7e65a`; functional candidate `64eb1f73152267d454056abf798aed5bf89f9b27`. Final evidence HEAD/CI and serving SHA are in PR/task handoff.
+- **PR:** New Bundle C PR against latest main; final URL/checks in handoff, no automatic merge.
+- **Implementation Status:** IMPLEMENTED UX-08 presentation of existing QA login; UX-09 PREPARATION, not final PO visual acceptance. Backend/session policy and global access unchanged.
+- **Test Status:** TESTED — local TypeScript/lint/build/safety, 195 frontend assertions and 96 login browser checks PASS; fourteen sanitized screenshots inspected. Bundle A browser 105 PASS and Bundle B 129 PASS (330 combined browser checks at exact functional SHA); final evidence-only release/CI independently verified in PR/task handoff.
+- **CI Status:** Local validation and final exact-head CI remain independent; final release checks verified after push in PR/task handoff.
+- **Merge Status:** Bundle C UNMERGED; PR66 independently MERGED.
+- **Development Visibility:** Candidate explicitly selected on the single HTTPS3000 frontend via supported launcher; merged main, previous sources and private backups retained for rollback. Final exact source is in handoff.
+- **Product Owner Acceptance:** Login visual approval PENDING; self-review is not PO acceptance. Monday, 12 October 2026 review remains scheduled.
+- **Remaining Blockers:** No global enforcement is authorized. Brand copy/language, logo scale, narrow layout and final polish await PO decision; operational Q01–Q10 and UAT remain pending.
+- **Next Action:** Senior/PO review of final PR, CI, screenshots and visible login candidate; no automatic Bundle C merge.
+
+Evidence: [readiness report](reliability-cockpit/docs/nadi-ux-bundle-c.md),
+[responsive/state screenshots](docs/design/ux-bundle-c/README.md),
+[official roadmap](plans/NADI-ROADMAP.md).

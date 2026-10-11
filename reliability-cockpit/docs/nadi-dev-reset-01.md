@@ -192,3 +192,16 @@ source/worktree, private fixture backups and operational container rollback rema
 Browser checks: `web/scripts/ux-bundle-b-browser.mjs`, with the same private account,
 Playwright and output variables as Bundle A. Synthetic screenshots use isolated
 response interception and a DEMO fixture identity; actual preview status remains real.
+
+
+## Bundle C main synchronization and login preview — 2026-10-10
+
+PR66 was explicitly authorized for controlled merge after exact-head CI/review gates
+were rechecked. Verified merged main `cc90fc73bea6ae399383d8538035c6454dc7e65a`
+was selected via the existing backup → stop → switch origin/main → start workflow.
+Same Secure session and original inspection/case/recommendation records were retained;
+operational container IDs/start times remained unchanged. Bundle C preview uses the
+same sequence with explicit `codex/nadi-ux-bundle-c`, never another frontend/port.
+The merged main and prior candidate/worktrees/backups are preserved for source rollback.
+[Bundle C readiness](nadi-ux-bundle-c.md) records the exact functional source and
+final release handoff. Global enforcement/cookies/CSRF/RBAC/session policies are unchanged.

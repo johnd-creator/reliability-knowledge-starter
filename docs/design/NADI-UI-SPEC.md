@@ -326,7 +326,7 @@ Bundle A implements this placement using existing routes. Engineering is a suppl
   audit and last-admin safeguards retained; no sensitive material in UI/log/export;
   activation separately approved before operational account management.
 
-## UI-11 — Login Page (global design only)
+## UI-11 — Login Page (QA presentation; global access design only)
 
 - **Purpose / users:** future secure application entry for all authorized personas;
   current QA login continues to serve isolated Engineering development only.
@@ -340,8 +340,8 @@ Bundle A implements this placement using existing routes. Engineering is a suppl
 - **Data dependencies:** existing local auth/session contract; approved onboarding,
   recovery, session/password policy and operational hosting/TLS before activation.
 - **Implemented:** development-only `/login` and authenticated `/engineering/local`,
-  merged foundation plus PR #62 live launcher. Global authentication is not activated.
-- **Planned:** UX-08 visual design only; subsequent global enforcement is a separate task.
+  merged foundation plus PR #62 live launcher; Bundle C polishes the existing QA presentation. Global authentication is not activated.
+- **Planned:** global enforcement, onboarding and recovery remain separate approved tasks; UX-08 implements only existing QA login presentation.
 - **Unknown data behavior:** generic invalid credentials; distinguish service unavailable
   without disclosing account existence; no fake signed-in state or fallback identity.
 - **Security constraints:** preserve HTTPS and Secure/HttpOnly/SameSite cookies,
@@ -349,8 +349,8 @@ Bundle A implements this placement using existing routes. Engineering is a suppl
   weaken current QA gates to make a mockup work. No password/session browser storage.
 - **Responsive requirements:** single readable form, mobile keyboard-friendly fields,
   visible labels/focus/error summary, no decorative obstruction or color-only error.
-- **Acceptance criteria:** design reviewed with error/loading/expiry states; mockups
-  clearly nonfunctional; existing QA login/security and factual access unchanged;
+- **Acceptance criteria:** working QA presentation verified with error/loading/expiry
+  states and labeled synthetic screenshot fixtures; existing QA login/security and factual access unchanged;
   no global enforcement claimed until separate approved implementation and UAT.
 
 ## Bundle A review evidence
@@ -387,3 +387,25 @@ Known reference deviations are deliberate: no illustrative health scores, risk
 colors/formula, diagnosis thresholds, interpolated trend or execution/budget
 categories. Operational readiness, Q01–Q10 validation, PO visual approval and UX-09
 acceptance remain separate pending gates. Original PNG assets/hashes are unchanged.
+
+
+## Bundle C / UX-08 and UX-09 preparation — 2026-10-10
+
+UI-11 has a working development presentation candidate. Desktop pairs a navy product
+panel with the existing sign-in form; the unchanged original `/logo_nadi.png` sits on
+V1's white logo surface. Tablet/mobile compact decorative brand copy while preserving
+identity/context and prioritizing the form. Existing navy navigation remains available.
+Username/password labels, autocomplete, 64/256 limits, required fields and current
+backend error categories remain. V1 buttons/inputs, 48 px controls, associated guidance,
+focusable announced error, busy lock/spinner and session-expiry feedback are presented.
+Repeated embedded QA forms receive unique label/control IDs. No recovery/signup or
+new identity/permission controls are invented. Normal login still navigates to the
+existing `/engineering/local`; product inline callbacks are unchanged.
+
+There is no supplied login reference screenshot; comparison is against implemented
+V1 tokens and the existing logo, not a new generated reference. UX-09 preparation
+records responsive/error/loading/expiry evidence and retained A/B regressions.
+[Evidence and outstanding decisions](../../reliability-cockpit/docs/nadi-ux-bundle-c.md)
+distinguish local tests, exact-head CI, runtime visibility and Product Owner review.
+PO provisional development acceptance of PR66 is separate from Monday, 12 October 2026
+final visual review. Operational engineer validation and Phase 1 governance remain intact.
