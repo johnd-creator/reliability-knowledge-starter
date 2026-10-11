@@ -1,5 +1,20 @@
 # NADI product roadmap — main quest
 
+## Source-free 72h review — 12 Oktober 2026
+
+**Monitoring PARTIAL; product readiness UNKNOWN; Phase 1 CURRENT/PARTIAL.**
+Review window8 Oktober21:45:26.619585–11 Oktober21:45:26.619585WIB. Stored WO822/836
+full successes, PI304/322full433/433,857paired Mart completion reports. Reconstructed
+stale windowsMaximo 6/2190,086s, PI 3/6279,663s; Mart≈105,795s paired-log proxy, exact
+per-domain stale durationUNKNOWN. False alerts dan24h reviewUNKNOWN. Latest snapshot
+12 Oktober05:36WIB8 PASS/1 UNKNOWN, bukan retroactive72h acceptance.
+Effective policies660/660/1800;5legacy/conditionUNSET, no drift. Checkpoint Owner
+12 Oktober20:00WIB dan hard expiry13Oktober00:00WIB tetapmanual, tanpaextension/reset.
+Main3ad0da8 verified; previewf06abce preserved. Tidak ada source GET/retry/migration/
+restart/data/policy change. Earlier sections remain dated historical evidence.
+
+[Full audit, gates, evidence gaps and decision matrix](../reliability-cockpit/docs/nadi-p1-fresh-review-72h.md).
+
 ## Current checkpoint — NADI-ENG-INTEGRATION-01 — 2026-10-11
 
 Latest main `cc90fc73bea6ae399383d8538035c6454dc7e65a` is unchanged. Exact unmerged

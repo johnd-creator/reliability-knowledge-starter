@@ -1,0 +1,303 @@
+{
+  "task": "NADI-P1-FRESH-REVIEW-72H",
+  "verdict": "PARTIAL",
+  "review_start": "2026-10-08T21:45:26.619585+07:00",
+  "review_end": "2026-10-11T21:45:26.619585+07:00",
+  "history_observation_cutoff": "2026-10-12T05:35:14.695531+07:00",
+  "readiness_observed_at": "2026-10-12T05:36:07.692601+07:00",
+  "policy_seconds": {
+    "maximo_wo": 660,
+    "mart_factual": 660,
+    "pi_collector": 1800
+  },
+  "maximo": {
+    "attempts_started_in_window": 836,
+    "completions_in_window": 836,
+    "full_success": 822,
+    "not_full_success": 14,
+    "error_sum": 14,
+    "duration_seconds": {
+      "n": 836,
+      "min": 4.985655,
+      "median": 6.943268,
+      "p95": 14.676912,
+      "max": 112.690755
+    },
+    "success_gap_seconds": {
+      "n": 822,
+      "min": 305.984591,
+      "median": 307.9430265,
+      "p95": 314.474375,
+      "max": 2307.878371
+    },
+    "freshness": {
+      "episodes": 6,
+      "stale_seconds": 2190.086438,
+      "stale_percent": 0.8449407554012345,
+      "unknown_seconds": 0,
+      "windows": [
+        {
+          "start": "2026-10-09T10:52:34.770240+00:00",
+          "end": "2026-10-09T10:52:35.680182+00:00",
+          "seconds": 0.909942
+        },
+        {
+          "start": "2026-10-09T14:14:08.128565+00:00",
+          "end": "2026-10-09T14:16:01.260529+00:00",
+          "seconds": 113.131964
+        },
+        {
+          "start": "2026-10-09T19:09:28.643250+00:00",
+          "end": "2026-10-09T19:14:42.901896+00:00",
+          "seconds": 314.258646
+        },
+        {
+          "start": "2026-10-10T18:42:17.965901+00:00",
+          "end": "2026-10-10T18:42:18.366814+00:00",
+          "seconds": 0.400913
+        },
+        {
+          "start": "2026-10-10T18:53:18.366814+00:00",
+          "end": "2026-10-10T19:20:46.245185+00:00",
+          "seconds": 1647.878371
+        },
+        {
+          "start": "2026-10-11T00:34:20.731941+00:00",
+          "end": "2026-10-11T00:36:14.238543+00:00",
+          "seconds": 113.506602
+        }
+      ],
+      "last_success_at_cutoff": "2026-10-11T14:41:13.353278+00:00",
+      "cutoff_success_age_seconds": 253.266307
+    },
+    "anomalies": {
+      "null_start": 0,
+      "null_finish_started_in_window": 0,
+      "finish_before_start": 0,
+      "duplicate_finish": 0,
+      "future_vs_now": 0
+    }
+  },
+  "pi": {
+    "attempts_started_in_window": 322,
+    "completions_in_window": 322,
+    "full_success": 304,
+    "not_full_success": 18,
+    "error_sum": 291,
+    "duration_seconds": {
+      "n": 322,
+      "min": 455.98594,
+      "median": 486.84995200000003,
+      "p95": 570.15829,
+      "max": 1218.944972
+    },
+    "success_gap_seconds": {
+      "n": 304,
+      "min": 756.00197,
+      "median": 789.2508895,
+      "p95": 878.146473,
+      "max": 5749.952206
+    },
+    "freshness": {
+      "episodes": 3,
+      "stale_seconds": 6279.662652,
+      "stale_percent": 2.4227093564814814,
+      "unknown_seconds": 0,
+      "windows": [
+        {
+          "start": "2026-10-09T01:43:12.688222+00:00",
+          "end": "2026-10-09T02:49:02.640428+00:00",
+          "seconds": 3949.952206
+        },
+        {
+          "start": "2026-10-09T14:28:04.383375+00:00",
+          "end": "2026-10-09T14:46:54.679194+00:00",
+          "seconds": 1130.295819
+        },
+        {
+          "start": "2026-10-11T00:33:32.172425+00:00",
+          "end": "2026-10-11T00:53:31.587052+00:00",
+          "seconds": 1199.414627
+        }
+      ],
+      "last_success_at_cutoff": "2026-10-11T14:19:57.186488+00:00",
+      "cutoff_success_age_seconds": 1529.433097
+    },
+    "anomalies": {
+      "null_start": 0,
+      "null_finish_started_in_window": 0,
+      "finish_before_start": 0,
+      "duplicate_finish": 0,
+      "future_vs_now": 0
+    },
+    "observed_attributes_seen": [
+      433
+    ],
+    "partial_432_of_433": 10,
+    "aborted": 0
+  },
+  "mart": {
+    "asset_master": {
+      "completion_reports": 857,
+      "completed_true": 857,
+      "completed_false": 0,
+      "duration_known": false,
+      "success_gap_seconds": {
+        "n": 857,
+        "min": 301.541788,
+        "median": 301.796767,
+        "p95": 302.20153,
+        "max": 765.795264
+      },
+      "freshness": {
+        "episodes": 1,
+        "stale_seconds": 105.795264,
+        "stale_percent": 0.040816074074074074,
+        "unknown_seconds": 0,
+        "windows": [
+          {
+            "start": "2026-10-09T14:13:37.312884+00:00",
+            "end": "2026-10-09T14:15:23.108148+00:00",
+            "seconds": 105.795264
+          }
+        ],
+        "last_success_at_cutoff": "2026-10-11T14:43:05.906404+00:00",
+        "cutoff_success_age_seconds": 140.713181,
+        "exact_domain_commit_stale_duration": "UNKNOWN",
+        "stale_seconds_is_log_proxy": true
+      },
+      "null_source_changed_sum": 0,
+      "skipped_missing_equipment_sum": 0,
+      "skipped_unproven_scope_sum": 0,
+      "clock_precision": "post-completion log timestamp upper bound; per-domain exact historic commit timestamps not retained",
+      "paired_json_emission_spread_seconds": 0.001075
+    },
+    "maintenance_event": {
+      "completion_reports": 857,
+      "completed_true": 857,
+      "completed_false": 0,
+      "duration_known": false,
+      "success_gap_seconds": {
+        "n": 857,
+        "min": 301.541788,
+        "median": 301.796767,
+        "p95": 302.20153,
+        "max": 765.795264
+      },
+      "freshness": {
+        "episodes": 1,
+        "stale_seconds": 105.795264,
+        "stale_percent": 0.040816074074074074,
+        "unknown_seconds": 0,
+        "windows": [
+          {
+            "start": "2026-10-09T14:13:37.312884+00:00",
+            "end": "2026-10-09T14:15:23.108148+00:00",
+            "seconds": 105.795264
+          }
+        ],
+        "last_success_at_cutoff": "2026-10-11T14:43:05.906404+00:00",
+        "cutoff_success_age_seconds": 140.713181,
+        "exact_domain_commit_stale_duration": "UNKNOWN",
+        "stale_seconds_is_log_proxy": true
+      },
+      "null_source_changed_sum": 0,
+      "skipped_missing_equipment_sum": 1460,
+      "skipped_unproven_scope_sum": 0,
+      "clock_precision": "post-completion log timestamp upper bound; per-domain exact historic commit timestamps not retained",
+      "paired_json_emission_spread_seconds": 0.001075
+    }
+  },
+  "recent_run_history": {
+    "start": "2026-10-11T14:45:26.619585+00:00",
+    "end": "2026-10-11T22:35:14.695531+00:00",
+    "maximo": {
+      "completed": 91,
+      "full_success": 85,
+      "not_full_success": 6,
+      "errors": 6,
+      "last_success": "2026-10-11T22:31:18.270949+00:00"
+    },
+    "pi": {
+      "completed": 36,
+      "full_success": 32,
+      "not_full_success": 4,
+      "errors": 78,
+      "last_success": "2026-10-11T22:26:49.825514+00:00"
+    }
+  },
+  "current_nine_gates": {
+    "contract_version": "1.0",
+    "scope": "PHASE_1_PRODUCT_PILOT",
+    "evidence_origin": "OPERATOR_DOCUMENT",
+    "observed_at": "2026-10-11T22:36:07.692601Z",
+    "verdict": "UNKNOWN",
+    "gates": [
+      {
+        "gate": "P1-MAXIMO-CURRENT",
+        "verdict": "PASS",
+        "reason": "LOCAL_EVIDENCE_CURRENT"
+      },
+      {
+        "gate": "P1-MART-CURRENT",
+        "verdict": "PASS",
+        "reason": "LOCAL_EVIDENCE_CURRENT"
+      },
+      {
+        "gate": "P1-PI-COLLECTOR-CURRENT",
+        "verdict": "PASS",
+        "reason": "LOCAL_EVIDENCE_CURRENT"
+      },
+      {
+        "gate": "P1-MART-GOVERNANCE-READY",
+        "verdict": "PASS",
+        "reason": "READER_SCHEMA_COMPATIBLE"
+      },
+      {
+        "gate": "P1-CONDITION-SCHEMA-READY",
+        "verdict": "PASS",
+        "reason": "READER_SCHEMA_COMPATIBLE"
+      },
+      {
+        "gate": "P1-IDENTITY-MAPPING-READY",
+        "verdict": "PASS",
+        "reason": "VERIFIED_PILOT_AVAILABLE"
+      },
+      {
+        "gate": "P1-SIGNAL-SELECTION-READY",
+        "verdict": "PASS",
+        "reason": "APPROVED_PILOT_SIGNALS_AVAILABLE"
+      },
+      {
+        "gate": "P1-CONDITION-PROJECTION-READY",
+        "verdict": "UNKNOWN",
+        "reason": "UNKNOWN_SOURCE_OR_PROJECTION_FRESHNESS"
+      },
+      {
+        "gate": "P1-INTEGRATION-STATUS-READY",
+        "verdict": "PASS",
+        "reason": "STATUS_CONTRACT_VALID"
+      }
+    ],
+    "coverage": {
+      "registered_assets": 845,
+      "verified_mapping_assets": 1,
+      "ambiguous_mapping_assets": 0,
+      "approved_signal_assets": 1,
+      "projected_assets": 1,
+      "approved_signals": 1,
+      "projected_signals": 1,
+      "technical_registry_total": 490,
+      "technical_registry_active": 433,
+      "technical_snapshots": 433
+    }
+  },
+  "false_alerts": {
+    "verdict": "UNKNOWN",
+    "reason": "No retained sampled alert stream or operator adjudication"
+  },
+  "historical_24h_review": "NOT_VERIFIED_UNKNOWN",
+  "full_nine_gate_history_at_cutoff": "UNKNOWN",
+  "source_requests_by_review": 0,
+  "runtime_mutations_by_review": 0
+}
