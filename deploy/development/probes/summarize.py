@@ -5,6 +5,12 @@ from pathlib import Path
 MIB=1048576
 def rows(path):return [json.loads(x) for x in path.read_text().splitlines()] if path.exists() else []
 
+def public_function_name(value):
+    # Webpack module IDs may be embedded in functionName, not only callFrame.url.
+    # Suppress the whole ID rather than publishing clipped absolute paths.
+    if '/' in value or '\\' in value:return '(compiled module)'
+    return (value or '(anonymous)')[:80]
+
 def slope(values):
     if len(values)<2:return None
     xs=[x['at']/60000 for x in values];ys=[x['heapUsed']/MIB for x in values]
@@ -25,8 +31,8 @@ def summarize(root):
             else:owner=frame
             # Strip filesystem paths, compiled source, line text, usernames and IDs.
             category='node-internal' if owner['url'].startswith('node:') else 'webpack' if 'webpack' in owner['url'] else 'next-runtime' if 'next/' in owner['url'] else 'app-compiled' if '.next-primary-dev' in owner['url'] else 'other'
-            name=owner['functionName'] or '(anonymous)'
-            sizes[(category,name[:80])]+=node['selfSize']
+            name=public_function_name(owner['functionName'])
+            sizes[(category,name)]+=node['selfSize']
             for child in node.get('children',[]):visit(child,stack)
         visit(profile['head'],[])
         allocation.append(dict(at=int(file.stem.rsplit('-',1)[1]),sampled_mib=round(sum(sizes.values())/MIB,1),top=[dict(category=k[0],function=k[1],mib=round(v/MIB,1)) for k,v in sizes.most_common(12)]))
