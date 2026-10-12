@@ -1,0 +1,594 @@
+[
+  {
+    "seconds": 0,
+    "mapSize": 82,
+    "ancestryNodes": 71597,
+    "truncated": false,
+    "owners": 4,
+    "stackFrames": 11571,
+    "weakRefs": 70627,
+    "tags": {
+      "0": 970,
+      "1": 26434,
+      "2": 44183,
+      "3": 7,
+      "4": 3
+    }
+  },
+  {
+    "seconds": 120,
+    "mapSize": 4094,
+    "ancestryNodes": 154509,
+    "truncated": false,
+    "owners": 8,
+    "stackFrames": 23502,
+    "weakRefs": 152427,
+    "tags": {
+      "0": 2082,
+      "1": 57355,
+      "2": 95034,
+      "3": 29,
+      "4": 9
+    }
+  },
+  {
+    "seconds": 240,
+    "mapSize": 2759,
+    "ancestryNodes": 206490,
+    "truncated": false,
+    "owners": 7,
+    "stackFrames": 30855,
+    "weakRefs": 203837,
+    "tags": {
+      "0": 2653,
+      "1": 76181,
+      "2": 127628,
+      "3": 22,
+      "4": 6
+    }
+  },
+  {
+    "seconds": 360,
+    "mapSize": 4407,
+    "ancestryNodes": 252746,
+    "truncated": false,
+    "owners": 7,
+    "stackFrames": 37254,
+    "weakRefs": 249460,
+    "tags": {
+      "0": 3286,
+      "1": 93289,
+      "2": 156137,
+      "3": 26,
+      "4": 8
+    }
+  },
+  {
+    "seconds": 480,
+    "mapSize": 2673,
+    "ancestryNodes": 329371,
+    "truncated": false,
+    "owners": 4,
+    "stackFrames": 46562,
+    "weakRefs": 325179,
+    "tags": {
+      "0": 4192,
+      "1": 121489,
+      "2": 203658,
+      "3": 26,
+      "4": 6
+    }
+  },
+  {
+    "seconds": 600,
+    "mapSize": 2472,
+    "ancestryNodes": 381816,
+    "truncated": false,
+    "owners": 4,
+    "stackFrames": 53888,
+    "weakRefs": 377023,
+    "tags": {
+      "0": 4793,
+      "1": 140552,
+      "2": 236442,
+      "3": 23,
+      "4": 6
+    }
+  },
+  {
+    "seconds": 720,
+    "mapSize": 7984,
+    "ancestryNodes": 280925,
+    "truncated": false,
+    "owners": 4,
+    "stackFrames": 42782,
+    "weakRefs": 276980,
+    "tags": {
+      "0": 3945,
+      "1": 103812,
+      "2": 173131,
+      "3": 24,
+      "4": 13
+    }
+  },
+  {
+    "seconds": 840,
+    "mapSize": 3916,
+    "ancestryNodes": 337489,
+    "truncated": false,
+    "owners": 8,
+    "stackFrames": 48248,
+    "weakRefs": 333173,
+    "tags": {
+      "0": 4316,
+      "1": 124517,
+      "2": 208624,
+      "3": 26,
+      "4": 6
+    }
+  },
+  {
+    "seconds": 960,
+    "mapSize": 2665,
+    "ancestryNodes": 398342,
+    "truncated": false,
+    "owners": 4,
+    "stackFrames": 56205,
+    "weakRefs": 393360,
+    "tags": {
+      "0": 4982,
+      "1": 146585,
+      "2": 246744,
+      "3": 25,
+      "4": 6
+    }
+  },
+  {
+    "seconds": 1080,
+    "mapSize": 13125,
+    "ancestryNodes": 297335,
+    "truncated": false,
+    "owners": 8,
+    "stackFrames": 45237,
+    "weakRefs": 293158,
+    "tags": {
+      "0": 4177,
+      "1": 110381,
+      "2": 182722,
+      "3": 39,
+      "4": 16
+    }
+  },
+  {
+    "seconds": 1200,
+    "mapSize": 3636,
+    "ancestryNodes": 352806,
+    "truncated": false,
+    "owners": 8,
+    "stackFrames": 50153,
+    "weakRefs": 348317,
+    "tags": {
+      "0": 4489,
+      "1": 130037,
+      "2": 218251,
+      "3": 23,
+      "4": 6
+    }
+  },
+  {
+    "seconds": 1320,
+    "mapSize": 9167,
+    "ancestryNodes": 411821,
+    "truncated": false,
+    "owners": 8,
+    "stackFrames": 60455,
+    "weakRefs": 406413,
+    "tags": {
+      "0": 5408,
+      "1": 151953,
+      "2": 254421,
+      "3": 29,
+      "4": 10
+    }
+  },
+  {
+    "seconds": 1440,
+    "mapSize": 13979,
+    "ancestryNodes": 311193,
+    "truncated": false,
+    "owners": 8,
+    "stackFrames": 45554,
+    "weakRefs": 307038,
+    "tags": {
+      "0": 4155,
+      "1": 115253,
+      "2": 191754,
+      "3": 25,
+      "4": 6
+    }
+  },
+  {
+    "seconds": 1560,
+    "mapSize": 696,
+    "ancestryNodes": 360280,
+    "truncated": false,
+    "owners": 4,
+    "stackFrames": 50674,
+    "weakRefs": 355735,
+    "tags": {
+      "0": 4545,
+      "1": 132589,
+      "2": 223124,
+      "3": 18,
+      "4": 4
+    }
+  },
+  {
+    "seconds": 1680,
+    "mapSize": 18259,
+    "ancestryNodes": 416957,
+    "truncated": false,
+    "owners": 8,
+    "stackFrames": 61259,
+    "weakRefs": 411322,
+    "tags": {
+      "0": 5635,
+      "1": 154090,
+      "2": 257184,
+      "3": 34,
+      "4": 14
+    }
+  },
+  {
+    "seconds": 1800,
+    "mapSize": 2448,
+    "ancestryNodes": 314363,
+    "truncated": false,
+    "owners": 4,
+    "stackFrames": 44657,
+    "weakRefs": 310341,
+    "tags": {
+      "0": 4022,
+      "1": 116016,
+      "2": 194301,
+      "3": 20,
+      "4": 4
+    }
+  },
+  {
+    "seconds": 1920,
+    "mapSize": 6519,
+    "ancestryNodes": 373108,
+    "truncated": false,
+    "owners": 4,
+    "stackFrames": 52959,
+    "weakRefs": 368332,
+    "tags": {
+      "0": 4776,
+      "1": 137184,
+      "2": 230972,
+      "3": 86,
+      "4": 90
+    }
+  },
+  {
+    "seconds": 2040,
+    "mapSize": 5287,
+    "ancestryNodes": 254080,
+    "truncated": false,
+    "owners": 8,
+    "stackFrames": 37850,
+    "weakRefs": 250731,
+    "tags": {
+      "0": 3349,
+      "1": 93838,
+      "2": 156859,
+      "3": 26,
+      "4": 8
+    }
+  },
+  {
+    "seconds": 2160,
+    "mapSize": 14445,
+    "ancestryNodes": 327777,
+    "truncated": false,
+    "owners": 8,
+    "stackFrames": 48190,
+    "weakRefs": 323365,
+    "tags": {
+      "0": 4412,
+      "1": 121393,
+      "2": 201936,
+      "3": 28,
+      "4": 8
+    }
+  },
+  {
+    "seconds": 2280,
+    "mapSize": 2497,
+    "ancestryNodes": 381667,
+    "truncated": false,
+    "owners": 4,
+    "stackFrames": 53559,
+    "weakRefs": 376899,
+    "tags": {
+      "0": 4768,
+      "1": 140507,
+      "2": 236361,
+      "3": 25,
+      "4": 6
+    }
+  },
+  {
+    "seconds": 2400,
+    "mapSize": 21894,
+    "ancestryNodes": 273358,
+    "truncated": false,
+    "owners": 8,
+    "stackFrames": 43091,
+    "weakRefs": 269369,
+    "tags": {
+      "0": 3989,
+      "1": 101539,
+      "2": 167775,
+      "3": 39,
+      "4": 16
+    }
+  },
+  {
+    "seconds": 2520,
+    "mapSize": 13098,
+    "ancestryNodes": 342110,
+    "truncated": false,
+    "owners": 8,
+    "stackFrames": 49646,
+    "weakRefs": 337593,
+    "tags": {
+      "0": 4517,
+      "1": 126626,
+      "2": 210924,
+      "3": 36,
+      "4": 7
+    }
+  },
+  {
+    "seconds": 2640,
+    "mapSize": 5333,
+    "ancestryNodes": 393815,
+    "truncated": false,
+    "owners": 8,
+    "stackFrames": 56009,
+    "weakRefs": 388839,
+    "tags": {
+      "0": 4976,
+      "1": 145170,
+      "2": 243640,
+      "3": 23,
+      "4": 6
+    }
+  },
+  {
+    "seconds": 2760,
+    "mapSize": 33136,
+    "ancestryNodes": 305532,
+    "truncated": false,
+    "owners": 12,
+    "stackFrames": 49475,
+    "weakRefs": 300807,
+    "tags": {
+      "0": 4725,
+      "1": 114056,
+      "2": 186652,
+      "3": 70,
+      "4": 29
+    }
+  },
+  {
+    "seconds": 2880,
+    "mapSize": 131,
+    "ancestryNodes": 343192,
+    "truncated": false,
+    "owners": 4,
+    "stackFrames": 48344,
+    "weakRefs": 338852,
+    "tags": {
+      "0": 4340,
+      "1": 126291,
+      "2": 212548,
+      "3": 10,
+      "4": 3
+    }
+  },
+  {
+    "seconds": 3000,
+    "mapSize": 7465,
+    "ancestryNodes": 410817,
+    "truncated": false,
+    "owners": 8,
+    "stackFrames": 59269,
+    "weakRefs": 405525,
+    "tags": {
+      "0": 5292,
+      "1": 151461,
+      "2": 254025,
+      "3": 29,
+      "4": 10
+    }
+  },
+  {
+    "seconds": 3120,
+    "mapSize": 24214,
+    "ancestryNodes": 309661,
+    "truncated": false,
+    "owners": 8,
+    "stackFrames": 47974,
+    "weakRefs": 305142,
+    "tags": {
+      "0": 4519,
+      "1": 115297,
+      "2": 189768,
+      "3": 56,
+      "4": 21
+    }
+  },
+  {
+    "seconds": 3240,
+    "mapSize": 15678,
+    "ancestryNodes": 365785,
+    "truncated": false,
+    "owners": 8,
+    "stackFrames": 52422,
+    "weakRefs": 361035,
+    "tags": {
+      "0": 4750,
+      "1": 135233,
+      "2": 225755,
+      "3": 38,
+      "4": 9
+    }
+  },
+  {
+    "seconds": 3360,
+    "mapSize": 20494,
+    "ancestryNodes": 426842,
+    "truncated": false,
+    "owners": 8,
+    "stackFrames": 64037,
+    "weakRefs": 420997,
+    "tags": {
+      "0": 5845,
+      "1": 157790,
+      "2": 263147,
+      "3": 42,
+      "4": 18
+    }
+  },
+  {
+    "seconds": 3480,
+    "mapSize": 2682,
+    "ancestryNodes": 315725,
+    "truncated": false,
+    "owners": 4,
+    "stackFrames": 45294,
+    "weakRefs": 311649,
+    "tags": {
+      "0": 4076,
+      "1": 116573,
+      "2": 195044,
+      "3": 26,
+      "4": 6
+    }
+  },
+  {
+    "seconds": 3600,
+    "mapSize": 73,
+    "ancestryNodes": 367711,
+    "truncated": false,
+    "owners": 4,
+    "stackFrames": 52232,
+    "weakRefs": 363061,
+    "tags": {
+      "0": 4650,
+      "1": 135199,
+      "2": 227853,
+      "3": 6,
+      "4": 3
+    }
+  },
+  {
+    "seconds": 3720,
+    "mapSize": 20890,
+    "ancestryNodes": 259529,
+    "truncated": false,
+    "owners": 8,
+    "stackFrames": 40022,
+    "weakRefs": 255870,
+    "tags": {
+      "0": 3659,
+      "1": 96418,
+      "2": 159392,
+      "3": 45,
+      "4": 15
+    }
+  },
+  {
+    "seconds": 3840,
+    "mapSize": 2676,
+    "ancestryNodes": 322067,
+    "truncated": false,
+    "owners": 4,
+    "stackFrames": 45550,
+    "weakRefs": 317950,
+    "tags": {
+      "0": 4117,
+      "1": 118842,
+      "2": 199077,
+      "3": 25,
+      "4": 6
+    }
+  },
+  {
+    "seconds": 3960,
+    "mapSize": 2485,
+    "ancestryNodes": 381802,
+    "truncated": false,
+    "owners": 4,
+    "stackFrames": 53682,
+    "weakRefs": 377011,
+    "tags": {
+      "0": 4791,
+      "1": 140539,
+      "2": 236443,
+      "3": 23,
+      "4": 6
+    }
+  },
+  {
+    "seconds": 4080,
+    "mapSize": 22101,
+    "ancestryNodes": 273177,
+    "truncated": false,
+    "owners": 8,
+    "stackFrames": 43127,
+    "weakRefs": 269195,
+    "tags": {
+      "0": 3982,
+      "1": 101445,
+      "2": 167690,
+      "3": 42,
+      "4": 18
+    }
+  },
+  {
+    "seconds": 4200,
+    "mapSize": 1034,
+    "ancestryNodes": 336084,
+    "truncated": false,
+    "owners": 4,
+    "stackFrames": 47534,
+    "weakRefs": 331805,
+    "tags": {
+      "0": 4279,
+      "1": 123817,
+      "2": 207965,
+      "3": 19,
+      "4": 4
+    }
+  },
+  {
+    "seconds": 4320,
+    "mapSize": 101,
+    "ancestryNodes": 389075,
+    "truncated": false,
+    "owners": 4,
+    "stackFrames": 54577,
+    "weakRefs": 384215,
+    "tags": {
+      "0": 4860,
+      "1": 142952,
+      "2": 241252,
+      "3": 8,
+      "4": 3
+    }
+  }
+]

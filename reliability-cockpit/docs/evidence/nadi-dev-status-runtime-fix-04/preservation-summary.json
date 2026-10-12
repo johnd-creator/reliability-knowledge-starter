@@ -1,0 +1,41 @@
+{
+  "frontend_sha": "f06abce76f8ef9b967ee5b1c2e0802112d77b056",
+  "qa_api_source_sha": "b348235ce6f82c84873a65344ad2ef5fe276987d",
+  "frontend_parent_pid": 3078556,
+  "frontend_worker_pid": 3078570,
+  "qa_api_pid": 1664250,
+  "changed_preserved_file_count": 0,
+  "root_status_unchanged": true,
+  "frontend_clean": true,
+  "qa_api_source_clean": true,
+  "original_assets": {
+    "konsep1.png": {
+      "sha256": "b204566e4fc9e07512898ceca89d4e75c420cef9defc70755c3a6543d262f666",
+      "bytes": 1223245
+    },
+    "konsep2.png": {
+      "sha256": "1b3686be9700257f9eb53b1c2fe1073215d7dc09dc96487b9b547033d6f2b2ee",
+      "bytes": 1452710
+    },
+    "konsep3.png": {
+      "sha256": "77270507fe975b883b9317a46b0580462fd9e06f248920722bea6f2cc8f17b60",
+      "bytes": 1424594
+    },
+    "konsep4.png": {
+      "sha256": "31082400dc1a501d7924ddd7be4c7865413ae7a9c125290587a979b39f293d57",
+      "bytes": 1322063
+    },
+    "konsep5.png": {
+      "sha256": "a6e57d1ca29400b8e62f372b819c3f9875f7949cae2dde1736e874f32583f1ec",
+      "bytes": 1287446
+    },
+    "23496711.xls": {
+      "sha256": "aa0bd8fd22275aea3ecf8654ee37878106123b7dbdf58135fb783e853ee66a5f",
+      "bytes": 1281569
+    }
+  },
+  "private_controller_and_backup_hash_comparison": "UNCHANGED",
+  "persistent_qa_comparison": "NOT_VERIFIED_NO_ACCESS",
+  "containers_comparison": "NOT_FRESHLY_VERIFIED_NO_DOCKER_ACTIONS",
+  "scope": "FILE/SOURCE/PID continuity only; no persistent QA/database/container queries"
+}
