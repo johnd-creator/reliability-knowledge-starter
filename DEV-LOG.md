@@ -575,3 +575,40 @@ Evidence:[final failure/recovery](reliability-cockpit/docs/nadi-dev-status-runti
 - Remaining Blockers: 60-minute live acceptance not executed; Node25 V8 cause and precise retained-object allocation remain unproven.
 - Next Action: Owner reviews candidate and authorizes official frontend-only preflight/backup/cutover and >=60-minute acceptance, with rollback on unexpected worker or integrity failure.
 - Evidence: [FIX-03 report](reliability-cockpit/docs/nadi-dev-status-runtime-fix-03.md); [isolated metrics/screenshots](reliability-cockpit/docs/evidence/nadi-dev-status-runtime-fix-03/README.md). A/B peak2344.0→1836.7MiB, baseline internal restart1 versus candidate0. This bounded isolated result is not sustained live acceptance.
+
+
+## 2026-10-12 — NADI-DEV-UX-STATUS-01-FIX-03 — late live failure and recovery
+
+Date: 2026-10-12 WIB.
+Task ID: NADI-DEV-UX-STATUS-01-FIX-03 (actual acceptance checkpoint).
+Objective: observe the explicitly authorized exact candidate for 60 minutes plus 15-minute handoff.
+Branch: codex/nadi-dev-status-runtime-fix-03.
+Commit SHA: tested candidate 726ea1f1100c446112dcb71883d77839c5e5acfc; restored frontend f06abce76f8ef9b967ee5b1c2e0802112d77b056; QA API b348235ce6f82c84873a65344ad2ef5fe276987d.
+PR: #75/#76/#77 OPEN; no merge.
+Implementation Status: IMPLEMENTED candidate retained, not accepted for sustained live runtime.
+Test Status: FINAL GATE FAILED at 16:38:25.260994 WIB after 3475.85s (57m55.85s). Next heap safeguard replaced worker 3010264 with 3078400; parent 3010238 and systemd restart count stayed unchanged. No observed V8 abort/OOM. Earlier browser/login/HMR checks do not override failure; 15-minute handoff NOT RUN.
+CI Status: source CI PASS historically, independent of runtime failure.
+Merge Status: NOT MERGED; HOLD runtime stack.
+Development Visibility: official recovery restored known-good source and original Node25/controller; frontend parent3078556/worker3078570 started16:38:28, backend1664250 unchanged.
+Product Owner Acceptance: controlled test authorized; sustained runtime acceptance FAILED; final visual/merge approval not granted.
+Remaining Blockers: sustained retained heap growth; full allocation/retaining owner uncertain.
+Next Action: isolated FIX-04 root-cause investigation, no automatic live retry.
+Evidence: [FIX-04 checkpoint and investigation](reliability-cockpit/docs/nadi-dev-status-runtime-fix-04.md). Private actual acceptance journal/metrics/screens retained. Previous bounded isolated PASS remains historical; this append records the later failure without rewriting it.
+
+## 2026-10-12 — NADI-DEV-UX-STATUS-01-FIX-04 — isolated heap investigation
+
+Date: 2026-10-12 WIB.
+Task ID: NADI-DEV-UX-STATUS-01-FIX-04.
+Objective: measure sustained heap contributors while leaving HTTPS3000 untouched.
+Branch: codex/nadi-dev-status-runtime-fix-04, clean isolated branch stacked on PR77.
+Commit SHA: application baseline726ea1f1100c446112dcb71883d77839c5e5acfc; diagnostic runtime harness 9edac65bf3c87ff8cdf842a1b96a2fe45a16093f; exact final evidence HEAD at PR78 handoff. Main2e190c2b51fde50e0467d6d5165ebb1060902867.
+PR: [#78](https://github.com/johnd-creator/reliability-knowledge-starter/pull/78), diagnostic DRAFT; #75/#76/#77 remain independent and unmerged.
+Implementation Status: IMPLEMENTED disposable diagnostics; NO application remediation. PARTIAL — NEEDS FURTHER INVESTIGATION.
+Test Status: three ≥75min baseline variants and a corrected HMR variant that reproduced Next threshold replacement after3911.8s (65m11.8s), with immediate fail-stop/no retry. Original worker3355751→3427089, parent3355725 unchanged, no V8/OOM. Read-only Flight ancestry/mechanism controls; 50 controller/confinement/privacy tests PASS. Rejected weak-link experiment not installed. No remediated-candidate75-minute PASS claimed.
+CI Status: required backend/frontend exact-head CI verified at final PR handoff; CI does not prove live stability.
+Merge Status: NOT MERGED; no live-cutover authority in this task.
+Development Visibility: official frontend remainsf06abce76f8ef9b967ee5b1c2e0802112d77b056, APIb348235ce6f82c84873a65344ad2ef5fe276987d; screenshots are explicitly disposable fixture evidence.
+Product Owner Acceptance: investigation authorized; live, visual, engineer UAT and production acceptance NOT GRANTED.
+Remaining Blockers: full module-source retaining path, instrumentation-versus-live dominance and a framework-compatible remedy. Equivalent Next safeguard failure is reproduced; problem NOT FIXED. Fresh persistent database/schema/record/session/container comparison NOT VERIFIED after automatic approval review refused non-operational task access.
+Next Action: bounded disposable retainer/module-generation analysis and reviewed framework compatibility work; separate new PO approval before any future live acceptance.
+Evidence: [investigation](reliability-cockpit/docs/nadi-dev-status-runtime-fix-04.md), [sanitized timelines and fixture screens](reliability-cockpit/docs/evidence/nadi-dev-status-runtime-fix-04/README.md). Raw profiles private; active controller/source/backup/assets/workbook retained; no database, collector, policy or operational change.

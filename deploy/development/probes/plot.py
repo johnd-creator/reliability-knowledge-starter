@@ -16,6 +16,12 @@ def main():
         pid=json.loads((path/'progress.json').read_text())['expected_worker'];heap=rows(path/f'heap-{pid}.jsonl');gc=[r for r in rows(path/f'gc-{pid}.jsonl') if r['kind']==4];origin=heap[0]['at']
         axes[0].plot([(r['at']-origin)/60000 for r in heap],[r['heapUsed']/1048576 for r in heap],color=color,alpha=.75,linewidth=1,label=label)
         axes[1].plot([(r['at']-origin)/60000 for r in gc],[r['heapUsed']/1048576 for r in gc],color=color,linewidth=1,label=label)
+        result=json.loads((path/'result.json').read_text()) if (path/'result.json').exists() else {}
+        if result.get('failure')=='UNEXPECTED_WORKER_GENERATION':
+            # Plot the original generation only. A replacement worker's lower
+            # heap is a failed gate, not a successful memory improvement.
+            end=(heap[-1]['at']-origin)/60000
+            for ax in axes:ax.axvline(end,color='#dc2626',linestyle=':',linewidth=1.2,label='Worker replacement (~65 min)')
     for ax in axes:
         ax.set_ylabel('V8 heap (MiB)');ax.grid(alpha=.18);ax.set_xlim(left=0);ax.set_ylim(0,1800);ax.legend(fontsize=9,loc='upper left')
     axes[0].axhline(1676.8,linestyle='--',color='#dc2626',linewidth=1,label='Next threshold')

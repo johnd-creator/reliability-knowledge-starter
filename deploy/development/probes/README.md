@@ -89,6 +89,13 @@ Raw profiles/journals stay inside the private output directory. Never commit the
 bounded allocation categories/function names. Review even those before publishing.
 Screenshots from this tool are **disposable fixtures**, never live HTTPS3000.
 
+`plot.py` is optional offline analysis and requires an existing Matplotlib Python
+environment (not a frontend/backend dependency). Pass `--root` with the private
+probe directory and `--output` for numeric evidence figures. It imports no NK,
+collector or application code; reuse a suitable existing environment rather than
+installing or changing operational dependencies. Figures must be regenerated
+after all trials finish and visually reviewed before publication.
+
 On interruption, SIGINT the **exact identified disposable Python controller**;
 its finally block stops its own transient service/browser/fixture. Do not use
 broad process-name kills. Preserve output as failed/incomplete evidence.
