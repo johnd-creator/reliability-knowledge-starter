@@ -2,17 +2,22 @@
 // Never run inside a serving worker. No networking, DB, inspector or forced GC.
 const fs=require('node:fs'),Module=require('node:module'),v8=require('node:v8');
 const [mode,bundle,duration='60']=process.argv.slice(2);
-if(process.version!=='v22.23.1'||!['plain','flight'].includes(mode)||!/^\d+$/.test(duration)||Number(duration)>300)throw Error('Invalid diagnostic runtime/arguments');
-if(mode==='flight') {
+if(process.version!=='v22.23.1'||!['plain','flight','weak'].includes(mode)||!/^\d+$/.test(duration)||Number(duration)>300)throw Error('Invalid diagnostic runtime/arguments');
+if(mode!=='plain') {
   const original=Module._extensions['.js'];
   Module._extensions['.js']=function(module,filename) {
     if(filename!==bundle)return original(module,filename);
     const code=fs.readFileSync(filename,'utf8');
     const needle='pendingOperations=new Map,lastRanAwait=null';
     if(code.split(needle).length!==2)throw Error('Locked Flight shape not recognized');
+    if(mode==='weak') {
+      const hash=require('node:crypto').createHash('sha256').update(code).digest('hex');
+      if(hash!=='f5642afec1b380029730444582c0af19300709dcb586f91c96cb002fc8bffddb')throw Error('Unknown locked Flight bytes');
+      globalThis.__NADI_EXPERIMENTAL_WEAK_MAP=require('./weak-flight-map.cjs');
+    }
     // Expose only the already-rooted debug Map. Do not change its callbacks,
     // pruning, links or eviction. No installed dependency file is written.
-    module._compile(code.replace(needle,'pendingOperations=(globalThis.__NADI_DIAGNOSTIC_OPERATIONS=new Map),lastRanAwait=null'),filename);
+    module._compile(code.replace(needle,'pendingOperations=(globalThis.__NADI_DIAGNOSTIC_OPERATIONS=new '+(mode==='weak'?'globalThis.__NADI_EXPERIMENTAL_WEAK_MAP':'Map')+'),lastRanAwait=null'),filename);
   };
   require(bundle);
   Module._extensions['.js']=original;

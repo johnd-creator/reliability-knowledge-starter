@@ -77,6 +77,13 @@ stops at its time/512MiB/graph bound. It is not a comparable navigation workload
 not a reproduced live failure, and not an application/library patch proposal.
 Use the same transient resource caps and serialize it after sustained probes.
 
+Its `weak` mode is a **rejected experimental causal control**, not a fix. It
+changes only debug-node ancestry descriptors in a disposable module load with
+an exact locked-bundle SHA256 guard. The observed control consumed more memory
+than baseline and stopped at the512MiB bound. The official launcher and sustained
+application probes cannot select this mode. Preserve the negative evidence; do
+not promote this private React intervention to an application runtime.
+
 Raw profiles/journals stay inside the private output directory. Never commit them.
 `summarize.py` emits only aggregate numeric timelines, source identities and
 bounded allocation categories/function names. Review even those before publishing.
