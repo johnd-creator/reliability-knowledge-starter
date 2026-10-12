@@ -161,12 +161,54 @@ class FrontendPreview:
             raise RuntimeError('UNREVIEWED_FRONTEND_CONTROLLER_RELEASE')
         return release['source_sha'], hashlib.sha256((main_hash + helper_hash).encode()).hexdigest()
 
+    def runtime(self):
+        """Explicit private Node 22 pin. No PATH/Brew fallback, install or API effects."""
+        try:
+            pin = private_json(self.c.STATE / 'frontend-runtime.json')
+        except (OSError, ValueError) as error:
+            raise RuntimeError('PINNED_FRONTEND_NODE_CONFIG_REQUIRED') from error
+        binary = Path(pin.get('node_path', ''))
+        if (not binary.is_absolute() or binary.resolve() != binary or not binary.is_file() or
+                binary.stat().st_uid not in (0, os.getuid()) or binary.stat().st_mode & 0o022 or
+                not os.access(binary, os.X_OK)):
+            raise RuntimeError('PINNED_FRONTEND_NODE_BINARY_REQUIRED')
+        digest = hashlib.sha256(binary.read_bytes()).hexdigest()
+        if digest != pin.get('node_sha256'):
+            raise RuntimeError('PINNED_FRONTEND_NODE_HASH_CHANGED')
+        script = "JSON.stringify({node:process.versions.node,v8:process.versions.v8,execPath:process.execPath,libnode:process.report.getReport().sharedObjects.filter(p=>p.includes('/libnode.so'))})"
+        try:
+            result = subprocess.run([str(binary), '-p', script], capture_output=True, text=True, timeout=10,
+                                    env={'PATH': '/usr/bin:/bin', 'HOME': str(Path.home())}, check=True)
+        except (OSError, subprocess.SubprocessError) as error:
+            raise RuntimeError('PINNED_FRONTEND_NODE_EXECUTION_FAILED') from error
+        actual = json.loads(result.stdout)
+        if (not re.fullmatch(r'22\.\d+\.\d+', actual.get('node', '')) or
+                actual.get('node') != pin.get('node_version') or actual.get('v8') != pin.get('v8_version') or
+                Path(actual.get('execPath', '')).resolve() != binary):
+            raise RuntimeError('PINNED_FRONTEND_NODE_22_VERSION_REQUIRED')
+        libraries = pin.get('libnode_sha256', {})
+        if not isinstance(libraries, dict) or set(actual.get('libnode', [])) != set(libraries):
+            raise RuntimeError('PINNED_FRONTEND_NODE_LIBRARY_CHANGED')
+        for name, expected in libraries.items():
+            path = Path(name)
+            if (not path.is_absolute() or path.stat().st_uid not in (0, os.getuid()) or
+                    path.stat().st_mode & 0o022 or hashlib.sha256(path.read_bytes()).hexdigest() != expected):
+                raise RuntimeError('PINNED_FRONTEND_NODE_LIBRARY_CHANGED')
+        command = self.c.STATE / 'frontend-node-bin' / 'node'
+        directory = command.parent
+        if (directory.is_symlink() or directory.stat().st_uid != os.getuid() or directory.stat().st_mode & 0o077 or
+                not command.is_symlink() or command.resolve() != binary):
+            raise RuntimeError('PINNED_FRONTEND_CHILD_NODE_REQUIRED')
+        return {'path': str(binary), 'version': actual['node'], 'v8': actual['v8'],
+                'sha256': digest, 'digest': hashlib.sha256(canonical(pin).encode()).hexdigest()}
+
     def preflight(self, root, sha, backup):
         config = self.c.load()
         target = urlsplit(config['application_dsn'])
         if target.hostname != '127.0.0.1' or target.port != 15443 or target.path != '/nadi_live_dev_test' or target.username != 'nadi_dev_fixture':
             raise RuntimeError('EXISTING_LOOPBACK_QA_STORE_REQUIRED')
         launcher_sha, launcher_digest = self.launcher_release()
+        runtime = self.runtime()
         root = self.source(root, sha)
         if self.c.active(self.c.LEGACY_WEB):
             raise RuntimeError('COMPETING_FRONTEND_DENIED')
@@ -192,7 +234,9 @@ class FrontendPreview:
         return {'frontend_root': str(root), 'frontend_sha': sha, 'backend_root': str(self.c.ROOT),
                 'backend_sha': backend_sha, 'compatibility_digest': evidence, 'version': 1,
                 'launcher_sha256': launcher_digest, 'launcher_source_sha': launcher_sha,
-                'backup_sha256': backup_hash, 'approved_at': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}, {
+                'backup_sha256': backup_hash, 'frontend_node_path': runtime['path'],
+                'frontend_node_version': runtime['version'], 'frontend_v8_version': runtime['v8'],
+                'frontend_node_sha256': runtime['sha256'], 'frontend_runtime_digest': runtime['digest'], 'approved_at': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}, {
                     'root': str(previous), 'sha': previous_sha, 'manifest': manifest,
                     'api_unit': api, 'backup': str(Path(backup).absolute())}
 
@@ -210,15 +254,17 @@ class FrontendPreview:
         return data
 
     def web_start(self, root, sha, manifest):
+        runtime = self.runtime()
         extra = ['NODE_ENV=development', 'NEXT_TELEMETRY_DISABLED=1', 'NODE_OPTIONS=--max-old-space-size=2048',
                  'NADI_LIVE_DEV=true', 'NADI_PRIMARY_FRONTEND=true', 'NADI_ENGINEERING_WORKSPACE_ENABLED=true',
                  'NADI_ENGINEERING_DEMO_ENABLED=true', 'NADI_ENGINEERING_QA_ENABLED=true',
                  'NADI_QA_BACKEND_URL=http://127.0.0.1:13036', 'COCKPIT_API_BASE=http://127.0.0.1:8000',
-                 'NADI_DEV_LAUNCHED_SHA=' + sha]
+                 'NADI_DEV_LAUNCHED_SHA=' + sha,
+                 'PATH=' + str(self.c.STATE / 'frontend-node-bin') + ':/usr/bin:/bin']
         if manifest:
             extra.append('NADI_DEV_FRONTEND_MANIFEST=' + str(manifest))
         self.c.start_unit('nadi-primary-web', Path(root) / 'reliability-cockpit/web',
-                         ['/home/linuxbrew/.linuxbrew/bin/node', 'node_modules/next/dist/bin/next', 'dev',
+                         [runtime['path'], 'node_modules/next/dist/bin/next', 'dev',
                           '--hostname', 'localhost', '--port', '3000', '--experimental-https',
                           '--experimental-https-key', str(self.c.STATE / 'localhost.key'),
                           '--experimental-https-cert', str(self.c.STATE / 'localhost.pem')], extra)

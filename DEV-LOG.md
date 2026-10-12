@@ -500,3 +500,60 @@ Product Owner Acceptance: pending visual review.
 Remaining Blockers: original running checkout is dirty from Next-generated next-env.d.ts cache reference. Official preflight denies dirty source; task prohibits overwrite/reset. Live candidate not activated.
 Next Action: review focused PR and separately authorize safe original-source reconciliation before official frontend-only cutover; do not suppress integrity checks.
 Evidence: [implementation/root cause/review](reliability-cockpit/docs/nadi-dev-ux-status-01.md), [synthetic screenshot index](reliability-cockpit/docs/evidence/nadi-dev-ux-status-01/README.md). Existing frontend/API, 35 containers, original PNG/workbook/worktrees/QA data preserved; no DB or policy changes.
+
+
+## 2026-10-12 — NADI-DEV-UX-STATUS-01-FIX-02 — pre-cutover runtime investigation
+
+Date: 2026-10-12 WIB
+Task ID: NADI-DEV-UX-STATUS-01-FIX-02
+Objective: investigate delayed V8 abort and prepare a strictly verified frontend-only Node22 pin.
+Branch: codex/nadi-dev-status-runtime-fix-02, based on PR75 candidate.
+Commit SHA: frontend candidate5e961b1bfe8ce3c34092613922c3b556de3d74a1; exact runtime-helper commit at linked PR handoff.
+PR: focused linked runtime-fix; PR75 remains independent; no auto-merge.
+Implementation Status: IMPLEMENTED — pin/preflight/start guard only; active controller not updated.
+Test Status: TESTED —35 hermetic tests, both360s same-source/version comparison,20,000 serializer iterations each, three isolated Node22 process cold starts + actual HMR PASS. Original Node25 abort not reproduced; causal fix unproven.
+CI Status: exact-head runtime-fix checks verified separately after push; existing PR75 checks PASS.
+Merge Status: NOT MERGED.
+Development Visibility: HTTPS3000 retains restored f06abce76f8ef9b967ee5b1c2e0802112d77b056 with backend b348235ce6f82c84873a65344ad2ef5fe276987d; no live Node22 activation yet.
+Product Owner Acceptance: runtime proposal/cutover approval and sustained live acceptance PENDING.
+Remaining Blockers: explicit authorization before live runtime cutover; three official cold starts/30min stability/HMR/session/rollback gates not yet fulfilled.
+Next Action: review pin and CI, obtain explicit cutover approval, run official lifecycle and sustained acceptance; rollback if any live gate fails.
+Evidence: [runtime investigation and gates](reliability-cockpit/docs/nadi-dev-status-runtime-fix-02.md). No application UI/backend/schema/collector/freshness changes or global Node replacement.
+
+
+## 2026-10-12 — NADI-DEV-UX-STATUS-01-FIX-02 — actual sustained acceptance
+
+Date:2026-10-12 WIB
+Task ID:NADI-DEV-UX-STATUS-01-FIX-02
+Objective:controlled verified Node22 preview acceptance after explicit Owner authorization.
+Branch:codex/nadi-dev-status-runtime-fix-02 (evidence-only update after reviewed code).
+Commit SHA:frontend5e961b1bfe8ce3c34092613922c3b556de3d74a1; installed helper7fd3bdac22788ae1ac31cb8306f283c69384972d; backendb348235ce6f82c84873a65344ad2ef5fe276987d. Final evidence HEAD at PR handoff.
+PR:75+76 OPEN; no merge.
+Implementation Status:IMPLEMENTED —frontend-only pin; system Node/API/collectors unchanged.
+Test Status:TESTED —three official cold starts + actual rollback/return,95 live checks,HMR/session/reconnect; strict1813.65s/120samples and1802s/106browser navigations PASS; no abort/OOM/unscheduled restart.
+CI Status:reviewed runtime code exact-head backend/frontend PASS; evidence-only exact-head checked separately after push.
+Merge Status:NOT MERGED.
+Development Visibility:VISIBLE —sole HTTPS3000 serves exact PR75 source on Node22.23.1; approved clean provenance and both backends AVAILABLE.
+Product Owner Acceptance:controlled runtime acceptance authorized/PASS; final visual/merge decision PENDING; engineer UAT/production separate.
+Remaining Blockers:no required live runtime gate outstanding; memory headroom/trend follow-up and unproven exact Node25 trigger disclosed; Case detail not available to tested subject, not claimed live-covered.
+Next Action:Owner/senior review coordinated PR75+76; retain source/backup/rollback; no auto-merge.
+Evidence:[final actual checkpoint](reliability-cockpit/docs/nadi-dev-status-runtime-fix-02.md#controlled-live-acceptance--2026-10-12-final-checkpoint). All old sessions/records/audit/assets/35containers preserved; normal login session/audit additions retained.
+
+
+## 2026-10-12 — NADI-DEV-UX-STATUS-01-FIX-02 — late gate failure and rollback
+
+Date:2026-10-12 WIB
+Task ID:NADI-DEV-UX-STATUS-01-FIX-02
+Objective:final handoff integrity after bounded30min observation.
+Branch:codex/nadi-dev-status-runtime-fix-02, evidence-only final correction.
+Commit SHA:candidate5e961b1bfe8ce3c34092613922c3b556de3d74a1 preserved; final servingf06abce76f8ef9b967ee5b1c2e0802112d77b056; backendb348235ce6f82c84873a65344ad2ef5fe276987d.
+PR:75+76 remain OPEN; HOLD MERGE.
+Implementation Status:Node22 pin proposal preserved but explicitly rolled back to reviewed pre-test companion/runtime for recovery.
+Test Status:bounded30min120samples/106navigations PASS historically; FINAL GATE FAIL at12:33:13WIB —Next memory-threshold worker restart, PID2802093→2847354, regenerated next-env.d.ts dirt and provenance refusal. No observed Node22 V8 abort/OOM; NRestarts0 was insufficient to detect internal worker generation.
+CI Status:source/evidence checks independently green/pending after push; cannot override runtime BLOCKED.
+Merge Status:NOT MERGED.
+Development Visibility:known-good HTTPS3000 restored with Node25.6.1; frontend main PID2850832/start12:36:53; backend PID1664250/start unchanged; both AVAILABLE, clean approved provenance.
+Product Owner Acceptance:runtime acceptance NOT GRANTED; final BLOCKED despite earlier bounded-window success.
+Remaining Blockers:memory/cache investigation and auditable worker-generation/generated-source lifecycle; original Node25 deopt trigger unproven.
+Next Action:Owner review separate controlled follow-up; no forcing candidate retry or merge.
+Evidence:[final failure/recovery](reliability-cockpit/docs/nadi-dev-status-runtime-fix-02.md#final-handoff--late-gate-failed-known-good-restored). Existing sessions/record/audit/35containers/assets retained; only normal test login/session/audit additions, no cleanup/API/collector/policy changes.

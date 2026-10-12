@@ -88,7 +88,9 @@ class FrontendPreviewTest(unittest.TestCase):
    with self.assertRaisesRegex(RuntimeError,'UNCHANGED_QA'):self.manager.backend()
   self.c.api_start.assert_not_called()
  def test_web_command_fixed_local_https(self):
-  self.manager.web_start(self.front,self.new,'/private/manifest');args=self.c.start_unit.call_args.args
+  with patch.object(self.manager,'runtime',return_value={'path':'/private/node22'}):self.manager.web_start(self.front,self.new,'/private/manifest')
+  args=self.c.start_unit.call_args.args
+  self.assertEqual(args[2][0],'/private/node22');self.assertNotIn('/home/linuxbrew/.linuxbrew/bin',args[3][-1])
   self.assertEqual(args[0],'nadi-primary-web');self.assertEqual(args[1],self.front/'reliability-cockpit/web')
   self.assertIn('3000',args[2]);self.assertIn('localhost',args[2]);self.assertIn('--experimental-https',args[2]);self.assertIn('NADI_DEV_LAUNCHED_SHA='+self.new,args[3]);self.c.api_start.assert_not_called()
 
@@ -111,3 +113,72 @@ class FrontendPreviewTest(unittest.TestCase):
   with patch.object(self.manager,'preflight',return_value=(self.approval,self.previous)),patch.object(self.manager,'web_start') as start,patch.object(self.manager,'restore') as restore:
    with self.assertRaisesRegex(RuntimeError,'NOT_RELEASED'):self.manager.select(self.front,self.new,'backup')
    start.assert_not_called();restore.assert_called_once()
+
+class PinnedNodeRuntimeTest(unittest.TestCase):
+ def setUp(self):
+  self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
+  self.state=Path(self.temp.name);self.binary=self.state/'node22';self.binary.write_bytes(b'fixture-node-binary');self.binary.chmod(0o700)
+  directory=self.state/'frontend-node-bin';directory.mkdir(mode=0o700);(directory/'node').symlink_to(self.binary)
+  self.pin={'node_path':str(self.binary),'node_sha256':hashlib.sha256(self.binary.read_bytes()).hexdigest(),'node_version':'22.23.1','v8_version':'12.4','libnode_sha256':{}}
+  self.actual={'execPath':str(self.binary),'node':'22.23.1','v8':'12.4','libnode':[]}
+  self.manager=m.FrontendPreview(SimpleNamespace(STATE=self.state))
+  self.process=SimpleNamespace(stdout=json.dumps(self.actual))
+  self.save()
+ def save(self):
+  p=self.state/'frontend-runtime.json';p.write_text(json.dumps(self.pin));p.chmod(0o600)
+ def test_verified_absolute_node22_and_clean_environment(self):
+  with patch.object(m.subprocess,'run',return_value=self.process) as run:
+   result=self.manager.runtime()
+  self.assertEqual(result['version'],'22.23.1');self.assertEqual(result['path'],str(self.binary))
+  self.assertEqual(run.call_args.args[0][0],str(self.binary));self.assertNotIn('NODE_OPTIONS',run.call_args.kwargs['env']);self.assertEqual(run.call_args.kwargs['env']['PATH'],'/usr/bin:/bin')
+ def test_node25_refused_even_with_matching_pin(self):
+  self.pin['node_version']='25.6.1';self.actual['node']='25.6.1';self.save()
+  with patch.object(m.subprocess,'run',return_value=SimpleNamespace(stdout=json.dumps(self.actual))):
+   with self.assertRaisesRegex(RuntimeError,'NODE_22_VERSION'):self.manager.runtime()
+ def test_changed_binary_refused_before_execution(self):
+  self.binary.write_bytes(b'changed')
+  with patch.object(m.subprocess,'run') as run:
+   with self.assertRaisesRegex(RuntimeError,'HASH_CHANGED'):self.manager.runtime()
+   run.assert_not_called()
+ def test_wrong_patch_or_v8_refused(self):
+  for field,value in [('node','22.24.0'),('v8','14.1')]:
+   actual={**self.actual,field:value}
+   with patch.object(m.subprocess,'run',return_value=SimpleNamespace(stdout=json.dumps(actual))):
+    with self.assertRaisesRegex(RuntimeError,'NODE_22_VERSION'):self.manager.runtime()
+ def test_path_symlink_and_world_writable_binary_refused(self):
+  self.pin['node_path']=str(self.state/'frontend-node-bin/node');self.save()
+  with self.assertRaisesRegex(RuntimeError,'BINARY_REQUIRED'):self.manager.runtime()
+  self.pin['node_path']=str(self.binary);self.save();self.binary.chmod(0o777)
+  with self.assertRaisesRegex(RuntimeError,'BINARY_REQUIRED'):self.manager.runtime()
+ def test_child_node_cannot_fallback_to_other_binary(self):
+  alias=self.state/'frontend-node-bin/node';alias.unlink();other=self.state/'node25';other.write_bytes(b'other');alias.symlink_to(other)
+  with patch.object(m.subprocess,'run',return_value=self.process):
+   with self.assertRaisesRegex(RuntimeError,'CHILD_NODE'):self.manager.runtime()
+ def test_shared_libnode_hash_changes_refused(self):
+  lib=self.state/'libnode.so.127';lib.write_bytes(b'fixture-v8');lib.chmod(0o600)
+  self.pin['libnode_sha256']={str(lib):hashlib.sha256(lib.read_bytes()).hexdigest()};self.actual['libnode']=[str(lib)];self.save()
+  with patch.object(m.subprocess,'run',return_value=SimpleNamespace(stdout=json.dumps(self.actual))):self.manager.runtime()
+  lib.write_bytes(b'changed-v8')
+  with patch.object(m.subprocess,'run',return_value=SimpleNamespace(stdout=json.dumps(self.actual))):
+   with self.assertRaisesRegex(RuntimeError,'LIBRARY_CHANGED'):self.manager.runtime()
+ def test_extra_shared_library_refused(self):
+  with patch.object(m.subprocess,'run',return_value=SimpleNamespace(stdout=json.dumps({**self.actual,'libnode':['/unknown/libnode.so']}))):
+   with self.assertRaisesRegex(RuntimeError,'LIBRARY_CHANGED'):self.manager.runtime()
+ def test_private_pin_permissions_enforced(self):
+  (self.state/'frontend-runtime.json').chmod(0o644)
+  with self.assertRaisesRegex(RuntimeError,'PRIVATE_FRONTEND_STATE'):self.manager.runtime()
+ def test_runtime_failure_prevents_frontend_selection_stop(self):
+  c=SimpleNamespace(STATE=self.state,load=lambda:{'application_dsn':'postgresql://nadi_dev_fixture:x@127.0.0.1:15443/nadi_live_dev_test'},stop_unit=Mock())
+  manager=m.FrontendPreview(c)
+  with patch.object(manager,'launcher_release',return_value=('a'*40,'b'*64)),patch.object(manager,'runtime',side_effect=RuntimeError('PIN_REFUSED')):
+   with self.assertRaisesRegex(RuntimeError,'PIN_REFUSED'):manager.select('/candidate','a'*40,'backup')
+  c.stop_unit.assert_not_called()
+
+ def test_missing_pin_never_uses_system_node(self):
+  (self.state/'frontend-runtime.json').unlink()
+  with patch.object(m.subprocess,'run') as run:
+   with self.assertRaisesRegex(RuntimeError,'NODE_CONFIG_REQUIRED'):self.manager.runtime()
+   run.assert_not_called()
+ def test_node_execution_failure_fails_closed(self):
+  with patch.object(m.subprocess,'run',side_effect=m.subprocess.TimeoutExpired('node',10)):
+   with self.assertRaisesRegex(RuntimeError,'NODE_EXECUTION_FAILED'):self.manager.runtime()
