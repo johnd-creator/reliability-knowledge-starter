@@ -14,6 +14,7 @@ records, sessions, credentials or source-system samples were used.
   capture overhead and protocol identity; no raw payloads.
 - [Comparison figure](comparison.png): heap and external are separate metrics,
   not interchangeable with RSS/cgroup memory.
+- [Read-only host preservation attestation](preservation.json): file hashes/source/process identities only; no HTTP/DB/container audit.
 - [Report and interpretation](../../nadi-dev-status-runtime-fix-05.md).
 
 ![Synthetic matched comparison](comparison.png)

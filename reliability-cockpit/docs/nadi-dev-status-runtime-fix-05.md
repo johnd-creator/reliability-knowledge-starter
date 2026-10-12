@@ -24,6 +24,8 @@ not established. No application fix, deployment or runtime acceptance is claimed
 Official controller, frontend/backend worktrees, backups and original assets were
 not modified. No DB/session/schema/migration-ledger comparison, container inventory,
 source GET, collector retry, restart, cutover or Phase1 policy action was attempted.
+Postflight [host file/process attestation](evidence/nadi-dev-status-runtime-fix-05/preservation.json) confirms all12 asset/controller/backup hashes match, primary parent3078556/worker3744151 and QA parent1664250/start times/restart counts unchanged, and both source SHAs intact. The primary generated-file dirt remains. A sandbox-only /proc visibility failure was corrected through host metadata; no API drift was established.
+
 Persistent QA preservation is by non-interaction; fresh DB contents/35-container
 health are **NOT VERIFIED**, explicitly outside this scope.
 
