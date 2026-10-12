@@ -1,0 +1,23 @@
+[
+  {
+    "trial": 1,
+    "cold_start": true,
+    "navigations": 14,
+    "actual_hmr_without_reload": 3,
+    "dropdown": true
+  },
+  {
+    "trial": 2,
+    "cold_start": true,
+    "navigations": 14,
+    "actual_hmr_without_reload": 3,
+    "dropdown": true
+  },
+  {
+    "trial": 3,
+    "cold_start": true,
+    "navigations": 14,
+    "actual_hmr_without_reload": 3,
+    "dropdown": true
+  }
+]
