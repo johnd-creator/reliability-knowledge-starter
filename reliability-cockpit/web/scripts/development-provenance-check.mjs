@@ -1,13 +1,13 @@
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
 import {execFileSync} from 'node:child_process';
-import {mkdtempSync,rmSync,mkdirSync,writeFileSync,chmodSync,symlinkSync} from 'node:fs';
+import {mkdtempSync,rmSync,mkdirSync,writeFileSync,chmodSync,symlinkSync,readFileSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 const require=createRequire(import.meta.url),temp=mkdtempSync(join(tmpdir(),'nadi-provenance-'));
 try{
  execFileSync(process.execPath,['node_modules/typescript/bin/tsc','lib/development-provenance.ts','--outDir',temp,'--module','commonjs','--target','ES2022','--esModuleInterop','--skipLibCheck']);
- const {approvalDigest,approvedPair,readApproval}=require(join(temp,'development-provenance.js'));
+ const {approvalDigest,approvedPair,readApproval,approvedWorker,workerStatus}=require(join(temp,'development-provenance.js'));
  const front='a'.repeat(40),back='b'.repeat(40);
  const approval={version:1,frontend_sha:front,backend_sha:back,frontend_root:'/fixture/front',backend_root:'/fixture/backend',compatibility_digest:'c'.repeat(64),launcher_source_sha:'d'.repeat(40),launcher_sha256:'d'.repeat(64),backup_sha256:'e'.repeat(64),approved_at:'2026-10-11T00:00:00Z'};
  const e={approval,approval_id:approvalDigest(approval)};
@@ -24,5 +24,25 @@ try{
  const link=join(state,'frontend-approval-bbbb.json');symlinkSync(path,link);assert.equal(await readApproval(link,web),null);
  assert.equal(await readApproval(path,join(base,'other','reliability-cockpit','web')),null);
  writeFileSync(path,JSON.stringify({...approved,approval_id:'f'.repeat(64)}));assert.equal(await readApproval(path,web),null);
+ const identity={worker_pid:321,parent_pid:123,start_ticks:'999'};
+ const receipt={...identity,approval_id:e.approval_id,generation:1,invocation_id:'a'.repeat(32)};
+ assert.equal(approvedWorker(receipt,identity,e.approval_id),true);
+ for(const patch of [{worker_pid:322},{parent_pid:124},{start_ticks:'1000'}])assert.equal(approvedWorker(receipt,{...identity,...patch},e.approval_id),false);
+ for(const patch of [{generation:0},{generation:1.5},{approval_id:'f'.repeat(64)},{invocation_id:'UNKNOWN'}])assert.equal(approvedWorker({...receipt,...patch},identity,e.approval_id),false);
+ assert.equal(approvedWorker(null,identity,e.approval_id),false);
+ assert.equal((await workerStatus(undefined,undefined,e.approval_id)).worker_integrity,'UNVERIFIED');
+ const ticks=readFileSync('/proc/self/stat','utf8').split(') ').at(-1).trim().split(/\s+/)[19];
+ const actual={worker_pid:process.pid,parent_pid:process.ppid,start_ticks:ticks};
+ const workerFile=join(state,'frontend-worker-aaaa.json'),workerReceipt={...actual,approval_id:approved.approval_id,generation:1,invocation_id:'a'.repeat(32)};
+ writeFileSync(workerFile,JSON.stringify(workerReceipt),{mode:0o600});
+ assert.equal((await workerStatus(workerFile,path,approved.approval_id)).worker_integrity,'VERIFIED');
+ writeFileSync(workerFile,JSON.stringify({...workerReceipt,worker_pid:process.pid+1}));
+ assert.equal((await workerStatus(workerFile,path,approved.approval_id)).worker_integrity,'UNVERIFIED');
+ writeFileSync(workerFile,JSON.stringify(workerReceipt));chmodSync(workerFile,0o644);
+ assert.equal((await workerStatus(workerFile,path,approved.approval_id)).worker_integrity,'UNVERIFIED');
+ chmodSync(workerFile,0o600);
+ const workerLink=join(state,'frontend-worker-bbbb.json');symlinkSync(workerFile,workerLink);
+ assert.equal((await workerStatus(workerLink,join(state,'frontend-approval-bbbb.json'),approved.approval_id)).worker_integrity,'UNVERIFIED');
+
  console.log('Development provenance checks PASS: approved exact pair, missing/forged/stale/dirty/unknown identities refused');
 }finally{rmSync(temp,{recursive:true,force:true});}

@@ -88,7 +88,7 @@ class FrontendPreviewTest(unittest.TestCase):
    with self.assertRaisesRegex(RuntimeError,'UNCHANGED_QA'):self.manager.backend()
   self.c.api_start.assert_not_called()
  def test_web_command_fixed_local_https(self):
-  with patch.object(self.manager,'runtime',return_value={'path':'/private/node22'}):self.manager.web_start(self.front,self.new,'/private/manifest')
+  with patch.object(self.manager,'runtime',return_value={'path':'/private/node22'}):self.manager.web_start(self.front,self.new,self.state/'frontend-approval-aaaa.json')
   args=self.c.start_unit.call_args.args
   self.assertEqual(args[2][0],'/private/node22');self.assertNotIn('/home/linuxbrew/.linuxbrew/bin',args[3][-1])
   self.assertEqual(args[0],'nadi-primary-web');self.assertEqual(args[1],self.front/'reliability-cockpit/web')
@@ -98,7 +98,7 @@ class FrontendPreviewTest(unittest.TestCase):
   web=self.front/'reliability-cockpit/web';web.mkdir(parents=True);p=web/'next-env.d.ts'
   original='/// <reference path="./.next/types/routes.d.ts" />\n'
   p.write_text(original.replace('.next/', '.next-primary-dev/'))
-  with patch.object(m,'git',side_effect=[self.new,original.strip()]):self.manager.restore_generated_types(self.front,self.new)
+  with patch.object(m,'git',side_effect=[self.new,original.strip(),' M reliability-cockpit/web/next-env.d.ts',self.new]):self.manager.restore_generated_types(self.front,self.new)
   self.assertEqual(p.read_text(),original)
  def test_unrelated_generated_edit_never_discarded(self):
   web=self.front/'reliability-cockpit/web';web.mkdir(parents=True);p=web/'next-env.d.ts';p.write_text('user changes\n')
@@ -113,6 +113,51 @@ class FrontendPreviewTest(unittest.TestCase):
   with patch.object(self.manager,'preflight',return_value=(self.approval,self.previous)),patch.object(self.manager,'web_start') as start,patch.object(self.manager,'restore') as restore:
    with self.assertRaisesRegex(RuntimeError,'NOT_RELEASED'):self.manager.select(self.front,self.new,'backup')
    start.assert_not_called();restore.assert_called_once()
+
+ def test_exact_generated_change_audited(self):
+  self.test_known_next_generated_reference_restored_exactly()
+  records=list(self.state.glob('frontend-generated-*.json'))
+  self.assertEqual(len(records),1)
+  value=m.private_json(records[0]);self.assertIn('.next-primary-dev',value['diff'])
+  self.assertNotEqual(value['before_sha256'],value['after_sha256'])
+ def test_generated_change_with_other_dirt_never_restored(self):
+  web=self.front/'reliability-cockpit/web';web.mkdir(parents=True);p=web/'next-env.d.ts'
+  original='/// <reference path="./.next/types/routes.d.ts" />\n';changed=original.replace('.next/', '.next-primary-dev/');p.write_text(changed)
+  for dirt in [' M other.ts\n M reliability-cockpit/web/next-env.d.ts','M  reliability-cockpit/web/next-env.d.ts','?? untracked']:
+   with patch.object(m,'git',side_effect=[self.new,original.strip(),dirt]):
+    with self.assertRaisesRegex(RuntimeError,'UNRELATED_GENERATED'):self.manager.restore_generated_types(self.front,self.new)
+   self.assertEqual(p.read_text(),changed)
+  self.assertFalse(list(self.state.glob('frontend-generated-*.json')))
+ def test_worker_generations_preserve_history(self):
+  manifest=self.state/'frontend-approval-aaaa.json';self.c.write_private(manifest,json.dumps({'approval_id':'c'*64}))
+  identity={'worker_pid':21,'parent_pid':11,'start_ticks':'100','invocation_id':'d'*32}
+  self.manager.record_worker(self.front,manifest,identity)
+  self.manager.record_worker(self.front,manifest,{**identity,'worker_pid':22,'start_ticks':'200'})
+  self.assertEqual(m.private_json(self.manager.worker_path(manifest))['generation'],2)
+  self.assertEqual(len(list(self.state.glob('frontend-worker-aaaa-generation-*.json'))),2)
+ def test_unexpected_worker_during_startup_fails_closed(self):
+  manifest=self.state/'frontend-approval-aaaa.json';self.c.write_private(manifest,json.dumps({'approval':{'frontend_root':str(self.front)}}))
+  with patch.object(self.manager,'worker_identity',side_effect=[{'worker_pid':21},{'worker_pid':22}]),patch.object(self.manager,'record_worker'),patch.object(self.manager,'restore_generated_types'),patch.object(self.manager,'readiness',side_effect=RuntimeError('FRONTEND_ONLY_READINESS_FAILED')),patch.object(m.time,'sleep'):
+   with self.assertRaisesRegex(RuntimeError,'NEXT_WORKER_CHANGED'):self.manager.wait_ready(self.new,self.old,manifest)
+ def test_worker_path_cannot_escape_private_state(self):
+  for path in ['/tmp/frontend-approval-aaaa.json',str(self.state/'unreviewed.json')]:
+   with self.assertRaisesRegex(RuntimeError,'PRIVATE_WORKER'):self.manager.worker_path(path)
+
+
+ def test_generated_crlf_edit_is_not_known_transformation(self):
+  web=self.front/'reliability-cockpit/web';web.mkdir(parents=True);p=web/'next-env.d.ts'
+  original='/// <reference path="./.next/types/routes.d.ts" />\n';p.write_bytes(original.replace('.next/','.next-primary-dev/').replace('\n','\r\n').encode())
+  with patch.object(m,'git',side_effect=[self.new,original.strip()]):
+   with self.assertRaisesRegex(RuntimeError,'UNEXPECTED_GENERATED'):self.manager.restore_generated_types(self.front,self.new)
+  self.assertIn(b'\r\n',p.read_bytes())
+ def test_worker_identity_is_listener_not_supervisor(self):
+  identity_stat='21 (next-server (v15.5.9)) '+' '.join(['S','11']+['0']*17+['777'])
+  with patch.object(self.manager,'verify_owner',return_value={'MainPID':'11'}),patch.object(m,'output',side_effect=['LISTEN 0 511 [::1]:3000 [::]:* users:(("next-server",pid=21,fd=19))','d'*32]),patch.object(Path,'read_text',return_value=identity_stat):
+   value=self.manager.worker_identity(self.front)
+  self.assertEqual(value['worker_pid'],21);self.assertEqual(value['parent_pid'],11);self.assertEqual(value['start_ticks'],'777')
+ def test_parent_change_is_not_approved(self):
+  with patch.object(self.manager,'verify_owner',return_value={'MainPID':'12'}),patch.object(m,'output',return_value='pid=21'),patch.object(Path,'read_text',return_value='21 (worker) S 11 '+'0 '*18):
+   with self.assertRaisesRegex(RuntimeError,'PARENT_CHANGED'):self.manager.worker_identity(self.front)
 
 class PinnedNodeRuntimeTest(unittest.TestCase):
  def setUp(self):

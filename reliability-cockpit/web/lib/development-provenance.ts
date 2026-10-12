@@ -29,3 +29,24 @@ export async function readApproval(path:string|undefined,cwd:string):Promise<Env
   return value;
  }catch{return null;}
 }
+
+export type WorkerIdentity={worker_pid:number;parent_pid:number;start_ticks:string};
+export type WorkerReceipt=WorkerIdentity&{approval_id:string;generation:number;invocation_id:string};
+export function approvedWorker(receipt:WorkerReceipt|null,identity:WorkerIdentity,approvalId:string|undefined):boolean {
+ return !!receipt&&hex(approvalId)&&receipt.approval_id===approvalId&&
+  receipt.worker_pid===identity.worker_pid&&receipt.parent_pid===identity.parent_pid&&receipt.start_ticks===identity.start_ticks&&
+  Number.isSafeInteger(receipt.generation)&&receipt.generation>0&&/^[a-f0-9]{32}$/.test(receipt.invocation_id);
+}
+export async function workerStatus(path:string|undefined,manifest:string|undefined,approvalId:string|undefined){
+ const identity:WorkerIdentity={worker_pid:process.pid,parent_pid:process.ppid,start_ticks:"UNKNOWN"};
+ let receipt:WorkerReceipt|null=null;
+ try{
+  const stat=await readFile("/proc/self/stat","utf8");identity.start_ticks=stat.slice(stat.lastIndexOf(") ")+2).trim().split(/\s+/)[19];
+  if(!path||!manifest||path!==manifest.replace(/frontend-approval-([a-f0-9]+)\.json$/,"frontend-worker-$1.json")||path===manifest)throw new Error();
+  const info=await lstat(path);
+  if(info.isSymbolicLink()||!info.isFile()||(info.mode&0o077)||info.uid!==process.getuid?.())throw new Error();
+  receipt=JSON.parse(await readFile(path,"utf8"));
+ }catch{}
+ return {...identity,approved_worker_pid:receipt?.worker_pid??null,worker_generation:receipt?.generation??null,
+  worker_integrity:approvedWorker(receipt,identity,approvalId)?"VERIFIED":"UNVERIFIED"};
+}

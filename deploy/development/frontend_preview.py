@@ -1,4 +1,5 @@
 """Explicit single-frontend source selection. Never calls API/DB startup or migrations."""
+import difflib
 import hashlib
 import json
 import os
@@ -45,6 +46,8 @@ def output(args, cwd=None):
 
 
 def git(root, *args):
+    if args and args[0] == 'status':
+        return subprocess.check_output(['git', *args], cwd=root, text=True, timeout=20).rstrip('\n')
     return output(['git', *args], root)
 
 
@@ -263,11 +266,47 @@ class FrontendPreview:
                  'PATH=' + str(self.c.STATE / 'frontend-node-bin') + ':/usr/bin:/bin']
         if manifest:
             extra.append('NADI_DEV_FRONTEND_MANIFEST=' + str(manifest))
+            extra.append('NADI_DEV_FRONTEND_WORKER=' + str(self.worker_path(manifest)))
         self.c.start_unit('nadi-primary-web', Path(root) / 'reliability-cockpit/web',
                          [runtime['path'], 'node_modules/next/dist/bin/next', 'dev',
                           '--hostname', 'localhost', '--port', '3000', '--experimental-https',
                           '--experimental-https-key', str(self.c.STATE / 'localhost.key'),
                           '--experimental-https-cert', str(self.c.STATE / 'localhost.pem')], extra)
+
+    def worker_path(self, manifest):
+        manifest = Path(manifest)
+        if manifest.parent != self.c.STATE or not re.fullmatch(r'frontend-approval-[a-f0-9]+\.json', manifest.name):
+            raise RuntimeError('PRIVATE_WORKER_MANIFEST_REQUIRED')
+        return manifest.with_name(manifest.name.replace('frontend-approval-', 'frontend-worker-'))
+
+    def worker_identity(self, root):
+        """Capture actual HTTPS listener, PID reuse token, parent and service invocation."""
+        unit = self.verify_owner(Path(root))
+        lines = output(['ss', '-H', '-ltnp', 'sport = :3000'])
+        pids = set(re.findall(r'pid=(\d+)', lines))
+        if len(pids) != 1:
+            raise RuntimeError('SINGLE_NEXT_WORKER_REQUIRED')
+        pid = int(pids.pop())
+        fields = Path('/proc/' + str(pid) + '/stat').read_text().rsplit(') ', 1)[1].split()
+        if fields[1] != unit['MainPID']:
+            raise RuntimeError('NEXT_WORKER_PARENT_CHANGED')
+        invocation = output(['systemctl', '--user', 'show', self.c.UNITS[1], '--value', '-p', 'InvocationID'])
+        return {'worker_pid': pid, 'parent_pid': int(fields[1]), 'start_ticks': fields[19],
+                'invocation_id': invocation}
+
+    def record_worker(self, root, manifest, identity):
+        path = self.worker_path(manifest)
+        envelope = private_json(manifest)
+        previous = private_json(path) if path.exists() else None
+        record = {**identity, 'approval_id': envelope['approval_id'],
+                  'generation': (previous['generation'] + 1) if previous else 1,
+                  'recorded_at': time.time()}
+        # Preserve each officially observed generation rather than overwrite history.
+        history = path.with_name(path.stem + '-generation-' + uuid.uuid4().hex + '.json')
+        self.c.write_private(history, canonical(record))
+        temporary = path.with_name(path.stem + '-' + uuid.uuid4().hex + '.tmp')
+        self.c.write_private(temporary, canonical(record))
+        os.replace(temporary, path)
 
     def restore_generated_types(self, root, sha):
         # Next rewrites only this generated cache reference during dev startup.
@@ -277,23 +316,53 @@ class FrontendPreview:
         if path.is_symlink() or git(root, 'rev-parse', 'HEAD') != sha:
             raise RuntimeError('GENERATED_TYPE_SOURCE_CHANGED')
         expected = git(root, 'show', sha + ':reliability-cockpit/web/next-env.d.ts') + '\n'
-        actual = path.read_text()
+        actual = path.read_bytes().decode("utf-8")
         if actual == expected:
             return
-        generated = re.sub(r'/// <reference path="\./\.next(?:-dev|-primary-dev)?/types/routes\.d\.ts" />',
+        if expected.count('/// <reference path="./.next/types/routes.d.ts" />') != 1:
+            raise RuntimeError('UNEXPECTED_GENERATED_TYPE_BASELINE')
+        generated = re.sub(r'/// <reference path="\./\.next/types/routes\.d\.ts" />',
                            '/// <reference path="./.next-primary-dev/types/routes.d.ts" />', expected)
         if actual != generated or actual == expected:
             raise RuntimeError('UNEXPECTED_GENERATED_TYPE_EDIT')
+        # No mutation if *any* other tracked/untracked/staged change exists.
+        if git(root, 'status', '--porcelain') != ' M reliability-cockpit/web/next-env.d.ts':
+            raise RuntimeError('UNRELATED_GENERATED_SOURCE_DIRT')
+        if git(root, 'rev-parse', 'HEAD') != sha or path.read_bytes().decode('utf-8') != actual:
+            raise RuntimeError('GENERATED_TYPE_SOURCE_CHANGED')
+        event = {'source_sha': sha, 'root': str(root), 'at': time.time(),
+                 'before_sha256': hashlib.sha256(actual.encode()).hexdigest(),
+                 'after_sha256': hashlib.sha256(expected.encode()).hexdigest(),
+                 'diff': ''.join(difflib.unified_diff(expected.splitlines(True), actual.splitlines(True))),
+                 'original_generated_bytes': actual, 'result': 'VERIFIED_EXACT_TRANSFORMATION'}
+        audit = self.c.STATE / ('frontend-generated-' + uuid.uuid4().hex + '.json')
+        self.c.write_private(audit, canonical(event))
         path.write_text(expected)
-        print('Restored committed Next.js generated type reference; no user edits discarded')
+        print('Audited exact Next generated type restoration: ' + audit.name)
 
     def wait_ready(self, sha, backend_sha, manifest):
         root = private_json(manifest)['approval']['frontend_root'] if manifest else self.c.ROOT
+        identity = None
+        recorded = False
         for _ in range(45):
             try:
+                current = self.worker_identity(root) if manifest else None
+                if identity is not None and current != identity:
+                    raise RuntimeError('NEXT_WORKER_CHANGED_DURING_STARTUP')
+                identity = current
                 self.restore_generated_types(root, sha)
-                return self.readiness(sha, backend_sha, manifest)
-            except Exception:
+                if manifest and not recorded:
+                    self.record_worker(root, manifest, identity)
+                    recorded = True
+                data = self.readiness(sha, backend_sha, manifest)
+                if manifest and self.worker_identity(root) != identity:
+                    raise RuntimeError('NEXT_WORKER_CHANGED_DURING_STARTUP')
+                return data
+            except RuntimeError as error:
+                if str(error).startswith(('NEXT_WORKER_CHANGED', 'UNEXPECTED_GENERATED', 'UNRELATED_GENERATED', 'GENERATED_TYPE_SOURCE_CHANGED')):
+                    raise
+                time.sleep(1)
+            except (OSError, ValueError):
                 time.sleep(1)
         raise RuntimeError('FRONTEND_ONLY_STARTUP_FAILED')
 
@@ -355,4 +424,6 @@ class FrontendPreview:
         return {'frontend_root': str(root), 'frontend_sha': sha, 'backend_sha': data.get('backend_sha'),
                 'source_sha': data.get('sha'), 'dirty': data.get('dirty'), 'stale': data.get('stale'),
                 'compatibility': data.get('compatibility', 'SAME_SOURCE' if data.get('sha') == data.get('backend_sha') else 'UNVERIFIED'),
-                'compatibility_approval': data.get('compatibility_approval'), 'manifest': manifest}
+                'compatibility_approval': data.get('compatibility_approval'), 'manifest': manifest, 'worker_pid': data.get('worker_pid'),
+                'parent_pid': data.get('parent_pid'), 'worker_generation': data.get('worker_generation'),
+                'worker_integrity': data.get('worker_integrity', 'UNKNOWN')}
