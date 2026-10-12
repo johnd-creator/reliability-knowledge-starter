@@ -33,7 +33,7 @@ export async function readApproval(path:string|undefined,cwd:string):Promise<Env
 export type WorkerIdentity={worker_pid:number;parent_pid:number;start_ticks:string};
 export type WorkerReceipt=WorkerIdentity&{approval_id:string;generation:number;invocation_id:string};
 export function approvedWorker(receipt:WorkerReceipt|null,identity:WorkerIdentity,approvalId:string|undefined):boolean {
- return !!receipt&&hex(approvalId)&&receipt.approval_id===approvalId&&
+ return !!receipt&&Number.isSafeInteger(identity.worker_pid)&&identity.worker_pid>0&&Number.isSafeInteger(identity.parent_pid)&&identity.parent_pid>0&&/^[1-9][0-9]*$/.test(identity.start_ticks)&&hex(approvalId)&&receipt.approval_id===approvalId&&
   receipt.worker_pid===identity.worker_pid&&receipt.parent_pid===identity.parent_pid&&receipt.start_ticks===identity.start_ticks&&
   Number.isSafeInteger(receipt.generation)&&receipt.generation>0&&/^[a-f0-9]{32}$/.test(receipt.invocation_id);
 }

@@ -30,6 +30,7 @@ try{
  for(const patch of [{worker_pid:322},{parent_pid:124},{start_ticks:'1000'}])assert.equal(approvedWorker(receipt,{...identity,...patch},e.approval_id),false);
  for(const patch of [{generation:0},{generation:1.5},{approval_id:'f'.repeat(64)},{invocation_id:'UNKNOWN'}])assert.equal(approvedWorker({...receipt,...patch},identity,e.approval_id),false);
  assert.equal(approvedWorker(null,identity,e.approval_id),false);
+ for(const patch of [{worker_pid:0},{parent_pid:-1},{start_ticks:'UNKNOWN'}])assert.equal(approvedWorker({...receipt,...patch},{...identity,...patch},e.approval_id),false);
  assert.equal((await workerStatus(undefined,undefined,e.approval_id)).worker_integrity,'UNVERIFIED');
  const ticks=readFileSync('/proc/self/stat','utf8').split(') ').at(-1).trim().split(/\s+/)[19];
  const actual={worker_pid:process.pid,parent_pid:process.ppid,start_ticks:ticks};

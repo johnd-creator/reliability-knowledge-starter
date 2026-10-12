@@ -251,6 +251,8 @@ class FrontendPreview:
                 data.get('backend') != 'AVAILABLE' or data.get('factual_backend') != 'AVAILABLE' or
                 data.get('database_identity') != 'nadi_live_dev_test' or not data.get('engineering')):
             raise RuntimeError('FRONTEND_ONLY_READINESS_FAILED')
+        if data.get('worker_integrity') is not None and data['worker_integrity'] != 'VERIFIED':
+            raise RuntimeError('UNAPPROVED_NEXT_WORKER_GENERATION')
         if sha != backend_sha:
             envelope = private_json(manifest)
             if data.get('compatibility_approval') != envelope['approval_id'] or data.get('compatibility') != 'VERIFIED_SOURCE_EQUIVALENT':
@@ -363,7 +365,7 @@ class FrontendPreview:
                 if str(error).startswith(('NEXT_WORKER_CHANGED', 'UNEXPECTED_GENERATED', 'UNRELATED_GENERATED', 'GENERATED_TYPE_SOURCE_CHANGED')):
                     raise
                 time.sleep(1)
-            except (OSError, ValueError):
+            except (OSError, ValueError, subprocess.SubprocessError):
                 time.sleep(1)
         raise RuntimeError('FRONTEND_ONLY_STARTUP_FAILED')
 

@@ -159,6 +159,11 @@ class FrontendPreviewTest(unittest.TestCase):
   with patch.object(self.manager,'verify_owner',return_value={'MainPID':'12'}),patch.object(m,'output',return_value='pid=21'),patch.object(Path,'read_text',return_value='21 (worker) S 11 '+'0 '*18):
    with self.assertRaisesRegex(RuntimeError,'PARENT_CHANGED'):self.manager.worker_identity(self.front)
 
+ def test_lifecycle_failure_refused_even_if_other_status_fields_claim_ready(self):
+  data={'sha':self.new,'launched_sha':self.new,'backend_sha':self.old,'stale':False,'dirty':False,'backend':'AVAILABLE','factual_backend':'AVAILABLE','database_identity':'nadi_live_dev_test','engineering':True,'worker_integrity':'UNVERIFIED'}
+  with patch.object(self.manager,'request',return_value=data):
+   with self.assertRaisesRegex(RuntimeError,'UNAPPROVED_NEXT_WORKER'):self.manager.readiness(self.new,self.old,'manifest')
+
 class PinnedNodeRuntimeTest(unittest.TestCase):
  def setUp(self):
   self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
