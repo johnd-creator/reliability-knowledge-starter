@@ -538,3 +538,22 @@ Product Owner Acceptance:controlled runtime acceptance authorized/PASS; final vi
 Remaining Blockers:no required live runtime gate outstanding; memory headroom/trend follow-up and unproven exact Node25 trigger disclosed; Case detail not available to tested subject, not claimed live-covered.
 Next Action:Owner/senior review coordinated PR75+76; retain source/backup/rollback; no auto-merge.
 Evidence:[final actual checkpoint](reliability-cockpit/docs/nadi-dev-status-runtime-fix-02.md#controlled-live-acceptance--2026-10-12-final-checkpoint). All old sessions/records/audit/assets/35containers preserved; normal login session/audit additions retained.
+
+
+## 2026-10-12 — NADI-DEV-UX-STATUS-01-FIX-02 — late gate failure and rollback
+
+Date:2026-10-12 WIB
+Task ID:NADI-DEV-UX-STATUS-01-FIX-02
+Objective:final handoff integrity after bounded30min observation.
+Branch:codex/nadi-dev-status-runtime-fix-02, evidence-only final correction.
+Commit SHA:candidate5e961b1bfe8ce3c34092613922c3b556de3d74a1 preserved; final servingf06abce76f8ef9b967ee5b1c2e0802112d77b056; backendb348235ce6f82c84873a65344ad2ef5fe276987d.
+PR:75+76 remain OPEN; HOLD MERGE.
+Implementation Status:Node22 pin proposal preserved but explicitly rolled back to reviewed pre-test companion/runtime for recovery.
+Test Status:bounded30min120samples/106navigations PASS historically; FINAL GATE FAIL at12:33:13WIB —Next memory-threshold worker restart, PID2802093→2847354, regenerated next-env.d.ts dirt and provenance refusal. No observed Node22 V8 abort/OOM; NRestarts0 was insufficient to detect internal worker generation.
+CI Status:source/evidence checks independently green/pending after push; cannot override runtime BLOCKED.
+Merge Status:NOT MERGED.
+Development Visibility:known-good HTTPS3000 restored with Node25.6.1; frontend main PID2850832/start12:36:53; backend PID1664250/start unchanged; both AVAILABLE, clean approved provenance.
+Product Owner Acceptance:runtime acceptance NOT GRANTED; final BLOCKED despite earlier bounded-window success.
+Remaining Blockers:memory/cache investigation and auditable worker-generation/generated-source lifecycle; original Node25 deopt trigger unproven.
+Next Action:Owner review separate controlled follow-up; no forcing candidate retry or merge.
+Evidence:[final failure/recovery](reliability-cockpit/docs/nadi-dev-status-runtime-fix-02.md#final-handoff--late-gate-failed-known-good-restored). Existing sessions/record/audit/35containers/assets retained; only normal test login/session/audit additions, no cleanup/API/collector/policy changes.

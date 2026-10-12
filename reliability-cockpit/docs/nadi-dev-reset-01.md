@@ -260,3 +260,11 @@ Three official candidate cold starts, real rollback/return, HTTPS existing-QA se
 HMR, responsive browser checks and >30min strict stability passed; see the final
 checkpoint in the linked runtime report. Source/runtime pin checks remain fail-closed.
 Retain memory trend/headroom follow-up and independently verify any future release.
+
+
+Final FIX-02 handoff subsequently BLOCKED: Next automatically restarted its worker
+at12:33:13WIB due to the memory threshold after the bounded30min window; generated
+next-env.d.ts dirt caused real provenance refusal. Known-good source and original
+reviewed controller/runtime were restored through official rollback. Current preview
+is f06abce / Node25.6.1. Retain the Node22 proposal/pin/evidence inactive; no candidate
+retry, automatic fallback or merge. Full timeline is in the runtime report.

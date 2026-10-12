@@ -1,5 +1,7 @@
 # NADI-DEV-UX-STATUS-01-FIX-02 — frontend runtime alignment
 
+> FINAL HANDOFF: BLOCKED after a late Next memory-threshold worker restart. Known-good source/runtime restored; hold merge. See final handoff below.
+
 2026-10-12 WIB. Pre-cutover investigation/implementation checkpoint only. Sustained live acceptance is **PENDING** and must not be inferred from this report or CI. PR #75 frontend candidate remains `5e961b1bfe8ce3c34092613922c3b556de3d74a1`; existing HTTPS3000 remains `f06abce76f8ef9b967ee5b1c2e0802112d77b056`. Backend remains `b348235ce6f82c84873a65344ad2ef5fe276987d`. Main baseline `2e190c2b51fde50e0467d6d5165ebb1060902867`.
 
 ## Confirmed evidence and remaining hypotheses
@@ -77,3 +79,18 @@ Meaningful instrumentation failures retained: the first monitor mistook the exis
 Actual operational/screenshots/session evidence remains private in the existing state archive, with a SHA256/dimension index; it is not committed or replaced by fixtures. Includes nine overview screenshots, three Engineering viewport captures, login, actual HMR warning, registry Asset detail and session/stability/preservation summaries. Existing committed synthetic screenshots keep their original provenance. Final read-only official rollback preflight PASS after sustained observation; retained first recovery record targets known-good source with fresh backup, without disrupting the successful final candidate.
 
 Root-cause calibration: the original Node25/V8 failure location is confirmed, but the exact trigger was not reproduced or proven. Stock Node22 alignment **mitigated the observed preview failure within all requested live gates**. Node25-specific causality remains a hypothesis. Review PR75+PR76 as a coordinated pair; hold production/global-auth activation and engineer UAT separate; no auto-merge.
+
+
+## Final handoff — late gate FAILED; known-good restored
+
+**FINAL STATUS: BLOCKED. HOLD MERGE of PR75 and PR76.** The bounded30min results above remain valid historical evidence, but they are **not final acceptance**. During final handoff verification, after that window, the required clean/current lifecycle gate failed. Do not describe the candidate as stably accepted or currently serving.
+
+At2026-10-12 12:33:13.471928 WIB, original server PID2802093 logged `Server is approaching the used memory threshold, restarting...`. The Next supervisor retained main PID2802076 and systemd NRestarts0, but the worker changed to PID2847354. Thus systemd restart count alone does not prove worker continuity. This was a framework memory-threshold restart, not an observed Node22 V8 abort or cgroup OOM. The late worker startup rewrote the tracked next-env.d.ts reference to .next-primary-dev, causing real dirty=true/stale=true/UNVERIFIED provenance. Both backends remained AVAILABLE. Final official readiness correctly refused FRONTEND_ONLY_READINESS_FAILED.
+
+No candidate retry or safeguard suppression. Exact late diff/source/process/journal evidence was retained privately. To permit the approved rollback, the entire sole generated-file difference was checked against committed bytes and the known transformation, then restored via the existing narrowly guarded official helper. All other dirty files would refuse. The preserved **pre-test controller companion/release** was explicitly restored; unchanged controller code, Node22 pin/evidence and source worktrees were retained. This intentionally restores the known-good runtime; it is not an automatic missing-pin fallback.
+
+Official frontend-rollback succeeded using the retained first recovery record and fresh backup. **Final serving frontend: f06abce76f8ef9b967ee5b1c2e0802112d77b056, Node25.6.1**, main PID2850832/start12:36:53 WIB. Backend remains b348235ce6f82c84873a65344ad2ef5fe276987d / PID1664250 unchanged. HTTPS3000 operational, both backends AVAILABLE, dirty=false/stale=false/approved pair. No second permanent frontend or global Node replacement. Normal test session and audit additions retained; all pre-existing records/sessions/audit/assets/containers preserved, no cleanup or source/operational/policy changes.
+
+Node22 aligned with CI and avoided the original V8 abort in the observed window, but did **not** complete final runtime/lifecycle acceptance. The new failure mode is confirmed: dev memory threshold → internal worker restart → generated-source dirt → honest provenance refusal. The original Node25 native deopt trigger is still not isolated. Future work must investigate memory/cache/workload behavior with stock safeguards and make worker-generation/generated-file reconciliation auditable; do not merely raise limits, ignore dirty state or disable the memory restart. That follow-up requires a separate controlled plan; this acceptance run stopped after rollback as directed.
+
+Actual Node22 screenshots represent the briefly validated candidate before its late gate failure, not the final serving release. CI may remain green despite BLOCKED runtime readiness. Evidence-only final HEAD is recorded in PR handoff; installed runtime-fix source7fd3bda was rolled back explicitly, candidate source5e961b1 remains preserved. Product Owner review may inspect source/evidence; merge recommendation is HOLD / NEEDS_FIX until sustained handoff remains healthy without unplanned worker restart or integrity drift.
