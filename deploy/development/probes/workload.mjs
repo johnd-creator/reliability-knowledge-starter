@@ -35,7 +35,13 @@ try {
     }
     if(mode==='nav-hmr'&&Math.floor(elapsed/60)>lastHmr) {
       lastHmr=Math.floor(elapsed/60);
-      if(page.url().endsWith('/login'))await page.goto(base+'/',{waitUntil:'domcontentloaded'});
+      if(page.url().endsWith('/login')) {
+        await page.goto(base+'/',{waitUntil:'load'});
+        await page.waitForFunction(()=>{const b=document.querySelector('.dev-status-trigger');return b&&b.getAttribute('aria-label')!=='Status development: Memeriksa status';});
+        // The newly mounted HMR client must settle before an edit; don't race
+        // a redirect from the standalone authentication layout with hydration.
+        await new Promise(resolve=>setTimeout(resolve,2000));
+      }
       const text='DEV PROBE '+lastHmr;
       fs.writeFileSync(component,original.toString().replace('<span>DEV</span>','<span>'+text+'</span>'));
       await page.getByRole('button',{name:/Status development:/}).filter({hasText:text}).waitFor({timeout:45000});

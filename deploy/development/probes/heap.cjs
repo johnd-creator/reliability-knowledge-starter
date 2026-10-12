@@ -10,6 +10,8 @@ if (out) {
     Module._extensions['.js']=function(module,filename) {
       if(filename!==process.env.NADI_PROBE_FLIGHT_PATH)return original(module,filename);
       const code=fs.readFileSync(filename,'utf8'),needle='pendingOperations=new Map,lastRanAwait=null';
+      const hash=require('node:crypto').createHash('sha256').update(code).digest('hex');
+      if(hash!=='f5642afec1b380029730444582c0af19300709dcb586f91c96cb002fc8bffddb')throw Error('Unknown locked Flight bytes');
       if(code.split(needle).length!==2)throw Error('Unknown locked Flight shape');
       // Read-only access to an already-live hook root, disposable worker only.
       module._compile(code.replace(needle,'pendingOperations=(globalThis.__NADI_DIAGNOSTIC_OPERATIONS=new Map),lastRanAwait=null'),filename);
