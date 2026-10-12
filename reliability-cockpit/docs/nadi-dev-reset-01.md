@@ -238,3 +238,18 @@ launcher source/hash, compatible source digest and backup digest. Unknown/dirty/
 or unapproved different SHA still fails closed. A matching GitHub CI alone never proves
 actual runtime visibility. Rollback requires a fresh valid backup and repeats preflight;
 retain the expanded Advisory/ACK schema and every persisted record.
+
+
+### Node22 frontend runtime pin — proposed FIX-02
+
+See [runtime evidence and acceptance plan](nadi-dev-status-runtime-fix-02.md).
+The frontend-only companion now requires a privately reviewed `frontend-runtime.json`
+with `node_path`, `node_sha256`, `node_version` (22.x exact patch), `v8_version`,
+and `libnode_sha256` mapping for any dynamically linked libnode. A private
+`state/frontend-node-bin/node` symlink must resolve to the recorded binary;
+child PATH excludes Homebrew. Hash/version/permission changes refuse selection.
+Do not update system-wide Node, API runtimes, or silently fall back to Node25.
+Provision the private pin and update reviewed companion/release hashes only after
+Product Owner cutover authorization. Existing active frontend stays running until
+source/ownership/HTTPS/backup/compatibility/pin preflight PASS. This documentation
+checkpoint does not itself prove 30-minute live acceptance.

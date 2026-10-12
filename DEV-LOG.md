@@ -500,3 +500,22 @@ Product Owner Acceptance: pending visual review.
 Remaining Blockers: original running checkout is dirty from Next-generated next-env.d.ts cache reference. Official preflight denies dirty source; task prohibits overwrite/reset. Live candidate not activated.
 Next Action: review focused PR and separately authorize safe original-source reconciliation before official frontend-only cutover; do not suppress integrity checks.
 Evidence: [implementation/root cause/review](reliability-cockpit/docs/nadi-dev-ux-status-01.md), [synthetic screenshot index](reliability-cockpit/docs/evidence/nadi-dev-ux-status-01/README.md). Existing frontend/API, 35 containers, original PNG/workbook/worktrees/QA data preserved; no DB or policy changes.
+
+
+## 2026-10-12 — NADI-DEV-UX-STATUS-01-FIX-02 — pre-cutover runtime investigation
+
+Date: 2026-10-12 WIB
+Task ID: NADI-DEV-UX-STATUS-01-FIX-02
+Objective: investigate delayed V8 abort and prepare a strictly verified frontend-only Node22 pin.
+Branch: codex/nadi-dev-status-runtime-fix-02, based on PR75 candidate.
+Commit SHA: frontend candidate5e961b1bfe8ce3c34092613922c3b556de3d74a1; exact runtime-helper commit at linked PR handoff.
+PR: focused linked runtime-fix; PR75 remains independent; no auto-merge.
+Implementation Status: IMPLEMENTED — pin/preflight/start guard only; active controller not updated.
+Test Status: TESTED —35 hermetic tests, both360s same-source/version comparison,20,000 serializer iterations each, three isolated Node22 process cold starts + actual HMR PASS. Original Node25 abort not reproduced; causal fix unproven.
+CI Status: exact-head runtime-fix checks verified separately after push; existing PR75 checks PASS.
+Merge Status: NOT MERGED.
+Development Visibility: HTTPS3000 retains restored f06abce76f8ef9b967ee5b1c2e0802112d77b056 with backend b348235ce6f82c84873a65344ad2ef5fe276987d; no live Node22 activation yet.
+Product Owner Acceptance: runtime proposal/cutover approval and sustained live acceptance PENDING.
+Remaining Blockers: explicit authorization before live runtime cutover; three official cold starts/30min stability/HMR/session/rollback gates not yet fulfilled.
+Next Action: review pin and CI, obtain explicit cutover approval, run official lifecycle and sustained acceptance; rollback if any live gate fails.
+Evidence: [runtime investigation and gates](reliability-cockpit/docs/nadi-dev-status-runtime-fix-02.md). No application UI/backend/schema/collector/freshness changes or global Node replacement.
