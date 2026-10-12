@@ -46,8 +46,9 @@ def output(args, cwd=None):
 
 
 def git(root, *args):
-    if args and args[0] == 'status':
-        return subprocess.check_output(['git', *args], cwd=root, text=True, timeout=20).rstrip('\n')
+    if args and args[0] in ('status', 'show'):
+        value = subprocess.check_output(['git', *args], cwd=root, timeout=20).decode('utf-8')
+        return value.rstrip('\n') if args[0] == 'status' else value
     return output(['git', *args], root)
 
 
@@ -315,7 +316,7 @@ class FrontendPreview:
         path = Path(root) / 'reliability-cockpit/web/next-env.d.ts'
         if path.is_symlink() or git(root, 'rev-parse', 'HEAD') != sha:
             raise RuntimeError('GENERATED_TYPE_SOURCE_CHANGED')
-        expected = git(root, 'show', sha + ':reliability-cockpit/web/next-env.d.ts') + '\n'
+        expected = git(root, 'show', sha + ':reliability-cockpit/web/next-env.d.ts')
         actual = path.read_bytes().decode("utf-8")
         if actual == expected:
             return

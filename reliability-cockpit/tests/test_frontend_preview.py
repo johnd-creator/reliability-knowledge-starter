@@ -98,7 +98,7 @@ class FrontendPreviewTest(unittest.TestCase):
   web=self.front/'reliability-cockpit/web';web.mkdir(parents=True);p=web/'next-env.d.ts'
   original='/// <reference path="./.next/types/routes.d.ts" />\n'
   p.write_text(original.replace('.next/', '.next-primary-dev/'))
-  with patch.object(m,'git',side_effect=[self.new,original.strip(),' M reliability-cockpit/web/next-env.d.ts',self.new]):self.manager.restore_generated_types(self.front,self.new)
+  with patch.object(m,'git',side_effect=[self.new,original,' M reliability-cockpit/web/next-env.d.ts',self.new]):self.manager.restore_generated_types(self.front,self.new)
   self.assertEqual(p.read_text(),original)
  def test_unrelated_generated_edit_never_discarded(self):
   web=self.front/'reliability-cockpit/web';web.mkdir(parents=True);p=web/'next-env.d.ts';p.write_text('user changes\n')
@@ -124,7 +124,7 @@ class FrontendPreviewTest(unittest.TestCase):
   web=self.front/'reliability-cockpit/web';web.mkdir(parents=True);p=web/'next-env.d.ts'
   original='/// <reference path="./.next/types/routes.d.ts" />\n';changed=original.replace('.next/', '.next-primary-dev/');p.write_text(changed)
   for dirt in [' M other.ts\n M reliability-cockpit/web/next-env.d.ts','M  reliability-cockpit/web/next-env.d.ts','?? untracked']:
-   with patch.object(m,'git',side_effect=[self.new,original.strip(),dirt]):
+   with patch.object(m,'git',side_effect=[self.new,original,dirt]):
     with self.assertRaisesRegex(RuntimeError,'UNRELATED_GENERATED'):self.manager.restore_generated_types(self.front,self.new)
    self.assertEqual(p.read_text(),changed)
   self.assertFalse(list(self.state.glob('frontend-generated-*.json')))
@@ -147,7 +147,7 @@ class FrontendPreviewTest(unittest.TestCase):
  def test_generated_crlf_edit_is_not_known_transformation(self):
   web=self.front/'reliability-cockpit/web';web.mkdir(parents=True);p=web/'next-env.d.ts'
   original='/// <reference path="./.next/types/routes.d.ts" />\n';p.write_bytes(original.replace('.next/','.next-primary-dev/').replace('\n','\r\n').encode())
-  with patch.object(m,'git',side_effect=[self.new,original.strip()]):
+  with patch.object(m,'git',side_effect=[self.new,original]):
    with self.assertRaisesRegex(RuntimeError,'UNEXPECTED_GENERATED'):self.manager.restore_generated_types(self.front,self.new)
   self.assertIn(b'\r\n',p.read_bytes())
  def test_worker_identity_is_listener_not_supervisor(self):
