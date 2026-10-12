@@ -40,7 +40,7 @@ def git_fixture(root):
     return command(['git','rev-parse','HEAD'],root)
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--repo',required=True);p.add_argument('--sha',required=True);p.add_argument('--deps',required=True);p.add_argument('--output',required=True);p.add_argument('--mode',choices=['nav-poll','nav-no-poll','poll-only','nav-hmr'],required=True);p.add_argument('--seconds',type=int,default=4500);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--repo',required=True);p.add_argument('--sha',required=True);p.add_argument('--deps',required=True);p.add_argument('--output',required=True);p.add_argument('--mode',choices=['nav-poll','nav-no-poll','poll-only','nav-hmr'],required=True);p.add_argument('--seconds',type=int,default=4500);p.add_argument('--flight-graph',action='store_true');a=p.parse_args()
     repo=Path(a.repo).resolve();sha=command(['git','rev-parse',a.sha+'^{commit}'],repo)
     if not 1 <= a.seconds <= 10800:raise ValueError('Invalid bounded duration')
     if command(['/usr/bin/node-22','--version'])!='v22.23.1':raise ValueError('Exact Node22.23.1 required; no fallback')
@@ -64,10 +64,11 @@ def main():
     digest=hashlib.sha256(json.dumps(approval,sort_keys=True,separators=(',',':')).encode()).hexdigest()
     write(manifest,dict(approval=approval,approval_id=digest))
     unit='nadi-fix04-disposable-'+a.mode+'-'+token[:6];fixture=None;browser=None;initial_worker=None;start=time.monotonic();failure=None;log=None
-    write(out/'definition.json',dict(baseline_sha=sha,test_copy_sha=front_sha,mode=a.mode,seconds=a.seconds,node=command(['/usr/bin/node-22','--version']),heap_mib=2048,cgroup_mib=2500,cpu_percent=200,port=port,fixture_port=fixture_port,transport='DISPOSABLE HTTP LOOPBACK',unit=unit,source_changes=['fixed backend URLs to in-memory fixtures','compiler measurement plugin']+(['disable polling in disposable copy'] if a.mode=='nav-no-poll' else []),profiling='internal inspector sampling 512KiB; 120s; raw budget64MiB/process'))
+    write(out/'definition.json',dict(baseline_sha=sha,test_copy_sha=front_sha,mode=a.mode,seconds=a.seconds,node=command(['/usr/bin/node-22','--version']),heap_mib=2048,cgroup_mib=2500,cpu_percent=200,port=port,fixture_port=fixture_port,transport='DISPOSABLE HTTP LOOPBACK',unit=unit,source_changes=['fixed backend URLs to in-memory fixtures','compiler measurement plugin']+(['disable polling in disposable copy'] if a.mode=='nav-no-poll' else []),flight_graph=a.flight_graph,profiling='internal inspector sampling 512KiB; 120s; raw budget64MiB/process'))
     try:
         fixture=subprocess.Popen(['/usr/bin/node-22',str(source/'fixtures.cjs'),str(web),str(fixture_port),backend_sha],stdout=open(out/'fixture.log','w'),stderr=subprocess.STDOUT)
         env=['PATH=/usr/bin:/bin','HOME='+str(Path.home()),'NODE_ENV=development','NODE_OPTIONS=--max-old-space-size=2048 --require='+str(source/'heap.cjs'),'NEXT_TELEMETRY_DISABLED=1','NADI_PROBE_DIR='+str(out),'NADI_PRIMARY_FRONTEND=true','NADI_LIVE_DEV=true','NADI_ENGINEERING_QA_ENABLED=true','NADI_ENGINEERING_WORKSPACE_ENABLED=true','COCKPIT_API_BASE='+endpoint,'NADI_QA_BACKEND_URL='+endpoint,'NADI_DEV_FRONTEND_MANIFEST='+str(manifest),'NADI_DEV_FRONTEND_WORKER='+str(receipt),'NADI_DEV_LAUNCHED_SHA='+front_sha]
+        if a.flight_graph:env.append('NADI_PROBE_FLIGHT_PATH='+str(Path(a.deps).resolve()/'next/dist/compiled/next-server/app-page.runtime.dev.js'))
         command(['systemd-run','--user','--collect','--unit='+unit,'--service-type=exec','--working-directory='+str(web),'-p','MemoryMax=2500M','-p','CPUQuota=200%','-p','TasksMax=128','-p','Restart=no','-p','UMask=0077','/usr/bin/env','-i',*env,'/usr/bin/node-22','node_modules/next/dist/bin/next','dev','--hostname','127.0.0.1','--port',str(port)])
         while time.monotonic()-start<120:
             props=dict(x.split('=',1) for x in command(['systemctl','--user','show',unit,'-p','MainPID','-p','ControlGroup','-p','InvocationID']).splitlines())

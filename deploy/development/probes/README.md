@@ -58,6 +58,25 @@ limitation. GC callback heap is an observer-time post-GC approximation, not an
 exact dominator/retainer measurement. Active-resource counts are not a per-path
 watch inventory. Sampling identifies allocation stacks, not retaining edges.
 
+Optional `--flight-graph` is a separately declared diagnostic variant. The
+disposable process intercepts only the locked `app-page.runtime.dev.js` load and
+exposes its existing `pendingOperations` Map through one guarded initializer
+assignment. It does not write installed dependencies or change hook callbacks,
+eviction, links, framework safeguards or source approval. Every120s a bounded,
+read-only traversal counts Map entries, `.previous`/`.awaited` ancestry, owners,
+stack frames and WeakRefs **without dereferencing WeakRefs or reading owner data**.
+At500,000 nodes it reports truncation/lower bounds. The traversal adds allocation
+and CPU overhead, so record it explicitly and don't equate it to the uninstrumented
+live worker. The Map is already held by enabled async hooks; this accessor is only
+for disposable diagnostics and must never be installed in the live launcher.
+
+`flight-ancestry.cjs` is a separate mechanism control: plain Node versus loading
+the actual locked Flight runtime with that same read-only Map accessor. It drives
+a bounded, artificial long-lived await context with no HTTP or app records, then
+stops at its time/512MiB/graph bound. It is not a comparable navigation workload,
+not a reproduced live failure, and not an application/library patch proposal.
+Use the same transient resource caps and serialize it after sustained probes.
+
 Raw profiles/journals stay inside the private output directory. Never commit them.
 `summarize.py` emits only aggregate numeric timelines, source identities and
 bounded allocation categories/function names. Review even those before publishing.

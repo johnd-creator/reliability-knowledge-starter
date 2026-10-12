@@ -52,6 +52,13 @@ jobs:
         with:
           node-version: '22'
       - run: npm ci
+      - name: Disposable heap probe syntax (no runtime activation)
+        run: |
+          node --check ../../deploy/development/probes/heap.cjs
+          node --check ../../deploy/development/probes/fixtures.cjs
+          node --check ../../deploy/development/probes/flight-ancestry.cjs
+          node --check ../../deploy/development/probes/webpack.cjs
+          node --check ../../deploy/development/probes/workload.mjs
       - run: npm run check:engineering && npm run check:phase2 && npm run check:workflow && npm run check:http-qa && npm run check:bounded-http && npm run check:bounded-proxy && npm run check:local-auth && npm run check:product-safety
       - run: npm run check:ux && npm run check:eng-product && npm run lint
       - run: npx tsc --noEmit
