@@ -1,0 +1,16 @@
+{
+  "files_match": true,
+  "matched_files": 12,
+  "root_status": "?? 23496711.xls",
+  "frontend_sha": "f06abce76f8ef9b967ee5b1c2e0802112d77b056",
+  "frontend_status": "M next-env.d.ts",
+  "backend_sha": "b348235ce6f82c84873a65344ad2ef5fe276987d",
+  "backend_status": "",
+  "services": {
+    "nadi-primary-web.service": "MainPID=3078556\nNRestarts=0\nExecMainStartTimestamp=Mon 2026-10-12 16:38:28 WIB",
+    "nadi-live-api.service": "MainPID=1664250\nNRestarts=0\nExecMainStartTimestamp=Sun 2026-10-11 07:53:34 WIB"
+  },
+  "frontend_listener_worker": 3744151,
+  "qa_parent": 1664250,
+  "scope": "HOST READ-ONLY FILE/PROCESS ATTESTATION; NO HTTP/DB/CONTAINER AUDIT"
+}

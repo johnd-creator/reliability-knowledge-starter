@@ -1,0 +1,262 @@
+{
+  "minimal": [
+    {
+      "kind": "vendor-next",
+      "bytes": 7156284,
+      "eval_text_occurrences": 338,
+      "map_comments": 337,
+      "maps_with_embedded_source": 337
+    },
+    {
+      "kind": "application-page",
+      "bytes": 853772,
+      "eval_text_occurrences": 29,
+      "map_comments": 28,
+      "maps_with_embedded_source": 28
+    },
+    {
+      "kind": "application-page",
+      "bytes": 686168,
+      "eval_text_occurrences": 25,
+      "map_comments": 24,
+      "maps_with_embedded_source": 24
+    },
+    {
+      "kind": "application-page",
+      "bytes": 915589,
+      "eval_text_occurrences": 36,
+      "map_comments": 35,
+      "maps_with_embedded_source": 35
+    },
+    {
+      "kind": "application-page",
+      "bytes": 835901,
+      "eval_text_occurrences": 34,
+      "map_comments": 33,
+      "maps_with_embedded_source": 33
+    },
+    {
+      "kind": "application-page",
+      "bytes": 728784,
+      "eval_text_occurrences": 27,
+      "map_comments": 26,
+      "maps_with_embedded_source": 26
+    },
+    {
+      "kind": "application-page",
+      "bytes": 713822,
+      "eval_text_occurrences": 27,
+      "map_comments": 26,
+      "maps_with_embedded_source": 26
+    },
+    {
+      "kind": "application-page",
+      "bytes": 849296,
+      "eval_text_occurrences": 37,
+      "map_comments": 36,
+      "maps_with_embedded_source": 36
+    },
+    {
+      "kind": "application-page",
+      "bytes": 1018147,
+      "eval_text_occurrences": 32,
+      "map_comments": 31,
+      "maps_with_embedded_source": 31
+    }
+  ],
+  "webpack-nosources": [
+    {
+      "kind": "vendor-next",
+      "bytes": 3999536,
+      "eval_text_occurrences": 338,
+      "map_comments": 337,
+      "maps_with_embedded_source": 0
+    },
+    {
+      "kind": "application-page",
+      "bytes": 662378,
+      "eval_text_occurrences": 29,
+      "map_comments": 28,
+      "maps_with_embedded_source": 0
+    },
+    {
+      "kind": "application-page",
+      "bytes": 554014,
+      "eval_text_occurrences": 25,
+      "map_comments": 24,
+      "maps_with_embedded_source": 0
+    },
+    {
+      "kind": "application-page",
+      "bytes": 731687,
+      "eval_text_occurrences": 36,
+      "map_comments": 35,
+      "maps_with_embedded_source": 0
+    },
+    {
+      "kind": "application-page",
+      "bytes": 665569,
+      "eval_text_occurrences": 34,
+      "map_comments": 33,
+      "maps_with_embedded_source": 0
+    },
+    {
+      "kind": "application-page",
+      "bytes": 550086,
+      "eval_text_occurrences": 27,
+      "map_comments": 26,
+      "maps_with_embedded_source": 0
+    },
+    {
+      "kind": "application-page",
+      "bytes": 537552,
+      "eval_text_occurrences": 27,
+      "map_comments": 26,
+      "maps_with_embedded_source": 0
+    },
+    {
+      "kind": "application-page",
+      "bytes": 685082,
+      "eval_text_occurrences": 37,
+      "map_comments": 36,
+      "maps_with_embedded_source": 0
+    },
+    {
+      "kind": "application-page",
+      "bytes": 802385,
+      "eval_text_occurrences": 32,
+      "map_comments": 31,
+      "maps_with_embedded_source": 0
+    }
+  ],
+  "webpack-map-off": [
+    {
+      "kind": "vendor-next",
+      "bytes": 2749498,
+      "eval_text_occurrences": 0,
+      "map_comments": 0,
+      "maps_with_embedded_source": 0
+    },
+    {
+      "kind": "application-page",
+      "bytes": 545034,
+      "eval_text_occurrences": 0,
+      "map_comments": 0,
+      "maps_with_embedded_source": 0
+    },
+    {
+      "kind": "application-page",
+      "bytes": 465423,
+      "eval_text_occurrences": 0,
+      "map_comments": 0,
+      "maps_with_embedded_source": 0
+    },
+    {
+      "kind": "application-page",
+      "bytes": 591516,
+      "eval_text_occurrences": 0,
+      "map_comments": 0,
+      "maps_with_embedded_source": 0
+    },
+    {
+      "kind": "application-page",
+      "bytes": 540367,
+      "eval_text_occurrences": 0,
+      "map_comments": 0,
+      "maps_with_embedded_source": 0
+    },
+    {
+      "kind": "application-page",
+      "bytes": 447766,
+      "eval_text_occurrences": 0,
+      "map_comments": 0,
+      "maps_with_embedded_source": 0
+    },
+    {
+      "kind": "application-page",
+      "bytes": 437306,
+      "eval_text_occurrences": 0,
+      "map_comments": 0,
+      "maps_with_embedded_source": 0
+    },
+    {
+      "kind": "application-page",
+      "bytes": 566029,
+      "eval_text_occurrences": 0,
+      "map_comments": 0,
+      "maps_with_embedded_source": 0
+    },
+    {
+      "kind": "application-page",
+      "bytes": 656652,
+      "eval_text_occurrences": 0,
+      "map_comments": 0,
+      "maps_with_embedded_source": 0
+    }
+  ],
+  "webpack-vendor-exclude": [
+    {
+      "kind": "vendor-next",
+      "bytes": 2750054,
+      "eval_text_occurrences": 1,
+      "map_comments": 0,
+      "maps_with_embedded_source": 0
+    },
+    {
+      "kind": "application-page",
+      "bytes": 862297,
+      "eval_text_occurrences": 29,
+      "map_comments": 28,
+      "maps_with_embedded_source": 28
+    },
+    {
+      "kind": "application-page",
+      "bytes": 690353,
+      "eval_text_occurrences": 25,
+      "map_comments": 24,
+      "maps_with_embedded_source": 24
+    },
+    {
+      "kind": "application-page",
+      "bytes": 924784,
+      "eval_text_occurrences": 36,
+      "map_comments": 35,
+      "maps_with_embedded_source": 35
+    },
+    {
+      "kind": "application-page",
+      "bytes": 844261,
+      "eval_text_occurrences": 34,
+      "map_comments": 33,
+      "maps_with_embedded_source": 33
+    },
+    {
+      "kind": "application-page",
+      "bytes": 735219,
+      "eval_text_occurrences": 27,
+      "map_comments": 26,
+      "maps_with_embedded_source": 26
+    },
+    {
+      "kind": "application-page",
+      "bytes": 720047,
+      "eval_text_occurrences": 27,
+      "map_comments": 26,
+      "maps_with_embedded_source": 26
+    },
+    {
+      "kind": "application-page",
+      "bytes": 856441,
+      "eval_text_occurrences": 37,
+      "map_comments": 36,
+      "maps_with_embedded_source": 36
+    },
+    {
+      "kind": "application-page",
+      "bytes": 1029062,
+      "eval_text_occurrences": 32,
+      "map_comments": 31,
+      "maps_with_embedded_source": 31
+    }
+  ]
+}

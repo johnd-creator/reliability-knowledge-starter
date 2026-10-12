@@ -1,0 +1,140 @@
+[
+  {
+    "trial": "minimal-a",
+    "scope": "PRIVATE SYNTHETIC SNAPSHOT",
+    "bytes": 279321068,
+    "sha256": "5dc7fda13c13df21b520092d1a6c0b38fef888caa1135610a7ad0a52a56a531b",
+    "capture": {
+      "refused": false,
+      "bytes": 279321068,
+      "elapsed_ms": 7272,
+      "pid": 3861847,
+      "pre_heap": 397296544,
+      "post_heap": 387498536,
+      "sha256": "5dc7fda13c13df21b520092d1a6c0b38fef888caa1135610a7ad0a52a56a531b"
+    },
+    "definition": {
+      "base_sha": "ef70aa6f2dc21866bbbd6de73f1db30ad4ab286a",
+      "copy_sha": "57782959031366a53c8c4d75aa7ebf18a3621729",
+      "mode": "minimal",
+      "node": "22.23.1",
+      "heap_mib": 2048,
+      "cgroup_mib": 2500,
+      "counts": {
+        "navigation": 24,
+        "status": 72,
+        "hmr": 8,
+        "session": 4
+      },
+      "snapshot_steps": [
+        12,
+        24
+      ],
+      "scripts": {
+        "capture.cjs": "e4b3bcb47d071e44981f593d857d123afcbf6d88da805781399c5f19cd96c291",
+        "workload.mjs": "130711f33c4f783f6f9d6a6f4ded2c12bac745fc55e572ffc77ddfecfafe6528",
+        "run.py": "e5dd5f10ba1dcfe3daa8fd43051fe941ee8169fe62810062879a68bb85cc4893"
+      },
+      "snapshot_budget": {
+        "heap_mib": 550,
+        "cgroup_mib": 1300,
+        "host_available_mib": 3000,
+        "file_mib": 384,
+        "seconds": 60
+      }
+    }
+  },
+  {
+    "trial": "minimal-12",
+    "scope": "PRIVATE SYNTHETIC SNAPSHOT",
+    "bytes": 281967839,
+    "sha256": "90d1e14ca0eac70e916ece02a53b7fb93c1bb8a25b3971e363d9f5176ea01a5d",
+    "capture": {
+      "refused": false,
+      "bytes": 281967839,
+      "elapsed_ms": 7155,
+      "pid": 3884035,
+      "pre_heap": 390768880,
+      "post_heap": 387308848,
+      "sha256": "90d1e14ca0eac70e916ece02a53b7fb93c1bb8a25b3971e363d9f5176ea01a5d"
+    },
+    "definition": {
+      "base_sha": "ef70aa6f2dc21866bbbd6de73f1db30ad4ab286a",
+      "copy_sha": "fdd310f08e44cd884af6972a12a2303425643501",
+      "mode": "minimal",
+      "node": "22.23.1",
+      "heap_mib": 2048,
+      "cgroup_mib": 2500,
+      "counts": {
+        "navigation": 12,
+        "status": 36,
+        "hmr": 4,
+        "session": 2
+      },
+      "snapshot_steps": [
+        12
+      ],
+      "scripts": {
+        "capture.cjs": "ea26ad7d1f5b6f7b8f78393c955148fedff453acedd290f1646ca81083e798eb",
+        "workload.mjs": "f751b9daee1cf87d1760dd4d88f70da08255cc90d780d06a23ae58b8bbd8f2a7",
+        "run.py": "d24a9756bc30ac1bc708d32caca15f4a28f1e65b4bac9fbbb92f1115eb5ab478",
+        "analyze.cpp": "47fa98eabbb283632915acd300955edf6858d937b40b468a888f59b1c2653dff",
+        "webpack.cjs": "91d63775fc19c8e07ac82d3d2bc80869584593fd72035e4183e1937c1396d7a8"
+      },
+      "snapshot_budget": {
+        "heap_mib": 550,
+        "cgroup_mib": 1300,
+        "host_available_mib": 3000,
+        "file_mib": 384,
+        "seconds": 60
+      }
+    }
+  },
+  {
+    "trial": "matched-minimal",
+    "scope": "PRIVATE SYNTHETIC SNAPSHOT",
+    "bytes": 282114191,
+    "sha256": "e768ee526b618c32a4bc975e8f67cc44ae0158a790886121e8f3b10860d6acc6",
+    "capture": {
+      "refused": false,
+      "bytes": 282114191,
+      "elapsed_ms": 7287,
+      "pid": 3895702,
+      "pre_heap": 391882976,
+      "post_heap": 387707712,
+      "sha256": "e768ee526b618c32a4bc975e8f67cc44ae0158a790886121e8f3b10860d6acc6"
+    },
+    "definition": {
+      "base_sha": "ef70aa6f2dc21866bbbd6de73f1db30ad4ab286a",
+      "copy_sha": "79378fb56a647ee563692d119d31c1fe52695d77",
+      "mode": "minimal",
+      "node": "22.23.1",
+      "heap_mib": 2048,
+      "cgroup_mib": 2500,
+      "counts": {
+        "navigation": 12,
+        "status": 36,
+        "hmr": 4,
+        "session": 2
+      },
+      "snapshot_steps": [
+        12
+      ],
+      "protocol": "matched-12-browser-released",
+      "scripts": {
+        "capture.cjs": "ea26ad7d1f5b6f7b8f78393c955148fedff453acedd290f1646ca81083e798eb",
+        "workload.mjs": "dd8c29fd53261648f6c1059ed384a621b392fd8ccfb39a72fa071005e73850ac",
+        "run.py": "dbedaeb1a80e95913657e812e8e9c83d011653fbd16b1572a2aa336a0ea73cd1",
+        "analyze.cpp": "12044bb01e9d0d7abe0ae3c20d68f05d142c66b249e2d0b4cd38d7cb8a8d6a41",
+        "webpack.cjs": "91d63775fc19c8e07ac82d3d2bc80869584593fd72035e4183e1937c1396d7a8"
+      },
+      "snapshot_budget": {
+        "heap_mib": 550,
+        "cgroup_mib": 1300,
+        "host_available_mib": 3000,
+        "file_mib": 384,
+        "seconds": 60
+      }
+    }
+  }
+]

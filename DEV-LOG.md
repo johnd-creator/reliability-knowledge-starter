@@ -612,3 +612,21 @@ Product Owner Acceptance: investigation authorized; live, visual, engineer UAT a
 Remaining Blockers: full module-source retaining path, instrumentation-versus-live dominance and a framework-compatible remedy. Equivalent Next safeguard failure is reproduced; problem NOT FIXED. Fresh persistent database/schema/record/session/container comparison NOT VERIFIED after automatic approval review refused non-operational task access.
 Next Action: bounded disposable retainer/module-generation analysis and reviewed framework compatibility work; separate new PO approval before any future live acceptance.
 Evidence: [investigation](reliability-cockpit/docs/nadi-dev-status-runtime-fix-04.md), [sanitized timelines and fixture screens](reliability-cockpit/docs/evidence/nadi-dev-status-runtime-fix-04/README.md). Raw profiles private; active controller/source/backup/assets/workbook retained; no database, collector, policy or operational change.
+
+## 2026-10-13 — NADI-DEV-UX-STATUS-01-FIX-05 — isolated retainer attribution
+
+Date: 2026-10-13 WIB.
+Task ID: NADI-DEV-UX-STATUS-01-FIX-05.
+Objective: distinguish GC-root reachability, projected retained-byte dominance and diagnostic overhead; assess safe framework-compatible candidates.
+Branch: codex/nadi-dev-status-runtime-fix-05, stacked on exact FIX-04 ef70aa6f2dc21866bbbd6de73f1db30ad4ab286a.
+Commit SHA: final immutable diagnostic HEAD recorded in draft PR delivery; main2e190c2b51fde50e0467d6d5165ebb1060902867; official configured frontendf06abce76f8ef9b967ee5b1c2e0802112d77b056/APIb348235ce6f82c84873a65344ad2ef5fe276987d remain separate.
+PR: new DRAFT above PR78; no merge or runtime cutover.
+Implementation Status: IMPLEMENTED disposable diagnostics; PARTIAL — NEEDS FURTHER INVESTIGATION; no application remediation.
+Test Status: TESTED —private bounded snapshots, eight matched synthetic6/18/2/1 full-GC controls,66 safety/graph tests and seeded oracle comparisons. Failed capture/resource/Inspector attempts retained. Source strings133.7MB; four vendor Script versions59.2MB; Flight ancestry186,271 nodes. Ephemeron ownership remains unproven. Memory cache+35% rejected; vendor-map exclusion-21.75% heap is an isolated candidate, not acceptance.
+CI Status: exact-head backend/frontend required and reported at draft handoff; independent of sustained runtime acceptance.
+Merge Status: NOT MERGED.
+Development Visibility: NOT ACTIVATED; no live HTTP/browser/session interaction. Pre-existing primary worker drift and next-env.d.ts dirt disclosed and untouched.
+Product Owner Acceptance: diagnostic scope authorized; visual/live/engineer UAT/production acceptance NOT GRANTED.
+Remaining Blockers: complete conditional WeakMap/root ownership, long-run comparative slope, original-frame/debugging compatibility; no fresh persistent QA/session/container audit within this scope.
+Next Action: review guarded vendor-only map exclusion proposal for isolated FIX-06; separate approval before any future official runtime action.
+Evidence: [FIX-05 report](reliability-cockpit/docs/nadi-dev-status-runtime-fix-05.md), [sanitized evidence](reliability-cockpit/docs/evidence/nadi-dev-status-runtime-fix-05/README.md). Prior evidence, worktrees, assets, workbook, backup and operational settings preserved; no DB/schema/collector/source/freshness change.
