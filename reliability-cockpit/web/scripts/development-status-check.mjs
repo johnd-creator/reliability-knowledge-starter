@@ -16,6 +16,7 @@ try{
  check('approved split-source pair is verified',()=>assert.equal(developmentTone(snapshot),'verified'));
  check('same-source contract is verified',()=>assert.equal(developmentTone({...snapshot,backend_sha:snapshot.sha,compatibility:'SAME_SOURCE',compatibility_approval:null}),'verified'));
  check('dirty uncommitted source remains warning',()=>assert.equal(developmentTone({...snapshot,dirty:true}),'warning'));
+ check('unapproved worker generation remains warning',()=>assert.equal(developmentTone({...snapshot,worker_integrity:'UNVERIFIED'}),'warning'));
  check('stale release remains warning',()=>assert.equal(developmentTone({...snapshot,stale:true}),'warning'));
  check('unapproved mismatch remains warning',()=>assert.equal(developmentTone({...snapshot,compatibility:'UNVERIFIED'}),'warning'));
  check('approval and loaded source identity cannot be missing',()=>{for(const patch of [{compatibility_approval:null},{launched_sha:'d'.repeat(40)},{sha:'UNKNOWN'},{backend_sha:'UNKNOWN'},{dirty:null},{compatibility:'UNKNOWN'}])assert.equal(developmentTone({...snapshot,...patch}),'warning');});

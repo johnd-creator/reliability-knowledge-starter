@@ -268,3 +268,7 @@ next-env.d.ts dirt caused real provenance refusal. Known-good source and origina
 reviewed controller/runtime were restored through official rollback. Current preview
 is f06abce / Node25.6.1. Retain the Node22 proposal/pin/evidence inactive; no candidate
 retry, automatic fallback or merge. Full timeline is in the runtime report.
+
+### FIX-03 isolated worker/integrity candidate (not activated)
+
+See [FIX-03 report and Owner-approved acceptance plan](nadi-dev-status-runtime-fix-03.md). This candidate retains Node22 pinning, adds official worker generation receipts and exact generated-file audit, and disables development filesystem Webpack cache only. An internal worker restart remains a readiness failure; zero systemd restarts is insufficient. Ordinary preflight stays clean-only. Do not install this helper or select this candidate until separate Product Owner approval. Active known-good source/controller/runtime remain unchanged by isolated validation.

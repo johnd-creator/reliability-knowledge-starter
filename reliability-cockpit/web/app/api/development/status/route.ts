@@ -1,6 +1,6 @@
 import {execFile} from "node:child_process";
 import {promisify} from "node:util";
-import {readApproval,approvedPair} from "../../../../lib/development-provenance";
+import {readApproval,approvedPair,workerStatus} from "../../../../lib/development-provenance";
 import {NextResponse} from "next/server";
 export const dynamic="force-dynamic";
 const run=promisify(execFile);
@@ -30,16 +30,17 @@ export async function GET(){
   backendHead=(await run("git",["rev-parse","HEAD"],options)).stdout.trim();
   backendDirty=(await run("git",["status","--porcelain"],options)).stdout.trim().length>0;
  }catch{}}
+ const worker=await workerStatus(process.env.NADI_DEV_FRONTEND_WORKER,process.env.NADI_DEV_FRONTEND_MANIFEST,envelope?.approval_id);
  const launchedSha=process.env.NADI_DEV_LAUNCHED_SHA??"UNKNOWN";
- const equivalent=backend==="AVAILABLE"&&approvedPair(envelope,sha,launchedSha,backendSha,dirty,backendHead,backendDirty);
+ const equivalent=worker.worker_integrity==="VERIFIED"&&backend==="AVAILABLE"&&approvedPair(envelope,sha,launchedSha,backendSha,dirty,backendHead,backendDirty);
  const compatibility=equivalent?"VERIFIED_SOURCE_EQUIVALENT":sha!=="UNKNOWN"&&sha===backendSha?"SAME_SOURCE":"UNVERIFIED";
- return NextResponse.json({environment:"DEVELOPMENT",branch,sha,dirty,backend,database,engineering,
+ return NextResponse.json({...worker,frontend_node_version:process.versions.node,frontend_v8_version:process.versions.v8,environment:"DEVELOPMENT",branch,sha,dirty,backend,database,engineering,
   factual_backend:factualBackend,database_identity:databaseIdentity,primary_origin:"https://localhost:3000",
   launched_sha:launchedSha,frontend_sha:sha,backend_sha:backendSha,
   compatibility,compatibility_approval:equivalent?envelope?.approval_id:null,
   launcher_source_sha:equivalent?envelope?.approval.launcher_source_sha:null,
   launcher_sha256:equivalent?envelope?.approval.launcher_sha256:null,
-  stale:sha==="UNKNOWN"||sha!==launchedSha||(sha!==backendSha&&!equivalent),
+  stale:worker.worker_integrity!=="VERIFIED"||sha==="UNKNOWN"||sha!==launchedSha||(sha!==backendSha&&!equivalent),
   factual_data:"OPERATIONAL_LOCAL_READ_ONLY",engineering_data:"SYNTHETIC_FIXTURES"},
   {headers:{"Cache-Control":"no-store"}});
 }

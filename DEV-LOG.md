@@ -557,3 +557,21 @@ Product Owner Acceptance:runtime acceptance NOT GRANTED; final BLOCKED despite e
 Remaining Blockers:memory/cache investigation and auditable worker-generation/generated-source lifecycle; original Node25 deopt trigger unproven.
 Next Action:Owner review separate controlled follow-up; no forcing candidate retry or merge.
 Evidence:[final failure/recovery](reliability-cockpit/docs/nadi-dev-status-runtime-fix-02.md#final-handoff--late-gate-failed-known-good-restored). Existing sessions/record/audit/35containers/assets retained; only normal test login/session/audit additions, no cleanup/API/collector/policy changes.
+
+### 2026-10-12 — NADI-DEV-UX-STATUS-01-FIX-03 (isolated candidate)
+
+- Date: 2026-10-12 WIB.
+- Task ID: NADI-DEV-UX-STATUS-01-FIX-03.
+- Objective: investigate Next memory restart; reduce measured dev-cache peak, track worker generations and audit exact generated-file restoration without touching live runtime.
+- Branch: codex/nadi-dev-status-runtime-fix-03, latest verified main2e190c2b51fde50e0467d6d5165ebb1060902867 with independent PR75/76 ancestry retained.
+- Commit SHA: lifecycle46fdf8a / byte-integrity98a2fb9 / memorya9cd743 / runtime status997fe23; final immutable HEAD recorded in linked PR delivery.
+- PR: focused FIX-03 stack above PR76; neither dependency auto-merged.
+- Implementation Status: IMPLEMENTED in isolated candidate.
+- Test Status: TESTED, 44 controller checks, frontend/security assertions, TypeScript/lint/build, 900s A/B, three isolated cold starts with nine actual HMR changes. Backend local205 run/67 PostgreSQL-specific skipped; exact-head CI uses disposable PostgreSQL.
+- CI Status: exact-head GitHub Actions required; result and immutable run attached to delivery PR.
+- Merge Status: NOT MERGED.
+- Development Visibility: isolated browser evidence only; official HTTPS3000 remains f06abce76f8ef9b967ee5b1c2e0802112d77b056, API b348235ce6f82c84873a65344ad2ef5fe276987d.
+- Product Owner Acceptance: NOT ACCEPTED; separate authorization required before live changes.
+- Remaining Blockers: 60-minute live acceptance not executed; Node25 V8 cause and precise retained-object allocation remain unproven.
+- Next Action: Owner reviews candidate and authorizes official frontend-only preflight/backup/cutover and >=60-minute acceptance, with rollback on unexpected worker or integrity failure.
+- Evidence: [FIX-03 report](reliability-cockpit/docs/nadi-dev-status-runtime-fix-03.md); [isolated metrics/screenshots](reliability-cockpit/docs/evidence/nadi-dev-status-runtime-fix-03/README.md). A/B peak2344.0→1836.7MiB, baseline internal restart1 versus candidate0. This bounded isolated result is not sustained live acceptance.

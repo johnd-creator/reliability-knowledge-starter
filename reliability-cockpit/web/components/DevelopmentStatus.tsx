@@ -8,6 +8,7 @@ export type DevelopmentSnapshot = {
  branch:string; sha:string; launched_sha:string; dirty:boolean|null; backend:string;
  database:string; database_identity:string; factual_backend:string; engineering:boolean;
  stale:boolean; backend_sha:string; compatibility:string; compatibility_approval:string|null;
+ worker_pid?:number;parent_pid?:number;worker_generation?:number|null;worker_integrity?:string;
  launcher_sha256:string|null; launcher_source_sha:string|null;
 };
 export function developmentTone(status:DevelopmentSnapshot|null):"verified"|"warning"|"unavailable" {
@@ -15,7 +16,7 @@ export function developmentTone(status:DevelopmentSnapshot|null):"verified"|"war
  const sha=(value:string)=>/^[a-f0-9]{40}$/.test(value);
  const pair=status.compatibility==="SAME_SOURCE"?status.sha===status.backend_sha:
   status.compatibility==="VERIFIED_SOURCE_EQUIVALENT"&&!!status.compatibility_approval&&/^[a-f0-9]{64}$/.test(status.compatibility_approval);
- return status.dirty===false&&status.stale===false&&sha(status.sha)&&sha(status.backend_sha)&&status.launched_sha===status.sha&&pair&&
+ return (!status.worker_integrity||status.worker_integrity==="VERIFIED")&&status.dirty===false&&status.stale===false&&sha(status.sha)&&sha(status.backend_sha)&&status.launched_sha===status.sha&&pair&&
   status.backend==="AVAILABLE"&&status.factual_backend==="AVAILABLE"?"verified":"warning";
 }
 
@@ -63,6 +64,7 @@ export default function DevelopmentStatus(){
     {status.dirty===true&&<p className="dev-status-warning">Ada perubahan belum di-commit (UNCOMMITTED). Periksa diff; jangan mereset atau berpindah source pada worktree aktif.</p>}
     {status.stale&&<p className="dev-status-warning">Integritas preview belum terverifikasi (UNKNOWN / release mismatch). SHA proses, source, dirty state dan approval kompatibilitas perlu diperiksa.</p>}
     <dl>
+     {status.worker_integrity&&<><dt>Integritas worker Next</dt><dd>{status.worker_integrity}</dd><dt>PID parent / worker · generasi resmi</dt><dd>{status.parent_pid} / {status.worker_pid} · {value(status.worker_generation?.toString())}</dd></>}
      <dt>Branch</dt><dd>{status.branch}</dd>
      <dt>SHA frontend</dt><dd><code>{status.sha}</code></dd>
      <dt>SHA saat proses diluncurkan</dt><dd><code>{value(status.launched_sha)}</code></dd>
