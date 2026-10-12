@@ -1,0 +1,968 @@
+[
+  {
+    "mode": "minimal",
+    "base_sha": "ef70aa6f2dc21866bbbd6de73f1db30ad4ab286a",
+    "copy_sha": "4ef7e79bfb7d3538719a96fef78952e1d8309a7b",
+    "scope": "SYNTHETIC DISPOSABLE; NOT LIVE ACCEPTANCE",
+    "counts": {
+      "navigation": 6,
+      "status": 18,
+      "hmr": 2,
+      "session": 1
+    },
+    "elapsed_seconds": 124.7128103680443,
+    "worker": 3918896,
+    "post_gc_heap_bytes": 342180784,
+    "external_bytes": 107103159,
+    "rss_bytes": 804343808,
+    "cgroup_peak_bytes": 962338816,
+    "cpu_seconds": 39.052498,
+    "native_source_maps": true,
+    "effective_native_source_maps": [
+      true
+    ],
+    "gc_policy": "QUERY_OBJECTS_FULL_GC_NO_SNAPSHOT",
+    "object_count_current_realm": 654851,
+    "code_after": {
+      "code_and_metadata_size": 16734885,
+      "bytecode_and_metadata_size": 4231752,
+      "external_script_source_size": 3806936,
+      "cpu_profiler_metadata_size": 0
+    },
+    "source_hashes": {
+      "capture.cjs": "d20eaa073b13fd11a029bebc101dd1212b4de2a7c82f4013ac770aff65699a11",
+      "workload.mjs": "46a0d5ebe65647242b86da8d55ba6c2555e0504c1ad52ec9ee6b7afa2b9c19be",
+      "run.py": "2e5347e3444b389f4651e65d0ba5ea5221fbc0f5e62ee52b33dabf3aa29f00e2",
+      "analyze.cpp": "cc8d7aebf5e7db3bdc993c31bc2ef1834ca3ccfd12bb19d323b9a0a021df01ef",
+      "webpack.cjs": "c8b53134d87663565049292f5ed7a87d518b51d13596496e4f098329952d1786"
+    },
+    "worker_replacements": 0,
+    "oom_kills": 0,
+    "browser_errors": [],
+    "compiler_config": [
+      {
+        "name": "client",
+        "cache": false,
+        "plugins": [
+          "MemoryWithGcCachePlugin",
+          "ReactFreshWebpackPlugin",
+          "ProvidePlugin",
+          "DefinePlugin",
+          "ReactLoadablePlugin",
+          "DropClientPage",
+          "IgnorePlugin",
+          "NextJsRequireCacheHotReloader",
+          "HotModuleReplacementPlugin",
+          "BuildManifestPlugin",
+          "ProfilingPlugin",
+          "WellKnownErrorsPlugin",
+          "CopyFilePlugin",
+          "AppBuildManifestPlugin",
+          "ClientReferenceManifestPlugin",
+          "NextFontManifestPlugin",
+          "Function",
+          "EvalSourceMapDevToolPlugin",
+          "NextMiniCssExtractPlugin",
+          "Probe"
+        ],
+        "eval_no_sources": [],
+        "eval_vendor_exclusion": []
+      },
+      {
+        "name": "edge-server",
+        "cache": false,
+        "plugins": [
+          "MemoryWithGcCachePlugin",
+          "ProvidePlugin",
+          "DefinePlugin",
+          "DropClientPage",
+          "IgnorePlugin",
+          "NextJsRequireCacheHotReloader",
+          "HotModuleReplacementPlugin",
+          "PagesManifestPlugin",
+          "MiddlewarePlugin",
+          "ProfilingPlugin",
+          "WellKnownErrorsPlugin",
+          "FlightClientEntryPlugin",
+          "NextTypesPlugin",
+          "Function",
+          "EvalSourceMapDevToolPlugin",
+          "Probe"
+        ],
+        "eval_no_sources": [],
+        "eval_vendor_exclusion": []
+      },
+      {
+        "name": "server",
+        "cache": false,
+        "plugins": [
+          "NormalModuleReplacementPlugin",
+          "MemoryWithGcCachePlugin",
+          "DefinePlugin",
+          "IgnorePlugin",
+          "NextJsRequireCacheHotReloader",
+          "PagesManifestPlugin",
+          "ProfilingPlugin",
+          "WellKnownErrorsPlugin",
+          "FlightClientEntryPlugin",
+          "NextTypesPlugin",
+          "Function",
+          "EvalSourceMapDevToolPlugin",
+          "Probe"
+        ],
+        "eval_no_sources": [],
+        "eval_vendor_exclusion": []
+      }
+    ]
+  },
+  {
+    "mode": "sampled",
+    "base_sha": "ef70aa6f2dc21866bbbd6de73f1db30ad4ab286a",
+    "copy_sha": "f41a4bc46fea689167a8b9770246e2564a360c8b",
+    "scope": "SYNTHETIC DISPOSABLE; NOT LIVE ACCEPTANCE",
+    "counts": {
+      "navigation": 6,
+      "status": 18,
+      "hmr": 2,
+      "session": 1
+    },
+    "elapsed_seconds": 124.73158617701847,
+    "worker": 3922260,
+    "post_gc_heap_bytes": 343431320,
+    "external_bytes": 107110315,
+    "rss_bytes": 814837760,
+    "cgroup_peak_bytes": 926179328,
+    "cpu_seconds": 40.579131,
+    "native_source_maps": true,
+    "effective_native_source_maps": [
+      true
+    ],
+    "gc_policy": "QUERY_OBJECTS_FULL_GC_NO_SNAPSHOT",
+    "object_count_current_realm": 654574,
+    "code_after": {
+      "code_and_metadata_size": 16588338,
+      "bytecode_and_metadata_size": 3897808,
+      "external_script_source_size": 3814092,
+      "cpu_profiler_metadata_size": 0
+    },
+    "source_hashes": {
+      "capture.cjs": "d20eaa073b13fd11a029bebc101dd1212b4de2a7c82f4013ac770aff65699a11",
+      "workload.mjs": "46a0d5ebe65647242b86da8d55ba6c2555e0504c1ad52ec9ee6b7afa2b9c19be",
+      "run.py": "2e5347e3444b389f4651e65d0ba5ea5221fbc0f5e62ee52b33dabf3aa29f00e2",
+      "analyze.cpp": "cc8d7aebf5e7db3bdc993c31bc2ef1834ca3ccfd12bb19d323b9a0a021df01ef",
+      "webpack.cjs": "c8b53134d87663565049292f5ed7a87d518b51d13596496e4f098329952d1786"
+    },
+    "worker_replacements": 0,
+    "oom_kills": 0,
+    "browser_errors": [],
+    "compiler_config": [
+      {
+        "name": "client",
+        "cache": false,
+        "plugins": [
+          "MemoryWithGcCachePlugin",
+          "ReactFreshWebpackPlugin",
+          "ProvidePlugin",
+          "DefinePlugin",
+          "ReactLoadablePlugin",
+          "DropClientPage",
+          "IgnorePlugin",
+          "NextJsRequireCacheHotReloader",
+          "HotModuleReplacementPlugin",
+          "BuildManifestPlugin",
+          "ProfilingPlugin",
+          "WellKnownErrorsPlugin",
+          "CopyFilePlugin",
+          "AppBuildManifestPlugin",
+          "ClientReferenceManifestPlugin",
+          "NextFontManifestPlugin",
+          "Function",
+          "EvalSourceMapDevToolPlugin",
+          "NextMiniCssExtractPlugin",
+          "Probe"
+        ],
+        "eval_no_sources": [],
+        "eval_vendor_exclusion": []
+      },
+      {
+        "name": "edge-server",
+        "cache": false,
+        "plugins": [
+          "MemoryWithGcCachePlugin",
+          "ProvidePlugin",
+          "DefinePlugin",
+          "DropClientPage",
+          "IgnorePlugin",
+          "NextJsRequireCacheHotReloader",
+          "HotModuleReplacementPlugin",
+          "PagesManifestPlugin",
+          "MiddlewarePlugin",
+          "ProfilingPlugin",
+          "WellKnownErrorsPlugin",
+          "FlightClientEntryPlugin",
+          "NextTypesPlugin",
+          "Function",
+          "EvalSourceMapDevToolPlugin",
+          "Probe"
+        ],
+        "eval_no_sources": [],
+        "eval_vendor_exclusion": []
+      },
+      {
+        "name": "server",
+        "cache": false,
+        "plugins": [
+          "NormalModuleReplacementPlugin",
+          "MemoryWithGcCachePlugin",
+          "DefinePlugin",
+          "IgnorePlugin",
+          "NextJsRequireCacheHotReloader",
+          "PagesManifestPlugin",
+          "ProfilingPlugin",
+          "WellKnownErrorsPlugin",
+          "FlightClientEntryPlugin",
+          "NextTypesPlugin",
+          "Function",
+          "EvalSourceMapDevToolPlugin",
+          "Probe"
+        ],
+        "eval_no_sources": [],
+        "eval_vendor_exclusion": []
+      }
+    ]
+  },
+  {
+    "mode": "graph",
+    "base_sha": "ef70aa6f2dc21866bbbd6de73f1db30ad4ab286a",
+    "copy_sha": "5b04c63bef472c04a93d35d4d11f803527d2da8c",
+    "scope": "SYNTHETIC DISPOSABLE; NOT LIVE ACCEPTANCE",
+    "counts": {
+      "navigation": 6,
+      "status": 18,
+      "hmr": 2,
+      "session": 1
+    },
+    "elapsed_seconds": 125.76105205598287,
+    "worker": 3925791,
+    "post_gc_heap_bytes": 343604288,
+    "external_bytes": 107080757,
+    "rss_bytes": 809992192,
+    "cgroup_peak_bytes": 892063744,
+    "cpu_seconds": 40.795814,
+    "native_source_maps": true,
+    "effective_native_source_maps": [
+      true
+    ],
+    "gc_policy": "QUERY_OBJECTS_FULL_GC_NO_SNAPSHOT",
+    "object_count_current_realm": 654632,
+    "code_after": {
+      "code_and_metadata_size": 16652808,
+      "bytecode_and_metadata_size": 3898320,
+      "external_script_source_size": 3814092,
+      "cpu_profiler_metadata_size": 0
+    },
+    "source_hashes": {
+      "capture.cjs": "d20eaa073b13fd11a029bebc101dd1212b4de2a7c82f4013ac770aff65699a11",
+      "workload.mjs": "46a0d5ebe65647242b86da8d55ba6c2555e0504c1ad52ec9ee6b7afa2b9c19be",
+      "run.py": "2e5347e3444b389f4651e65d0ba5ea5221fbc0f5e62ee52b33dabf3aa29f00e2",
+      "analyze.cpp": "cc8d7aebf5e7db3bdc993c31bc2ef1834ca3ccfd12bb19d323b9a0a021df01ef",
+      "webpack.cjs": "c8b53134d87663565049292f5ed7a87d518b51d13596496e4f098329952d1786"
+    },
+    "worker_replacements": 0,
+    "oom_kills": 0,
+    "browser_errors": [],
+    "compiler_config": [
+      {
+        "name": "client",
+        "cache": false,
+        "plugins": [
+          "MemoryWithGcCachePlugin",
+          "ReactFreshWebpackPlugin",
+          "ProvidePlugin",
+          "DefinePlugin",
+          "ReactLoadablePlugin",
+          "DropClientPage",
+          "IgnorePlugin",
+          "NextJsRequireCacheHotReloader",
+          "HotModuleReplacementPlugin",
+          "BuildManifestPlugin",
+          "ProfilingPlugin",
+          "WellKnownErrorsPlugin",
+          "CopyFilePlugin",
+          "AppBuildManifestPlugin",
+          "ClientReferenceManifestPlugin",
+          "NextFontManifestPlugin",
+          "Function",
+          "EvalSourceMapDevToolPlugin",
+          "NextMiniCssExtractPlugin",
+          "Probe"
+        ],
+        "eval_no_sources": [],
+        "eval_vendor_exclusion": []
+      },
+      {
+        "name": "edge-server",
+        "cache": false,
+        "plugins": [
+          "MemoryWithGcCachePlugin",
+          "ProvidePlugin",
+          "DefinePlugin",
+          "DropClientPage",
+          "IgnorePlugin",
+          "NextJsRequireCacheHotReloader",
+          "HotModuleReplacementPlugin",
+          "PagesManifestPlugin",
+          "MiddlewarePlugin",
+          "ProfilingPlugin",
+          "WellKnownErrorsPlugin",
+          "FlightClientEntryPlugin",
+          "NextTypesPlugin",
+          "Function",
+          "EvalSourceMapDevToolPlugin",
+          "Probe"
+        ],
+        "eval_no_sources": [],
+        "eval_vendor_exclusion": []
+      },
+      {
+        "name": "server",
+        "cache": false,
+        "plugins": [
+          "NormalModuleReplacementPlugin",
+          "MemoryWithGcCachePlugin",
+          "DefinePlugin",
+          "IgnorePlugin",
+          "NextJsRequireCacheHotReloader",
+          "PagesManifestPlugin",
+          "ProfilingPlugin",
+          "WellKnownErrorsPlugin",
+          "FlightClientEntryPlugin",
+          "NextTypesPlugin",
+          "Function",
+          "EvalSourceMapDevToolPlugin",
+          "Probe"
+        ],
+        "eval_no_sources": [],
+        "eval_vendor_exclusion": []
+      }
+    ]
+  },
+  {
+    "mode": "node-source-map-off",
+    "base_sha": "ef70aa6f2dc21866bbbd6de73f1db30ad4ab286a",
+    "copy_sha": "2f24f9a2497ba30be72cc9d3ff7fbf62bec5dbe1",
+    "scope": "SYNTHETIC DISPOSABLE; NOT LIVE ACCEPTANCE",
+    "counts": {
+      "navigation": 6,
+      "status": 18,
+      "hmr": 2,
+      "session": 1
+    },
+    "elapsed_seconds": 123.82919589802623,
+    "worker": 3929353,
+    "post_gc_heap_bytes": 321895808,
+    "external_bytes": 107321001,
+    "rss_bytes": 782307328,
+    "cgroup_peak_bytes": 874815488,
+    "cpu_seconds": 36.53648,
+    "native_source_maps": false,
+    "effective_native_source_maps": [
+      false
+    ],
+    "gc_policy": "QUERY_OBJECTS_FULL_GC_NO_SNAPSHOT",
+    "object_count_current_realm": 647260,
+    "code_after": {
+      "code_and_metadata_size": 16709562,
+      "bytecode_and_metadata_size": 4225224,
+      "external_script_source_size": 3806936,
+      "cpu_profiler_metadata_size": 0
+    },
+    "source_hashes": {
+      "capture.cjs": "d20eaa073b13fd11a029bebc101dd1212b4de2a7c82f4013ac770aff65699a11",
+      "workload.mjs": "46a0d5ebe65647242b86da8d55ba6c2555e0504c1ad52ec9ee6b7afa2b9c19be",
+      "run.py": "2e5347e3444b389f4651e65d0ba5ea5221fbc0f5e62ee52b33dabf3aa29f00e2",
+      "analyze.cpp": "cc8d7aebf5e7db3bdc993c31bc2ef1834ca3ccfd12bb19d323b9a0a021df01ef",
+      "webpack.cjs": "c8b53134d87663565049292f5ed7a87d518b51d13596496e4f098329952d1786",
+      "README.md": "b635ea71cc324e721df6f6a48ba37b13820374abdac3991107a00ca2d1706a99"
+    },
+    "worker_replacements": 0,
+    "oom_kills": 0,
+    "browser_errors": [],
+    "compiler_config": [
+      {
+        "name": "client",
+        "cache": false,
+        "plugins": [
+          "MemoryWithGcCachePlugin",
+          "ReactFreshWebpackPlugin",
+          "ProvidePlugin",
+          "DefinePlugin",
+          "ReactLoadablePlugin",
+          "DropClientPage",
+          "IgnorePlugin",
+          "NextJsRequireCacheHotReloader",
+          "HotModuleReplacementPlugin",
+          "BuildManifestPlugin",
+          "ProfilingPlugin",
+          "WellKnownErrorsPlugin",
+          "CopyFilePlugin",
+          "AppBuildManifestPlugin",
+          "ClientReferenceManifestPlugin",
+          "NextFontManifestPlugin",
+          "Function",
+          "EvalSourceMapDevToolPlugin",
+          "NextMiniCssExtractPlugin",
+          "Probe"
+        ],
+        "eval_no_sources": [],
+        "eval_vendor_exclusion": []
+      },
+      {
+        "name": "edge-server",
+        "cache": false,
+        "plugins": [
+          "MemoryWithGcCachePlugin",
+          "ProvidePlugin",
+          "DefinePlugin",
+          "DropClientPage",
+          "IgnorePlugin",
+          "NextJsRequireCacheHotReloader",
+          "HotModuleReplacementPlugin",
+          "PagesManifestPlugin",
+          "MiddlewarePlugin",
+          "ProfilingPlugin",
+          "WellKnownErrorsPlugin",
+          "FlightClientEntryPlugin",
+          "NextTypesPlugin",
+          "Function",
+          "EvalSourceMapDevToolPlugin",
+          "Probe"
+        ],
+        "eval_no_sources": [],
+        "eval_vendor_exclusion": []
+      },
+      {
+        "name": "server",
+        "cache": false,
+        "plugins": [
+          "NormalModuleReplacementPlugin",
+          "MemoryWithGcCachePlugin",
+          "DefinePlugin",
+          "IgnorePlugin",
+          "NextJsRequireCacheHotReloader",
+          "PagesManifestPlugin",
+          "ProfilingPlugin",
+          "WellKnownErrorsPlugin",
+          "FlightClientEntryPlugin",
+          "NextTypesPlugin",
+          "Function",
+          "EvalSourceMapDevToolPlugin",
+          "Probe"
+        ],
+        "eval_no_sources": [],
+        "eval_vendor_exclusion": []
+      }
+    ]
+  },
+  {
+    "mode": "webpack-map-off",
+    "base_sha": "ef70aa6f2dc21866bbbd6de73f1db30ad4ab286a",
+    "copy_sha": "d2110378760edde41b10fed6c72db272e5da34ed",
+    "scope": "SYNTHETIC DISPOSABLE; NOT LIVE ACCEPTANCE",
+    "counts": {
+      "navigation": 6,
+      "status": 18,
+      "hmr": 2,
+      "session": 1
+    },
+    "elapsed_seconds": 121.7063779180171,
+    "worker": 3932925,
+    "post_gc_heap_bytes": 234356744,
+    "external_bytes": 57151264,
+    "rss_bytes": 616787968,
+    "cgroup_peak_bytes": 699490304,
+    "cpu_seconds": 32.150742,
+    "native_source_maps": true,
+    "effective_native_source_maps": [
+      true
+    ],
+    "gc_policy": "QUERY_OBJECTS_FULL_GC_NO_SNAPSHOT",
+    "object_count_current_realm": 669284,
+    "code_after": {
+      "code_and_metadata_size": 17094643,
+      "bytecode_and_metadata_size": 4370864,
+      "external_script_source_size": 3806936,
+      "cpu_profiler_metadata_size": 0
+    },
+    "source_hashes": {
+      "capture.cjs": "d20eaa073b13fd11a029bebc101dd1212b4de2a7c82f4013ac770aff65699a11",
+      "workload.mjs": "46a0d5ebe65647242b86da8d55ba6c2555e0504c1ad52ec9ee6b7afa2b9c19be",
+      "run.py": "2e5347e3444b389f4651e65d0ba5ea5221fbc0f5e62ee52b33dabf3aa29f00e2",
+      "analyze.cpp": "cc8d7aebf5e7db3bdc993c31bc2ef1834ca3ccfd12bb19d323b9a0a021df01ef",
+      "webpack.cjs": "c8b53134d87663565049292f5ed7a87d518b51d13596496e4f098329952d1786",
+      "README.md": "b635ea71cc324e721df6f6a48ba37b13820374abdac3991107a00ca2d1706a99"
+    },
+    "worker_replacements": 0,
+    "oom_kills": 0,
+    "browser_errors": [],
+    "compiler_config": [
+      {
+        "name": "client",
+        "cache": false,
+        "plugins": [
+          "MemoryWithGcCachePlugin",
+          "ReactFreshWebpackPlugin",
+          "ProvidePlugin",
+          "DefinePlugin",
+          "ReactLoadablePlugin",
+          "DropClientPage",
+          "IgnorePlugin",
+          "NextJsRequireCacheHotReloader",
+          "HotModuleReplacementPlugin",
+          "BuildManifestPlugin",
+          "ProfilingPlugin",
+          "WellKnownErrorsPlugin",
+          "CopyFilePlugin",
+          "AppBuildManifestPlugin",
+          "ClientReferenceManifestPlugin",
+          "NextFontManifestPlugin",
+          "Function",
+          "NextMiniCssExtractPlugin",
+          "Probe"
+        ],
+        "eval_no_sources": [],
+        "eval_vendor_exclusion": []
+      },
+      {
+        "name": "edge-server",
+        "cache": false,
+        "plugins": [
+          "MemoryWithGcCachePlugin",
+          "ProvidePlugin",
+          "DefinePlugin",
+          "DropClientPage",
+          "IgnorePlugin",
+          "NextJsRequireCacheHotReloader",
+          "HotModuleReplacementPlugin",
+          "PagesManifestPlugin",
+          "MiddlewarePlugin",
+          "ProfilingPlugin",
+          "WellKnownErrorsPlugin",
+          "FlightClientEntryPlugin",
+          "NextTypesPlugin",
+          "Function",
+          "Probe"
+        ],
+        "eval_no_sources": [],
+        "eval_vendor_exclusion": []
+      },
+      {
+        "name": "server",
+        "cache": false,
+        "plugins": [
+          "NormalModuleReplacementPlugin",
+          "MemoryWithGcCachePlugin",
+          "DefinePlugin",
+          "IgnorePlugin",
+          "NextJsRequireCacheHotReloader",
+          "PagesManifestPlugin",
+          "ProfilingPlugin",
+          "WellKnownErrorsPlugin",
+          "FlightClientEntryPlugin",
+          "NextTypesPlugin",
+          "Function",
+          "Probe"
+        ],
+        "eval_no_sources": [],
+        "eval_vendor_exclusion": []
+      }
+    ]
+  },
+  {
+    "mode": "webpack-memory",
+    "base_sha": "ef70aa6f2dc21866bbbd6de73f1db30ad4ab286a",
+    "copy_sha": "a16b2eee0d39301e45444c2690a219cdc9edf49a",
+    "scope": "SYNTHETIC DISPOSABLE; NOT LIVE ACCEPTANCE",
+    "counts": {
+      "navigation": 6,
+      "status": 18,
+      "hmr": 2,
+      "session": 1
+    },
+    "elapsed_seconds": 126.8987338260049,
+    "worker": 3936420,
+    "post_gc_heap_bytes": 463139544,
+    "external_bytes": 112648806,
+    "rss_bytes": 1041125376,
+    "cgroup_peak_bytes": 1045659648,
+    "cpu_seconds": 42.521026,
+    "native_source_maps": true,
+    "effective_native_source_maps": [
+      true
+    ],
+    "gc_policy": "QUERY_OBJECTS_FULL_GC_NO_SNAPSHOT",
+    "object_count_current_realm": 1267754,
+    "code_after": {
+      "code_and_metadata_size": 17096299,
+      "bytecode_and_metadata_size": 4260040,
+      "external_script_source_size": 3806936,
+      "cpu_profiler_metadata_size": 0
+    },
+    "source_hashes": {
+      "capture.cjs": "d20eaa073b13fd11a029bebc101dd1212b4de2a7c82f4013ac770aff65699a11",
+      "workload.mjs": "46a0d5ebe65647242b86da8d55ba6c2555e0504c1ad52ec9ee6b7afa2b9c19be",
+      "run.py": "2e5347e3444b389f4651e65d0ba5ea5221fbc0f5e62ee52b33dabf3aa29f00e2",
+      "analyze.cpp": "cc8d7aebf5e7db3bdc993c31bc2ef1834ca3ccfd12bb19d323b9a0a021df01ef",
+      "webpack.cjs": "c8b53134d87663565049292f5ed7a87d518b51d13596496e4f098329952d1786",
+      "README.md": "b635ea71cc324e721df6f6a48ba37b13820374abdac3991107a00ca2d1706a99"
+    },
+    "worker_replacements": 0,
+    "oom_kills": 0,
+    "browser_errors": [],
+    "compiler_config": [
+      {
+        "name": "client",
+        "cache": {
+          "type": "memory",
+          "maxGenerations": 1,
+          "cacheUnaffected": true
+        },
+        "plugins": [
+          "MemoryWithGcCachePlugin",
+          "ReactFreshWebpackPlugin",
+          "ProvidePlugin",
+          "DefinePlugin",
+          "ReactLoadablePlugin",
+          "DropClientPage",
+          "IgnorePlugin",
+          "NextJsRequireCacheHotReloader",
+          "HotModuleReplacementPlugin",
+          "BuildManifestPlugin",
+          "ProfilingPlugin",
+          "WellKnownErrorsPlugin",
+          "CopyFilePlugin",
+          "AppBuildManifestPlugin",
+          "ClientReferenceManifestPlugin",
+          "NextFontManifestPlugin",
+          "Function",
+          "EvalSourceMapDevToolPlugin",
+          "NextMiniCssExtractPlugin",
+          "Probe"
+        ],
+        "eval_no_sources": [],
+        "eval_vendor_exclusion": []
+      },
+      {
+        "name": "edge-server",
+        "cache": {
+          "type": "memory",
+          "maxGenerations": 1,
+          "cacheUnaffected": true
+        },
+        "plugins": [
+          "MemoryWithGcCachePlugin",
+          "ProvidePlugin",
+          "DefinePlugin",
+          "DropClientPage",
+          "IgnorePlugin",
+          "NextJsRequireCacheHotReloader",
+          "HotModuleReplacementPlugin",
+          "PagesManifestPlugin",
+          "MiddlewarePlugin",
+          "ProfilingPlugin",
+          "WellKnownErrorsPlugin",
+          "FlightClientEntryPlugin",
+          "NextTypesPlugin",
+          "Function",
+          "EvalSourceMapDevToolPlugin",
+          "Probe"
+        ],
+        "eval_no_sources": [],
+        "eval_vendor_exclusion": []
+      },
+      {
+        "name": "server",
+        "cache": {
+          "type": "memory",
+          "maxGenerations": 1,
+          "cacheUnaffected": true
+        },
+        "plugins": [
+          "NormalModuleReplacementPlugin",
+          "MemoryWithGcCachePlugin",
+          "DefinePlugin",
+          "IgnorePlugin",
+          "NextJsRequireCacheHotReloader",
+          "PagesManifestPlugin",
+          "ProfilingPlugin",
+          "WellKnownErrorsPlugin",
+          "FlightClientEntryPlugin",
+          "NextTypesPlugin",
+          "Function",
+          "EvalSourceMapDevToolPlugin",
+          "Probe"
+        ],
+        "eval_no_sources": [],
+        "eval_vendor_exclusion": []
+      }
+    ]
+  },
+  {
+    "mode": "webpack-nosources",
+    "base_sha": "ef70aa6f2dc21866bbbd6de73f1db30ad4ab286a",
+    "copy_sha": "78b6de3b1ee746031474e54d2fb3341ff52710b5",
+    "scope": "SYNTHETIC DISPOSABLE; NOT LIVE ACCEPTANCE",
+    "counts": {
+      "navigation": 6,
+      "status": 18,
+      "hmr": 2,
+      "session": 1
+    },
+    "elapsed_seconds": 124.75046911498066,
+    "worker": 3941425,
+    "post_gc_heap_bytes": 300104296,
+    "external_bytes": 73951466,
+    "rss_bytes": 744452096,
+    "cgroup_peak_bytes": 916377600,
+    "cpu_seconds": 36.152808,
+    "native_source_maps": true,
+    "effective_native_source_maps": [
+      true
+    ],
+    "gc_policy": "QUERY_OBJECTS_FULL_GC_NO_SNAPSHOT",
+    "object_count_current_realm": 679532,
+    "code_after": {
+      "code_and_metadata_size": 16745702,
+      "bytecode_and_metadata_size": 4239880,
+      "external_script_source_size": 3806936,
+      "cpu_profiler_metadata_size": 0
+    },
+    "source_hashes": {
+      "capture.cjs": "d20eaa073b13fd11a029bebc101dd1212b4de2a7c82f4013ac770aff65699a11",
+      "workload.mjs": "46a0d5ebe65647242b86da8d55ba6c2555e0504c1ad52ec9ee6b7afa2b9c19be",
+      "run.py": "09644fae881ad48f20c2206d4abbbbf70c7013f60fde21f36ca53b45af9563e3",
+      "analyze.cpp": "bca81d3ebe9f1742a46b953e5cfa2b053268669de9e31374be2b332eaf9966ca",
+      "webpack.cjs": "db0f9b401b4c2bd7725f9676f6623fd0fba6cbc5ae71fc002424ae68b9b91aff",
+      "README.md": "31473d1927a7ae9750ce6c00400d549d2e07799a35d372fd3947a2402f8d46b5"
+    },
+    "worker_replacements": 0,
+    "oom_kills": 0,
+    "browser_errors": [],
+    "compiler_config": [
+      {
+        "name": "client",
+        "cache": false,
+        "plugins": [
+          "MemoryWithGcCachePlugin",
+          "ReactFreshWebpackPlugin",
+          "ProvidePlugin",
+          "DefinePlugin",
+          "ReactLoadablePlugin",
+          "DropClientPage",
+          "IgnorePlugin",
+          "NextJsRequireCacheHotReloader",
+          "HotModuleReplacementPlugin",
+          "BuildManifestPlugin",
+          "ProfilingPlugin",
+          "WellKnownErrorsPlugin",
+          "CopyFilePlugin",
+          "AppBuildManifestPlugin",
+          "ClientReferenceManifestPlugin",
+          "NextFontManifestPlugin",
+          "Function",
+          "EvalSourceMapDevToolPlugin",
+          "NextMiniCssExtractPlugin",
+          "Probe"
+        ],
+        "eval_no_sources": [
+          true
+        ],
+        "eval_vendor_exclusion": [
+          false
+        ]
+      },
+      {
+        "name": "edge-server",
+        "cache": false,
+        "plugins": [
+          "MemoryWithGcCachePlugin",
+          "ProvidePlugin",
+          "DefinePlugin",
+          "DropClientPage",
+          "IgnorePlugin",
+          "NextJsRequireCacheHotReloader",
+          "HotModuleReplacementPlugin",
+          "PagesManifestPlugin",
+          "MiddlewarePlugin",
+          "ProfilingPlugin",
+          "WellKnownErrorsPlugin",
+          "FlightClientEntryPlugin",
+          "NextTypesPlugin",
+          "Function",
+          "EvalSourceMapDevToolPlugin",
+          "Probe"
+        ],
+        "eval_no_sources": [
+          true
+        ],
+        "eval_vendor_exclusion": [
+          false
+        ]
+      },
+      {
+        "name": "server",
+        "cache": false,
+        "plugins": [
+          "NormalModuleReplacementPlugin",
+          "MemoryWithGcCachePlugin",
+          "DefinePlugin",
+          "IgnorePlugin",
+          "NextJsRequireCacheHotReloader",
+          "PagesManifestPlugin",
+          "ProfilingPlugin",
+          "WellKnownErrorsPlugin",
+          "FlightClientEntryPlugin",
+          "NextTypesPlugin",
+          "Function",
+          "EvalSourceMapDevToolPlugin",
+          "Probe"
+        ],
+        "eval_no_sources": [
+          true
+        ],
+        "eval_vendor_exclusion": [
+          false
+        ]
+      }
+    ]
+  },
+  {
+    "mode": "webpack-vendor-exclude",
+    "base_sha": "ef70aa6f2dc21866bbbd6de73f1db30ad4ab286a",
+    "copy_sha": "602a9a2171bd9fdd99e4f49ad756299320ea8c98",
+    "scope": "SYNTHETIC DISPOSABLE; NOT LIVE ACCEPTANCE",
+    "counts": {
+      "navigation": 6,
+      "status": 18,
+      "hmr": 2,
+      "session": 1
+    },
+    "elapsed_seconds": 122.7563650039956,
+    "worker": 3945635,
+    "post_gc_heap_bytes": 267770488,
+    "external_bytes": 68938412,
+    "rss_bytes": 680013824,
+    "cgroup_peak_bytes": 867717120,
+    "cpu_seconds": 35.148469,
+    "native_source_maps": true,
+    "effective_native_source_maps": [
+      true
+    ],
+    "gc_policy": "QUERY_OBJECTS_FULL_GC_NO_SNAPSHOT",
+    "object_count_current_realm": 665911,
+    "code_after": {
+      "code_and_metadata_size": 17446501,
+      "bytecode_and_metadata_size": 4438640,
+      "external_script_source_size": 3806936,
+      "cpu_profiler_metadata_size": 0
+    },
+    "source_hashes": {
+      "capture.cjs": "d20eaa073b13fd11a029bebc101dd1212b4de2a7c82f4013ac770aff65699a11",
+      "workload.mjs": "46a0d5ebe65647242b86da8d55ba6c2555e0504c1ad52ec9ee6b7afa2b9c19be",
+      "run.py": "09644fae881ad48f20c2206d4abbbbf70c7013f60fde21f36ca53b45af9563e3",
+      "analyze.cpp": "bca81d3ebe9f1742a46b953e5cfa2b053268669de9e31374be2b332eaf9966ca",
+      "webpack.cjs": "db0f9b401b4c2bd7725f9676f6623fd0fba6cbc5ae71fc002424ae68b9b91aff",
+      "README.md": "31473d1927a7ae9750ce6c00400d549d2e07799a35d372fd3947a2402f8d46b5"
+    },
+    "worker_replacements": 0,
+    "oom_kills": 0,
+    "browser_errors": [],
+    "compiler_config": [
+      {
+        "name": "client",
+        "cache": false,
+        "plugins": [
+          "MemoryWithGcCachePlugin",
+          "ReactFreshWebpackPlugin",
+          "ProvidePlugin",
+          "DefinePlugin",
+          "ReactLoadablePlugin",
+          "DropClientPage",
+          "IgnorePlugin",
+          "NextJsRequireCacheHotReloader",
+          "HotModuleReplacementPlugin",
+          "BuildManifestPlugin",
+          "ProfilingPlugin",
+          "WellKnownErrorsPlugin",
+          "CopyFilePlugin",
+          "AppBuildManifestPlugin",
+          "ClientReferenceManifestPlugin",
+          "NextFontManifestPlugin",
+          "Function",
+          "EvalSourceMapDevToolPlugin",
+          "NextMiniCssExtractPlugin",
+          "Probe"
+        ],
+        "eval_no_sources": [
+          false
+        ],
+        "eval_vendor_exclusion": [
+          true
+        ]
+      },
+      {
+        "name": "edge-server",
+        "cache": false,
+        "plugins": [
+          "MemoryWithGcCachePlugin",
+          "ProvidePlugin",
+          "DefinePlugin",
+          "DropClientPage",
+          "IgnorePlugin",
+          "NextJsRequireCacheHotReloader",
+          "HotModuleReplacementPlugin",
+          "PagesManifestPlugin",
+          "MiddlewarePlugin",
+          "ProfilingPlugin",
+          "WellKnownErrorsPlugin",
+          "FlightClientEntryPlugin",
+          "NextTypesPlugin",
+          "Function",
+          "EvalSourceMapDevToolPlugin",
+          "Probe"
+        ],
+        "eval_no_sources": [
+          false
+        ],
+        "eval_vendor_exclusion": [
+          true
+        ]
+      },
+      {
+        "name": "server",
+        "cache": false,
+        "plugins": [
+          "NormalModuleReplacementPlugin",
+          "MemoryWithGcCachePlugin",
+          "DefinePlugin",
+          "IgnorePlugin",
+          "NextJsRequireCacheHotReloader",
+          "PagesManifestPlugin",
+          "ProfilingPlugin",
+          "WellKnownErrorsPlugin",
+          "FlightClientEntryPlugin",
+          "NextTypesPlugin",
+          "Function",
+          "EvalSourceMapDevToolPlugin",
+          "Probe"
+        ],
+        "eval_no_sources": [
+          false
+        ],
+        "eval_vendor_exclusion": [
+          true
+        ]
+      }
+    ]
+  }
+]
