@@ -481,3 +481,22 @@ Product Owner Acceptance:72h review authorized; threshold extension/rollback/eng
 Remaining Blockers:false-alert adjudication, exact historical cutoff/full nine-gate history, per-domain Mart commit clocks,24h review evidence and condition-use-age readiness UNKNOWN.
 Next Action:Owner checkpoint12 Oktober20:00WIB; manual hard expiry13Oktober00:00WIB; separate approval required before any policy action.
 Evidence:[72h audit](reliability-cockpit/docs/nadi-p1-fresh-review-72h.md). Verdict monitoringPARTIAL/productUNKNOWN, latest8 PASS/1 UNKNOWN; original evidence/pilot/35 containers/preview/assets preserved. Source GET, database mutation, migration, retry, restart and policy action all 0.
+
+
+## 2026-10-12 — NADI-DEV-UX-STATUS-01 — compact diagnostics candidate
+
+Date: 2026-10-12 (Asia/Jakarta)
+Task ID: NADI-DEV-UX-STATUS-01
+Objective: replace oversized development banner with a gated topbar disclosure while retaining all diagnostics and integrity checks.
+Branch: codex/nadi-dev-ux-status-01, isolated from verified main.
+Commit SHA: baseline 2e190c2b51fde50e0467d6d5165ebb1060902867; exact candidate HEAD recorded in PR handoff.
+PR: focused compact-status candidate; no automatic merge.
+Implementation Status: IMPLEMENTED — development-only slot, accessible dropdown, verified/warning/unavailable states.
+Test Status: TESTED — TypeScript/lint/build/product safety, 12 status/gating assertions, existing frontend regression and 455 network-isolated browser checks PASS.
+CI Status: exact-head backend/frontend checked separately after push; not substituted for runtime visibility.
+Merge Status: NOT MERGED.
+Development Visibility: candidate component screenshots only; actual HTTPS3000 retains f06abce76f8ef9b967ee5b1c2e0802112d77b056 and QA backend b348235ce6f82c84873a65344ad2ef5fe276987d. No service restarted.
+Product Owner Acceptance: pending visual review.
+Remaining Blockers: original running checkout is dirty from Next-generated next-env.d.ts cache reference. Official preflight denies dirty source; task prohibits overwrite/reset. Live candidate not activated.
+Next Action: review focused PR and separately authorize safe original-source reconciliation before official frontend-only cutover; do not suppress integrity checks.
+Evidence: [implementation/root cause/review](reliability-cockpit/docs/nadi-dev-ux-status-01.md), [synthetic screenshot index](reliability-cockpit/docs/evidence/nadi-dev-ux-status-01/README.md). Existing frontend/API, 35 containers, original PNG/workbook/worktrees/QA data preserved; no DB or policy changes.

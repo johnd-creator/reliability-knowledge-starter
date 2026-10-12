@@ -1,6 +1,7 @@
 import {ThemeProvider} from "../../components/ThemeProvider";
 // Browser-only test entry: actual candidate components, no listening server.
 import React from 'react';
+import DevelopmentStatus from '../../components/DevelopmentStatus';
 import {createRoot} from 'react-dom/client';
 import {AppShell} from '../../components/AppNavigation';
 import Executive from '../../components/ExecutiveOverview';
@@ -40,5 +41,5 @@ const assetParams=Promise.resolve({canonicalId:[decodeURIComponent(path.split('/
 const content=path.startsWith('/assets/')?<Asset params={assetParams}/>:pages[path];
 createRoot(document.getElementById('root')!).render(<ThemeProvider>{path==='/login'
  ? <main id="main-content" className="authentication-layout">{content}</main>
- : <AppShell engineeringVisible liveDevelopment><aside role="note" className="scope-banner engineering-demo"><strong>DEMO — QA SINTETIS · UJI KOMPONEN KANDIDAT</strong><span>Fixture browser terisolasi; bukan data pembangkit atau runtime yang diterapkan.</span></aside>{content}</AppShell>}
+ : <AppShell engineeringVisible liveDevelopment developmentStatus={<DevelopmentStatus/>}><aside role="note" className="scope-banner engineering-demo"><strong>DEMO — QA SINTETIS · UJI KOMPONEN KANDIDAT</strong><span>Fixture browser terisolasi; bukan data pembangkit atau runtime yang diterapkan.</span></aside>{content}</AppShell>}
 </ThemeProvider>);

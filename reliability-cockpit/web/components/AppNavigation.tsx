@@ -22,7 +22,7 @@ export function NavIcon({ name }: { name: string }) {
   return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={iconPaths[name] ?? iconPaths.overview} /></svg>;
 }
 
-export function AppShell({ children, engineeringVisible = false, liveDevelopment = false }: { children: ReactNode; engineeringVisible?: boolean; liveDevelopment?: boolean }) {
+export function AppShell({ children, engineeringVisible = false, liveDevelopment = false, developmentStatus }: { children: ReactNode; engineeringVisible?: boolean; liveDevelopment?: boolean; developmentStatus?: ReactNode }) {
   const pathname = usePathname() ?? "/";
   const group = navigationGroup(pathname);
   const [expanded, setExpanded] = useState<Record<string, boolean>>({ assets: group === "assets", integration: group === "integration" });
@@ -95,7 +95,7 @@ export function AppShell({ children, engineeringVisible = false, liveDevelopment
       <button type="button" className="sidebar-collapse" onClick={() => setCollapsed(!collapsed)} aria-label={collapsed ? idText("Expand sidebar") : idText("Collapse sidebar")} aria-expanded={!collapsed}><span aria-hidden="true">{collapsed ? "»" : "«"}</span><span className="nav-copy">{idText("Collapse sidebar")}</span></button>
     </aside>
     <div className="nadi-content" inert={drawer ? true : undefined}>
-      <header className="nadi-topbar"><div className="topbar-context"><button ref={menuButton} type="button" className="menu-toggle icon-button" aria-label={idText("Open navigation")} aria-expanded={drawer} aria-controls="nadi-sidebar" onClick={() => { setCollapsed(false); setDrawer(true); }}>☰</button><div><span className="topbar-kicker">{idText("NADI / RELIABILITY PLATFORM")}</span><span className="topbar-title">PLTU Banten 1 Suralaya</span></div></div><div className="topbar-actions"><span className="topbar-status">{idText("Mart read-only")} <span className="scope-chip">BSR / IP</span></span><ThemeToggle /></div></header>
+      <header className="nadi-topbar"><div className="topbar-context"><button ref={menuButton} type="button" className="menu-toggle icon-button" aria-label={idText("Open navigation")} aria-expanded={drawer} aria-controls="nadi-sidebar" onClick={() => { setCollapsed(false); setDrawer(true); }}>☰</button><div><span className="topbar-kicker">{idText("NADI / RELIABILITY PLATFORM")}</span><span className="topbar-title">PLTU Banten 1 Suralaya</span></div></div><div className="topbar-actions"><span className="topbar-status">{idText("Mart read-only")} <span className="scope-chip">BSR / IP</span></span>{liveDevelopment && developmentStatus}<ThemeToggle /></div></header>
       <main id="main-content" tabIndex={-1} className="nadi-main">{children}</main>
     </div>
   </div>;
