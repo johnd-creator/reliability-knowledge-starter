@@ -12,6 +12,7 @@ const bundle=await browserBundle(),browser=await chromium.launch({headless:true}
 const check=(name,value)=>{assert.ok(value,name);checks.push(name);console.log('PASS '+name);};
 const context=await browser.newContext({ignoreHTTPSErrors:true,viewport:{width:1440,height:1086}}),page=await context.newPage();
 page.on('pageerror',error=>{errors.push(error.message);console.error('Candidate browser exception:',error.message);});
+let devMode='approved';
 let role='AUTHOR',subject='demo-author',signedIn=true,qaFailure=0,factualFailure=false,saveFailure=true,stale=false,loginDelay=0;
 const asset=fixture.asset.canonical_id,now='2026-10-11T00:00:00Z';
 let cases=[],recommendations=structuredClone(fixture.recommendations),advisories=[],ack=null;
@@ -26,6 +27,16 @@ await context.route('**/*',async route=>{
  if(path==='/candidate.css')return route.fulfill({contentType:'text/css',body:bundle.css});
  if(path==='/logo_nadi.png')return route.fulfill({contentType:'image/png',body:readFileSync('public/logo_nadi.png')});
  if(request.isNavigationRequest())return route.fulfill({contentType:'text/html; charset=utf-8',body:'<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NADI QA SINTETIS — kandidat lokalisasi</title><link rel="stylesheet" href="/candidate.css"></head><body><div id="root"></div><script src="/candidate.js"></script></body></html>'});
+ if(path==='/api/development/status'){
+  if(devMode==='unavailable')return route.fulfill({status:503,json:{}});
+  const status={environment:'DEVELOPMENT',branch:'codex/DEMO-status',sha:'a'.repeat(40),launched_sha:'a'.repeat(40),dirty:false,backend:'AVAILABLE',factual_backend:'AVAILABLE',database:'DISPOSABLE_TEST',database_identity:'nadi_live_dev_test',engineering:true,backend_sha:'b'.repeat(40),compatibility:'VERIFIED_SOURCE_EQUIVALENT',compatibility_approval:'c'.repeat(64),launcher_source_sha:'d'.repeat(40),launcher_sha256:'e'.repeat(64),stale:false};
+  if(devMode==='dirty'){status.dirty=true;status.stale=true;status.compatibility='UNVERIFIED';status.compatibility_approval=null;}
+  if(devMode==='stale')status.stale=true;
+  if(devMode==='service')status.backend='UNAVAILABLE';
+  if(devMode==='same'){status.backend_sha=status.sha;status.compatibility='SAME_SOURCE';status.compatibility_approval=null;}
+  if(devMode==='unknown'){status.sha='UNKNOWN';status.dirty=null;status.compatibility='UNVERIFIED';status.stale=true;}
+  return route.fulfill({json:status});
+ }
  if(path.startsWith('/api/engineering-qa/')){
   const relative=path.slice('/api/engineering-qa/'.length),parts=relative.split('/'),resource=parts[0],id=decodeURIComponent(parts[1]??''),action=parts[2],body=request.postDataJSON();
   const fail=(status,code)=>route.fulfill({status,json:{detail:{code}}});
@@ -108,6 +119,33 @@ try{
  await go('/engineering/inbox?record=advisory:DEMO-ID');await button('Acknowledge receipt only').click();await page.waitForFunction(text=>[...document.querySelectorAll('button')].some(b=>b.textContent===text&&b.disabled),t('Acknowledge receipt only')); check('ACK remains receipt only',ack.meaning==='RECEIPT_ONLY_NOT_APPROVAL_OR_WORK_AUTHORIZATION');await page.reload({waitUntil:'networkidle'});check('simulated reload keeps ACK display',await button('Acknowledge receipt only').isDisabled());
  check('all protected commands retain CSRF',commands.filter(x=>x.resource!=='auth').every(x=>x.csrf==='DEMO_BROWSER_ONLY'));check('structured case observation/hypothesis preserved',cases[0].investigation.observations[0]==='Observasi asli QA SINTETIS.'&&cases[0].investigation.hypotheses[0]==='Hipotesis manusia belum tervalidasi.');
  qaFailure=403;await go('/engineering/cases');check('denied access clears previous records',await page.getByRole('alert').filter({hasText:t('Record access unavailable or denied')}).isVisible()&&await page.getByText(cases[0].title,{exact:true}).count()===0);qaFailure=0;
+ // DEV is a disclosure in the topbar, not a new content banner. All data here is fixture-only.
+ for(const width of [1440,768,390]){
+  await page.setViewportSize({width,height:1086});devMode='approved';await go('/');
+  const trigger=page.getByRole('button',{name:'Status development: Layanan dan integritas terverifikasi',exact:true});await trigger.waitFor();
+  check('DEV lives in topbar '+width,await page.locator('.nadi-topbar .dev-status-trigger').count()===1&&await page.locator('#main-content .dev-status').count()===0);
+  check('large banner absent '+width,await page.locator('.nadi-development-status').count()===0);
+  await page.screenshot({path:out+'/dev-closed-'+width+'.png',fullPage:true});
+  await trigger.focus();await page.keyboard.press('Enter');const details=page.getByRole('region',{name:'Detail status development',exact:true});await details.waitFor();
+  check('keyboard opens and focuses details '+width,await details.evaluate(n=>n===document.activeElement));
+  for(const text of ['a'.repeat(40),'b'.repeat(40),'c'.repeat(64),'nadi_live_dev_test','SINTETIS'])check('full diagnostics '+text.slice(0,12)+' '+width,(await details.innerText()).includes(text));
+  check('dev links retained '+width,await details.locator('a').count()===3);
+  check('popover contained in viewport '+width,await details.evaluate(n=>{const b=n.getBoundingClientRect();return b.left>=0&&b.right<=innerWidth&&b.top>=0&&b.bottom<=innerHeight;}));
+  await page.screenshot({path:out+'/dev-open-'+width+'.png',fullPage:true});await page.keyboard.press('Escape');check('Escape closes/returns focus '+width,await details.count()===0&&await trigger.evaluate(n=>n===document.activeElement));
+  await trigger.click();await page.locator('.topbar-title').click();check('outside closes '+width,await details.count()===0);
+  await page.getByRole('button',{name:'Ganti ke tema gelap'}).click();await trigger.click();check('dark popover '+width,await page.locator('html').getAttribute('data-theme')==='dark');await page.screenshot({path:out+'/dev-dark-'+width+'.png',fullPage:true});await page.keyboard.press('Escape');await page.getByRole('button',{name:'Ganti ke tema terang'}).click();
+ }
+ for(const mode of ['dirty','stale','service','unknown','same','unavailable']){
+  devMode=mode;await go('/');const label=mode==='same'?'Layanan dan integritas terverifikasi':mode==='unavailable'?'Status tidak tersedia':'Peringatan development';
+  const trigger=page.getByRole('button',{name:'Status development: '+label,exact:true});await trigger.waitFor();await trigger.click();const details=page.getByRole('region',{name:'Detail status development'});
+  check('truthful DEV mode '+mode,await details.isVisible());
+  if(mode==='dirty')check('uncommitted explanation retained',(await details.innerText()).includes('UNCOMMITTED'));
+  if(mode==='stale'||mode==='dirty'||mode==='unknown')check('mismatch explanation '+mode,(await details.innerText()).includes('UNKNOWN / release mismatch'));
+  if(mode==='service')check('backend unavailable disclosed',(await details.innerText()).includes('UNAVAILABLE'));
+  if(mode==='unavailable')check('endpoint unavailable distinct',(await details.innerText()).includes('Endpoint status tidak dapat dibaca'));
+  await page.keyboard.press('Escape');
+ }
+ devMode='approved';
  // Full visual route coverage, including honest unavailable/error states for absent fixture contracts.
  const routes=['/','/assets','/assets/'+encodeURIComponent(asset),'/asset-health','/maintenance','/maintenance/investigation','/work-orders','/fmea','/rcfa','/overhauls','/data-quality','/login','/pdm','/recommendations?record=recommendation:DEMO-ID','/action-board?record=recommendation:DEMO-ID','/engineering/cases?record=case:DEMO-ID','/engineering/advisories?record=advisory:DEMO-ID','/engineering/inbox?record=advisory:DEMO-ID','/engineering','/engineering/lab','/engineering/workflow','/panduan/istilah','/equipment/DEMO','/engineering/qa'];
  for(const width of (process.env.NADI_BROWSER_WIDTHS??"1440,768,390").split(",").map(Number)){
