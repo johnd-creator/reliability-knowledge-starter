@@ -519,3 +519,22 @@ Product Owner Acceptance: runtime proposal/cutover approval and sustained live a
 Remaining Blockers: explicit authorization before live runtime cutover; three official cold starts/30min stability/HMR/session/rollback gates not yet fulfilled.
 Next Action: review pin and CI, obtain explicit cutover approval, run official lifecycle and sustained acceptance; rollback if any live gate fails.
 Evidence: [runtime investigation and gates](reliability-cockpit/docs/nadi-dev-status-runtime-fix-02.md). No application UI/backend/schema/collector/freshness changes or global Node replacement.
+
+
+## 2026-10-12 — NADI-DEV-UX-STATUS-01-FIX-02 — actual sustained acceptance
+
+Date:2026-10-12 WIB
+Task ID:NADI-DEV-UX-STATUS-01-FIX-02
+Objective:controlled verified Node22 preview acceptance after explicit Owner authorization.
+Branch:codex/nadi-dev-status-runtime-fix-02 (evidence-only update after reviewed code).
+Commit SHA:frontend5e961b1bfe8ce3c34092613922c3b556de3d74a1; installed helper7fd3bdac22788ae1ac31cb8306f283c69384972d; backendb348235ce6f82c84873a65344ad2ef5fe276987d. Final evidence HEAD at PR handoff.
+PR:75+76 OPEN; no merge.
+Implementation Status:IMPLEMENTED —frontend-only pin; system Node/API/collectors unchanged.
+Test Status:TESTED —three official cold starts + actual rollback/return,95 live checks,HMR/session/reconnect; strict1813.65s/120samples and1802s/106browser navigations PASS; no abort/OOM/unscheduled restart.
+CI Status:reviewed runtime code exact-head backend/frontend PASS; evidence-only exact-head checked separately after push.
+Merge Status:NOT MERGED.
+Development Visibility:VISIBLE —sole HTTPS3000 serves exact PR75 source on Node22.23.1; approved clean provenance and both backends AVAILABLE.
+Product Owner Acceptance:controlled runtime acceptance authorized/PASS; final visual/merge decision PENDING; engineer UAT/production separate.
+Remaining Blockers:no required live runtime gate outstanding; memory headroom/trend follow-up and unproven exact Node25 trigger disclosed; Case detail not available to tested subject, not claimed live-covered.
+Next Action:Owner/senior review coordinated PR75+76; retain source/backup/rollback; no auto-merge.
+Evidence:[final actual checkpoint](reliability-cockpit/docs/nadi-dev-status-runtime-fix-02.md#controlled-live-acceptance--2026-10-12-final-checkpoint). All old sessions/records/audit/assets/35containers preserved; normal login session/audit additions retained.

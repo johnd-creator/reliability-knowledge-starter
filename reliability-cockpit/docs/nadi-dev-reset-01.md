@@ -253,3 +253,10 @@ Provision the private pin and update reviewed companion/release hashes only afte
 Product Owner cutover authorization. Existing active frontend stays running until
 source/ownership/HTTPS/backup/compatibility/pin preflight PASS. This documentation
 checkpoint does not itself prove 30-minute live acceptance.
+
+
+Node22 FIX-02 was explicitly approved and installed for the single frontend on2026-10-12.
+Three official candidate cold starts, real rollback/return, HTTPS existing-QA session,
+HMR, responsive browser checks and >30min strict stability passed; see the final
+checkpoint in the linked runtime report. Source/runtime pin checks remain fail-closed.
+Retain memory trend/headroom follow-up and independently verify any future release.
