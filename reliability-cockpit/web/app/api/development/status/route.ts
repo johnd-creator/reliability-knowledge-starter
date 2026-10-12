@@ -34,7 +34,7 @@ export async function GET(){
  const launchedSha=process.env.NADI_DEV_LAUNCHED_SHA??"UNKNOWN";
  const equivalent=worker.worker_integrity==="VERIFIED"&&backend==="AVAILABLE"&&approvedPair(envelope,sha,launchedSha,backendSha,dirty,backendHead,backendDirty);
  const compatibility=equivalent?"VERIFIED_SOURCE_EQUIVALENT":sha!=="UNKNOWN"&&sha===backendSha?"SAME_SOURCE":"UNVERIFIED";
- return NextResponse.json({...worker,environment:"DEVELOPMENT",branch,sha,dirty,backend,database,engineering,
+ return NextResponse.json({...worker,frontend_node_version:process.versions.node,frontend_v8_version:process.versions.v8,environment:"DEVELOPMENT",branch,sha,dirty,backend,database,engineering,
   factual_backend:factualBackend,database_identity:databaseIdentity,primary_origin:"https://localhost:3000",
   launched_sha:launchedSha,frontend_sha:sha,backend_sha:backendSha,
   compatibility,compatibility_approval:equivalent?envelope?.approval_id:null,

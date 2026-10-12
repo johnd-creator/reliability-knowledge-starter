@@ -16,7 +16,7 @@ export function developmentTone(status:DevelopmentSnapshot|null):"verified"|"war
  const sha=(value:string)=>/^[a-f0-9]{40}$/.test(value);
  const pair=status.compatibility==="SAME_SOURCE"?status.sha===status.backend_sha:
   status.compatibility==="VERIFIED_SOURCE_EQUIVALENT"&&!!status.compatibility_approval&&/^[a-f0-9]{64}$/.test(status.compatibility_approval);
- return status.dirty===false&&status.stale===false&&sha(status.sha)&&sha(status.backend_sha)&&status.launched_sha===status.sha&&pair&&
+ return (!status.worker_integrity||status.worker_integrity==="VERIFIED")&&status.dirty===false&&status.stale===false&&sha(status.sha)&&sha(status.backend_sha)&&status.launched_sha===status.sha&&pair&&
   status.backend==="AVAILABLE"&&status.factual_backend==="AVAILABLE"?"verified":"warning";
 }
 
