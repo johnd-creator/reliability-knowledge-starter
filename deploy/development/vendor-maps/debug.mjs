@@ -1,0 +1,61 @@
+import fs from 'node:fs';
+import {createRequire} from 'node:module';
+import {pathToFileURL} from 'node:url';
+import assert from 'node:assert/strict';
+const [port,web,out]=process.argv.slice(2),base='http://127.0.0.1:'+port;
+const req=createRequire(web+'/package.json');
+const {SourceMapConsumer}=req('next/dist/compiled/source-map08');
+const {chromium}=await import(pathToFileURL(process.env.NADI_PLAYWRIGHT_MODULE).href);
+const browser=await chromium.launch({headless:true}),context=await browser.newContext(),page=await context.newPage();
+await context.route('**/*',r=>new URL(r.request().url()).origin===base?r.continue():r.abort());
+const cdp=await context.newCDPSession(page),scripts=[];await cdp.send('Debugger.enable');
+cdp.on('Debugger.scriptParsed',s=>scripts.push(s));
+const result={scope:'DISPOSABLE SYNTHETIC; no real QA',checks:{}};
+const client=web+'/app/fix06-debug/Client.tsx',original=fs.readFileSync(client,'utf8');
+try {
+ await page.goto(base+'/fix06-debug',{waitUntil:'networkidle'});
+ await page.getByRole('button',{name:'Counter 0'}).click();
+ await page.getByRole('button',{name:'Application error',exact:true}).click();
+ const stack=await page.evaluate(()=>window.__fix06Stack);
+ const script=scripts.find(s=>s.url.includes('fix06-debug/Client.tsx')&&s.sourceMapURL?.startsWith('data:'));
+ assert(script,'application eval script with inline map');
+ const map=JSON.parse(Buffer.from(script.sourceMapURL.split(',')[1],'base64').toString());
+ const source=map.sources.find(s=>s.includes('fix06-debug/Client.tsx'));
+ const line=original.split('\n').findIndex(s=>s.includes("throw new Error"))+1;
+ const consumer=await new SourceMapConsumer(map);
+ const generated=consumer.generatedPositionFor({source,line,column:2});assert(generated.line);
+ const mapped=consumer.originalPositionFor({line:generated.line,column:generated.column});assert.equal(mapped.line,line);
+ assert(map.sourcesContent.some(s=>s===original));
+ const frame=stack.split('\n').find(s=>s.includes('Client.tsx'));
+ const pos=frame?.match(/:(\d+):(\d+)\)?$/);assert(pos,'actual error frame coordinates');
+ const errorMapped=consumer.originalPositionFor({line:Number(pos[1]),column:Number(pos[2])-1});assert.equal(errorMapped.line,line);
+ const clientFrames=req('next/dist/compiled/stacktrace-parser').parse(stack).map(f=>({file:f.file,methodName:f.methodName,line1:f.lineNumber,column1:f.column}));
+ const mappedClient=await page.evaluate(async frames=>(await fetch('/__nextjs_original-stack-frames',{method:'POST',body:JSON.stringify({frames,isServer:false,isEdgeServer:false,isAppDirectory:true})})).json(),clientFrames);
+ assert(mappedClient.some(f=>f.value?.originalStackFrame?.line1===line && f.value.originalStackFrame.file.includes('Client.tsx')),'Next client original frame');
+ result.checks.nextClientOriginalFrame=true;
+ result.checks.applicationStack={originalFile:'app/fix06-debug/Client.tsx',expectedLine:line,actualLine:errorMapped.line,sourceContent:true};
+ const bp=await cdp.send('Debugger.setBreakpoint',{location:{scriptId:script.scriptId,lineNumber:generated.line-1,columnNumber:generated.column}});
+ const pause=new Promise((resolve,reject)=>{const t=setTimeout(()=>reject(Error('breakpoint timeout')),10000);cdp.once('Debugger.paused',async e=>{clearTimeout(t);await cdp.send('Debugger.resume');resolve(e);});});
+ await page.getByRole('button',{name:'Application error',exact:true}).click();const paused=await pause;
+ const location=paused.callFrames[0].location;const at=consumer.originalPositionFor({line:location.lineNumber+1,column:location.columnNumber});assert.equal(at.line,line);
+ result.checks.breakpoint={originalLine:at.line,hit:true};await cdp.send('Debugger.removeBreakpoint',{breakpointId:bp.breakpointId});consumer.destroy();
+ await page.getByRole('button',{name:'Vendor error',exact:true}).click();assert.match(await page.evaluate(()=>window.__fix06Vendor),/React.Children.only/);result.checks.vendorError={actionableMessage:true,stackHasLocation:/:\d+:\d+/.test(await page.evaluate(()=>window.__fix06Vendor))};
+ let rsc=0;page.on('response',r=>{if(r.headers()['content-type']?.includes('text/x-component'))rsc++;});
+ await page.getByRole('link',{name:'RSC navigation'}).click();await page.getByRole('heading',{name:'FIX06 RSC SENTINEL'}).waitFor();
+ await page.getByRole('link',{name:'Back to client'}).click();await page.getByRole('heading',{name:'FIX06 SYNTHETIC DEBUG ONLY'}).waitFor();assert(rsc>0);result.checks.rscResponses=rsc;
+ await page.getByRole('button',{name:'Counter 0'}).click();
+ const docId=await page.evaluate(()=>window.__fix06Document=crypto.randomUUID());
+ for(let i=1;i<=3;i++){
+  fs.writeFileSync(client,original.replace('HMR_MARKER_BASE','HMR_MARKER_'+i));await page.getByText('HMR_MARKER_'+i,{exact:true}).waitFor({timeout:45000});
+  assert.equal(await page.evaluate(()=>window.__fix06Document),docId,'HMR must not reload document');await page.getByRole('button',{name:'Counter 1'}).waitFor();
+  fs.writeFileSync(client,original);await page.getByText('HMR_MARKER_BASE',{exact:true}).waitFor({timeout:45000});assert.equal(await page.evaluate(()=>window.__fix06Document),docId);
+ }
+ result.checks.hmr={cycles:3,noReload:true,statePreserved:true};
+ const server=await page.evaluate(async()=>(await fetch('/fix06-debug/api')).json());assert.equal(server.nativeSourceMaps,true);
+ const serverFrames=req('next/dist/compiled/stacktrace-parser').parse(server.stack).map(f=>({file:f.file,methodName:f.methodName,line1:f.lineNumber,column1:f.column}));
+ const mappedServer=await page.evaluate(async frames=>(await fetch('/__nextjs_original-stack-frames',{method:'POST',body:JSON.stringify({frames,isServer:true,isEdgeServer:false,isAppDirectory:true})})).json(),serverFrames);
+ assert(mappedServer.some(f=>f.value?.originalStackFrame?.line1===4 && f.value.originalStackFrame.file.includes('fix06-debug/api/route.ts')),'Next server original frame');
+ result.checks.serverStack={originalFile:'app/fix06-debug/api/route.ts',originalLine:4,nativeSourceMaps:true};
+ result.completed=true;
+} catch(e){result.completed=false;result.failure=e.message;throw e;}
+finally {fs.writeFileSync(client,original);fs.writeFileSync(out+'/browser-result.json',JSON.stringify(result,null,2));await browser.close();}
