@@ -1,0 +1,33 @@
+'use client';
+import Link from 'next/link';
+import {useState} from 'react';
+import type {Inspection,QaSession} from '../lib/product-records';
+import type {InspectionDraft} from '../lib/pdm-input';
+import type {CaseDraft,CaseRecord} from '../lib/case-records';
+import {emptyDraft} from '../lib/case-records';
+import {engineeringRequest} from '../lib/engineering-http';
+import {usePdmDraft} from './PdmDraftContext';
+import {useQaCommand} from './useQaCommand';
+import PdmMeasurementForm from './PdmMeasurementForm';
+import InspectionDetail from './InspectionDetail';
+import CaseForm from './CaseForm';
+import {Button,Feedback,SectionCard} from './ui';
+export default function PdmInspectionWorkflow({initial,session,onExpired,onChanged}:{initial:Inspection;session:QaSession;onExpired:()=>void;onChanged:()=>void}){
+ const recovery=usePdmDraft()?.recovery;
+ const [row,setRow]=useState(initial),[editing,setEditing]=useState(recovery?.subject===session.subject&&recovery?.base?.record_id===initial.record_id),[reason,setReason]=useState(''),[creatingCase,setCreatingCase]=useState(false),[newCase,setNewCase]=useState<CaseRecord|null>(null),[linked,setLinked]=useState(false),[evidenceVersion,setEvidenceVersion]=useState(initial.revision);
+ const cmd=useQaCommand(session,onExpired);
+ const author=session.roles.includes('AUTHOR')&&row.created_by===session.subject;
+ const independent=session.roles.includes('REVIEWER')&&![row.created_by,row.inspector_ref,...row.contributors??[]].includes(session.subject);
+ async function latest(){try{setRow(await engineeringRequest('inspections/'+encodeURIComponent(row.record_id)) as Inspection);}catch{onExpired();}}
+ async function action(name:string,payload:Record<string,unknown>){const next=await cmd.run<Inspection>(`inspections/${encodeURIComponent(row.record_id)}/${name}`,'POST',{expected_revision:row.revision,...payload});if(next){setRow(next);onChanged();}}
+ async function save(draft:InspectionDraft,expectedRevision=row.revision){const next=await cmd.run<Inspection>('inspections/'+encodeURIComponent(row.record_id),'PUT',{draft,expected_revision:expectedRevision});if(next){setRow(next);setEditing(false);onChanged();return true;}return false;}
+ async function linkCase(candidate:CaseRecord){const next=await cmd.run<CaseRecord>(`cases/${encodeURIComponent(candidate.case_id)}/evidence`,'POST',{expected_revision:candidate.revision,kind:'MANUAL_INSPECTION',record_id:row.record_id,mode:'FROZEN_SNAPSHOT',expected_inspection_revision:evidenceVersion});if(next){setNewCase(next);setLinked(true);setCreatingCase(false);}}
+ async function createCase(draft:CaseDraft){let candidate=newCase;if(!candidate){candidate=await cmd.run<CaseRecord>('cases','POST',{draft});if(!candidate)return;setNewCase(candidate);}await linkCase(candidate);}
+ const caseInitial=emptyDraft(row.canonical_asset_id);caseInitial.investigation={...caseInitial.investigation,operating_context:row.operating_context??'',observations:row.observations,hypotheses:row.interpretations};
+ return <><InspectionDetail row={row}/><SectionCard><h2>Workflow inspeksi berotorisasi</h2><p>DRAFT → SUBMITTED → UNDER_REVIEW → APPROVED / RETURNED / REJECTED. APPROVED berarti review rekam NADI; kondisi aset tetap belum dinilai.</p>{cmd.error&&<Feedback error>{cmd.error}</Feedback>}{cmd.notice&&<Feedback>{cmd.notice}</Feedback>}
+ <div className="engineering-actions"><Button disabled={cmd.busy} onClick={latest}>Baca revisi terbaru</Button>{author&&row.status==='DRAFT'&&<><Button disabled={cmd.busy} onClick={()=>setEditing(true)}>Ubah draf inspeksi</Button><Button disabled={cmd.busy||editing} variant="primary" onClick={()=>action('submit',{})}>Ajukan inspeksi</Button></>}</div>
+ <label>Alasan review / revisi<textarea className="input-control" value={reason} maxLength={6000} onChange={e=>setReason(e.target.value)}/></label><div className="engineering-actions">{independent&&row.status==='SUBMITTED'&&<Button disabled={cmd.busy||!reason.trim()} onClick={()=>action('begin_review',{reason})}>Mulai review independen</Button>}{independent&&['UNDER_REVIEW','IN_REVIEW'].includes(row.status)&&(!row.review_started_by||row.review_started_by===session.subject)&&[['APPROVED','Setujui rekam inspeksi'],['RETURNED','Kembalikan untuk koreksi'],['REJECTED','Tolak rekam inspeksi']].map(([decision,label])=><Button key={decision} disabled={cmd.busy||!reason.trim()} onClick={()=>action('review',{decision,reason})}>{label}</Button>)}{author&&['RETURNED','REJECTED'].includes(row.status)&&<Button disabled={cmd.busy||!reason.trim()} onClick={()=>action('revise',{reason})}>Revisi rekam dikembalikan / ditolak</Button>}</div>
+ {row.status==='APPROVED'&&session.roles.includes('AUTHOR')&&<><h3>Analisis Engineering dari evidence yang direview</h3><p>Inspeksi exact {row.record_id} · r{row.revision}. Snapshot dibekukan server dan revisi diperiksa ulang; tidak ada diagnosis atau rekomendasi otomatis.</p>{!newCase&&<Button disabled={cmd.busy} onClick={()=>{setEvidenceVersion(row.revision);setCreatingCase(true);}}>Mulai Engineering Case</Button>}{creatingCase&&!newCase&&<CaseForm initial={caseInitial} assets={[row.canonical_asset_id]} busy={cmd.busy} onSave={createCase} onCancel={()=>setCreatingCase(false)}/>}</>}
+ {newCase&&<Feedback>Case draf {newCase.case_id} sudah tersimpan. {linked?'Evidence versi exact telah ditautkan.':'Evidence belum ditautkan; tidak ada klaim workflow selesai.'}<div className="engineering-actions">{!linked&&<Button disabled={cmd.busy} onClick={()=>linkCase(newCase)}>Coba tautkan versi evidence yang sama</Button>}<Link className="button secondary" href={'/engineering/cases?record='+encodeURIComponent(newCase.case_id)}>Buka workflow Case yang ada</Link></div></Feedback>}
+ </SectionCard>{editing&&author&&<PdmMeasurementForm session={session} initial={row} busy={cmd.busy} onSave={save} onCancel={()=>setEditing(false)}/>}</>;
+}

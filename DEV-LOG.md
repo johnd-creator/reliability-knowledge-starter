@@ -481,3 +481,21 @@ Product Owner Acceptance:72h review authorized; threshold extension/rollback/eng
 Remaining Blockers:false-alert adjudication, exact historical cutoff/full nine-gate history, per-domain Mart commit clocks,24h review evidence and condition-use-age readiness UNKNOWN.
 Next Action:Owner checkpoint12 Oktober20:00WIB; manual hard expiry13Oktober00:00WIB; separate approval required before any policy action.
 Evidence:[72h audit](reliability-cockpit/docs/nadi-p1-fresh-review-72h.md). Verdict monitoringPARTIAL/productUNKNOWN, latest8 PASS/1 UNKNOWN; original evidence/pilot/35 containers/preview/assets preserved. Source GET, database mutation, migration, retry, restart and policy action all 0.
+
+## 2026-10-13 — NADI-PDM-CENTER-INPUT-01
+
+Date: 2026-10-13 (Asia/Jakarta)
+Task ID: NADI-PDM-CENTER-INPUT-01
+Objective: Native multi-point engineer entry, authorized original-event history, safe scatter and existing review/Case handoff.
+Branch: codex/nadi-pdm-center-input-01
+Commit SHA: base main 2e190c2b51fde50e0467d6d5165ebb1060902867; exact candidate HEAD in PR handoff.
+PR: Separate DRAFT candidate; no automatic merge.
+Implementation Status: IMPLEMENTED within strict InspectionDraft v1.1 and isolated QA contracts; field/template compatibility candidates only.
+Test Status: TESTED —41 focused backend tests; broader selection119 executed PASS/58 PostgreSQL skips;16 input safety assertions;395 existing component-browser checks; isolated PdM checks and1440/768/390 screenshots; TypeScript/lint/build/diff checks. CI disposable PostgreSQL qualification remains a separate exact-head gate.
+CI Status: Exact-head backend/frontend workflow extended for PdM; result independently verified on the delivery PR.
+Merge Status: NOT MERGED.
+Development Visibility: Isolated intercepted component screenshots only; official HTTPS3000 untouched and not accessed.
+Product Owner Acceptance: Task implementation authorized; final visual review PENDING. ENGINEER APPROVED and OPERATIONALLY ACCEPTED remain PENDING/NO.
+Remaining Blockers: Q01–Q10 field/point/instrument/procedure mappings, approved cross-acquisition comparison, attachment custody, real UAT and operational activation. QA filtered totals scan authorized documents; operational scale qualification pending.
+Next Action: Review focused DRAFT PR/evidence; validate engineering fields and compatibility separately before any runtime selection or activation.
+Evidence: [implementation/self-review](reliability-cockpit/docs/nadi-pdm-center-input-01.md), [isolated screenshots/checks](reliability-cockpit/docs/evidence/nadi-pdm-center-input-01/README.md). Original assets/workbook/PR75–81 preserved; no active DB/session/source/container access, migrations, restarts, cutover or freshness policy changes.

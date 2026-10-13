@@ -1,0 +1,35 @@
+import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
+import {mkdtempSync,rmSync} from 'node:fs';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+import {createRequire} from 'node:module';
+const temp=mkdtempSync(join(tmpdir(),'nadi-pdm-input-'));
+let checks=0;const test=(name,fn)=>{fn();checks++;console.log('PASS '+name);};
+try{
+ execFileSync(process.execPath,['node_modules/typescript/bin/tsc','lib/pdm-input.ts','--outDir',temp,'--target','ES2022','--module','commonjs','--skipLibCheck'],{stdio:'pipe'});
+ const {buildDraft,newEntry,emptyRow,rawPlot,inputContexts,fromInspection}=createRequire(import.meta.url)(join(temp,'pdm-input.js'));
+ const e=newEntry('asset:SYNTHETIC:A');Object.assign(e,{version:'candidate-1',time:'2026-10-09T08:00:00+07:00',context:'SYNTHETIC',instrument:'SYNTHETIC-I',procedure:'SYNTHETIC-P',orientation:'SYNTHETIC-O'});
+ e.rows=Array.from({length:4},(_,i)=>({...emptyRow('row-'+i),point:'point:SYNTHETIC',quantity:'synthetic_quantity',kind:['NUMERIC','UNKNOWN','TEXT','BOOLEAN'][i],value:['0','','trace','false'][i],unit:i===1?'':'unit-A',time:['2026-10-09T01:00:00Z','2026-10-09T01:02:00Z','2026-10-09T01:13:00Z','2026-10-09T02:00:00Z'][i]}));
+ const draft=buildDraft(e,'synthetic-author',[e.asset],undefined,Date.parse('2026-10-10T00:00:00Z'));
+ test('zero/null/text/false remain original types',()=>assert.deepEqual(draft.measurements.map(x=>x.value),[0,null,'trace',false]));
+ test('original units and sparse times retained',()=>{assert.equal(draft.measurements[1].unit,null);assert.equal(draft.measurements[2].measured_at,e.rows[2].time);assert.equal(draft.inspected_at,e.time);});
+ test('blank numeric not zero',()=>assert.throws(()=>buildDraft({...e,rows:[{...e.rows[0],value:''}]},'x',[e.asset])));
+ test('unknown ignores stale numeric entry',()=>assert.equal(buildDraft({...e,rows:[{...e.rows[0],kind:'UNKNOWN',value:'44'}]},'x',[e.asset]).measurements[0].value,null));
+ test('foreign asset refused',()=>assert.throws(()=>buildDraft(e,'x',['asset:FOREIGN'])));
+ test('unknown method refused',()=>assert.throws(()=>buildDraft({...e,method:'PD'},'x',[e.asset])));
+ test('naive or future timestamp refused',()=>{for(const time of ['2026-10-09T08:00:00','2026-02-30T00:00:00Z','2999-01-01T00:00:00Z'])assert.throws(()=>buildDraft({...e,time},'x',[e.asset]));});
+ test('empty observation remains unknown, not healthy',()=>assert.deepEqual(draft.observations,[]));
+ test('bounded rows/fields and nonblank hypothesis',()=>{assert.throws(()=>buildDraft({...e,rows:Array(101).fill(e.rows[0])},'x',[e.asset]));assert.throws(()=>buildDraft({...e,hypothesis:' '},'x',[e.asset]));});
+ test('three versioned contexts have no fabricated workbook fields',()=>{assert.deepEqual(inputContexts.map(x=>x.label),['AREA FAN','AREA MILL','Logsheet 6 kV']);assert.ok(inputContexts.every(x=>!x.units&&!x.thresholds));});
+ test('native metadata remains bounded and metadata-only',()=>{const metadata={ref:'attachment:SYNTHETIC',filename:'synthetic.csv',type:'text/csv',size:'0',sha256:''};const result=buildDraft({...e,metadata},'x',[e.asset]);assert.equal(result.attachments[0].size_bytes,0);assert.equal(result.attachments[0].status,'METADATA_ONLY_NOT_UPLOADED');for(const extra of [{filename:'../secret'},{size:'-1'},{type:'text/html'},{sha256:'invalid'}])assert.throws(()=>buildDraft({...e,metadata:{...metadata,...extra}},'x',[e.asset]));});
+ const row={...draft,record_id:'inspection:SYNTHETIC',revision:1,status:'DRAFT',created_by:'synthetic-author',attachments:[{attachment_ref:'attachment:SYNTHETIC'}],case_refs:['case:SYNTHETIC'],method_extension:{...draft.method_extension,legacy_sample_id:'legacy'}};
+ test('round-trip revisions preserve attachments/links/unknown extension',()=>{const next=buildDraft(fromInspection(row),'synthetic-author',[e.asset],row);assert.deepEqual(next.attachments,row.attachments);assert.deepEqual(next.case_refs,row.case_refs);assert.equal(next.method_extension.legacy_sample_id,'legacy');});
+ const event=(measurement,index=0)=>({record_id:row.record_id,revision:1,measurement_index:index,canonical_asset_id:e.asset,method:e.method,method_version:e.version,operating_context:e.context,method_extension:draft.method_extension,measurement});
+ const events=[event(draft.measurements[0]),event({...draft.measurements[0],value:4.2,measured_at:'2026-10-09T02:51:00Z'},1)];
+ test('single acquisition sparse scatter has original samples only',()=>{const plot=rawPlot(events);assert.equal(plot.points.length,2);assert.equal(plot.points[0].value,0);assert.equal(plot.points[1].time-plot.points[0].time,111*60000);});
+ test('cross inspection never equivalence from matching labels',()=>assert.equal(rawPlot([events[0],{...events[1],record_id:'inspection:OTHER'}]).points.length,0));
+ test('different unit point quantity procedure regime refused',()=>{for(const other of [{measurement:{...events[1].measurement,unit:'unit-B'}},{measurement:{...events[1].measurement,point_ref:'point:B'}},{measurement:{...events[1].measurement,quantity:'other'}},{method_extension:{...draft.method_extension,procedure_ref:'other'}},{operating_context:'different'}])assert.equal(rawPlot([events[0],{...events[1],...other}]).points.length,0);});
+ test('unknown instrument/null/time no fabricated plot',()=>{for(const other of [{method_extension:{}},{measurement:{...events[0].measurement,value:null}},{measurement:{...events[0].measurement,measured_at:null}},{measurement:{...events[0].measurement,provenance:'PI'}}])assert.equal(rawPlot([{...events[0],...other}]).points.length,0);});
+ console.log('PdM input safety checks: '+checks);
+}finally{rmSync(temp,{recursive:true,force:true});}

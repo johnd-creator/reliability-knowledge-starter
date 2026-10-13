@@ -1,0 +1,73 @@
+{
+  "status": "PASS",
+  "checks": [
+    "template awaits validation",
+    "keyboard advances measurement fields",
+    "trusted-session refresh retains same-identity unsaved rows",
+    "candidate context survives authorized refresh",
+    "native controls have touch height",
+    "no page overflow measurement-input 1440",
+    "no page overflow measurement-input 768",
+    "no page overflow measurement-input 390",
+    "CSRF unchanged 1",
+    "failed save retains native rows",
+    "CSRF unchanged 2",
+    "retry uses same request ID",
+    "zero and null preserved",
+    "no page overflow inspection-detail 1440",
+    "no page overflow inspection-detail 768",
+    "no page overflow inspection-detail 390",
+    "null/incompatible context not plotted",
+    "scatter has two actual samples without interpolation",
+    "no page overflow measurement-history 1440",
+    "no page overflow measurement-history 768",
+    "no page overflow measurement-history 390",
+    "CSRF unchanged 3",
+    "author has no self-review control",
+    "CSRF unchanged 4",
+    "CSRF unchanged 5",
+    "review does not classify condition",
+    "CSRF unchanged 6",
+    "CSRF unchanged 7",
+    "handoff binds exact approved inspection revision",
+    "Case existing workflow receives exact evidence",
+    "no page overflow engineering-handoff 1440",
+    "no page overflow engineering-handoff 768",
+    "no page overflow engineering-handoff 390",
+    "denied session exposes no records",
+    "no page overflow register-dark 1440",
+    "no page overflow register-dark 768",
+    "no page overflow register-dark 390",
+    "no uncaught browser errors"
+  ],
+  "errors": [],
+  "synthetic_fixtures": true,
+  "official_runtime_access": false,
+  "commands": [
+    {
+      "resource": "inspections"
+    },
+    {
+      "resource": "inspections"
+    },
+    {
+      "resource": "inspections",
+      "action": "submit"
+    },
+    {
+      "resource": "inspections",
+      "action": "begin_review"
+    },
+    {
+      "resource": "inspections",
+      "action": "review"
+    },
+    {
+      "resource": "cases"
+    },
+    {
+      "resource": "cases",
+      "action": "evidence"
+    }
+  ]
+}

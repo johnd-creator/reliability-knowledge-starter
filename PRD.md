@@ -312,3 +312,16 @@ Tidak ada global authentication enforcement atau aktivasi operasional baru.
 `/login` is standalone without AppShell, sidebar, topbar or dashboard links. Successful existing authentication opens `/engineering/local`. Current-session logout and local-workspace expiry return to fullscreen login after clearing prior-user views. Existing factual development access and server QA/security policy remain unchanged. This UX correction is not activation of global authentication, production acceptance or engineer UAT.
 
 [Implementation, boundaries and evidence](reliability-cockpit/docs/nadi-ux-login-01.md).
+
+## FR-03/04 — PdM native input development checkpoint — 2026-10-13
+
+[NADI-PDM-CENTER-INPUT-01](reliability-cockpit/docs/nadi-pdm-center-input-01.md)
+adds a candidate native multi-point InspectionDraft v1.1 form, globally authorized
+server register/event filters, page-scoped raw-sample scatter, existing independent
+review and exact-revision Case evidence handoff. Original values/types/units/time,
+UNKNOWN/NOT_ASSESSED and informational WO ownership remain unchanged. AREA FAN,
+AREA MILL and Logsheet 6 kV are candidate workflow contexts; workbook fields and
+Q01–Q10 remain PENDING_ENGINEER_VALIDATION. No live activation, schema migration,
+Excel import, diagnosis, threshold or cross-inspection/PI comparability approval.
+Implementation/testing, DRAFT PR, engineer approval and operational acceptance are
+independent gates; see the report and official roadmap for actual delivery evidence.

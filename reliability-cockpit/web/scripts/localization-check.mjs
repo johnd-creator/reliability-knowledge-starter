@@ -20,9 +20,10 @@ try {
  check('errors retain exact security/conflict code without leaking transport details',()=>{for(const code of ['REVISION_CONFLICT','ACCESS_DENIED','CSRF_DENIED','SESSION_EXPIRED'])assert.ok(errorLabel(code).includes(code));assert.ok(!errorLabel(new Error('https://private/?password=secret')).includes('secret'));assert.equal(errorLabel('Unable to sign in. Check your credentials.'),idText('Unable to sign in. Check your credentials.'));assert.equal(errorLabel(idText('Enter a reviewer reason before a simulated decision.')),idText('Enter a reviewer reason before a simulated decision.')); });
  check('glossary is searchable in both languages and has unique anchors',()=>{assert.equal(new Set(glossary.map(x=>x.id)).size,glossary.length);assert.ok(searchGlossary('pemeliharaan').length);assert.ok(searchGlossary('acknowledgment').length);assert.equal(searchGlossary('   ').length,glossary.length);assert.equal(searchGlossary('no-such-term-1234').length,0);});
  check('candidate method rules remain pending engineer validation',()=>{for(const id of ['vibration','ir','mcsa','tribology','threshold'])assert.ok(glossary.find(x=>x.id===id)?.pending,id);assert.match(glossary.find(x=>x.id==='pd-dga').meaning,/tidak|bukan/);});
+ // Reviewed hashes: Inspection adds optional v1.1 read fields; original wire enums/values unchanged.
  const immutable={
   "lib/api.ts": "ca5ec127f433f9203cb379d68e85124f25b36534b20134f9706598066755e19e",
-  "lib/product-records.ts": "e54efa614091bc72ba9ea333815005dfdeee49d819e92447a71842081f2743f3",
+  "lib/product-records.ts": "6a79950aa1786ad9d1c9d9cdccab2abaccc6738cbd6fbe60a2ebf3dc7a670993",
   "lib/case-records.ts": "443b55be0a9bd8040e791e0dc9e6e4d3a311620c45ee93e56c15677a499df74f",
   "lib/advisory-records.ts": "d1edee16e4d68b70d9657bf9787d50f65bae62db103c3937d6f91ba5f94f779a",
   "lib/engineering.ts": "f1303806007546d0c107055c888a87d0b0f83852c89cffaa94f45bac3cf558f6",
@@ -35,7 +36,7 @@ try {
   "fixtures/ux-bundle-b.json": "aac1b608ec2b0ba9e0c99d6293b8c8bb016a3422f3a8e9eedc4118e535d8b061",
   "app/design-tokens.css": "803076930da5cce81fe32ba88bbad7ee01bd52ab782d8dbaa102a864ac76a2aa"
 };
- check('protocol, authorization, persistence, fixture values and design tokens remain byte-identical to baseline',()=>{for(const [file,hash] of Object.entries(immutable))assert.equal(createHash('sha256').update(readFileSync(file)).digest('hex'),hash,file);});
+ check('reviewed presentation contracts and unchanged authorization, fixture values and tokens retain pinned hashes',()=>{for(const [file,hash] of Object.entries(immutable))assert.equal(createHash('sha256').update(readFileSync(file)).digest('hex'),hash,file);});
  check('synthetic screen selection uses original keys independently of translated labels',()=>{for(const [file,variable] of [['components/EngineeringWorkflow.tsx','views'],['components/Phase2Workspace.tsx','screens']]){const source=readFileSync(file,'utf8');const declaration=source.match(new RegExp('const '+variable+'=([^;]+);'))[1];assert.ok(!declaration.includes('idText'));assert.doesNotMatch(source,/changeView\(idText|useState<Screen>\(idText|quantity,setQuantity\]=useState\(idText/);assert.ok(source.includes('idText('+ (variable==='views'?'x':'name')+')'));}});
  check('original reasons are preserved in synthetic command history',()=>{const source=readFileSync('components/EngineeringWorkflow.tsx','utf8');for(const reason of ['Demo workflow','Submitted demo finding','Local demo follow-up'])assert.ok(source.includes('"'+reason+'"')&&!source.includes('idText("'+reason+'")'));});
  check('translated option labels always carry a separate original value',()=>{for(const file of ['components/CaseForm.tsx','components/AdvisoryWorkspace.tsx','components/RecommendationWorkspace.tsx','components/EngineeringWorkspace.tsx']){const source=readFileSync(file,'utf8'),sf=ts.createSourceFile(file,source,99,true,ts.ScriptKind.TSX);function visit(n){if(ts.isJsxElement(n)&&n.openingElement.tagName.getText(sf)==='option'&&n.children.some(c=>c.getText(sf).includes('statusLabel(')))assert.ok(n.openingElement.attributes.properties.some(a=>a.name?.text==='value'),file);ts.forEachChild(n,visit);}visit(sf);}});

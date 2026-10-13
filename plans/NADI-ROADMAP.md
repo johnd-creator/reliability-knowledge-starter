@@ -900,3 +900,16 @@ light/dark screenshots retained. Original QA records/sessions/schema/API and col
 preserved; final documentation-release head/CI/visibility independently reverified on
 [PR73](https://github.com/johnd-creator/reliability-knowledge-starter/pull/73). Product
 Owner final visual review remains PENDING; UX-09 final acceptance is not inferred.
+
+## Phase 2 PdM Measurement — native-input checkpoint — 2026-10-13
+
+[NADI-PDM-CENTER-INPUT-01](../reliability-cockpit/docs/nadi-pdm-center-input-01.md)
+is an IMPLEMENTED/TESTED development candidate from latest main `2e190c2b51fde50e0467d6d5165ebb1060902867`,
+separate DRAFT PR. It advances M03/M05 within the existing Phase 2 scope: native
+multi-point draft, authorized register/event history, safe page-scoped original-sample
+scatter, independent review and exact-version Case handoff. M02 field signoff,
+M04 parser/custody, M07 engineer UAT and cross-acquisition comparison are pending;
+Q01–Q10 and PD/DGA uncertainty are preserved. Three workbook contexts are candidates,
+not accepted measurement methods. MERGED/official runtime VISIBLE/ENGINEER APPROVED/
+OPERATIONALLY ACCEPTED remain NO/PENDING. Phase0–5 and Phase1 policy/checkpoints/
+hard-expiry are unchanged; no runtime or operational action was performed.

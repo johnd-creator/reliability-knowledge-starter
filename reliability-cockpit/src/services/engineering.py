@@ -118,8 +118,13 @@ class CaseService:
         if (action == "CREATE" and (case_id is not None or expected_revision != 0)) or (action != "CREATE" and (not case_id or type(expected_revision) is not int or expected_revision < 1)):
             raise EngineeringError("INVALID_REVISION", 422)
         required = {"NOTE": {"text"}, "LINK": {"kind", "record_id", "mode"}, "SUBMIT": set(), "REVIEW": {"decision", "reason"}, "REVISE": {"reason"}, "REOPEN": {"reason"}}
-        if action in required and set(payload) != required[action]:
+        allowed = required.get(action, set()) | ({"expected_inspection_revision"} if action == "LINK" else set())
+        if action in required and (not required[action] <= set(payload) or not set(payload) <= allowed):
             raise EngineeringError("INVALID_CONTRACT", 422)
+        if action == "LINK" and "expected_inspection_revision" in payload:
+            version = payload["expected_inspection_revision"]
+            if payload["kind"] != "MANUAL_INSPECTION" or payload["mode"] != "FROZEN_SNAPSHOT" or type(version) is not int or version < 1:
+                raise EngineeringError("INVALID_CONTRACT", 422)
         if not re.fullmatch(r"[A-Za-z0-9_.:-]{1,100}", request_id or ""):
             raise EngineeringError("INVALID_REQUEST_ID", 422)
         fingerprint = sha256(json.dumps(dict(action=action, payload=payload, case_id=case_id,
@@ -163,6 +168,12 @@ class CaseService:
                 elif action == "LINK":
                     kind = EvidenceKind(payload["kind"])
                     ref = self.checked_reference(asset, kind, payload["record_id"], payload["mode"], actor.principal_id, now)
+                    if "expected_inspection_revision" in payload:
+                        human = ref.snapshot.reviewed_inspection if ref.snapshot else None
+                        if human is None or human.revision != payload["expected_inspection_revision"]:
+                            raise EngineeringError("EVIDENCE_VERSION_CHANGED", 409)
+                        # Recheck the reviewed version under the owning-store lock.
+                        self.catalog.guard_evidence(c, actor, asset, (ref,))
                     if any((r.kind, r.record_id) == (ref.kind, ref.record_id) for r in current.evidence):
                         raise EngineeringError("DUPLICATE_EVIDENCE")
                     data["evidence"] = [*current.evidence, ref]

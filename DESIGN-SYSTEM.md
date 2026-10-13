@@ -176,3 +176,14 @@ menyeluruh. Pilihan padanan bahasa dan kepadatan halaman tetap menunggu review P
 Login uses a standalone full-viewport navy/surface composition, unchanged logo and Indonesian form. At 768/390 the brand contracts and the form remains primary. ThemeProvider shares the existing light/dark preference with the workspace; the login theme button is independent of its topbar. QA identity stays visible; technical provenance remains on the status endpoint and workspace banner. Form h1, persistent labels, focus feedback, password toggle and 48px controls retain V1 tokens. No global authentication enforcement is introduced.
 
 [Implementation, boundaries and evidence](reliability-cockpit/docs/nadi-ux-login-01.md).
+
+## PdM native entry — 2026-10-13 candidate
+
+The native multi-point form reuses V1 tokens and primitives, with 44px labeled
+controls, fieldset legends, keyboard Tab order, explicit validation feedback and
+neutral record states. Desktop scrolls only inside the grid; at 768px rows become
+two-column grouped cards and at 390px single-column cards. The raw-sample plot uses
+informational color with exact-value/time table alternatives, never severity colors
+or connecting interpolation. Light/dark and responsive evidence remains isolated:
+[PdM review](reliability-cockpit/docs/nadi-pdm-center-input-01.md). PO visual review
+and full accessibility certification are separate pending gates.
