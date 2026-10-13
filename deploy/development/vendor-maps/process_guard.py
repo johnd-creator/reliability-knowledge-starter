@@ -2,10 +2,12 @@
 
 No title-substring worker counting; no implicit approval of children. Snapshots
 are bounded consistency checks, not atomic kernel traces. Unreadable/vanished
-members reject the observation, including apparently harmless helpers.
+members reject the observation. Only descriptor ENOENT permits a bounded fresh
+collection; an incomplete read is never verified or reused.
 """
 import hashlib
 import os
+import time
 from pathlib import Path
 
 class AttributionError(RuntimeError):
@@ -19,9 +21,12 @@ IDENTITY = ("pid", "parent", "start_ticks", "executable", "exe_device", "exe_ino
 def identity(record):
     return tuple(record[key] for key in IDENTITY)
 
-def process(pid, proc=Path("/proc")):
+class IncompleteObservation(AttributionError):
+    """A closed descriptor invalidates this read; it is never a verified view."""
+
+
+def process_identity(pid, proc=Path("/proc")):
     folder = proc / str(pid)
-    stage = "identity"
     try:
         before = (folder / "stat").read_text().rsplit(") ", 1)[1].split()
         raw = (folder / "cmdline").read_bytes()
@@ -29,15 +34,7 @@ def process(pid, proc=Path("/proc")):
         exe = (folder / "exe").stat()
         group = (folder / "cgroup").read_text()
         comm = (folder / "comm").read_text().strip()
-        stage = "file_descriptors"
-        sockets = set()
-        for fd in (folder / "fd").iterdir():
-            target = os.readlink(fd)
-            if target.startswith("socket:["):
-                sockets.add(target[8:-1])
-        stage = "identity_recheck"
         after = (folder / "stat").read_text().rsplit(") ", 1)[1].split()
-        # Recheck exec/title too: the same PID/start time may exec during a read.
         if before[1] != after[1] or before[19] != after[19] or raw != (folder / "cmdline").read_bytes() or executable != os.readlink(folder / "exe"):
             raise AttributionError("PROCESS_CHANGED_DURING_READ")
         argv = tuple(x.decode("utf-8", "strict") for x in raw.rstrip(b"\0").split(b"\0"))
@@ -46,9 +43,30 @@ def process(pid, proc=Path("/proc")):
         return dict(pid=int(pid), parent=int(after[1]), start_ticks=after[19],
                     executable=executable, exe_device=exe.st_dev, exe_inode=exe.st_ino,
                     command_sha256=hashlib.sha256(raw).hexdigest(), comm=comm,
-                    cgroup=group, argv=argv, sockets=sorted(sockets))
+                    cgroup=group, argv=argv)
     except (OSError, ValueError, IndexError, UnicodeError) as error:
-        raise AttributionError("UNREADABLE_PROCESS_EVIDENCE", dict(pid=int(pid), stage=stage, error_type=type(error).__name__)) from error
+        raise AttributionError("UNREADABLE_PROCESS_EVIDENCE", dict(pid=int(pid), stage="identity", error_type=type(error).__name__)) from error
+
+
+def process(pid, proc=Path("/proc")):
+    record = process_identity(pid, proc)
+    sockets = set()
+    folder = proc / str(pid)
+    try:
+        for fd in (folder / "fd").iterdir():
+            try:
+                target = os.readlink(fd)
+            except FileNotFoundError as error:
+                # No skipped descriptor, stale view or assumed socket type.
+                raise IncompleteObservation("INCOMPLETE_DESCRIPTOR_OBSERVATION",
+                    dict(pid=int(pid), descriptor=fd.name, complete=False, identity=record, sockets=sorted(sockets))) from error
+            if target.startswith("socket:["):
+                sockets.add(target[8:-1])
+    except OSError as error:
+        raise AttributionError("UNREADABLE_PROCESS_EVIDENCE", dict(pid=int(pid), stage="file_descriptors", error_type=type(error).__name__)) from error
+    if identity(record) != identity(process_identity(pid, proc)):
+        raise AttributionError("PROCESS_CHANGED_DURING_READ")
+    return dict(record, sockets=sorted(sockets))
 
 def tcp_listeners(proc=Path("/proc")):
     listeners = {}
@@ -154,6 +172,77 @@ class Guard:
             classified.append(dict(pid=pid, role="EXACT_REVIEWED_AUXILIARY", start_ticks=row["start_ticks"]))
         return dict(worker=self.worker["pid"], parent=self.parent["pid"], inode=self.inode,
                     invocation=self.invocation, auxiliaries=classified)
+
+# Fixed acquisition budget. This retries evidence only, never a process/application.
+COLLECTION_ATTEMPTS = 3
+COLLECTION_BUDGET_SECONDS = 0.25
+COLLECTION_PAUSE_SECONDS = 0.01
+
+
+def collect_observation(guard, group, properties, auxiliaries=(), proc=Path("/proc"), on_incomplete=None):
+    deadline = time.monotonic() + COLLECTION_BUDGET_SECONDS
+    incomplete = []
+    keys = ("MainPID", "InvocationID", "ControlGroup")
+    expected = (str(guard.parent["pid"]), guard.invocation, guard.cgroup)
+    for attempt in range(1, COLLECTION_ATTEMPTS + 1):
+        if time.monotonic() >= deadline:
+            break
+        before = properties()
+        if not all(isinstance(before.get(key),str) for key in keys):
+            raise AttributionError("UNREADABLE_SERVICE_EVIDENCE")
+        if tuple(before[key] for key in keys) != expected:
+            raise AttributionError("PARENT_OR_INVOCATION_CHANGED")
+        try:
+            view = snapshot(group, proc=proc, port=guard.port)
+        except IncompleteObservation as error:
+            # Only descriptor ENOENT can reach here. A missing PID, denied FD,
+            # changed membership/identity or invalid listener is not retryable.
+            row = error.evidence["identity"]
+            pid = row["pid"]
+            for approved in (guard.parent, guard.worker):
+                if identity(process_identity(approved["pid"], proc)) != identity(approved):
+                    raise AttributionError("APPROVED_PROCESS_IDENTITY_CHANGED")
+            current = process_identity(pid, proc)
+            if identity(current) != identity(row):
+                raise AttributionError("PROCESS_CHANGED_DURING_READ")
+            approved = next((r for r in (guard.parent, guard.worker) if r["pid"] == pid), None)
+            if approved is not None:
+                if identity(row) != identity(approved):
+                    raise AttributionError("APPROVED_PROCESS_IDENTITY_CHANGED")
+            elif row["argv"][0].startswith("next-server") or row["parent"] != guard.worker["pid"] or row["executable"] != guard.node or row["cgroup"] != "0::" + guard.cgroup + "\n" or row["argv"] not in auxiliaries:
+                raise AttributionError("UNVERIFIED_AUXILIARY_PROCESS")
+            if pid in guard.auxiliary_identities and guard.auxiliary_identities[pid] != identity(row):
+                raise AttributionError("AUXILIARY_PID_REUSE_OR_IDENTITY_CHANGED")
+            listeners = tcp_listeners(proc)
+            observed_listeners = set(error.evidence.get("sockets", ())) & set(listeners)
+            allowed_listeners = {guard.inode} if pid == guard.worker["pid"] else set()
+            if observed_listeners - allowed_listeners:
+                raise AttributionError("UNAUTHORIZED_LISTENER")
+            targets = {inode for inode, item in listeners.items() if item["port"] == guard.port}
+            if targets != {guard.inode}:
+                raise AttributionError("MISSING_OR_CHANGED_LISTENER")
+            observation = dict(attempt=attempt, pid=pid, descriptor=error.evidence["descriptor"], complete=False)
+            incomplete.append(observation)
+            if on_incomplete is not None:
+                on_incomplete(observation)
+            if attempt < COLLECTION_ATTEMPTS and time.monotonic() + COLLECTION_PAUSE_SECONDS < deadline:
+                time.sleep(COLLECTION_PAUSE_SECONDS)
+                continue
+            break
+        after = properties()
+        if not all(isinstance(after.get(key),str) for key in keys):
+            raise AttributionError("UNREADABLE_SERVICE_EVIDENCE")
+        if tuple(after[key] for key in keys) != expected:
+            raise AttributionError("PARENT_OR_INVOCATION_CHANGED")
+        if time.monotonic() >= deadline:
+            break
+        attribution = guard.validate(view, int(after["MainPID"]), after["InvocationID"], auxiliaries)
+        if time.monotonic() >= deadline:
+            break
+        attribution["collection"] = dict(complete=True, attempts=attempt, incomplete_observations=incomplete)
+        return view, attribution, after
+    raise AttributionError("PERSISTENT_INCOMPLETE_LISTENER_EVIDENCE", dict(complete=False, observations=incomplete))
+
 
 def sanitized(view):
     # Full argv never enters published evidence. Socket ownership is numeric.

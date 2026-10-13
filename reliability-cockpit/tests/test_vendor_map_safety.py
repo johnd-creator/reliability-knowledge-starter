@@ -43,9 +43,9 @@ class VendorMapSafety(unittest.TestCase):
             self.assertNotIn('vendor-maps/adapter', (ROOT/file).read_text())
 
     def test_fast_duration_and_memory_policy(self):
-        for duration in [0,59,601,5700,7200]:
+        for duration in [0,59,181,600,5700,7200]:
             with self.assertRaises(ValueError):module.bounded_seconds(duration)
-        self.assertEqual(module.bounded_seconds(600),600)
+        self.assertEqual(module.bounded_seconds(180),180)
         text=(ROOT/'deploy/development/vendor-maps/run.py').read_text()
         self.assertIn('--max-old-space-size=4096',text)
         self.assertIn('MemoryMax=6144M',text)

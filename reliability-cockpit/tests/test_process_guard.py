@@ -132,3 +132,97 @@ class ProcessGuardTest(unittest.TestCase):
             changed=copy.deepcopy(self.v["records"][2]);changed["sockets"]=[]
             rows=[self.v["records"][1],self.v["records"][2],self.v["records"][1],changed]
             with patch.object(g,"process",side_effect=rows),patch.object(g,"tcp_listeners",return_value=self.v["listeners"]),self.assertRaisesRegex(g.AttributionError,"LISTENER_OWNERSHIP_CHANGED"):g.snapshot(p)
+
+
+class StableCollectionTest(unittest.TestCase):
+    setUp = ProcessGuardTest.setUp
+    """Each retry starts a complete new capture; no incomplete view is reused."""
+    def props(self):
+        return dict(MainPID="1", InvocationID="invocation", ControlGroup=GROUP)
+    def incomplete(self, pid=2):
+        return g.IncompleteObservation("INCOMPLETE_DESCRIPTOR_OBSERVATION", dict(
+            pid=pid,descriptor="9",complete=False,identity=copy.deepcopy(self.v["records"][pid])))
+    def collect(self, captures, *, properties=None, identities=None, listeners=None, events=None):
+        with patch.object(g,"snapshot",side_effect=captures) as capture, \
+             patch.object(g,"process_identity",side_effect=identities or (lambda pid,proc:self.v["records"][pid])), \
+             patch.object(g,"tcp_listeners",return_value=self.v["listeners"] if listeners is None else listeners), \
+             patch.object(g.time,"sleep"):
+            result=g.collect_observation(self.guard,Path("/not-used"),properties or self.props,
+                                         on_incomplete=(events.append if events is not None else None))
+            return result,capture.call_count
+    def test_transient_non_listener_descriptor_closure_fresh_capture(self):
+        events=[];(v,attr,props),calls=self.collect([self.incomplete(),self.v],events=events)
+        self.assertEqual(calls,2);self.assertIs(v,self.v)
+        self.assertEqual(attr["collection"]["attempts"],2)
+        self.assertTrue(attr["collection"]["complete"])
+        self.assertEqual(events,[dict(attempt=1,pid=2,descriptor="9",complete=False)])
+    def test_process_fd_enoent_is_incomplete_not_verified(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);folder=root/"42";folder.mkdir();fds=folder/"fd";fds.mkdir()
+            fields=["S","1"]+["0"]*17+["1234"]
+            (folder/"stat").write_text("42 (fixture) "+" ".join(fields))
+            (folder/"cmdline").write_bytes(b"fixture\0")
+            (folder/"exe").symlink_to("/bin/sleep")
+            (folder/"comm").write_text("fixture")
+            (folder/"cgroup").write_text("0::/isolated\n")
+            (fds/"8").symlink_to("socket:[20]");closing=fds/"9";closing.symlink_to("/synthetic/non-listener")
+            original=os.readlink
+            def readlink(path):
+                if Path(path)==closing:closing.unlink()
+                return original(path)
+            with patch.object(g.os,"readlink",side_effect=readlink),self.assertRaises(g.IncompleteObservation) as error:g.process(42,root)
+            self.assertFalse(error.exception.evidence["complete"])
+            self.assertEqual(error.exception.evidence["descriptor"],"9")
+    def test_listener_disappearance_after_incomplete_is_terminal(self):
+        with self.assertRaisesRegex(g.AttributionError,"MISSING_OR_CHANGED_LISTENER"):self.collect([self.incomplete(),self.v],listeners={})
+    def test_listener_disappearance_in_fresh_capture_is_terminal(self):
+        missing=dict(records=self.v["records"],listeners={})
+        with self.assertRaisesRegex(g.AttributionError,"MISSING_OR_AMBIGUOUS_LISTENER"):self.collect([self.incomplete(),missing])
+    def test_repeated_failure_bounded_to_three_captures(self):
+        events=[]
+        with patch.object(g,"snapshot",side_effect=[self.incomplete()]*4) as captures, \
+             patch.object(g,"process_identity",side_effect=lambda pid,proc:self.v["records"][pid]), \
+             patch.object(g,"tcp_listeners",return_value=self.v["listeners"]),patch.object(g.time,"sleep"), \
+             self.assertRaisesRegex(g.AttributionError,"PERSISTENT_INCOMPLETE") as error:
+            g.collect_observation(self.guard,Path("/not-used"),self.props,on_incomplete=events.append)
+        self.assertEqual(captures.call_count,3);self.assertEqual(len(events),3)
+        self.assertFalse(error.exception.evidence["complete"])
+    def test_permission_denial_is_not_retried(self):
+        failure=g.AttributionError("UNREADABLE_PROCESS_EVIDENCE",dict(error_type="PermissionError"))
+        with patch.object(g,"snapshot",side_effect=failure) as capture,self.assertRaises(g.AttributionError):g.collect_observation(self.guard,Path("/not-used"),self.props)
+        self.assertEqual(capture.call_count,1)
+    def test_pid_replacement_during_incomplete_is_terminal(self):
+        changed=copy.deepcopy(self.v["records"][2]);changed["start_ticks"]="replacement"
+        with self.assertRaisesRegex(g.AttributionError,"IDENTITY_CHANGED"):self.collect([self.incomplete(),self.v],identities=lambda pid,proc:changed if pid==2 else self.v["records"][pid])
+    def test_identity_change_on_fresh_capture(self):
+        for key in ["parent","start_ticks","executable","command_sha256","cgroup"]:
+            changed=copy.deepcopy(self.v);changed["records"][2][key]="changed"
+            with self.subTest(key=key),self.assertRaisesRegex(g.AttributionError,"IDENTITY_CHANGED"):self.collect([self.incomplete(),changed])
+    def test_unauthorized_socket_on_fresh_capture(self):
+        changed=copy.deepcopy(self.v);changed["records"][1]["sockets"]=["30"]
+        changed["listeners"]["30"]=dict(port=9999,address="0100007F")
+        with self.assertRaisesRegex(g.AttributionError,"UNAUTHORIZED_LISTENER"):self.collect([self.incomplete(),changed])
+    def test_partial_unauthorized_socket_is_terminal(self):
+        failure=self.incomplete();failure.evidence["sockets"]=["30"]
+        listeners=dict(self.v["listeners"],**{"30":dict(port=9999,address="0100007F")})
+        with self.assertRaisesRegex(g.AttributionError,"UNAUTHORIZED_LISTENER"):self.collect([failure,self.v],listeners=listeners)
+    def test_missing_process_identity_is_not_retried(self):
+        with self.assertRaisesRegex(g.AttributionError,"UNREADABLE_PROCESS"):self.collect([self.incomplete(),self.v],identities=g.AttributionError("UNREADABLE_PROCESS_EVIDENCE"))
+    def test_unknown_process_cannot_use_retry(self):
+        failure=self.incomplete();failure.evidence["identity"]=row(3,2,"next-server (v15.5.9)")
+        self.v["records"][3]=failure.evidence["identity"]
+        with self.assertRaisesRegex(g.AttributionError,"UNVERIFIED_AUXILIARY"):self.collect([failure,self.v])
+    def test_changed_invocation_after_capture_is_terminal(self):
+        calls=iter([self.props(),dict(self.props(),InvocationID="changed")])
+        with self.assertRaisesRegex(g.AttributionError,"INVOCATION_CHANGED"):self.collect([self.v],properties=lambda:next(calls))
+    def test_time_budget_exhaustion_never_accepts_capture(self):
+        with patch.object(g.time,"monotonic",side_effect=[0,0,.3]),self.assertRaisesRegex(g.AttributionError,"PERSISTENT_INCOMPLETE"):self.collect([self.v])
+
+    def test_missing_service_metadata_not_retried(self):
+        with patch.object(g,"snapshot") as capture,self.assertRaisesRegex(g.AttributionError,"UNREADABLE_SERVICE"):g.collect_observation(self.guard,Path("/not-used"),lambda:{"MainPID":"1"})
+        capture.assert_not_called()
+    def test_fd_permission_denial_does_not_become_incomplete(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);fds=root/"2/fd";fds.mkdir(parents=True);(fds/"9").symlink_to("/synthetic/non-listener")
+            with patch.object(g,"process_identity",return_value=self.v["records"][2]),patch.object(g.os,"readlink",side_effect=PermissionError()),self.assertRaisesRegex(g.AttributionError,"UNREADABLE_PROCESS") as error:g.process(2,root)
+            self.assertNotIsInstance(error.exception,g.IncompleteObservation)

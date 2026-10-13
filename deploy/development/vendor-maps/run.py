@@ -42,11 +42,11 @@ def process_evidence(pid):
         return dict(pid=int(pid),unverified_or_vanished=True)
 
 def bounded_seconds(value):
-    if not 60 <= value <= 600:raise ValueError('FAST VALIDATION ONLY: 60-600 seconds')
+    if not 60 <= value <= 180:raise ValueError('FAST VALIDATION ONLY: 60-180 seconds')
     return value
 
 def main():
-    args=argparse.ArgumentParser();args.add_argument('--repo',required=True);args.add_argument('--deps',required=True);args.add_argument('--output',required=True);args.add_argument('--seconds',type=int,default=600);args.add_argument('--sampling',action='store_true');args.add_argument('--debug',action='store_true');args.add_argument('--https',action='store_true');args.add_argument('--mode',choices=['baseline','candidate'],required=True);a=args.parse_args()
+    args=argparse.ArgumentParser();args.add_argument('--repo',required=True);args.add_argument('--deps',required=True);args.add_argument('--output',required=True);args.add_argument('--seconds',type=int,default=180);args.add_argument('--sampling',action='store_true');args.add_argument('--debug',action='store_true');args.add_argument('--https',action='store_true');args.add_argument('--mode',choices=['baseline','candidate'],required=True);a=args.parse_args()
     bounded_seconds(a.seconds)
     repo=Path(a.repo).resolve();sha='63b61d09c45630a76657cdb54991349fb0528e7b'
     if helper.command(['/usr/bin/node-22','--version'])!='v22.23.1':raise ValueError('Pinned Node required')
@@ -80,11 +80,19 @@ def main():
         helper.command(['openssl','req','-x509','-newkey','rsa:2048','-nodes','-days','1','-subj','/CN=localhost','-addext','subjectAltName=DNS:localhost,IP:127.0.0.1','-keyout',str(key),'-out',str(cert)])
         key.chmod(0o600);cert.chmod(0o600)
         tls_args=['--experimental-https','--experimental-https-key',str(key),'--experimental-https-cert',str(cert)]
+    def observation_properties():
+        try:
+            output=subprocess.check_output(['systemctl','--user','show',unit,'-p','MainPID','-p','MemoryCurrent','-p','MemoryPeak','-p','CPUUsageNSec','-p','ControlGroup','-p','InvocationID'],text=True,timeout=.1)
+            return dict(x.split('=',1) for x in output.strip().splitlines())
+        except (OSError,subprocess.SubprocessError,ValueError) as error:
+            raise pid_guard.AttributionError('UNREADABLE_SERVICE_EVIDENCE') from error
+    def incomplete_observation(record):
+        with (out/'incomplete-observations.jsonl').open('a') as log:log.write(json.dumps(dict(at=time.time(),**record))+'\n')
     fixture=browser=None;failure=None;worker=None;start=time.monotonic()
     try:
         fixture=subprocess.Popen(['/usr/bin/node-22',str(HERE.parent/'probes/fixtures.cjs'),str(web),str(api_port),back_sha],env={'PATH':'/usr/bin:/bin','HOME':str(Path.home())},stdout=open(out/'fixture.log','w'),stderr=subprocess.STDOUT)
         env=['PATH=/usr/bin:/bin','HOME='+str(Path.home()),'NODE_ENV=development','NODE_OPTIONS=--max-old-space-size=4096 --require='+str(HERE/'heap.cjs'),'NEXT_TELEMETRY_DISABLED=1','NADI_FIX06_VENDOR_MAPS='+('1' if a.mode=='candidate' else '0'),'NADI_FIX06_DISPOSABLE_ROOT='+str(web),'NADI_FIX06_SAMPLING='+('1' if a.sampling else '0'),'NADI_PROBE_DIR='+str(out),'NADI_PRIMARY_FRONTEND=true','NADI_LIVE_DEV=true','NADI_ENGINEERING_QA_ENABLED=true','NADI_ENGINEERING_WORKSPACE_ENABLED=true','COCKPIT_API_BASE='+base,'NADI_QA_BACKEND_URL='+base,'NADI_DEV_FRONTEND_MANIFEST='+str(manifest),'NADI_DEV_FRONTEND_WORKER='+str(receipt),'NADI_DEV_LAUNCHED_SHA='+front_sha]
-        helper.command(['systemd-run','--user','--collect','--unit='+unit,'--service-type=exec','--working-directory='+str(web),'-p','MemoryMax=6144M','-p','CPUQuota=200%','-p','TasksMax=128','-p','Restart=no','-p','UMask=0077','/usr/bin/env','-i',*env,'/usr/bin/node-22','node_modules/next/dist/bin/next','dev','--hostname','127.0.0.1','--port',str(port),*tls_args])
+        helper.command(['systemd-run','--user','--collect','--unit='+unit,'--service-type=exec','--working-directory='+str(web),'-p','RuntimeMaxSec=270','-p','TimeoutStopSec=10','-p','MemoryMax=6144M','-p','CPUQuota=200%','-p','TasksMax=128','-p','Restart=no','-p','UMask=0077','/usr/bin/env','-i',*env,'/usr/bin/node-22','node_modules/next/dist/bin/next','dev','--hostname','127.0.0.1','--port',str(port),*tls_args])
         while time.monotonic()-start<120:
             props=dict(x.split('=',1) for x in helper.command(['systemctl','--user','show',unit,'-p','MainPID','-p','ControlGroup','-p','InvocationID']).splitlines());group=Path('/sys/fs/cgroup'+props['ControlGroup'])
             try:
@@ -105,14 +113,13 @@ def main():
             time.sleep(1)
         if types.read_bytes()!=original:raise RuntimeError('Generated shape mismatch')
         helper.write(out/'generated-audit.json',dict(before=hashlib.sha256(generated).hexdigest(),after=hashlib.sha256(original).hexdigest(),scope='DISPOSABLE COPY ONLY'))
-        browser=subprocess.Popen(['systemd-run','--user','--collect','--wait','--pipe','--unit='+unit+'-browser','-p','MemoryMax=768M','-p','CPUQuota=200%','-p','TasksMax=192','-p','Restart=no','-p','UMask=0077','/usr/bin/env','-i','PATH=/usr/bin:/bin','HOME='+str(Path.home()),'NADI_FIX06_HTTPS='+('1' if a.https else '0'),'NADI_PLAYWRIGHT_MODULE=/home/john-d/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs','/usr/bin/node-22',str(HERE/('debug.mjs' if a.debug else 'workload.mjs')),str(port),str(web),str(out),'nav-hmr',str(a.seconds)],stdout=open(out/'browser.log','w'),stderr=subprocess.STDOUT)
+        browser=subprocess.Popen(['systemd-run','--user','--collect','--wait','--pipe','--unit='+unit+'-browser','-p','RuntimeMaxSec=270','-p','TimeoutStopSec=10','-p','MemoryMax=768M','-p','CPUQuota=200%','-p','TasksMax=192','-p','Restart=no','-p','UMask=0077','/usr/bin/env','-i','PATH=/usr/bin:/bin','HOME='+str(Path.home()),'NADI_FIX06_HTTPS='+('1' if a.https else '0'),'NADI_PLAYWRIGHT_MODULE=/home/john-d/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs','/usr/bin/node-22',str(HERE/('debug.mjs' if a.debug else 'workload.mjs')),str(port),str(web),str(out),'nav-hmr',str(a.seconds)],stdout=open(out/'browser.log','w'),stderr=subprocess.STDOUT)
         with (out/'metrics.jsonl').open('a') as log:
             while time.monotonic()-start<a.seconds+120:
-                props=dict(x.split('=',1) for x in helper.command(['systemctl','--user','show',unit,'-p','MainPID','-p','MemoryCurrent','-p','MemoryPeak','-p','CPUUsageNSec','-p','ControlGroup','-p','InvocationID']).splitlines());group=Path('/sys/fs/cgroup'+props['ControlGroup']);workers=[]
+                workers=[]
                 try:
-                    view=pid_guard.snapshot(group,port=port)
                     pid_guard.reviewed_next_auxiliary(deps,os.path.realpath('/usr/bin/node-22'))
-                    attribution=guard.validate(view,int(props['MainPID']),props['InvocationID'],auxiliaries)
+                    view,attribution,props=pid_guard.collect_observation(guard,group,observation_properties,auxiliaries,on_incomplete=incomplete_observation)
                     workers=[attribution['worker']]
                     helper.write(out/'process-latest.json',dict(at=time.time(),records=pid_guard.sanitized(view),attribution=attribution))
                 except pid_guard.AttributionError as error:
@@ -142,4 +149,5 @@ def main():
         if fixture and fixture.poll() is None:fixture.terminate();fixture.wait(timeout=10)
         for p in out.iterdir():
             if p.is_file():p.chmod(0o600)
+    if failure:raise SystemExit(1)
 if __name__=='__main__':main()
