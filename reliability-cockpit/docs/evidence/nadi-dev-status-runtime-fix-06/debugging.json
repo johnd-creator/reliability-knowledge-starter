@@ -1,0 +1,33 @@
+{
+  "scope": "DISPOSABLE SYNTHETIC; no real QA",
+  "checks": {
+    "nextClientOriginalFrame": true,
+    "applicationStack": {
+      "originalFile": "app/fix06-debug/Client.tsx",
+      "expectedLine": 7,
+      "actualLine": 7,
+      "sourceContent": true
+    },
+    "breakpoint": {
+      "originalLine": 7,
+      "hit": true
+    },
+    "vendorError": {
+      "actionableMessage": true,
+      "stackHasLocation": true,
+      "applicationOriginalLine": 10
+    },
+    "rscResponses": 2,
+    "hmr": {
+      "cycles": 3,
+      "noReload": true,
+      "statePreserved": true
+    },
+    "serverStack": {
+      "originalFile": "app/fix06-debug/api/route.ts",
+      "originalLine": 4,
+      "nativeSourceMaps": true
+    }
+  },
+  "completed": true
+}

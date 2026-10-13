@@ -653,3 +653,15 @@ Evidence: [FIX-05 report](reliability-cockpit/docs/nadi-dev-status-runtime-fix-0
 - Next Action: complete baseline/candidate run, natural post-GC slope/threshold and
   allocation comparisons, append actual verdict and exact-head CI evidence.
 - Source evidence: [FIX-06 report](reliability-cockpit/docs/nadi-dev-status-runtime-fix-06.md).
+
+## 2026-10-13 — FIX-06 sustained baseline failure and candidate launch
+
+Baseline failed at79.85min on Next used-heap threshold / worker generation loss.
+Original4102290, unapproved33574; no receipt refresh, repair or retry.277 navigations,
+1222 status requests,80 HMR cycles/80 reloads,27 in-memory session reads; heap
+peak1648.9MiB, cgroup peak2343.2MiB, OOM0. Official frontend/backend were not acted on.
+Final guarded-adapter debugger qualification passed actual client/server original
+frames, breakpoint, vendor-error application callsite, RSC and3 state-preserving
+component HMR cycles. Candidate95min started with15min additional headroom beyond
+baseline failure. Candidate stability remains IN PROGRESS, no acceptance/merge.
+Source: [FIX-06 report](reliability-cockpit/docs/nadi-dev-status-runtime-fix-06.md).

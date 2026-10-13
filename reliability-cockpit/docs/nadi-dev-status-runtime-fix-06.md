@@ -66,7 +66,7 @@ assertions passed, including logout/expiry, CAS/review/Advisory/ACK UI, response
 states, keyboard behavior,1440/768/390 and dark mode. This proves no persistent QA,
 real RBAC grant, engineer UAT or HTTPS-session behavior.
 
-## Sustained method — results pending
+## Sustained method — baseline failed, candidate pending
 
 Corrected FIX-04 nav-HMR protocol:21 routes,15s pause,5s DEV polling, HMR once per
 minute, one fictional session read each10 navigations. Node22.23.1,2048MiB old-space,
@@ -78,8 +78,9 @@ No forced GC or Flight initializer/ancestry instrumentation is used.
 Source/PID/start identity, OOM,2400MiB service peak and1200MiB host headroom are
 fail-stop checks. Exact generated-file restoration and declared HMR edits apply
 only in NEW copies; staged/untracked/env changes refuse. Worker replacement is
-never accepted, reapproved or retried. Requested run duration is80minutes per
-variant; actual successful duration/counts and failure timing govern acceptance.
+never accepted, reapproved or retried. Baseline requested80minutes and failed at79.85minutes on the Next used-heap
+threshold. Candidate is requested95minutes to supply15minutes additional
+headroom beyond that observed failure; actual duration/counts govern acceptance.
 Profile overhead is matched but its long-run causal contribution remains uncertain;
 FIX-05's <1% short instrumentation overhead is historical, not a long-run bound.
 
@@ -88,6 +89,14 @@ heap/RSS/external/cgroup, compiler counts, session/navigation/HMR counts, thresh
 distance and worker generations will be reported. Sampled allocation stacks are
 not exclusive ownership. FIX-05's conditional WeakMap paths and unresolved root
 attribution remain; this experiment does not perform weak-link surgery.
+
+Baseline original worker4102290 exited after4791s; journal recorded threshold
+restart and unapproved worker33574. Fail-stop detected the first identity loss and
+stopped the disposable units without retry or receipt refresh. 277 navigations,
+1222 status requests,80 HMR cycles (all full reloads) and27 fictional session reads
+completed; kernel cgroup peak2343.2MiB, heap peak1648.9MiB, OOM counters0.
+Warm post-major-GC slope11.211MiB/min. No V8 abort observed.
+[Baseline and final debug evidence](evidence/nadi-dev-status-runtime-fix-06/README.md).
 
 ## Validation / corrections
 

@@ -1,0 +1,3983 @@
+{
+  "mode": "baseline",
+  "baseline_sha": "63b61d09c45630a76657cdb54991349fb0528e7b",
+  "test_copy_sha": "7c4597215549b61964faf2bf36d8e7379959df75",
+  "node": "22.23.1",
+  "limits": {
+    "heap_mib": 2048,
+    "cgroup_mib": 2500,
+    "cpu_percent": 200
+  },
+  "flight_graph_instrumented": false,
+  "sampling": true,
+  "elapsed": 4791.0,
+  "worker_unchanged": false,
+  "parent_unchanged": true,
+  "heap_limit_mib": 2096.0,
+  "next_threshold_mib": 1676.8,
+  "minimum_sampled_threshold_distance_mib": 27.9,
+  "native_maps_enabled": true,
+  "parent_heap_peak_mib": 23.6,
+  "cpu_seconds": 953.2,
+  "memory_events_peak": {
+    "low": 0,
+    "high": 0,
+    "max": 0,
+    "oom": 0,
+    "oom_kill": 0,
+    "oom_group_kill": 0,
+    "sock_throttled": 0
+  },
+  "samples": 958,
+  "gc_count": 9225,
+  "gc_duration_total_ms": 50503.8,
+  "gc_duration_peak_ms": 322.3,
+  "major_gc_count": 291,
+  "warm_major_gc_count": 201,
+  "heap_peak_mib": 1648.9,
+  "heap_final_mib": 1615.9,
+  "external_peak_mib": 160.8,
+  "array_buffers_peak_mib": 156.7,
+  "rss_peak_mib": 2115.7,
+  "cgroup_sampled_peak_mib": 2299.5,
+  "cgroup_kernel_peak_mib": 2343.2,
+  "warm_heap_slope_mib_per_min": 11.85,
+  "warm_post_major_gc_slope_mib_per_min": 11.211,
+  "major_gc_latest_mib": 1474.5,
+  "compiler_completions": 967,
+  "compiler_module_peak": {
+    "client": 312,
+    "server": 496,
+    "edge-server": 0
+  },
+  "resource_counts_final": {
+    "FSReqCallback": 2,
+    "PipeWrap": 3,
+    "TCPServerWrap": 1,
+    "FSEventWrap": 46,
+    "TCPSocketWrap": 2
+  },
+  "heap_spaces_final": {
+    "read_only_space": 0.0,
+    "new_space": 7.2,
+    "old_space": 471.9,
+    "code_space": 23.0,
+    "shared_space": 0.0,
+    "trusted_space": 14.5,
+    "new_large_object_space": 0.0,
+    "large_object_space": 1098.6,
+    "code_large_object_space": 0.8,
+    "shared_large_object_space": 0.0,
+    "trusted_large_object_space": 0.0
+  },
+  "major_gc_timeline": [
+    {
+      "seconds": 0.2,
+      "heap_mib": 15.7
+    },
+    {
+      "seconds": 1.2,
+      "heap_mib": 65.3
+    },
+    {
+      "seconds": 2.6,
+      "heap_mib": 95.9
+    },
+    {
+      "seconds": 3.2,
+      "heap_mib": 114.6
+    },
+    {
+      "seconds": 3.8,
+      "heap_mib": 164.5
+    },
+    {
+      "seconds": 5.6,
+      "heap_mib": 191.4
+    },
+    {
+      "seconds": 24.7,
+      "heap_mib": 300.9
+    },
+    {
+      "seconds": 25.3,
+      "heap_mib": 281.4
+    },
+    {
+      "seconds": 28.6,
+      "heap_mib": 301.2
+    },
+    {
+      "seconds": 44.9,
+      "heap_mib": 325.2
+    },
+    {
+      "seconds": 61.3,
+      "heap_mib": 318.7
+    },
+    {
+      "seconds": 61.7,
+      "heap_mib": 314.8
+    },
+    {
+      "seconds": 78.1,
+      "heap_mib": 340.7
+    },
+    {
+      "seconds": 94.2,
+      "heap_mib": 337.5
+    },
+    {
+      "seconds": 97.9,
+      "heap_mib": 347.8
+    },
+    {
+      "seconds": 114.3,
+      "heap_mib": 357.7
+    },
+    {
+      "seconds": 120.3,
+      "heap_mib": 352.7
+    },
+    {
+      "seconds": 130.5,
+      "heap_mib": 365.6
+    },
+    {
+      "seconds": 132.6,
+      "heap_mib": 380.7
+    },
+    {
+      "seconds": 150.6,
+      "heap_mib": 404.8
+    },
+    {
+      "seconds": 167.0,
+      "heap_mib": 403.1
+    },
+    {
+      "seconds": 183.6,
+      "heap_mib": 432.6
+    },
+    {
+      "seconds": 200.0,
+      "heap_mib": 435.0
+    },
+    {
+      "seconds": 219.5,
+      "heap_mib": 444.3
+    },
+    {
+      "seconds": 220.7,
+      "heap_mib": 418.6
+    },
+    {
+      "seconds": 237.1,
+      "heap_mib": 423.6
+    },
+    {
+      "seconds": 240.3,
+      "heap_mib": 420.4
+    },
+    {
+      "seconds": 252.0,
+      "heap_mib": 397.0
+    },
+    {
+      "seconds": 252.7,
+      "heap_mib": 393.8
+    },
+    {
+      "seconds": 253.6,
+      "heap_mib": 411.5
+    },
+    {
+      "seconds": 257.9,
+      "heap_mib": 417.3
+    },
+    {
+      "seconds": 273.6,
+      "heap_mib": 438.5
+    },
+    {
+      "seconds": 290.1,
+      "heap_mib": 432.8
+    },
+    {
+      "seconds": 298.6,
+      "heap_mib": 411.2
+    },
+    {
+      "seconds": 299.3,
+      "heap_mib": 409.3
+    },
+    {
+      "seconds": 306.2,
+      "heap_mib": 432.5
+    },
+    {
+      "seconds": 322.9,
+      "heap_mib": 455.1
+    },
+    {
+      "seconds": 327.2,
+      "heap_mib": 447.7
+    },
+    {
+      "seconds": 339.2,
+      "heap_mib": 430.8
+    },
+    {
+      "seconds": 339.9,
+      "heap_mib": 429.6
+    },
+    {
+      "seconds": 342.8,
+      "heap_mib": 465.9
+    },
+    {
+      "seconds": 360.0,
+      "heap_mib": 477.7
+    },
+    {
+      "seconds": 360.4,
+      "heap_mib": 465.0
+    },
+    {
+      "seconds": 368.4,
+      "heap_mib": 451.1
+    },
+    {
+      "seconds": 369.1,
+      "heap_mib": 451.1
+    },
+    {
+      "seconds": 376.5,
+      "heap_mib": 463.8
+    },
+    {
+      "seconds": 396.8,
+      "heap_mib": 481.9
+    },
+    {
+      "seconds": 421.3,
+      "heap_mib": 468.2
+    },
+    {
+      "seconds": 422.0,
+      "heap_mib": 459.4
+    },
+    {
+      "seconds": 429.2,
+      "heap_mib": 486.8
+    },
+    {
+      "seconds": 446.1,
+      "heap_mib": 511.3
+    },
+    {
+      "seconds": 462.5,
+      "heap_mib": 501.0
+    },
+    {
+      "seconds": 463.2,
+      "heap_mib": 480.7
+    },
+    {
+      "seconds": 465.4,
+      "heap_mib": 520.3
+    },
+    {
+      "seconds": 480.4,
+      "heap_mib": 503.2
+    },
+    {
+      "seconds": 481.4,
+      "heap_mib": 508.9
+    },
+    {
+      "seconds": 498.0,
+      "heap_mib": 539.8
+    },
+    {
+      "seconds": 514.4,
+      "heap_mib": 523.8
+    },
+    {
+      "seconds": 515.2,
+      "heap_mib": 513.3
+    },
+    {
+      "seconds": 517.8,
+      "heap_mib": 553.3
+    },
+    {
+      "seconds": 549.6,
+      "heap_mib": 577.7
+    },
+    {
+      "seconds": 565.8,
+      "heap_mib": 565.9
+    },
+    {
+      "seconds": 582.2,
+      "heap_mib": 543.1
+    },
+    {
+      "seconds": 583.0,
+      "heap_mib": 527.8
+    },
+    {
+      "seconds": 586.0,
+      "heap_mib": 568.1
+    },
+    {
+      "seconds": 600.4,
+      "heap_mib": 545.2
+    },
+    {
+      "seconds": 602.1,
+      "heap_mib": 562.7
+    },
+    {
+      "seconds": 619.5,
+      "heap_mib": 593.6
+    },
+    {
+      "seconds": 636.5,
+      "heap_mib": 553.8
+    },
+    {
+      "seconds": 637.7,
+      "heap_mib": 543.0
+    },
+    {
+      "seconds": 640.8,
+      "heap_mib": 562.4
+    },
+    {
+      "seconds": 679.4,
+      "heap_mib": 594.3
+    },
+    {
+      "seconds": 680.8,
+      "heap_mib": 587.7
+    },
+    {
+      "seconds": 699.7,
+      "heap_mib": 610.2
+    },
+    {
+      "seconds": 713.3,
+      "heap_mib": 572.5
+    },
+    {
+      "seconds": 714.1,
+      "heap_mib": 568.9
+    },
+    {
+      "seconds": 716.7,
+      "heap_mib": 578.3
+    },
+    {
+      "seconds": 720.6,
+      "heap_mib": 579.5
+    },
+    {
+      "seconds": 733.2,
+      "heap_mib": 615.3
+    },
+    {
+      "seconds": 771.4,
+      "heap_mib": 616.2
+    },
+    {
+      "seconds": 788.0,
+      "heap_mib": 605.9
+    },
+    {
+      "seconds": 804.4,
+      "heap_mib": 640.2
+    },
+    {
+      "seconds": 820.2,
+      "heap_mib": 608.0
+    },
+    {
+      "seconds": 821.0,
+      "heap_mib": 584.5
+    },
+    {
+      "seconds": 824.0,
+      "heap_mib": 613.7
+    },
+    {
+      "seconds": 840.5,
+      "heap_mib": 616.3
+    },
+    {
+      "seconds": 857.7,
+      "heap_mib": 648.4
+    },
+    {
+      "seconds": 874.1,
+      "heap_mib": 618.1
+    },
+    {
+      "seconds": 874.9,
+      "heap_mib": 604.8
+    },
+    {
+      "seconds": 877.0,
+      "heap_mib": 661.7
+    },
+    {
+      "seconds": 909.2,
+      "heap_mib": 688.6
+    },
+    {
+      "seconds": 926.1,
+      "heap_mib": 676.3
+    },
+    {
+      "seconds": 941.9,
+      "heap_mib": 653.2
+    },
+    {
+      "seconds": 942.7,
+      "heap_mib": 634.9
+    },
+    {
+      "seconds": 945.5,
+      "heap_mib": 652.5
+    },
+    {
+      "seconds": 960.4,
+      "heap_mib": 651.2
+    },
+    {
+      "seconds": 962.1,
+      "heap_mib": 650.4
+    },
+    {
+      "seconds": 978.2,
+      "heap_mib": 673.9
+    },
+    {
+      "seconds": 1013.5,
+      "heap_mib": 743.3
+    },
+    {
+      "seconds": 1037.9,
+      "heap_mib": 674.0
+    },
+    {
+      "seconds": 1038.8,
+      "heap_mib": 663.7
+    },
+    {
+      "seconds": 1046.1,
+      "heap_mib": 674.2
+    },
+    {
+      "seconds": 1066.0,
+      "heap_mib": 724.5
+    },
+    {
+      "seconds": 1080.5,
+      "heap_mib": 697.4
+    },
+    {
+      "seconds": 1082.6,
+      "heap_mib": 696.4
+    },
+    {
+      "seconds": 1099.4,
+      "heap_mib": 725.3
+    },
+    {
+      "seconds": 1115.0,
+      "heap_mib": 716.0
+    },
+    {
+      "seconds": 1115.8,
+      "heap_mib": 701.7
+    },
+    {
+      "seconds": 1137.7,
+      "heap_mib": 717.1
+    },
+    {
+      "seconds": 1173.6,
+      "heap_mib": 762.1
+    },
+    {
+      "seconds": 1190.1,
+      "heap_mib": 752.5
+    },
+    {
+      "seconds": 1200.5,
+      "heap_mib": 752.4
+    },
+    {
+      "seconds": 1206.7,
+      "heap_mib": 752.1
+    },
+    {
+      "seconds": 1223.7,
+      "heap_mib": 779.5
+    },
+    {
+      "seconds": 1238.7,
+      "heap_mib": 746.0
+    },
+    {
+      "seconds": 1239.5,
+      "heap_mib": 728.2
+    },
+    {
+      "seconds": 1243.1,
+      "heap_mib": 776.1
+    },
+    {
+      "seconds": 1260.1,
+      "heap_mib": 769.0
+    },
+    {
+      "seconds": 1276.5,
+      "heap_mib": 795.0
+    },
+    {
+      "seconds": 1311.3,
+      "heap_mib": 822.6
+    },
+    {
+      "seconds": 1320.5,
+      "heap_mib": 785.7
+    },
+    {
+      "seconds": 1343.5,
+      "heap_mib": 817.8
+    },
+    {
+      "seconds": 1360.3,
+      "heap_mib": 797.0
+    },
+    {
+      "seconds": 1361.2,
+      "heap_mib": 782.7
+    },
+    {
+      "seconds": 1379.4,
+      "heap_mib": 822.2
+    },
+    {
+      "seconds": 1396.1,
+      "heap_mib": 812.8
+    },
+    {
+      "seconds": 1431.7,
+      "heap_mib": 889.3
+    },
+    {
+      "seconds": 1440.5,
+      "heap_mib": 828.2
+    },
+    {
+      "seconds": 1464.6,
+      "heap_mib": 856.6
+    },
+    {
+      "seconds": 1489.3,
+      "heap_mib": 850.9
+    },
+    {
+      "seconds": 1490.2,
+      "heap_mib": 818.0
+    },
+    {
+      "seconds": 1513.8,
+      "heap_mib": 833.0
+    },
+    {
+      "seconds": 1520.3,
+      "heap_mib": 844.1
+    },
+    {
+      "seconds": 1555.5,
+      "heap_mib": 885.5
+    },
+    {
+      "seconds": 1560.6,
+      "heap_mib": 863.7
+    },
+    {
+      "seconds": 1572.0,
+      "heap_mib": 849.2
+    },
+    {
+      "seconds": 1574.0,
+      "heap_mib": 857.0
+    },
+    {
+      "seconds": 1589.2,
+      "heap_mib": 861.1
+    },
+    {
+      "seconds": 1609.4,
+      "heap_mib": 890.4
+    },
+    {
+      "seconds": 1642.3,
+      "heap_mib": 901.5
+    },
+    {
+      "seconds": 1678.2,
+      "heap_mib": 940.7
+    },
+    {
+      "seconds": 1680.6,
+      "heap_mib": 905.7
+    },
+    {
+      "seconds": 1696.2,
+      "heap_mib": 921.4
+    },
+    {
+      "seconds": 1727.2,
+      "heap_mib": 917.1
+    },
+    {
+      "seconds": 1728.0,
+      "heap_mib": 896.4
+    },
+    {
+      "seconds": 1747.3,
+      "heap_mib": 932.4
+    },
+    {
+      "seconds": 1765.3,
+      "heap_mib": 930.5
+    },
+    {
+      "seconds": 1799.5,
+      "heap_mib": 980.8
+    },
+    {
+      "seconds": 1800.6,
+      "heap_mib": 940.8
+    },
+    {
+      "seconds": 1808.9,
+      "heap_mib": 917.2
+    },
+    {
+      "seconds": 1809.7,
+      "heap_mib": 915.1
+    },
+    {
+      "seconds": 1817.1,
+      "heap_mib": 951.6
+    },
+    {
+      "seconds": 1852.1,
+      "heap_mib": 992.6
+    },
+    {
+      "seconds": 1885.6,
+      "heap_mib": 988.4
+    },
+    {
+      "seconds": 1920.6,
+      "heap_mib": 985.4
+    },
+    {
+      "seconds": 1940.0,
+      "heap_mib": 1005.8
+    },
+    {
+      "seconds": 1941.9,
+      "heap_mib": 1023.9
+    },
+    {
+      "seconds": 1957.7,
+      "heap_mib": 985.1
+    },
+    {
+      "seconds": 1976.6,
+      "heap_mib": 802.9
+    },
+    {
+      "seconds": 1990.9,
+      "heap_mib": 781.3
+    },
+    {
+      "seconds": 1994.1,
+      "heap_mib": 800.2
+    },
+    {
+      "seconds": 2029.7,
+      "heap_mib": 876.2
+    },
+    {
+      "seconds": 2040.5,
+      "heap_mib": 809.9
+    },
+    {
+      "seconds": 2062.2,
+      "heap_mib": 839.2
+    },
+    {
+      "seconds": 2097.6,
+      "heap_mib": 866.0
+    },
+    {
+      "seconds": 2115.3,
+      "heap_mib": 882.6
+    },
+    {
+      "seconds": 2146.4,
+      "heap_mib": 839.7
+    },
+    {
+      "seconds": 2147.2,
+      "heap_mib": 820.4
+    },
+    {
+      "seconds": 2160.4,
+      "heap_mib": 837.9
+    },
+    {
+      "seconds": 2166.4,
+      "heap_mib": 849.0
+    },
+    {
+      "seconds": 2183.6,
+      "heap_mib": 863.2
+    },
+    {
+      "seconds": 2202.8,
+      "heap_mib": 885.5
+    },
+    {
+      "seconds": 2234.9,
+      "heap_mib": 875.3
+    },
+    {
+      "seconds": 2270.3,
+      "heap_mib": 933.8
+    },
+    {
+      "seconds": 2280.5,
+      "heap_mib": 905.2
+    },
+    {
+      "seconds": 2303.0,
+      "heap_mib": 901.9
+    },
+    {
+      "seconds": 2304.7,
+      "heap_mib": 934.9
+    },
+    {
+      "seconds": 2320.1,
+      "heap_mib": 855.1
+    },
+    {
+      "seconds": 2339.6,
+      "heap_mib": 882.7
+    },
+    {
+      "seconds": 2357.2,
+      "heap_mib": 907.4
+    },
+    {
+      "seconds": 2392.0,
+      "heap_mib": 946.5
+    },
+    {
+      "seconds": 2400.5,
+      "heap_mib": 884.1
+    },
+    {
+      "seconds": 2424.2,
+      "heap_mib": 908.1
+    },
+    {
+      "seconds": 2460.0,
+      "heap_mib": 939.1
+    },
+    {
+      "seconds": 2477.1,
+      "heap_mib": 946.3
+    },
+    {
+      "seconds": 2511.9,
+      "heap_mib": 944.1
+    },
+    {
+      "seconds": 2520.4,
+      "heap_mib": 921.9
+    },
+    {
+      "seconds": 2543.3,
+      "heap_mib": 932.4
+    },
+    {
+      "seconds": 2545.4,
+      "heap_mib": 921.5
+    },
+    {
+      "seconds": 2579.4,
+      "heap_mib": 960.5
+    },
+    {
+      "seconds": 2596.7,
+      "heap_mib": 957.2
+    },
+    {
+      "seconds": 2631.8,
+      "heap_mib": 998.1
+    },
+    {
+      "seconds": 2640.5,
+      "heap_mib": 968.6
+    },
+    {
+      "seconds": 2664.2,
+      "heap_mib": 999.7
+    },
+    {
+      "seconds": 2700.4,
+      "heap_mib": 1056.7
+    },
+    {
+      "seconds": 2718.2,
+      "heap_mib": 990.3
+    },
+    {
+      "seconds": 2749.1,
+      "heap_mib": 976.7
+    },
+    {
+      "seconds": 2749.8,
+      "heap_mib": 951.9
+    },
+    {
+      "seconds": 2760.5,
+      "heap_mib": 972.1
+    },
+    {
+      "seconds": 2785.2,
+      "heap_mib": 987.5
+    },
+    {
+      "seconds": 2821.0,
+      "heap_mib": 1002.7
+    },
+    {
+      "seconds": 2853.6,
+      "heap_mib": 986.4
+    },
+    {
+      "seconds": 2854.4,
+      "heap_mib": 959.7
+    },
+    {
+      "seconds": 2872.8,
+      "heap_mib": 1011.7
+    },
+    {
+      "seconds": 2880.4,
+      "heap_mib": 976.2
+    },
+    {
+      "seconds": 2905.1,
+      "heap_mib": 1024.0
+    },
+    {
+      "seconds": 2907.1,
+      "heap_mib": 996.6
+    },
+    {
+      "seconds": 2941.0,
+      "heap_mib": 1055.0
+    },
+    {
+      "seconds": 2958.4,
+      "heap_mib": 1028.6
+    },
+    {
+      "seconds": 2992.9,
+      "heap_mib": 1070.9
+    },
+    {
+      "seconds": 3000.5,
+      "heap_mib": 1048.1
+    },
+    {
+      "seconds": 3008.8,
+      "heap_mib": 1047.0
+    },
+    {
+      "seconds": 3025.6,
+      "heap_mib": 1072.9
+    },
+    {
+      "seconds": 3042.0,
+      "heap_mib": 1052.6
+    },
+    {
+      "seconds": 3061.5,
+      "heap_mib": 1024.9
+    },
+    {
+      "seconds": 3079.1,
+      "heap_mib": 1040.6
+    },
+    {
+      "seconds": 3114.3,
+      "heap_mib": 1072.3
+    },
+    {
+      "seconds": 3120.4,
+      "heap_mib": 1045.0
+    },
+    {
+      "seconds": 3145.9,
+      "heap_mib": 1039.4
+    },
+    {
+      "seconds": 3180.9,
+      "heap_mib": 1099.3
+    },
+    {
+      "seconds": 3198.4,
+      "heap_mib": 1069.3
+    },
+    {
+      "seconds": 3240.5,
+      "heap_mib": 1091.5
+    },
+    {
+      "seconds": 3264.0,
+      "heap_mib": 1081.2
+    },
+    {
+      "seconds": 3300.0,
+      "heap_mib": 1119.3
+    },
+    {
+      "seconds": 3319.9,
+      "heap_mib": 1104.2
+    },
+    {
+      "seconds": 3352.1,
+      "heap_mib": 1139.8
+    },
+    {
+      "seconds": 3360.5,
+      "heap_mib": 1117.3
+    },
+    {
+      "seconds": 3384.6,
+      "heap_mib": 1160.7
+    },
+    {
+      "seconds": 3420.4,
+      "heap_mib": 1195.6
+    },
+    {
+      "seconds": 3428.7,
+      "heap_mib": 1089.9
+    },
+    {
+      "seconds": 3429.5,
+      "heap_mib": 1083.3
+    },
+    {
+      "seconds": 3437.8,
+      "heap_mib": 1110.4
+    },
+    {
+      "seconds": 3480.5,
+      "heap_mib": 1133.8
+    },
+    {
+      "seconds": 3505.0,
+      "heap_mib": 1163.5
+    },
+    {
+      "seconds": 3540.0,
+      "heap_mib": 1166.1
+    },
+    {
+      "seconds": 3558.9,
+      "heap_mib": 1158.2
+    },
+    {
+      "seconds": 3588.9,
+      "heap_mib": 1138.1
+    },
+    {
+      "seconds": 3589.7,
+      "heap_mib": 1127.6
+    },
+    {
+      "seconds": 3600.4,
+      "heap_mib": 1139.3
+    },
+    {
+      "seconds": 3623.7,
+      "heap_mib": 1175.7
+    },
+    {
+      "seconds": 3659.9,
+      "heap_mib": 1217.9
+    },
+    {
+      "seconds": 3679.7,
+      "heap_mib": 1236.3
+    },
+    {
+      "seconds": 3708.6,
+      "heap_mib": 1175.2
+    },
+    {
+      "seconds": 3709.4,
+      "heap_mib": 1164.3
+    },
+    {
+      "seconds": 3720.5,
+      "heap_mib": 1198.1
+    },
+    {
+      "seconds": 3744.2,
+      "heap_mib": 1237.9
+    },
+    {
+      "seconds": 3780.7,
+      "heap_mib": 1269.0
+    },
+    {
+      "seconds": 3789.0,
+      "heap_mib": 1222.0
+    },
+    {
+      "seconds": 3789.8,
+      "heap_mib": 1216.4
+    },
+    {
+      "seconds": 3797.5,
+      "heap_mib": 1259.3
+    },
+    {
+      "seconds": 3840.5,
+      "heap_mib": 1272.1
+    },
+    {
+      "seconds": 3864.2,
+      "heap_mib": 1299.0
+    },
+    {
+      "seconds": 3914.7,
+      "heap_mib": 1326.0
+    },
+    {
+      "seconds": 3931.2,
+      "heap_mib": 1273.4
+    },
+    {
+      "seconds": 3932.0,
+      "heap_mib": 1261.3
+    },
+    {
+      "seconds": 3960.5,
+      "heap_mib": 1287.3
+    },
+    {
+      "seconds": 3982.6,
+      "heap_mib": 1321.7
+    },
+    {
+      "seconds": 4019.3,
+      "heap_mib": 1353.3
+    },
+    {
+      "seconds": 4038.7,
+      "heap_mib": 1358.4
+    },
+    {
+      "seconds": 4052.0,
+      "heap_mib": 1298.4
+    },
+    {
+      "seconds": 4052.8,
+      "heap_mib": 1293.3
+    },
+    {
+      "seconds": 4071.3,
+      "heap_mib": 1339.2
+    },
+    {
+      "seconds": 4080.5,
+      "heap_mib": 1325.9
+    },
+    {
+      "seconds": 4103.9,
+      "heap_mib": 1377.2
+    },
+    {
+      "seconds": 4154.9,
+      "heap_mib": 1416.3
+    },
+    {
+      "seconds": 4157.5,
+      "heap_mib": 1297.7
+    },
+    {
+      "seconds": 4171.3,
+      "heap_mib": 1267.8
+    },
+    {
+      "seconds": 4172.1,
+      "heap_mib": 1256.3
+    },
+    {
+      "seconds": 4191.8,
+      "heap_mib": 1288.1
+    },
+    {
+      "seconds": 4200.5,
+      "heap_mib": 1275.0
+    },
+    {
+      "seconds": 4224.1,
+      "heap_mib": 1291.8
+    },
+    {
+      "seconds": 4265.2,
+      "heap_mib": 1326.3
+    },
+    {
+      "seconds": 4279.3,
+      "heap_mib": 1345.3
+    },
+    {
+      "seconds": 4320.5,
+      "heap_mib": 1339.1
+    },
+    {
+      "seconds": 4343.3,
+      "heap_mib": 1349.0
+    },
+    {
+      "seconds": 4362.9,
+      "heap_mib": 1354.6
+    },
+    {
+      "seconds": 4395.3,
+      "heap_mib": 1364.0
+    },
+    {
+      "seconds": 4431.7,
+      "heap_mib": 1396.3
+    },
+    {
+      "seconds": 4440.1,
+      "heap_mib": 1360.8
+    },
+    {
+      "seconds": 4440.5,
+      "heap_mib": 1361.0
+    },
+    {
+      "seconds": 4463.3,
+      "heap_mib": 1403.2
+    },
+    {
+      "seconds": 4481.2,
+      "heap_mib": 1384.7
+    },
+    {
+      "seconds": 4500.0,
+      "heap_mib": 1374.0
+    },
+    {
+      "seconds": 4520.3,
+      "heap_mib": 1408.7
+    },
+    {
+      "seconds": 4552.8,
+      "heap_mib": 1396.6
+    },
+    {
+      "seconds": 4560.5,
+      "heap_mib": 1369.4
+    },
+    {
+      "seconds": 4584.9,
+      "heap_mib": 1387.9
+    },
+    {
+      "seconds": 4635.3,
+      "heap_mib": 1427.0
+    },
+    {
+      "seconds": 4680.5,
+      "heap_mib": 1428.0
+    },
+    {
+      "seconds": 4704.1,
+      "heap_mib": 1464.9
+    },
+    {
+      "seconds": 4754.7,
+      "heap_mib": 1474.5
+    }
+  ],
+  "timeline": [
+    {
+      "seconds": 0,
+      "heap_mib": 4.2,
+      "rss_mib": 52.5,
+      "external_mib": 1.7
+    },
+    {
+      "seconds": 60,
+      "heap_mib": 360.8,
+      "rss_mib": 724.6,
+      "external_mib": 99.1
+    },
+    {
+      "seconds": 120,
+      "heap_mib": 352.7,
+      "rss_mib": 786.6,
+      "external_mib": 106.0
+    },
+    {
+      "seconds": 180,
+      "heap_mib": 413.5,
+      "rss_mib": 847.7,
+      "external_mib": 118.1
+    },
+    {
+      "seconds": 240,
+      "heap_mib": 420.4,
+      "rss_mib": 915.5,
+      "external_mib": 118.8
+    },
+    {
+      "seconds": 300,
+      "heap_mib": 409.6,
+      "rss_mib": 782.4,
+      "external_mib": 112.7
+    },
+    {
+      "seconds": 360,
+      "heap_mib": 465.0,
+      "rss_mib": 948.9,
+      "external_mib": 120.6
+    },
+    {
+      "seconds": 420,
+      "heap_mib": 549.9,
+      "rss_mib": 991.4,
+      "external_mib": 122.9
+    },
+    {
+      "seconds": 480,
+      "heap_mib": 503.2,
+      "rss_mib": 938.8,
+      "external_mib": 121.7
+    },
+    {
+      "seconds": 540,
+      "heap_mib": 604.2,
+      "rss_mib": 998.6,
+      "external_mib": 122.8
+    },
+    {
+      "seconds": 600,
+      "heap_mib": 545.2,
+      "rss_mib": 984.1,
+      "external_mib": 119.2
+    },
+    {
+      "seconds": 661,
+      "heap_mib": 591.9,
+      "rss_mib": 1005.3,
+      "external_mib": 118.4
+    },
+    {
+      "seconds": 721,
+      "heap_mib": 579.5,
+      "rss_mib": 1013.0,
+      "external_mib": 119.8
+    },
+    {
+      "seconds": 781,
+      "heap_mib": 624.9,
+      "rss_mib": 1151.9,
+      "external_mib": 133.7
+    },
+    {
+      "seconds": 841,
+      "heap_mib": 639.1,
+      "rss_mib": 1094.3,
+      "external_mib": 117.9
+    },
+    {
+      "seconds": 901,
+      "heap_mib": 709.9,
+      "rss_mib": 1121.3,
+      "external_mib": 121.6
+    },
+    {
+      "seconds": 961,
+      "heap_mib": 672.8,
+      "rss_mib": 1108.8,
+      "external_mib": 118.9
+    },
+    {
+      "seconds": 1021,
+      "heap_mib": 762.5,
+      "rss_mib": 1258.7,
+      "external_mib": 122.3
+    },
+    {
+      "seconds": 1081,
+      "heap_mib": 695.4,
+      "rss_mib": 1229.7,
+      "external_mib": 118.9
+    },
+    {
+      "seconds": 1141,
+      "heap_mib": 722.3,
+      "rss_mib": 1179.2,
+      "external_mib": 130.4
+    },
+    {
+      "seconds": 1201,
+      "heap_mib": 752.0,
+      "rss_mib": 1326.4,
+      "external_mib": 123.0
+    },
+    {
+      "seconds": 1261,
+      "heap_mib": 776.1,
+      "rss_mib": 1252.2,
+      "external_mib": 118.5
+    },
+    {
+      "seconds": 1321,
+      "heap_mib": 785.8,
+      "rss_mib": 1375.4,
+      "external_mib": 124.2
+    },
+    {
+      "seconds": 1381,
+      "heap_mib": 859.9,
+      "rss_mib": 1290.4,
+      "external_mib": 130.2
+    },
+    {
+      "seconds": 1441,
+      "heap_mib": 828.3,
+      "rss_mib": 1408.7,
+      "external_mib": 123.1
+    },
+    {
+      "seconds": 1501,
+      "heap_mib": 820.5,
+      "rss_mib": 1275.2,
+      "external_mib": 118.4
+    },
+    {
+      "seconds": 1562,
+      "heap_mib": 867.0,
+      "rss_mib": 1417.9,
+      "external_mib": 125.0
+    },
+    {
+      "seconds": 1622,
+      "heap_mib": 933.5,
+      "rss_mib": 1382.7,
+      "external_mib": 120.7
+    },
+    {
+      "seconds": 1682,
+      "heap_mib": 905.8,
+      "rss_mib": 1522.0,
+      "external_mib": 125.4
+    },
+    {
+      "seconds": 1742,
+      "heap_mib": 954.9,
+      "rss_mib": 1403.4,
+      "external_mib": 119.3
+    },
+    {
+      "seconds": 1802,
+      "heap_mib": 940.9,
+      "rss_mib": 1502.2,
+      "external_mib": 123.2
+    },
+    {
+      "seconds": 1862,
+      "heap_mib": 997.9,
+      "rss_mib": 1527.2,
+      "external_mib": 121.4
+    },
+    {
+      "seconds": 1922,
+      "heap_mib": 985.5,
+      "rss_mib": 1572.9,
+      "external_mib": 126.1
+    },
+    {
+      "seconds": 1982,
+      "heap_mib": 848.9,
+      "rss_mib": 1529.5,
+      "external_mib": 120.5
+    },
+    {
+      "seconds": 2042,
+      "heap_mib": 812.7,
+      "rss_mib": 1388.8,
+      "external_mib": 120.8
+    },
+    {
+      "seconds": 2102,
+      "heap_mib": 922.7,
+      "rss_mib": 1466.6,
+      "external_mib": 123.5
+    },
+    {
+      "seconds": 2162,
+      "heap_mib": 838.0,
+      "rss_mib": 1317.0,
+      "external_mib": 119.9
+    },
+    {
+      "seconds": 2222,
+      "heap_mib": 929.6,
+      "rss_mib": 1413.8,
+      "external_mib": 139.9
+    },
+    {
+      "seconds": 2282,
+      "heap_mib": 905.0,
+      "rss_mib": 1476.2,
+      "external_mib": 123.7
+    },
+    {
+      "seconds": 2342,
+      "heap_mib": 928.7,
+      "rss_mib": 1416.8,
+      "external_mib": 127.7
+    },
+    {
+      "seconds": 2402,
+      "heap_mib": 884.2,
+      "rss_mib": 1488.7,
+      "external_mib": 124.1
+    },
+    {
+      "seconds": 2462,
+      "heap_mib": 947.7,
+      "rss_mib": 1537.0,
+      "external_mib": 138.6
+    },
+    {
+      "seconds": 2522,
+      "heap_mib": 924.8,
+      "rss_mib": 1531.2,
+      "external_mib": 126.9
+    },
+    {
+      "seconds": 2582,
+      "heap_mib": 984.9,
+      "rss_mib": 1561.7,
+      "external_mib": 132.6
+    },
+    {
+      "seconds": 2642,
+      "heap_mib": 971.5,
+      "rss_mib": 1566.9,
+      "external_mib": 123.1
+    },
+    {
+      "seconds": 2702,
+      "heap_mib": 1056.0,
+      "rss_mib": 1660.2,
+      "external_mib": 139.9
+    },
+    {
+      "seconds": 2763,
+      "heap_mib": 972.2,
+      "rss_mib": 1458.7,
+      "external_mib": 121.3
+    },
+    {
+      "seconds": 2823,
+      "heap_mib": 1021.4,
+      "rss_mib": 1601.0,
+      "external_mib": 132.7
+    },
+    {
+      "seconds": 2883,
+      "heap_mib": 976.3,
+      "rss_mib": 1485.6,
+      "external_mib": 116.6
+    },
+    {
+      "seconds": 2943,
+      "heap_mib": 1051.4,
+      "rss_mib": 1557.0,
+      "external_mib": 136.0
+    },
+    {
+      "seconds": 3003,
+      "heap_mib": 1048.2,
+      "rss_mib": 1617.0,
+      "external_mib": 127.6
+    },
+    {
+      "seconds": 3063,
+      "heap_mib": 1041.2,
+      "rss_mib": 1599.7,
+      "external_mib": 120.8
+    },
+    {
+      "seconds": 3123,
+      "heap_mib": 1045.1,
+      "rss_mib": 1622.2,
+      "external_mib": 124.3
+    },
+    {
+      "seconds": 3183,
+      "heap_mib": 1094.7,
+      "rss_mib": 1654.1,
+      "external_mib": 137.4
+    },
+    {
+      "seconds": 3243,
+      "heap_mib": 1094.3,
+      "rss_mib": 1664.0,
+      "external_mib": 127.1
+    },
+    {
+      "seconds": 3303,
+      "heap_mib": 1154.6,
+      "rss_mib": 1714.5,
+      "external_mib": 123.3
+    },
+    {
+      "seconds": 3363,
+      "heap_mib": 1117.4,
+      "rss_mib": 1719.1,
+      "external_mib": 123.7
+    },
+    {
+      "seconds": 3423,
+      "heap_mib": 1203.8,
+      "rss_mib": 1801.2,
+      "external_mib": 138.3
+    },
+    {
+      "seconds": 3483,
+      "heap_mib": 1136.7,
+      "rss_mib": 1684.0,
+      "external_mib": 121.7
+    },
+    {
+      "seconds": 3543,
+      "heap_mib": 1166.4,
+      "rss_mib": 1753.0,
+      "external_mib": 122.8
+    },
+    {
+      "seconds": 3603,
+      "heap_mib": 1142.2,
+      "rss_mib": 1617.7,
+      "external_mib": 120.0
+    },
+    {
+      "seconds": 3663,
+      "heap_mib": 1214.1,
+      "rss_mib": 1803.6,
+      "external_mib": 134.6
+    },
+    {
+      "seconds": 3723,
+      "heap_mib": 1201.0,
+      "rss_mib": 1682.5,
+      "external_mib": 123.8
+    },
+    {
+      "seconds": 3783,
+      "heap_mib": 1269.2,
+      "rss_mib": 1884.5,
+      "external_mib": 124.3
+    },
+    {
+      "seconds": 3843,
+      "heap_mib": 1275.0,
+      "rss_mib": 1810.9,
+      "external_mib": 121.8
+    },
+    {
+      "seconds": 3903,
+      "heap_mib": 1478.5,
+      "rss_mib": 1913.3,
+      "external_mib": 153.5
+    },
+    {
+      "seconds": 3963,
+      "heap_mib": 1287.0,
+      "rss_mib": 1795.0,
+      "external_mib": 114.6
+    },
+    {
+      "seconds": 4023,
+      "heap_mib": 1358.7,
+      "rss_mib": 1964.7,
+      "external_mib": 135.2
+    },
+    {
+      "seconds": 4083,
+      "heap_mib": 1328.8,
+      "rss_mib": 1842.8,
+      "external_mib": 119.6
+    },
+    {
+      "seconds": 4143,
+      "heap_mib": 1575.0,
+      "rss_mib": 2013.7,
+      "external_mib": 150.3
+    },
+    {
+      "seconds": 4203,
+      "heap_mib": 1275.9,
+      "rss_mib": 1798.6,
+      "external_mib": 117.5
+    },
+    {
+      "seconds": 4263,
+      "heap_mib": 1495.7,
+      "rss_mib": 1928.0,
+      "external_mib": 160.8
+    },
+    {
+      "seconds": 4323,
+      "heap_mib": 1342.0,
+      "rss_mib": 1920.6,
+      "external_mib": 123.9
+    },
+    {
+      "seconds": 4383,
+      "heap_mib": 1446.8,
+      "rss_mib": 1957.4,
+      "external_mib": 140.7
+    },
+    {
+      "seconds": 4443,
+      "heap_mib": 1364.0,
+      "rss_mib": 1846.5,
+      "external_mib": 121.4
+    },
+    {
+      "seconds": 4503,
+      "heap_mib": 1367.8,
+      "rss_mib": 1946.0,
+      "external_mib": 118.5
+    },
+    {
+      "seconds": 4563,
+      "heap_mib": 1372.3,
+      "rss_mib": 1957.6,
+      "external_mib": 119.5
+    },
+    {
+      "seconds": 4624,
+      "heap_mib": 1577.4,
+      "rss_mib": 2010.9,
+      "external_mib": 153.6
+    },
+    {
+      "seconds": 4684,
+      "heap_mib": 1430.9,
+      "rss_mib": 2065.5,
+      "external_mib": 121.1
+    },
+    {
+      "seconds": 4744,
+      "heap_mib": 1643.5,
+      "rss_mib": 2115.7,
+      "external_mib": 149.2
+    }
+  ],
+  "allocation_profiles": [
+    {
+      "at": 1791857197128,
+      "sampled_mib": 322.5,
+      "mechanisms_mib": {
+        "module_source_read_stack": 115.7,
+        "flight_runtime_stack": 43.0
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 84.5
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 22.0
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 18.1
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 14.3
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 13.0
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 12.5
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 7.9
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        },
+        {
+          "category": "node-internal",
+          "function": "fromStringFast",
+          "mib": 6.3
+        },
+        {
+          "category": "other",
+          "function": "push",
+          "mib": 5.0
+        },
+        {
+          "category": "node-internal",
+          "function": "slice",
+          "mib": 4.7
+        }
+      ]
+    },
+    {
+      "at": 1791857317107,
+      "sampled_mib": 404.7,
+      "mechanisms_mib": {
+        "module_source_read_stack": 147.6,
+        "flight_runtime_stack": 69.0
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 113.2
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 31.5
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 25.5
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 21.3
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 19.3
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 12.0
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 9.0
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromDataUrl",
+          "mib": 7.8
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 7.4
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 7.0
+        }
+      ]
+    },
+    {
+      "at": 1791857437198,
+      "sampled_mib": 457.7,
+      "mechanisms_mib": {
+        "module_source_read_stack": 170.5,
+        "flight_runtime_stack": 95.9
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 138.8
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 44.5
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 24.0
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 18.6
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 17.4
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 13.5
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 13.0
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 12.0
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 10.9
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromDataUrl",
+          "mib": 7.7
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        }
+      ]
+    },
+    {
+      "at": 1791857557185,
+      "sampled_mib": 506.5,
+      "mechanisms_mib": {
+        "module_source_read_stack": 199.2,
+        "flight_runtime_stack": 110.8
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 166.9
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 57.0
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 29.1
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 21.5
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 18.6
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 16.5
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 15.0
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 13.0
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromDataUrl",
+          "mib": 8.1
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 6.9
+        }
+      ]
+    },
+    {
+      "at": 1791857677181,
+      "sampled_mib": 534.1,
+      "mechanisms_mib": {
+        "module_source_read_stack": 220.9,
+        "flight_runtime_stack": 122.6
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 187.5
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 60.5
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 23.6
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 19.7
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 18.0
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 17.6
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 16.0
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 13.5
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 8.3
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromDataUrl",
+          "mib": 7.4
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        }
+      ]
+    },
+    {
+      "at": 1791857797385,
+      "sampled_mib": 555.3,
+      "mechanisms_mib": {
+        "module_source_read_stack": 240.2,
+        "flight_runtime_stack": 131.0
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 207.3
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 68.5
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 22.1
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 20.6
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 20.0
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 19.8
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 16.5
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 13.1
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 8.8
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromDataUrl",
+          "mib": 5.9
+        }
+      ]
+    },
+    {
+      "at": 1791857917284,
+      "sampled_mib": 597.1,
+      "mechanisms_mib": {
+        "module_source_read_stack": 255.6,
+        "flight_runtime_stack": 152.8
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 222.8
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 80.0
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 23.0
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 22.5
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 20.5
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 19.1
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 18.1
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 12.5
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "node-internal",
+          "function": "createContext",
+          "mib": 9.0
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromDataUrl",
+          "mib": 7.5
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 7.3
+        }
+      ]
+    },
+    {
+      "at": 1791858037274,
+      "sampled_mib": 627.3,
+      "mechanisms_mib": {
+        "module_source_read_stack": 273.9,
+        "flight_runtime_stack": 174.4
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 242.7
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 92.0
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 25.0
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 24.5
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 22.6
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 19.8
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 18.1
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 12.5
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "node-internal",
+          "function": "createContext",
+          "mib": 9.0
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 7.3
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromDataUrl",
+          "mib": 7.3
+        }
+      ]
+    },
+    {
+      "at": 1791858157289,
+      "sampled_mib": 688.4,
+      "mechanisms_mib": {
+        "module_source_read_stack": 303.2,
+        "flight_runtime_stack": 191.6
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 271.4
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 103.0
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 28.5
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 28.0
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 23.6
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 19.2
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 18.7
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 13.5
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 10.5
+        },
+        {
+          "category": "node-internal",
+          "function": "createContext",
+          "mib": 10.0
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "other",
+          "function": "set",
+          "mib": 7.2
+        }
+      ]
+    },
+    {
+      "at": 1791858277310,
+      "sampled_mib": 725.4,
+      "mechanisms_mib": {
+        "module_source_read_stack": 331.1,
+        "flight_runtime_stack": 201.2
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 297.5
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 112.0
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 30.5
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 30.0
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 26.1
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 21.6
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 20.4
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 12.0
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 11.4
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromDataUrl",
+          "mib": 7.0
+        }
+      ]
+    },
+    {
+      "at": 1791858397340,
+      "sampled_mib": 759.8,
+      "mechanisms_mib": {
+        "module_source_read_stack": 345.2,
+        "flight_runtime_stack": 217.4
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 310.1
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 121.5
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 36.0
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 32.0
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 25.6
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 22.0
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 17.5
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 15.5
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 7.4
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromDataUrl",
+          "mib": 7.0
+        }
+      ]
+    },
+    {
+      "at": 1791858517370,
+      "sampled_mib": 804.0,
+      "mechanisms_mib": {
+        "module_source_read_stack": 374.0,
+        "flight_runtime_stack": 235.4
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 338.7
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 132.5
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 40.0
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 35.0
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 25.5
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 21.6
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 18.8
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 14.0
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromDataUrl",
+          "mib": 8.4
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 6.9
+        }
+      ]
+    },
+    {
+      "at": 1791858637393,
+      "sampled_mib": 848.9,
+      "mechanisms_mib": {
+        "module_source_read_stack": 387.2,
+        "flight_runtime_stack": 260.6
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 351.6
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 144.0
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 44.5
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 39.5
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 27.1
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 21.9
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 19.4
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 14.5
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 7.8
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromDataUrl",
+          "mib": 7.4
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        }
+      ]
+    },
+    {
+      "at": 1791858757410,
+      "sampled_mib": 885.3,
+      "mechanisms_mib": {
+        "module_source_read_stack": 406.8,
+        "flight_runtime_stack": 280.1
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 372.7
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 153.0
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 47.5
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 42.5
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 25.6
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 22.1
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 19.9
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 15.0
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 10.9
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        },
+        {
+          "category": "node-internal",
+          "function": "createContext",
+          "mib": 6.5
+        }
+      ]
+    },
+    {
+      "at": 1791858877391,
+      "sampled_mib": 922.3,
+      "mechanisms_mib": {
+        "module_source_read_stack": 432.1,
+        "flight_runtime_stack": 292.8
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 397.5
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 164.0
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 48.0
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 47.0
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 24.1
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 22.2
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 21.4
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 12.5
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 9.4
+        },
+        {
+          "category": "node-internal",
+          "function": "createContext",
+          "mib": 7.5
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        }
+      ]
+    },
+    {
+      "at": 1791858997413,
+      "sampled_mib": 962.8,
+      "mechanisms_mib": {
+        "module_source_read_stack": 446.4,
+        "flight_runtime_stack": 317.9
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 410.4
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 175.0
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 55.0
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 49.5
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 27.1
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 22.3
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 20.5
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 14.5
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 12.4
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "node-internal",
+          "function": "createContext",
+          "mib": 8.0
+        },
+        {
+          "category": "other",
+          "function": "(V8 API)",
+          "mib": 7.4
+        }
+      ]
+    },
+    {
+      "at": 1791859117290,
+      "sampled_mib": 794.3,
+      "mechanisms_mib": {
+        "module_source_read_stack": 472.4,
+        "flight_runtime_stack": 124.6
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 440.4
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 58.5
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 25.1
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 20.4
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 18.8
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 17.0
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 15.5
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 15.5
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 9.3
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromDataUrl",
+          "mib": 7.6
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        }
+      ]
+    },
+    {
+      "at": 1791859237274,
+      "sampled_mib": 819.5,
+      "mechanisms_mib": {
+        "module_source_read_stack": 489.7,
+        "flight_runtime_stack": 137.6
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 454.1
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 68.0
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 24.0
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 22.5
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 17.5
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 17.5
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 16.5
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 15.5
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromDataUrl",
+          "mib": 9.8
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 8.3
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        }
+      ]
+    },
+    {
+      "at": 1791859357302,
+      "sampled_mib": 875.8,
+      "mechanisms_mib": {
+        "module_source_read_stack": 524.4,
+        "flight_runtime_stack": 151.0
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 493.2
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 77.0
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 28.6
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 21.0
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 19.8
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 19.0
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 17.5
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 13.5
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromDataUrl",
+          "mib": 11.8
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 7.9
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        }
+      ]
+    },
+    {
+      "at": 1791859477287,
+      "sampled_mib": 874.5,
+      "mechanisms_mib": {
+        "module_source_read_stack": 542.9,
+        "flight_runtime_stack": 133.0
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 510.5
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 63.5
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 25.1
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 21.5
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 19.6
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 19.3
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 16.0
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 14.5
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 8.3
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        },
+        {
+          "category": "node-internal",
+          "function": "createContext",
+          "mib": 6.5
+        }
+      ]
+    },
+    {
+      "at": 1791859597272,
+      "sampled_mib": 915.7,
+      "mechanisms_mib": {
+        "module_source_read_stack": 562.5,
+        "flight_runtime_stack": 150.6
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 525.5
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 73.0
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 28.1
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 25.5
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 23.4
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 22.5
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 17.0
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 15.5
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 9.4
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromDataUrl",
+          "mib": 6.7
+        }
+      ]
+    },
+    {
+      "at": 1791859717286,
+      "sampled_mib": 964.4,
+      "mechanisms_mib": {
+        "module_source_read_stack": 595.7,
+        "flight_runtime_stack": 165.0
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 563.0
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 83.0
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 27.5
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 25.1
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 20.9
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 20.5
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 19.0
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 15.0
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 9.3
+        },
+        {
+          "category": "other",
+          "function": "set",
+          "mib": 7.3
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        }
+      ]
+    },
+    {
+      "at": 1791859837289,
+      "sampled_mib": 963.6,
+      "mechanisms_mib": {
+        "module_source_read_stack": 631.4,
+        "flight_runtime_stack": 130.3
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 596.3
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 64.5
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 24.5
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 21.4
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 19.9
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 17.0
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 15.5
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 14.0
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 10.9
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromDataUrl",
+          "mib": 8.9
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        }
+      ]
+    },
+    {
+      "at": 1791859957269,
+      "sampled_mib": 968.9,
+      "mechanisms_mib": {
+        "module_source_read_stack": 630.0,
+        "flight_runtime_stack": 147.2
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 594.1
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 72.5
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 22.7
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 22.6
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 20.5
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 20.0
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 17.1
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 14.0
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 11.4
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromDataUrl",
+          "mib": 7.5
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        }
+      ]
+    },
+    {
+      "at": 1791860077288,
+      "sampled_mib": 1037.1,
+      "mechanisms_mib": {
+        "module_source_read_stack": 668.9,
+        "flight_runtime_stack": 164.7
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 631.7
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 81.0
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 25.6
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 23.0
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 22.7
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 22.5
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 21.5
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 16.5
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 11.9
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        },
+        {
+          "category": "other",
+          "function": "(V8 API)",
+          "mib": 6.7
+        }
+      ]
+    },
+    {
+      "at": 1791860197266,
+      "sampled_mib": 1031.6,
+      "mechanisms_mib": {
+        "module_source_read_stack": 699.8,
+        "flight_runtime_stack": 130.5
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 665.8
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 59.0
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 25.6
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 20.3
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 20.1
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 18.5
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 16.5
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 15.0
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 9.8
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromDataUrl",
+          "mib": 7.4
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        }
+      ]
+    },
+    {
+      "at": 1791860317297,
+      "sampled_mib": 1072.8,
+      "mechanisms_mib": {
+        "module_source_read_stack": 709.1,
+        "flight_runtime_stack": 159.3
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 670.8
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 72.0
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 24.7
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 24.6
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 21.3
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 20.0
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 17.5
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 16.0
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 13.1
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "other",
+          "function": "set",
+          "mib": 7.6
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromDataUrl",
+          "mib": 7.4
+        }
+      ]
+    },
+    {
+      "at": 1791860437302,
+      "sampled_mib": 1104.3,
+      "mechanisms_mib": {
+        "module_source_read_stack": 742.7,
+        "flight_runtime_stack": 157.0
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 707.6
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 78.0
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 24.0
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 23.1
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 21.9
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 21.4
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 17.0
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 14.5
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 8.9
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromDataUrl",
+          "mib": 6.9
+        }
+      ]
+    },
+    {
+      "at": 1791860557312,
+      "sampled_mib": 1126.0,
+      "mechanisms_mib": {
+        "module_source_read_stack": 768.8,
+        "flight_runtime_stack": 153.2
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 733.6
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 63.5
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 25.1
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 22.5
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 21.0
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 19.9
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 17.6
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 17.5
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 12.3
+        },
+        {
+          "category": "other",
+          "function": "set",
+          "mib": 10.7
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        }
+      ]
+    },
+    {
+      "at": 1791860677281,
+      "sampled_mib": 1142.9,
+      "mechanisms_mib": {
+        "module_source_read_stack": 781.4,
+        "flight_runtime_stack": 153.6
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 747.4
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 71.5
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 23.0
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 22.0
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 21.4
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 20.9
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 16.5
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 16.5
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 12.9
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromDataUrl",
+          "mib": 8.2
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        }
+      ]
+    },
+    {
+      "at": 1791860797299,
+      "sampled_mib": 1187.4,
+      "mechanisms_mib": {
+        "module_source_read_stack": 821.9,
+        "flight_runtime_stack": 166.5
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 787.6
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 83.0
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 25.5
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 23.6
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 20.6
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 19.1
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 18.0
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 17.5
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 9.9
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromDataUrl",
+          "mib": 8.7
+        },
+        {
+          "category": "node-internal",
+          "function": "createFromString",
+          "mib": 7.0
+        }
+      ]
+    },
+    {
+      "at": 1791860917335,
+      "sampled_mib": 1256.8,
+      "mechanisms_mib": {
+        "module_source_read_stack": 854.5,
+        "flight_runtime_stack": 205.2
+      },
+      "top": [
+        {
+          "category": "node-internal",
+          "function": "defaultLoadImpl",
+          "mib": 820.1
+        },
+        {
+          "category": "next-runtime",
+          "function": "init",
+          "mib": 100.0
+        },
+        {
+          "category": "next-runtime",
+          "function": "collectStackTracePrivate",
+          "mib": 35.5
+        },
+        {
+          "category": "webpack",
+          "function": "(anonymous)",
+          "mib": 25.6
+        },
+        {
+          "category": "node-internal",
+          "function": "wrapSafe",
+          "mib": 21.3
+        },
+        {
+          "category": "other",
+          "function": "WeakRef",
+          "mib": 19.0
+        },
+        {
+          "category": "node-internal",
+          "function": "fromString",
+          "mib": 18.4
+        },
+        {
+          "category": "other",
+          "function": "(anonymous)",
+          "mib": 17.0
+        },
+        {
+          "category": "app-compiled",
+          "function": "(compiled module)",
+          "mib": 11.3
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromFile",
+          "mib": 9.7
+        },
+        {
+          "category": "node-internal",
+          "function": "sourceMapFromDataUrl",
+          "mib": 9.1
+        },
+        {
+          "category": "other",
+          "function": "set",
+          "mib": 7.6
+        }
+      ]
+    }
+  ],
+  "browser": {
+    "completed": false,
+    "failure": "page.goto: Target page, context or browser has been closed",
+    "counts": {
+      "requests": 6470,
+      "status": 1222,
+      "navigations": 277,
+      "hmr": 80,
+      "hmrReloads": 80,
+      "session": 27
+    },
+    "errors": []
+  },
+  "result": {
+    "failure": "WORKER_REPLACED",
+    "worker": 4102290,
+    "parent": 4102270,
+    "start_ticks": "68973115",
+    "elapsed": 4791.012701388914
+  }
+}
