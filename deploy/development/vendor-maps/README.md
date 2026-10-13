@@ -70,3 +70,8 @@ bounded synthetic HTTPS attribution scenarios, not a sustained mode.
 
 See [qualification and known collection-race blocker](../../../reliability-cockpit/docs/nadi-fix06-pid-qualification.md).
 Earlier long-duration examples are historical and are now rejected by the runner.
+
+QUAL02 now restricts navigation to60–180 seconds (270s unit lifetime), with up to
+three fresh evidence acquisitions within250ms only for a descriptor-specific
+ENOENT. Incomplete views remain unverified; permission/identity/listener failures
+still stop immediately. See the follow-up checkpoint in the qualification report.
