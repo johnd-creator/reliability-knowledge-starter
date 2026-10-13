@@ -75,3 +75,10 @@ QUAL02 now restricts navigation to60–180 seconds (270s unit lifetime), with up
 three fresh evidence acquisitions within250ms only for a descriptor-specific
 ENOENT. Incomplete views remain unverified; permission/identity/listener failures
 still stop immediately. See the follow-up checkpoint in the qualification report.
+
+QUAL03 separates lifecycle refusal categories and browser-functional outcomes.
+A membership gap allows one bounded diagnostic capture but **never a successful
+attestation return**; unknown vanished processes remain unverified. Current
+navigation bounds are60–120s, owned unit lifetime160s (5s stop timeout).
+See the QUAL03 checkpoint for the first failure and unimplemented event-journal
+architecture proposal. No fourth iterative smoke is scheduled.

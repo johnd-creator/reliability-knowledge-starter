@@ -1,0 +1,208 @@
+{
+  "status": "PARTIAL \u2014 deterministic lifecycle qualification PASS; single smoke BLOCKED",
+  "base": "34e7f5af489860f2a727de725152f73914aa34ba",
+  "implementation": "a1ff79722a181a3247c346c9b78e259d00186244",
+  "node": "22.23.1",
+  "heap_mib": 4096,
+  "memory_max_mib": 6144,
+  "application_archive": "63b61d09c45630a76657cdb54991349fb0528e7b",
+  "application_copy": "6a77da2d9f202b42f66098ab5e5b3a6c176446c9",
+  "result": {
+    "failure": "UNREADABLE_PROCESS_EVIDENCE",
+    "worker": 319089,
+    "parent": 319071,
+    "start_ticks": "70828970",
+    "elapsed": 78.85908542398829
+  },
+  "outcome": {
+    "overall": "BLOCKED",
+    "process_attestation": {
+      "status": "BLOCKED",
+      "diagnostic": "TRANSIENT_MEMBERSHIP_UNVERIFIED",
+      "reason": "UNREADABLE_PROCESS_EVIDENCE"
+    },
+    "browser_functional": {
+      "status": "INCOMPLETE_INTERRUPTED_BY_ATTESTATION",
+      "reason": "locator.waitFor: Target page, context or browser has been closed\nCall log:\n  - waiting for getByRole('button', { name: /Status development:/ }).filter({ hasText: 'DEV PROBE 1' }) to be visible\n",
+      "counts": {
+        "requests": 146,
+        "status": 21,
+        "navigations": 5,
+        "hmr": 1,
+        "hmrReloads": 1,
+        "session": 0
+      },
+      "errors": []
+    },
+    "application_crash_established": false
+  },
+  "baseline": {
+    "records": {
+      "319071": {
+        "pid": 319071,
+        "parent": 1515,
+        "start_ticks": "70828936",
+        "executable": "/usr/bin/node-22",
+        "exe_device": 38,
+        "exe_inode": 13719409,
+        "command_sha256": "49eb8a2cd6b9967635f8323dde13c0d16d487706220aa7817abeb8f188f3d1f6",
+        "comm": "node-22",
+        "cgroup": "0::/user.slice/user-1000.slice/user@1000.service/app.slice/nadi-fix06-disposable-candidate-9fbe4b.service\n",
+        "sockets": [
+          "39684576",
+          "39685921"
+        ]
+      },
+      "319089": {
+        "pid": 319089,
+        "parent": 319071,
+        "start_ticks": "70828970",
+        "executable": "/usr/bin/node-22",
+        "exe_device": 38,
+        "exe_inode": 13719409,
+        "command_sha256": "502a5204624ad218db82df94ceeabfd15c53bbf5964b153bfc585c2788e4a880",
+        "comm": "next-server (v1",
+        "cgroup": "0::/user.slice/user-1000.slice/user@1000.service/app.slice/nadi-fix06-disposable-candidate-9fbe4b.service\n",
+        "sockets": [
+          "39684576",
+          "39685922",
+          "39685935",
+          "39686908"
+        ]
+      }
+    },
+    "listener": "39686908",
+    "port": 42563,
+    "https": true,
+    "invocation": "acbe61fa7dac474fb6fe95790bceab9a"
+  },
+  "accepted_samples": 74,
+  "worker_set": [
+    319089
+  ],
+  "all_accepted_complete": true,
+  "cgroup_peak_mib": 845.32421875,
+  "heap_peak_mib": 508.3245849609375,
+  "rss_peak_mib": 840.45703125,
+  "cpu_seconds": 24.345068,
+  "all_sampled_oom_zero": true,
+  "v8_abort": false,
+  "failure_evidence": {
+    "pid": 321420,
+    "stage": "identity",
+    "error_type": "FileNotFoundError",
+    "members": [
+      319071,
+      319089,
+      321408,
+      321420
+    ],
+    "verified_partial": {
+      "319071": {
+        "pid": 319071,
+        "parent": 1515,
+        "start_ticks": "70828936",
+        "executable": "/usr/bin/node-22",
+        "exe_device": 38,
+        "exe_inode": 13719409,
+        "command_sha256": "49eb8a2cd6b9967635f8323dde13c0d16d487706220aa7817abeb8f188f3d1f6",
+        "comm": "node-22",
+        "cgroup": "0::/user.slice/user-1000.slice/user@1000.service/app.slice/nadi-fix06-disposable-candidate-9fbe4b.service\n",
+        "sockets": [
+          "39684576",
+          "39685921"
+        ]
+      },
+      "319089": {
+        "pid": 319089,
+        "parent": 319071,
+        "start_ticks": "70828970",
+        "executable": "/usr/bin/node-22",
+        "exe_device": 38,
+        "exe_inode": 13719409,
+        "command_sha256": "502a5204624ad218db82df94ceeabfd15c53bbf5964b153bfc585c2788e4a880",
+        "comm": "next-server (v1",
+        "cgroup": "0::/user.slice/user-1000.slice/user@1000.service/app.slice/nadi-fix06-disposable-candidate-9fbe4b.service\n",
+        "sockets": [
+          "39684576",
+          "39684579",
+          "39684580",
+          "39685922",
+          "39686908",
+          "39693059",
+          "39694954",
+          "39694963",
+          "39694965",
+          "39694967",
+          "39694969",
+          "39695925",
+          "39695926",
+          "39695927",
+          "39695928",
+          "39695929",
+          "39695930",
+          "39696451",
+          "39696497",
+          "39696501",
+          "39696504",
+          "39696505",
+          "39696506",
+          "39696507"
+        ]
+      },
+      "321408": {
+        "pid": 321408,
+        "parent": 319089,
+        "start_ticks": "70836817",
+        "executable": "/usr/bin/node-22",
+        "exe_device": 38,
+        "exe_inode": 13719409,
+        "command_sha256": "f02c845809d37de4ffc7944216a0d7910675dabb6fe3565df2f504a7d26352c5",
+        "comm": "node-22",
+        "cgroup": "0::/user.slice/user-1000.slice/user@1000.service/app.slice/nadi-fix06-disposable-candidate-9fbe4b.service\n",
+        "sockets": [
+          "39694964",
+          "39694966",
+          "39694968",
+          "39694970"
+        ]
+      }
+    },
+    "diagnostic": "TRANSIENT_MEMBERSHIP_UNVERIFIED",
+    "attestation": "INCOMPLETE_OR_REFUSED",
+    "acceptance": false,
+    "vanished_role": "UNKNOWN",
+    "membership_gap_closed": false,
+    "fresh_diagnostic": {
+      "status": "UNVERIFIED",
+      "acceptance": false,
+      "reason": "CGROUP_CHANGED_DURING_READ",
+      "diagnostic": "TRANSIENT_MEMBERSHIP_UNVERIFIED"
+    }
+  },
+  "preservation": {
+    "at": 1791875931.443728,
+    "hash_checks": {
+      "konsep1.png": true,
+      "konsep2.png": true,
+      "konsep3.png": true,
+      "konsep4.png": true,
+      "konsep5.png": true,
+      "23496711.xls": true,
+      ".nadi-dev/state/controller.py": true,
+      ".nadi-dev/state/frontend_preview.py": true,
+      ".nadi-dev/state/controller-release.json": true,
+      ".nadi-dev/state/frontend-active.json": true,
+      ".nadi-dev/state/frontend-runtime.json": true,
+      ".nadi-dev/state/backup-20261012-153417.dump": true
+    },
+    "process_identity_checks": {
+      "3078556": true,
+      "3744151": true,
+      "1664250": true,
+      "1664262": true
+    },
+    "database_and_qa_sessions": "NOT_ACCESSED",
+    "official_http": "NOT_REQUESTED"
+  }
+}

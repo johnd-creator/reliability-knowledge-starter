@@ -712,3 +712,16 @@ process attribution. [Report](reliability-cockpit/docs/nadi-dev-status-runtime-f
 - Development Visibility: disposable HTTPS only; official source unchanged.
 - Product Owner Acceptance: not claimed; no sustained/live authorization.
 - Remaining Blocker/Next Action: review the unverified additional-process failure. [Evidence](reliability-cockpit/docs/nadi-fix06-pid-qualification.md#qual02--stable-listener-evidence-collection-2026-10-13).
+
+### 2026-10-13 — NADI-FIX06-PID-QUAL-03
+
+- Objective: qualify short-lived membership races without weakening worker/listener invariants.
+- Branch/PR: `codex/nadi-fix06-pid-qualification`, DRAFT PR81; base `34e7f5af489860f2a727de725152f73914aa34ba`.
+- Commit SHA: tested implementation `a1ff79722a181a3247c346c9b78e259d00186244`; evidence separately committed.
+- Implementation Status: IMPLEMENTED isolated diagnostics; vanished-process identity remains unverified.
+- Test Status:124 deterministic/safety regressions PASS; one smoke stopped78.86s on PID321420. Fresh membership diagnostic also UNVERIFIED.
+- CI Status: exact-head results maintained in PR81 checks; not inferred from local tests.
+- Merge Status: NOT MERGED; DRAFT retained.
+- Development Visibility: disposable HTTPS only; no official cutover.
+- Product Owner Acceptance: NOT CLAIMED; overall smoke BLOCKED, browser coverage incomplete after attestation interruption.
+- Remaining Blocker/Next Action: snapshot polling cannot recover vanished-process identity. Review [event-journal architecture proposal](reliability-cockpit/docs/nadi-fix06-pid-qualification.md#qual03--process-lifecycle-qualification-2026-10-13) separately. No fourth iterative smoke or sustained run scheduled.
