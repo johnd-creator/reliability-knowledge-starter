@@ -11,7 +11,7 @@ export default function PdmMeasurementForm({session,initial,busy,onSave,onCancel
  const cache=usePdmDraft();
  const recovered=cache?.recovery?.subject===session.subject&&cache.recovery.base?.record_id===initial?.record_id?cache.recovery:null;
  const base=useRef(recovered?.base??initial).current;
- const [entry,setEntry]=useState<Entry>(()=>recovered?.entry??(base?fromInspection(base):newEntry(session.asset_ids[0]??''))); 
+ const [entry,setEntry]=useState<Entry>(()=>recovered?.entry??(base?fromInspection(base):newEntry(session.asset_ids[0]??'')));
  const [dirty,setDirty]=useState(!!recovered),[error,setError]=useState(''),[identity,setIdentity]=useState('Memuat konteks aset…');
  const sequence=useRef(100);
  useEffect(()=>{let active=true;setIdentity('Memuat konteks aset…');if(entry.asset)engineeringRequest('asset-context/'+encodeURIComponent(entry.asset)+'?limit=1').then(raw=>{const value=raw as {canonical_asset_id:string;identity?:{description?:string;location_ref?:string};identity_availability:string};if(active)setIdentity(value.canonical_asset_id===entry.asset&&value.identity_availability==='AVAILABLE'?`${value.identity?.description??'Deskripsi belum diketahui'} · ${value.identity?.location_ref??'Lokasi belum diketahui'}`:'Konteks aset belum tersedia; server tetap memverifikasi Registry saat menyimpan.');}).catch(()=>{if(active)setIdentity('Konteks aset tidak dapat dibaca; tidak membuat aset baru.');});return()=>{active=false;};},[entry.asset]);
