@@ -96,8 +96,15 @@ def snapshot(group, proc=Path("/proc"), port=None):
         listeners = tcp_listeners(proc)
         after = sorted(int(x) for x in (group / "cgroup.procs").read_text().split())
         if members != after:
-            raise AttributionError("CGROUP_CHANGED_DURING_READ")
-        second = {pid: process(pid, proc) for pid in members}
+            raise AttributionError("CGROUP_CHANGED_DURING_READ", dict(members=members, members_after=after, complete=False))
+        second = {}
+        try:
+            for pid in members:
+                second[pid] = process(pid, proc)
+        except AttributionError as error:
+            error.evidence.update(dict(members=members, capture_pass=2,
+                                      verified_partial=sanitized(dict(records=second))))
+            raise
         for pid, old in records.items():
             if identity(old) != identity(second[pid]):
                 raise AttributionError("PROCESS_CHANGED_DURING_SNAPSHOT")
@@ -179,7 +186,7 @@ COLLECTION_BUDGET_SECONDS = 0.25
 COLLECTION_PAUSE_SECONDS = 0.01
 
 
-def collect_observation(guard, group, properties, auxiliaries=(), proc=Path("/proc"), on_incomplete=None):
+def _collect_complete_observation(guard, group, properties, auxiliaries=(), proc=Path("/proc"), on_incomplete=None):
     deadline = time.monotonic() + COLLECTION_BUDGET_SECONDS
     incomplete = []
     keys = ("MainPID", "InvocationID", "ControlGroup")
@@ -242,6 +249,66 @@ def collect_observation(guard, group, properties, auxiliaries=(), proc=Path("/pr
         attribution["collection"] = dict(complete=True, attempts=attempt, incomplete_observations=incomplete)
         return view, attribution, after
     raise AttributionError("PERSISTENT_INCOMPLETE_LISTENER_EVIDENCE", dict(complete=False, observations=incomplete))
+
+
+def diagnostic_category(error, guard):
+    """A refusal category is not an assertion that Next crashed or was replaced."""
+    code = str(error)
+    approved = {guard.parent["pid"], guard.worker["pid"]}
+    if code == "UNREADABLE_PROCESS_EVIDENCE" and error.evidence.get("pid") in approved:
+        return "UNREADABLE_APPROVED_PROCESS"
+    if code == "UNREADABLE_PROCESS_EVIDENCE" and error.evidence.get("pid") is not None and error.evidence.get("error_type") == "FileNotFoundError":
+        return "TRANSIENT_MEMBERSHIP_UNVERIFIED"
+    if code == "CGROUP_CHANGED_DURING_READ":
+        if approved - set(error.evidence.get("members_after", ())):
+            return "UNAUTHORIZED_OR_REPLACED_WORKER"
+        return "TRANSIENT_MEMBERSHIP_UNVERIFIED"
+    if code in {"APPROVED_PROCESS_IDENTITY_CHANGED", "PARENT_OR_INVOCATION_CHANGED",
+                "EXECUTABLE_OR_CGROUP_MISMATCH", "PROCESS_CHANGED_DURING_READ",
+                "PROCESS_CHANGED_DURING_SNAPSHOT", "LISTENER_WORKER_CHANGED",
+                "UNAUTHORIZED_LISTENER", "UNAUTHORIZED_OR_SHARED_LISTENER",
+                "UNVERIFIED_ADDITIONAL_NEXT_PROCESS", "UNVERIFIED_AUXILIARY_PROCESS",
+                "AUXILIARY_PID_REUSE_OR_IDENTITY_CHANGED", "MISSING_OR_CHANGED_LISTENER",
+                "MISSING_OR_AMBIGUOUS_LISTENER", "LISTENER_OWNERSHIP_CHANGED_DURING_SNAPSHOT"}:
+        return "UNAUTHORIZED_OR_REPLACED_WORKER"
+    return "PROCESS_ATTESTATION_FAILED"
+
+
+def fresh_membership_diagnostic(guard, group, properties, auxiliaries, proc):
+    """One bounded fresh view, diagnostics only. It cannot repair a historical gap."""
+    deadline = time.monotonic() + COLLECTION_BUDGET_SECONDS
+    expected = (str(guard.parent["pid"]), guard.invocation, guard.cgroup)
+    keys = ("MainPID", "InvocationID", "ControlGroup")
+    try:
+        before = properties()
+        if tuple(before.get(key) for key in keys) != expected:
+            raise AttributionError("PARENT_OR_INVOCATION_CHANGED")
+        view = snapshot(group, proc=proc, port=guard.port)
+        after = properties()
+        if tuple(after.get(key) for key in keys) != expected:
+            raise AttributionError("PARENT_OR_INVOCATION_CHANGED")
+        current = guard.validate(view, int(after["MainPID"]), after["InvocationID"], auxiliaries)
+        if time.monotonic() >= deadline:
+            return dict(status="BUDGET_EXHAUSTED", acceptance=False)
+        return dict(status="CURRENT_PRIMARY_VERIFIED_ONLY", acceptance=False,
+                    membership_gap_closed=False, current=current, records=sanitized(view))
+    except AttributionError as error:
+        return dict(status="UNVERIFIED", acceptance=False, reason=str(error),
+                    diagnostic=diagnostic_category(error, guard))
+
+
+def collect_observation(guard, group, properties, auxiliaries=(), proc=Path("/proc"), on_incomplete=None):
+    try:
+        return _collect_complete_observation(guard, group, properties, auxiliaries, proc, on_incomplete)
+    except AttributionError as error:
+        category = diagnostic_category(error, guard)
+        error.evidence.update(dict(diagnostic=category, attestation="INCOMPLETE_OR_REFUSED", acceptance=False))
+        if category == "TRANSIENT_MEMBERSHIP_UNVERIFIED":
+            error.evidence.update(dict(vanished_role="UNKNOWN", membership_gap_closed=False,
+                fresh_diagnostic=fresh_membership_diagnostic(guard, group, properties, auxiliaries, proc)))
+        # Never return a success value after a membership/identity gap, even if
+        # the diagnostic view is complete and the pinned primary remains valid.
+        raise
 
 
 def sanitized(view):

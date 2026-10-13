@@ -226,3 +226,70 @@ class StableCollectionTest(unittest.TestCase):
             root=Path(tmp);fds=root/"2/fd";fds.mkdir(parents=True);(fds/"9").symlink_to("/synthetic/non-listener")
             with patch.object(g,"process_identity",return_value=self.v["records"][2]),patch.object(g.os,"readlink",side_effect=PermissionError()),self.assertRaisesRegex(g.AttributionError,"UNREADABLE_PROCESS") as error:g.process(2,root)
             self.assertNotIsInstance(error.exception,g.IncompleteObservation)
+
+
+class LifecycleQualificationTest(unittest.TestCase):
+    setUp = ProcessGuardTest.setUp
+    def props(self):
+        return dict(MainPID="1",InvocationID="invocation",ControlGroup=GROUP)
+    def vanished(self,pid=3):
+        return g.AttributionError("UNREADABLE_PROCESS_EVIDENCE",dict(pid=pid,stage="identity",error_type="FileNotFoundError",members=[1,2,pid]))
+    def test_short_lived_auxiliary_disappears_after_enumeration(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            folder=Path(tmp);(folder/"cgroup.procs").write_text("1\n2\n3")
+            def read(pid,proc):
+                if pid==3:
+                    (folder/"cgroup.procs").write_text("1\n2")
+                    raise self.vanished()
+                return self.v["records"][pid]
+            with patch.object(g,"process",side_effect=read),patch.object(g,"tcp_listeners",return_value=self.v["listeners"]),self.assertRaises(g.AttributionError) as error:g.snapshot(folder)
+            self.assertEqual(g.diagnostic_category(error.exception,self.guard),"TRANSIENT_MEMBERSHIP_UNVERIFIED")
+            self.assertEqual(error.exception.evidence["members"],[1,2,3])
+            self.assertNotIn(3,error.exception.evidence["verified_partial"])
+    def test_unknown_vanish_then_fresh_stable_is_not_pass(self):
+        original_worker=copy.deepcopy(self.guard.worker)
+        with patch.object(g,"snapshot",side_effect=[self.vanished(),self.v]) as captures,self.assertRaises(g.AttributionError) as error:g.collect_observation(self.guard,Path("/not-used"),self.props)
+        self.assertEqual(captures.call_count,2)
+        self.assertEqual(error.exception.evidence["diagnostic"],"TRANSIENT_MEMBERSHIP_UNVERIFIED")
+        self.assertFalse(error.exception.evidence["acceptance"])
+        fresh=error.exception.evidence["fresh_diagnostic"]
+        self.assertEqual(fresh["status"],"CURRENT_PRIMARY_VERIFIED_ONLY")
+        self.assertFalse(fresh["membership_gap_closed"])
+        self.assertEqual(self.guard.worker,original_worker)
+    def test_bounded_fresh_diagnostic_failure_never_loops(self):
+        with patch.object(g,"snapshot",side_effect=[self.vanished(),self.vanished()]) as captures,self.assertRaises(g.AttributionError) as error:g.collect_observation(self.guard,Path("/not-used"),self.props)
+        self.assertEqual(captures.call_count,2)
+        self.assertEqual(error.exception.evidence["fresh_diagnostic"]["status"],"UNVERIFIED")
+        self.assertFalse(error.exception.evidence["acceptance"])
+    def test_approved_unreadable_has_separate_terminal_diagnostic(self):
+        for pid in [1,2]:
+            with self.subTest(pid=pid),patch.object(g,"snapshot",side_effect=self.vanished(pid)) as captures,self.assertRaises(g.AttributionError) as error:g.collect_observation(self.guard,Path("/not-used"),self.props)
+            self.assertEqual(captures.call_count,1)
+            self.assertEqual(error.exception.evidence["diagnostic"],"UNREADABLE_APPROVED_PROCESS")
+    def test_changed_membership_has_no_silent_recovery(self):
+        gap=g.AttributionError("CGROUP_CHANGED_DURING_READ",dict(members=[1,2,3],members_after=[1,2]))
+        with patch.object(g,"snapshot",side_effect=[gap,self.v]),self.assertRaises(g.AttributionError) as error:g.collect_observation(self.guard,Path("/not-used"),self.props)
+        self.assertFalse(error.exception.evidence["acceptance"])
+        self.assertEqual(error.exception.evidence["diagnostic"],"TRANSIENT_MEMBERSHIP_UNVERIFIED")
+    def test_primary_missing_in_membership_is_protection_failure(self):
+        failure=g.AttributionError("CGROUP_CHANGED_DURING_READ",dict(members=[1,2],members_after=[1,3]))
+        self.assertEqual(g.diagnostic_category(failure,self.guard),"UNAUTHORIZED_OR_REPLACED_WORKER")
+    def test_replaced_pid_cannot_be_approved_in_fresh_diagnostic(self):
+        changed=copy.deepcopy(self.v);changed["records"][2]["start_ticks"]="reused"
+        with patch.object(g,"snapshot",side_effect=[self.vanished(),changed]),self.assertRaises(g.AttributionError) as error:g.collect_observation(self.guard,Path("/not-used"),self.props)
+        fresh=error.exception.evidence["fresh_diagnostic"]
+        self.assertEqual(fresh["diagnostic"],"UNAUTHORIZED_OR_REPLACED_WORKER")
+        self.assertFalse(fresh["acceptance"])
+        self.assertEqual(self.guard.worker["start_ticks"],"102")
+    def test_foreign_listener_in_fresh_diagnostic_refused(self):
+        changed=copy.deepcopy(self.v);changed["records"][3]=row(3,2,"next-server (v15.5.9)",["20"])
+        with patch.object(g,"snapshot",side_effect=[self.vanished(),changed]),self.assertRaises(g.AttributionError) as error:g.collect_observation(self.guard,Path("/not-used"),self.props)
+        self.assertEqual(error.exception.evidence["fresh_diagnostic"]["diagnostic"],"UNAUTHORIZED_OR_REPLACED_WORKER")
+    def test_invocation_changed_in_fresh_diagnostic_refused(self):
+        contexts=iter([self.props(),dict(self.props(),InvocationID="changed")])
+        with patch.object(g,"snapshot",side_effect=self.vanished()),self.assertRaises(g.AttributionError) as error:g.collect_observation(self.guard,Path("/not-used"),lambda:next(contexts))
+        self.assertEqual(error.exception.evidence["fresh_diagnostic"]["diagnostic"],"UNAUTHORIZED_OR_REPLACED_WORKER")
+    def test_fresh_diagnostic_has_time_budget(self):
+        with patch.object(g,"snapshot",return_value=self.v),patch.object(g.time,"monotonic",side_effect=[0,.3]):
+            result=g.fresh_membership_diagnostic(self.guard,Path("/not-used"),self.props,(),Path("/proc"))
+        self.assertEqual(result["status"],"BUDGET_EXHAUSTED");self.assertFalse(result["acceptance"])
