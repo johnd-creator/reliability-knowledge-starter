@@ -5,6 +5,7 @@ const path = require('node:path');
 const {createHash} = require('node:crypto');
 const {createRequire} = require('node:module');
 const fingerprints = Object.freeze({
+  'next/dist/compiled/webpack/bundle5.js': '4f227eeae1d56f062ad42143e1e4c7b9520fae7aa359fdc1e25ee8d0d3445b2c',
   'next/dist/compiled/next-server/app-page.runtime.dev.js': 'f5642afec1b380029730444582c0af19300709dcb586f91c96cb002fc8bffddb',
   'next/dist/build/webpack/plugins/eval-source-map-dev-tool-plugin.js': 'bdb7813990c37584a2fb02c0439bf4dc899edd60085bab78f0dfce3c392eca2d',
   'next/dist/build/webpack/config/blocks/base.js': '50549f6840d622bf655efdd1d63e04d3fd827f67647e525db536ef63d56e216a',

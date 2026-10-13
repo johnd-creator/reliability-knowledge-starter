@@ -4,6 +4,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[2]
 spec = importlib.util.spec_from_file_location('vendor_run', ROOT/'deploy/development/vendor-maps/run.py')
 module = importlib.util.module_from_spec(spec)
@@ -12,6 +13,8 @@ class VendorMapSafety(unittest.TestCase):
     def test_output_confinement(self):
         for value in ['relative', '/tmp/other', '/tmp/nadi-fix06-private/../escape', '/tmp/nadi-fix06-private']:
             with self.subTest(value=value), self.assertRaises(ValueError): module.private_output(value)
+        with patch.object(Path, "exists", return_value=False), self.assertRaises(ValueError):
+            module.private_output("/tmp/nadi-fix06-private")
     def test_source_and_staged_refusal(self):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp); file=root/'reliability-cockpit/web/components/DevelopmentStatus.tsx'

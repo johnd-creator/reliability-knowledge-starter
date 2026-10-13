@@ -7,7 +7,7 @@ helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper)
 
 def private_output(value):
     p=Path(value)
-    if not p.is_absolute() or '..' in p.parts or p.exists() or any(x.is_symlink() for x in [p,*p.parents]) or p.parts[:3]!=('/','tmp','nadi-fix06-private'):
+    if len(p.parts) <= 3 or not p.is_absolute() or '..' in p.parts or p.exists() or any(x.is_symlink() for x in [p,*p.parents]) or p.parts[:3]!=('/','tmp','nadi-fix06-private'):
         raise ValueError('New private FIX06 output required')
     return p
 
