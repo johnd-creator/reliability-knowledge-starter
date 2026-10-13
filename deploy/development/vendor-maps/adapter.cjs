@@ -11,7 +11,7 @@ const fingerprints = Object.freeze({
   'next/dist/build/webpack/config/blocks/base.js': '50549f6840d622bf655efdd1d63e04d3fd827f67647e525db536ef63d56e216a',
   'next/dist/compiled/webpack/webpack.js': '13649aa1a17e743f377e062cbebfd430b6e2498ecacdf40145a3d0722a650f4d',
 });
-const vendor = /(?:^|[\\/])node_modules[\\/]/;
+const vendor = /^(?:[^?]*[\\/])?node_modules[\\/]/;
 function refuse(condition, message) { if (!condition) throw Error('VENDOR_MAP_REFUSED: '+message); }
 function adapt(config, context, env = process.env) {
   if (env.NADI_FIX06_VENDOR_MAPS === undefined || env.NADI_FIX06_VENDOR_MAPS === '0') return config;

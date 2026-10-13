@@ -6,7 +6,7 @@ test('default disabled returns identical config without loading dependencies',()
 test('unrecognized flag refuses before mutation',()=>assert.throws(()=>adapt({}, {},{NADI_FIX06_VENDOR_MAPS:'true'}),/explicit flag/));
 test('production opt-in refused',()=>assert.throws(()=>adapt({}, {dev:false},{NADI_FIX06_VENDOR_MAPS:'1',NODE_ENV:'production'}),/development only/));
 test('official or unrelated root refused',()=>assert.throws(()=>adapt({}, {dev:true},{NADI_FIX06_VENDOR_MAPS:'1',NODE_ENV:'development'}),/disposable root/));
-test('vendor path component only; application similar names remain mapped',()=>{for(const name of ['/x/node_modules/next/a.js','C:\\x\\node_modules\\react\\a.js'])assert(vendor.test(name));for(const name of ['/x/app/node_modules-guide.tsx','/x/my_node_modules/a.ts','/x/app/a.tsx'])assert(!vendor.test(name));});
+test('vendor path component only; application similar names remain mapped',()=>{for(const name of ['/x/node_modules/next/a.js','C:\\x\\node_modules\\react\\a.js'])assert(vendor.test(name));for(const name of ['/x/app/node_modules-guide.tsx','/x/my_node_modules/a.ts','/x/app/a.tsx','/x/app/a.tsx?alias=/node_modules/react/a.js'])assert(!vendor.test(name));});
 // Real locked plugin constructor, synthetic config: refusals must precede mutation.
 const fs=require('node:fs'),{createRequire}=require('node:module');
 const deps=process.env.NADI_FIX06_TEST_DEPS;
