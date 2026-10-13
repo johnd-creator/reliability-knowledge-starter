@@ -17,7 +17,7 @@ Branch: `codex/nadi-pdm-center-input-01`. Delivery: separate DRAFT PR, no merge.
 
 [Responsive evidence and hashes](evidence/nadi-pdm-center-input-01/README.md) are
 explicitly synthetic intercepted component screenshots, not live acceptance.
-Exact delivery HEAD/backend/frontend CI are recorded on the linked PR and handoff;
+[DRAFT PR82](https://github.com/johnd-creator/reliability-knowledge-starter/pull/82) records exact delivery HEAD/backend/frontend CI and handoff;
 local tests cannot prove deployment or production readiness.
 
 ## Functional decisions
@@ -64,6 +64,8 @@ parser/discovery or workbook re-upload was performed.
   `expected_inspection_revision` for MANUAL_INSPECTION/FROZEN_SNAPSHOT only. Existing
   requests remain compatible; mismatch returns EVIDENCE_VERSION_CHANGED/409.
 
+List/event responses declare AUTHORIZED_POPULATION and INSPECTED_AT/MEASURED_AT respectively. The UI requires those markers; an older backend that ignores filters or lacks history is refused instead of claiming global filtering. This candidate requires the reviewed QA backend containing the extensions. No frontend-only compatibility approval or backend restart is granted by this task.
+
 No schema/migration/table or new persistence engine. Auth, Origin, CSRF, leases,
 RBAC, asset ownership, contributor exclusions, transactional receipts and CAS are
 reused. These router factories remain excluded from operational `create_app`.
@@ -98,7 +100,8 @@ reviewer-controlled reopen. Self-review and another assigned reviewer are denied
 the server. APPROVED means record review, not asset health or maintenance authority.
 
 The command hook locks duplicate clicks and retains the same receipt ID on retry of
-the same failed intent. Unsaved native input is protected on unload/links and kept
+the same failed intent. Its optional PdM-scoped memory ref preserves that ID through
+trusted-session rereads/remounts; identity/scope loss or explicit discard clears it. Unsaved native input is protected on unload/links and kept
 only in component memory during trusted-session rereads. Recovery is bound to the
 same identity, permitted asset and **original** edit revision; it is cleared for
 signed-out/denied/changed identity or removed scope. Reading a new revision does not
@@ -122,7 +125,7 @@ Case. No automatic Case diagnosis/recommendation or Maximo WO mutation.
   PASS; existing engineering/phase2/workflow/HTTP/bounded proxy/auth/product/UX/login/
   localization/provenance suites PASS. TypeScript and lint PASS; one existing
   EngineeringWorkspace hook warning is unchanged.
-- Browser: [PdM result](evidence/nadi-pdm-center-input-01/results.json) passes native
+- Browser: 41 checks in [PdM result](evidence/nadi-pdm-center-input-01/results.json) passes native
   entry, refresh recovery, retry ID, zero/null, raw sparse samples, review, exact Case
   handoff, denied-session clearing and 1440/768/390 layouts. Existing network-isolated
   localization/all-route regression: 395 checks PASS. Both use intercepted fixtures;
@@ -135,8 +138,10 @@ Meaningful first-pass findings and corrections:
 | Finding | Severity / correction | Retest |
 |---|---|---|
 | Select label included option content, breaking exact lookup | Medium: explicit measurement select labels | Keyboard/browser PASS |
-| New draftee absent from old register page after save | Medium: reload authorized register on acknowledged mutation | Full journey PASS |
-| Refresh could discard unsaved form or lose context | High: identity/scope-bound memory recovery, preserve original CAS base | Refresh/browser/type checks PASS |
+| New draft absent from old register page after save | Medium: reload authorized register on acknowledged mutation | Full journey PASS |
+| Refresh could discard unsaved form, context or failed receipt ID | High: identity/scope-bound memory recovery, preserve original CAS base and same failed intent ID | Refresh/retry/browser/type checks PASS |
+| Retained entry view after AUTHOR role removal | Medium: native form clears/hides when trusted role or scope is removed | Active-form role-loss browser PASS |
+| Older backend could ignore filter parameters silently | High: explicit authorized-population/time-basis response markers, fail-closed UI | Older-backend negative fixture and HTTP proof PASS |
 | Native grid controls lacked V1 styling/touch size | Medium: shared tokens, 44px controls, narrow row cards | Three widths/light-dark PASS |
 | Potential silently newer evidence at Case handoff | High: optional exact inspection revision and owning-store lock | Positive/stale/re-reviewed HTTP PASS |
 | Plot fixture selection reset after filter / review input reset after reload | Harness: wait for acknowledged page/state and reselect context, enter new review rationale | Browser PASS |

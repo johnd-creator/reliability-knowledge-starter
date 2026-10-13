@@ -1,11 +1,12 @@
 'use client';
 import { idText, errorLabel } from "../lib/id-copy";
-import {useRef,useState} from 'react';
+import {useRef,useState,type RefObject} from 'react';
 import {engineeringRequest,EngineeringHttpError} from '../lib/engineering-http';
 import type {QaSession} from '../lib/product-records';
 // A retry of the same failed intent retains its idempotency ID. No browser storage.
-export function useQaCommand(session:QaSession,onExpired:()=>void) {
- const pending=useRef<{key:string;id:string}|null>(null),locked=useRef(false);
+export function useQaCommand(session:QaSession,onExpired:()=>void,intent?:RefObject<{key:string;id:string}|null>) {
+ const localPending=useRef<{key:string;id:string}|null>(null),locked=useRef(false);
+ const pending=intent??localPending;
  const [busy,setBusy]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState('');
  async function run<T>(path:string,method:string,body:Record<string,unknown>):Promise<T|null>{
   if(locked.current)return null;locked.current=true;setBusy(true);setError('');setNotice('');

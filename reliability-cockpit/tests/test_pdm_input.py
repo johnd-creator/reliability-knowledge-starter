@@ -19,6 +19,8 @@ class PdmInputTest(BundleCIntegrationTest):
     def test_multirow_original_type_null_time_and_global_history(self):
         row=self.multi()
         events=self.call("GET","inspections/measurement-history?limit=2")
+        self.assertEqual(events["filter_scope"],"AUTHORIZED_POPULATION")
+        self.assertEqual(events["event_time_basis"],"MEASURED_AT")
         self.assertEqual((events["total"],len(events["items"]),events["has_more"]),(5,2,True))
         self.assertEqual(events["items"][0]["measurement"]["value"],0)
         self.assertIsNone(events["items"][1]["measurement"]["value"])
@@ -37,6 +39,7 @@ class PdmInputTest(BundleCIntegrationTest):
         for i in range(27): self.multi("row:"+str(i), observations=["needle" if i==26 else "ordinary"])
         result=self.call("GET","inspections?search=needle&status=DRAFT&method=VIBRATION&limit=1")
         self.assertEqual(result["total"],1)
+        self.assertEqual(result["event_time_basis"],"INSPECTED_AT")
         self.assertEqual(result["items"][0]["observations"],["needle"])
         self.assertEqual(self.call("GET","inspections?method=MCSA")["total"],0)
         self.call("GET","inspections?asset_id=asset:FOREIGN",expected=404)

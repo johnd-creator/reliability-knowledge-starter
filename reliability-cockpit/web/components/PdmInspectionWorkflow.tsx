@@ -13,9 +13,9 @@ import InspectionDetail from './InspectionDetail';
 import CaseForm from './CaseForm';
 import {Button,Feedback,SectionCard} from './ui';
 export default function PdmInspectionWorkflow({initial,session,onExpired,onChanged}:{initial:Inspection;session:QaSession;onExpired:()=>void;onChanged:()=>void}){
- const recovery=usePdmDraft()?.recovery;
+ const draftCache=usePdmDraft(),recovery=draftCache?.recovery;
  const [row,setRow]=useState(initial),[editing,setEditing]=useState(recovery?.subject===session.subject&&recovery?.base?.record_id===initial.record_id),[reason,setReason]=useState(''),[creatingCase,setCreatingCase]=useState(false),[newCase,setNewCase]=useState<CaseRecord|null>(null),[linked,setLinked]=useState(false),[evidenceVersion,setEvidenceVersion]=useState(initial.revision);
- const cmd=useQaCommand(session,onExpired);
+ const cmd=useQaCommand(session,onExpired,draftCache?.intent);
  const author=session.roles.includes('AUTHOR')&&row.created_by===session.subject;
  const independent=session.roles.includes('REVIEWER')&&![row.created_by,row.inspector_ref,...row.contributors??[]].includes(session.subject);
  async function latest(){try{setRow(await engineeringRequest('inspections/'+encodeURIComponent(row.record_id)) as Inspection);}catch{onExpired();}}

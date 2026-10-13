@@ -325,3 +325,8 @@ Q01–Q10 remain PENDING_ENGINEER_VALIDATION. No live activation, schema migrati
 Excel import, diagnosis, threshold or cross-inspection/PI comparability approval.
 Implementation/testing, DRAFT PR, engineer approval and operational acceptance are
 independent gates; see the report and official roadmap for actual delivery evidence.
+
+PdM server-filter proof is mandatory for this candidate; older QA backends cannot
+silently ignore filters. No frontend-only preview pairing or runtime activation
+is approved here. Native drafts and failed intent IDs recover only for the same
+trusted identity/scope and original edit revision.

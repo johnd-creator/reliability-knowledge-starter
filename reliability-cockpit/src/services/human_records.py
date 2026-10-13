@@ -369,7 +369,9 @@ class InspectionService(ReviewedRecordService):
                         items.append(event)
                     total += 1
             return dict(items=items, total=total, offset=offset, limit=limit,
-                        has_more=offset + limit < total)
+                        has_more=offset + limit < total,
+                        filter_scope="AUTHORIZED_POPULATION",
+                        event_time_basis="MEASURED_AT" if measurements else "INSPECTED_AT")
         return self.repo.transact(read)
 
     def list(self, actor, **filters):

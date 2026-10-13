@@ -489,9 +489,9 @@ Task ID: NADI-PDM-CENTER-INPUT-01
 Objective: Native multi-point engineer entry, authorized original-event history, safe scatter and existing review/Case handoff.
 Branch: codex/nadi-pdm-center-input-01
 Commit SHA: base main 2e190c2b51fde50e0467d6d5165ebb1060902867; exact candidate HEAD in PR handoff.
-PR: Separate DRAFT candidate; no automatic merge.
+PR: [82](https://github.com/johnd-creator/reliability-knowledge-starter/pull/82), DRAFT; no automatic merge.
 Implementation Status: IMPLEMENTED within strict InspectionDraft v1.1 and isolated QA contracts; field/template compatibility candidates only.
-Test Status: TESTED —41 focused backend tests; broader selection119 executed PASS/58 PostgreSQL skips;16 input safety assertions;395 existing component-browser checks; isolated PdM checks and1440/768/390 screenshots; TypeScript/lint/build/diff checks. CI disposable PostgreSQL qualification remains a separate exact-head gate.
+Test Status: TESTED —41 focused backend tests; broader selection119 executed PASS/58 PostgreSQL skips;16 input safety assertions;395 existing component-browser checks; 41 isolated PdM checks and1440/768/390 screenshots; TypeScript/lint/build/diff checks. CI disposable PostgreSQL qualification remains a separate exact-head gate.
 CI Status: Exact-head backend/frontend workflow extended for PdM; result independently verified on the delivery PR.
 Merge Status: NOT MERGED.
 Development Visibility: Isolated intercepted component screenshots only; official HTTPS3000 untouched and not accessed.
