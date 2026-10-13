@@ -59,6 +59,7 @@ jobs:
           node --check ../../deploy/development/vendor-maps/adapter.cjs
           node --check ../../deploy/development/vendor-maps/debug.mjs
           node --check ../../deploy/development/vendor-maps/heap.cjs
+          node --check ../../deploy/development/vendor-maps/webpack.cjs
           node --check ../../deploy/development/vendor-maps/workload.mjs
           node --check ../../deploy/development/retainers/webpack.cjs
           node --check ../../deploy/development/retainers/capture.cjs

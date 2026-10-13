@@ -45,7 +45,7 @@ def main():
     api_port=helper.free_port(qa=True);port=helper.free_port();base='http://127.0.0.1:'+str(api_port)
     file=web/'app/api/development/status/route.ts';file.write_text(file.read_text().replace('http://127.0.0.1:13036',base).replace('http://127.0.0.1:8000',base))
     config=web/'next.config.js'
-    config.write_text(config.read_text()+f"\nconst originalWebpack=module.exports.webpack;module.exports.webpack=(config,options)=>{{config=originalWebpack(config,options);config=require({json.dumps(str(HERE/'adapter.cjs'))}).adapt(config,options);config.plugins.push(new(require({json.dumps(str(HERE.parent/'retainers/webpack.cjs'))}))());return config;}};\n")
+    config.write_text(config.read_text()+f"\nconst originalWebpack=module.exports.webpack;module.exports.webpack=(config,options)=>{{config=originalWebpack(config,options);config=require({json.dumps(str(HERE/'adapter.cjs'))}).adapt(config,options);config.plugins.push(new(require({json.dumps(str(HERE/'webpack.cjs'))}))());return config;}};\n")
     if a.debug:
         import shutil
         shutil.copytree(HERE/'debug-app',web/'app/fix06-debug')
