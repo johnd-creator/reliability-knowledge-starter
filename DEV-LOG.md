@@ -683,3 +683,45 @@ REQUIRED. DB/session/container contents not queried. Final exact-head CI/HEAD
 recorded in DRAFT PR80 delivery; no merge and no live acceptance recommendation.
 Next: separate authorization for NEW qualified sustained experiment after richer
 process attribution. [Report](reliability-cockpit/docs/nadi-dev-status-runtime-fix-06.md).
+
+### 2026-10-13 — FIX-06 PID qualification / FAST VALIDATION
+
+- Task ID: NADI-DEV-UX-STATUS-01-FIX-06-PID-QUAL-01; PO cancelled sustained testing.
+- Objective: distinguish listener worker from helpers without weakening fail-closed attribution.
+- Branch: `codex/nadi-fix06-pid-qualification` (stacked on PR80).
+- Commit SHA: diagnostic implementation `0caa021a6ac9dd7bd631ceee253653a052461e9a`; evidence follow-up separately committed.
+- PR: focused DRAFT follow-up; PR75–80 unchanged.
+- Implementation Status: IMPLEMENTED isolated guard; historical95687 UNKNOWN.
+- Test Status:95 local safety tests and4 synthetic HTTPS scenarios PASS; navigation smoke stopped117.37s on unreadable descriptor evidence; separate3-cycle HMR/debugging PASS.
+- CI Status: exact-head result maintained in follow-up PR checks; not inferred from local tests.
+- Merge Status: NOT MERGED.
+- Development Visibility: official serving f06abce unchanged; no cutover.
+- Product Owner Acceptance: NOT REQUESTED; fast navigation acceptance BLOCKED.
+- Remaining Blockers: stable auditable descriptor/listener collection; historical PID attribution unavailable; official Node25/retainedNode22 and generated-file provenance require operational review.
+- Next Action: review [diagnostic evidence](reliability-cockpit/docs/nadi-fix06-pid-qualification.md). No sustained rerun scheduled.
+
+### 2026-10-13 — NADI-FIX06-PID-QUAL-02
+
+- Objective: bounded fresh acquisition after transient descriptor closure; preserve fail-closed process attribution.
+- Branch/PR: `codex/nadi-fix06-pid-qualification`, existing DRAFT PR81; base `ebc42d1422f4bda197e339f859713c5af8c2d151`.
+- Commit SHA: implementation `96720d2b614bc4aed9623a6f23b144ee10f4a3a5`; evidence separately committed.
+- Implementation Status: IMPLEMENTED; no application/operational change.
+- Test Status:111 local regressions PASS; two incomplete acquisitions recovered; single smoke BLOCKED at140.19s on additional PID273851 identity evidence. No application retry.
+- CI Status: exact-head checks maintained in PR81; local results do not imply CI success.
+- Merge Status: NOT MERGED, DRAFT retained.
+- Development Visibility: disposable HTTPS only; official source unchanged.
+- Product Owner Acceptance: not claimed; no sustained/live authorization.
+- Remaining Blocker/Next Action: review the unverified additional-process failure. [Evidence](reliability-cockpit/docs/nadi-fix06-pid-qualification.md#qual02--stable-listener-evidence-collection-2026-10-13).
+
+### 2026-10-13 — NADI-FIX06-PID-QUAL-03
+
+- Objective: qualify short-lived membership races without weakening worker/listener invariants.
+- Branch/PR: `codex/nadi-fix06-pid-qualification`, DRAFT PR81; base `34e7f5af489860f2a727de725152f73914aa34ba`.
+- Commit SHA: tested implementation `a1ff79722a181a3247c346c9b78e259d00186244`; evidence separately committed.
+- Implementation Status: IMPLEMENTED isolated diagnostics; vanished-process identity remains unverified.
+- Test Status:124 deterministic/safety regressions PASS; one smoke stopped78.86s on PID321420. Fresh membership diagnostic also UNVERIFIED.
+- CI Status: exact-head results maintained in PR81 checks; not inferred from local tests.
+- Merge Status: NOT MERGED; DRAFT retained.
+- Development Visibility: disposable HTTPS only; no official cutover.
+- Product Owner Acceptance: NOT CLAIMED; overall smoke BLOCKED, browser coverage incomplete after attestation interruption.
+- Remaining Blocker/Next Action: snapshot polling cannot recover vanished-process identity. Review [event-journal architecture proposal](reliability-cockpit/docs/nadi-fix06-pid-qualification.md#qual03--process-lifecycle-qualification-2026-10-13) separately. No fourth iterative smoke or sustained run scheduled.

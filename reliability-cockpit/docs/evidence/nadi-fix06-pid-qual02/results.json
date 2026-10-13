@@ -1,0 +1,197 @@
+{
+  "status": "PARTIAL \u2014 descriptor recollection exercised; navigation smoke BLOCKED",
+  "base": "ebc42d1422f4bda197e339f859713c5af8c2d151",
+  "implementation": "96720d2b614bc4aed9623a6f23b144ee10f4a3a5",
+  "application_archive": "63b61d09c45630a76657cdb54991349fb0528e7b",
+  "application_copy": "3787b503bf730880af85a3fdc152bab9aa59cef5",
+  "node": "22.23.1",
+  "heap_mib": 4096,
+  "memory_max_mib": 6144,
+  "requested_navigation_seconds": 180,
+  "result": {
+    "failure": "UNREADABLE_PROCESS_EVIDENCE",
+    "worker": 270055,
+    "parent": 270037,
+    "start_ticks": "70591852",
+    "elapsed": 140.18593382509425
+  },
+  "baseline": {
+    "records": {
+      "270037": {
+        "pid": 270037,
+        "parent": 1515,
+        "start_ticks": "70591821",
+        "executable": "/usr/bin/node-22",
+        "exe_device": 38,
+        "exe_inode": 13719409,
+        "command_sha256": "e3c760a03a620d42adc615fb72e419f71b7d51cc9e2c4c58ff27b3dd9f1274b6",
+        "comm": "node-22",
+        "cgroup": "0::/user.slice/user-1000.slice/user@1000.service/app.slice/nadi-fix06-disposable-candidate-e2f5a6.service\n",
+        "sockets": [
+          "39502588",
+          "39502591"
+        ]
+      },
+      "270055": {
+        "pid": 270055,
+        "parent": 270037,
+        "start_ticks": "70591852",
+        "executable": "/usr/bin/node-22",
+        "exe_device": 38,
+        "exe_inode": 13719409,
+        "command_sha256": "502a5204624ad218db82df94ceeabfd15c53bbf5964b153bfc585c2788e4a880",
+        "comm": "next-server (v1",
+        "cgroup": "0::/user.slice/user-1000.slice/user@1000.service/app.slice/nadi-fix06-disposable-candidate-e2f5a6.service\n",
+        "sockets": [
+          "39491195",
+          "39494069",
+          "39502588",
+          "39502592"
+        ]
+      }
+    },
+    "listener": "39494069",
+    "port": 53189,
+    "https": true,
+    "invocation": "9b061897fb584d5b827b23bde2efc04a"
+  },
+  "samples": 134,
+  "observed_workers": [
+    270055
+  ],
+  "all_accepted_complete": true,
+  "max_collection_attempts": 2,
+  "incomplete_observations": [
+    {
+      "at": 1791873270.021707,
+      "attempt": 1,
+      "pid": 270055,
+      "descriptor": "23",
+      "complete": false
+    },
+    {
+      "at": 1791873272.1118996,
+      "attempt": 1,
+      "pid": 270055,
+      "descriptor": "40",
+      "complete": false
+    }
+  ],
+  "recovered_observations": [
+    {
+      "complete": true,
+      "attempts": 2,
+      "incomplete_observations": [
+        {
+          "attempt": 1,
+          "pid": 270055,
+          "descriptor": "23",
+          "complete": false
+        }
+      ]
+    },
+    {
+      "complete": true,
+      "attempts": 2,
+      "incomplete_observations": [
+        {
+          "attempt": 1,
+          "pid": 270055,
+          "descriptor": "40",
+          "complete": false
+        }
+      ]
+    }
+  ],
+  "browser": {
+    "completed": false,
+    "failure": "page.goto: Target page, context or browser has been closed",
+    "counts": {
+      "requests": 221,
+      "status": 37,
+      "navigations": 8,
+      "hmr": 2,
+      "hmrReloads": 2,
+      "session": 0
+    },
+    "errors": []
+  },
+  "cgroup_peak_mib": 849.40625,
+  "heap_peak_mib": 503.3721237182617,
+  "rss_peak_mib": 808.6796875,
+  "cpu_seconds": 36.02965,
+  "all_sampled_oom_zero": true,
+  "v8_abort": false,
+  "failure_evidence": {
+    "pid": 273851,
+    "stage": "identity",
+    "error_type": "FileNotFoundError",
+    "members": [
+      270037,
+      270055,
+      273851
+    ],
+    "verified_partial": {
+      "270037": {
+        "pid": 270037,
+        "parent": 1515,
+        "start_ticks": "70591821",
+        "executable": "/usr/bin/node-22",
+        "exe_device": 38,
+        "exe_inode": 13719409,
+        "command_sha256": "e3c760a03a620d42adc615fb72e419f71b7d51cc9e2c4c58ff27b3dd9f1274b6",
+        "comm": "node-22",
+        "cgroup": "0::/user.slice/user-1000.slice/user@1000.service/app.slice/nadi-fix06-disposable-candidate-e2f5a6.service\n",
+        "sockets": [
+          "39502588",
+          "39502591"
+        ]
+      },
+      "270055": {
+        "pid": 270055,
+        "parent": 270037,
+        "start_ticks": "70591852",
+        "executable": "/usr/bin/node-22",
+        "exe_device": 38,
+        "exe_inode": 13719409,
+        "command_sha256": "502a5204624ad218db82df94ceeabfd15c53bbf5964b153bfc585c2788e4a880",
+        "comm": "next-server (v1",
+        "cgroup": "0::/user.slice/user-1000.slice/user@1000.service/app.slice/nadi-fix06-disposable-candidate-e2f5a6.service\n",
+        "sockets": [
+          "39491239",
+          "39491240",
+          "39494069",
+          "39502588",
+          "39502592",
+          "39513524",
+          "39515669"
+        ]
+      }
+    }
+  },
+  "preservation": {
+    "at": 1791873625.255856,
+    "hash_checks": {
+      "konsep1.png": true,
+      "konsep2.png": true,
+      "konsep3.png": true,
+      "konsep4.png": true,
+      "konsep5.png": true,
+      "23496711.xls": true,
+      ".nadi-dev/state/controller.py": true,
+      ".nadi-dev/state/frontend_preview.py": true,
+      ".nadi-dev/state/controller-release.json": true,
+      ".nadi-dev/state/frontend-active.json": true,
+      ".nadi-dev/state/frontend-runtime.json": true,
+      ".nadi-dev/state/backup-20261012-153417.dump": true
+    },
+    "process_identity_checks": {
+      "3078556": true,
+      "3744151": true,
+      "1664250": true,
+      "1664262": true
+    },
+    "database_and_sessions": "NOT_ACCESSED",
+    "official_http": "NOT_REQUESTED"
+  }
+}

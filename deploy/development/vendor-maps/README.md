@@ -57,3 +57,28 @@ React.Children.only error must retain an actionable message and location. Vendor
 original-source mapping is intentionally unavailable and must be disclosed.
 The large existing fixture browser suite separately tests authorization/session UI
 semantics; neither synthetic suite proves persistent QA or operational UAT.
+
+## PID qualification / fast-only mode
+
+The current follow-up runner rejects durations over600 seconds, retains Node22.23.1,
+and uses the explicitly approved4096 MiB heap /6144 MiB cgroup budget for disposable
+experiments. `--https` creates a private disposable certificate; it never reads the
+primary service key. `process_guard.py` pins the actual listener and process identity.
+The exact source-hashed Next Jest child role is separate from the serving worker;
+unknown processes and unreadable evidence still fail closed. `qualify.py` has four
+bounded synthetic HTTPS attribution scenarios, not a sustained mode.
+
+See [qualification and known collection-race blocker](../../../reliability-cockpit/docs/nadi-fix06-pid-qualification.md).
+Earlier long-duration examples are historical and are now rejected by the runner.
+
+QUAL02 now restricts navigation to60–180 seconds (270s unit lifetime), with up to
+three fresh evidence acquisitions within250ms only for a descriptor-specific
+ENOENT. Incomplete views remain unverified; permission/identity/listener failures
+still stop immediately. See the follow-up checkpoint in the qualification report.
+
+QUAL03 separates lifecycle refusal categories and browser-functional outcomes.
+A membership gap allows one bounded diagnostic capture but **never a successful
+attestation return**; unknown vanished processes remain unverified. Current
+navigation bounds are60–120s, owned unit lifetime160s (5s stop timeout).
+See the QUAL03 checkpoint for the first failure and unimplemented event-journal
+architecture proposal. No fourth iterative smoke is scheduled.

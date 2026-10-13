@@ -1,0 +1,171 @@
+{
+  "synthetic": {
+    "scope": "SYNTHETIC DISPOSABLE ONLY; NOT HISTORICAL PID ATTRIBUTION",
+    "node": "22.23.1",
+    "results": [
+      {
+        "scenario": "helper",
+        "expected": null,
+        "actual": null,
+        "helper_observed": true,
+        "tls": true,
+        "pass_": true,
+        "elapsed": 8.033
+      },
+      {
+        "scenario": "duplicate",
+        "expected": "UNVERIFIED_ADDITIONAL_NEXT_PROCESS",
+        "actual": "UNVERIFIED_ADDITIONAL_NEXT_PROCESS",
+        "helper_observed": false,
+        "tls": true,
+        "pass_": true,
+        "elapsed": 0.395
+      },
+      {
+        "scenario": "listener",
+        "expected": "UNAUTHORIZED_LISTENER",
+        "actual": "UNAUTHORIZED_LISTENER",
+        "helper_observed": false,
+        "tls": true,
+        "pass_": true,
+        "elapsed": 0.396
+      },
+      {
+        "scenario": "replacement",
+        "expected": "APPROVED_PROCESS_IDENTITY_CHANGED",
+        "actual": "APPROVED_PROCESS_IDENTITY_CHANGED",
+        "helper_observed": false,
+        "tls": true,
+        "pass_": true,
+        "elapsed": 0.394
+      }
+    ],
+    "pass_": true
+  },
+  "first_https": {
+    "failure": "UNREADABLE_PROCESS_EVIDENCE",
+    "worker": 140712,
+    "parent": 140693,
+    "start_ticks": "69967028",
+    "elapsed": 7.180904477019794
+  },
+  "attribution_https": {
+    "failure": "UNVERIFIED_AUXILIARY_PROCESS",
+    "worker": 142251,
+    "parent": 142228,
+    "start_ticks": "69979350",
+    "elapsed": 7.191573201096617
+  },
+  "fast_initial": {
+    "failure": "UNVERIFIED_AUXILIARY_PROCESS",
+    "worker": 147667,
+    "parent": 147630,
+    "start_ticks": "70006021",
+    "elapsed": 9.231521603069268
+  },
+  "fast_reviewed_helper": {
+    "failure": "UNREADABLE_PROCESS_EVIDENCE",
+    "worker": 151056,
+    "parent": 151038,
+    "start_ticks": "70021490",
+    "elapsed": 117.37049423798453,
+    "samples": 108,
+    "worker_set": [
+      151056
+    ],
+    "cgroup_peak_mib": 773.421875,
+    "cpu_seconds": 28.517114,
+    "heap_peak_mib": 411.32852935791016,
+    "rss_peak_mib": 730.90234375,
+    "all_oom_zero": true,
+    "v8_abort": false,
+    "browser": {
+      "completed": false,
+      "failure": "page.goto: net::ERR_ABORTED at https://127.0.0.1:45619/action-board\nCall log:\n  - navigating to \"https://127.0.0.1:45619/action-board\", waiting until \"load\"\n",
+      "counts": {
+        "requests": 193,
+        "status": 30,
+        "navigations": 6,
+        "hmr": 2,
+        "hmrReloads": 2,
+        "session": 0
+      },
+      "errors": []
+    }
+  },
+  "debug_final": {
+    "failure": null,
+    "worker": 156469,
+    "parent": 156375,
+    "start_ticks": "70044127",
+    "elapsed": 9.255526195047423,
+    "samples": 8,
+    "worker_set": [
+      156469
+    ],
+    "cgroup_peak_mib": 691.953125,
+    "cpu_seconds": 10.671849,
+    "heap_peak_mib": 281.5098571777344,
+    "rss_peak_mib": 472.94921875,
+    "all_oom_zero": true,
+    "v8_abort": false
+  },
+  "debug_checks": {
+    "scope": "DISPOSABLE SYNTHETIC; no real QA",
+    "checks": {
+      "nextClientOriginalFrame": true,
+      "applicationStack": {
+        "originalFile": "app/fix06-debug/Client.tsx",
+        "expectedLine": 7,
+        "actualLine": 7,
+        "sourceContent": true
+      },
+      "breakpoint": {
+        "originalLine": 7,
+        "hit": true
+      },
+      "vendorError": {
+        "actionableMessage": true,
+        "stackHasLocation": true,
+        "applicationOriginalLine": 10
+      },
+      "rscResponses": 2,
+      "hmr": {
+        "cycles": 3,
+        "noReload": true,
+        "statePreserved": true
+      },
+      "serverStack": {
+        "originalFile": "app/fix06-debug/api/route.ts",
+        "originalLine": 4,
+        "nativeSourceMaps": true
+      }
+    },
+    "completed": true
+  },
+  "preservation": {
+    "at": 1791867878.3043652,
+    "hash_checks": {
+      "konsep1.png": true,
+      "konsep2.png": true,
+      "konsep3.png": true,
+      "konsep4.png": true,
+      "konsep5.png": true,
+      "23496711.xls": true,
+      ".nadi-dev/state/controller.py": true,
+      ".nadi-dev/state/frontend_preview.py": true,
+      ".nadi-dev/state/controller-release.json": true,
+      ".nadi-dev/state/frontend-active.json": true,
+      ".nadi-dev/state/frontend-runtime.json": true,
+      ".nadi-dev/state/backup-20261012-153417.dump": true
+    },
+    "process_identity_checks": {
+      "3078556": true,
+      "3744151": true,
+      "1664250": true,
+      "1664262": true
+    },
+    "database_and_sessions": "NOT_ACCESSED",
+    "official_http": "NOT_REQUESTED"
+  }
+}
