@@ -19,7 +19,7 @@ def slope(values):
 
 def summarize(root):
     definition=json.loads((root/'definition.json').read_text());progress=json.loads((root/'progress.json').read_text());worker=progress['expected']
-    heap=rows(root/f'heap-{worker}.jsonl');gc=rows(root/f'gc-{worker}.jsonl');metrics=rows(root/'metrics.jsonl');compilers=rows(root/'compilers.jsonl');major=[x for x in gc if x['kind']==4]
+    heap=rows(root/f'heap-{worker}.jsonl');gc=rows(root/f'gc-{worker}.jsonl');metrics=rows(root/'metrics.jsonl');compilers=[x for x in rows(root/'compilers.jsonl') if x['pid']==worker];major=[x for x in gc if x['kind']==4]
     warm_start=heap[0]['at']+15*60000;warm=[x for x in heap if x['at']>=warm_start];warm_major=[x for x in major if x['at']>=warm_start]
     profiles=sorted(root.glob(f'alloc-{worker}-*.heapprofile'));allocation=[]
     for file in profiles:
