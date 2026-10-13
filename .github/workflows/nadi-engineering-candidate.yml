@@ -36,7 +36,7 @@ jobs:
         working-directory: reliability-cockpit
         env:
           PYTHONPATH: '.:tests'
-        run: python -m unittest test_application_identity test_identity_adapter.AdapterTest test_application_migrations test_attachments test_session_cleanup test_bundle_d_http.RealHttpQaTest test_identity_configuration test_application_access test_attachment_readiness test_qa_limits test_qa_preflight test_qa_release test_bundle_e_rehearsal test_local_authentication test_local_login_http test_live_development test_frontend_preview test_heap_probe_safety test_retainer_diagnostics test_vendor_map_safety test_advisory.AdvisoryTest test_advisory_http.AdvisoryHttpTest test_advisory_http.AdvisorySchemaGateTest test_qa_advisory_schema -v
+        run: python -m unittest test_application_identity test_identity_adapter.AdapterTest test_application_migrations test_attachments test_session_cleanup test_bundle_d_http.RealHttpQaTest test_identity_configuration test_application_access test_attachment_readiness test_qa_limits test_qa_preflight test_qa_release test_bundle_e_rehearsal test_local_authentication test_local_login_http test_live_development test_frontend_preview test_heap_probe_safety test_retainer_diagnostics test_vendor_map_safety test_process_guard test_advisory.AdvisoryTest test_advisory_http.AdvisoryHttpTest test_advisory_http.AdvisorySchemaGateTest test_qa_advisory_schema -v
       - name: Canonical contracts
         working-directory: reliability-data-contracts
         run: python -m unittest discover -s tests -v
@@ -56,6 +56,7 @@ jobs:
         run: |
           mkdir -p /tmp/nadi-fix06-private
           NADI_FIX06_TEST_DEPS="$PWD/node_modules" node ../../deploy/development/vendor-maps/adapter.test.cjs
+          python -c "import importlib.util,pathlib; s=importlib.util.spec_from_file_location('guard','../../deploy/development/vendor-maps/process_guard.py'); m=importlib.util.module_from_spec(s); s.loader.exec_module(m); m.reviewed_next_auxiliary(pathlib.Path('node_modules'),'/usr/bin/node-22')"
           node --check ../../deploy/development/vendor-maps/adapter.cjs
           node --check ../../deploy/development/vendor-maps/debug.mjs
           node --check ../../deploy/development/vendor-maps/heap.cjs

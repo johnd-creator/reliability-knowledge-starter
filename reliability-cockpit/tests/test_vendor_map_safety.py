@@ -41,3 +41,11 @@ class VendorMapSafety(unittest.TestCase):
     def test_no_official_adapter_installation(self):
         for file in ['reliability-cockpit/web/next.config.js','deploy/development/nadi-dev.py','deploy/development/frontend_preview.py']:
             self.assertNotIn('vendor-maps/adapter', (ROOT/file).read_text())
+
+    def test_fast_duration_and_memory_policy(self):
+        for duration in [0,59,601,5700,7200]:
+            with self.assertRaises(ValueError):module.bounded_seconds(duration)
+        self.assertEqual(module.bounded_seconds(600),600)
+        text=(ROOT/'deploy/development/vendor-maps/run.py').read_text()
+        self.assertIn('--max-old-space-size=4096',text)
+        self.assertIn('MemoryMax=6144M',text)

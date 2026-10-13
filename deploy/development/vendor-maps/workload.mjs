@@ -3,9 +3,9 @@ import fs from 'node:fs';
 import {pathToFileURL} from 'node:url';
 const [port,web,out,mode,seconds]=process.argv.slice(2);
 const {chromium}=await import(pathToFileURL(process.env.NADI_PLAYWRIGHT_MODULE).href);
-const base='http://127.0.0.1:'+port, browser=await chromium.launch({headless:true});
+const base=(process.env.NADI_FIX06_HTTPS==='1'?'https://127.0.0.1:':'http://127.0.0.1:')+port, browser=await chromium.launch({headless:true});
 const copy=JSON.parse(fs.readFileSync(web+'/lib/id-messages.json'));
-const context=await browser.newContext({viewport:{width:1440,height:1086}}),page=await context.newPage();
+const context=await browser.newContext({ignoreHTTPSErrors:process.env.NADI_FIX06_HTTPS==='1',viewport:{width:1440,height:1086}}),page=await context.newPage();
 const counts={requests:0,status:0,navigations:0,hmr:0,hmrReloads:0,session:0},errors=[];
 const record=row=>fs.appendFileSync(out+'/workload.jsonl',JSON.stringify({at:Date.now(),...row})+'\n',{mode:0o600});
 await context.route('**/*',route=>new URL(route.request().url()).origin===base?route.continue():route.abort('blockedbyclient'));
@@ -22,7 +22,7 @@ try {
   await page.getByLabel(copy.Password,{exact:true}).fill('DEMO_NOT_A_CREDENTIAL');
   await page.getByRole('button',{name:copy['Sign in'],exact:true}).click();
   await page.waitForURL(/\/engineering\/local/,{timeout:60000});
-  record({login:'DISPOSABLE_FIXTURE_SUCCESS',https:false});
+  record({login:'DISPOSABLE_FIXTURE_SUCCESS',https:process.env.NADI_FIX06_HTTPS==='1'});
   await page.goto(base+'/',{waitUntil:'domcontentloaded',timeout:60000});
   const start=Date.now();
   while((Date.now()-start)/1000<Number(seconds)) {
