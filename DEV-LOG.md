@@ -683,3 +683,19 @@ REQUIRED. DB/session/container contents not queried. Final exact-head CI/HEAD
 recorded in DRAFT PR80 delivery; no merge and no live acceptance recommendation.
 Next: separate authorization for NEW qualified sustained experiment after richer
 process attribution. [Report](reliability-cockpit/docs/nadi-dev-status-runtime-fix-06.md).
+
+### 2026-10-13 — FIX-06 PID qualification / FAST VALIDATION
+
+- Task ID: NADI-DEV-UX-STATUS-01-FIX-06-PID-QUAL-01; PO cancelled sustained testing.
+- Objective: distinguish listener worker from helpers without weakening fail-closed attribution.
+- Branch: `codex/nadi-fix06-pid-qualification` (stacked on PR80).
+- Commit SHA: diagnostic implementation `0caa021a6ac9dd7bd631ceee253653a052461e9a`; evidence follow-up separately committed.
+- PR: focused DRAFT follow-up; PR75–80 unchanged.
+- Implementation Status: IMPLEMENTED isolated guard; historical95687 UNKNOWN.
+- Test Status:95 local safety tests and4 synthetic HTTPS scenarios PASS; navigation smoke stopped117.37s on unreadable descriptor evidence; separate3-cycle HMR/debugging PASS.
+- CI Status: exact-head result maintained in follow-up PR checks; not inferred from local tests.
+- Merge Status: NOT MERGED.
+- Development Visibility: official serving f06abce unchanged; no cutover.
+- Product Owner Acceptance: NOT REQUESTED; fast navigation acceptance BLOCKED.
+- Remaining Blockers: stable auditable descriptor/listener collection; historical PID attribution unavailable; official Node25/retainedNode22 and generated-file provenance require operational review.
+- Next Action: review [diagnostic evidence](reliability-cockpit/docs/nadi-fix06-pid-qualification.md). No sustained rerun scheduled.
