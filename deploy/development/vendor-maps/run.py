@@ -162,16 +162,16 @@ def main():
             else:failure='WORKLOAD_TIMEOUT'
         helper.write(out/'result.json',dict(failure=failure,worker=worker,parent=int(initial_parent),start_ticks=initial_ticks,elapsed=time.monotonic()-start));print(json.dumps(dict(mode=a.mode,failure=failure,output=str(out))),flush=True)
     except pid_guard.AttributionError as error:
-        failure=str(error);helper.write(out/'result.json',dict(failure=failure,elapsed=time.monotonic()-start,scope='DISPOSABLE ONLY',evidence=error.evidence));raise
+        failure=str(error);attestation_diagnostic=error.evidence.get('diagnostic','PROCESS_ATTESTATION_FAILED');helper.write(out/'result.json',dict(failure=failure,elapsed=time.monotonic()-start,scope='DISPOSABLE ONLY',evidence=error.evidence));raise
     finally:
         subprocess.run(['systemctl','--user','stop',unit+'-browser'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
         if browser and browser.poll() is None:browser.terminate();browser.wait(timeout=30)
         subprocess.run(['journalctl','--user','-u',unit,'--no-pager','-o','short-iso'],stdout=open(out/'journal.log','w'),stderr=subprocess.DEVNULL)
         subprocess.run(['systemctl','--user','stop',unit],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
         if fixture and fixture.poll() is None:fixture.terminate();fixture.wait(timeout=10)
+        browser_result=json.loads((out/'browser-result.json').read_text()) if (out/'browser-result.json').exists() else {}
+        helper.write(out/'outcome.json',separate_outcome(failure,attestation_diagnostic,browser_result))
         for p in out.iterdir():
             if p.is_file():p.chmod(0o600)
-    browser_result=json.loads((out/'browser-result.json').read_text()) if (out/'browser-result.json').exists() else {}
-    helper.write(out/'outcome.json',separate_outcome(failure,attestation_diagnostic,browser_result))
     if failure:raise SystemExit(1)
 if __name__=='__main__':main()
