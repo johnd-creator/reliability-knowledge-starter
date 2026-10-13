@@ -4,6 +4,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 import unittest
+import os
 from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[2]
 spec = importlib.util.spec_from_file_location('vendor_run', ROOT/'deploy/development/vendor-maps/run.py')
@@ -29,6 +30,14 @@ class VendorMapSafety(unittest.TestCase):
             with self.assertRaises(RuntimeError):module.verify_source(root,sha)
             file.write_text('<span>DEV</span>');(root/'.env').write_text('SYNTHETIC_ONLY=1')
             with self.assertRaises(RuntimeError):module.verify_source(root,sha)
+    def test_private_process_evidence(self):
+        record=module.process_evidence(os.getpid())
+        self.assertEqual(record['pid'],os.getpid())
+        self.assertEqual(record['parent'],os.getppid())
+        self.assertTrue(record['start_ticks'].isdigit())
+        self.assertEqual(len(record['command_sha256']),64)
+        self.assertNotIn('command',record)
+        self.assertTrue(module.process_evidence(99999999)['unverified_or_vanished'])
     def test_no_official_adapter_installation(self):
         for file in ['reliability-cockpit/web/next.config.js','deploy/development/nadi-dev.py','deploy/development/frontend_preview.py']:
             self.assertNotIn('vendor-maps/adapter', (ROOT/file).read_text())

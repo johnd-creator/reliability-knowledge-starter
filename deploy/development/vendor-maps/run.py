@@ -26,6 +26,19 @@ def verify_source(root,sha):
     for base in [root,root/'reliability-cockpit/web']:
         if any((base/name).exists() for name in ['.env','.env.local','.env.development','.env.development.local']):raise RuntimeError('PROVENANCE_MISMATCH')
 
+def process_evidence(pid):
+    """Private evidence only; classification/rejection rules remain unchanged."""
+    proc=Path('/proc')/str(pid)
+    try:
+        raw=(proc/'cmdline').read_bytes()
+        stat=(proc/'stat').read_text().split(') ',1)[1].split()
+        return dict(pid=int(pid),parent=int(stat[1]),start_ticks=stat[19],
+                    executable=os.readlink(proc/'exe'),comm=(proc/'comm').read_text().strip(),
+                    command_sha256=hashlib.sha256(raw).hexdigest(),
+                    next_title_prefix=raw.startswith(b'next-server'))
+    except (OSError,ValueError,IndexError):
+        return dict(pid=int(pid),unverified_or_vanished=True)
+
 def main():
     args=argparse.ArgumentParser();args.add_argument('--repo',required=True);args.add_argument('--deps',required=True);args.add_argument('--output',required=True);args.add_argument('--seconds',type=int,default=4800);args.add_argument('--sampling',action='store_true');args.add_argument('--debug',action='store_true');args.add_argument('--mode',choices=['baseline','candidate'],required=True);a=args.parse_args()
     if not 60 <= a.seconds <= 10800:raise ValueError('Duration outside bounds')
@@ -84,7 +97,7 @@ def main():
                         if b'next-server' in (Path('/proc')/pid/'cmdline').read_bytes():workers.append(int(pid))
                     except FileNotFoundError:pass
                 available=int(next(x.split()[1] for x in Path('/proc/meminfo').read_text().splitlines() if x.startswith('MemAvailable:')))*1024
-                events=(group/'memory.events').read_text() if group.exists() else '';row=dict(at=time.time()*1000,**props,workers=workers,available=available,events=events);log.write(json.dumps(row)+'\n');log.flush()
+                events=(group/'memory.events').read_text() if group.exists() else '';row=dict(at=time.time()*1000,**props,workers=workers,worker_evidence=[process_evidence(pid) for pid in workers],available=available,events=events);log.write(json.dumps(row)+'\n');log.flush()
                 helper.write(out/'progress.json',dict(elapsed=round(time.monotonic()-start,1),workers=workers,expected=worker,memory_mib=round(int(props['MemoryCurrent'])/1048576,1),available_mib=round(available/1048576,1)))
                 if workers!=[worker] or props['MainPID']!=initial_parent:failure='WORKER_REPLACED';break
                 if (Path('/proc')/str(worker)/'stat').read_text().split(') ',1)[1].split()[19]!=initial_ticks:failure='WORKER_REPLACED';break

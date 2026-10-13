@@ -665,3 +665,21 @@ frames, breakpoint, vendor-error application callsite, RSC and3 state-preserving
 component HMR cycles. Candidate95min started with15min additional headroom beyond
 baseline failure. Candidate stability remains IN PROGRESS, no acceptance/merge.
 Source: [FIX-06 report](reliability-cockpit/docs/nadi-dev-status-runtime-fix-06.md).
+
+## 2026-10-13 — FIX-06 final isolated verdict: PARTIAL
+
+Candidate requested95min but guard stopped at39.58min on[36574,95687]. Original
+worker remained observed, heap417MiB, no threshold/startup/fatal/OOM sequence;
+extra PID identity insufficient, cause UNKNOWN (fork/exec transition hypothesis).
+No retry, receipt refresh, live change or acceptance. Baseline confirmed threshold
+replacement at79.85min. Common39.575min window peak1110.5→560.2MiB and warm natural
+major-GC slope+10.324→−0.152MiB/min support mitigation only in that shorter window.
+Actual frames/breakpoint/RSC and3 state-preserving component HMR cycles PASS; DEV
+label HMR still full-reloaded in both variants, not hidden. Metadata recorder now
+captures private process identity for future diagnosis without weakening rejection.
+Postflight12 hashes and known frontend/QA process identities/source states match;
+preexisting Node25/worker replacement/generated dirt remain OPERATIONAL REVIEW
+REQUIRED. DB/session/container contents not queried. Final exact-head CI/HEAD
+recorded in DRAFT PR80 delivery; no merge and no live acceptance recommendation.
+Next: separate authorization for NEW qualified sustained experiment after richer
+process attribution. [Report](reliability-cockpit/docs/nadi-dev-status-runtime-fix-06.md).

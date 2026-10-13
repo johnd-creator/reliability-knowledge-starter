@@ -1,0 +1,186 @@
+{
+  "baseline": {
+    "mode": "baseline",
+    "baseline_sha": "63b61d09c45630a76657cdb54991349fb0528e7b",
+    "test_copy_sha": "7c4597215549b61964faf2bf36d8e7379959df75",
+    "node": "22.23.1",
+    "limits": {
+      "heap_mib": 2048,
+      "cgroup_mib": 2500,
+      "cpu_percent": 200
+    },
+    "flight_graph_instrumented": false,
+    "sampling": true,
+    "elapsed": 4791.0,
+    "worker_unchanged": false,
+    "parent_unchanged": true,
+    "heap_limit_mib": 2096.0,
+    "next_threshold_mib": 1676.8,
+    "minimum_sampled_threshold_distance_mib": 27.9,
+    "native_maps_enabled": true,
+    "parent_heap_peak_mib": 23.6,
+    "cpu_seconds": 953.2,
+    "memory_events_peak": {
+      "low": 0,
+      "high": 0,
+      "max": 0,
+      "oom": 0,
+      "oom_kill": 0,
+      "oom_group_kill": 0,
+      "sock_throttled": 0
+    },
+    "samples": 958,
+    "gc_count": 9225,
+    "gc_duration_total_ms": 50503.8,
+    "gc_duration_peak_ms": 322.3,
+    "major_gc_count": 291,
+    "warm_major_gc_count": 201,
+    "heap_peak_mib": 1648.9,
+    "heap_final_mib": 1615.9,
+    "external_peak_mib": 160.8,
+    "array_buffers_peak_mib": 156.7,
+    "rss_peak_mib": 2115.7,
+    "cgroup_sampled_peak_mib": 2299.5,
+    "cgroup_kernel_peak_mib": 2343.2,
+    "warm_heap_slope_mib_per_min": 11.85,
+    "warm_post_major_gc_slope_mib_per_min": 11.211,
+    "major_gc_latest_mib": 1474.5,
+    "compiler_completions": 967,
+    "compiler_module_peak": {
+      "client": 312,
+      "edge-server": 0,
+      "server": 496
+    },
+    "resource_counts_final": {
+      "FSReqCallback": 2,
+      "PipeWrap": 3,
+      "TCPServerWrap": 1,
+      "FSEventWrap": 46,
+      "TCPSocketWrap": 2
+    },
+    "heap_spaces_final": {
+      "read_only_space": 0.0,
+      "new_space": 7.2,
+      "old_space": 471.9,
+      "code_space": 23.0,
+      "shared_space": 0.0,
+      "trusted_space": 14.5,
+      "new_large_object_space": 0.0,
+      "large_object_space": 1098.6,
+      "code_large_object_space": 0.8,
+      "shared_large_object_space": 0.0,
+      "trusted_large_object_space": 0.0
+    },
+    "browser": {
+      "completed": false,
+      "failure": "page.goto: Target page, context or browser has been closed",
+      "counts": {
+        "requests": 6470,
+        "status": 1222,
+        "navigations": 277,
+        "hmr": 80,
+        "hmrReloads": 80,
+        "session": 27
+      },
+      "errors": []
+    },
+    "result": {
+      "failure": "WORKER_REPLACED",
+      "worker": 4102290,
+      "parent": 4102270,
+      "start_ticks": "68973115",
+      "elapsed": 4791.012701388914
+    }
+  },
+  "candidate": {
+    "mode": "candidate",
+    "baseline_sha": "63b61d09c45630a76657cdb54991349fb0528e7b",
+    "test_copy_sha": "8a044672895f1d72361c151093b3064c475823e7",
+    "node": "22.23.1",
+    "limits": {
+      "heap_mib": 2048,
+      "cgroup_mib": 2500,
+      "cpu_percent": 200
+    },
+    "flight_graph_instrumented": false,
+    "sampling": true,
+    "elapsed": 2374.5,
+    "worker_unchanged": false,
+    "parent_unchanged": true,
+    "heap_limit_mib": 2096.0,
+    "next_threshold_mib": 1676.8,
+    "minimum_sampled_threshold_distance_mib": 1116.6,
+    "native_maps_enabled": true,
+    "parent_heap_peak_mib": 23.6,
+    "cpu_seconds": 448.1,
+    "memory_events_peak": {
+      "low": 0,
+      "high": 0,
+      "max": 0,
+      "oom": 0,
+      "oom_kill": 0,
+      "oom_group_kill": 0,
+      "sock_throttled": 0
+    },
+    "samples": 477,
+    "gc_count": 4804,
+    "gc_duration_total_ms": 25229.2,
+    "gc_duration_peak_ms": 236.3,
+    "major_gc_count": 215,
+    "warm_major_gc_count": 123,
+    "heap_peak_mib": 560.2,
+    "heap_final_mib": 417.0,
+    "external_peak_mib": 108.2,
+    "array_buffers_peak_mib": 104.1,
+    "rss_peak_mib": 925.4,
+    "cgroup_sampled_peak_mib": 991.7,
+    "cgroup_kernel_peak_mib": 1030.5,
+    "warm_heap_slope_mib_per_min": 0.091,
+    "warm_post_major_gc_slope_mib_per_min": -0.152,
+    "major_gc_latest_mib": 409.6,
+    "compiler_completions": 505,
+    "compiler_module_peak": {
+      "client": 312,
+      "edge-server": 0,
+      "server": 491
+    },
+    "resource_counts_final": {
+      "PipeWrap": 3,
+      "TCPServerWrap": 1,
+      "FSEventWrap": 46
+    },
+    "heap_spaces_final": {
+      "read_only_space": 0.0,
+      "new_space": 6.3,
+      "old_space": 284.0,
+      "code_space": 16.0,
+      "shared_space": 0.0,
+      "trusted_space": 8.7,
+      "new_large_object_space": 0.0,
+      "large_object_space": 101.2,
+      "code_large_object_space": 0.8,
+      "shared_large_object_space": 0.0,
+      "trusted_large_object_space": 0.0
+    },
+    "browser": {
+      "completed": false,
+      "failure": "page.goto: Target page, context or browser has been closed",
+      "counts": {
+        "requests": 3243,
+        "status": 612,
+        "navigations": 139,
+        "hmr": 40,
+        "hmrReloads": 40,
+        "session": 13
+      },
+      "errors": []
+    },
+    "result": {
+      "failure": "WORKER_REPLACED",
+      "worker": 36574,
+      "parent": 36554,
+      "start_ticks": "69467093",
+      "elapsed": 2374.535625263932
+    }
+  }
+}

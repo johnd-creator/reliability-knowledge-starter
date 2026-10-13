@@ -1,0 +1,417 @@
+{
+  "warning": "Live sampling stack categories overlap; not exclusive retained-byte/root ownership. Durations differ.",
+  "variants": {
+    "baseline": [
+      {
+        "minutes_since_first_profile": 0.0,
+        "sampled_mib": 322.5,
+        "mechanisms_mib": {
+          "module_source_read_stack": 115.7,
+          "flight_runtime_stack": 43.0
+        }
+      },
+      {
+        "minutes_since_first_profile": 2.0,
+        "sampled_mib": 404.7,
+        "mechanisms_mib": {
+          "module_source_read_stack": 147.6,
+          "flight_runtime_stack": 69.0
+        }
+      },
+      {
+        "minutes_since_first_profile": 4.0,
+        "sampled_mib": 457.7,
+        "mechanisms_mib": {
+          "module_source_read_stack": 170.5,
+          "flight_runtime_stack": 95.9
+        }
+      },
+      {
+        "minutes_since_first_profile": 6.0,
+        "sampled_mib": 506.5,
+        "mechanisms_mib": {
+          "module_source_read_stack": 199.2,
+          "flight_runtime_stack": 110.8
+        }
+      },
+      {
+        "minutes_since_first_profile": 8.0,
+        "sampled_mib": 534.1,
+        "mechanisms_mib": {
+          "module_source_read_stack": 220.9,
+          "flight_runtime_stack": 122.6
+        }
+      },
+      {
+        "minutes_since_first_profile": 10.0,
+        "sampled_mib": 555.3,
+        "mechanisms_mib": {
+          "module_source_read_stack": 240.2,
+          "flight_runtime_stack": 131.0
+        }
+      },
+      {
+        "minutes_since_first_profile": 12.0,
+        "sampled_mib": 597.1,
+        "mechanisms_mib": {
+          "module_source_read_stack": 255.6,
+          "flight_runtime_stack": 152.8
+        }
+      },
+      {
+        "minutes_since_first_profile": 14.0,
+        "sampled_mib": 627.3,
+        "mechanisms_mib": {
+          "module_source_read_stack": 273.9,
+          "flight_runtime_stack": 174.4
+        }
+      },
+      {
+        "minutes_since_first_profile": 16.0,
+        "sampled_mib": 688.4,
+        "mechanisms_mib": {
+          "module_source_read_stack": 303.2,
+          "flight_runtime_stack": 191.6
+        }
+      },
+      {
+        "minutes_since_first_profile": 18.0,
+        "sampled_mib": 725.4,
+        "mechanisms_mib": {
+          "module_source_read_stack": 331.1,
+          "flight_runtime_stack": 201.2
+        }
+      },
+      {
+        "minutes_since_first_profile": 20.0,
+        "sampled_mib": 759.8,
+        "mechanisms_mib": {
+          "module_source_read_stack": 345.2,
+          "flight_runtime_stack": 217.4
+        }
+      },
+      {
+        "minutes_since_first_profile": 22.0,
+        "sampled_mib": 804.0,
+        "mechanisms_mib": {
+          "module_source_read_stack": 374.0,
+          "flight_runtime_stack": 235.4
+        }
+      },
+      {
+        "minutes_since_first_profile": 24.0,
+        "sampled_mib": 848.9,
+        "mechanisms_mib": {
+          "module_source_read_stack": 387.2,
+          "flight_runtime_stack": 260.6
+        }
+      },
+      {
+        "minutes_since_first_profile": 26.0,
+        "sampled_mib": 885.3,
+        "mechanisms_mib": {
+          "module_source_read_stack": 406.8,
+          "flight_runtime_stack": 280.1
+        }
+      },
+      {
+        "minutes_since_first_profile": 28.0,
+        "sampled_mib": 922.3,
+        "mechanisms_mib": {
+          "module_source_read_stack": 432.1,
+          "flight_runtime_stack": 292.8
+        }
+      },
+      {
+        "minutes_since_first_profile": 30.0,
+        "sampled_mib": 962.8,
+        "mechanisms_mib": {
+          "module_source_read_stack": 446.4,
+          "flight_runtime_stack": 317.9
+        }
+      },
+      {
+        "minutes_since_first_profile": 32.0,
+        "sampled_mib": 794.3,
+        "mechanisms_mib": {
+          "module_source_read_stack": 472.4,
+          "flight_runtime_stack": 124.6
+        }
+      },
+      {
+        "minutes_since_first_profile": 34.0,
+        "sampled_mib": 819.5,
+        "mechanisms_mib": {
+          "module_source_read_stack": 489.7,
+          "flight_runtime_stack": 137.6
+        }
+      },
+      {
+        "minutes_since_first_profile": 36.0,
+        "sampled_mib": 875.8,
+        "mechanisms_mib": {
+          "module_source_read_stack": 524.4,
+          "flight_runtime_stack": 151.0
+        }
+      },
+      {
+        "minutes_since_first_profile": 38.0,
+        "sampled_mib": 874.5,
+        "mechanisms_mib": {
+          "module_source_read_stack": 542.9,
+          "flight_runtime_stack": 133.0
+        }
+      },
+      {
+        "minutes_since_first_profile": 40.0,
+        "sampled_mib": 915.7,
+        "mechanisms_mib": {
+          "module_source_read_stack": 562.5,
+          "flight_runtime_stack": 150.6
+        }
+      },
+      {
+        "minutes_since_first_profile": 42.0,
+        "sampled_mib": 964.4,
+        "mechanisms_mib": {
+          "module_source_read_stack": 595.7,
+          "flight_runtime_stack": 165.0
+        }
+      },
+      {
+        "minutes_since_first_profile": 44.0,
+        "sampled_mib": 963.6,
+        "mechanisms_mib": {
+          "module_source_read_stack": 631.4,
+          "flight_runtime_stack": 130.3
+        }
+      },
+      {
+        "minutes_since_first_profile": 46.0,
+        "sampled_mib": 968.9,
+        "mechanisms_mib": {
+          "module_source_read_stack": 630.0,
+          "flight_runtime_stack": 147.2
+        }
+      },
+      {
+        "minutes_since_first_profile": 48.0,
+        "sampled_mib": 1037.1,
+        "mechanisms_mib": {
+          "module_source_read_stack": 668.9,
+          "flight_runtime_stack": 164.7
+        }
+      },
+      {
+        "minutes_since_first_profile": 50.0,
+        "sampled_mib": 1031.6,
+        "mechanisms_mib": {
+          "module_source_read_stack": 699.8,
+          "flight_runtime_stack": 130.5
+        }
+      },
+      {
+        "minutes_since_first_profile": 52.0,
+        "sampled_mib": 1072.8,
+        "mechanisms_mib": {
+          "module_source_read_stack": 709.1,
+          "flight_runtime_stack": 159.3
+        }
+      },
+      {
+        "minutes_since_first_profile": 54.0,
+        "sampled_mib": 1104.3,
+        "mechanisms_mib": {
+          "module_source_read_stack": 742.7,
+          "flight_runtime_stack": 157.0
+        }
+      },
+      {
+        "minutes_since_first_profile": 56.0,
+        "sampled_mib": 1126.0,
+        "mechanisms_mib": {
+          "module_source_read_stack": 768.8,
+          "flight_runtime_stack": 153.2
+        }
+      },
+      {
+        "minutes_since_first_profile": 58.0,
+        "sampled_mib": 1142.9,
+        "mechanisms_mib": {
+          "module_source_read_stack": 781.4,
+          "flight_runtime_stack": 153.6
+        }
+      },
+      {
+        "minutes_since_first_profile": 60.0,
+        "sampled_mib": 1187.4,
+        "mechanisms_mib": {
+          "module_source_read_stack": 821.9,
+          "flight_runtime_stack": 166.5
+        }
+      },
+      {
+        "minutes_since_first_profile": 62.0,
+        "sampled_mib": 1256.8,
+        "mechanisms_mib": {
+          "module_source_read_stack": 854.5,
+          "flight_runtime_stack": 205.2
+        }
+      }
+    ],
+    "candidate": [
+      {
+        "minutes_since_first_profile": 0.0,
+        "sampled_mib": 240.7,
+        "mechanisms_mib": {
+          "flight_runtime_stack": 33.2,
+          "module_source_read_stack": 71.0
+        }
+      },
+      {
+        "minutes_since_first_profile": 2.0,
+        "sampled_mib": 268.8,
+        "mechanisms_mib": {
+          "flight_runtime_stack": 52.7,
+          "module_source_read_stack": 76.5
+        }
+      },
+      {
+        "minutes_since_first_profile": 4.0,
+        "sampled_mib": 302.8,
+        "mechanisms_mib": {
+          "flight_runtime_stack": 74.9,
+          "module_source_read_stack": 81.5
+        }
+      },
+      {
+        "minutes_since_first_profile": 6.0,
+        "sampled_mib": 304.6,
+        "mechanisms_mib": {
+          "flight_runtime_stack": 86.2,
+          "module_source_read_stack": 69.9
+        }
+      },
+      {
+        "minutes_since_first_profile": 8.0,
+        "sampled_mib": 317.8,
+        "mechanisms_mib": {
+          "flight_runtime_stack": 106.2,
+          "module_source_read_stack": 71.2
+        }
+      },
+      {
+        "minutes_since_first_profile": 10.0,
+        "sampled_mib": 350.9,
+        "mechanisms_mib": {
+          "flight_runtime_stack": 123.1,
+          "module_source_read_stack": 70.8
+        }
+      },
+      {
+        "minutes_since_first_profile": 12.0,
+        "sampled_mib": 371.1,
+        "mechanisms_mib": {
+          "flight_runtime_stack": 142.0,
+          "module_source_read_stack": 79.4
+        }
+      },
+      {
+        "minutes_since_first_profile": 14.0,
+        "sampled_mib": 354.4,
+        "mechanisms_mib": {
+          "flight_runtime_stack": 107.7,
+          "module_source_read_stack": 80.0
+        }
+      },
+      {
+        "minutes_since_first_profile": 16.0,
+        "sampled_mib": 353.7,
+        "mechanisms_mib": {
+          "flight_runtime_stack": 115.1,
+          "module_source_read_stack": 78.9
+        }
+      },
+      {
+        "minutes_since_first_profile": 18.0,
+        "sampled_mib": 311.4,
+        "mechanisms_mib": {
+          "flight_runtime_stack": 96.5,
+          "module_source_read_stack": 68.6
+        }
+      },
+      {
+        "minutes_since_first_profile": 20.0,
+        "sampled_mib": 358.0,
+        "mechanisms_mib": {
+          "flight_runtime_stack": 119.7,
+          "module_source_read_stack": 79.4
+        }
+      },
+      {
+        "minutes_since_first_profile": 22.0,
+        "sampled_mib": 381.3,
+        "mechanisms_mib": {
+          "flight_runtime_stack": 137.9,
+          "module_source_read_stack": 79.8
+        }
+      },
+      {
+        "minutes_since_first_profile": 24.0,
+        "sampled_mib": 411.1,
+        "mechanisms_mib": {
+          "flight_runtime_stack": 168.4,
+          "module_source_read_stack": 81.0
+        }
+      },
+      {
+        "minutes_since_first_profile": 26.0,
+        "sampled_mib": 345.2,
+        "mechanisms_mib": {
+          "flight_runtime_stack": 116.0,
+          "module_source_read_stack": 78.8
+        }
+      },
+      {
+        "minutes_since_first_profile": 28.0,
+        "sampled_mib": 354.3,
+        "mechanisms_mib": {
+          "flight_runtime_stack": 128.7,
+          "module_source_read_stack": 75.4
+        }
+      },
+      {
+        "minutes_since_first_profile": 30.0,
+        "sampled_mib": 380.7,
+        "mechanisms_mib": {
+          "flight_runtime_stack": 152.6,
+          "module_source_read_stack": 76.4
+        }
+      },
+      {
+        "minutes_since_first_profile": 32.0,
+        "sampled_mib": 355.4,
+        "mechanisms_mib": {
+          "flight_runtime_stack": 114.0,
+          "module_source_read_stack": 79.4
+        }
+      },
+      {
+        "minutes_since_first_profile": 34.0,
+        "sampled_mib": 369.3,
+        "mechanisms_mib": {
+          "flight_runtime_stack": 135.0,
+          "module_source_read_stack": 74.8
+        }
+      },
+      {
+        "minutes_since_first_profile": 36.0,
+        "sampled_mib": 338.4,
+        "mechanisms_mib": {
+          "flight_runtime_stack": 98.6,
+          "module_source_read_stack": 79.6
+        }
+      }
+    ]
+  }
+}

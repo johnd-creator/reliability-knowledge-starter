@@ -47,8 +47,8 @@
   "compiler_completions": 967,
   "compiler_module_peak": {
     "client": 312,
-    "server": 496,
-    "edge-server": 0
+    "edge-server": 0,
+    "server": 496
   },
   "resource_counts_final": {
     "FSReqCallback": 2,

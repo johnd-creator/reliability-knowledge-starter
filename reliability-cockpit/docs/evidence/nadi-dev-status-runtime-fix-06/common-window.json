@@ -1,0 +1,14 @@
+{
+  "baseline": {
+    "window_minutes": 39.575,
+    "heap_peak_mib": 1110.5,
+    "post_major_gc_slope_mib_min": 10.324,
+    "post_major_gc_samples": 90
+  },
+  "candidate": {
+    "window_minutes": 39.575,
+    "heap_peak_mib": 560.2,
+    "post_major_gc_slope_mib_min": -0.152,
+    "post_major_gc_samples": 123
+  }
+}

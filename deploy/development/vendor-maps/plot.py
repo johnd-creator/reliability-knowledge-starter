@@ -15,6 +15,8 @@ for file,color in [(a.baseline,'#334155'),(a.candidate,'#118C45')]:
  axes[2].plot(x,[r['external_mib'] for r in rows],color=color,label=name)
  if d['result'].get('failure'):
   for ax in axes:ax.axvline(d['elapsed']/60,color=color,linestyle=':',alpha=.5)
+axes[0].annotate('Candidate guard stop: extra PID\ncause UNKNOWN; no retry',xy=(39.58,560),xytext=(44,610),fontsize=9,arrowprops={'arrowstyle':'->','color':'#118C45'})
+axes[0].annotate('Baseline threshold restart',xy=(79.85,1648.9),xytext=(59,1550),fontsize=9,arrowprops={'arrowstyle':'->','color':'#334155'})
 axes[0].axhline(1676.8,color='#DC2626',linestyle='--',label='Next used-heap threshold (~80%)')
 for ax,label in zip(axes,['Heap used (MiB)','Worker RSS (MiB)','External memory (MiB)']):
  ax.set_ylabel(label);ax.grid(alpha=.2);ax.legend(loc='upper left')
