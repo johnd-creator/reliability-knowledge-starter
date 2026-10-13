@@ -10,6 +10,7 @@ for file,color in [(a.baseline,'#334155'),(a.candidate,'#118C45')]:
  d=json.loads(Path(file).read_text());name=d['mode']
  rows=d['timeline'];x=[r['seconds']/60 for r in rows]
  axes[0].plot(x,[r['heap_mib'] for r in rows],color=color,label=name)
+ gc=d['major_gc_timeline'];axes[0].scatter([r['seconds']/60 for r in gc],[r['heap_mib'] for r in gc],s=7,color=color,alpha=.4,label=name+' natural major GC')
  axes[1].plot(x,[r['rss_mib'] for r in rows],color=color,label=name)
  axes[2].plot(x,[r['external_mib'] for r in rows],color=color,label=name)
  if d['result'].get('failure'):

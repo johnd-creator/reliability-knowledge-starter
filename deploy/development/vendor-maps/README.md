@@ -30,6 +30,8 @@ update. No real QA identities, sessions, source data or database are involved.
 Raw CDP/debug data remains local. Debug pages exist only in archived test copies.
 
 Limits remain2048MiB old-space,2500MiB service,200% CPU,128 tasks,Restart=no.
+Before starting, host available memory must be >=4500MiB. Fixture/Next/browser
+environments are explicitly clean; no operational env file is loaded.
 Browser cleanup group has768MiB/200% CPU/192 tasks. Fail-stop on parent/worker/start
 identity change, source drift, OOM,2400MiB peak or <1200MiB host available memory.
 Generated-file restoration applies only to the exact known bytes in the NEW copy.

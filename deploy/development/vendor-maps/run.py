@@ -36,6 +36,8 @@ def main():
     for package,version in [('next','15.5.9'),('react','19.2.8')]:
         if json.loads((deps/package/'package.json').read_text())['version']!=version:raise ValueError('Locked dependency mismatch')
     if hashlib.sha256(Path('/usr/bin/node-22').read_bytes()).hexdigest()!='9d9f55f1f4497fe069d681020b728f77221c43b9a4e9576a89ff7cc537caf5cf':raise ValueError('Node binary mismatch')
+    available=int(next(x.split()[1] for x in Path('/proc/meminfo').read_text().splitlines() if x.startswith('MemAvailable:')))*1024
+    if available<4500*1048576:raise RuntimeError('INITIAL_HOST_HEADROOM_REFUSAL')
     out=private_output(a.output);out.mkdir(parents=True,mode=0o700);root=out/'runs/frontend';root.mkdir(parents=True);web=root/'reliability-cockpit/web';state=root.parent/'state';state.mkdir(mode=0o700)
     with tarfile.open(fileobj=io.BytesIO(subprocess.check_output(['git','archive',sha,'reliability-cockpit/web'],cwd=repo))) as archive:archive.extractall(root,filter='data')
     (root/'.gitignore').write_bytes(subprocess.check_output(['git','show',sha+':.gitignore'],cwd=repo));(web/'node_modules').symlink_to(Path(a.deps).resolve())
@@ -54,7 +56,7 @@ def main():
     helper.write(out/'definition.json',dict(base_sha=sha,copy_sha=front_sha,mode=a.mode,unit=unit,node='22.23.1',heap_mib=2048,cgroup_mib=2500,cpu_percent=200,seconds=a.seconds,sampling=a.sampling,debug=a.debug,protocol='FIX04 corrected nav-hmr; 21 routes,15s dwell,5s polling,60s HMR; no forced GC',browser_cgroup_mib=768,scripts=scripts,port=port,fixture_port=api_port,scope='SYNTHETIC DISPOSABLE ONLY'))
     fixture=browser=None;failure=None;worker=None;start=time.monotonic()
     try:
-        fixture=subprocess.Popen(['/usr/bin/node-22',str(HERE.parent/'probes/fixtures.cjs'),str(web),str(api_port),back_sha],stdout=open(out/'fixture.log','w'),stderr=subprocess.STDOUT)
+        fixture=subprocess.Popen(['/usr/bin/node-22',str(HERE.parent/'probes/fixtures.cjs'),str(web),str(api_port),back_sha],env={'PATH':'/usr/bin:/bin','HOME':str(Path.home())},stdout=open(out/'fixture.log','w'),stderr=subprocess.STDOUT)
         env=['PATH=/usr/bin:/bin','HOME='+str(Path.home()),'NODE_ENV=development','NODE_OPTIONS=--max-old-space-size=2048 --require='+str(HERE/'heap.cjs'),'NEXT_TELEMETRY_DISABLED=1','NADI_FIX06_VENDOR_MAPS='+('1' if a.mode=='candidate' else '0'),'NADI_FIX06_DISPOSABLE_ROOT='+str(web),'NADI_FIX06_SAMPLING='+('1' if a.sampling else '0'),'NADI_PROBE_DIR='+str(out),'NADI_PRIMARY_FRONTEND=true','NADI_LIVE_DEV=true','NADI_ENGINEERING_QA_ENABLED=true','NADI_ENGINEERING_WORKSPACE_ENABLED=true','COCKPIT_API_BASE='+base,'NADI_QA_BACKEND_URL='+base,'NADI_DEV_FRONTEND_MANIFEST='+str(manifest),'NADI_DEV_FRONTEND_WORKER='+str(receipt),'NADI_DEV_LAUNCHED_SHA='+front_sha]
         helper.command(['systemd-run','--user','--collect','--unit='+unit,'--service-type=exec','--working-directory='+str(web),'-p','MemoryMax=2500M','-p','CPUQuota=200%','-p','TasksMax=128','-p','Restart=no','-p','UMask=0077','/usr/bin/env','-i',*env,'/usr/bin/node-22','node_modules/next/dist/bin/next','dev','--hostname','127.0.0.1','--port',str(port)])
         while time.monotonic()-start<120:
