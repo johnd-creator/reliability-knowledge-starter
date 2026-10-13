@@ -630,3 +630,56 @@ Product Owner Acceptance: diagnostic scope authorized; visual/live/engineer UAT/
 Remaining Blockers: complete conditional WeakMap/root ownership, long-run comparative slope, original-frame/debugging compatibility; no fresh persistent QA/session/container audit within this scope.
 Next Action: review guarded vendor-only map exclusion proposal for isolated FIX-06; separate approval before any future official runtime action.
 Evidence: [FIX-05 report](reliability-cockpit/docs/nadi-dev-status-runtime-fix-05.md), [sanitized evidence](reliability-cockpit/docs/evidence/nadi-dev-status-runtime-fix-05/README.md). Prior evidence, worktrees, assets, workbook, backup and operational settings preserved; no DB/schema/collector/source/freshness change.
+
+## 2026-10-13 — NADI-DEV-UX-STATUS-01-FIX-06 implementation checkpoint
+
+- Objective: default-disabled vendor-map adapter and sustained isolated assessment.
+- Branch: `codex/nadi-dev-status-runtime-fix-06`; base `63b61d09c45630a76657cdb54991349fb0528e7b`.
+- PR: [DRAFT #80](https://github.com/johnd-creator/reliability-knowledge-starter/pull/80), stacked on FIX-05/PR79.
+- Implementation Status: IMPLEMENTED, experimental/disposable only; application/controller unchanged.
+- Test Status:69 hermetic controller/analyzer/confinement tests,21 adapter cases,
+  actual client/server source-frame and breakpoint qualification,3 state-preserving
+  component HMR cycles,455 intercepted browser assertions, TypeScript/lint/build PASS.
+- CI Status: backend/frontend PASS at guard correction milestone; final delivery
+  exact HEAD remains a separate verification after sustained evidence.
+- Merge Status: OPEN/DRAFT; not merged.
+- Development Visibility: official preview not changed or queried by HTTP.
+- Product Owner Acceptance: NOT REQUESTED; sustained assessment IN PROGRESS.
+- Remaining Blockers: existing primary Node25 worker replaced by heap safeguard at
+  03:31:52WIB and generated next-env dirt require OPERATIONAL REVIEW. Source/frontend
+  status JSON does not prove current provenance. QA status would read DB and was not
+  called. Baseline DEV-label HMR full reloads are recorded separately from successful
+  component Fast Refresh. Initial CI fresh-root confinement failure corrected/tested.
+- Next Action: complete baseline/candidate run, natural post-GC slope/threshold and
+  allocation comparisons, append actual verdict and exact-head CI evidence.
+- Source evidence: [FIX-06 report](reliability-cockpit/docs/nadi-dev-status-runtime-fix-06.md).
+
+## 2026-10-13 — FIX-06 sustained baseline failure and candidate launch
+
+Baseline failed at79.85min on Next used-heap threshold / worker generation loss.
+Original4102290, unapproved33574; no receipt refresh, repair or retry.277 navigations,
+1222 status requests,80 HMR cycles/80 reloads,27 in-memory session reads; heap
+peak1648.9MiB, cgroup peak2343.2MiB, OOM0. Official frontend/backend were not acted on.
+Final guarded-adapter debugger qualification passed actual client/server original
+frames, breakpoint, vendor-error application callsite, RSC and3 state-preserving
+component HMR cycles. Candidate95min started with15min additional headroom beyond
+baseline failure. Candidate stability remains IN PROGRESS, no acceptance/merge.
+Source: [FIX-06 report](reliability-cockpit/docs/nadi-dev-status-runtime-fix-06.md).
+
+## 2026-10-13 — FIX-06 final isolated verdict: PARTIAL
+
+Candidate requested95min but guard stopped at39.58min on[36574,95687]. Original
+worker remained observed, heap417MiB, no threshold/startup/fatal/OOM sequence;
+extra PID identity insufficient, cause UNKNOWN (fork/exec transition hypothesis).
+No retry, receipt refresh, live change or acceptance. Baseline confirmed threshold
+replacement at79.85min. Common39.575min window peak1110.5→560.2MiB and warm natural
+major-GC slope+10.324→−0.152MiB/min support mitigation only in that shorter window.
+Actual frames/breakpoint/RSC and3 state-preserving component HMR cycles PASS; DEV
+label HMR still full-reloaded in both variants, not hidden. Metadata recorder now
+captures private process identity for future diagnosis without weakening rejection.
+Postflight12 hashes and known frontend/QA process identities/source states match;
+preexisting Node25/worker replacement/generated dirt remain OPERATIONAL REVIEW
+REQUIRED. DB/session/container contents not queried. Final exact-head CI/HEAD
+recorded in DRAFT PR80 delivery; no merge and no live acceptance recommendation.
+Next: separate authorization for NEW qualified sustained experiment after richer
+process attribution. [Report](reliability-cockpit/docs/nadi-dev-status-runtime-fix-06.md).

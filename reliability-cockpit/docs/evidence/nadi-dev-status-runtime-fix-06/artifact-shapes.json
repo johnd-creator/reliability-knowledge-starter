@@ -1,0 +1,161 @@
+{
+  "baseline_terminal": "UNAVAILABLE \u2014 Next replacement cleared vendor/app build artifacts; no retry",
+  "candidate_capture_phase": "approximately 21min, intermediate only",
+  "candidate": [
+    {
+      "kind": "vendor-next",
+      "bytes": 2777100,
+      "eval_text_occurrences": 1,
+      "map_comments": 0,
+      "maps_with_embedded_source": 0
+    },
+    {
+      "kind": "application-page",
+      "bytes": 859889,
+      "eval_text_occurrences": 29,
+      "map_comments": 28,
+      "maps_with_embedded_source": 28
+    },
+    {
+      "kind": "application-page",
+      "bytes": 689225,
+      "eval_text_occurrences": 25,
+      "map_comments": 24,
+      "maps_with_embedded_source": 24
+    },
+    {
+      "kind": "application-page",
+      "bytes": 758880,
+      "eval_text_occurrences": 27,
+      "map_comments": 26,
+      "maps_with_embedded_source": 26
+    },
+    {
+      "kind": "application-page",
+      "bytes": 731728,
+      "eval_text_occurrences": 27,
+      "map_comments": 26,
+      "maps_with_embedded_source": 26
+    },
+    {
+      "kind": "application-page",
+      "bytes": 736789,
+      "eval_text_occurrences": 27,
+      "map_comments": 26,
+      "maps_with_embedded_source": 26
+    },
+    {
+      "kind": "application-page",
+      "bytes": 861643,
+      "eval_text_occurrences": 29,
+      "map_comments": 28,
+      "maps_with_embedded_source": 28
+    },
+    {
+      "kind": "application-page",
+      "bytes": 704079,
+      "eval_text_occurrences": 27,
+      "map_comments": 26,
+      "maps_with_embedded_source": 26
+    },
+    {
+      "kind": "application-page",
+      "bytes": 700984,
+      "eval_text_occurrences": 27,
+      "map_comments": 26,
+      "maps_with_embedded_source": 26
+    },
+    {
+      "kind": "application-page",
+      "bytes": 922078,
+      "eval_text_occurrences": 36,
+      "map_comments": 35,
+      "maps_with_embedded_source": 35
+    },
+    {
+      "kind": "application-page",
+      "bytes": 922196,
+      "eval_text_occurrences": 36,
+      "map_comments": 35,
+      "maps_with_embedded_source": 35
+    },
+    {
+      "kind": "application-page",
+      "bytes": 841885,
+      "eval_text_occurrences": 34,
+      "map_comments": 33,
+      "maps_with_embedded_source": 33
+    },
+    {
+      "kind": "application-page",
+      "bytes": 733363,
+      "eval_text_occurrences": 27,
+      "map_comments": 26,
+      "maps_with_embedded_source": 26
+    },
+    {
+      "kind": "application-page",
+      "bytes": 718247,
+      "eval_text_occurrences": 27,
+      "map_comments": 26,
+      "maps_with_embedded_source": 26
+    },
+    {
+      "kind": "application-page",
+      "bytes": 968761,
+      "eval_text_occurrences": 37,
+      "map_comments": 36,
+      "maps_with_embedded_source": 36
+    },
+    {
+      "kind": "application-page",
+      "bytes": 1001820,
+      "eval_text_occurrences": 41,
+      "map_comments": 40,
+      "maps_with_embedded_source": 40
+    },
+    {
+      "kind": "application-page",
+      "bytes": 1002054,
+      "eval_text_occurrences": 41,
+      "map_comments": 40,
+      "maps_with_embedded_source": 40
+    },
+    {
+      "kind": "application-page",
+      "bytes": 995623,
+      "eval_text_occurrences": 43,
+      "map_comments": 42,
+      "maps_with_embedded_source": 42
+    },
+    {
+      "kind": "application-page",
+      "bytes": 854377,
+      "eval_text_occurrences": 37,
+      "map_comments": 36,
+      "maps_with_embedded_source": 36
+    },
+    {
+      "kind": "application-page",
+      "bytes": 1026002,
+      "eval_text_occurrences": 32,
+      "map_comments": 31,
+      "maps_with_embedded_source": 31
+    },
+    {
+      "kind": "application-page",
+      "bytes": 722943,
+      "eval_text_occurrences": 27,
+      "map_comments": 26,
+      "maps_with_embedded_source": 26
+    },
+    {
+      "kind": "application-page",
+      "bytes": 655914,
+      "eval_text_occurrences": 28,
+      "map_comments": 27,
+      "maps_with_embedded_source": 27
+    }
+  ],
+  "historical_baseline_reference": "FIX05 artifact-shapes.json, not a fresh FIX06 capture"
+}

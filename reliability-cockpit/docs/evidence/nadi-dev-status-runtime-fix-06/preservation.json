@@ -1,0 +1,33 @@
+{
+  "scope": "Read-only file/process continuity; no HTTP/DB/session/container contents audit",
+  "matches": {
+    "konsep1.png": true,
+    "konsep2.png": true,
+    "konsep3.png": true,
+    "konsep4.png": true,
+    "konsep5.png": true,
+    "23496711.xls": true,
+    ".nadi-dev/state/controller.py": true,
+    ".nadi-dev/state/frontend_preview.py": true,
+    ".nadi-dev/state/controller-release.json": true,
+    ".nadi-dev/state/frontend-active.json": true,
+    ".nadi-dev/state/frontend-runtime.json": true,
+    ".nadi-dev/state/backup-20261012-153417.dump": true
+  },
+  "sources": {
+    "frontend": {
+      "sha": "f06abce76f8ef9b967ee5b1c2e0802112d77b056",
+      "status": " M reliability-cockpit/web/next-env.d.ts\n"
+    },
+    "backend": {
+      "sha": "b348235ce6f82c84873a65344ad2ef5fe276987d",
+      "status": ""
+    }
+  },
+  "sources_unchanged": true,
+  "services_unchanged": true,
+  "known_process_identities_unchanged": true,
+  "original_listener_worker": 3744151,
+  "operational_verdict": "OPERATIONAL REVIEW REQUIRED \u2014 preexisting Node25, replaced worker, generated dirt; untouched",
+  "postflight_check_note": "Comparison normalized serialized PID keys; initial mixed int/string comparison was corrected. Raw process identities unchanged."
+}
