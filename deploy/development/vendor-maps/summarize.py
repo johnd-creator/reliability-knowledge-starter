@@ -23,7 +23,7 @@ def summarize(root):
     warm_start=heap[0]['at']+15*60000;warm=[x for x in heap if x['at']>=warm_start];warm_major=[x for x in major if x['at']>=warm_start]
     profiles=sorted(root.glob(f'alloc-{worker}-*.heapprofile'));allocation=[]
     for file in profiles:
-        profile=json.loads(file.read_text());sizes=collections.Counter()
+        profile=json.loads(file.read_text());sizes=collections.Counter();mechanisms=collections.Counter()
         def visit(node,parents):
             frame=node['callFrame'];url=frame['url'];stack=parents+[frame]
             if url=='node:fs':
@@ -33,9 +33,11 @@ def summarize(root):
             category='node-internal' if owner['url'].startswith('node:') else 'webpack' if 'webpack' in owner['url'] else 'next-runtime' if 'next/' in owner['url'] else 'app-compiled' if '.next-primary-dev' in owner['url'] else 'other'
             name=public_function_name(owner['functionName'])
             sizes[(category,name)]+=node['selfSize']
+            if any(f['functionName'] in ['defaultLoadImpl','readFileSync','wrapSafe','loadSource'] for f in stack): mechanisms['module_source_read_stack']+=node['selfSize']
+            if any('app-page.runtime.dev' in f['url'] for f in stack): mechanisms['flight_runtime_stack']+=node['selfSize']
             for child in node.get('children',[]):visit(child,stack)
         visit(profile['head'],[])
-        allocation.append(dict(at=int(file.stem.rsplit('-',1)[1]),sampled_mib=round(sum(sizes.values())/MIB,1),top=[dict(category=k[0],function=k[1],mib=round(v/MIB,1)) for k,v in sizes.most_common(12)]))
+        allocation.append(dict(at=int(file.stem.rsplit('-',1)[1]),sampled_mib=round(sum(sizes.values())/MIB,1),mechanisms_mib={k:round(v/MIB,1) for k,v in mechanisms.items()},top=[dict(category=k[0],function=k[1],mib=round(v/MIB,1)) for k,v in sizes.most_common(12)]))
     parent=int(metrics[0]['MainPID']);parent_heap=rows(root/f'heap-{parent}.jsonl')
     events={}
     for sample in metrics:

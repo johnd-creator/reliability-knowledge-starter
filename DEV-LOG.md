@@ -630,3 +630,26 @@ Product Owner Acceptance: diagnostic scope authorized; visual/live/engineer UAT/
 Remaining Blockers: complete conditional WeakMap/root ownership, long-run comparative slope, original-frame/debugging compatibility; no fresh persistent QA/session/container audit within this scope.
 Next Action: review guarded vendor-only map exclusion proposal for isolated FIX-06; separate approval before any future official runtime action.
 Evidence: [FIX-05 report](reliability-cockpit/docs/nadi-dev-status-runtime-fix-05.md), [sanitized evidence](reliability-cockpit/docs/evidence/nadi-dev-status-runtime-fix-05/README.md). Prior evidence, worktrees, assets, workbook, backup and operational settings preserved; no DB/schema/collector/source/freshness change.
+
+## 2026-10-13 — NADI-DEV-UX-STATUS-01-FIX-06 implementation checkpoint
+
+- Objective: default-disabled vendor-map adapter and sustained isolated assessment.
+- Branch: `codex/nadi-dev-status-runtime-fix-06`; base `63b61d09c45630a76657cdb54991349fb0528e7b`.
+- PR: [DRAFT #80](https://github.com/johnd-creator/reliability-knowledge-starter/pull/80), stacked on FIX-05/PR79.
+- Implementation Status: IMPLEMENTED, experimental/disposable only; application/controller unchanged.
+- Test Status:69 hermetic controller/analyzer/confinement tests,21 adapter cases,
+  actual client/server source-frame and breakpoint qualification,3 state-preserving
+  component HMR cycles,455 intercepted browser assertions, TypeScript/lint/build PASS.
+- CI Status: backend/frontend PASS at guard correction milestone; final delivery
+  exact HEAD remains a separate verification after sustained evidence.
+- Merge Status: OPEN/DRAFT; not merged.
+- Development Visibility: official preview not changed or queried by HTTP.
+- Product Owner Acceptance: NOT REQUESTED; sustained assessment IN PROGRESS.
+- Remaining Blockers: existing primary Node25 worker replaced by heap safeguard at
+  03:31:52WIB and generated next-env dirt require OPERATIONAL REVIEW. Source/frontend
+  status JSON does not prove current provenance. QA status would read DB and was not
+  called. Baseline DEV-label HMR full reloads are recorded separately from successful
+  component Fast Refresh. Initial CI fresh-root confinement failure corrected/tested.
+- Next Action: complete baseline/candidate run, natural post-GC slope/threshold and
+  allocation comparisons, append actual verdict and exact-head CI evidence.
+- Source evidence: [FIX-06 report](reliability-cockpit/docs/nadi-dev-status-runtime-fix-06.md).
