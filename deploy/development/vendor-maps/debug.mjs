@@ -40,6 +40,10 @@ try {
  const location=paused.callFrames[0].location;const at=consumer.originalPositionFor({line:location.lineNumber+1,column:location.columnNumber});assert.equal(at.line,line);
  result.checks.breakpoint={originalLine:at.line,hit:true};await cdp.send('Debugger.removeBreakpoint',{breakpointId:bp.breakpointId});consumer.destroy();
  await page.getByRole('button',{name:'Vendor error',exact:true}).click();assert.match(await page.evaluate(()=>window.__fix06Vendor),/React.Children.only/);result.checks.vendorError={actionableMessage:true,stackHasLocation:/:\d+:\d+/.test(await page.evaluate(()=>window.__fix06Vendor))};
+ const vendorFrames=req('next/dist/compiled/stacktrace-parser').parse(await page.evaluate(()=>window.__fix06Vendor)).map(f=>({file:f.file,methodName:f.methodName,line1:f.lineNumber,column1:f.column}));
+ const vendorMapped=await page.evaluate(async frames=>(await fetch('/__nextjs_original-stack-frames',{method:'POST',body:JSON.stringify({frames,isServer:false,isEdgeServer:false,isAppDirectory:true})})).json(),vendorFrames);
+ assert(vendorMapped.some(f=>f.value?.originalStackFrame?.line1===10 && f.value.originalStackFrame.file.includes('Client.tsx')),'vendor failure application callsite');
+ result.checks.vendorError.applicationOriginalLine=10;
  let rsc=0;page.on('response',r=>{if(r.headers()['content-type']?.includes('text/x-component'))rsc++;});
  await page.getByRole('link',{name:'RSC navigation'}).click();await page.getByRole('heading',{name:'FIX06 RSC SENTINEL'}).waitFor();
  await page.getByRole('link',{name:'Back to client'}).click();await page.getByRole('heading',{name:'FIX06 SYNTHETIC DEBUG ONLY'}).waitFor();assert(rsc>0);result.checks.rscResponses=rsc;
