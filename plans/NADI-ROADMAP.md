@@ -932,3 +932,41 @@ is activated. Q01–Q10, Phase0–5 and separate Phase1 governance remain unchan
 ## Checkpoint 15 Oktober 2026 — NADI-PDM-WORKBOOK-02
 
 Phase0–5 dan Q01–Q10 tidak berubah. M01/M02 kandidat diperluas pada DRAFT PR85:4/4 sumber baru,177 sheet diinventarisasi;4 keluarga Vibration +2 CEP provisional,39 DIRECT baru dan3 input ambigu. Old3 profil/9 DIRECT serta historical acceptance dipertahankan. [Laporan](../reliability-cockpit/docs/nadi-pdm-workbook-02.md): implementation/test evidence ada; mapping PARTIAL, engineer approval/comparability PENDING, belum merged/visible/operational accepted. Tidak mengubah Phase1 review/expiry. Next: PO visual review dan field validation; bukan historical import atau aktivasi IRT.
+
+## 15 Oktober 2026 — Engineering validation pack / M02 readiness
+
+Checkpoint ini melengkapi catatan historis di atas; tidak menulis ulang acceptance.
+Main terverifikasi `05ce1c060605defb58a74467a38acb43ff4d04f9` memuat PR82,83,85
+MERGED. PR85 HEAD `7daab3a62866f19b30fb45462a94bafff8795dc5`;9 profil terintegrasi,
+48 DIRECT sumber +3 unit temperatur AMBIGUOUS. DIRECT bukan engineer approval.
+
+Bukti [checkpoint merge development](https://github.com/johnd-creator/reliability-knowledge-starter/pull/85#issuecomment-6192024336)
+dan [post-merge CI PASS](https://github.com/johnd-creator/reliability-knowledge-starter/actions/runs/38734062455)
+memisahkan MERGED, TESTED, VISIBLE dan ACCEPTED. Live development keyboard1280/
+1440/1920, light/dark, zoom browser asli125%, draft/review/Case serta HMR telah
+terverifikasi pada7daab3a; final visual PO tetap PENDING. QAO-PDM-01 tetap dicatat:
+ERR_TOO_MANY_RETRIES, root UNKNOWN, risiko NON_BLOCKING hanya untuk development;
+run bersih berikutnya tidak membuktikan penyebabnya.
+
+[Paket validasi M02](../reliability-cockpit/docs/nadi-pdm-eng-validation-01.md)
+menyiapkan20 keputusan P1 +6 P2 yang masih PENDING_ENGINEER_VALIDATION dan
+[lembar diskusi engineer](../reliability-cockpit/docs/nadi-pdm-engineer-review-packet.md).
+Dokumentasi READY tidak menutup M02 atau menyetujui definisi field.
+
+| Milestone existing | Checkpoint aktual / gerbang berikutnya |
+|---|---|
+| M01 — sampel/terminologi | Inventaris7 workbook/200 sheet dan9 profil tersedia; jawaban/approval Q01–Q10 tetap pending |
+| M02 — kontrak metode/titik/instrumen | CANDIDATE: matriks/analisis v1.1 siap;20 keputusan kritis dan definisi berwenang belum diterima. Registry titik, konteks per-row, semantik waktu ganda dan snapshot konteks perlu proposal terpisah bila diperlukan |
+| M03 — kronologi/filter | Foundation history/manual entry/raw scatter terintegrasi; comparability dan historical import tetap gated oleh M02 serta izin tersendiri |
+| M04 — import/lampiran | Parser dan custody/upload diagnostik belum diaktifkan; izin/mapping/storage terpisah |
+| M05 — interpretasi/review/Case | Foundation independent review/exact-revision handoff teruji; bukan method approval atau engineer UAT |
+| M06 — WO/rekomendasi | Foundation NADI existing tetap; WO Maximo hanya rujukan read-only, tanpa perluasan scope |
+| M07 — UAT engineer | PENDING setelah field sign-off dan bukti representatif; QA sintetis bukan UAT |
+
+Next: PO membahas paket per keluarga representatif dengan engineer; implementasi
+hanya keputusan M02 yang disetujui melalui task berikutnya. Vibration point/quantity,
+3 unit temperatur, CEP IR Window/IRT dan comparability tetap unresolved. Phase0–5,
+M01–M07 serta batas diagnostik Phase3 dipertahankan. Tidak ada assessment otomatis.
+Phase1 review/checkpoint/expiry dan kewenangan operasional tidak diubah, diperpanjang
+atau disertifikasi ulang; hasil operator tidak dinilai oleh task dokumentasi ini.
+Tidak ada runtime/DB/session/source/collector/Mart/external-QA action.

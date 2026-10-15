@@ -149,3 +149,16 @@ This task changes Markdown only. Production source GET/write, WO mutation, DB
 write/DDL, deployment/restart, source approval and Phase1 evidence/journal/cursor
 mutation are zero. Active LiveDev is preserved. No workbook inspection, parser,
 collector, threshold activation or new PdM functionality was performed.
+
+## 15 Oktober 2026 — targeted workbook engineer-validation preparation
+
+The historical R/Q/M requirements above remain authoritative and unresolved;
+this addendum does not manufacture interview answers or close Q01–Q10.
+After PR82/83/85 merged, the [M02 field/contract analysis and editable matrix](nadi-pdm-eng-validation-01.md)
+and [Indonesian engineer working-session packet](nadi-pdm-engineer-review-packet.md)
+provide20 P1 decisions and6 P2 comparison/advanced questions. All rows start
+PENDING_ENGINEER_VALIDATION. Seven existing workbook inventories/200 worksheets
+are reused without new discovery. Nine integrated profiles/48 DIRECT source-derived
+fields and3 ambiguous temperature units remain distinct from engineer approval.
+No new method, threshold, schema, history import, attachment custody, Phase3
+intelligence, operational source access or activation is authorized by this packet.

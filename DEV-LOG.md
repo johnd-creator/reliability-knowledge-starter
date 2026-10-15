@@ -556,3 +556,36 @@ Development Visibility: New correction NOT ACTIVATED. HTTPS3000 remains at f8d63
 Product Owner Acceptance: PENDING controlled source selection and live visual review.
 Remaining Blockers: No hermetic keyboard regression blocker; live/native-zoom visual acceptance remains separate.
 Next Action: Controlled localhost update, Product Owner review, then merge decision. [Evidence report](reliability-cockpit/docs/nadi-pdm-ui-fix-01.md).
+
+## 2026-10-15 — NADI-PDM-CHECKPOINT-03 (verified historical checkpoint)
+
+Date: 2026-10-15
+Task ID: NADI-PDM-CHECKPOINT-03
+Objective: bounded console classification and conditional development-candidate merge of PR85.
+Branch / Commit SHA: codex/nadi-pdm-workbook-01 HEAD7daab3a62866f19b30fb45462a94bafff8795dc5; main before106a4dc08b149576b2e84bbf8c70694288c7e9a7, merge/main after05ce1c060605defb58a74467a38acb43ff4d04f9.
+PR: [#85 MERGED](https://github.com/johnd-creator/reliability-knowledge-starter/pull/85)
+Implementation Status: IMPLEMENTED9 workbook profiles/48 DIRECT labels-units +3 AMBIGUOUS units; keyboard correction included.
+Test Status: TESTED — prior live development keyboard, genuine125% browser zoom, draft/review/Case/HMR and preservation gates; no new full E2E/runtime experiment in checkpoint03.
+CI Status: exact-head [38727418216](https://github.com/johnd-creator/reliability-knowledge-starter/actions/runs/38727418216) and merge-head [38734062455](https://github.com/johnd-creator/reliability-knowledge-starter/actions/runs/38734062455), backend/frontend PASS.
+Merge Status: MERGED as development checkpoint only; exact head/parents/tree verified.
+Development Visibility: VISIBLE previously verified on7daab3a; GitHub merge left laptop serving source/process/controller unchanged.
+Product Owner Acceptance: conditional technical merge authorized; final visual acceptance and engineer/UAT/operational approval PENDING.
+Remaining Blockers: M02 field/point/instrument/time definitions, three temperature units, provisional CEP/IRT, comparability, custody/import authority. QAO-PDM-01 accepted NON_BLOCKING for development, root UNKNOWN; original partial console evidence preserved.
+Next Action: targeted engineer validation, no implicit runtime promotion/import/operational activation.
+Evidence: [final checkpoint decision](https://github.com/johnd-creator/reliability-knowledge-starter/pull/85#issuecomment-6192024336).
+
+## 2026-10-15 — NADI-PDM-ENG-VALIDATION-01
+
+Date: 2026-10-15
+Task ID: NADI-PDM-ENG-VALIDATION-01
+Objective: prepare source-traceable Indonesian engineer discussion material, editable decision matrix and M02/v1.1 fit analysis.
+Branch: codex/nadi-pdm-eng-validation-01, from verified main05ce1c060605defb58a74467a38acb43ff4d04f9.
+Commit SHA / PR: enclosing documentation delivery commit and DRAFT PR recorded in handoff; no implementation or merge inferred.
+Implementation Status: IMPLEMENTED documentation only —20 critical P1 decisions,6 optional/advanced P2; all PENDING_ENGINEER_VALIDATION.
+Test Status: documentation links/counts/source-consistency and docs-only diff/whitespace gates verified at delivery; no application tests or live fixture/session/source access in this task.
+CI Status: documentation PR checks recorded independently at handoff; existing PR85 CI is historical source evidence, not this task's test result.
+Merge Status: DRAFT delivery, UNMERGED.
+Development Visibility: no runtime action; current localhost source, sessions/fixtures, collectors/Mart and external QA preserved.
+Product Owner Acceptance: package review pending; no engineer responses/signatures/field approval invented.
+Remaining Blockers: actual engineer decisions; registry/per-point/temporal/snapshot needs may require separately reviewed strict contract proposals. M02 readiness CANDIDATE, implementation/operational release gated.
+Next Action: PO uses [engineer packet](reliability-cockpit/docs/nadi-pdm-engineer-review-packet.md) and [matrix/analysis](reliability-cockpit/docs/nadi-pdm-eng-validation-01.md); implement approved decisions only in a subsequent task.
