@@ -539,3 +539,20 @@ Next Action: PO visual review and engineer field validation; no automatic runtim
 Evidence: [report](reliability-cockpit/docs/nadi-pdm-workbook-02.md), [sanitized evidence](reliability-cockpit/docs/evidence/nadi-pdm-workbook-02/README.md). No DB/session access, source requests, collector/Mart change, restart, migration or policy change.
 
 WORKBOOK-02 self-review correction: source axis labels are display-only row hints; physical quantity and canonical point are blank until explicitly supplied by engineer. No sourceHint persistence. Impacted assertions/browser/screenshots and exact-head CI rerun.
+
+## 2026-10-15 — NADI-PDM-UI-FIX-01
+
+Date: 2026-10-15
+Task ID: NADI-PDM-UI-FIX-01
+Objective: Reveal the complete keyboard-focused measurement control and outline inside the contained desktop grid.
+Branch: existing remote codex/nadi-pdm-workbook-01; detached non-serving implementation worktree preserves the active local branch.
+Commit SHA: Delivery commit linked from PR #85; tested source baseline f8d6334ce93f766b851a5d69577ff83c1b8563e1.
+PR: [#85 OPEN/DRAFT](https://github.com/johnd-creator/reliability-knowledge-starter/pull/85)
+Implementation Status: IMPLEMENTED — component-local horizontal focus reveal; no CSS width, API, data or security contract changes.
+Test Status: TESTED — 404 focused + 169 existing hermetic browser checks; 320 complete-outline geometry observations; 64 input/workbook assertions; TypeScript/lint/build/diff PASS. Native 125% browser zoom not available; effective-width proxy explicitly distinguished.
+CI Status: Exact-head result recorded independently in PR delivery update.
+Merge Status: UNMERGED.
+Development Visibility: New correction NOT ACTIVATED. HTTPS3000 remains at f8d6334; no runtime/controller/fixture/session access or change.
+Product Owner Acceptance: PENDING controlled source selection and live visual review.
+Remaining Blockers: No hermetic keyboard regression blocker; live/native-zoom visual acceptance remains separate.
+Next Action: Controlled localhost update, Product Owner review, then merge decision. [Evidence report](reliability-cockpit/docs/nadi-pdm-ui-fix-01.md).

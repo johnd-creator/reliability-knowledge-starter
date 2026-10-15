@@ -1,5 +1,5 @@
 'use client';
-import {useEffect,useRef,useState,type FormEvent} from 'react';
+import {useEffect,useRef,useState,type FocusEvent,type FormEvent} from 'react';
 import type {Inspection,QaSession} from '../lib/product-records';
 import {buildDraft,emptyRow,fromInspection,inputContexts,newEntry,type Entry,type InspectionDraft,type ValueKind} from '../lib/pdm-input';
 import {methods} from '../lib/manual-pdm';
@@ -25,6 +25,17 @@ export default function PdmMeasurementForm({session,initial,busy,onSave,onCancel
   try{update({rows:workbookRows(profile.id,entry.method,()=> 'row-'+ ++sequence.current)});setError('');}catch(e){setError(e instanceof Error?e.message:'Template belum dapat digunakan.');}
  }
  function cancel(){if(!dirty||window.confirm('Buang isian inspeksi yang belum disimpan?')){cache?.clear();onCancel();}}
+ function revealMeasurementFocus(event:FocusEvent<HTMLDivElement>){
+  const container=event.currentTarget,target=event.target;
+  if(target===container)return;
+  // Native focus can leave a partly visible control clipped. Reveal its outline
+  // within this grid only; preserve focus, tab order and the browser's vertical scroll.
+  const style=getComputedStyle(target),ring=Math.max(0,parseFloat(style.outlineWidth)+parseFloat(style.outlineOffset));
+  const control=target.getBoundingClientRect(),viewport=container.getBoundingClientRect();
+  const left=viewport.left+container.clientLeft,right=left+container.clientWidth;
+  if(control.left-ring<left)container.scrollLeft-=left-(control.left-ring);
+  else if(control.right+ring>right)container.scrollLeft+=control.right+ring-right;
+ }
  async function submit(event:FormEvent){event.preventDefault();setError('');try{const draft=buildDraft(entry,session.subject,session.asset_ids,base);if(await onSave(draft,base?.revision)){setDirty(false);cache?.clear();}}catch(e){setError(e instanceof Error?e.message:'Validasi isian gagal.');}}
  return <SectionCard className="pdm-entry"><h2>{base?'Ubah draf inspeksi':'Input Pengukuran'}</h2><p>QA SINTETIS · Inspector: <strong>{session.subject}</strong>. Nilai, observasi, dan hipotesis tetap terpisah. Persetujuan rekam bukan sertifikasi kondisi aset.</p>
  {base&&<p className="section-note">Isian terikat ke r{base.revision}; membaca revisi terbaru tidak mengubah basis CAS isian ini. Untuk merekonsiliasi konflik, tutup form secara eksplisit lalu pilih revisi terbaru.</p>}
@@ -41,7 +52,7 @@ export default function PdmMeasurementForm({session,initial,busy,onSave,onCancel
  <p className="section-note">Instrumen, prosedur, orientasi, dan konteks operasi di sini berlaku untuk seluruh inspeksi v1.1. Bila konteks berbeda antar titik, gunakan inspeksi terpisah; field kandidat ini tidak menyetujui kesetaraan seri.</p>
  <label>Konteks operasi<textarea value={entry.context} maxLength={6000} onChange={e=>update({context:e.target.value})}/></label>
  <div className="section-heading"><h3>Titik dan measurement asli</h3><Button disabled={entry.rows.length>=100} onClick={()=>update({rows:[...entry.rows,emptyRow('row-'+ ++sequence.current)]})}>Tambah baris</Button></div><p className="section-note">Maksimal 100 baris. Tab untuk berpindah field. Nol adalah nilai valid; kosong bukan nol. Pilih Belum diketahui untuk null. Tidak ada konversi unit atau jadwal harian otomatis.</p>
- <div className="pdm-grid-scroll" role="region" aria-label="Grid input multi-titik" tabIndex={0}><div className="pdm-measurement-grid">{entry.rows.map((row,index)=>{
+ <div className="pdm-grid-scroll" role="region" aria-label="Grid input multi-titik" tabIndex={0} onFocusCapture={revealMeasurementFocus}><div className="pdm-measurement-grid">{entry.rows.map((row,index)=>{
   const set=(key: keyof typeof row,value:string)=>update({rows:entry.rows.map(x=>x.key===row.key?{...x,[key]:value}:x)});
   return <fieldset className="pdm-measurement-row" key={row.key}><legend>Measurement {index+1}{row.sourceHint&&<> · label sumber {row.sourceHint} (titik/parameter belum terikat)</>}</legend>
    <label>Titik {index+1}<input value={row.point} maxLength={200} onChange={e=>set('point',e.target.value)}/></label>

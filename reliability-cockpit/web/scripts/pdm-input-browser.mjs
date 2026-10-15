@@ -4,6 +4,7 @@ import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {browserBundle} from './localization-browser-build.mjs';
+import {pdmKeyboardChecks} from './pdm-keyboard-browser.mjs';
 const {chromium}=await import(process.env.NADI_PLAYWRIGHT_MODULE?pathToFileURL(process.env.NADI_PLAYWRIGHT_MODULE).href:'playwright');
 const base='https://pdm.synthetic.invalid',out=resolve(process.env.NADI_BROWSER_OUTPUT??'/tmp/nadi-pdm-input-evidence');mkdirSync(out,{recursive:true});
 const bundle=await browserBundle(),browser=await chromium.launch({headless:true}),checks=[],errors=[],commands=[];
@@ -56,6 +57,7 @@ await ctx.route('**/*',async route=>{
 const button=name=>p.getByRole('button',{name,exact:true});const go=async()=>{await p.goto(base+'/pdm',{waitUntil:'networkidle'});await button('Input Pengukuran').waitFor();};
 async function evidence(name){for(const width of [1440,768,390]){await p.setViewportSize({width,height:1086});check('no page overflow '+name+' '+width,await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await p.evaluate(()=>window.scrollTo(0,0));await p.screenshot({path:out+'/'+name+'-'+width+'.png',fullPage:true});}}
 try{
+ await pdmKeyboardChecks({p,button,go,check,out});
  // Workbook candidates: same mounted components, all network responses intercepted.
  const workbookOut=resolve(process.env.NADI_WORKBOOK_OUTPUT??out+'/workbook-candidates');mkdirSync(workbookOut,{recursive:true});
  for(const [context,method,units] of [['AREA_FAN','TRIBOLOGY',['Cst','mgKOH/g','ppm']],['AREA_MILL','TRIBOLOGY',['%','mg KOH/g','ppm']],['LOGSHEET_6KV','MCSA',['%','Ω','dB']]]){

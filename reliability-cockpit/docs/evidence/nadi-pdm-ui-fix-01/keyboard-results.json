@@ -1,0 +1,8328 @@
+{
+  "status": "PASS",
+  "synthetic_fixtures": true,
+  "official_runtime_access": false,
+  "zoom": "Actual browser chrome zoom unavailable in headless harness. 1152 CSS pixels is an additional 1440/1.25 effective-width proxy, not actual browser zoom.",
+  "observations": [
+    {
+      "label": "keyboard 3 rows 1440 light row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        324,
+        1364,
+        392.46875,
+        821.46875
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1440 light row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        324,
+        1364,
+        392.46875,
+        821.46875
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1440 light row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1049.0625,
+        1279.75,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        324,
+        1364,
+        392.46875,
+        821.46875
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1440 light row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        324,
+        1364,
+        392.46875,
+        821.46875
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1440 light row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        329,
+        473.171875,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        324,
+        1364,
+        392.46875,
+        821.46875
+      ],
+      "scrollLeft": 14,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1440 light row 3 Tab",
+      "active": "Hapus measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        760.46875,
+        804.46875
+      ],
+      "container": [
+        324,
+        1364,
+        392.46875,
+        821.46875
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1440 light row 3 Shift+Tab",
+      "active": "Hapus measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        760.46875,
+        804.46875
+      ],
+      "container": [
+        324,
+        1364,
+        392.46875,
+        821.46875
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1440 light row 3 reverse to time",
+      "active": "Waktu measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1049.0625,
+        1279.75,
+        760.46875,
+        804.46875
+      ],
+      "container": [
+        324,
+        1364,
+        392.46875,
+        821.46875
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1440 light row 3 return Tab",
+      "active": "Hapus measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        760.46875,
+        804.46875
+      ],
+      "container": [
+        324,
+        1364,
+        392.46875,
+        821.46875
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1440 light row 3 left field",
+      "active": "Titik 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        329,
+        473.171875,
+        760.46875,
+        804.46875
+      ],
+      "container": [
+        324,
+        1364,
+        392.46875,
+        821.46875
+      ],
+      "scrollLeft": 14,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1440 dark row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        324,
+        1364,
+        392.46875,
+        821.46875
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1440 dark row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        324,
+        1364,
+        392.46875,
+        821.46875
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1440 dark row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1049.0625,
+        1279.75,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        324,
+        1364,
+        392.46875,
+        821.46875
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1440 dark row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        324,
+        1364,
+        392.46875,
+        821.46875
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1440 dark row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        329,
+        473.171875,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        324,
+        1364,
+        392.46875,
+        821.46875
+      ],
+      "scrollLeft": 14,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1440 dark row 3 Tab",
+      "active": "Hapus measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        760.46875,
+        804.46875
+      ],
+      "container": [
+        324,
+        1364,
+        392.46875,
+        821.46875
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1440 dark row 3 Shift+Tab",
+      "active": "Hapus measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        760.46875,
+        804.46875
+      ],
+      "container": [
+        324,
+        1364,
+        392.46875,
+        821.46875
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1440 dark row 3 reverse to time",
+      "active": "Waktu measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1049.0625,
+        1279.75,
+        760.46875,
+        804.46875
+      ],
+      "container": [
+        324,
+        1364,
+        392.46875,
+        821.46875
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1440 dark row 3 return Tab",
+      "active": "Hapus measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        760.46875,
+        804.46875
+      ],
+      "container": [
+        324,
+        1364,
+        392.46875,
+        821.46875
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1440 dark row 3 left field",
+      "active": "Titik 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        329,
+        473.171875,
+        760.46875,
+        804.46875
+      ],
+      "container": [
+        324,
+        1364,
+        392.46875,
+        821.46875
+      ],
+      "scrollLeft": 14,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1920 light row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        457.875,
+        501.875
+      ],
+      "container": [
+        360,
+        1808,
+        391.875,
+        820.875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1920 light row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        457.875,
+        501.875
+      ],
+      "container": [
+        360,
+        1808,
+        391.875,
+        820.875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1920 light row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1392.0625,
+        1709.75,
+        457.875,
+        501.875
+      ],
+      "container": [
+        360,
+        1808,
+        391.875,
+        820.875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1920 light row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        457.875,
+        501.875
+      ],
+      "container": [
+        360,
+        1808,
+        391.875,
+        820.875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1920 light row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        379,
+        577.546875,
+        457.875,
+        501.875
+      ],
+      "container": [
+        360,
+        1808,
+        391.875,
+        820.875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1920 light row 3 Tab",
+      "active": "Hapus measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        759.875,
+        803.875
+      ],
+      "container": [
+        360,
+        1808,
+        391.875,
+        820.875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1920 light row 3 Shift+Tab",
+      "active": "Hapus measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        759.875,
+        803.875
+      ],
+      "container": [
+        360,
+        1808,
+        391.875,
+        820.875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1920 light row 3 reverse to time",
+      "active": "Waktu measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1392.0625,
+        1709.75,
+        759.875,
+        803.875
+      ],
+      "container": [
+        360,
+        1808,
+        391.875,
+        820.875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1920 light row 3 return Tab",
+      "active": "Hapus measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        759.875,
+        803.875
+      ],
+      "container": [
+        360,
+        1808,
+        391.875,
+        820.875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1920 light row 3 left field",
+      "active": "Titik 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        379,
+        577.546875,
+        759.875,
+        803.875
+      ],
+      "container": [
+        360,
+        1808,
+        391.875,
+        820.875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1920 dark row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        457.875,
+        501.875
+      ],
+      "container": [
+        360,
+        1808,
+        391.875,
+        820.875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1920 dark row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        457.875,
+        501.875
+      ],
+      "container": [
+        360,
+        1808,
+        391.875,
+        820.875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1920 dark row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1392.0625,
+        1709.75,
+        457.875,
+        501.875
+      ],
+      "container": [
+        360,
+        1808,
+        391.875,
+        820.875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1920 dark row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        457.875,
+        501.875
+      ],
+      "container": [
+        360,
+        1808,
+        391.875,
+        820.875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1920 dark row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        379,
+        577.546875,
+        457.875,
+        501.875
+      ],
+      "container": [
+        360,
+        1808,
+        391.875,
+        820.875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1920 dark row 3 Tab",
+      "active": "Hapus measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        759.875,
+        803.875
+      ],
+      "container": [
+        360,
+        1808,
+        391.875,
+        820.875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1920 dark row 3 Shift+Tab",
+      "active": "Hapus measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        759.875,
+        803.875
+      ],
+      "container": [
+        360,
+        1808,
+        391.875,
+        820.875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1920 dark row 3 reverse to time",
+      "active": "Waktu measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1392.0625,
+        1709.75,
+        759.875,
+        803.875
+      ],
+      "container": [
+        360,
+        1808,
+        391.875,
+        820.875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1920 dark row 3 return Tab",
+      "active": "Hapus measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        759.875,
+        803.875
+      ],
+      "container": [
+        360,
+        1808,
+        391.875,
+        820.875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1920 dark row 3 left field",
+      "active": "Titik 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        379,
+        577.546875,
+        759.875,
+        803.875
+      ],
+      "container": [
+        360,
+        1808,
+        391.875,
+        820.875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1280 light row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        457.578125,
+        501.578125
+      ],
+      "container": [
+        324,
+        1204,
+        391.578125,
+        820.578125
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1280 light row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        457.578125,
+        501.578125
+      ],
+      "container": [
+        324,
+        1204,
+        391.578125,
+        820.578125
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1280 light row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        875.0625,
+        1105.75,
+        457.578125,
+        501.578125
+      ],
+      "container": [
+        324,
+        1204,
+        391.578125,
+        820.578125
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1280 light row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        457.578125,
+        501.578125
+      ],
+      "container": [
+        324,
+        1204,
+        391.578125,
+        820.578125
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1280 light row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        457.578125,
+        501.578125
+      ],
+      "container": [
+        324,
+        1204,
+        391.578125,
+        820.578125
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1280 light row 3 Tab",
+      "active": "Hapus measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        759.578125,
+        803.578125
+      ],
+      "container": [
+        324,
+        1204,
+        391.578125,
+        820.578125
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1280 light row 3 Shift+Tab",
+      "active": "Hapus measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        759.578125,
+        803.578125
+      ],
+      "container": [
+        324,
+        1204,
+        391.578125,
+        820.578125
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1280 light row 3 reverse to time",
+      "active": "Waktu measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        875.0625,
+        1105.75,
+        759.578125,
+        803.578125
+      ],
+      "container": [
+        324,
+        1204,
+        391.578125,
+        820.578125
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1280 light row 3 return Tab",
+      "active": "Hapus measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        759.578125,
+        803.578125
+      ],
+      "container": [
+        324,
+        1204,
+        391.578125,
+        820.578125
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1280 light row 3 left field",
+      "active": "Titik 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        759.578125,
+        803.578125
+      ],
+      "container": [
+        324,
+        1204,
+        391.578125,
+        820.578125
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1280 dark row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        457.578125,
+        501.578125
+      ],
+      "container": [
+        324,
+        1204,
+        391.578125,
+        820.578125
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1280 dark row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        457.578125,
+        501.578125
+      ],
+      "container": [
+        324,
+        1204,
+        391.578125,
+        820.578125
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1280 dark row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        875.0625,
+        1105.75,
+        457.578125,
+        501.578125
+      ],
+      "container": [
+        324,
+        1204,
+        391.578125,
+        820.578125
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1280 dark row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        457.578125,
+        501.578125
+      ],
+      "container": [
+        324,
+        1204,
+        391.578125,
+        820.578125
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1280 dark row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        457.578125,
+        501.578125
+      ],
+      "container": [
+        324,
+        1204,
+        391.578125,
+        820.578125
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1280 dark row 3 Tab",
+      "active": "Hapus measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        759.578125,
+        803.578125
+      ],
+      "container": [
+        324,
+        1204,
+        391.578125,
+        820.578125
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1280 dark row 3 Shift+Tab",
+      "active": "Hapus measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        759.578125,
+        803.578125
+      ],
+      "container": [
+        324,
+        1204,
+        391.578125,
+        820.578125
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1280 dark row 3 reverse to time",
+      "active": "Waktu measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        875.0625,
+        1105.75,
+        759.578125,
+        803.578125
+      ],
+      "container": [
+        324,
+        1204,
+        391.578125,
+        820.578125
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1280 dark row 3 return Tab",
+      "active": "Hapus measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        759.578125,
+        803.578125
+      ],
+      "container": [
+        324,
+        1204,
+        391.578125,
+        820.578125
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 1280 dark row 3 left field",
+      "active": "Titik 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        759.578125,
+        803.578125
+      ],
+      "container": [
+        324,
+        1204,
+        391.578125,
+        820.578125
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 125-percent-effective-width-proxy light row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        324,
+        1076,
+        392.0625,
+        821.0625
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 125-percent-effective-width-proxy light row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        324,
+        1076,
+        392.0625,
+        821.0625
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 125-percent-effective-width-proxy light row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        747.0625,
+        977.75,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        324,
+        1076,
+        392.0625,
+        821.0625
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 125-percent-effective-width-proxy light row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        324,
+        1076,
+        392.0625,
+        821.0625
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 125-percent-effective-width-proxy light row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        324,
+        1076,
+        392.0625,
+        821.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 125-percent-effective-width-proxy light row 3 Tab",
+      "active": "Hapus measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        760.0625,
+        804.0625
+      ],
+      "container": [
+        324,
+        1076,
+        392.0625,
+        821.0625
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 125-percent-effective-width-proxy light row 3 Shift+Tab",
+      "active": "Hapus measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        760.0625,
+        804.0625
+      ],
+      "container": [
+        324,
+        1076,
+        392.0625,
+        821.0625
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 125-percent-effective-width-proxy light row 3 reverse to time",
+      "active": "Waktu measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        747.0625,
+        977.75,
+        760.0625,
+        804.0625
+      ],
+      "container": [
+        324,
+        1076,
+        392.0625,
+        821.0625
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 125-percent-effective-width-proxy light row 3 return Tab",
+      "active": "Hapus measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        760.0625,
+        804.0625
+      ],
+      "container": [
+        324,
+        1076,
+        392.0625,
+        821.0625
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 125-percent-effective-width-proxy light row 3 left field",
+      "active": "Titik 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        760.0625,
+        804.0625
+      ],
+      "container": [
+        324,
+        1076,
+        392.0625,
+        821.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 125-percent-effective-width-proxy dark row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        324,
+        1076,
+        392.0625,
+        821.0625
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 125-percent-effective-width-proxy dark row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        324,
+        1076,
+        392.0625,
+        821.0625
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 125-percent-effective-width-proxy dark row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        747.0625,
+        977.75,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        324,
+        1076,
+        392.0625,
+        821.0625
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 125-percent-effective-width-proxy dark row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        324,
+        1076,
+        392.0625,
+        821.0625
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 125-percent-effective-width-proxy dark row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        324,
+        1076,
+        392.0625,
+        821.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 125-percent-effective-width-proxy dark row 3 Tab",
+      "active": "Hapus measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        760.0625,
+        804.0625
+      ],
+      "container": [
+        324,
+        1076,
+        392.0625,
+        821.0625
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 125-percent-effective-width-proxy dark row 3 Shift+Tab",
+      "active": "Hapus measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        760.0625,
+        804.0625
+      ],
+      "container": [
+        324,
+        1076,
+        392.0625,
+        821.0625
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 125-percent-effective-width-proxy dark row 3 reverse to time",
+      "active": "Waktu measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        747.0625,
+        977.75,
+        760.0625,
+        804.0625
+      ],
+      "container": [
+        324,
+        1076,
+        392.0625,
+        821.0625
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 125-percent-effective-width-proxy dark row 3 return Tab",
+      "active": "Hapus measurement 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        760.0625,
+        804.0625
+      ],
+      "container": [
+        324,
+        1076,
+        392.0625,
+        821.0625
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 3 rows 125-percent-effective-width-proxy dark row 3 left field",
+      "active": "Titik 3",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        760.0625,
+        804.0625
+      ],
+      "container": [
+        324,
+        1076,
+        392.0625,
+        821.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1440 light row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        1726.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1440 light row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        1726.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1440 light row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1049.0625,
+        1279.75,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        1726.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1440 light row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        1726.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1440 light row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        329,
+        473.171875,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        1726.65625
+      ],
+      "scrollLeft": 14,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1440 light row 9 Tab",
+      "active": "Hapus measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -816.34375,
+        518.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1440 light row 9 Shift+Tab",
+      "active": "Hapus measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -816.34375,
+        518.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1440 light row 9 reverse to time",
+      "active": "Waktu measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1049.0625,
+        1279.75,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -816.34375,
+        518.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1440 light row 9 return Tab",
+      "active": "Hapus measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -816.34375,
+        518.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1440 light row 9 left field",
+      "active": "Titik 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        329,
+        473.171875,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -816.34375,
+        518.65625
+      ],
+      "scrollLeft": 14,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1440 dark row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        1726.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1440 dark row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        1726.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1440 dark row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1049.0625,
+        1279.75,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        1726.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1440 dark row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        1726.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1440 dark row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        329,
+        473.171875,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        1726.65625
+      ],
+      "scrollLeft": 14,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1440 dark row 9 Tab",
+      "active": "Hapus measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -816.34375,
+        518.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1440 dark row 9 Shift+Tab",
+      "active": "Hapus measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -816.34375,
+        518.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1440 dark row 9 reverse to time",
+      "active": "Waktu measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1049.0625,
+        1279.75,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -816.34375,
+        518.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1440 dark row 9 return Tab",
+      "active": "Hapus measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -816.34375,
+        518.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1440 dark row 9 left field",
+      "active": "Titik 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        329,
+        473.171875,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -816.34375,
+        518.65625
+      ],
+      "scrollLeft": 14,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1920 light row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        360,
+        1808,
+        392.46875,
+        1727.46875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1920 light row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        360,
+        1808,
+        392.46875,
+        1727.46875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1920 light row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1392.0625,
+        1709.75,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        360,
+        1808,
+        392.46875,
+        1727.46875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1920 light row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        360,
+        1808,
+        392.46875,
+        1727.46875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1920 light row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        379,
+        577.546875,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        360,
+        1808,
+        392.46875,
+        1727.46875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1920 light row 9 Tab",
+      "active": "Hapus measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        360,
+        1808,
+        -815.53125,
+        519.46875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1920 light row 9 Shift+Tab",
+      "active": "Hapus measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        360,
+        1808,
+        -815.53125,
+        519.46875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1920 light row 9 reverse to time",
+      "active": "Waktu measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1392.0625,
+        1709.75,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        360,
+        1808,
+        -815.53125,
+        519.46875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1920 light row 9 return Tab",
+      "active": "Hapus measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        360,
+        1808,
+        -815.53125,
+        519.46875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1920 light row 9 left field",
+      "active": "Titik 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        379,
+        577.546875,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        360,
+        1808,
+        -815.53125,
+        519.46875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1920 dark row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        360,
+        1808,
+        392.46875,
+        1727.46875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1920 dark row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        360,
+        1808,
+        392.46875,
+        1727.46875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1920 dark row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1392.0625,
+        1709.75,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        360,
+        1808,
+        392.46875,
+        1727.46875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1920 dark row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        360,
+        1808,
+        392.46875,
+        1727.46875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1920 dark row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        379,
+        577.546875,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        360,
+        1808,
+        392.46875,
+        1727.46875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1920 dark row 9 Tab",
+      "active": "Hapus measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        360,
+        1808,
+        -815.53125,
+        519.46875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1920 dark row 9 Shift+Tab",
+      "active": "Hapus measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        360,
+        1808,
+        -815.53125,
+        519.46875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1920 dark row 9 reverse to time",
+      "active": "Waktu measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1392.0625,
+        1709.75,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        360,
+        1808,
+        -815.53125,
+        519.46875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1920 dark row 9 return Tab",
+      "active": "Hapus measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        360,
+        1808,
+        -815.53125,
+        519.46875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1920 dark row 9 left field",
+      "active": "Titik 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        379,
+        577.546875,
+        458.46875,
+        502.46875
+      ],
+      "container": [
+        360,
+        1808,
+        -815.53125,
+        519.46875
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1280 light row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        457.765625,
+        501.765625
+      ],
+      "container": [
+        324,
+        1204,
+        391.765625,
+        1726.765625
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1280 light row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        457.765625,
+        501.765625
+      ],
+      "container": [
+        324,
+        1204,
+        391.765625,
+        1726.765625
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1280 light row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        875.0625,
+        1105.75,
+        457.765625,
+        501.765625
+      ],
+      "container": [
+        324,
+        1204,
+        391.765625,
+        1726.765625
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1280 light row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        457.765625,
+        501.765625
+      ],
+      "container": [
+        324,
+        1204,
+        391.765625,
+        1726.765625
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1280 light row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        457.765625,
+        501.765625
+      ],
+      "container": [
+        324,
+        1204,
+        391.765625,
+        1726.765625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1280 light row 9 Tab",
+      "active": "Hapus measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        457.765625,
+        501.765625
+      ],
+      "container": [
+        324,
+        1204,
+        -816.234375,
+        518.765625
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1280 light row 9 Shift+Tab",
+      "active": "Hapus measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        457.765625,
+        501.765625
+      ],
+      "container": [
+        324,
+        1204,
+        -816.234375,
+        518.765625
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1280 light row 9 reverse to time",
+      "active": "Waktu measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        875.0625,
+        1105.75,
+        457.765625,
+        501.765625
+      ],
+      "container": [
+        324,
+        1204,
+        -816.234375,
+        518.765625
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1280 light row 9 return Tab",
+      "active": "Hapus measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        457.765625,
+        501.765625
+      ],
+      "container": [
+        324,
+        1204,
+        -816.234375,
+        518.765625
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1280 light row 9 left field",
+      "active": "Titik 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        457.765625,
+        501.765625
+      ],
+      "container": [
+        324,
+        1204,
+        -816.234375,
+        518.765625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1280 dark row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        457.765625,
+        501.765625
+      ],
+      "container": [
+        324,
+        1204,
+        391.765625,
+        1726.765625
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1280 dark row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        457.765625,
+        501.765625
+      ],
+      "container": [
+        324,
+        1204,
+        391.765625,
+        1726.765625
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1280 dark row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        875.0625,
+        1105.75,
+        457.765625,
+        501.765625
+      ],
+      "container": [
+        324,
+        1204,
+        391.765625,
+        1726.765625
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1280 dark row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        457.765625,
+        501.765625
+      ],
+      "container": [
+        324,
+        1204,
+        391.765625,
+        1726.765625
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1280 dark row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        457.765625,
+        501.765625
+      ],
+      "container": [
+        324,
+        1204,
+        391.765625,
+        1726.765625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1280 dark row 9 Tab",
+      "active": "Hapus measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        457.765625,
+        501.765625
+      ],
+      "container": [
+        324,
+        1204,
+        -816.234375,
+        518.765625
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1280 dark row 9 Shift+Tab",
+      "active": "Hapus measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        457.765625,
+        501.765625
+      ],
+      "container": [
+        324,
+        1204,
+        -816.234375,
+        518.765625
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1280 dark row 9 reverse to time",
+      "active": "Waktu measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        875.0625,
+        1105.75,
+        457.765625,
+        501.765625
+      ],
+      "container": [
+        324,
+        1204,
+        -816.234375,
+        518.765625
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1280 dark row 9 return Tab",
+      "active": "Hapus measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        457.765625,
+        501.765625
+      ],
+      "container": [
+        324,
+        1204,
+        -816.234375,
+        518.765625
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 1280 dark row 9 left field",
+      "active": "Titik 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        457.765625,
+        501.765625
+      ],
+      "container": [
+        324,
+        1204,
+        -816.234375,
+        518.765625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 125-percent-effective-width-proxy light row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        458.25,
+        502.25
+      ],
+      "container": [
+        324,
+        1076,
+        392.25,
+        1727.25
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 125-percent-effective-width-proxy light row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        458.25,
+        502.25
+      ],
+      "container": [
+        324,
+        1076,
+        392.25,
+        1727.25
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 125-percent-effective-width-proxy light row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        747.0625,
+        977.75,
+        458.25,
+        502.25
+      ],
+      "container": [
+        324,
+        1076,
+        392.25,
+        1727.25
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 125-percent-effective-width-proxy light row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        458.25,
+        502.25
+      ],
+      "container": [
+        324,
+        1076,
+        392.25,
+        1727.25
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 125-percent-effective-width-proxy light row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        458.25,
+        502.25
+      ],
+      "container": [
+        324,
+        1076,
+        392.25,
+        1727.25
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 125-percent-effective-width-proxy light row 9 Tab",
+      "active": "Hapus measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        458.25,
+        502.25
+      ],
+      "container": [
+        324,
+        1076,
+        -815.75,
+        519.25
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 125-percent-effective-width-proxy light row 9 Shift+Tab",
+      "active": "Hapus measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        458.25,
+        502.25
+      ],
+      "container": [
+        324,
+        1076,
+        -815.75,
+        519.25
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 125-percent-effective-width-proxy light row 9 reverse to time",
+      "active": "Waktu measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        747.0625,
+        977.75,
+        458.25,
+        502.25
+      ],
+      "container": [
+        324,
+        1076,
+        -815.75,
+        519.25
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 125-percent-effective-width-proxy light row 9 return Tab",
+      "active": "Hapus measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        458.25,
+        502.25
+      ],
+      "container": [
+        324,
+        1076,
+        -815.75,
+        519.25
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 125-percent-effective-width-proxy light row 9 left field",
+      "active": "Titik 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        458.25,
+        502.25
+      ],
+      "container": [
+        324,
+        1076,
+        -815.75,
+        519.25
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 125-percent-effective-width-proxy dark row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        458.25,
+        502.25
+      ],
+      "container": [
+        324,
+        1076,
+        392.25,
+        1727.25
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 125-percent-effective-width-proxy dark row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        458.25,
+        502.25
+      ],
+      "container": [
+        324,
+        1076,
+        392.25,
+        1727.25
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 125-percent-effective-width-proxy dark row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        747.0625,
+        977.75,
+        458.25,
+        502.25
+      ],
+      "container": [
+        324,
+        1076,
+        392.25,
+        1727.25
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 125-percent-effective-width-proxy dark row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        458.25,
+        502.25
+      ],
+      "container": [
+        324,
+        1076,
+        392.25,
+        1727.25
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 125-percent-effective-width-proxy dark row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        458.25,
+        502.25
+      ],
+      "container": [
+        324,
+        1076,
+        392.25,
+        1727.25
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 125-percent-effective-width-proxy dark row 9 Tab",
+      "active": "Hapus measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        458.25,
+        502.25
+      ],
+      "container": [
+        324,
+        1076,
+        -815.75,
+        519.25
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 125-percent-effective-width-proxy dark row 9 Shift+Tab",
+      "active": "Hapus measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        458.25,
+        502.25
+      ],
+      "container": [
+        324,
+        1076,
+        -815.75,
+        519.25
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 125-percent-effective-width-proxy dark row 9 reverse to time",
+      "active": "Waktu measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        747.0625,
+        977.75,
+        458.25,
+        502.25
+      ],
+      "container": [
+        324,
+        1076,
+        -815.75,
+        519.25
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 125-percent-effective-width-proxy dark row 9 return Tab",
+      "active": "Hapus measurement 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        458.25,
+        502.25
+      ],
+      "container": [
+        324,
+        1076,
+        -815.75,
+        519.25
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 9 rows 125-percent-effective-width-proxy dark row 9 left field",
+      "active": "Titik 9",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        458.25,
+        502.25
+      ],
+      "container": [
+        324,
+        1076,
+        -815.75,
+        519.25
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1440 light row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        2028.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1440 light row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        2028.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1440 light row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1049.0625,
+        1279.75,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        2028.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1440 light row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        2028.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1440 light row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        329,
+        473.171875,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        2028.65625
+      ],
+      "scrollLeft": 14,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1440 light row 11 Tab",
+      "active": "Hapus measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -1118.34375,
+        518.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1440 light row 11 Shift+Tab",
+      "active": "Hapus measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -1118.34375,
+        518.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1440 light row 11 reverse to time",
+      "active": "Waktu measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1049.0625,
+        1279.75,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -1118.34375,
+        518.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1440 light row 11 return Tab",
+      "active": "Hapus measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -1118.34375,
+        518.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1440 light row 11 left field",
+      "active": "Titik 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        329,
+        473.171875,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -1118.34375,
+        518.65625
+      ],
+      "scrollLeft": 14,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1440 dark row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        2028.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1440 dark row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        2028.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1440 dark row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1049.0625,
+        1279.75,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        2028.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1440 dark row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        2028.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1440 dark row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        329,
+        473.171875,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        2028.65625
+      ],
+      "scrollLeft": 14,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1440 dark row 11 Tab",
+      "active": "Hapus measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -1118.34375,
+        518.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1440 dark row 11 Shift+Tab",
+      "active": "Hapus measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -1118.34375,
+        518.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1440 dark row 11 reverse to time",
+      "active": "Waktu measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1049.0625,
+        1279.75,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -1118.34375,
+        518.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1440 dark row 11 return Tab",
+      "active": "Hapus measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -1118.34375,
+        518.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1440 dark row 11 left field",
+      "active": "Titik 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        329,
+        473.171875,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -1118.34375,
+        518.65625
+      ],
+      "scrollLeft": 14,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1920 light row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        392.0625,
+        2029.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1920 light row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        392.0625,
+        2029.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1920 light row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1392.0625,
+        1709.75,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        392.0625,
+        2029.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1920 light row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        392.0625,
+        2029.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1920 light row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        379,
+        577.546875,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        392.0625,
+        2029.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1920 light row 11 Tab",
+      "active": "Hapus measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        -1117.9375,
+        519.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1920 light row 11 Shift+Tab",
+      "active": "Hapus measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        -1117.9375,
+        519.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1920 light row 11 reverse to time",
+      "active": "Waktu measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1392.0625,
+        1709.75,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        -1117.9375,
+        519.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1920 light row 11 return Tab",
+      "active": "Hapus measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        -1117.9375,
+        519.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1920 light row 11 left field",
+      "active": "Titik 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        379,
+        577.546875,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        -1117.9375,
+        519.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1920 dark row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        392.0625,
+        2029.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1920 dark row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        392.0625,
+        2029.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1920 dark row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1392.0625,
+        1709.75,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        392.0625,
+        2029.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1920 dark row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        392.0625,
+        2029.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1920 dark row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        379,
+        577.546875,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        392.0625,
+        2029.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1920 dark row 11 Tab",
+      "active": "Hapus measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        -1117.9375,
+        519.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1920 dark row 11 Shift+Tab",
+      "active": "Hapus measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        -1117.9375,
+        519.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1920 dark row 11 reverse to time",
+      "active": "Waktu measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1392.0625,
+        1709.75,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        -1117.9375,
+        519.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1920 dark row 11 return Tab",
+      "active": "Hapus measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        -1117.9375,
+        519.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1920 dark row 11 left field",
+      "active": "Titik 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        379,
+        577.546875,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        -1117.9375,
+        519.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1280 light row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        392.359375,
+        2029.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1280 light row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        392.359375,
+        2029.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1280 light row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        875.0625,
+        1105.75,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        392.359375,
+        2029.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1280 light row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        392.359375,
+        2029.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1280 light row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        392.359375,
+        2029.359375
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1280 light row 11 Tab",
+      "active": "Hapus measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        -1117.640625,
+        519.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1280 light row 11 Shift+Tab",
+      "active": "Hapus measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        -1117.640625,
+        519.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1280 light row 11 reverse to time",
+      "active": "Waktu measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        875.0625,
+        1105.75,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        -1117.640625,
+        519.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1280 light row 11 return Tab",
+      "active": "Hapus measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        -1117.640625,
+        519.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1280 light row 11 left field",
+      "active": "Titik 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        -1117.640625,
+        519.359375
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1280 dark row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        392.359375,
+        2029.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1280 dark row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        392.359375,
+        2029.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1280 dark row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        875.0625,
+        1105.75,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        392.359375,
+        2029.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1280 dark row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        392.359375,
+        2029.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1280 dark row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        392.359375,
+        2029.359375
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1280 dark row 11 Tab",
+      "active": "Hapus measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        -1117.640625,
+        519.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1280 dark row 11 Shift+Tab",
+      "active": "Hapus measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        -1117.640625,
+        519.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1280 dark row 11 reverse to time",
+      "active": "Waktu measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        875.0625,
+        1105.75,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        -1117.640625,
+        519.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1280 dark row 11 return Tab",
+      "active": "Hapus measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        -1117.640625,
+        519.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 1280 dark row 11 left field",
+      "active": "Titik 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        -1117.640625,
+        519.359375
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 125-percent-effective-width-proxy light row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        391.84375,
+        2028.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 125-percent-effective-width-proxy light row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        391.84375,
+        2028.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 125-percent-effective-width-proxy light row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        747.0625,
+        977.75,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        391.84375,
+        2028.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 125-percent-effective-width-proxy light row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        391.84375,
+        2028.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 125-percent-effective-width-proxy light row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        391.84375,
+        2028.84375
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 125-percent-effective-width-proxy light row 11 Tab",
+      "active": "Hapus measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        -1118.15625,
+        518.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 125-percent-effective-width-proxy light row 11 Shift+Tab",
+      "active": "Hapus measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        -1118.15625,
+        518.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 125-percent-effective-width-proxy light row 11 reverse to time",
+      "active": "Waktu measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        747.0625,
+        977.75,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        -1118.15625,
+        518.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 125-percent-effective-width-proxy light row 11 return Tab",
+      "active": "Hapus measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        -1118.15625,
+        518.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 125-percent-effective-width-proxy light row 11 left field",
+      "active": "Titik 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        -1118.15625,
+        518.84375
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 125-percent-effective-width-proxy dark row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        391.84375,
+        2028.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 125-percent-effective-width-proxy dark row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        391.84375,
+        2028.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 125-percent-effective-width-proxy dark row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        747.0625,
+        977.75,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        391.84375,
+        2028.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 125-percent-effective-width-proxy dark row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        391.84375,
+        2028.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 125-percent-effective-width-proxy dark row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        391.84375,
+        2028.84375
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 125-percent-effective-width-proxy dark row 11 Tab",
+      "active": "Hapus measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        -1118.15625,
+        518.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 125-percent-effective-width-proxy dark row 11 Shift+Tab",
+      "active": "Hapus measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        -1118.15625,
+        518.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 125-percent-effective-width-proxy dark row 11 reverse to time",
+      "active": "Waktu measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        747.0625,
+        977.75,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        -1118.15625,
+        518.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 125-percent-effective-width-proxy dark row 11 return Tab",
+      "active": "Hapus measurement 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        -1118.15625,
+        518.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 11 rows 125-percent-effective-width-proxy dark row 11 left field",
+      "active": "Titik 11",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        -1118.15625,
+        518.84375
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1440 light row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        2179.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1440 light row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        2179.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1440 light row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1049.0625,
+        1279.75,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        2179.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1440 light row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        2179.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1440 light row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        329,
+        473.171875,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        2179.65625
+      ],
+      "scrollLeft": 14,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1440 light row 12 Tab",
+      "active": "Hapus measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -1269.34375,
+        518.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1440 light row 12 Shift+Tab",
+      "active": "Hapus measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -1269.34375,
+        518.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1440 light row 12 reverse to time",
+      "active": "Waktu measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1049.0625,
+        1279.75,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -1269.34375,
+        518.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1440 light row 12 return Tab",
+      "active": "Hapus measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -1269.34375,
+        518.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1440 light row 12 left field",
+      "active": "Titik 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        329,
+        473.171875,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -1269.34375,
+        518.65625
+      ],
+      "scrollLeft": 14,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1440 dark row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        2179.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1440 dark row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        2179.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1440 dark row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1049.0625,
+        1279.75,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        2179.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1440 dark row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        2179.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1440 dark row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        329,
+        473.171875,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        391.65625,
+        2179.65625
+      ],
+      "scrollLeft": 14,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1440 dark row 12 Tab",
+      "active": "Hapus measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -1269.34375,
+        518.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1440 dark row 12 Shift+Tab",
+      "active": "Hapus measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -1269.34375,
+        518.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1440 dark row 12 reverse to time",
+      "active": "Waktu measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1049.0625,
+        1279.75,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -1269.34375,
+        518.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1440 dark row 12 return Tab",
+      "active": "Hapus measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1291.75,
+        1359,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -1269.34375,
+        518.65625
+      ],
+      "scrollLeft": 46,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1440 dark row 12 left field",
+      "active": "Titik 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        329,
+        473.171875,
+        457.65625,
+        501.65625
+      ],
+      "container": [
+        324,
+        1364,
+        -1269.34375,
+        518.65625
+      ],
+      "scrollLeft": 14,
+      "scrollWidth": 1100,
+      "clientWidth": 1040,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1920 light row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        392.0625,
+        2180.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1920 light row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        392.0625,
+        2180.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1920 light row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1392.0625,
+        1709.75,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        392.0625,
+        2180.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1920 light row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        392.0625,
+        2180.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1920 light row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        379,
+        577.546875,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        392.0625,
+        2180.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1920 light row 12 Tab",
+      "active": "Hapus measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        -1268.9375,
+        519.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1920 light row 12 Shift+Tab",
+      "active": "Hapus measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        -1268.9375,
+        519.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1920 light row 12 reverse to time",
+      "active": "Waktu measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1392.0625,
+        1709.75,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        -1268.9375,
+        519.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1920 light row 12 return Tab",
+      "active": "Hapus measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        -1268.9375,
+        519.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1920 light row 12 left field",
+      "active": "Titik 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        379,
+        577.546875,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        -1268.9375,
+        519.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1920 dark row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        392.0625,
+        2180.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1920 dark row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        392.0625,
+        2180.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1920 dark row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1392.0625,
+        1709.75,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        392.0625,
+        2180.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1920 dark row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        392.0625,
+        2180.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1920 dark row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        379,
+        577.546875,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        392.0625,
+        2180.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1920 dark row 12 Tab",
+      "active": "Hapus measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        -1268.9375,
+        519.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1920 dark row 12 Shift+Tab",
+      "active": "Hapus measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        -1268.9375,
+        519.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1920 dark row 12 reverse to time",
+      "active": "Waktu measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1392.0625,
+        1709.75,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        -1268.9375,
+        519.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1920 dark row 12 return Tab",
+      "active": "Hapus measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1721.75,
+        1789,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        -1268.9375,
+        519.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1920 dark row 12 left field",
+      "active": "Titik 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        379,
+        577.546875,
+        458.0625,
+        502.0625
+      ],
+      "container": [
+        360,
+        1808,
+        -1268.9375,
+        519.0625
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1448,
+      "clientWidth": 1448,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1280 light row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        392.359375,
+        2180.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1280 light row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        392.359375,
+        2180.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1280 light row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        875.0625,
+        1105.75,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        392.359375,
+        2180.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1280 light row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        392.359375,
+        2180.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1280 light row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        392.359375,
+        2180.359375
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1280 light row 12 Tab",
+      "active": "Hapus measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        -1268.640625,
+        519.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1280 light row 12 Shift+Tab",
+      "active": "Hapus measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        -1268.640625,
+        519.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1280 light row 12 reverse to time",
+      "active": "Waktu measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        875.0625,
+        1105.75,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        -1268.640625,
+        519.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1280 light row 12 return Tab",
+      "active": "Hapus measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        -1268.640625,
+        519.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1280 light row 12 left field",
+      "active": "Titik 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        -1268.640625,
+        519.359375
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1280 dark row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        392.359375,
+        2180.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1280 dark row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        392.359375,
+        2180.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1280 dark row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        875.0625,
+        1105.75,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        392.359375,
+        2180.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1280 dark row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        392.359375,
+        2180.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1280 dark row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        392.359375,
+        2180.359375
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1280 dark row 12 Tab",
+      "active": "Hapus measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        -1268.640625,
+        519.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1280 dark row 12 Shift+Tab",
+      "active": "Hapus measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        -1268.640625,
+        519.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1280 dark row 12 reverse to time",
+      "active": "Waktu measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        875.0625,
+        1105.75,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        -1268.640625,
+        519.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1280 dark row 12 return Tab",
+      "active": "Hapus measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        1117.75,
+        1185,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        -1268.640625,
+        519.359375
+      ],
+      "scrollLeft": 220,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 1280 dark row 12 left field",
+      "active": "Titik 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        458.359375,
+        502.359375
+      ],
+      "container": [
+        324,
+        1204,
+        -1268.640625,
+        519.359375
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 880,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 125-percent-effective-width-proxy light row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        391.84375,
+        2179.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 125-percent-effective-width-proxy light row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        391.84375,
+        2179.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 125-percent-effective-width-proxy light row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        747.0625,
+        977.75,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        391.84375,
+        2179.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 125-percent-effective-width-proxy light row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        391.84375,
+        2179.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 125-percent-effective-width-proxy light row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        391.84375,
+        2179.84375
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 125-percent-effective-width-proxy light row 12 Tab",
+      "active": "Hapus measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        -1269.15625,
+        518.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 125-percent-effective-width-proxy light row 12 Shift+Tab",
+      "active": "Hapus measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        -1269.15625,
+        518.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 125-percent-effective-width-proxy light row 12 reverse to time",
+      "active": "Waktu measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        747.0625,
+        977.75,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        -1269.15625,
+        518.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 125-percent-effective-width-proxy light row 12 return Tab",
+      "active": "Hapus measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        -1269.15625,
+        518.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 125-percent-effective-width-proxy light row 12 left field",
+      "active": "Titik 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        -1269.15625,
+        518.84375
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 125-percent-effective-width-proxy dark row 1 Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        391.84375,
+        2179.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 125-percent-effective-width-proxy dark row 1 Shift+Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        391.84375,
+        2179.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 125-percent-effective-width-proxy dark row 1 reverse to time",
+      "active": "Waktu measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        747.0625,
+        977.75,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        391.84375,
+        2179.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 125-percent-effective-width-proxy dark row 1 return Tab",
+      "active": "Hapus measurement 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        391.84375,
+        2179.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 125-percent-effective-width-proxy dark row 1 left field",
+      "active": "Titik 1",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        391.84375,
+        2179.84375
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 125-percent-effective-width-proxy dark row 12 Tab",
+      "active": "Hapus measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        -1269.15625,
+        518.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 125-percent-effective-width-proxy dark row 12 Shift+Tab",
+      "active": "Hapus measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        -1269.15625,
+        518.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 125-percent-effective-width-proxy dark row 12 reverse to time",
+      "active": "Waktu measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        747.0625,
+        977.75,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        -1269.15625,
+        518.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 125-percent-effective-width-proxy dark row 12 return Tab",
+      "active": "Hapus measurement 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        989.75,
+        1057,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        -1269.15625,
+        518.84375
+      ],
+      "scrollLeft": 348,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    },
+    {
+      "label": "keyboard 12 rows 125-percent-effective-width-proxy dark row 12 left field",
+      "active": "Titik 12",
+      "focusVisible": true,
+      "outlineWidth": 3,
+      "outlineStyle": "solid",
+      "ring": 5,
+      "control": [
+        343,
+        487.171875,
+        457.84375,
+        501.84375
+      ],
+      "container": [
+        324,
+        1076,
+        -1269.15625,
+        518.84375
+      ],
+      "scrollLeft": 0,
+      "scrollWidth": 1100,
+      "clientWidth": 752,
+      "contained": true,
+      "viewportVisible": true,
+      "pageOverflow": false
+    }
+  ]
+}
