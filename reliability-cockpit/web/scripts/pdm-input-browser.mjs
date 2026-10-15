@@ -84,6 +84,39 @@ try{
   await p.evaluate(()=>delete document.documentElement.dataset.theme);
   p.once('dialog',dialog=>dialog.accept());await button('Batal input').click();
  }
+
+ // WORKBOOK-02: representative source families; standalone intercepted synthetic evidence.
+ const nextOut=resolve(process.env.NADI_WORKBOOK2_OUTPUT??out+'/workbook-02');mkdirSync(nextOut,{recursive:true});
+ for(const [context,profile,method,count,unit] of [
+  ['VIBRATION_BOILER','boiler-three-point-rms','VIBRATION',9,'mm/s-rms'],
+  ['VIBRATION_BOILER','boiler-five-axis','VIBRATION',5,'mm/s'],
+  ['VIBRATION_BC','bc-irregular-axis','VIBRATION',11,'mm/s'],
+  ['VIBRATION_TURBINE','turbine-four-point','VIBRATION',12,'mm/s'],
+  ['CEP_CBM','cep-bearing-cbm','OTHER',4,'Ampere'],
+  ['CEP_CBM','cep-ir-window','OTHER',1,'Ampere']]){
+  await go();await button('Input Pengukuran').click();await p.getByLabel('Konteks input kandidat').selectOption(context);
+  check('explicit new family selection '+profile,await button('Gunakan baris kandidat').count()===0);
+  await p.getByLabel('Keluarga template kandidat').selectOption(profile);
+  check('context keeps selected method '+profile,await p.getByLabel('Metode',{exact:true}).inputValue()==='VIBRATION');
+  await p.getByLabel('Metode',{exact:true}).selectOption('MCSA');
+  check('incompatible method refused '+profile,await button('Gunakan baris kandidat').isDisabled());
+  await p.getByLabel('Metode',{exact:true}).selectOption(method);await button('Gunakan baris kandidat').click();
+  check('exact family row count '+profile,await p.locator('.pdm-measurement-row').count()===count);
+  check('literal family unit '+profile,await p.getByLabel('Unit asli 1',{exact:true}).inputValue()===unit);
+  check('unbound physical point and unknown time '+profile,await p.getByLabel('Titik 1',{exact:true}).inputValue()===''&&await p.getByLabel('Waktu measurement 1',{exact:true}).inputValue()==='');
+  check('no original source value copied '+profile,await p.getByLabel('Tipe nilai 1',{exact:true}).inputValue()==='UNKNOWN'&&await p.getByLabel('Nilai asli 1',{exact:true}).inputValue()==='');
+  if(profile==='cep-bearing-cbm')check('ambiguous thermal units stay empty',await p.getByLabel('Unit asli 2',{exact:true}).inputValue()===''&&await p.getByText('CBM provisional: temperatur/IR Window belum membuktikan inspeksi IRT lengkap.',{exact:false}).isVisible());
+  if(method==='VIBRATION')check('source axis visible without canonical binding '+profile,await p.locator('.workbook-field').first().getByText(/belum terikat ke titik kanonis/).isVisible());
+  await p.getByLabel('Tipe nilai 1',{exact:true}).selectOption('NUMERIC');await p.getByLabel('Nilai asli 1',{exact:true}).fill('0');
+  p.once('dialog',dialog=>dialog.dismiss());await button('Gunakan baris kandidat').click();
+  check('replacement confirmation retains zero '+profile,await p.getByLabel('Nilai asli 1',{exact:true}).inputValue()==='0');
+  for(const width of [1440,1920])for(const theme of ['light','dark']){
+   await p.setViewportSize({width,height:1200});await p.evaluate(t=>document.documentElement.dataset.theme=t,theme);await p.evaluate(()=>window.scrollTo(0,0));
+   check('family desktop no overflow '+profile+' '+width+' '+theme,await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+   await p.screenshot({path:nextOut+'/'+profile+'-'+theme+'-'+width+'.png',fullPage:true});
+  }
+  await p.evaluate(()=>delete document.documentElement.dataset.theme);p.once('dialog',dialog=>dialog.accept());await button('Batal input').click();
+ }
  await p.setViewportSize({width:1440,height:1086});
  await go();await button('Input Pengukuran').click();await p.getByLabel('Konteks input kandidat').selectOption('AREA_FAN');check('template awaits validation',await p.getByText(/Menunggu Validasi Engineer\. Pemilihan konteks/).isVisible());
  await p.getByLabel('Versi metode / prosedur').fill('candidate-1');await p.getByLabel('Waktu inspeksi asli').fill('2026-10-09T08:00:00+07:00');await p.getByLabel('Referensi instrumen').fill('instrument:SYNTHETIC');await p.getByLabel('Referensi prosedur').fill('procedure:SYNTHETIC');await p.getByLabel('Orientasi').fill('orientation:SYNTHETIC');await p.getByLabel('Konteks operasi',{exact:true}).fill('SYNTHETIC steady regime');

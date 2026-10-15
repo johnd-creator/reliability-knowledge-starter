@@ -928,3 +928,7 @@ PARTIAL candidate: remaining sheet variants, formula/units/time/point ambiguity,
 engineer mapping approval and operational UAT remain pending. No parser, schema,
 source acquisition, threshold, scoring, attachment custody or live source selection
 is activated. Q01–Q10, Phase0–5 and separate Phase1 governance remain unchanged.
+
+## Checkpoint 15 Oktober 2026 — NADI-PDM-WORKBOOK-02
+
+Phase0–5 dan Q01–Q10 tidak berubah. M01/M02 kandidat diperluas pada DRAFT PR85:4/4 sumber baru,177 sheet diinventarisasi;4 keluarga Vibration +2 CEP provisional,39 DIRECT baru dan3 input ambigu. Old3 profil/9 DIRECT serta historical acceptance dipertahankan. [Laporan](../reliability-cockpit/docs/nadi-pdm-workbook-02.md): implementation/test evidence ada; mapping PARTIAL, engineer approval/comparability PENDING, belum merged/visible/operational accepted. Tidak mengubah Phase1 review/expiry. Next: PO visual review dan field validation; bukan historical import atau aktivasi IRT.

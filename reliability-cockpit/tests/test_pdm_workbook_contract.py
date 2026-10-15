@@ -5,19 +5,19 @@ from pathlib import Path
 from pydantic import ValidationError
 from src.domain.manual_inspection import InspectionDraft
 
-PROFILES=json.loads((Path(__file__).resolve().parents[1]/'docs/evidence/nadi-pdm-workbook-01/candidate-dictionary.json').read_text())['profiles']
+PROFILES=json.loads((Path(__file__).resolve().parents[1]/'docs/evidence/nadi-pdm-workbook-01/candidate-dictionary.json').read_text())['profiles']+json.loads((Path(__file__).resolve().parents[1]/'docs/evidence/nadi-pdm-workbook-02/candidate-dictionary.json').read_text())['profiles']
 
 def draft(profile):
     return {'canonical_asset_id':'asset:SYNTHETIC:WORKBOOK','method':profile['methodTerm'],
             'method_version':'SYNTHETIC-inspector-version','inspector_ref':'synthetic-author',
             'inspected_at':'2026-10-09T09:00:00+07:00',
-            'measurements':[{'quantity':f['label'],'unit':f['unit'],'value':value,
+            'measurements':[{'quantity':f['label'],'unit':f['unit'] or None,'value':value,
                              'point_ref':None,'measured_at':None,
                              'quality':'INSPECTOR_REPORTED','provenance':'HUMAN_ENTERED_MEASUREMENT'}
-                            for f,value in zip(profile['fields'],[0,None,'SYNTHETIC original text'])]}
+                            for f,value in zip(profile['fields'],([0,None,'SYNTHETIC original text']*34))]}
 
 class WorkbookContractTest(unittest.TestCase):
-    def test_all_nine_candidate_fields_preserve_server_scalar_and_unit_contract(self):
+    def test_all_candidate_fields_preserve_server_scalar_and_unit_contract(self):
         for p in PROFILES:
             with self.subTest(profile=p['id']):
                 data=draft(p);parsed=InspectionDraft.model_validate(data).model_dump(mode='json')

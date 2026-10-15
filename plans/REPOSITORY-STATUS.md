@@ -955,3 +955,7 @@ record local tests, exact-head PR CI and pending engineer/PO/operational gates.
 PR75–81 remain OPEN at their existing heads and all old worktrees/evidence remain.
 Official frontend/API provenance was not probed or repaired; runtime/database/session/
 container/policy operations are outside this task.
+
+## 15 Oktober 2026 — WORKBOOK-02 candidate
+
+Main terverifikasi106a4dc08b149576b2e84bbf8c70694288c7e9a7; PR85 diteruskan dari3aa2c015c8e8e0e591e7d239c37396e3f97eaebc pada branch yang sama, OPEN/DRAFT. [Inventaris/mapping/test report](../reliability-cockpit/docs/nadi-pdm-workbook-02.md) membedakan workbook structure verified, candidate implemented dan engineer approval pending. Serving laptop tetap9895890a045a221998856a175d80c17270cd0d38; tidak ada live promotion/DB/source operation.

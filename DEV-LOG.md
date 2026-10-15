@@ -519,3 +519,21 @@ Evidence: [implementation/self-review](reliability-cockpit/docs/nadi-pdm-center-
 - MERGED: NO; DRAFT delivery only. VISIBLE on localhost:3000: NO, serving PR82 unchanged. ENGINEER APPROVAL: PENDING; no operational or Product Owner visual acceptance claimed.
 - Blockers: remaining sheet variants, original/derived boundaries, exact asset/point/time/unit semantics; Q01–Q10 remain pending.
 - Evidence/next action: [report](reliability-cockpit/docs/nadi-pdm-workbook-01.md); senior/engineer review, then separately authorized controlled preview.
+
+## 2026-10-15 — NADI-PDM-WORKBOOK-02
+
+Date: 2026-10-15
+Task ID: NADI-PDM-WORKBOOK-02
+Objective: extend source-traceable Vibration and provisional CEP/IR Window candidate templates.
+Branch: codex/nadi-pdm-workbook-01
+Commit SHA: enclosing commit; previous3aa2c015c8e8e0e591e7d239c37396e3f97eaebc; base106a4dc08b149576b2e84bbf8c70694288c7e9a7.
+PR: #85 OPEN/DRAFT; same integrated candidate.
+Implementation Status: IMPLEMENTED6 additional profiles, preserving3 old profiles/9 DIRECT; mapping PARTIAL,39 new DIRECT +3 AMBIGUOUS.
+Test Status: 42 original-source lineage checks;64 assertions;169 intercepted synthetic browser checks;45 hermetic backend checks;24 new desktop screenshots; TypeScript/lint/build PASS. Exact-head CI final evidence recorded on PR.
+CI Status: final exact-head GitHub result must be verified independently of local tests.
+Merge Status: UNMERGED.
+Development Visibility: candidate screenshots only; localhost3000 source unchanged9895890.
+Product Owner Acceptance: implementation authorized; visual and engineer validation PENDING.
+Remaining Blockers: temperature units, canonical identity/points, acquisition/timezone/comparability, IRT custody/method scope, historical import authority and operational UAT.
+Next Action: PO visual review and engineer field validation; no automatic runtime change or next implementation.
+Evidence: [report](reliability-cockpit/docs/nadi-pdm-workbook-02.md), [sanitized evidence](reliability-cockpit/docs/evidence/nadi-pdm-workbook-02/README.md). No DB/session access, source requests, collector/Mart change, restart, migration or policy change.

@@ -197,3 +197,7 @@ severity colors. Units remain explicit and missing values remain UNKNOWN/null.
 Replacement confirmation preserves unsaved readings; applying a candidate does not
 edit an existing revision. [1440/1920 light/dark component evidence](reliability-cockpit/docs/evidence/nadi-pdm-workbook-01/README.md)
 is synthetic, not live or Product Owner acceptance. No new token system is introduced.
+
+## PdM desktop workbook candidates — WORKBOOK-02
+
+Panel kandidat memakai token/grid V1 existing dan selector keluarga eksplisit; label axis sumber terlihat tanpa canonical point binding. Unit ambigu tampil BELUM DIKETAHUI, nilai awal UNKNOWN/null, pending approval bukan severity. [24 screenshot sintetis 1440/1920 light/dark](reliability-cockpit/docs/evidence/nadi-pdm-workbook-02/README.md) adalah evidence komponen, bukan live acceptance.

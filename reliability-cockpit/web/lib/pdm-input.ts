@@ -5,6 +5,10 @@ export const inputContexts = [
  {id:'AREA_FAN',label:'AREA FAN',version:'candidate-1'},
  {id:'AREA_MILL',label:'AREA MILL',version:'candidate-1'},
  {id:'LOGSHEET_6KV',label:'Logsheet 6 kV',version:'candidate-1'},
+ {id:'VIBRATION_BOILER',label:'Vibration · Boiler',version:'candidate-2'},
+ {id:'VIBRATION_BC',label:'Vibration · BC/conveyor',version:'candidate-2'},
+ {id:'VIBRATION_TURBINE',label:'Vibration · Turbin/pompa',version:'candidate-2'},
+ {id:'CEP_CBM',label:'CEP · Thermal / IR Window provisional',version:'candidate-2'},
 ] as const;
 // No workbook columns/units/limits are approved. Definitions bind schema paths only.
 export const inputFields={inspection:['canonical_asset_id','method','method_version','inspected_at','operating_context'],measurement:['point_ref','quantity','value','unit','measured_at'],optionalContext:['instrument_ref','procedure_ref','orientation']} as const;

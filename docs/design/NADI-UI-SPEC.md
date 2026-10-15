@@ -520,3 +520,7 @@ replacement confirmation. Generic input and revision/review/Case protections sta
 Desktop1440/1920 screenshots use intercepted synthetic fixtures, not the active
 laptop. Remaining fields/variants and operational engineering approval are pending;
 no automatic source import, score, threshold or template metadata persistence.
+
+## PdM workbook extension — WORKBOOK-02 / 15 Oktober 2026
+
+Kandidat PR85 menambah pilihan Boiler, BC/conveyor, Turbin/pompa, CEP CBM/IR Window; keluarga dan metode dipilih eksplisit. Empat Vibration family berbeda; dua CEP memakai OTHER provisional, unit temperatur unresolved tetap kosong. Panel source axis tidak menetapkan canonical point. Form umum,3 profil lama, new-draft-only dan replacement confirmation dipertahankan. [Spesifikasi aktual/batas kontrak](../../reliability-cockpit/docs/nadi-pdm-workbook-02.md), [screenshot sintetis](../../reliability-cockpit/docs/evidence/nadi-pdm-workbook-02/README.md). Engineer approval, historical comparability dan PO visual acceptance PENDING; tidak live di HTTPS3000.
