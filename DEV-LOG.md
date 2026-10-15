@@ -623,3 +623,20 @@ Development Visibility: synthetic screenshots only; localhost3000 neither access
 Product Owner Acceptance: PENDING senior/product review; report definitions NOT OPERATIONALLY APPROVED.
 Remaining Blockers: approved real-report definitions/privacy/deployment authorization and eventual separately approved export/distribution; no source or engineer approval inferred.
 Next Action: [Review evidence](reliability-cockpit/docs/nadi-reports-ui-01.md), then separately authorized conditional checkpoint. No automatic merge/promotion.
+
+## 2026-10-16 — NADI-ADMIN-READINESS-01
+
+Date: 2026-10-16
+Task ID: NADI-ADMIN-READINESS-01
+Objective: source-grounded Administration architecture, authorization matrix and proposed implementation slices.
+Branch: codex/nadi-admin-readiness-01 from main5af41294745d7eb78eb14f617cacdbc223844564.
+Commit SHA: exact documentation HEAD recorded in PR delivery; no application source change.
+PR: dedicated DRAFT; exact URL and checks recorded at delivery.
+Implementation Status: documentation READY for review; Administration web NOT IMPLEMENTED; seven API gaps,12 pending decisions, all organizational permissions PROPOSED.
+Test Status:27 existing hermetic identity/adapter/configuration +4 independent-review/spoofing checks PASS; no persistent DB/CLI or live request.
+CI Status: final exact-head backend/frontend status recorded independently at PR delivery; baseline CI is not a substitute.
+Merge Status: UNMERGED/DRAFT.
+Development Visibility: no UI, screenshot or runtime transition; localhost3000 not accessed or changed.
+Product Owner Acceptance: PENDING senior security/product review; no new permission mapping or operational approval.
+Remaining Blockers: approved reader/mutation contracts, organizational scope/delegation, custody/recovery, deployment approval;26 engineer decisions and M02/M03/M07 unchanged.
+Next Action: [Review architecture and numbered decisions](reliability-cockpit/docs/nadi-admin-readiness-01.md), then explicitly authorize the first Administration slice. STOP after DRAFT delivery.

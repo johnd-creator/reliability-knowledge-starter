@@ -367,3 +367,16 @@ APPROVED. Registry/technical populations, evidence classes, original time bases,
 unknowns and chronology's independent bucket scope are retained. No new KPI,
 export/distribution, schema, authentication activation or runtime promotion.
 Production readers remain blocked pending deployment access review.
+
+## FR-08 architecture readiness — NADI-ADMIN-READINESS-01 / 16 Oktober 2026
+
+[Administration architecture](reliability-cockpit/docs/nadi-admin-readiness-01.md)
+and [candidate matrix](reliability-cockpit/docs/nadi-admin-authorization-matrix.md)
+are review-ready documentation from main5af41294745d7eb78eb14f617cacdbc223844564.
+Existing AUTHOR/REVIEWER/ADMIN, QA login/session and private operator services are
+distinct from a product account directory or web administrator. Seven missing API
+contract groups and12 pending PO/security/operator decisions are recorded in the
+[proposed plan](reliability-cockpit/docs/nadi-admin-implementation-plan.md). All
+organizational mappings remain PROPOSED. No Administration UI/API, account/grant/
+recovery operation, global authentication, source privilege or deployment is
+implemented or activated by this task; ADMIN cannot override independent review.

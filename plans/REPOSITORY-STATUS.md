@@ -998,3 +998,14 @@ Development acceptance does not approve underlying API deployment access.
 from this baseline. DRAFT delivery; final HEAD/CI/PR URL in delivery checks. No
 laptop runtime, QA/session data, collectors/Mart, operational policy or external
 QA change. M02/M03/M07 remain ON HOLD;26 engineer decisions unchanged.
+
+## 16 Oktober 2026 — Administration readiness documentation candidate
+
+Baseline main5af41294745d7eb78eb14f617cacdbc223844564, including merged PR88.
+`codex/nadi-admin-readiness-01` contains [source-only security/product architecture](../reliability-cockpit/docs/nadi-admin-readiness-01.md),
+[authorization matrix](../reliability-cockpit/docs/nadi-admin-authorization-matrix.md)
+and [proposed contract/implementation plan](../reliability-cockpit/docs/nadi-admin-implementation-plan.md).
+DRAFT submission, not an implemented Administration page or operational permission
+grant. Local31 synthetic identity/review tests PASS; documentation/exact-head CI
+tracked at PR delivery. Existing source, private CLI boundary, migrations, accounts,
+sessions, runtime and Phase1/PdM approval gates remain untouched.
