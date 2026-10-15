@@ -970,3 +970,17 @@ M01–M07 serta batas diagnostik Phase3 dipertahankan. Tidak ada assessment otom
 Phase1 review/checkpoint/expiry dan kewenangan operasional tidak diubah, diperpanjang
 atau disertifikasi ulang; hasil operator tidak dinilai oleh task dokumentasi ini.
 Tidak ada runtime/DB/session/source/collector/Mart/external-QA action.
+
+## 15 Oktober 2026 — NADI-INTEGRATION-UI-01 candidate
+
+[Pusat Integrasi Sistem](../reliability-cockpit/docs/nadi-integration-ui-01.md) pada
+[DRAFT PR87](https://github.com/johnd-creator/reliability-knowledge-starter/pull/87)
+mengimplementasikan `/system-integration` development-only dari DTO integration
+status/Data Trust existing. Independent freshness/availability/identity/quality,
+populasi Registry vs teknis dan semua route domain dipertahankan. Komponen, browser
+sintetis/responsive/a11y dan local regression PASS; CI exact-head dicatat pada PR.
+IMPLEMENTED/TESTED kandidat bukan MERGED, live VISIBLE, PO ACCEPTED atau operational
+readiness. Tidak ada runtime/DB/collector/Mart/source/policy action. M01–M07 dan
+Phase0–5 tetap; M02/M03/M07 ON HOLD, seluruh26 engineer decisions tetap pending.
+Phase1 checkpoint/review/hard-expiry tidak diubah atau disertifikasi ulang.
+Next: senior/product review, kemudian conditional integration checkpoint.

@@ -291,7 +291,12 @@ Bundle A implements this placement using existing routes. Engineering is a suppl
   collector observations, projector clocks and separately approved freshness policy.
 - **Implemented:** factual Data Trust and integration evidence; bounded governed PI
   pilot recorded. Complete PI/CEMS product integration is not established.
-- **Planned:** UX-03 hierarchy, consolidated integration page and approved future panels.
+- **Implemented candidate (15 October 2026):** development-only `/system-integration`,
+  independent component cards, logical pipeline, bounded Data Trust summary and
+  technical links; [synthetic evidence/review](../../reliability-cockpit/docs/nadi-integration-ui-01.md).
+  Existing integration group ID/children and factual routes remain intact.
+- **Planned:** senior/PO visual approval, deployment authentication/authorization
+  prerequisites and separately approved future panels; no complete PI/CEMS integration claimed.
 - **Unknown data behavior:** availability, age, quality and condition separate;
   missing policy remains UNKNOWN; no reset of clocks or recency-as-freshness shortcut.
 - **Security constraints:** local stored-data reads only; no start-worker, retry-source,

@@ -589,3 +589,20 @@ Development Visibility: no runtime action; current localhost source, sessions/fi
 Product Owner Acceptance: package review pending; no engineer responses/signatures/field approval invented.
 Remaining Blockers: actual engineer decisions; registry/per-point/temporal/snapshot needs may require separately reviewed strict contract proposals. M02 readiness CANDIDATE, implementation/operational release gated.
 Next Action: PO uses [engineer packet](reliability-cockpit/docs/nadi-pdm-engineer-review-packet.md) and [matrix/analysis](reliability-cockpit/docs/nadi-pdm-eng-validation-01.md); implement approved decisions only in a subsequent task.
+
+## 2026-10-15 — NADI-INTEGRATION-UI-01
+
+Date: 2026-10-15
+Task ID: NADI-INTEGRATION-UI-01
+Objective: read-only System Integration product workspace using existing DTOs.
+Branch: codex/nadi-integration-ui-01
+Commit SHA: implementation f85e7fc3eecce0ca188234fd59ec738ec8544fd9; final documentation/evidence HEAD recorded in PR checks/handoff.
+PR: [#87 OPEN/DRAFT](https://github.com/johnd-creator/reliability-knowledge-starter/pull/87)
+Implementation Status: IMPLEMENTED development-only `/system-integration`, existing AppShell/navigation/V1 and API contracts reused.
+Test Status: TESTED synthetic components22, integration browser67, existing browser395, PdM browser573, backend63 + DTO fixtures3 PASS; TypeScript/lint/build PASS.
+CI Status: final exact-head backend/frontend results tracked independently on PR; local PASS does not establish CI or runtime acceptance.
+Merge Status: UNMERGED/DRAFT.
+Development Visibility: synthetic screenshots only; active HTTPS3000 not accessed or changed.
+Product Owner Acceptance: PENDING senior/product review.
+Remaining Blockers: deployment auth/scope prerequisite, no CEMS status DTO, no standalone Data Trust observation time; engineer validation remains ON HOLD.
+Next Action: [Review evidence](reliability-cockpit/docs/nadi-integration-ui-01.md), then separately authorized conditional checkpoint; no automatic merge/promotion.

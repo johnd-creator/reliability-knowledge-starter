@@ -1,0 +1,32 @@
+{
+  "scope": "SYNTHETIC browser evidence, not live/runtime acceptance",
+  "implementation_sha": "f85e7fc3eecce0ca188234fd59ec738ec8544fd9",
+  "baseline": "1ac1d5e709724c2b5433beba8f0305c19b5d3a0e",
+  "source_sha256": {
+    ".github/workflows/nadi-engineering-candidate.yml": "4600c01337fb3b320a82334c843811e2256edf964dcae46e7adb03203aaf9606",
+    "reliability-cockpit/tests/test_integration_ui_contract.py": "373f491c789411388ba5ac56866fafeb1471a616702773eddc5ad67e56cc161d",
+    "reliability-cockpit/web/app/(workspace)/system-integration/page.tsx": "ccdae1fec4c31203f1d94ab9b625a7e88a0ac77998f0eda268e23ab9b45f4054",
+    "reliability-cockpit/web/app/globals.css": "617e67593a9db3674f8232cf99a3610206220f2500c32579c3ba0d752c78cb9c",
+    "reliability-cockpit/web/components/IntegrationComponentCards.tsx": "f615b065804c2211cf02a21d4615e34b6e7f551011b4cc9a03fcb2891634fd3a",
+    "reliability-cockpit/web/components/SystemIntegrationCenter.tsx": "5a180717153bdfc8c7f7b16f17f66cb5949f2fd64627319857e0f1c65923e920",
+    "reliability-cockpit/web/eslint.config.mjs": "fd5ad48c5d119fca8d85cc8a27f022d98dab4c96282a1f53d868c6f7d7a75c33",
+    "reliability-cockpit/web/fixtures/integration-ui.json": "d38ee9f1a90baa1d08f84233f3feaae2eb4124d650a6d2fbedb229b9f3859cdd",
+    "reliability-cockpit/web/lib/id-copy.ts": "1df935cfad90f2be2ff92978e8f65b79aed7da6d061b2bda04c7d12e3dedbeb4",
+    "reliability-cockpit/web/lib/integration.ts": "765d715e5ead46db76b4fcd9bc669c55e8e79d86eeb0da95dbd608e550f82306",
+    "reliability-cockpit/web/lib/navigation.ts": "41b0eb2e1fd7b9ff21f226155eddc3a6f803ba29460c1579a35fd52cf66d0c99",
+    "reliability-cockpit/web/package.json": "03f7f95086c096a9df455b26633f7767314d64f60dc3ac4a319127975ee82c42",
+    "reliability-cockpit/web/scripts/integration-browser.mjs": "a08eae009036252f50c4a2328ef5d8460c36920bf77c14631c824f6adb70d1b3",
+    "reliability-cockpit/web/scripts/integration-check.mjs": "41b99082abbc4cc9bccf944081f4f9baa1dbd376e0d854bf1a2a063f4740cb57",
+    "reliability-cockpit/web/scripts/integration-entry.tsx": "019bbb3de47208b144630a0b2b44d9d43b758482b94ebfa61f65a21bdd0fd89a"
+  },
+  "screenshots_sha256": {
+    "integration-dark-390.png": "c467fb78250c927c60b8283bb1667e8aa1bf7210f312cb2b3b6d060d24e8ab4a",
+    "integration-light-390.png": "95bb07f41c203055f877aef4a141aa8885dcb6ccb1d6f71079e1ddc55eb010cb",
+    "integration-dark-768.png": "9a1f21a5545a874385961ffcb2ec1e308dfbb708ee50028a407b6d67770805ab",
+    "integration-light-768.png": "2ae08ae5e8751f76ee7a348c6f04907fed0870fbba6879ba55b34462d03d2923",
+    "integration-dark-1920.png": "206d2c4e8d89179db8e8071553a6e836f427ff733050a99d2b73ccac33e06490",
+    "integration-light-1920.png": "96e4c3df5dbcb7b5b7385a67be764e17396fc8820ea5c3996301489221afcda0",
+    "integration-dark-1440.png": "a42b35e528633edd72d8313f50e170aa744e999917806c390f00382870b03498",
+    "integration-light-1440.png": "7ede90c10752b31b02df9aa691acf3167feb5976647ace78988c16e09cc6da9a"
+  }
+}
