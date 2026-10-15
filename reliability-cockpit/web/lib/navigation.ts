@@ -11,7 +11,7 @@ export const navigation: NavItem[] = [
   { id: "pdm", href: "/pdm", label: idText("PdM Center"), icon: "chart" },
   { id: "recommendations", href: "/recommendations", label: idText("Recommendations"), icon: "idea" },
   { id: "actions", href: "/action-board", label: idText("Action Board"), icon: "board" },
-  { id: "reports", label: idText("Reports"), icon: "report", planned: true },
+  { id: "reports", href: "/reports", label: idText("Reports"), icon: "report" },
   { id: "integration", label: idText("System Integration"), icon: "integration", children: [
     { href: "/system-integration", label: "Ringkasan Integrasi" },
     { href: "/data-quality", label: idText("Data Trust Center") },

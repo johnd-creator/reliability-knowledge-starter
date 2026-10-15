@@ -626,3 +626,35 @@ td strong { color: var(--text); font-weight: 650; }
 @media (max-width: 1200px) { .integration-summary,.integration-pipeline { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 @media (max-width: 900px) { .integration-component-grid { grid-template-columns: minmax(0,1fr); } .integration-links { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 @media (max-width: 540px) { .integration-summary,.integration-pipeline,.integration-links,.integration-dimensions { grid-template-columns: minmax(0,1fr); } .integration-component { padding: var(--space-4); } }
+
+/* Reports Center candidates reuse V1 and factual DTOs; no severity semantics. */
+.reports-workspace,.report-preview { display:grid;gap:var(--space-6);min-width:0; }
+.reports-workspace > .page-header { margin-bottom:0; }
+.report-catalog,.report-two-columns { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-4); }
+.report-template { display:grid;gap:var(--space-2);text-align:left;color:var(--text);background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--radius);padding:var(--space-6);min-width:0; }
+.report-template.selected { border-color:var(--primary);box-shadow:inset 4px 0 0 var(--primary);background:var(--cyan-soft); }
+.report-template strong { font-size:var(--font-section); }
+.report-template p { margin:0; }
+.report-template small,.report-template-version { font-size:var(--font-small);color:var(--muted); }
+.report-metrics { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-4); }
+.report-provenance { border:1px solid var(--line);background:var(--surface);border-radius:var(--radius);padding:var(--space-4); }
+.report-provenance summary { padding:var(--space-2) 0;cursor:pointer;font-weight:700; }
+.report-provenance summary:focus-visible { outline:3px solid var(--focus);outline-offset:2px; }
+.report-provenance dl { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-4); }
+.report-provenance dt { font-weight:650;color:var(--muted); }
+.report-provenance dd { margin:var(--space-1) 0 0; }
+.reports-workspace time { font-variant-numeric:tabular-nums; }
+.reports-workspace :is(p,small,dd,td,th,span,strong,time) { overflow-wrap:anywhere; }
+.reports-workspace td small,.reports-workspace th small { display:block;color:var(--muted);margin-top:var(--space-2);font-weight:400;white-space:normal; }
+.reports-workspace .section-heading { flex-wrap:wrap; }
+.report-preview-heading h2 { margin:var(--space-2) 0; }
+.report-activity { margin:0; }
+.report-activity figcaption { font-weight:650; }
+.report-chart-scroll { overflow-x:auto;max-width:100%;margin:var(--space-4) 0; }
+.report-bars { display:grid;min-width:650px;gap:var(--space-2);align-items:end;padding:var(--space-3); }
+.report-bar { display:flex;flex-direction:column;align-items:center;min-width:0;gap:var(--space-2);font-size:var(--font-label); }
+.report-bar-track { display:flex;align-items:flex-end;justify-content:center;height:100px;width:100%;background:var(--surface-2); }
+.report-bar-track span { width:50%;background:var(--chart);min-height:0; }
+@media(max-width:1100px){.report-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.report-two-columns{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:640px){.report-catalog,.report-metrics,.report-provenance dl{grid-template-columns:minmax(0,1fr)}.report-template{padding:var(--space-4)}}
+.reports-workspace :is(.table-frame,.report-chart-scroll):focus-visible { outline:3px solid var(--focus);outline-offset:2px; }
