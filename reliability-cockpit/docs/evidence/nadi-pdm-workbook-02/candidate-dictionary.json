@@ -1,0 +1,1335 @@
+{
+  "profiles": [
+    {
+      "id": "boiler-three-point-rms",
+      "context": "VIBRATION_BOILER",
+      "label": "Boiler · tiga titik / sembilan axis RMS",
+      "version": "candidate-0.2.0",
+      "sourceRef": "WB-VIB-BOILER-02",
+      "filename": "TRENDING VIBRASI BOILER AREA.xlsx",
+      "sheetIndex": 35,
+      "methodTerm": "VIBRATION",
+      "headerRange": "A1:N2",
+      "approval": "PENDING_ENGINEER_VALIDATION",
+      "fields": [
+        {
+          "id": "axis-1V",
+          "label": "1V",
+          "unit": "mm/s-rms",
+          "headerCells": [
+            "B2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "B3:B145",
+          "classification": "DIRECT",
+          "sourcePointLabel": "1V",
+          "sourceAxis": "V"
+        },
+        {
+          "id": "axis-1H",
+          "label": "1H",
+          "unit": "mm/s-rms",
+          "headerCells": [
+            "C2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "C3:C145",
+          "classification": "DIRECT",
+          "sourcePointLabel": "1H",
+          "sourceAxis": "H"
+        },
+        {
+          "id": "axis-1A",
+          "label": "1A",
+          "unit": "mm/s-rms",
+          "headerCells": [
+            "D2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "D3:D145",
+          "classification": "DIRECT",
+          "sourcePointLabel": "1A",
+          "sourceAxis": "A"
+        },
+        {
+          "id": "axis-2V",
+          "label": "2V",
+          "unit": "mm/s-rms",
+          "headerCells": [
+            "E2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "E3:E145",
+          "classification": "DIRECT",
+          "sourcePointLabel": "2V",
+          "sourceAxis": "V"
+        },
+        {
+          "id": "axis-2H",
+          "label": "2H",
+          "unit": "mm/s-rms",
+          "headerCells": [
+            "F2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "F3:F145",
+          "classification": "DIRECT",
+          "sourcePointLabel": "2H",
+          "sourceAxis": "H"
+        },
+        {
+          "id": "axis-2A",
+          "label": "2A",
+          "unit": "mm/s-rms",
+          "headerCells": [
+            "G2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "G3:G145",
+          "classification": "DIRECT",
+          "sourcePointLabel": "2A",
+          "sourceAxis": "A"
+        },
+        {
+          "id": "axis-3V",
+          "label": "3V",
+          "unit": "mm/s-rms",
+          "headerCells": [
+            "H2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "H3:H145",
+          "classification": "DIRECT",
+          "sourcePointLabel": "3V",
+          "sourceAxis": "V"
+        },
+        {
+          "id": "axis-3H",
+          "label": "3H",
+          "unit": "mm/s-rms",
+          "headerCells": [
+            "I2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "I3:I145",
+          "classification": "DIRECT",
+          "sourcePointLabel": "3H",
+          "sourceAxis": "H"
+        },
+        {
+          "id": "axis-3A",
+          "label": "3A",
+          "unit": "mm/s-rms",
+          "headerCells": [
+            "J2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "J3:J145",
+          "classification": "DIRECT",
+          "sourcePointLabel": "3A",
+          "sourceAxis": "A"
+        }
+      ],
+      "unresolved": [
+        "Label titik/axis sumber bukan point_ref kanonis; arti axis, besaran, bandwidth, RMS/p-p, instrumen dan pemasangan perlu engineer.",
+        "Tidak menggabungkan portable, DCS/Bently, displacement atau velocity. Unit asli tidak dikonversi.",
+        "v1.1 hanya memiliki orientasi/instrumen/prosedur tingkat inspeksi; pisahkan inspeksi bila konteks titik berbeda. Waktu dan binding titik tetap kosong."
+      ]
+    },
+    {
+      "id": "boiler-five-axis",
+      "context": "VIBRATION_BOILER",
+      "label": "Boiler · lima axis sumber",
+      "version": "candidate-0.2.0",
+      "sourceRef": "WB-VIB-BOILER-02",
+      "filename": "TRENDING VIBRASI BOILER AREA.xlsx",
+      "sheetIndex": 12,
+      "methodTerm": "VIBRATION",
+      "headerRange": "A1:G2",
+      "approval": "PENDING_ENGINEER_VALIDATION",
+      "fields": [
+        {
+          "id": "axis-1V",
+          "label": "1V",
+          "unit": "mm/s",
+          "headerCells": [
+            "B2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "B3:B77",
+          "classification": "DIRECT",
+          "sourcePointLabel": "1V",
+          "sourceAxis": "V"
+        },
+        {
+          "id": "axis-1H",
+          "label": "1H",
+          "unit": "mm/s",
+          "headerCells": [
+            "C2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "C3:C77",
+          "classification": "DIRECT",
+          "sourcePointLabel": "1H",
+          "sourceAxis": "H"
+        },
+        {
+          "id": "axis-2V",
+          "label": "2V",
+          "unit": "mm/s",
+          "headerCells": [
+            "D2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "D3:D77",
+          "classification": "DIRECT",
+          "sourcePointLabel": "2V",
+          "sourceAxis": "V"
+        },
+        {
+          "id": "axis-2H",
+          "label": "2H",
+          "unit": "mm/s",
+          "headerCells": [
+            "E2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "E3:E77",
+          "classification": "DIRECT",
+          "sourcePointLabel": "2H",
+          "sourceAxis": "H"
+        },
+        {
+          "id": "axis-2A",
+          "label": "2A",
+          "unit": "mm/s",
+          "headerCells": [
+            "F2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "F3:F77",
+          "classification": "DIRECT",
+          "sourcePointLabel": "2A",
+          "sourceAxis": "A"
+        }
+      ],
+      "unresolved": [
+        "Label titik/axis sumber bukan point_ref kanonis; arti axis, besaran, bandwidth, RMS/p-p, instrumen dan pemasangan perlu engineer.",
+        "Tidak menggabungkan portable, DCS/Bently, displacement atau velocity. Unit asli tidak dikonversi.",
+        "v1.1 hanya memiliki orientasi/instrumen/prosedur tingkat inspeksi; pisahkan inspeksi bila konteks titik berbeda. Waktu dan binding titik tetap kosong."
+      ]
+    },
+    {
+      "id": "bc-irregular-axis",
+      "context": "VIBRATION_BC",
+      "label": "BC · subset axis tidak lengkap",
+      "version": "candidate-0.2.0",
+      "sourceRef": "WB-VIB-BC-02",
+      "filename": "TRENDING VIBRASI BC AREA EPA.xlsx",
+      "sheetIndex": 0,
+      "methodTerm": "VIBRATION",
+      "headerRange": "A1:AB2",
+      "approval": "PENDING_ENGINEER_VALIDATION",
+      "fields": [
+        {
+          "id": "axis-1V",
+          "label": "1V",
+          "unit": "mm/s",
+          "headerCells": [
+            "B2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "B3:B59",
+          "classification": "DIRECT",
+          "sourcePointLabel": "1V",
+          "sourceAxis": "V"
+        },
+        {
+          "id": "axis-1H",
+          "label": "1H",
+          "unit": "mm/s",
+          "headerCells": [
+            "C2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "C3:C59",
+          "classification": "DIRECT",
+          "sourcePointLabel": "1H",
+          "sourceAxis": "H"
+        },
+        {
+          "id": "axis-1A",
+          "label": "1A",
+          "unit": "mm/s",
+          "headerCells": [
+            "D2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "D3:D59",
+          "classification": "DIRECT",
+          "sourcePointLabel": "1A",
+          "sourceAxis": "A"
+        },
+        {
+          "id": "axis-2V",
+          "label": "2V",
+          "unit": "mm/s",
+          "headerCells": [
+            "E2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "E3:E59",
+          "classification": "DIRECT",
+          "sourcePointLabel": "2V",
+          "sourceAxis": "V"
+        },
+        {
+          "id": "axis-2H",
+          "label": "2H",
+          "unit": "mm/s",
+          "headerCells": [
+            "F2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "F3:F59",
+          "classification": "DIRECT",
+          "sourcePointLabel": "2H",
+          "sourceAxis": "H"
+        },
+        {
+          "id": "axis-2A",
+          "label": "2A",
+          "unit": "mm/s",
+          "headerCells": [
+            "G2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "G3:G59",
+          "classification": "DIRECT",
+          "sourcePointLabel": "2A",
+          "sourceAxis": "A"
+        },
+        {
+          "id": "axis-3V",
+          "label": "3V",
+          "unit": "mm/s",
+          "headerCells": [
+            "H2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "H3:H59",
+          "classification": "DIRECT",
+          "sourcePointLabel": "3V",
+          "sourceAxis": "V"
+        },
+        {
+          "id": "axis-3H",
+          "label": "3H",
+          "unit": "mm/s",
+          "headerCells": [
+            "I2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "I3:I59",
+          "classification": "DIRECT",
+          "sourcePointLabel": "3H",
+          "sourceAxis": "H"
+        },
+        {
+          "id": "axis-3A",
+          "label": "3A",
+          "unit": "mm/s",
+          "headerCells": [
+            "J2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "J3:J59",
+          "classification": "DIRECT",
+          "sourcePointLabel": "3A",
+          "sourceAxis": "A"
+        },
+        {
+          "id": "axis-6V",
+          "label": "6V",
+          "unit": "mm/s",
+          "headerCells": [
+            "Q2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "Q3:Q59",
+          "classification": "DIRECT",
+          "sourcePointLabel": "6V",
+          "sourceAxis": "V"
+        },
+        {
+          "id": "axis-6A",
+          "label": "6A",
+          "unit": "mm/s",
+          "headerCells": [
+            "R2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "R3:R59",
+          "classification": "DIRECT",
+          "sourcePointLabel": "6A",
+          "sourceAxis": "A"
+        }
+      ],
+      "unresolved": [
+        "Label titik/axis sumber bukan point_ref kanonis; arti axis, besaran, bandwidth, RMS/p-p, instrumen dan pemasangan perlu engineer.",
+        "Tidak menggabungkan portable, DCS/Bently, displacement atau velocity. Unit asli tidak dikonversi.",
+        "v1.1 hanya memiliki orientasi/instrumen/prosedur tingkat inspeksi; pisahkan inspeksi bila konteks titik berbeda. Waktu dan binding titik tetap kosong.",
+        "Subset 11 dari 26 kolom axis. Sumber melewati 6H; tidak menambahkan axis hilang atau menyamakan konfigurasi sheet lain."
+      ]
+    },
+    {
+      "id": "turbine-four-point",
+      "context": "VIBRATION_TURBINE",
+      "label": "Turbin/pompa · empat titik / dua belas axis",
+      "version": "candidate-0.2.0",
+      "sourceRef": "WB-VIB-TURBINE-02",
+      "filename": "TRENDING VIBRASI TURBIN AREA.xlsx",
+      "sheetIndex": 14,
+      "methodTerm": "VIBRATION",
+      "headerRange": "A1:N2",
+      "approval": "PENDING_ENGINEER_VALIDATION",
+      "fields": [
+        {
+          "id": "axis-1V",
+          "label": "1V",
+          "unit": "mm/s",
+          "headerCells": [
+            "B2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "B3:B95",
+          "classification": "DIRECT",
+          "sourcePointLabel": "1V",
+          "sourceAxis": "V"
+        },
+        {
+          "id": "axis-1H",
+          "label": "1H",
+          "unit": "mm/s",
+          "headerCells": [
+            "C2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "C3:C95",
+          "classification": "DIRECT",
+          "sourcePointLabel": "1H",
+          "sourceAxis": "H"
+        },
+        {
+          "id": "axis-1A",
+          "label": "1A",
+          "unit": "mm/s",
+          "headerCells": [
+            "D2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "D3:D95",
+          "classification": "DIRECT",
+          "sourcePointLabel": "1A",
+          "sourceAxis": "A"
+        },
+        {
+          "id": "axis-2V",
+          "label": "2V",
+          "unit": "mm/s",
+          "headerCells": [
+            "E2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "E3:E95",
+          "classification": "DIRECT",
+          "sourcePointLabel": "2V",
+          "sourceAxis": "V"
+        },
+        {
+          "id": "axis-2H",
+          "label": "2H",
+          "unit": "mm/s",
+          "headerCells": [
+            "F2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "F3:F95",
+          "classification": "DIRECT",
+          "sourcePointLabel": "2H",
+          "sourceAxis": "H"
+        },
+        {
+          "id": "axis-2A",
+          "label": "2A",
+          "unit": "mm/s",
+          "headerCells": [
+            "G2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "G3:G95",
+          "classification": "DIRECT",
+          "sourcePointLabel": "2A",
+          "sourceAxis": "A"
+        },
+        {
+          "id": "axis-3V",
+          "label": "3V",
+          "unit": "mm/s",
+          "headerCells": [
+            "H2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "H3:H95",
+          "classification": "DIRECT",
+          "sourcePointLabel": "3V",
+          "sourceAxis": "V"
+        },
+        {
+          "id": "axis-3H",
+          "label": "3H",
+          "unit": "mm/s",
+          "headerCells": [
+            "I2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "I3:I95",
+          "classification": "DIRECT",
+          "sourcePointLabel": "3H",
+          "sourceAxis": "H"
+        },
+        {
+          "id": "axis-3A",
+          "label": "3A",
+          "unit": "mm/s",
+          "headerCells": [
+            "J2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "J3:J95",
+          "classification": "DIRECT",
+          "sourcePointLabel": "3A",
+          "sourceAxis": "A"
+        },
+        {
+          "id": "axis-4V",
+          "label": "4V",
+          "unit": "mm/s",
+          "headerCells": [
+            "K2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "K3:K95",
+          "classification": "DIRECT",
+          "sourcePointLabel": "4V",
+          "sourceAxis": "V"
+        },
+        {
+          "id": "axis-4H",
+          "label": "4H",
+          "unit": "mm/s",
+          "headerCells": [
+            "L2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "L3:L95",
+          "classification": "DIRECT",
+          "sourcePointLabel": "4H",
+          "sourceAxis": "H"
+        },
+        {
+          "id": "axis-4A",
+          "label": "4A",
+          "unit": "mm/s",
+          "headerCells": [
+            "M2"
+          ],
+          "unitCell": "B1",
+          "valueRange": "M3:M95",
+          "classification": "DIRECT",
+          "sourcePointLabel": "4A",
+          "sourceAxis": "A"
+        }
+      ],
+      "unresolved": [
+        "Label titik/axis sumber bukan point_ref kanonis; arti axis, besaran, bandwidth, RMS/p-p, instrumen dan pemasangan perlu engineer.",
+        "Tidak menggabungkan portable, DCS/Bently, displacement atau velocity. Unit asli tidak dikonversi.",
+        "v1.1 hanya memiliki orientasi/instrumen/prosedur tingkat inspeksi; pisahkan inspeksi bila konteks titik berbeda. Waktu dan binding titik tetap kosong."
+      ]
+    },
+    {
+      "id": "cep-bearing-cbm",
+      "context": "CEP_CBM",
+      "label": "CEP · temperatur bearing / CBM provisional",
+      "version": "candidate-0.2.0",
+      "sourceRef": "WB-CEP-02",
+      "filename": "New Log Sheet_CEP_CBM1.xls",
+      "sheetIndex": 0,
+      "methodTerm": "OTHER",
+      "headerRange": "D11:H31",
+      "approval": "PENDING_ENGINEER_VALIDATION",
+      "fields": [
+        {
+          "id": "current",
+          "label": "Current (Ampere)",
+          "unit": "Ampere",
+          "headerCells": [
+            "D17"
+          ],
+          "unitCell": "D17",
+          "valueRange": "I17:BP17",
+          "classification": "DIRECT"
+        },
+        {
+          "id": "temperature-19",
+          "label": "Motor Thrust Brg Temp (1)",
+          "unit": "",
+          "headerCells": [
+            "D19"
+          ],
+          "unitCell": "",
+          "valueRange": "I19:BP19",
+          "classification": "AMBIGUOUS"
+        },
+        {
+          "id": "temperature-20",
+          "label": "Motor Inboard Brg Temp (2)",
+          "unit": "",
+          "headerCells": [
+            "D20"
+          ],
+          "unitCell": "",
+          "valueRange": "I20:BP20",
+          "classification": "AMBIGUOUS"
+        },
+        {
+          "id": "temperature-21",
+          "label": "Pump Brg Temp (3)",
+          "unit": "",
+          "headerCells": [
+            "D21"
+          ],
+          "unitCell": "",
+          "valueRange": "I21:BP21",
+          "classification": "AMBIGUOUS"
+        }
+      ],
+      "unresolved": [
+        "OTHER adalah konteks CBM provisional, bukan approval IR_THERMOGRAPHY atau MCSA.",
+        "Unit oC hanya eksplisit pada BASELINE; tidak diasumsikan berlaku untuk pembacaan temperatur. Unit temperatur tetap kosong hingga diklarifikasi.",
+        "IR Window tidak membuktikan kamera/thermogram/emissivity/reflected temperature. Label fase koneksi tanpa unit terverifikasi tidak diterapkan.",
+        "Arus adalah observasi beban; tidak menjadi diagnosis atau otomatis sebanding dengan temperatur. Date/Time parsial dan timezone belum disetujui."
+      ]
+    },
+    {
+      "id": "cep-ir-window",
+      "context": "CEP_CBM",
+      "label": "CEP · konteks IR Window provisional",
+      "version": "candidate-0.2.0",
+      "sourceRef": "WB-CEP-02",
+      "filename": "New Log Sheet_CEP_CBM1.xls",
+      "sheetIndex": 2,
+      "methodTerm": "OTHER",
+      "headerRange": "C4:M18",
+      "approval": "PENDING_ENGINEER_VALIDATION",
+      "fields": [
+        {
+          "id": "current",
+          "label": "Current (Ampere)",
+          "unit": "Ampere",
+          "headerCells": [
+            "C9"
+          ],
+          "unitCell": "C9",
+          "valueRange": "D9:M9",
+          "classification": "DIRECT"
+        }
+      ],
+      "unresolved": [
+        "OTHER adalah konteks CBM provisional, bukan approval IR_THERMOGRAPHY atau MCSA.",
+        "Unit oC hanya eksplisit pada BASELINE; tidak diasumsikan berlaku untuk pembacaan temperatur. Unit temperatur tetap kosong hingga diklarifikasi.",
+        "IR Window tidak membuktikan kamera/thermogram/emissivity/reflected temperature. Label fase koneksi tanpa unit terverifikasi tidak diterapkan.",
+        "Arus adalah observasi beban; tidak menjadi diagnosis atau otomatis sebanding dengan temperatur. Date/Time parsial dan timezone belum disetujui."
+      ]
+    }
+  ],
+  "lineage_checks": [
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-1V",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-1H",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-1A",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-2V",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-2H",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-2A",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-3V",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-3H",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-3A",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "boiler-five-axis",
+      "field": "axis-1V",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "boiler-five-axis",
+      "field": "axis-1H",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "boiler-five-axis",
+      "field": "axis-2V",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "boiler-five-axis",
+      "field": "axis-2H",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "boiler-five-axis",
+      "field": "axis-2A",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-1V",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-1H",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-1A",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-2V",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-2H",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-2A",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-3V",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-3H",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-3A",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-6V",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-6A",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-1V",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-1H",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-1A",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-2V",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-2H",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-2A",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-3V",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-3H",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-3A",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-4V",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-4H",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-4A",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "cep-bearing-cbm",
+      "field": "current",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "cep-bearing-cbm",
+      "field": "temperature-19",
+      "classification": "AMBIGUOUS",
+      "exact_label": true,
+      "literal_unit": false,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "cep-bearing-cbm",
+      "field": "temperature-20",
+      "classification": "AMBIGUOUS",
+      "exact_label": true,
+      "literal_unit": false,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "cep-bearing-cbm",
+      "field": "temperature-21",
+      "classification": "AMBIGUOUS",
+      "exact_label": true,
+      "literal_unit": false,
+      "formula_free_window": true,
+      "canonical_binding": false
+    },
+    {
+      "profile": "cep-ir-window",
+      "field": "current",
+      "classification": "DIRECT",
+      "exact_label": true,
+      "literal_unit": true,
+      "formula_free_window": true,
+      "canonical_binding": false
+    }
+  ],
+  "direct_fields": 39,
+  "ambiguous_input_fields": 3,
+  "contract_mapping": [
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-1V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-1H",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-1A",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-2V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-2H",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-2A",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-3V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-3H",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-3A",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-five-axis",
+      "field": "axis-1V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-five-axis",
+      "field": "axis-1H",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-five-axis",
+      "field": "axis-2V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-five-axis",
+      "field": "axis-2H",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-five-axis",
+      "field": "axis-2A",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-1V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-1H",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-1A",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-2V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-2H",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-2A",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-3V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-3H",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-3A",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-6V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-6A",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-1V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-1H",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-1A",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-2V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-2H",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-2A",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-3V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-3H",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-3A",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-4V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-4H",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-4A",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "cep-bearing-cbm",
+      "field": "current",
+      "quantity_binding": "SOURCE_LABEL_CANDIDATE",
+      "point_binding": "UNMAPPED",
+      "source_axis": "NOT_APPLICABLE"
+    },
+    {
+      "profile": "cep-bearing-cbm",
+      "field": "temperature-19",
+      "quantity_binding": "SOURCE_LABEL_CANDIDATE",
+      "point_binding": "UNMAPPED",
+      "source_axis": "NOT_APPLICABLE"
+    },
+    {
+      "profile": "cep-bearing-cbm",
+      "field": "temperature-20",
+      "quantity_binding": "SOURCE_LABEL_CANDIDATE",
+      "point_binding": "UNMAPPED",
+      "source_axis": "NOT_APPLICABLE"
+    },
+    {
+      "profile": "cep-bearing-cbm",
+      "field": "temperature-21",
+      "quantity_binding": "SOURCE_LABEL_CANDIDATE",
+      "point_binding": "UNMAPPED",
+      "source_axis": "NOT_APPLICABLE"
+    },
+    {
+      "profile": "cep-ir-window",
+      "field": "current",
+      "quantity_binding": "SOURCE_LABEL_CANDIDATE",
+      "point_binding": "UNMAPPED",
+      "source_axis": "NOT_APPLICABLE"
+    }
+  ]
+}

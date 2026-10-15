@@ -4,6 +4,7 @@ import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {browserBundle} from './localization-browser-build.mjs';
+import {pdmKeyboardChecks} from './pdm-keyboard-browser.mjs';
 const {chromium}=await import(process.env.NADI_PLAYWRIGHT_MODULE?pathToFileURL(process.env.NADI_PLAYWRIGHT_MODULE).href:'playwright');
 const base='https://pdm.synthetic.invalid',out=resolve(process.env.NADI_BROWSER_OUTPUT??'/tmp/nadi-pdm-input-evidence');mkdirSync(out,{recursive:true});
 const bundle=await browserBundle(),browser=await chromium.launch({headless:true}),checks=[],errors=[],commands=[];
@@ -56,6 +57,69 @@ await ctx.route('**/*',async route=>{
 const button=name=>p.getByRole('button',{name,exact:true});const go=async()=>{await p.goto(base+'/pdm',{waitUntil:'networkidle'});await button('Input Pengukuran').waitFor();};
 async function evidence(name){for(const width of [1440,768,390]){await p.setViewportSize({width,height:1086});check('no page overflow '+name+' '+width,await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await p.evaluate(()=>window.scrollTo(0,0));await p.screenshot({path:out+'/'+name+'-'+width+'.png',fullPage:true});}}
 try{
+ await pdmKeyboardChecks({p,button,go,check,out});
+ // Workbook candidates: same mounted components, all network responses intercepted.
+ const workbookOut=resolve(process.env.NADI_WORKBOOK_OUTPUT??out+'/workbook-candidates');mkdirSync(workbookOut,{recursive:true});
+ for(const [context,method,units] of [['AREA_FAN','TRIBOLOGY',['Cst','mgKOH/g','ppm']],['AREA_MILL','TRIBOLOGY',['%','mg KOH/g','ppm']],['LOGSHEET_6KV','MCSA',['%','Ω','dB']]]){
+  await go();await button('Input Pengukuran').click();await p.getByLabel('Konteks input kandidat').selectOption(context);
+  check('workbook context never changes method '+context,await p.getByLabel('Metode',{exact:true}).inputValue()==='VIBRATION');
+  check('workbook candidate requires explicit method '+context,await button('Gunakan baris kandidat').isDisabled());
+  await p.getByLabel('Metode',{exact:true}).selectOption(method);await button('Gunakan baris kandidat').click();
+  check('workbook creates only three native rows '+context,await p.locator('.pdm-measurement-row').count()===3);
+  check('workbook version and pending label '+context,await p.getByText(/candidate-0.1.0/).isVisible()&&await p.locator('.pdm-workbook-template').getByText('Menunggu Validasi Engineer',{exact:true}).isVisible());
+  for(let i=1;i<=3;i++){
+   check('literal source unit '+context+' '+i,await p.getByLabel('Unit asli '+i,{exact:true}).inputValue()===units[i-1]);
+   check('point and time unresolved '+context+' '+i,await p.getByLabel('Titik '+i,{exact:true}).inputValue()===''&&await p.getByLabel('Waktu measurement '+i,{exact:true}).inputValue()==='');
+   check('no workbook reading prefilled '+context+' '+i,await p.getByLabel('Tipe nilai '+i,{exact:true}).inputValue()==='UNKNOWN'&&await p.getByLabel('Nilai asli '+i,{exact:true}).inputValue()==='');
+  }
+  await p.getByLabel('Tipe nilai 1',{exact:true}).selectOption('NUMERIC');await p.getByLabel('Nilai asli 1',{exact:true}).fill('0');
+  p.once('dialog',dialog=>dialog.dismiss());await button('Gunakan baris kandidat').click();
+  check('cancelled replacement preserves unsaved value '+context,await p.getByLabel('Nilai asli 1',{exact:true}).inputValue()==='0');
+  for(const width of [1440,1920]){
+   await p.setViewportSize({width,height:1200});await p.evaluate(()=>window.scrollTo(0,0));
+   check('workbook desktop no page overflow '+context+' '+width,await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+   await p.screenshot({path:workbookOut+'/'+context.toLowerCase()+'-'+width+'.png',fullPage:true});
+  }
+  await p.evaluate(()=>document.documentElement.dataset.theme='dark');
+  check('workbook dark labels remain visible '+context,await p.getByText(/Profil sumber/).isVisible());
+  await p.screenshot({path:workbookOut+'/'+context.toLowerCase()+'-dark-1920.png',fullPage:true});
+  await p.evaluate(()=>delete document.documentElement.dataset.theme);
+  p.once('dialog',dialog=>dialog.accept());await button('Batal input').click();
+ }
+
+ // WORKBOOK-02: representative source families; standalone intercepted synthetic evidence.
+ const nextOut=resolve(process.env.NADI_WORKBOOK2_OUTPUT??out+'/workbook-02');mkdirSync(nextOut,{recursive:true});
+ for(const [context,profile,method,count,unit] of [
+  ['VIBRATION_BOILER','boiler-three-point-rms','VIBRATION',9,'mm/s-rms'],
+  ['VIBRATION_BOILER','boiler-five-axis','VIBRATION',5,'mm/s'],
+  ['VIBRATION_BC','bc-irregular-axis','VIBRATION',11,'mm/s'],
+  ['VIBRATION_TURBINE','turbine-four-point','VIBRATION',12,'mm/s'],
+  ['CEP_CBM','cep-bearing-cbm','OTHER',4,'Ampere'],
+  ['CEP_CBM','cep-ir-window','OTHER',1,'Ampere']]){
+  await go();await button('Input Pengukuran').click();await p.getByLabel('Konteks input kandidat').selectOption(context);
+  check('explicit new family selection '+profile,await button('Gunakan baris kandidat').count()===0);
+  await p.getByLabel('Keluarga template kandidat').selectOption(profile);
+  check('context keeps selected method '+profile,await p.getByLabel('Metode',{exact:true}).inputValue()==='VIBRATION');
+  await p.getByLabel('Metode',{exact:true}).selectOption('MCSA');
+  check('incompatible method refused '+profile,await button('Gunakan baris kandidat').isDisabled());
+  await p.getByLabel('Metode',{exact:true}).selectOption(method);await button('Gunakan baris kandidat').click();
+  check('exact family row count '+profile,await p.locator('.pdm-measurement-row').count()===count);
+  check('literal family unit '+profile,await p.getByLabel('Unit asli 1',{exact:true}).inputValue()===unit);
+  check('unbound physical point and unknown time '+profile,await p.getByLabel('Titik 1',{exact:true}).inputValue()===''&&await p.getByLabel('Waktu measurement 1',{exact:true}).inputValue()==='');
+  check('no original source value copied '+profile,await p.getByLabel('Tipe nilai 1',{exact:true}).inputValue()==='UNKNOWN'&&await p.getByLabel('Nilai asli 1',{exact:true}).inputValue()==='');
+  if(profile==='cep-bearing-cbm')check('ambiguous thermal units stay empty',await p.getByLabel('Unit asli 2',{exact:true}).inputValue()===''&&await p.getByText('CBM provisional: temperatur/IR Window belum membuktikan inspeksi IRT lengkap.',{exact:false}).isVisible());
+  if(method==='VIBRATION')check('source axis remains a display hint, not physical quantity or canonical point '+profile,await p.locator('.workbook-field').first().getByText(/belum terikat ke titik kanonis/).isVisible()&&await p.getByLabel('Parameter 1',{exact:true}).inputValue()===''&&await p.locator('.pdm-measurement-row').first().getByText(/label sumber 1V/).isVisible());
+  await p.getByLabel('Tipe nilai 1',{exact:true}).selectOption('NUMERIC');await p.getByLabel('Nilai asli 1',{exact:true}).fill('0');
+  p.once('dialog',dialog=>dialog.dismiss());await button('Gunakan baris kandidat').click();
+  check('replacement confirmation retains zero '+profile,await p.getByLabel('Nilai asli 1',{exact:true}).inputValue()==='0');
+  for(const width of [1440,1920])for(const theme of ['light','dark']){
+   await p.setViewportSize({width,height:1200});await p.evaluate(t=>document.documentElement.dataset.theme=t,theme);await p.evaluate(()=>window.scrollTo(0,0));
+   check('family desktop no overflow '+profile+' '+width+' '+theme,await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+   await p.screenshot({path:nextOut+'/'+profile+'-'+theme+'-'+width+'.png',fullPage:true});
+  }
+  await p.evaluate(()=>delete document.documentElement.dataset.theme);p.once('dialog',dialog=>dialog.accept());await button('Batal input').click();
+ }
+ await p.setViewportSize({width:1440,height:1086});
  await go();await button('Input Pengukuran').click();await p.getByLabel('Konteks input kandidat').selectOption('AREA_FAN');check('template awaits validation',await p.getByText(/Menunggu Validasi Engineer\. Pemilihan konteks/).isVisible());
  await p.getByLabel('Versi metode / prosedur').fill('candidate-1');await p.getByLabel('Waktu inspeksi asli').fill('2026-10-09T08:00:00+07:00');await p.getByLabel('Referensi instrumen').fill('instrument:SYNTHETIC');await p.getByLabel('Referensi prosedur').fill('procedure:SYNTHETIC');await p.getByLabel('Orientasi').fill('orientation:SYNTHETIC');await p.getByLabel('Konteks operasi',{exact:true}).fill('SYNTHETIC steady regime');
  for(let i=1;i<=3;i++){if(i>1)await button('Tambah baris').click();await p.getByLabel('Titik '+i,{exact:true}).fill('point:SYNTHETIC');await p.getByLabel('Parameter '+i,{exact:true}).fill(i===3?'synthetic_state':'synthetic_quantity');await p.getByLabel('Tipe nilai '+i,{exact:true}).selectOption(i===3?'UNKNOWN':'NUMERIC');if(i<3)await p.getByLabel('Nilai asli '+i,{exact:true}).fill(i===1?'0':'4.2');await p.getByLabel('Unit asli '+i,{exact:true}).fill(i===3?'':'unit-A');await p.getByLabel('Waktu measurement '+i,{exact:true}).fill(i===1?time:i===2?'2026-10-09T02:51:00Z':'');}

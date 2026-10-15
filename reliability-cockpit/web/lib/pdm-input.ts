@@ -5,11 +5,15 @@ export const inputContexts = [
  {id:'AREA_FAN',label:'AREA FAN',version:'candidate-1'},
  {id:'AREA_MILL',label:'AREA MILL',version:'candidate-1'},
  {id:'LOGSHEET_6KV',label:'Logsheet 6 kV',version:'candidate-1'},
+ {id:'VIBRATION_BOILER',label:'Vibration · Boiler',version:'candidate-2'},
+ {id:'VIBRATION_BC',label:'Vibration · BC/conveyor',version:'candidate-2'},
+ {id:'VIBRATION_TURBINE',label:'Vibration · Turbin/pompa',version:'candidate-2'},
+ {id:'CEP_CBM',label:'CEP · Thermal / IR Window provisional',version:'candidate-2'},
 ] as const;
 // No workbook columns/units/limits are approved. Definitions bind schema paths only.
 export const inputFields={inspection:['canonical_asset_id','method','method_version','inspected_at','operating_context'],measurement:['point_ref','quantity','value','unit','measured_at'],optionalContext:['instrument_ref','procedure_ref','orientation']} as const;
 export type ValueKind='NUMERIC'|'TEXT'|'BOOLEAN'|'UNKNOWN';
-export type EntryRow={key:string;point:string;quantity:string;kind:ValueKind;value:string;unit:string;time:string};
+export type EntryRow={sourceHint?:string;key:string;point:string;quantity:string;kind:ValueKind;value:string;unit:string;time:string};
 export interface Entry {inputContext?:string;asset:string;method:Method;version:string;time:string;context:string;rows:EntryRow[];observation:string;hypothesis:string;instrument:string;procedure:string;orientation:string;metadata?:{ref:string;filename:string;type:string;size:string;sha256:string};}
 export interface InspectionDraft {canonical_asset_id:string;method:Method;method_version:string;inspector_ref:string;inspected_at:string|null;operating_context:string|null;measurements:Measurement[];observations:string[];interpretations:string[];attachments:Inspection['attachments'];case_refs:string[];method_extension:Record<string,string|number|boolean|null>;}
 export function emptyRow(key:string):EntryRow{return {key,point:'',quantity:'',kind:'UNKNOWN',value:'',unit:'',time:''};}

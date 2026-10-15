@@ -187,3 +187,17 @@ informational color with exact-value/time table alternatives, never severity col
 or connecting interpolation. Light/dark and responsive evidence remains isolated:
 [PdM review](reliability-cockpit/docs/nadi-pdm-center-input-01.md). PO visual review
 and full accessibility certification are separate pending gates.
+
+## Workbook header candidates — 2026-10-15
+
+Input Pengukuran reuses V1 cards, neutral pending labels, fieldsets, buttons and
+scroll-contained measurement rows. The candidate source panel uses auto-fit desktop
+cards for literal header/unit labels and separate unresolved notes; no engineering
+severity colors. Units remain explicit and missing values remain UNKNOWN/null.
+Replacement confirmation preserves unsaved readings; applying a candidate does not
+edit an existing revision. [1440/1920 light/dark component evidence](reliability-cockpit/docs/evidence/nadi-pdm-workbook-01/README.md)
+is synthetic, not live or Product Owner acceptance. No new token system is introduced.
+
+## PdM desktop workbook candidates — WORKBOOK-02
+
+Panel kandidat memakai token/grid V1 existing dan selector keluarga eksplisit; label axis sumber terlihat tanpa canonical point binding. Unit ambigu tampil BELUM DIKETAHUI, nilai awal UNKNOWN/null, pending approval bukan severity. [24 screenshot sintetis 1440/1920 light/dark](reliability-cockpit/docs/evidence/nadi-pdm-workbook-02/README.md) adalah evidence komponen, bukan live acceptance.

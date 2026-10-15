@@ -584,3 +584,10 @@ td strong { color: var(--text); font-weight: 650; }
 .engineering-actions { display:flex;gap:12px;flex-wrap:wrap;margin-block:16px; }
 .engineering-prose { white-space:pre-wrap;overflow-wrap:anywhere; }
 .product-workspace .identifier { max-width:100%;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;word-break:break-word; }
+
+/* Workbook header candidates reuse V1 surfaces; no engineering-severity colors. */
+.pdm-workbook-template { padding:var(--space-4); margin:var(--space-4) 0; border:1px solid var(--line); border-radius:var(--radius); }
+.pdm-workbook-template .workbook-field { padding:var(--space-3); border:1px solid var(--line); border-radius:var(--radius-sm); min-width:0; overflow-wrap:anywhere; }
+.pdm-workbook-template details { margin:12px 0; }
+.pdm-workbook-template .section-heading { flex-wrap:wrap; }
+.pdm-workbook-template .product-context-grid { grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr)); }

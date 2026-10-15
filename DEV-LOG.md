@@ -509,3 +509,50 @@ Evidence: [implementation/self-review](reliability-cockpit/docs/nadi-pdm-center-
 - Product Owner acceptance: authority for conditional technical merge provided; no new visual/UAT/operational acceptance claimed.
 - Remaining gate: exact-head CI, review and post-merge verification; first future live branch selection needs separate approval.
 - Evidence and limitations: [LOCAL-DEV-02 report](reliability-cockpit/docs/nadi-local-dev-02.md).
+
+## 2026-10-15 — NADI-PDM-WORKBOOK-01
+
+- Objective: read-only engineer workbook discovery and safe desktop template subset (M01/M02 candidates).
+- Branch: `codex/nadi-pdm-workbook-01`; base main `106a4dc08b149576b2e84bbf8c70694288c7e9a7`; exact delivery HEAD/CI belong to the enclosing Git commit and DRAFT PR.
+- IMPLEMENTED: three candidate profiles/nine verified header fields; existing InspectionDraft v1.1, generic form and backend workflow unchanged.
+- TESTED:9/9 original lineage checks;34/34 presentation assertions;45/45 hermetic backend tests;92/92 intercepted browser checks including1440/1920 and dark mode. TypeScript/lint/build and UX assertions PASS; exact-head CI is independent.
+- MERGED: NO; DRAFT delivery only. VISIBLE on localhost:3000: NO, serving PR82 unchanged. ENGINEER APPROVAL: PENDING; no operational or Product Owner visual acceptance claimed.
+- Blockers: remaining sheet variants, original/derived boundaries, exact asset/point/time/unit semantics; Q01–Q10 remain pending.
+- Evidence/next action: [report](reliability-cockpit/docs/nadi-pdm-workbook-01.md); senior/engineer review, then separately authorized controlled preview.
+
+## 2026-10-15 — NADI-PDM-WORKBOOK-02
+
+Date: 2026-10-15
+Task ID: NADI-PDM-WORKBOOK-02
+Objective: extend source-traceable Vibration and provisional CEP/IR Window candidate templates.
+Branch: codex/nadi-pdm-workbook-01
+Commit SHA: enclosing commit; previous3aa2c015c8e8e0e591e7d239c37396e3f97eaebc; base106a4dc08b149576b2e84bbf8c70694288c7e9a7.
+PR: #85 OPEN/DRAFT; same integrated candidate.
+Implementation Status: IMPLEMENTED6 additional profiles, preserving3 old profiles/9 DIRECT; mapping PARTIAL,39 new DIRECT +3 AMBIGUOUS.
+Test Status: 42 original-source lineage checks;64 assertions;169 intercepted synthetic browser checks;45 hermetic backend checks;24 new desktop screenshots; TypeScript/lint/build PASS. Exact-head CI final evidence recorded on PR.
+CI Status: final exact-head GitHub result must be verified independently of local tests.
+Merge Status: UNMERGED.
+Development Visibility: candidate screenshots only; localhost3000 source unchanged9895890.
+Product Owner Acceptance: implementation authorized; visual and engineer validation PENDING.
+Remaining Blockers: temperature units, canonical identity/points, acquisition/timezone/comparability, IRT custody/method scope, historical import authority and operational UAT.
+Next Action: PO visual review and engineer field validation; no automatic runtime change or next implementation.
+Evidence: [report](reliability-cockpit/docs/nadi-pdm-workbook-02.md), [sanitized evidence](reliability-cockpit/docs/evidence/nadi-pdm-workbook-02/README.md). No DB/session access, source requests, collector/Mart change, restart, migration or policy change.
+
+WORKBOOK-02 self-review correction: source axis labels are display-only row hints; physical quantity and canonical point are blank until explicitly supplied by engineer. No sourceHint persistence. Impacted assertions/browser/screenshots and exact-head CI rerun.
+
+## 2026-10-15 — NADI-PDM-UI-FIX-01
+
+Date: 2026-10-15
+Task ID: NADI-PDM-UI-FIX-01
+Objective: Reveal the complete keyboard-focused measurement control and outline inside the contained desktop grid.
+Branch: existing remote codex/nadi-pdm-workbook-01; detached non-serving implementation worktree preserves the active local branch.
+Commit SHA: Delivery commit linked from PR #85; tested source baseline f8d6334ce93f766b851a5d69577ff83c1b8563e1.
+PR: [#85 OPEN/DRAFT](https://github.com/johnd-creator/reliability-knowledge-starter/pull/85)
+Implementation Status: IMPLEMENTED — component-local horizontal focus reveal; no CSS width, API, data or security contract changes.
+Test Status: TESTED — 404 focused + 169 existing hermetic browser checks; 320 complete-outline geometry observations; 64 input/workbook assertions; TypeScript/lint/build/diff PASS. Native 125% browser zoom not available; effective-width proxy explicitly distinguished.
+CI Status: Exact-head result recorded independently in PR delivery update.
+Merge Status: UNMERGED.
+Development Visibility: New correction NOT ACTIVATED. HTTPS3000 remains at f8d6334; no runtime/controller/fixture/session access or change.
+Product Owner Acceptance: PENDING controlled source selection and live visual review.
+Remaining Blockers: No hermetic keyboard regression blocker; live/native-zoom visual acceptance remains separate.
+Next Action: Controlled localhost update, Product Owner review, then merge decision. [Evidence report](reliability-cockpit/docs/nadi-pdm-ui-fix-01.md).
