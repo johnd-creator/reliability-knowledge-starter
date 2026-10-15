@@ -499,3 +499,13 @@ Product Owner Acceptance: Task implementation authorized; final visual review PE
 Remaining Blockers: Q01–Q10 field/point/instrument/procedure mappings, approved cross-acquisition comparison, attachment custody, real UAT and operational activation. QA filtered totals scan authorized documents; operational scale qualification pending.
 Next Action: Review focused DRAFT PR/evidence; validate engineering fields and compatibility separately before any runtime selection or activation.
 Evidence: [implementation/self-review](reliability-cockpit/docs/nadi-pdm-center-input-01.md), [isolated screenshots/checks](reliability-cockpit/docs/evidence/nadi-pdm-center-input-01/README.md). Original assets/workbook/PR75–81 preserved; no active DB/session/source/container access, migrations, restarts, cutover or freshness policy changes.
+
+## 2026-10-15 — NADI-LOCAL-DEV-02
+
+- Objective: resolve issue #84 in PR #83 with explicit reviewed refs, retained transition history and existing-fixture compatibility; no live transition.
+- Branch: `codex/nadi-local-dev-01`; baseline main `8397b53df29280082d1382dfa3e40a5e4e2a97af`; commit identity is the enclosing Git history and PR exact-head checks.
+- Implementation: IMPLEMENTED; deterministic TESTED94/94 (51 local/reusable +23 frontend-controller +20 launcher); merge/CI milestones recorded independently on [PR #83](https://github.com/johnd-creator/reliability-knowledge-starter/pull/83).
+- Development visibility: serving source remains PR #82 `9895890a045a221998856a175d80c17270cd0d38`; no controller installation, source selection or runtime restart/reload was performed.
+- Product Owner acceptance: authority for conditional technical merge provided; no new visual/UAT/operational acceptance claimed.
+- Remaining gate: exact-head CI, review and post-merge verification; first future live branch selection needs separate approval.
+- Evidence and limitations: [LOCAL-DEV-02 report](reliability-cockpit/docs/nadi-local-dev-02.md).

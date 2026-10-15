@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "frontend_sha": "9895890a045a221998856a175d80c17270cd0d38",
+  "backend_sha": "9895890a045a221998856a175d80c17270cd0d38",
+  "branch": "codex/nadi-local-dev-pr82",
+  "node": "22.23.1",
+  "database": "nadi_local_dev_01_test",
+  "origin": "https://localhost:3000",
+  "transition_count": 1,
+  "unit_restart_count": 0,
+  "fast_refresh": "PASS",
+  "backend_reload": "PASS",
+  "temporary_source_edits_restored": true,
+  "remaining_dirty_file": "reliability-cockpit/web/next-env.d.ts",
+  "sustained_acceptance": false,
+  "engineer_UAT": false,
+  "production_acceptance": false
+}

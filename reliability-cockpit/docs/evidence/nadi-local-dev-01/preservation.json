@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "original_database": "nadi_live_dev_test",
+  "records_sessions_ledger_constraints_unchanged": true,
+  "original_table_count": 14,
+  "container_count": 35,
+  "containers_unchanged": true,
+  "frontend_listener_identity_unchanged": true,
+  "api_parent_unchanged": true,
+  "old_generated_diff_unchanged": true
+}

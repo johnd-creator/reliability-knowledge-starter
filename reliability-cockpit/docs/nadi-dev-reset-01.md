@@ -238,3 +238,13 @@ launcher source/hash, compatible source digest and backup digest. Unknown/dirty/
 or unapproved different SHA still fails closed. A matching GitHub CI alone never proves
 actual runtime visibility. Rollback requires a fresh valid backup and repeats preflight;
 retain the expanded Advisory/ACK schema and every persisted record.
+
+
+## Reusable laptop workflow checkpoint — LOCAL-DEV-02
+
+For reviewed-ref selection, retained transition history and fixture compatibility, see
+[the LOCAL-DEV-02 runbook](nadi-local-dev-02.md). It supersedes the initial one-time
+LOCAL-DEV-01 controller design, while retaining its historical activation evidence.
+The new controller is qualified offline; merging it does not install it or switch
+the current PR #82 laptop pair. First future live selection requires separate
+authorization, release pinning, fresh preflight/backup and unchanged fixture schema.
