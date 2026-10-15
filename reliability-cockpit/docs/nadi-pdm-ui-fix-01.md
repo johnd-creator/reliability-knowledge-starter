@@ -68,7 +68,7 @@ commit are recorded in the PR delivery update, independently of local results.
 
 ## Evidence
 
-- Matched full-page 1440px screenshots, last Hapus focused:
+- Matched viewport-only 1440px screenshots, last Hapus focused:
   [before](evidence/nadi-pdm-ui-fix-01/before-hermetic-1440.png) /
   [after](evidence/nadi-pdm-ui-fix-01/after-hermetic-1440.png).
 - Settled focused viewport: [1440](evidence/nadi-pdm-ui-fix-01/focused-hermetic-1440.png),
@@ -77,6 +77,12 @@ commit are recorded in the PR delivery update, independently of local results.
 - [Geometry measurements](evidence/nadi-pdm-ui-fix-01/keyboard-results.json),
   [all browser assertions](evidence/nadi-pdm-ui-fix-01/pdm-browser-results.json),
   [screenshot hashes](evidence/nadi-pdm-ui-fix-01/sha256.json).
+
+Capture review: the initial full-page capture produced identical before/after
+images despite different pre-capture geometry. Those captures were rejected and
+replaced with viewport-only captures of exact baseline and candidate source.
+Both now visibly agree with the measured clipped/revealed control. Historical
+local captures are retained privately; no misleading full-page pair is delivered.
 
 Every image above is **hermetic synthetic browser evidence**, not live-after
 acceptance. Historical live evidence remains in its original private directory.
