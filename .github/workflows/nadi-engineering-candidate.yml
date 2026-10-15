@@ -36,7 +36,7 @@ jobs:
         working-directory: reliability-cockpit
         env:
           PYTHONPATH: '.:tests'
-        run: python -m unittest test_application_identity test_identity_adapter.AdapterTest test_application_migrations test_attachments test_session_cleanup test_bundle_d_http.RealHttpQaTest test_identity_configuration test_application_access test_attachment_readiness test_qa_limits test_qa_preflight test_qa_release test_bundle_e_rehearsal test_local_authentication test_local_login_http test_live_development test_frontend_preview test_local_development test_local_development_reusable test_advisory.AdvisoryTest test_advisory_http.AdvisoryHttpTest test_advisory_http.AdvisorySchemaGateTest test_qa_advisory_schema test_pdm_workbook_contract test_pdm_input.PdmInputTest test_pdm_input.PdmPostgresInputTest test_manual_inspection test_inspection_workflow -v
+        run: python -m unittest test_application_identity test_identity_adapter.AdapterTest test_application_migrations test_attachments test_session_cleanup test_bundle_d_http.RealHttpQaTest test_identity_configuration test_application_access test_attachment_readiness test_qa_limits test_qa_preflight test_qa_release test_bundle_e_rehearsal test_local_authentication test_local_login_http test_live_development test_frontend_preview test_local_development test_local_development_reusable test_advisory.AdvisoryTest test_advisory_http.AdvisoryHttpTest test_advisory_http.AdvisorySchemaGateTest test_qa_advisory_schema test_integration_status test_integration_observations_client test_integration_ui_contract test_pdm_workbook_contract test_pdm_input.PdmInputTest test_pdm_input.PdmPostgresInputTest test_manual_inspection test_inspection_workflow -v
       - name: Canonical contracts
         working-directory: reliability-data-contracts
         run: python -m unittest discover -s tests -v
@@ -53,7 +53,7 @@ jobs:
           node-version: '22'
       - run: npm ci
       - run: npm run check:engineering && npm run check:phase2 && npm run check:workflow && npm run check:http-qa && npm run check:bounded-http && npm run check:bounded-proxy && npm run check:local-auth && npm run check:product-safety
-      - run: npm run check:ux && npm run check:eng-product && npm run check:pdm-input && npm run lint
+      - run: npm run check:ux && npm run check:eng-product && npm run check:pdm-input && npm run check:integration && npm run lint
       - run: npx tsc --noEmit
       - run: npm run build
         env:
@@ -61,7 +61,8 @@ jobs:
           NEXT_TELEMETRY_DISABLED: '1'
       - name: Indonesian candidate browser regression (network-isolated fixtures)
         run: |
-          npm install --prefix "$RUNNER_TEMP/nadi-browser" --no-audit --no-fund --ignore-scripts playwright@1.62.1
+          npm install --prefix "$RUNNER_TEMP/nadi-browser" --no-audit --no-fund --ignore-scripts playwright@1.62.1 @axe-core/playwright@4.11.0
           node "$RUNNER_TEMP/nadi-browser/node_modules/playwright/cli.js" install --with-deps chromium
           NADI_PLAYWRIGHT_MODULE="$RUNNER_TEMP/nadi-browser/node_modules/playwright/index.mjs" node scripts/localization-browser.mjs
           NADI_PLAYWRIGHT_MODULE="$RUNNER_TEMP/nadi-browser/node_modules/playwright/index.mjs" node scripts/pdm-input-browser.mjs
+          NADI_AXE_MODULE="$RUNNER_TEMP/nadi-browser/node_modules/@axe-core/playwright/dist/index.mjs" NADI_PLAYWRIGHT_MODULE="$RUNNER_TEMP/nadi-browser/node_modules/playwright/index.mjs" node scripts/integration-browser.mjs

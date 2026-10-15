@@ -1,0 +1,289 @@
+{
+  "_fixture": "SYNTHETIC \u2014 browser regression only; no plant facts or policy activation",
+  "integration": {
+    "contract_version": "1.0",
+    "observed_at": "2026-10-15T00:00:00Z",
+    "canonical_asset_id": null,
+    "governance_schema_ready": true,
+    "condition_schema_ready": null,
+    "coverage": {
+      "registered_assets": 12,
+      "verified_mapping_assets": 3,
+      "ambiguous_mapping_assets": 1,
+      "approved_signal_assets": 0,
+      "projected_assets": null,
+      "approved_signals": 0,
+      "projected_signals": null,
+      "technical_registry_total": 47,
+      "technical_registry_active": 40,
+      "technical_snapshots": 38
+    },
+    "components": [
+      {
+        "component": "MAXIMO",
+        "state": "DEGRADED",
+        "availability": "AVAILABLE",
+        "collection_freshness": {
+          "state": "CURRENT",
+          "observed_at": "2026-10-15T00:00:00Z",
+          "max_age_seconds": 660
+        },
+        "source_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": null,
+          "max_age_seconds": null
+        },
+        "projection_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": null,
+          "max_age_seconds": null
+        },
+        "mapping_readiness": "UNKNOWN",
+        "quality": "UNKNOWN",
+        "last_successful_activity": "2020-01-01T00:00:00Z",
+        "degraded_reasons": [
+          "COLLECTOR_ERRORS"
+        ]
+      },
+      {
+        "component": "PI_COLLECTOR",
+        "state": "UNKNOWN",
+        "availability": "AVAILABLE",
+        "collection_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": null,
+          "max_age_seconds": null
+        },
+        "source_freshness": {
+          "state": "STALE",
+          "observed_at": "2020-01-01T00:00:00Z",
+          "max_age_seconds": 1800
+        },
+        "projection_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": null,
+          "max_age_seconds": null
+        },
+        "mapping_readiness": "UNKNOWN",
+        "quality": "UNKNOWN",
+        "last_successful_activity": "2020-01-01T00:00:00Z",
+        "degraded_reasons": []
+      },
+      {
+        "component": "RELIABILITY_MART",
+        "state": "UNKNOWN",
+        "availability": "AVAILABLE",
+        "collection_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": null,
+          "max_age_seconds": null
+        },
+        "source_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": null,
+          "max_age_seconds": null
+        },
+        "projection_freshness": {
+          "state": "CURRENT",
+          "observed_at": "2026-10-15T00:00:00Z",
+          "max_age_seconds": 660
+        },
+        "mapping_readiness": "UNKNOWN",
+        "quality": "UNKNOWN",
+        "last_successful_activity": "2020-01-01T00:00:00Z",
+        "degraded_reasons": []
+      },
+      {
+        "component": "ASSET_AF_MAPPING",
+        "state": "DEGRADED",
+        "availability": "AVAILABLE",
+        "collection_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": null,
+          "max_age_seconds": null
+        },
+        "source_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": null,
+          "max_age_seconds": null
+        },
+        "projection_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": null,
+          "max_age_seconds": null
+        },
+        "mapping_readiness": "PARTIAL",
+        "quality": "UNKNOWN",
+        "last_successful_activity": "2020-01-01T00:00:00Z",
+        "degraded_reasons": [
+          "PARTIAL_MAPPING_COVERAGE"
+        ]
+      },
+      {
+        "component": "PI_CONDITION_PROJECTION",
+        "state": "UNKNOWN",
+        "availability": "AVAILABLE",
+        "collection_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": null,
+          "max_age_seconds": null
+        },
+        "source_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": null,
+          "max_age_seconds": null
+        },
+        "projection_freshness": {
+          "state": "UNKNOWN",
+          "observed_at": null,
+          "max_age_seconds": null
+        },
+        "mapping_readiness": "UNKNOWN",
+        "quality": "UNKNOWN",
+        "last_successful_activity": "2020-01-01T00:00:00Z",
+        "degraded_reasons": []
+      }
+    ]
+  },
+  "trust": {
+    "scope": {
+      "site_code": "BSR",
+      "organization_code": "IP",
+      "source_system": "MAXIMO",
+      "registered_asset_boundary": "SYNTHETIC_REGISTRY",
+      "sync_freshness": "NOT_AVAILABLE",
+      "interpretation": "SYNTHETIC \u2014 bukan bukti operasional."
+    },
+    "population": {
+      "registered_reliability_assets": 12,
+      "registry_resolved": 10,
+      "registry_unresolved": 2,
+      "technical_asset_context": 120,
+      "maintenance_total": 20,
+      "registry_maintenance": 5,
+      "fmea": 3,
+      "asset_health": 0,
+      "rcfa": 2,
+      "overhaul": 0
+    },
+    "domains": [
+      {
+        "domain": "ASSET",
+        "source_system": "MAXIMO",
+        "source_object": "SYNTHETIC_ASSET",
+        "population_type": "BUSINESS_REGISTRY",
+        "record_count": 12,
+        "scoped_record_count": null,
+        "registered_assets_represented": null,
+        "business_scope": "SYNTHETIC bounded scope",
+        "relationship_state": "VERIFIED",
+        "latest_record_date": "2020-01-01T00:00:00Z",
+        "date_basis": "SYNTHETIC source record time",
+        "known_limitation": "Tanggal rekam bukan freshness collector.",
+        "evidence_class": "VERIFIED"
+      },
+      {
+        "domain": "MAINTENANCE",
+        "source_system": "MAXIMO",
+        "source_object": "SYNTHETIC_MAINTENANCE",
+        "population_type": "CONTROLLED_MART_POPULATION",
+        "record_count": 20,
+        "scoped_record_count": null,
+        "registered_assets_represented": null,
+        "business_scope": "SYNTHETIC bounded scope",
+        "relationship_state": "VERIFIED",
+        "latest_record_date": "2020-01-01T00:00:00Z",
+        "date_basis": "SYNTHETIC source record time",
+        "known_limitation": "Tanggal rekam bukan freshness collector.",
+        "evidence_class": "VERIFIED"
+      },
+      {
+        "domain": "FMEA",
+        "source_system": "MAXIMO",
+        "source_object": "SYNTHETIC_FMEA",
+        "population_type": "CONTROLLED_MART_POPULATION",
+        "record_count": 3,
+        "scoped_record_count": null,
+        "registered_assets_represented": null,
+        "business_scope": "SYNTHETIC bounded scope",
+        "relationship_state": "VERIFIED",
+        "latest_record_date": "2020-01-01T00:00:00Z",
+        "date_basis": "SYNTHETIC source record time",
+        "known_limitation": "Tanggal rekam bukan freshness collector.",
+        "evidence_class": "VERIFIED"
+      },
+      {
+        "domain": "ASSET_HEALTH",
+        "source_system": "MAXIMO",
+        "source_object": "SYNTHETIC_ASSET_HEALTH",
+        "population_type": "CONTROLLED_MART_POPULATION",
+        "record_count": 0,
+        "scoped_record_count": null,
+        "registered_assets_represented": null,
+        "business_scope": "SYNTHETIC bounded scope",
+        "relationship_state": "VERIFIED",
+        "latest_record_date": "2020-01-01T00:00:00Z",
+        "date_basis": "SYNTHETIC source record time",
+        "known_limitation": "Tanggal rekam bukan freshness collector.",
+        "evidence_class": "VERIFIED"
+      },
+      {
+        "domain": "RCFA",
+        "source_system": "MAXIMO",
+        "source_object": "SYNTHETIC_RCFA",
+        "population_type": "CONTROLLED_MART_POPULATION",
+        "record_count": 2,
+        "scoped_record_count": null,
+        "registered_assets_represented": null,
+        "business_scope": "SYNTHETIC bounded scope",
+        "relationship_state": "UNRESOLVED",
+        "latest_record_date": "2020-01-01T00:00:00Z",
+        "date_basis": "SYNTHETIC source record time",
+        "known_limitation": "Tanggal rekam bukan freshness collector.",
+        "evidence_class": "VERIFIED"
+      },
+      {
+        "domain": "OVERHAUL",
+        "source_system": "MAXIMO",
+        "source_object": "SYNTHETIC_OVERHAUL",
+        "population_type": "CONTROLLED_MART_POPULATION",
+        "record_count": 0,
+        "scoped_record_count": null,
+        "registered_assets_represented": null,
+        "business_scope": "SYNTHETIC bounded scope",
+        "relationship_state": "VERIFIED",
+        "latest_record_date": "2020-01-01T00:00:00Z",
+        "date_basis": "SYNTHETIC source record time",
+        "known_limitation": "Tanggal rekam bukan freshness collector.",
+        "evidence_class": "VERIFIED"
+      }
+    ],
+    "relationships": [
+      {
+        "relationship": "SYNTHETIC_RCFA_ASSET",
+        "evidence": "UNRESOLVED",
+        "resolved_count": null,
+        "unresolved_count": 2,
+        "technical_context_count": null,
+        "interpretation": "Hubungan belum diverifikasi."
+      }
+    ],
+    "semantic_readiness": [],
+    "integrity": {
+      "registered_assets_total": 12,
+      "registered_assets_resolved": 10,
+      "registered_assets_unresolved": 2,
+      "technical_asset_context_total": 120,
+      "asset_refs_total": 1,
+      "asset_refs_resolved": 0,
+      "asset_refs_unresolved": 1,
+      "workorder_refs_total": 1,
+      "workorder_refs_resolved": 0,
+      "workorder_refs_unresolved": 1,
+      "maintenance_registered_total": 5
+    },
+    "limitations": [
+      "DEMO \u2014 QA SINTETIS. Tidak ada data pembangkit."
+    ]
+  }
+}

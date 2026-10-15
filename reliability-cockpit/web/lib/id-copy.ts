@@ -6,6 +6,7 @@ export function idText(key: keyof typeof messages): string {
 }
 
 const statuses: Record<string, string> = {
+  CURRENT: 'Mutakhir pada dimensi bukti', NOT_CONFIGURED: 'Belum dikonfigurasi', GOOD: 'Kualitas data baik', BAD: 'Kualitas data buruk', AMBIGUOUS: 'Ambigu',
   UNKNOWN: 'Belum diketahui', NOT_ASSESSED: 'Belum dinilai', 'NOT ASSESSED': 'Belum dinilai',
   UNAVAILABLE: 'Tidak tersedia', 'NOT AVAILABLE': 'Tidak tersedia',
   DRAFT: 'Draf', IN_REVIEW: 'Dalam review', APPROVED: 'Rekam disetujui', REJECTED: 'Rekam ditolak',
