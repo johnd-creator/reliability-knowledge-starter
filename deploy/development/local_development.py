@@ -147,6 +147,7 @@ class LocalDevelopment:
         if self.c.active(self.c.LEGACY_WEB):
             raise RuntimeError('COMPETING_FRONTEND')
         front = self.c.frontend_controller()
+        front.launcher_release()
         previous, previous_sha, manifest = front.active_source()
         generated_hash = old_source(previous, previous_sha)
         if output(['git', 'status', '--porcelain'], cwd=self.c.ROOT):
@@ -303,7 +304,21 @@ class LocalDevelopment:
             raise
 
     def recover(self, value):
-        # Recover the preserved pair. No database restore/reset or source edit.
+        # Validate recovery resources before stopping a working candidate.
+        self.release()
+        self.c.frontend_controller().launcher_release()
+        old_source(Path(value['previous_root']),value['previous_sha'])
+        if (self.c.git('rev-parse','HEAD') != value['previous_backend_sha'] or
+                self.c.git('status','--porcelain')):
+            raise RuntimeError('ROLLBACK_API_SOURCE_CHANGED')
+        db=self.c.db()
+        if not db or db['Id'] != value['db_container_id'] or not db['State']['Running']:
+            raise RuntimeError('ROLLBACK_FIXTURE_CONTAINER_CHANGED')
+        if digest(self.state/'original-qa.dump') != value['backup_sha256']:
+            raise RuntimeError('ROLLBACK_BACKUP_CHANGED')
+        if digest(self.c.STATE/'config.json') != digest(self.state/'original-config.json'):
+            raise RuntimeError('ROLLBACK_CONFIG_CHANGED')
+        # No database restore/reset or source edit is needed.
         for unit,cwd in [(self.c.UNITS[1],Path(value['root'])/'reliability-cockpit/web'),(self.c.UNITS[0],Path(value['root'])/'reliability-cockpit')]:
             if self.c.active(unit):
                 current=self.unit(unit)
@@ -334,4 +349,5 @@ class LocalDevelopment:
         return private(self.state/'active.json')
 
     def status(self):
+        self.release()
         return self.readiness(self.active_value())

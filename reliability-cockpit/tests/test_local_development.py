@@ -132,3 +132,10 @@ class LocalDevelopmentTest(unittest.TestCase):
         self.assertIn('--property=MemoryMax=6G',args)
         self.assertIn('--property=KillMode=control-group',args)
         self.assertIn('-i',args)
+
+    def test_invalid_recovery_source_never_stops_working_candidate(self):
+        self.manager.release=Mock()
+        self.control.frontend_controller=Mock()
+        with patch.object(m,'old_source',side_effect=RuntimeError('ROLLBACK_SOURCE_CHANGED')):
+            self.denied('ROLLBACK_SOURCE_CHANGED',lambda:self.manager.recover({'previous_root':str(self.root),'previous_sha':m.SHA}))
+        self.control.stop_unit.assert_not_called()
