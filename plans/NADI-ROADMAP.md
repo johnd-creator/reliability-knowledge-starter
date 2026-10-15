@@ -984,3 +984,17 @@ readiness. Tidak ada runtime/DB/collector/Mart/source/policy action. M01–M07 d
 Phase0–5 tetap; M02/M03/M07 ON HOLD, seluruh26 engineer decisions tetap pending.
 Phase1 checkpoint/review/hard-expiry tidak diubah atau disertifikasi ulang.
 Next: senior/product review, kemudian conditional integration checkpoint.
+
+## 15 Oktober 2026 — NADI-REPORTS-UI-01 candidate
+
+Baseline main36203fe478e5a558fcf5ce4f8d5a9ff36fe92014 includes PR87 MERGED as
+DEVELOPMENT ACCEPTED only; factual API authorization remains a deployment
+prerequisite. [Reports Center V1](../reliability-cockpit/docs/nadi-reports-ui-01.md)
+adds two development candidate previews using existing DTOs. Local synthetic
+selection/period/race/semantics/responsive/browser and regression gates PASS;
+exact-head CI/PR status recorded separately at delivery. Candidate IMPLEMENTED/
+TESTED is not MERGED, live VISIBLE, PO ACCEPTED or operational approved. No export,
+delivery, new KPI, source access, runtime transition or policy change.
+Phase0–5 and M01–M07 unchanged; M02/M03/M07 ON HOLD and26 engineer decisions
+pending. Phase1 review/checkpoint/hard-expiry unchanged, not extended or recertified.
+Next: senior review then conditional development checkpoint.

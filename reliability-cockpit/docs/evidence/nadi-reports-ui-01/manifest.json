@@ -1,0 +1,41 @@
+{
+  "scope": "DEMO / QA SYNTHETIC components, not live preview",
+  "baseline": "36203fe478e5a558fcf5ce4f8d5a9ff36fe92014",
+  "implementation_sha": "8438adc3091eb1920cfd9514799ec8a5b5d2c8cc",
+  "source_sha256": {
+    ".github/workflows/nadi-engineering-candidate.yml": "1ec47047994a04064ec738fd5b8b4bec4fdc03942f51d9bed60bbc6e9fec96b9",
+    "reliability-cockpit/tests/test_reports_ui_contract.py": "b73677e4af40a0f1bef06c296cb8f9fb8158abab50ecdbe4d90a394bbc4b9449",
+    "reliability-cockpit/web/app/(workspace)/reports/page.tsx": "6e2a1709b100c9eeb2a27a2bf39595b67e45fd5468617512fcfd395d80ca217c",
+    "reliability-cockpit/web/app/globals.css": "a485486b573e54d91a4b2e14f6a7a7c7a1eb2704c08fcce9755837f1aac88ee2",
+    "reliability-cockpit/web/components/CoverageReport.tsx": "f87bcff86d21b6d1c40adad9aa347b55e9788e7519e52a83a40c1829611aa636",
+    "reliability-cockpit/web/components/MaintenanceReport.tsx": "6a2b5adb5b4f14b133edeab99738701c2511cd56d3abc7644d101668725ec01c",
+    "reliability-cockpit/web/components/ReportEvidence.tsx": "06a95a5e40b0ce398dc2b189d9d0b0737eb00be1d8eff1b77a0ad7a54112dfdf",
+    "reliability-cockpit/web/components/ReportsCenter.tsx": "658dd2df3e3f53116c6a95643254aa192a18f99e8732efeb94a8513d88ee5303",
+    "reliability-cockpit/web/eslint.config.mjs": "8266a40141c1735ccf1dd209632e448210f0b099461e13eb980e123bc41c8d3a",
+    "reliability-cockpit/web/fixtures/reports-ui.json": "d17c7639574f1d6069af05d142b4e1e462f61b727a4c5516f4e747120dbc2540",
+    "reliability-cockpit/web/lib/navigation.ts": "3e13759d32313baa83393f981b6918be837b0732b9f6f7c2c17b3a2218f807b1",
+    "reliability-cockpit/web/lib/reports.ts": "3e093ec51516361680d321629503b10ee97067e3a21e2c4551ac75f2955d45e8",
+    "reliability-cockpit/web/package.json": "2a289c5fd0d8f6f194a610187222da13cddb12e6c32a017556905490c99e8757",
+    "reliability-cockpit/web/scripts/reports-browser.mjs": "186eee552672ab10a82fc3a498945b82ae56cb68aa0125c597a2793a917f7e0c",
+    "reliability-cockpit/web/scripts/reports-check.mjs": "4c196cc3b06effaa3ab2181e652456a5d7300f2c4da3cbc5be7f78727cac6c0c",
+    "reliability-cockpit/web/scripts/reports-entry.tsx": "d47c0aa1e6cf94e20d25fcc8a32a4a4aa3860c74b313be68a9171d74eeffca07"
+  },
+  "screenshots_sha256": {
+    "maintenance-dark-390.png": "b8da38739fa35aab4bb58dd2377dae94146d28730d7a9c100dee3b03ee0c16d2",
+    "maintenance-light-390.png": "c63a2307ad783ea984449b54bf932e76bbaaafc15c650a155ee7f2e5b326423e",
+    "maintenance-dark-768.png": "6c7a29ec915b261f4bfbef2f89e599746b44966786f8e2858d48fd1ff3c2905e",
+    "maintenance-light-768.png": "b6af0423a23f6a800ec436a2a49de7ff947b79009c97aa49ab1df6282c19e6d0",
+    "maintenance-dark-1920.png": "4c428d788a2f7faea501b7afcd912486ffe9bad0dced827e54c0dcac3a2dbbb6",
+    "maintenance-light-1920.png": "124e50c0e3cdbecc126a74f15cb920a8869ca21e8a9003cdc51922f2ee9b5e54",
+    "maintenance-dark-1440.png": "d63e988aba4823cc65f8315a29521e630286b33f8fc9d11dfff7fd2afab75a66",
+    "maintenance-light-1440.png": "238c69f7bde71147569cdb0f106d951ddbab597570e37f88d925e39b22c8fdd2",
+    "coverage-dark-390.png": "faefc0eadb72b353153b412cfa8eb600977c36d8d82f9fef8f7685936172651e",
+    "coverage-light-390.png": "d52c00316455c838c5baacfadfc2e8df79b2d14591eb74cb24078d42ed06b336",
+    "coverage-dark-768.png": "365bd9841f4b2fbf82c873803b10f4f59b3d5ef1db46785caf8802a8a05d2570",
+    "coverage-light-768.png": "34a5d8be997c93b74a8794640de111bdb3552582180ee6a1df09da5ae6b74535",
+    "coverage-dark-1920.png": "a92f2600766845857955a4b8c6c5ec0b492ae9fc157f9cef316cc57e3ec9f662",
+    "coverage-light-1920.png": "2facd34b315fd6cab952231ec482b6f6681dad1dcd3e3796c095a1a8f1c3a8fc",
+    "coverage-dark-1440.png": "b2dcc7af7f17cc13e96b34de3cd840e0bfcdbcaaf0486a5043323839c061497a",
+    "coverage-light-1440.png": "fc704da6fa45197ba5d24236b56f9d14fab09543bb8807553e450073ef9bf3bf"
+  }
+}

@@ -1,0 +1,66 @@
+[
+  {
+    "suite": "reports-browser",
+    "status": "PASS",
+    "passed": 97,
+    "total": 97,
+    "errors": [],
+    "scope": "Actual components; fully intercepted synthetic network, no runtime/DB"
+  },
+  {
+    "suite": "existing-integration-browser",
+    "status": "PASS",
+    "passed": 67,
+    "total": 67,
+    "errors": [],
+    "scope": "Actual components; fully intercepted synthetic network, no runtime/DB"
+  },
+  {
+    "suite": "existing-factual-engineering-browser",
+    "status": "PASS",
+    "passed": 395,
+    "total": 395,
+    "errors": [],
+    "scope": "Actual components; fully intercepted synthetic network, no runtime/DB"
+  },
+  {
+    "suite": "existing-pdm-browser",
+    "status": "PASS",
+    "passed": 573,
+    "total": 573,
+    "errors": [],
+    "scope": "Actual components; fully intercepted synthetic network, no runtime/DB"
+  },
+  {
+    "suite": "reports-presentation",
+    "passed": 26,
+    "total": 26
+  },
+  {
+    "suite": "backend-existing-Mart-and-new-DTO-fixtures",
+    "passed": 45,
+    "total": 45,
+    "scope": "Existing temporary SQLite and pure Pydantic fixtures"
+  },
+  {
+    "suite": "final-TypeScript-lint-build-Reports",
+    "results": [
+      {
+        "check": "check:reports",
+        "exit": 0
+      },
+      {
+        "check": "lint",
+        "exit": 0
+      },
+      {
+        "check": "typescript",
+        "exit": 0
+      },
+      {
+        "check": "build",
+        "exit": 0
+      }
+    ]
+  }
+]

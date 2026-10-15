@@ -356,3 +356,14 @@ reading is not activated pending deployment authentication/authorization review.
 Synthetic implementation/tests are distinct from Product Owner, operational
 availability/freshness acceptance and engineer approval. Reports/Administration
 complete product screens remain planned.
+
+## FR-06 candidate checkpoint — 15 Oktober 2026
+
+[Reports Center V1](reliability-cockpit/docs/nadi-reports-ui-01.md) implements
+development-only `/reports` with two candidate previews: Data Coverage
+(DataTrustView; no period filter) and Maintenance Activity (DecisionOverviewView;
+7/30/90 days). Definitions remain DEVELOPMENT CANDIDATE — NOT OPERATIONALLY
+APPROVED. Registry/technical populations, evidence classes, original time bases,
+unknowns and chronology's independent bucket scope are retained. No new KPI,
+export/distribution, schema, authentication activation or runtime promotion.
+Production readers remain blocked pending deployment access review.

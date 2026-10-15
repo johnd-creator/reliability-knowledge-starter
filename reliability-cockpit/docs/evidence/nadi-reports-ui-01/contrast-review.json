@@ -1,0 +1,78 @@
+{
+  "status": "PASS",
+  "scope": "12 targeted V1 text/table/selected-catalog pairs; not WCAG certification",
+  "pairs": [
+    {
+      "theme": "light",
+      "pair": "text/surface",
+      "contrast": 17.85,
+      "minimum": 4.5
+    },
+    {
+      "theme": "light",
+      "pair": "muted/surface",
+      "contrast": 7.58,
+      "minimum": 4.5
+    },
+    {
+      "theme": "light",
+      "pair": "cell/surface",
+      "contrast": 10.35,
+      "minimum": 4.5
+    },
+    {
+      "theme": "light",
+      "pair": "muted-2/table-head",
+      "contrast": 5.95,
+      "minimum": 4.5
+    },
+    {
+      "theme": "light",
+      "pair": "text/cyan-soft",
+      "contrast": 16.41,
+      "minimum": 4.5
+    },
+    {
+      "theme": "light",
+      "pair": "muted/cyan-soft",
+      "contrast": 6.96,
+      "minimum": 4.5
+    },
+    {
+      "theme": "dark",
+      "pair": "text/surface",
+      "contrast": 14.13,
+      "minimum": 4.5
+    },
+    {
+      "theme": "dark",
+      "pair": "muted/surface",
+      "contrast": 9.74,
+      "minimum": 4.5
+    },
+    {
+      "theme": "dark",
+      "pair": "cell/surface",
+      "contrast": 12.22,
+      "minimum": 4.5
+    },
+    {
+      "theme": "dark",
+      "pair": "muted-2/table-head",
+      "contrast": 7.21,
+      "minimum": 4.5
+    },
+    {
+      "theme": "dark",
+      "pair": "text/cyan-soft",
+      "contrast": 11.1,
+      "minimum": 4.5
+    },
+    {
+      "theme": "dark",
+      "pair": "muted/cyan-soft",
+      "contrast": 7.65,
+      "minimum": 4.5
+    }
+  ]
+}

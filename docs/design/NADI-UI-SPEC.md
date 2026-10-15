@@ -529,3 +529,16 @@ no automatic source import, score, threshold or template metadata persistence.
 ## PdM workbook extension — WORKBOOK-02 / 15 Oktober 2026
 
 Kandidat PR85 menambah pilihan Boiler, BC/conveyor, Turbin/pompa, CEP CBM/IR Window; keluarga dan metode dipilih eksplisit. Empat Vibration family berbeda; dua CEP memakai OTHER provisional, unit temperatur unresolved tetap kosong. Panel/petunjuk baris source axis tidak menetapkan quantity atau canonical point; parameter Vibration diisi engineer. Form umum,3 profil lama, new-draft-only dan replacement confirmation dipertahankan. [Spesifikasi aktual/batas kontrak](../../reliability-cockpit/docs/nadi-pdm-workbook-02.md), [screenshot sintetis](../../reliability-cockpit/docs/evidence/nadi-pdm-workbook-02/README.md). Engineer approval, historical comparability dan PO visual acceptance PENDING; tidak live di HTTPS3000.
+
+## UI-08 candidate implementation — 15 Oktober 2026
+
+[Reports Center V1 review](../../reliability-cockpit/docs/nadi-reports-ui-01.md)
+records `/reports`: accessible catalog/selection, bounded Coverage and Maintenance
+previews, provenance, explicit unknown/error/empty states, supported7/30/90 periods
+only for Maintenance, neutral evidence and source links. V1 light/dark layouts
+validated at1440/1920/768/390 with synthetic components. Equivalent chart tables
+preserve original bucket periods independently from report-window summaries.
+This checkpoint supersedes the earlier planned-route allocation for development,
+not operational template/export approval. No export, report history, scheduling,
+delivery or production reader is enabled. Deployment auth/scope and PO visual
+acceptance remain separate; no complete WCAG conformance is asserted.
