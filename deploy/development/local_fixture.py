@@ -3,6 +3,8 @@
 Schema/account initialization is an explicit prepare command, never API startup.
 No operational config, DSN, collector, legacy worker or source adapter is loaded.
 """
+import hashlib
+import argparse
 import json
 import os
 import secrets
@@ -84,7 +86,7 @@ def create_app():
     from test_condition_evidence import ConditionProjectionTest, ASSET_ID
     from live_server import PersistentFixture, private_json
     config = load()
-    # Reuse selected PR #82 fixture wiring, without its historical fixed DB initializer.
+    # Reuse the selected source fixture wiring, without its historical fixed DB initializer.
     fixture = PersistentFixture.__new__(PersistentFixture)
     fixture.engine = engine_for(config)
     states = ApplicationMigrator(fixture.engine, expected_database=DB, isolated=True).status()
@@ -124,5 +126,33 @@ def create_app():
     return app
 
 
+def compatibility():
+    """Read-only existing fixture check. Never initializes tables, accounts or sessions."""
+    from sqlalchemy import text
+    from src.repositories.application_migrations import ApplicationMigrator
+    from src.repositories.qa_advisory_schema import qa_advisory_schema_ready
+    config = load()
+    engine = engine_for(config)
+    try:
+        ledger = ApplicationMigrator(engine, expected_database=DB, isolated=True).status()
+        if any(row['status'] != 'APPLIED' for row in ledger):
+            raise RuntimeError('EXPLICIT_FIXTURE_PREPARATION_REQUIRED')
+        if not qa_advisory_schema_ready(engine):
+            raise RuntimeError('ADVISORY_ACK_SCHEMA_REQUIRED')
+        with engine.connect() as c:
+            c.execute(text('SET TRANSACTION READ ONLY'))
+            # Catalogs only; no session content or operational store is inspected.
+            columns = [tuple(r) for r in c.execute(text("SELECT table_name,column_name,data_type,is_nullable,column_default FROM information_schema.columns WHERE table_schema='public' ORDER BY table_name,ordinal_position"))]
+            constraints = [tuple(r) for r in c.execute(text("SELECT conname,pg_get_constraintdef(oid) FROM pg_constraint WHERE connamespace='public'::regnamespace ORDER BY conname"))]
+        return {'database':DB,'role':ROLE,'ledger':ledger,
+                'schema_sha256':hashlib.sha256(json.dumps([columns,constraints],default=str).encode()).hexdigest()}
+    finally:
+        engine.dispose()
+
+
 if __name__ == '__main__':
-    prepare()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--check', action='store_true', required=True,
+                        help='Read-only compatibility check; fixture preparation requires separate authorization')
+    parser.parse_args()
+    print(json.dumps(compatibility()))

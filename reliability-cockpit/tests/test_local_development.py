@@ -26,6 +26,7 @@ class LocalDevelopmentTest(unittest.TestCase):
             UNITS=('nadi-live-api.service','nadi-primary-web.service'), ORIGIN='https://localhost:3000',
             run=Mock(), stop_unit=Mock(), primary_busy=Mock(return_value=False), write_private=Mock())
         self.manager = m.LocalDevelopment(self.control)
+        self.manager.active_value=Mock(return_value={'sha':'a'*40})
 
     def tearDown(self):
         self.tmp.cleanup()
@@ -35,41 +36,41 @@ class LocalDevelopmentTest(unittest.TestCase):
         self.assertEqual(str(e.exception), code)
 
     def test_clean_selection_required_before_mutation(self):
-        with patch.object(m,'output',side_effect=[m.SHA,' M application.py']):
-            self.denied('INITIAL_CLEAN_SOURCE_REQUIRED', lambda:m.source(self.root,self.base,clean=True))
+        with patch.object(m,'output',side_effect=['a'*40,' M application.py']):
+            self.denied('INITIAL_CLEAN_SOURCE_REQUIRED', lambda:m.source(self.root,self.base,'a'*40,clean=True))
         self.control.stop_unit.assert_not_called()
 
     def test_dirty_files_permitted_only_during_active_development(self):
-        with patch.object(m,'output',return_value=m.SHA):
-            self.assertEqual(m.source(self.root,self.base,clean=False),self.root)
+        with patch.object(m,'output',return_value='a'*40):
+            self.assertEqual(m.source(self.root,self.base,'a'*40,clean=False),self.root)
 
     def test_wrong_head_rejected(self):
         with patch.object(m,'output',return_value='f'*40):
-            self.denied('EXACT_PR82_SOURCE_REQUIRED',lambda:m.source(self.root,self.base))
+            self.denied('EXACT_REVIEWED_SOURCE_REQUIRED',lambda:m.source(self.root,self.base,'a'*40))
 
     def test_symlink_worktree_rejected(self):
         alias=self.base/'alias';alias.symlink_to(self.root)
-        self.denied('EXCLUSIVE_MANAGED_SOURCE_REQUIRED',lambda:m.source(alias,self.base))
+        self.denied('EXCLUSIVE_MANAGED_SOURCE_REQUIRED',lambda:m.source(alias,self.base,'a'*40))
 
     def test_dotenv_is_not_inherited(self):
         web=self.root/'reliability-cockpit/web';web.mkdir(parents=True);(web/'.env.local').touch()
-        with patch.object(m,'output',return_value=m.SHA):
-            self.denied('UNREVIEWED_DOTENV_DENIED',lambda:m.source(self.root,self.base))
+        with patch.object(m,'output',return_value='a'*40):
+            self.denied('UNREVIEWED_DOTENV_DENIED',lambda:m.source(self.root,self.base,'a'*40))
 
     def test_original_generated_file_exact_transform_only(self):
         name='reliability-cockpit/web/next-env.d.ts';path=self.root/name;path.parent.mkdir(parents=True)
         committed=b'/// <reference path="./.next/types/routes.d.ts" />\n'
         actual=committed.replace(b'./.next/',b'./.next-primary-dev/');path.write_bytes(actual)
-        with patch.object(m,'output',side_effect=[m.SHA,name,'']),patch.object(m.subprocess,'check_output',return_value=committed):
-            m.old_source(self.root,m.SHA)
+        with patch.object(m,'output',side_effect=['a'*40,name,'']),patch.object(m.subprocess,'check_output',return_value=committed):
+            m.old_source(self.root,'a'*40)
         self.assertEqual(path.read_bytes(),actual)
         path.write_bytes(actual+b'// unrelated edit\n')
-        with patch.object(m,'output',side_effect=[m.SHA,name,'']),patch.object(m.subprocess,'check_output',return_value=committed):
-            self.denied('UNRELATED_GENERATED_EDIT',lambda:m.old_source(self.root,m.SHA))
+        with patch.object(m,'output',side_effect=['a'*40,name,'']),patch.object(m.subprocess,'check_output',return_value=committed):
+            self.denied('UNRELATED_GENERATED_EDIT',lambda:m.old_source(self.root,'a'*40))
 
     def test_unrelated_old_source_edit_blocks(self):
-        with patch.object(m,'output',side_effect=[m.SHA,'other.ts','']):
-            self.denied('UNRELATED_ROLLBACK_EDITS',lambda:m.old_source(self.root,m.SHA))
+        with patch.object(m,'output',side_effect=['a'*40,'other.ts','']):
+            self.denied('UNRELATED_ROLLBACK_EDITS',lambda:m.old_source(self.root,'a'*40))
 
     def test_unknown_listener_is_rejected(self):
         self.manager.unit=Mock(return_value={'WorkingDirectory':str(self.root),'ControlGroup':'/owned'})
@@ -95,24 +96,26 @@ class LocalDevelopmentTest(unittest.TestCase):
             run.assert_not_called()
 
     def test_failed_transition_recovers_once_without_retry(self):
-        value={'before':{},'old_generated_hash':'a','root':str(self.root)}
-        self.manager.preflight=Mock(return_value=value)
-        self.manager.backup=Mock();self.manager.create_fixture=Mock();self.manager.save=Mock()
-        self.manager.start_pair=Mock(side_effect=RuntimeError('START_FAILED'))
-        self.manager.recover=Mock()
-        self.denied('START_FAILED',lambda:self.manager.select(self.root))
+        value={'previous':{'sha':'a'*40,'config_path':'unused','root':str(self.root),'before':{'web':{},'api':{}}},'root':str(self.root),'sha':'b'*40,'workflow_sha':'b'*40}
+        self.manager.preflight=Mock(side_effect=lambda *a:dict(value))
+        self.manager.backup=Mock();self.manager.validate_recovery=Mock()
+        self.manager.save=Mock();self.manager.start_pair=Mock(side_effect=RuntimeError('START_FAILED'))
+        self.manager._recover=Mock()
+        self.manager.owners=Mock(return_value={})
+        with patch.object(m,'source',return_value=self.root),patch.object(m,'private',return_value={}):
+            self.denied('START_FAILED',lambda:self.manager.select(self.root,'reviewed'))
         self.manager.start_pair.assert_called_once()
-        self.manager.recover.assert_called_once_with(value)
+        self.manager._recover.assert_called_once()
 
     def test_backup_failure_never_stops_a_service(self):
         self.manager.preflight=Mock(return_value={});self.manager.backup=Mock(side_effect=RuntimeError('BACKUP_FAILED'))
-        self.denied('BACKUP_FAILED',lambda:self.manager.select(self.root))
+        self.denied('BACKUP_FAILED',lambda:self.manager.select(self.root,'reviewed'))
         self.control.stop_unit.assert_not_called()
 
     def test_baseline_change_blocks_before_stop(self):
         one={'before':{'pid':1},'old_generated_hash':'a'};two={'before':{'pid':2},'old_generated_hash':'a'}
-        self.manager.preflight=Mock(side_effect=[one,two]);self.manager.backup=Mock();self.manager.create_fixture=Mock()
-        self.denied('BASELINE_CHANGED_BEFORE_TRANSITION',lambda:self.manager.select(self.root))
+        self.manager.preflight=Mock(side_effect=[one,two]);self.manager.backup=Mock();self.manager.validate_recovery=Mock()
+        self.denied('BASELINE_CHANGED_BEFORE_TRANSITION',lambda:self.manager.select(self.root,'reviewed'))
         self.control.stop_unit.assert_not_called()
 
     def test_startup_does_not_apply_migrations(self):
@@ -135,7 +138,8 @@ class LocalDevelopmentTest(unittest.TestCase):
 
     def test_invalid_recovery_source_never_stops_working_candidate(self):
         self.manager.release=Mock()
-        self.control.frontend_controller=Mock()
-        with patch.object(m,'old_source',side_effect=RuntimeError('ROLLBACK_SOURCE_CHANGED')):
-            self.denied('ROLLBACK_SOURCE_CHANGED',lambda:self.manager.recover({'previous_root':str(self.root),'previous_sha':m.SHA}))
+        self.manager.active_value=Mock(return_value={'sha':'b'*40,'previous':{'root':str(self.root),'sha':'a'*40}})
+        self.manager.readiness=Mock();self.manager.backup=Mock()
+        with patch.object(m,'source',side_effect=RuntimeError('ROLLBACK_SOURCE_CHANGED')):
+            self.denied('ROLLBACK_SOURCE_CHANGED',lambda:self.manager.recover(self.manager.active_value()))
         self.control.stop_unit.assert_not_called()

@@ -313,12 +313,12 @@ def main():
             print(json.dumps(manager.status(), indent=2))
         elif args.command == 'local-rollback':
             manager.recover(manager.active_value())
-        elif not args.ref:
-            raise RuntimeError('EXPLICIT_LOCAL_WORKTREE_REQUIRED')
+        elif not args.ref or not args.preview_ref:
+            raise RuntimeError('EXPLICIT_LOCAL_WORKTREE_AND_REVIEWED_REF_REQUIRED')
         elif args.command == 'local-preflight':
-            print(json.dumps(manager.preflight(Path(args.ref)), indent=2))
+            print(json.dumps(manager.preflight(Path(args.ref), args.preview_ref), indent=2))
         else:
-            manager.select(Path(args.ref))
+            manager.select(Path(args.ref), args.preview_ref)
         return
     if (STATE / 'frontend-active.json').exists() and args.command in ('start', 'stop', 'reload', 'switch', 'cutover', 'rollback', 'setup'):
         raise RuntimeError('FRONTEND_ONLY_SELECTION_ACTIVE: use frontend-select/rollback; shared-source lifecycle denied')

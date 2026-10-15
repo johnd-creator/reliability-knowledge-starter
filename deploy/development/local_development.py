@@ -1,20 +1,21 @@
 """Coordinated laptop-only source selection, through the existing nadi-dev lock.
 
-One explicit transition, fail closed preflight, no checkout/reset, no auto retry.
+Explicit reviewed refs, retained transition history, no checkout/reset or auto retry.
 Normal edits in the selected worktree are expected and reported, not discarded.
 """
 import hashlib
 import json
 import os
 import re
-import shutil
+import fcntl
+import uuid
+from contextlib import contextmanager
 import ssl
 import subprocess
 import time
 from pathlib import Path
 from urllib.request import urlopen
 
-SHA = '9895890a045a221998856a175d80c17270cd0d38'
 DB = 'nadi_local_dev_01_test'
 ROLE = 'nadi_local_dev_01'
 
@@ -30,17 +31,17 @@ def digest(path):
 def private(path):
     p = Path(path)
     st = p.lstat()
-    if p.is_symlink() or st.st_uid != os.getuid() or st.st_mode & 0o077:
+    if p.is_symlink() or not p.is_file() or st.st_uid != os.getuid() or st.st_mode & 0o077:
         raise RuntimeError('PRIVATE_LOCAL_STATE_REQUIRED')
     return json.loads(p.read_text())
 
 
-def source(root, base, clean=False):
+def source(root, base, sha, clean=False):
     root = Path(root)
     if root.is_symlink() or root.resolve() != root or root.parent != base:
         raise RuntimeError('EXCLUSIVE_MANAGED_SOURCE_REQUIRED')
-    if output(['git', 'rev-parse', 'HEAD'], cwd=root) != SHA:
-        raise RuntimeError('EXACT_PR82_SOURCE_REQUIRED')
+    if not re.fullmatch('[0-9a-f]{40}', sha or '') or output(['git', 'rev-parse', 'HEAD'], cwd=root) != sha:
+        raise RuntimeError('EXACT_REVIEWED_SOURCE_REQUIRED')
     if clean and output(['git', 'status', '--porcelain'], cwd=root):
         raise RuntimeError('INITIAL_CLEAN_SOURCE_REQUIRED')
     web = root / 'reliability-cockpit/web'
@@ -119,10 +120,15 @@ class LocalDevelopment:
                 ident = self.identity(int(pid))
                 if ident['cgroup'] != value['ControlGroup'] or ident['cwd'] != str(cwd):
                     raise RuntimeError('UNAUTHORIZED_LISTENER_OWNER')
+                # Repeat identity after observation to reject PID reuse while collecting.
+                if self.identity(int(pid)) != ident:
+                    raise RuntimeError('LISTENER_IDENTITY_CHANGED')
                 identities[pid] = ident
         inodes = re.findall(r'ino:(\d+)', '\n'.join(rows))
         if len(inodes) != len(rows):
             raise RuntimeError('LISTENER_INODE_UNVERIFIED')
+        if self.unit(unit) != value:
+            raise RuntimeError('DEVELOPMENT_UNIT_CHANGED_DURING_OBSERVATION')
         return {'unit': value, 'listeners': identities, 'socket_inodes': inodes}
 
     def request(self, url):
@@ -132,106 +138,198 @@ class LocalDevelopment:
 
     def release(self):
         record = private(self.c.STATE / 'local-development-release.json')
+        if (set(record['files']) != {'nadi-dev.py','local_development.py','local_fixture.py','frontend_preview.py'} or
+                not re.fullmatch('[0-9a-f]{40}',record.get('source_sha',''))):
+            raise RuntimeError('UNREVIEWED_LOCAL_CONTROLLER_RELEASE')
         for name, expected in record['files'].items():
             if digest(Path(__file__).with_name(name)) != expected:
                 raise RuntimeError('LOCAL_CONTROLLER_RELEASE_CHANGED')
         return record['source_sha']
 
-    def preflight(self, root):
-        self.release()
-        root = source(root, self.c.BASE, clean=True)
-        if output(['git', 'rev-parse', '--git-common-dir'], cwd=root) != output(['git', 'rev-parse', '--git-common-dir'], cwd=self.c.ROOT):
+    def replace(self, name, value):
+        # Exclusive temporary file plus atomic pointer replace. Immutable events use save().
+        temporary = name + '.' + uuid.uuid4().hex + '.tmp'
+        self.save(temporary, value)
+        os.replace(self.state / temporary, self.state / name)
+
+    @contextmanager
+    def transaction(self):
+        # CLI also holds the existing frontend-lifecycle.lock, shared with older commands.
+        # This nested lock protects direct companion calls and deterministic simulations.
+        self.state.mkdir(mode=0o700, exist_ok=True)
+        info = self.state.lstat()
+        if self.state.is_symlink() or info.st_uid != os.getuid() or info.st_mode & 0o077:
+            raise RuntimeError('PRIVATE_LOCAL_STATE_REQUIRED')
+        fd = os.open(self.state/'selection.lock', os.O_CREAT|os.O_RDWR|os.O_NOFOLLOW, 0o600)
+        try:
+            try:
+                fcntl.flock(fd, fcntl.LOCK_EX|fcntl.LOCK_NB)
+            except BlockingIOError:
+                raise RuntimeError('DEVELOPMENT_LIFECYCLE_BUSY') from None
+            yield
+        finally:
+            os.close(fd)
+
+    def resolve(self, root, ref):
+        if not ref or ref.startswith('-') or not re.fullmatch(r'[A-Za-z0-9_./-]+', ref):
+            raise RuntimeError('EXPLICIT_REVIEWED_REF_REQUIRED')
+        root = Path(root)
+        # Validate path before using it as a git execution directory.
+        if root.is_symlink() or root.resolve() != root or root.parent != self.c.BASE:
+            raise RuntimeError('EXCLUSIVE_MANAGED_SOURCE_REQUIRED')
+        sha = output(['git','rev-parse','--verify',ref+'^{commit}'],cwd=root)
+        root = source(root,self.c.BASE,sha,clean=True)
+        self.repository(root)
+        return root, sha
+
+    def repository(self, root):
+        def git(*args, cwd):
+            return output(['git',*args],cwd=cwd)
+        common = ['rev-parse','--path-format=absolute','--git-common-dir']
+        if git(*common,cwd=root) != git(*common,cwd=self.c.ROOT):
             raise RuntimeError('UNRELATED_SOURCE_REPOSITORY')
-        if (self.state / 'transition.json').exists():
-            raise RuntimeError('ONE_TRANSITION_ALREADY_USED')
+        remote = git('remote','get-url','origin',cwd=root)
+        if remote not in {'https://github.com/johnd-creator/reliability-knowledge-starter.git',
+                          'git@github.com:johnd-creator/reliability-knowledge-starter.git',
+                          'https://github.com/johnd-creator/reliability-knowledge-starter'}:
+            raise RuntimeError('UNTRUSTED_SOURCE_REPOSITORY')
+
+    def fixture_contract(self, previous, root, sha):
+        # Conservative schema/bootstrap/auth adapter compatibility, not inferred from SHA equality.
+        # Changed persistence/dependencies require separate fixture compatibility preparation.
+        paths = ('reliability-cockpit/application-migrations',
+                 'reliability-cockpit/src/repositories',
+                 'reliability-cockpit/src/services/local_authentication.py',
+                 'reliability-cockpit/src/services/application_identity.py',
+                 'reliability-cockpit/src/api/engineering_qa.py',
+                 'reliability-cockpit/pyproject.toml',
+                 'reliability-cockpit/tests/qa/live_server.py',
+                 'reliability-cockpit/tests/test_condition_evidence.py',
+                 'reliability-cockpit/tests/test_asset_af_mapping_admin.py',
+                 'pi-collector/tests/fixtures/condition_source.py')
+        hashes = {}
+        for path in paths:
+            a = output(['git','rev-parse',previous['sha']+':'+path],cwd=previous['root'])
+            b = output(['git','rev-parse',sha+':'+path],cwd=root)
+            if a != b:
+                raise RuntimeError('FIXTURE_CONTRACT_CHANGE_REQUIRES_SEPARATE_APPROVAL: '+path)
+            hashes[path] = b
+        # The existing comparator validates required web/API contract files and dependencies.
+        # Both selected applications must come from the same explicitly reviewed commit.
+        return hashlib.sha256(json.dumps(hashes,sort_keys=True).encode()).hexdigest()
+
+    def fixture_probe(self, value):
+        # Read-only validation through the selected source, never prepare()/migration helpers.
+        result = output(['/usr/bin/env','-i',*self.environment(Path(value['root'])),
+                         'NADI_LOCAL_DEV_CONFIG='+value['config_path'],
+                         str(self.c.STATE/'python-runtime/bin/python'),
+                         str(Path(__file__).with_name('local_fixture.py')),'--check'])
+        return json.loads(result)
+
+    def previous(self):
+        value = self.active_value()
+        root = source(value['root'],self.c.BASE,value['sha'])
+        self.repository(root)
+        generated = old_source(root,value['sha'])
+        data = self.readiness(value)
+        if data.get('engineering_data') != 'SYNTHETIC_FIXTURES':
+            raise RuntimeError('UNVERIFIED_APPLICATION_PROVENANCE')
+        config_path = value.get('config_path',str(self.state/'config.json'))
+        config = private(config_path)
+        if config['source_root'] != str(root):
+            raise RuntimeError('ACTIVE_FIXTURE_SOURCE_MISMATCH')
+        return dict(value,config_path=config_path,generated_hash=generated,
+                    before={'web':self.owners(self.c.UNITS[1],root/'reliability-cockpit/web',3000),
+                            'api':self.owners(self.c.UNITS[0],root/'reliability-cockpit',13036)})
+
+    def preflight(self, root, ref):
+        release = self.release()
+        root, sha = self.resolve(root,ref)
         if self.c.active(self.c.LEGACY_WEB):
             raise RuntimeError('COMPETING_FRONTEND')
-        front = self.c.frontend_controller()
-        front.launcher_release()
-        previous, previous_sha, manifest = front.active_source()
-        generated_hash = old_source(previous, previous_sha)
-        if output(['git', 'status', '--porcelain'], cwd=self.c.ROOT):
-            raise RuntimeError('ROLLBACK_API_SOURCE_DIRTY')
-        before = {'web': self.owners(self.c.UNITS[1], previous/'reliability-cockpit/web', 3000),
-                  'api': self.owners(self.c.UNITS[0], self.c.ROOT/'reliability-cockpit', 13036)}
+        previous = self.previous()
+        contract = self.fixture_contract(previous,root,sha)
+        # Same exact source supplies frontend and API; still verify the approved contract surface exists.
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('local_pair_compatibility',Path(__file__).with_name('frontend_preview.py'))
+        module = importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        pair = module.compatible(root,root,sha,sha)
         db = self.c.db()
         if not db or not db['State']['Running'] or db['NetworkSettings']['Ports'].get('5432/tcp') != [{'HostIp':'127.0.0.1','HostPort':'15443'}]:
             raise RuntimeError('EXISTING_DEVELOPMENT_POSTGRES_REQUIRED')
-        backend = self.request('http://127.0.0.1:13036/development/status')
-        if backend.get('source_sha') != self.c.git('rev-parse', 'HEAD') or backend.get('database_identity') != 'nadi_live_dev_test':
-            raise RuntimeError('ROLLBACK_API_IDENTITY_UNVERIFIED')
         pin = node_pin(self.c.STATE)
         web = root/'reliability-cockpit/web'
         if not (web/'node_modules/next/dist/bin/next').is_file():
             raise RuntimeError('LOCKED_DEPENDENCIES_REQUIRED')
+        # Installed package identity/lock, not a global npm install or automatic dependency update.
+        if digest(web/'node_modules/.package-lock.json') != digest(Path(previous['root'])/'reliability-cockpit/web/node_modules/.package-lock.json'):
+            raise RuntimeError('DEPENDENCY_INSTALL_CHANGED')
         for name in ['localhost.pem','localhost.key']:
-            st=(self.c.STATE/name).lstat()
-            if st.st_uid != os.getuid() or st.st_mode & 0o077 or (self.c.STATE/name).is_symlink():
+            path = self.c.STATE/name; st = path.lstat()
+            if path.is_symlink() or st.st_uid != os.getuid() or st.st_mode & 0o077:
                 raise RuntimeError('PRIVATE_HTTPS_REQUIRED')
         output(['openssl','x509','-in',self.c.STATE/'localhost.pem','-checkend','3600','-noout'])
         output(['openssl','x509','-in',self.c.STATE/'localhost.pem','-checkhost','localhost','-noout'])
-        return {'root':str(root),'sha':SHA,'node':pin,'backend_sha':SHA,'before':before,
-                'previous_root':str(previous),'previous_sha':previous_sha,'previous_manifest':manifest,
-                'previous_backend_sha':backend['source_sha'],'old_generated_hash':generated_hash,
-                'db_container_id':db['Id'],'workflow_sha':self.release()}
+        value = {'root':str(root),'sha':sha,'backend_sha':sha,'ref':ref,'node':pin,
+                 'previous':previous,'db_container_id':db['Id'],'workflow_sha':release,
+                 'fixture_contract':contract,'pair_contract':pair,
+                 'config_path':previous['config_path']}
+        value['fixture'] = self.fixture_probe(value)
+        value['config_hash'] = digest(previous['config_path'])
+        value['accounts_hash'] = digest(private(previous['config_path'])['accounts_file'])
+        return value
 
-    def fingerprint(self):
-        # Only the historical development store; return digests/counts, never rows.
-        args=['docker','exec',self.c.NAME,'psql','-XAt','-U','nadi_dev_fixture','-d','nadi_live_dev_test','-c']
-        tables=output([*args,"SELECT tablename FROM pg_tables WHERE schemaname='public' ORDER BY tablename"]).splitlines()
-        if not tables or any(not re.fullmatch('[a-z_]+',name) for name in tables):
-            raise RuntimeError('UNEXPECTED_FIXTURE_TABLES')
-        rows={}
-        for name in tables:
-            sql=f"SELECT count(*)::text||':'||md5(coalesce(string_agg(v,'' ORDER BY v),'')) FROM (SELECT md5(row_to_json(t)::text) v FROM {name} t) q"
-            rows[name]=output([*args,sql])
-        rows['constraints']=hashlib.sha256(output([*args,"SELECT conname,pg_get_constraintdef(oid) FROM pg_constraint WHERE connamespace='public'::regnamespace ORDER BY conname"]).encode()).hexdigest()
-        return rows
-
-    def backup(self, snapshot):
-        # Fresh original-store backup; never run a migration/restore against it.
-        target = self.state/'original-qa.dump'
+    def backup(self, value, token):
+        target = self.state/('backup-'+token+'.dump')
         with target.open('xb') as stream:
             os.chmod(target,0o600)
-            subprocess.run(['docker','exec',self.c.NAME,'pg_dump','-U','nadi_dev_fixture','-d','nadi_live_dev_test','-Fc'],stdout=stream,check=True,timeout=60)
+            subprocess.run(['docker','exec',self.c.NAME,'pg_dump','-U','nadi_dev_fixture','-d',DB,'-Fc'],
+                           stdout=stream,check=True,timeout=60)
+        value['backup'] = str(target)
+        value['backup_sha256'] = digest(target)
+        value['backup_created'] = time.time()
+        for unit,name in [(self.c.UNITS[1],'web.service'),(self.c.UNITS[0],'api.service')]:
+            self.c.write_private(self.state/(token+'-'+name),output(['systemctl','--user','cat',unit]))
+        self.validate_backup(value)
+
+    def validate_backup(self, value):
+        path = Path(value['backup']); st = path.lstat()
+        if (path.parent != self.state or path.is_symlink() or st.st_uid != os.getuid() or
+                st.st_mode & 0o077 or st.st_size < 1000 or not 0 <= time.time()-value['backup_created'] <= 3600 or
+                digest(path) != value['backup_sha256']):
+            raise RuntimeError('FRESH_PRIVATE_BACKUP_REQUIRED')
         for args in [['--list'],['--file=/dev/null']]:
-            with target.open('rb') as stream:
-                result=subprocess.run(['docker','exec','-i',self.c.NAME,'pg_restore',*args],stdin=stream,capture_output=True,timeout=30)
-            if result.returncode or (args==['--list'] and (b'nadi_human_record' not in result.stdout or b'nadi_application_session' not in result.stdout)):
+            with path.open('rb') as stream:
+                result = subprocess.run(['docker','exec','-i',self.c.NAME,'pg_restore',*args],
+                                        stdin=stream,capture_output=True,timeout=30)
+            if result.returncode or (args == ['--list'] and
+                    any(name not in result.stdout for name in [b'nadi_human_record',b'nadi_application_session',b'nadi_application_migration'])):
                 raise RuntimeError('BACKUP_UNREADABLE')
-        snapshot['backup_sha256']=digest(target)
-        self.save('original-db-fingerprint.json',self.fingerprint())
-        for unit,name in [(self.c.UNITS[1],'previous-web.service'),(self.c.UNITS[0],'previous-api.service')]:
-            self.c.write_private(self.state/name,output(['systemctl','--user','cat',unit]))
-        self.c.write_private(self.state/'original-next-env.diff', output(['git','diff','--binary'],cwd=snapshot['previous_root']))
-        for name in ['config.json','accounts.json','frontend-active.json','controller-release.json','controller.py','frontend_preview.py']:
-            destination=self.state/('original-'+name)
-            self.c.write_private(destination,(self.c.STATE/name).read_text())
-        self.save('baseline.json',snapshot)
+
+    def validate_recovery(self, value):
+        self.release()
+        previous = value['previous']
+        root = source(previous['root'],self.c.BASE,previous['sha'])
+        self.repository(root)
+        if old_source(root,previous['sha']) != previous['generated_hash']:
+            raise RuntimeError('ROLLBACK_SOURCE_CHANGED')
+        if (digest(previous['config_path']) != value['config_hash'] or
+                digest(private(previous['config_path'])['accounts_file']) != value['accounts_hash']):
+            raise RuntimeError('ROLLBACK_CONFIG_CHANGED')
+        db = self.c.db()
+        if not db or not db['State']['Running'] or db['Id'] != value['db_container_id']:
+            raise RuntimeError('ROLLBACK_FIXTURE_CONTAINER_CHANGED')
+        node_pin(self.c.STATE)
+        self.validate_backup(value)
+        probe = self.fixture_probe(previous)
+        if probe != value['fixture']:
+            raise RuntimeError('FIXTURE_SCHEMA_OR_LEDGER_CHANGED')
 
     def environment(self, root):
         cockpit=Path(root)/'reliability-cockpit'
         return ['PATH='+str(self.c.STATE/'frontend-node-bin')+':/usr/bin:/bin','HOME='+str(Path.home()),'LANG=C.UTF-8',
             'PYTHONPATH='+':'.join(map(str,[cockpit,cockpit/'tests',cockpit/'tests/qa',Path(__file__).parent])),
             'PYTHONUNBUFFERED=1','NADI_LOCAL_DEV_ACK='+DB,'NADI_LOCAL_DEV_CONFIG='+str(self.state/'config.json')]
-
-    def create_fixture(self, value):
-        # Only a new named fixture DB/role on the already verified laptop container.
-        import secrets
-        password=secrets.token_urlsafe(32)
-        sql=("SELECT 1 FROM pg_database WHERE datname='"+DB+"' UNION ALL SELECT 1 FROM pg_roles WHERE rolname='"+ROLE+"';")
-        exists=output(['docker','exec',self.c.NAME,'psql','-XAt','-U','nadi_dev_fixture','-d','postgres','-c',sql])
-        if exists:
-            raise RuntimeError('FIXTURE_NAME_ALREADY_EXISTS_PRESERVE_IT')
-        sql=(f"CREATE ROLE {ROLE} LOGIN PASSWORD '{password}' NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS;\n"
-             f"CREATE DATABASE {DB} OWNER {ROLE};\nREVOKE ALL ON DATABASE {DB} FROM PUBLIC;\n")
-        created=subprocess.run(['docker','exec','-i',self.c.NAME,'psql','-Xq','-v','ON_ERROR_STOP=1','-U','nadi_dev_fixture','-d','postgres'],input=sql,text=True,capture_output=True,timeout=30)
-        if created.returncode:raise RuntimeError('NEW_FIXTURE_CREATION_FAILED_PRIVATE_EVIDENCE_RETAINED')
-        config={'application_dsn':f'postgresql+psycopg://{ROLE}:{password}@127.0.0.1:15443/{DB}',
-                'accounts_file':str(self.state/'accounts.json'),'source_root':value['root'],'workflow_sha':value['workflow_sha']}
-        self.save('config.json',config)
-        subprocess.run(['/usr/bin/env','-i',*self.environment(value['root']),str(self.c.STATE/'python-runtime/bin/python'),
-                        str(Path(__file__).with_name('local_fixture.py'))],check=True,timeout=60)
 
     def start(self, unit, root, command, extra, memory):
         self.c.run(['systemd-run','--user','--collect','--unit='+unit,'--service-type=exec','--working-directory='+str(root),
@@ -243,107 +341,167 @@ class LocalDevelopment:
         root=Path(value['root']);web=root/'reliability-cockpit/web'
         self.start('nadi-live-api',root/'reliability-cockpit',
             [str(self.c.STATE/'python-runtime/bin/python'),'-m','uvicorn','local_fixture:create_app','--factory','--host','127.0.0.1','--port','13036',
-             '--reload','--reload-dir',str(root/'reliability-cockpit/src'),'--reload-dir',str(root/'reliability-cockpit/tests/qa'),'--no-access-log'],[], '2G')
+             '--reload','--reload-dir',str(root/'reliability-cockpit/src'),'--reload-dir',str(root/'reliability-cockpit/tests/qa'),'--no-access-log'],['NADI_LOCAL_DEV_CONFIG='+value['config_path']], '2G')
         self.start('nadi-primary-web',web,[value['node'],'node_modules/next/dist/bin/next','dev','--hostname','localhost','--port','3000',
              '--experimental-https','--experimental-https-key',str(self.c.STATE/'localhost.key'),'--experimental-https-cert',str(self.c.STATE/'localhost.pem')],
             ['NODE_ENV=development','NEXT_TELEMETRY_DISABLED=1','NODE_OPTIONS=--max-old-space-size=4096',
              'NADI_LIVE_DEV=true','NADI_PRIMARY_FRONTEND=true','NADI_ENGINEERING_WORKSPACE_ENABLED=true',
              'NADI_ENGINEERING_DEMO_ENABLED=true','NADI_ENGINEERING_QA_ENABLED=true','NADI_QA_BACKEND_URL=http://127.0.0.1:13036',
-             'COCKPIT_API_BASE=http://127.0.0.1:8000','NADI_DEV_LAUNCHED_SHA='+SHA], '6G')
+             'COCKPIT_API_BASE=http://127.0.0.1:8000','NADI_DEV_LAUNCHED_SHA='+value['sha']], '6G')
 
     def readiness(self, value):
-        root=source(value['root'],self.c.BASE)
-        front=self.owners(self.c.UNITS[1],root/'reliability-cockpit/web',3000)
-        self.owners(self.c.UNITS[0],root/'reliability-cockpit',13036)
+        root = source(value['root'],self.c.BASE,value['sha'])
+        front = self.owners(self.c.UNITS[1],root/'reliability-cockpit/web',3000)
+        api = self.owners(self.c.UNITS[0],root/'reliability-cockpit',13036)
+        python = str((self.c.STATE/'python-runtime/bin/python').resolve())
+        if any(r['exe'] != python for r in api['listeners'].values()):
+            raise RuntimeError('BACKEND_EXECUTABLE_CHANGED')
         if any(r['exe'] != value['node'] for r in front['listeners'].values()):
             raise RuntimeError('FRONTEND_NODE_PIN_CHANGED')
         if value.get('expected_web') and front != value['expected_web']:
             raise RuntimeError('UNEXPECTED_FRONTEND_PROCESS_OR_LISTENER_REPLACEMENT')
         if value.get('expected_api_parent') and self.unit(self.c.UNITS[0]) != value['expected_api_parent']:
             raise RuntimeError('UNEXPECTED_API_PARENT_REPLACEMENT')
-        data=self.request(self.c.ORIGIN+'/api/development/status')
-        if (data.get('sha')!=SHA or data.get('backend_sha')!=SHA or data.get('launched_sha')!=SHA or data.get('stale') is not False
-                or data.get('database_identity')!=DB or data.get('backend')!='AVAILABLE' or not data.get('engineering')):
+        backend = self.request('http://127.0.0.1:13036/development/status')
+        data = self.request(self.c.ORIGIN+'/api/development/status')
+        sha = value['sha']
+        if (data.get('sha') != sha or data.get('backend_sha') != sha or data.get('launched_sha') != sha or
+                backend.get('source_sha') != sha or backend.get('current_sha') != sha or
+                backend.get('bootstrap_sha') != value['workflow_sha'] or
+                backend.get('source') != 'SYNTHETIC_LOCAL_DEVELOPMENT' or
+                backend.get('database') != 'DISPOSABLE_TEST' or backend.get('environment') != 'DEVELOPMENT' or
+                data.get('stale') is not False or data.get('database_identity') != DB or
+                backend.get('database_identity') != DB or data.get('backend') != 'AVAILABLE' or
+                data.get('factual_backend') != 'AVAILABLE' or not data.get('engineering')):
             raise RuntimeError('LOCAL_PAIR_NOT_READY')
+        # Dirty source remains visible; it is never coerced to clean or discarded.
         return data
 
-    def select(self, root):
-        self.state.mkdir(mode=0o700,exist_ok=True)
-        value=self.preflight(root)
-        self.backup(value)
-        self.create_fixture(value)
-        # Recheck exact original ownership and source after preparation, before any stop.
-        again=self.preflight(root)
-        if again['before']!=value['before'] or again['old_generated_hash']!=value['old_generated_hash']:
-            raise RuntimeError('BASELINE_CHANGED_BEFORE_TRANSITION')
-        self.save('transition.json',{'state':'ATTEMPT_STARTED','value':value})
-        try:
-            self.c.stop_unit(self.c.UNITS[1]);self.c.stop_unit(self.c.UNITS[0])
-            if self.c.primary_busy():raise RuntimeError('PORT_NOT_RELEASED')
-            self.start_pair(value)
-            deadline=time.monotonic()+120
-            while True:
-                # Poll readiness only; never retry starting a process or replace a worker.
-                try:
-                    data=self.readiness(value)
-                    break
-                except RuntimeError as error:
-                    if str(error) not in {'EXPECTED_LISTENER_MISSING', 'LOCAL_PAIR_NOT_READY'}:raise
-                    if time.monotonic()>=deadline:raise
-                    time.sleep(1)
-                except OSError:
-                    if time.monotonic()>=deadline:raise
-                    time.sleep(1)
-            value['expected_web']=self.owners(self.c.UNITS[1],Path(value['root'])/'reliability-cockpit/web',3000)
-            value['expected_api_parent']=self.unit(self.c.UNITS[0])
-            self.save('active.json',value)
-            self.save('acceptance-start.json',data)
-            print(json.dumps({'status':'READY','origin':self.c.ORIGIN,'frontend_sha':SHA,'backend_sha':SHA,'database':DB}))
-        except Exception:
-            self.recover(value)
-            raise
-
-    def recover(self, value):
-        # Validate recovery resources before stopping a working candidate.
-        self.release()
-        self.c.frontend_controller().launcher_release()
-        old_source(Path(value['previous_root']),value['previous_sha'])
-        if (self.c.git('rev-parse','HEAD') != value['previous_backend_sha'] or
-                self.c.git('status','--porcelain')):
-            raise RuntimeError('ROLLBACK_API_SOURCE_CHANGED')
-        db=self.c.db()
-        if not db or db['Id'] != value['db_container_id'] or not db['State']['Running']:
-            raise RuntimeError('ROLLBACK_FIXTURE_CONTAINER_CHANGED')
-        if digest(self.state/'original-qa.dump') != value['backup_sha256']:
-            raise RuntimeError('ROLLBACK_BACKUP_CHANGED')
-        if digest(self.c.STATE/'config.json') != digest(self.state/'original-config.json'):
-            raise RuntimeError('ROLLBACK_CONFIG_CHANGED')
-        # No database restore/reset or source edit is needed.
-        for unit,cwd in [(self.c.UNITS[1],Path(value['root'])/'reliability-cockpit/web'),(self.c.UNITS[0],Path(value['root'])/'reliability-cockpit')]:
-            if self.c.active(unit):
-                current=self.unit(unit)
-                old=Path(value['previous_root'])/'reliability-cockpit/web' if unit==self.c.UNITS[1] else self.c.ROOT/'reliability-cockpit'
-                if current['WorkingDirectory'] not in {str(cwd),str(old)}:
-                    raise RuntimeError('UNEXPECTED_RECOVERY_UNIT_OWNER')
-            self.c.stop_unit(unit)
-        old_source(Path(value['previous_root']),value['previous_sha'])
-        self.c.api_start()
-        self.c.frontend_controller().web_start(Path(value['previous_root']),value['previous_sha'],value['previous_manifest'])
-        deadline=time.monotonic()+90
+    def wait_ready(self, value):
+        deadline = time.monotonic()+120
         while True:
             try:
-                self.owners(self.c.UNITS[1],Path(value['previous_root'])/'reliability-cockpit/web',3000)
-                api=self.request('http://127.0.0.1:13036/development/status')
-                if api.get('source_sha')!=value['previous_backend_sha'] or api.get('database_identity')!='nadi_live_dev_test':
-                    raise RuntimeError('ROLLBACK_API_NOT_READY')
-                break
-            except Exception:
-                if time.monotonic()>=deadline:raise
-                time.sleep(1)
-        active=self.state/'active.json'
-        if active.exists():
-            os.replace(active,self.state/'rolled-back-active.json')
-        self.save('rollback-complete.json',{'previous_frontend_sha':value['previous_sha'],'previous_backend_sha':value['previous_backend_sha']})
+                return self.readiness(value)
+            except RuntimeError as error:
+                if str(error) not in {'EXPECTED_LISTENER_MISSING','LOCAL_PAIR_NOT_READY'}:
+                    raise
+                if time.monotonic() >= deadline:
+                    raise
+            except OSError:
+                if time.monotonic() >= deadline:
+                    raise
+            time.sleep(1)
+
+    def attest(self, value):
+        value['expected_web'] = self.owners(self.c.UNITS[1],Path(value['root'])/'reliability-cockpit/web',3000)
+        value['expected_api_parent'] = self.unit(self.c.UNITS[0])
+
+    def failure(self, token, error):
+        code = str(error).split(':',1)[0]
+        self.save(token+'-failed.json',{'id':token,'outcome':'FAILED','error_type':type(error).__name__,
+                                      'code':code if re.fullmatch('[A-Z_]+',code) else 'PRIVATE_DIAGNOSTIC_REQUIRED'})
+
+    def select(self, root, ref):
+        # Identity is allocated even for rejected attempts; no deletion enables another attempt.
+        self.state.mkdir(mode=0o700,exist_ok=True)
+        info = self.state.lstat()
+        if self.state.is_symlink() or info.st_uid != os.getuid() or info.st_mode & 0o077:
+            raise RuntimeError('PRIVATE_LOCAL_STATE_REQUIRED')
+        token = 'selection-'+uuid.uuid4().hex
+        self.save(token+'-requested.json',{'id':token,'candidate':str(root),'ref':ref,'at':time.time(),
+                                         'before':self.active_value()['sha'],'after':'UNRESOLVED',
+                                         'outcome':'REQUESTED','rollback':None})
+        try:
+            with self.transaction():
+                self._select(root,ref,token)
+        except Exception as error:
+            self.failure(token,error)
+            raise
+
+    def _select(self, root, ref, token):
+        value = self.preflight(root,ref)
+        self.backup(value,token)
+        again = self.preflight(root,ref)
+        if again != {k:v for k,v in value.items() if k not in {'backup','backup_sha256','backup_created'}}:
+            raise RuntimeError('BASELINE_CHANGED_BEFORE_TRANSITION')
+        self.validate_recovery(value)
+        self.save(token+'-prepared.json',value)
+        config = private(value['previous']['config_path'])
+        config.update(source_root=value['root'],workflow_sha=value['workflow_sha'])
+        self.save(token+'-config.json',config)
+        value['config_path'] = str(self.state/(token+'-config.json'))
+        value['transition_id'] = token
+        self.save(token+'-stopping.json',{'before':value['previous']['sha'],'after':value['sha'],
+                                       'rollback':token+'-prepared.json'})
+        source(root,self.c.BASE,value['sha'],clean=True)
+        for key,unit,suffix,port in [('web',self.c.UNITS[1],'reliability-cockpit/web',3000),
+                                     ('api',self.c.UNITS[0],'reliability-cockpit',13036)]:
+            if self.owners(unit,Path(value['previous']['root'])/suffix,port) != value['previous']['before'][key]:
+                raise RuntimeError('BASELINE_CHANGED_BEFORE_TRANSITION')
+        try:
+            self.c.stop_unit(self.c.UNITS[1]); self.c.stop_unit(self.c.UNITS[0])
+            if self.c.primary_busy():
+                raise RuntimeError('PORT_NOT_RELEASED')
+            self.start_pair(value)
+            data = self.wait_ready(value)
+            self.attest(value)
+            self.save(token+'-accepted.json',{'id':token,'before':value['previous']['sha'],
+                                           'after':value['sha'],'outcome':'READY','rollback':token+'-prepared.json'})
+            self.replace('active.json',value)
+            print(json.dumps({'status':'READY','frontend_sha':value['sha'],'backend_sha':value['sha'],
+                              'database':DB,'origin':self.c.ORIGIN,'transition':token}))
+        except Exception:
+            # One recovery only, never retry candidate startup. Keep all evidence on failure.
+            self._recover(value,token+'-failure')
+            raise
+
+    def _recover(self, value, token):
+        self.validate_recovery(value)
+        previous = dict(value['previous'])
+        # Existing old-format expected PIDs describe the process before stop, not restored ones.
+        previous.pop('expected_web',None); previous.pop('expected_api_parent',None)
+        for unit,port,suffix in [(self.c.UNITS[1],3000,'reliability-cockpit/web'),
+                                 (self.c.UNITS[0],13036,'reliability-cockpit')]:
+            if self.c.active(unit):
+                current = self.unit(unit)
+                roots = [Path(value['root'])/suffix,Path(previous['root'])/suffix]
+                if current['WorkingDirectory'] not in {str(p) for p in roots}:
+                    raise RuntimeError('UNEXPECTED_RECOVERY_UNIT_OWNER')
+                # Known unit alone is insufficient: every extant socket must be owned.
+                try:
+                    self.owners(unit,Path(current['WorkingDirectory']),port)
+                except RuntimeError as error:
+                    if str(error) != 'EXPECTED_LISTENER_MISSING':
+                        raise
+        # All extant units/listeners are validated before stopping either process.
+        for unit in (self.c.UNITS[1],self.c.UNITS[0]):
+            self.c.stop_unit(unit)
+        if self.c.primary_busy():
+            raise RuntimeError('PORT_NOT_RELEASED')
+        self.start_pair(previous)
+        self.wait_ready(previous)
+        self.attest(previous)
+        self.save(token+'-recovered.json',{'outcome':'ROLLED_BACK','source':previous['sha'],
+                                        'backup':value['backup'],'data_restored_or_deleted':False})
+        self.replace('active.json',previous)
+
+    def recover(self, value):
+        if 'previous' not in value:
+            raise RuntimeError('REUSABLE_RECOVERY_RECORD_REQUIRED: historical recovery artifacts retained')
+        token = 'rollback-'+uuid.uuid4().hex
+        self.save(token+'-requested.json',{'outcome':'REQUESTED','source':value['sha']})
+        try:
+            with self.transaction():
+                if self.active_value() != value:
+                    raise RuntimeError('ACTIVE_SELECTION_CHANGED')
+                self.readiness(value)
+                recovery = dict(value)
+                self.backup(recovery,token)
+                self.save(token+'-prepared.json',recovery)
+                self._recover(recovery,token)
+        except Exception as error:
+            self.failure(token,error)
+            raise
 
     def active_value(self):
         return private(self.state/'active.json')
