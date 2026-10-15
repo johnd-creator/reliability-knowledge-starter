@@ -11,7 +11,7 @@ def draft(profile):
     return {'canonical_asset_id':'asset:SYNTHETIC:WORKBOOK','method':profile['methodTerm'],
             'method_version':'SYNTHETIC-inspector-version','inspector_ref':'synthetic-author',
             'inspected_at':'2026-10-09T09:00:00+07:00',
-            'measurements':[{'quantity':f['label'],'unit':f['unit'] or None,'value':value,
+            'measurements':[{'quantity':'SYNTHETIC-inspector-quantity' if f.get('sourcePointLabel') else f['label'],'unit':f['unit'] or None,'value':value,
                              'point_ref':None,'measured_at':None,
                              'quality':'INSPECTOR_REPORTED','provenance':'HUMAN_ENTERED_MEASUREMENT'}
                             for f,value in zip(profile['fields'],([0,None,'SYNTHETIC original text']*34))]}

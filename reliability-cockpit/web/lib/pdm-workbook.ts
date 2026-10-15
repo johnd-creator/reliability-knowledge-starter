@@ -680,5 +680,5 @@ export function workbookRows(id:string,method:Method,nextKey:()=>string):EntryRo
  if(!profile)throw Error('Profil workbook tidak dikenali.');
  // Explicit user method selection is separate from choosing an area/context.
  if(method!==profile.methodTerm)throw Error('Pilih metode secara eksplisit sesuai istilah sumber; konteks area tidak memilih metode.');
- return profile.fields.map(field=>({...emptyRow(nextKey()),quantity:field.label,unit:field.unit}));
+ return profile.fields.map(field=>({...emptyRow(nextKey()),quantity:field.sourcePointLabel?'':field.label,unit:field.unit,...(field.sourcePointLabel?{sourceHint:field.sourcePointLabel}:{})}));
 }

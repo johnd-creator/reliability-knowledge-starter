@@ -19,19 +19,19 @@ Seluruh screenshot adalah komponen aktual dengan request diintersepsi dan fixtur
 
 | File | SHA256 |
 |---|---|
-| bc-irregular-axis-dark-1440.png | `c354315d08bc6c04a7af43b69a78a8503ecdd95b7bc798e0717e9b82453169a1` |
-| bc-irregular-axis-dark-1920.png | `4184525d36a3743b2f7392b670cf5948c55a5c3bab55d0f502f32dec45c5d8b4` |
-| bc-irregular-axis-light-1440.png | `23b1925840b1e9bf440f73958cc71e4350bb5a7405873b99c3c1b43137fb272c` |
-| bc-irregular-axis-light-1920.png | `6059a7412b8c9188aafe7c964397fb59158ce824796deb6c235779acf9da7d23` |
-| boiler-five-axis-dark-1440.png | `2088e4f518e4466f67260d5a6ce4d958575dd9aa074167bc9a44f641df51e095` |
-| boiler-five-axis-dark-1920.png | `377270268674ae5d8e7602c3ecad4e62530594742d4b1374a247743443af7824` |
-| boiler-five-axis-light-1440.png | `ff48b92c0e1f7153db7284cfe44310009c02ab118df204a8f927e20ca56501a0` |
-| boiler-five-axis-light-1920.png | `978cf150984e31c73faab268da669a6642d351daf9adc907e9016f1bf59dc72e` |
-| boiler-three-point-rms-dark-1440.png | `624566295f854da822e232b317d81de43bcde58a1e45255cd96e614a17e0c642` |
-| boiler-three-point-rms-dark-1920.png | `6f3a0b1be1ae3854c5e9418e36ee1339db11da4d4e4463a350be5d76ed72f7d3` |
-| boiler-three-point-rms-light-1440.png | `3e0049ebb3424dcbfcadadf80c6d37de2a792e1e4042cb8162aeb992f1883da6` |
-| boiler-three-point-rms-light-1920.png | `ba409716003086cc962e9e121e3a1dd2235fc6a5dd1329cb0b01c115e40e871d` |
-| candidate-dictionary.json | `651daa29b8d4c8ebf469953d6c5f12dc1dfe051e6aaed7c6d8d264ca38477a7a` |
+| bc-irregular-axis-dark-1440.png | `18da43ab55f805383e8e15c19450cb133af36f29c7a96622bc26661d55f7668a` |
+| bc-irregular-axis-dark-1920.png | `80aec4c90bb2a092f9c17faff316c423176d3e18d711d3e9eaac60e279653aab` |
+| bc-irregular-axis-light-1440.png | `56c635fdd764c6f8149aabd6405f9cdfd9612beb78c68c4bab559a951953edf5` |
+| bc-irregular-axis-light-1920.png | `ec7af598fb9e4e76ceca30ddb0e3ecec5f3bcd3db442c711bdbdf9763aa8bc7e` |
+| boiler-five-axis-dark-1440.png | `3901829823991059e3f88e88be02d856365c6534f916a5041312f00074e97356` |
+| boiler-five-axis-dark-1920.png | `06f6f775153dd3d31923ab7a6a162ef4ba58c54d38b8d56d86d9a79f6da8e1d8` |
+| boiler-five-axis-light-1440.png | `2e81c1873e1499ecdddd4ec1ab9b7c0661d071b0b6cacce30a93c79cb8f2c8aa` |
+| boiler-five-axis-light-1920.png | `0f626e8decc37a19c8b94020df0bda5730e60ebce08035214200ae638d60ed18` |
+| boiler-three-point-rms-dark-1440.png | `8c4a29d1344a30492716a244c559541e4e3da1b6ecbf9ae5ca5448d56d88207b` |
+| boiler-three-point-rms-dark-1920.png | `268d9ddcc45bf747ccb7770998e5836e50c2453ad6fd381eaf05277c3038d64b` |
+| boiler-three-point-rms-light-1440.png | `89dddc2ffc609c510f428613ee3f0f3a23e681556b5a4e9579f868fba0c8c493` |
+| boiler-three-point-rms-light-1920.png | `eb97e7220314fc58f932122722dd026f84a60910c77fb815d268142f9eb06054` |
+| candidate-dictionary.json | `a3db0a58ca54339e122190f61d4bba35d0eec10f0954c49fba19ede564841fb9` |
 | cep-bearing-cbm-dark-1440.png | `6716824af73ca80c011025459a03efdb55b6f9f3f10657743fe9529ebf741f8a` |
 | cep-bearing-cbm-dark-1920.png | `b331c1ca6822895de4dec54d0e3f6849c86bf0b6cd80405f1b0b7529dfc61fae` |
 | cep-bearing-cbm-light-1440.png | `9c114929a574aae9fbea7d58e36c2438fba6650522aa0e48f2d98e2a0ceefbe2` |
@@ -40,9 +40,9 @@ Seluruh screenshot adalah komponen aktual dengan request diintersepsi dan fixtur
 | cep-ir-window-dark-1920.png | `96eb89e71f2b146cb71ad56d46194050c1ba8250e40faf74814ea3a6ea3cffd8` |
 | cep-ir-window-light-1440.png | `3ef5e0376deb03d0579d70ab5b370db0f704e02d86e909decaad39690c5eecd6` |
 | cep-ir-window-light-1920.png | `625014bf1737aa61271b4ec3ccb75e12871f8cf64ec9a9499a126e86f3aa1014` |
-| results.json | `7260e3d4eb872cd274f453448706aa01f143aeafe7e7311c687c2499af2caa7f` |
+| results.json | `e5413119562790e97b2fde350ecfb2f85359dc2bd7cc8ec3f30f0776f1160472` |
 | source-inventory.json | `e1a2c0b282711051944aa34a458f9bb6409fd07b47568e3e7f2f6c84b33bd1f8` |
-| turbine-four-point-dark-1440.png | `4e397c4207d4e25a285b54157108b8419a03ca68b80138150afdff9ab884da08` |
-| turbine-four-point-dark-1920.png | `8fb46f3435810a70d6a9c66f8b89f6d01a3c5e45aaa9508f3f887ffd147d8b0d` |
-| turbine-four-point-light-1440.png | `28c76b6e0078dec56aef752b3269619968ef1f242b9afe016c27172c34a1807a` |
-| turbine-four-point-light-1920.png | `670c060ef5b94dc870565a90a618378f582eefd730dba1867a941696ec728866` |
+| turbine-four-point-dark-1440.png | `28c4679f4b17ed59ab37966be1bcdc1ce67ee0cd2976daf4c6bef77ec6a37a55` |
+| turbine-four-point-dark-1920.png | `36db86735debacac20a86783e95abd31f46e06de4c94204dd1efdce2c4ac63fe` |
+| turbine-four-point-light-1440.png | `32f35270a092aef9cafbe9adb64cefd6adcab78552c093ec60262e1048a6b849` |
+| turbine-four-point-light-1920.png | `a94285b046e1a8942f150a8c9e0ef7728c9fc680de58be9760cf725b3a4ff598` |

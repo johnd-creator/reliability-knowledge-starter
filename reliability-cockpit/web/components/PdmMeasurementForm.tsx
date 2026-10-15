@@ -43,7 +43,7 @@ export default function PdmMeasurementForm({session,initial,busy,onSave,onCancel
  <div className="section-heading"><h3>Titik dan measurement asli</h3><Button disabled={entry.rows.length>=100} onClick={()=>update({rows:[...entry.rows,emptyRow('row-'+ ++sequence.current)]})}>Tambah baris</Button></div><p className="section-note">Maksimal 100 baris. Tab untuk berpindah field. Nol adalah nilai valid; kosong bukan nol. Pilih Belum diketahui untuk null. Tidak ada konversi unit atau jadwal harian otomatis.</p>
  <div className="pdm-grid-scroll" role="region" aria-label="Grid input multi-titik" tabIndex={0}><div className="pdm-measurement-grid">{entry.rows.map((row,index)=>{
   const set=(key: keyof typeof row,value:string)=>update({rows:entry.rows.map(x=>x.key===row.key?{...x,[key]:value}:x)});
-  return <fieldset className="pdm-measurement-row" key={row.key}><legend>Measurement {index+1}</legend>
+  return <fieldset className="pdm-measurement-row" key={row.key}><legend>Measurement {index+1}{row.sourceHint&&<> · label sumber {row.sourceHint} (titik/parameter belum terikat)</>}</legend>
    <label>Titik {index+1}<input value={row.point} maxLength={200} onChange={e=>set('point',e.target.value)}/></label>
    <label>Parameter {index+1}<input required value={row.quantity} maxLength={120} onChange={e=>set('quantity',e.target.value)}/></label>
    <label>Tipe nilai {index+1}<select aria-label={"Tipe nilai "+(index+1)} value={row.kind} onChange={e=>set('kind',e.target.value as ValueKind)}>{[['UNKNOWN','Belum diketahui (null)'],['NUMERIC','Angka'],['TEXT','Teks'],['BOOLEAN','Boolean']].map(([value,text])=><option key={value} value={value}>{text}</option>)}</select></label>

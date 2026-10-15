@@ -1035,5 +1035,301 @@
     }
   ],
   "direct_fields": 39,
-  "ambiguous_input_fields": 3
+  "ambiguous_input_fields": 3,
+  "contract_mapping": [
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-1V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-1H",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-1A",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-2V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-2H",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-2A",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-3V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-3H",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-three-point-rms",
+      "field": "axis-3A",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-five-axis",
+      "field": "axis-1V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-five-axis",
+      "field": "axis-1H",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-five-axis",
+      "field": "axis-2V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-five-axis",
+      "field": "axis-2H",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "boiler-five-axis",
+      "field": "axis-2A",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-1V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-1H",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-1A",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-2V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-2H",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-2A",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-3V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-3H",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-3A",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-6V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "bc-irregular-axis",
+      "field": "axis-6A",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-1V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-1H",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-1A",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-2V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-2H",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-2A",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-3V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-3H",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-3A",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-4V",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-4H",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "turbine-four-point",
+      "field": "axis-4A",
+      "quantity_binding": "MANUAL_ENGINEER_REQUIRED",
+      "point_binding": "UNMAPPED",
+      "source_axis": "DISPLAY_ONLY_NOT_PERSISTED"
+    },
+    {
+      "profile": "cep-bearing-cbm",
+      "field": "current",
+      "quantity_binding": "SOURCE_LABEL_CANDIDATE",
+      "point_binding": "UNMAPPED",
+      "source_axis": "NOT_APPLICABLE"
+    },
+    {
+      "profile": "cep-bearing-cbm",
+      "field": "temperature-19",
+      "quantity_binding": "SOURCE_LABEL_CANDIDATE",
+      "point_binding": "UNMAPPED",
+      "source_axis": "NOT_APPLICABLE"
+    },
+    {
+      "profile": "cep-bearing-cbm",
+      "field": "temperature-20",
+      "quantity_binding": "SOURCE_LABEL_CANDIDATE",
+      "point_binding": "UNMAPPED",
+      "source_axis": "NOT_APPLICABLE"
+    },
+    {
+      "profile": "cep-bearing-cbm",
+      "field": "temperature-21",
+      "quantity_binding": "SOURCE_LABEL_CANDIDATE",
+      "point_binding": "UNMAPPED",
+      "source_axis": "NOT_APPLICABLE"
+    },
+    {
+      "profile": "cep-ir-window",
+      "field": "current",
+      "quantity_binding": "SOURCE_LABEL_CANDIDATE",
+      "point_binding": "UNMAPPED",
+      "source_axis": "NOT_APPLICABLE"
+    }
+  ]
 }

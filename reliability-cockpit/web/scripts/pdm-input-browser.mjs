@@ -106,7 +106,7 @@ try{
   check('unbound physical point and unknown time '+profile,await p.getByLabel('Titik 1',{exact:true}).inputValue()===''&&await p.getByLabel('Waktu measurement 1',{exact:true}).inputValue()==='');
   check('no original source value copied '+profile,await p.getByLabel('Tipe nilai 1',{exact:true}).inputValue()==='UNKNOWN'&&await p.getByLabel('Nilai asli 1',{exact:true}).inputValue()==='');
   if(profile==='cep-bearing-cbm')check('ambiguous thermal units stay empty',await p.getByLabel('Unit asli 2',{exact:true}).inputValue()===''&&await p.getByText('CBM provisional: temperatur/IR Window belum membuktikan inspeksi IRT lengkap.',{exact:false}).isVisible());
-  if(method==='VIBRATION')check('source axis visible without canonical binding '+profile,await p.locator('.workbook-field').first().getByText(/belum terikat ke titik kanonis/).isVisible());
+  if(method==='VIBRATION')check('source axis remains a display hint, not physical quantity or canonical point '+profile,await p.locator('.workbook-field').first().getByText(/belum terikat ke titik kanonis/).isVisible()&&await p.getByLabel('Parameter 1',{exact:true}).inputValue()===''&&await p.locator('.pdm-measurement-row').first().getByText(/label sumber 1V/).isVisible());
   await p.getByLabel('Tipe nilai 1',{exact:true}).selectOption('NUMERIC');await p.getByLabel('Nilai asli 1',{exact:true}).fill('0');
   p.once('dialog',dialog=>dialog.dismiss());await button('Gunakan baris kandidat').click();
   check('replacement confirmation retains zero '+profile,await p.getByLabel('Nilai asli 1',{exact:true}).inputValue()==='0');

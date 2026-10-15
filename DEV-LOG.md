@@ -537,3 +537,5 @@ Product Owner Acceptance: implementation authorized; visual and engineer validat
 Remaining Blockers: temperature units, canonical identity/points, acquisition/timezone/comparability, IRT custody/method scope, historical import authority and operational UAT.
 Next Action: PO visual review and engineer field validation; no automatic runtime change or next implementation.
 Evidence: [report](reliability-cockpit/docs/nadi-pdm-workbook-02.md), [sanitized evidence](reliability-cockpit/docs/evidence/nadi-pdm-workbook-02/README.md). No DB/session access, source requests, collector/Mart change, restart, migration or policy change.
+
+WORKBOOK-02 self-review correction: source axis labels are display-only row hints; physical quantity and canonical point are blank until explicitly supplied by engineer. No sourceHint persistence. Impacted assertions/browser/screenshots and exact-head CI rerun.
