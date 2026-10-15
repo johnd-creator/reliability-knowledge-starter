@@ -1,0 +1,107 @@
+{
+  "acceptance-attempt-1.json": {
+    "status": "FAIL",
+    "checks": [
+      "PdM register and paired contract render",
+      "register no page overflow 1440",
+      "register no page overflow 1920",
+      "measurement-input no page overflow 1440",
+      "measurement-input no page overflow 1920",
+      "multi-point original zero/null persisted"
+    ],
+    "first_failure": "locator.fill: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByLabel('Observasi (satu per baris)', { exact: true })\u001b[22m\n",
+    "live": true,
+    "intercepted_responses": false
+  },
+  "acceptance-attempt-2.json": {
+    "status": "FAIL",
+    "checks": [
+      "PdM register and paired contract render",
+      "register no page overflow 1440",
+      "register no page overflow 1920"
+    ],
+    "first_failure": "locator.fill: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByLabel('Observasi (satu per baris)', { exact: true })\u001b[22m\n",
+    "live": true,
+    "intercepted_responses": false
+  },
+  "acceptance-attempt-3.json": {
+    "status": "FAIL",
+    "checks": [
+      "PdM register and paired contract render",
+      "register no page overflow 1440",
+      "register no page overflow 1920",
+      "edit persisted with CAS revision",
+      "invalid CSRF rejected",
+      "raw scatter has 3 actual samples and no interpolation",
+      "measurement-history no page overflow 1440",
+      "measurement-history no page overflow 1920",
+      "self-review or insufficient review authority rejected",
+      "stale revision rejected",
+      "reviewer has no author entry button"
+    ],
+    "first_failure": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Setujui rekam inspeksi', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button disabled type=\"button\" class=\"button secondary \">Setujui rekam inspeksi</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 \u00d7 waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 \u00d7 waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    58 \u00d7 waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not enabled\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+    "live": true,
+    "intercepted_responses": false
+  },
+  "acceptance-results.json": {
+    "status": "PASS",
+    "checks": [
+      "reviewer has no author entry button",
+      "independent reviewer approved record only",
+      "inspection-review no page overflow 1440",
+      "inspection-review no page overflow 1920",
+      "Case handoff uses exact approved inspection",
+      "engineering-handoff no page overflow 1440",
+      "engineering-handoff no page overflow 1920",
+      "foreign asset scope denied",
+      "unauthenticated records rejected",
+      "session persisted across browser reload",
+      "no uncaught browser errors",
+      "no external browser origins requested"
+    ],
+    "first_failure": null,
+    "live": true,
+    "intercepted_responses": false
+  },
+  "refresh-results.json": {
+    "status": "PASS",
+    "checks": [
+      "frontend probe has one exact safe replacement",
+      "Fast Refresh changed UI without document reload",
+      "no concurrent frontend edit before revert",
+      "Fast Refresh reverted UI without document reload",
+      "backend probe has one exact safe replacement",
+      "backend development reload exposes temporary read-only probe",
+      "no concurrent backend edit before revert",
+      "backend reload reverted read-only probe",
+      "same HTTPS session survives backend reload",
+      "persisted measurements remain readable after reconnect",
+      "source pair remains exact and honest dirty state"
+    ],
+    "first_failure": null,
+    "live": true,
+    "intercepted_responses": false
+  },
+  "supplement-results.json": {
+    "status": "PASS",
+    "checks": [
+      "original values units and timestamps intact",
+      "server-side register filters reconcile",
+      "nonmatching server filter has zero records",
+      "mixed/null context does not silently approve comparability",
+      "route available /pdm",
+      "route available /engineering/cases",
+      "route available /engineering/local",
+      "route available /recommendations",
+      "route available /action-board",
+      "route available /engineering/advisories",
+      "route available /engineering/inbox",
+      "desktop no overflow 1440",
+      "desktop no overflow 1920",
+      "no uncaught errors"
+    ],
+    "first_failure": null,
+    "live": true,
+    "intercepted_responses": false
+  }
+}

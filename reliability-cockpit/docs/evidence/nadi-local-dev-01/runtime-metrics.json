@@ -1,0 +1,42 @@
+{
+  "nadi-live-api.service": {
+    "InvocationID": "63d9ca99b6de4cda83444469c4110443",
+    "MainPID": "1348657",
+    "NRestarts": "0",
+    "ExecMainStartTimestamp": "Thu 2026-10-15 09:18:31 WIB",
+    "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/nadi-live-api.service",
+    "MemoryCurrent": "130801664",
+    "MemoryPeak": "204439552",
+    "CPUUsageNSec": "9458913000",
+    "memory_events": {
+      "low": "0",
+      "high": "0",
+      "max": "0",
+      "oom": "0",
+      "oom_kill": "0",
+      "oom_group_kill": "0",
+      "sock_throttled": "0"
+    },
+    "fatal_matches": "-- No entries --"
+  },
+  "nadi-primary-web.service": {
+    "InvocationID": "3a93caa4e3a34eb3906c719a82778e10",
+    "MainPID": "1348659",
+    "NRestarts": "0",
+    "ExecMainStartTimestamp": "Thu 2026-10-15 09:18:31 WIB",
+    "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/nadi-primary-web.service",
+    "MemoryCurrent": "897699840",
+    "MemoryPeak": "1185497088",
+    "CPUUsageNSec": "78632914000",
+    "memory_events": {
+      "low": "0",
+      "high": "0",
+      "max": "0",
+      "oom": "0",
+      "oom_kill": "0",
+      "oom_group_kill": "0",
+      "sock_throttled": "0"
+    },
+    "fatal_matches": "-- No entries --"
+  }
+}
