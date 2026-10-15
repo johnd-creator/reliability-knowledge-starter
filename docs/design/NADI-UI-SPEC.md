@@ -507,3 +507,16 @@ file upload or source mutation. 1440/768/390 native input, detail/history/handof
 dark register evidence is [explicitly isolated](../../reliability-cockpit/docs/evidence/nadi-pdm-center-input-01/README.md).
 [Implementation, limits and self-review](../../reliability-cockpit/docs/nadi-pdm-center-input-01.md)
 separate IMPLEMENTED/TESTED from MERGED, ENGINEER APPROVED and OPERATIONALLY ACCEPTED.
+
+## UI-04 workbook candidate subset — 2026-10-15
+
+[WORKBOOK-01](../../reliability-cockpit/docs/nadi-pdm-workbook-01.md) adds a versioned,
+configuration-driven header panel to existing Input Pengukuran. AREA FAN/MILL
+profiles reference verified Tribology headers; Logsheet6kV references MCSA headers.
+User method choice remains explicit; candidates remain PENDING ENGINEER VALIDATION.
+The panel groups original field labels/units with exact source coordinates and
+unresolved notes, then applies empty native rows only to a new draft after any
+replacement confirmation. Generic input and revision/review/Case protections stay.
+Desktop1440/1920 screenshots use intercepted synthetic fixtures, not the active
+laptop. Remaining fields/variants and operational engineering approval are pending;
+no automatic source import, score, threshold or template metadata persistence.

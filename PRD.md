@@ -330,3 +330,13 @@ PdM server-filter proof is mandatory for this candidate; older QA backends canno
 silently ignore filters. No frontend-only preview pairing or runtime activation
 is approved here. Native drafts and failed intent IDs recover only for the same
 trusted identity/scope and original edit revision.
+
+## FR-03 workbook candidate preparation — 2026-10-15
+
+[WORKBOOK-01](reliability-cockpit/docs/nadi-pdm-workbook-01.md) verifies the three
+original engineer workbooks and implements three restricted candidate header
+profiles. Nine direct fields retain original unit tokens; values, point identity
+and time are not prefilled. Context selection never chooses/approves the method.
+This does not approve all workbook variants, import calculated/diagnostic columns,
+activate warning thresholds or change InspectionDraft v1.1. Engineer mapping,
+Q01–Q10 and operational UAT remain pending; the general form stays available.

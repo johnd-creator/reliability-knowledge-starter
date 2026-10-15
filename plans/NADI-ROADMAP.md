@@ -913,3 +913,18 @@ Q01–Q10 and PD/DGA uncertainty are preserved. Three workbook contexts are cand
 not accepted measurement methods. MERGED/official runtime VISIBLE/ENGINEER APPROVED/
 OPERATIONALLY ACCEPTED remain NO/PENDING. Phase0–5 and Phase1 policy/checkpoints/
 hard-expiry are unchanged; no runtime or operational action was performed.
+
+## Phase 2 M01/M02 — workbook candidate checkpoint — 2026-10-15
+
+PR82 foundation is MERGED; PR83 reusable local tooling is MERGED in reviewed main
+`106a4dc08b149576b2e84bbf8c70694288c7e9a7`. The laptop still serves the unchanged
+PR82 source; merging tooling does not install it or select another branch.
+
+[NADI-PDM-WORKBOOK-01](../reliability-cockpit/docs/nadi-pdm-workbook-01.md) advances
+M01 with read-only inventory of the three original workbooks/23 worksheets and M02
+candidate preparation with three versioned header profiles/nine DIRECT fields.
+Native grid, generic input, review/CAS and Case handoff are retained. This is a
+PARTIAL candidate: remaining sheet variants, formula/units/time/point ambiguity,
+engineer mapping approval and operational UAT remain pending. No parser, schema,
+source acquisition, threshold, scoring, attachment custody or live source selection
+is activated. Q01–Q10, Phase0–5 and separate Phase1 governance remain unchanged.

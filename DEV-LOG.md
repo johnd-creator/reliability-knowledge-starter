@@ -509,3 +509,13 @@ Evidence: [implementation/self-review](reliability-cockpit/docs/nadi-pdm-center-
 - Product Owner acceptance: authority for conditional technical merge provided; no new visual/UAT/operational acceptance claimed.
 - Remaining gate: exact-head CI, review and post-merge verification; first future live branch selection needs separate approval.
 - Evidence and limitations: [LOCAL-DEV-02 report](reliability-cockpit/docs/nadi-local-dev-02.md).
+
+## 2026-10-15 — NADI-PDM-WORKBOOK-01
+
+- Objective: read-only engineer workbook discovery and safe desktop template subset (M01/M02 candidates).
+- Branch: `codex/nadi-pdm-workbook-01`; base main `106a4dc08b149576b2e84bbf8c70694288c7e9a7`; exact delivery HEAD/CI belong to the enclosing Git commit and DRAFT PR.
+- IMPLEMENTED: three candidate profiles/nine verified header fields; existing InspectionDraft v1.1, generic form and backend workflow unchanged.
+- TESTED:9/9 original lineage checks;34/34 presentation assertions;45/45 hermetic backend tests;92/92 intercepted browser checks including1440/1920 and dark mode. TypeScript/lint/build and UX assertions PASS; exact-head CI is independent.
+- MERGED: NO; DRAFT delivery only. VISIBLE on localhost:3000: NO, serving PR82 unchanged. ENGINEER APPROVAL: PENDING; no operational or Product Owner visual acceptance claimed.
+- Blockers: remaining sheet variants, original/derived boundaries, exact asset/point/time/unit semantics; Q01–Q10 remain pending.
+- Evidence/next action: [report](reliability-cockpit/docs/nadi-pdm-workbook-01.md); senior/engineer review, then separately authorized controlled preview.

@@ -3,6 +3,8 @@ import {useEffect,useRef,useState,type FormEvent} from 'react';
 import type {Inspection,QaSession} from '../lib/product-records';
 import {buildDraft,emptyRow,fromInspection,inputContexts,newEntry,type Entry,type InspectionDraft,type ValueKind} from '../lib/pdm-input';
 import {methods} from '../lib/manual-pdm';
+import {workbookRows,type WorkbookProfile} from '../lib/pdm-workbook';
+import PdmWorkbookTemplate from './PdmWorkbookTemplate';
 import {statusLabel} from '../lib/id-copy';
 import {engineeringRequest} from '../lib/engineering-http';
 import {usePdmDraft} from './PdmDraftContext';
@@ -17,6 +19,11 @@ export default function PdmMeasurementForm({session,initial,busy,onSave,onCancel
  useEffect(()=>{let active=true;setIdentity('Memuat konteks aset…');if(entry.asset)engineeringRequest('asset-context/'+encodeURIComponent(entry.asset)+'?limit=1').then(raw=>{const value=raw as {canonical_asset_id:string;identity?:{description?:string;location_ref?:string};identity_availability:string};if(active)setIdentity(value.canonical_asset_id===entry.asset&&value.identity_availability==='AVAILABLE'?`${value.identity?.description??'Deskripsi belum diketahui'} · ${value.identity?.location_ref??'Lokasi belum diketahui'}`:'Konteks aset belum tersedia; server tetap memverifikasi Registry saat menyimpan.');}).catch(()=>{if(active)setIdentity('Konteks aset tidak dapat dibaca; tidak membuat aset baru.');});return()=>{active=false;};},[entry.asset]);
  useEffect(()=>{const leave=(e:BeforeUnloadEvent)=>{if(dirty){e.preventDefault();e.returnValue='';}};const navigate=(e:MouseEvent)=>{const anchor=(e.target as Element).closest?.('a[href]');if(dirty&&anchor&&!anchor.getAttribute('href')?.startsWith('#')&&!window.confirm('Keluar dan buang isian inspeksi yang belum disimpan?')){e.preventDefault();e.stopImmediatePropagation();}};window.addEventListener('beforeunload',leave);document.addEventListener('click',navigate,true);return()=>{window.removeEventListener('beforeunload',leave);document.removeEventListener('click',navigate,true);};},[dirty]);
  function update(patch:Partial<Entry>){const next={...entry,...patch};setEntry(next);setDirty(true);cache?.keep({subject:session.subject,entry:next,base});}
+ function applyWorkbook(profile:WorkbookProfile){
+  if(base)return;
+  if(entry.rows.some(row=>[row.point,row.quantity,row.value,row.unit,row.time].some(Boolean))&&!window.confirm('Ganti baris measurement yang belum disimpan dengan baris kandidat?'))return;
+  try{update({rows:workbookRows(profile.id,entry.method,()=> 'row-'+ ++sequence.current)});setError('');}catch(e){setError(e instanceof Error?e.message:'Template belum dapat digunakan.');}
+ }
  function cancel(){if(!dirty||window.confirm('Buang isian inspeksi yang belum disimpan?')){cache?.clear();onCancel();}}
  async function submit(event:FormEvent){event.preventDefault();setError('');try{const draft=buildDraft(entry,session.subject,session.asset_ids,base);if(await onSave(draft,base?.revision)){setDirty(false);cache?.clear();}}catch(e){setError(e instanceof Error?e.message:'Validasi isian gagal.');}}
  return <SectionCard className="pdm-entry"><h2>{base?'Ubah draf inspeksi':'Input Pengukuran'}</h2><p>QA SINTETIS · Inspector: <strong>{session.subject}</strong>. Nilai, observasi, dan hipotesis tetap terpisah. Persetujuan rekam bukan sertifikasi kondisi aset.</p>
@@ -25,10 +32,11 @@ export default function PdmMeasurementForm({session,initial,busy,onSave,onCancel
  <form className="engineering-form" onSubmit={submit} aria-busy={busy}><fieldset disabled={busy}><legend>Konteks inspeksi</legend><div className="filter-grid">
  <label>Aset kanonis berotorisasi<select required disabled={!!initial} value={entry.asset} onChange={e=>update({asset:e.target.value})}>{session.asset_ids.map(id=><option key={id}>{id}</option>)}</select></label>
  <label>Konteks input kandidat<select value={entry.inputContext??''} onChange={e=>update({inputContext:e.target.value})}><option value="">Form umum v1.1</option>{inputContexts.map(x=><option key={x.id} value={x.id}>{x.label} · {x.version}</option>)}</select></label>
- <label>Metode<select value={entry.method} onChange={e=>update({method:e.target.value as Entry['method']})}>{methods.map(x=><option key={x} value={x}>{statusLabel(x)}</option>)}</select></label>
+ <label>Metode<select aria-label="Metode" value={entry.method} onChange={e=>update({method:e.target.value as Entry['method']})}>{methods.map(x=><option key={x} value={x}>{statusLabel(x)}</option>)}</select></label>
  <label>Versi metode / prosedur<input required value={entry.version} maxLength={80} onChange={e=>update({version:e.target.value})}/></label>
  <label>Waktu inspeksi asli (ISO + zona waktu)<input value={entry.time} maxLength={40} placeholder="2026-10-09T08:00:00+07:00" onChange={e=>update({time:e.target.value})}/></label>
  </div><p role="status" className="section-note">{identity}</p><p className="section-note">AREA FAN, AREA MILL, dan Logsheet 6 kV adalah konteks workflow, bukan metode atau field workbook yang disetujui. Menunggu Validasi Engineer. Pemilihan konteks tidak menyisipkan metadata di luar schema.</p>
+ <PdmWorkbookTemplate context={entry.inputContext} method={entry.method} editing={!!base} onApply={applyWorkbook}/>
  <div className="filter-grid"><label>Referensi instrumen (kandidat)<input value={entry.instrument} maxLength={2000} onChange={e=>update({instrument:e.target.value})}/></label><label>Referensi prosedur (kandidat)<input value={entry.procedure} maxLength={2000} onChange={e=>update({procedure:e.target.value})}/></label><label>Orientasi (kandidat, bila diketahui)<input value={entry.orientation} maxLength={2000} onChange={e=>update({orientation:e.target.value})}/></label></div>
  <p className="section-note">Instrumen, prosedur, orientasi, dan konteks operasi di sini berlaku untuk seluruh inspeksi v1.1. Bila konteks berbeda antar titik, gunakan inspeksi terpisah; field kandidat ini tidak menyetujui kesetaraan seri.</p>
  <label>Konteks operasi<textarea value={entry.context} maxLength={6000} onChange={e=>update({context:e.target.value})}/></label>
