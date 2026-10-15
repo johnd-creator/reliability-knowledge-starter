@@ -277,9 +277,18 @@ def frontend_controller():
     return module.FrontendPreview(SimpleNamespace(**globals()))
 
 
+def local_controller():
+    import importlib.util
+    from types import SimpleNamespace
+    spec = importlib.util.spec_from_file_location('local_development', Path(__file__).with_name('local_development.py'))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.LocalDevelopment(SimpleNamespace(**globals()))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('command', choices=['setup', 'start', 'status', 'logs', 'stop', 'reload', 'switch', 'backup', 'cutover', 'rollback', 'retire-legacy', 'frontend-preflight', 'frontend-select', 'frontend-rollback'])
+    parser.add_argument('command', choices=['setup', 'start', 'status', 'logs', 'stop', 'reload', 'switch', 'backup', 'cutover', 'rollback', 'retire-legacy', 'frontend-preflight', 'frontend-select', 'frontend-rollback', 'local-preflight', 'local-select', 'local-status', 'local-rollback'])
     parser.add_argument('ref', nargs='?')
     parser.add_argument('--preview-ref', help='Explicit feature ref; must resolve to this checkout HEAD')
     parser.add_argument('--backup', help='Existing private backup, validated read-only')
@@ -294,6 +303,23 @@ def main():
         except BlockingIOError:
             os.close(lock_fd)
             raise RuntimeError('DEVELOPMENT_LIFECYCLE_BUSY')
+    if (STATE / 'local-dev-01/active.json').exists() and not args.command.startswith('local-') and args.command not in ('status','logs','backup'):
+        raise RuntimeError('LOCAL_PAIRED_SOURCE_ACTIVE: use local lifecycle; no independent source selection')
+    if args.command == 'status' and (STATE / 'local-dev-01/active.json').exists():
+        print(json.dumps(local_controller().status(), indent=2)); return
+    if args.command.startswith('local-'):
+        manager = local_controller()
+        if args.command == 'local-status':
+            print(json.dumps(manager.status(), indent=2))
+        elif args.command == 'local-rollback':
+            manager.recover(manager.active_value())
+        elif not args.ref:
+            raise RuntimeError('EXPLICIT_LOCAL_WORKTREE_REQUIRED')
+        elif args.command == 'local-preflight':
+            print(json.dumps(manager.preflight(Path(args.ref)), indent=2))
+        else:
+            manager.select(Path(args.ref))
+        return
     if (STATE / 'frontend-active.json').exists() and args.command in ('start', 'stop', 'reload', 'switch', 'cutover', 'rollback', 'setup'):
         raise RuntimeError('FRONTEND_ONLY_SELECTION_ACTIVE: use frontend-select/rollback; shared-source lifecycle denied')
     if args.command.startswith('frontend-'):
