@@ -159,6 +159,7 @@ Rujukan implementasi: [InspectionDraft](../src/domain/manual_inspection.py),
 |---|---|---|
 | Identitas aset | canonical_asset_id existing; pilihan/scope otorisasi server tetap | Persetujuan binding workbook→aset bukan hasil kesamaan nama |
 | Titik / quantity / unit | Per measurement ada point_ref opsional, quantity wajib, unit opsional | point_ref adalah rujukan teks terbatas, bukan registry titik/versioned binding yang sudah divalidasi |
+| Sampel / laporan lab | Tidak ada identitas sampel atau report berversi khusus per measurement | point_ref adalah rujukan titik, bukan pengganti identitas satu sampel; bila dibutuhkan engineer, ajukan kontrak eksplisit beserta hubungan sampel–titik–laporan |
 | Nilai / waktu | Scalar asli/null dan measured_at opsional; inspected_at terpisah | Peran sampel/analisis/report serta precision waktu belum memiliki field terpisah; perlu proposal ketat bila harus disimpan bersama |
 | Metode / versi | Enum metode existing + method_version | Tidak ada registry definisi quantity/acquisition/version approval yang ditegakkan oleh envelope |
 | Instrument/procedure/orientation | Form native menulis scalar instrument_ref, procedure_ref, orientation di method_extension tingkat inspeksi | Bukan metadata per-row; konteks berbeda memakai inspeksi terpisah sampai kontrak baru disetujui |
