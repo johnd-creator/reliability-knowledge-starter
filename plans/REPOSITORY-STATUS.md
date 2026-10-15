@@ -959,3 +959,21 @@ container/policy operations are outside this task.
 ## 15 Oktober 2026 — WORKBOOK-02 candidate
 
 Main terverifikasi106a4dc08b149576b2e84bbf8c70694288c7e9a7; PR85 diteruskan dari3aa2c015c8e8e0e591e7d239c37396e3f97eaebc pada branch yang sama, OPEN/DRAFT. [Inventaris/mapping/test report](../reliability-cockpit/docs/nadi-pdm-workbook-02.md) membedakan workbook structure verified, candidate implemented dan engineer approval pending. Serving laptop tetap9895890a045a221998856a175d80c17270cd0d38; tidak ada live promotion/DB/source operation.
+
+## 15 Oktober 2026 — PR85 merged / engineering decision preparation
+
+Main reverified `05ce1c060605defb58a74467a38acb43ff4d04f9`; PR82/83/85 MERGED,
+PR85 reviewed HEAD `7daab3a62866f19b30fb45462a94bafff8795dc5`.
+[Merge/CI checkpoint](https://github.com/johnd-creator/reliability-knowledge-starter/pull/85#issuecomment-6192024336)
+records live development keyboard/native125%-zoom/function gates and unchanged
+laptop source; final PO visual and engineer approval remain PENDING. The single
+console observation is NON_BLOCKING for development with UNKNOWN root cause.
+Earlier UNMERGED/not-visible entries above retain their historical checkpoint.
+
+`codex/nadi-pdm-eng-validation-01` branches from this main for documentation only:
+[20 critical +6 deferred/advanced decisions](../reliability-cockpit/docs/nadi-pdm-eng-validation-01.md),
+[Indonesian working-session packet](../reliability-cockpit/docs/nadi-pdm-engineer-review-packet.md).
+M02 is CANDIDATE preparation, not completed approval;9 profiles/48 DIRECT and3
+ambiguous temperature units unchanged. No schema/API/UI/dependency/runtime or
+persistent-data changes. The documentation PR is delivered DRAFT; its own commit,
+PR and checks are recorded at handoff, not inferred from PR85 CI.
