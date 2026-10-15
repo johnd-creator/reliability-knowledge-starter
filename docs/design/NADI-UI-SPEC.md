@@ -542,3 +542,15 @@ This checkpoint supersedes the earlier planned-route allocation for development,
 not operational template/export approval. No export, report history, scheduling,
 delivery or production reader is enabled. Deployment auth/scope and PO visual
 acceptance remain separate; no complete WCAG conformance is asserted.
+
+## UI-10 architecture readiness — 16 Oktober 2026
+
+[Administration candidate architecture](../../reliability-cockpit/docs/nadi-admin-readiness-01.md)
+defines overview, scoped account/detail, roles/canonical scopes, session/security
+history and sanitized configuration readiness. V1/Bahasa Indonesia/light-dark/
+keyboard/contained tables remain the design basis; no new UI or screenshot is
+claimed. Server-authorized minimal DTOs are prerequisites; hidden navigation and
+client role labels are not authorization. Account/grant/reset/recovery actions
+remain private or separately gated. [Matrix and approval boundaries](../../reliability-cockpit/docs/nadi-admin-authorization-matrix.md)
+are PROPOSED organizational permissions; UI-11 QA login and factual development
+access remain unchanged.

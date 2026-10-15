@@ -998,3 +998,19 @@ delivery, new KPI, source access, runtime transition or policy change.
 Phase0–5 and M01–M07 unchanged; M02/M03/M07 ON HOLD and26 engineer decisions
 pending. Phase1 review/checkpoint/hard-expiry unchanged, not extended or recertified.
 Next: senior review then conditional development checkpoint.
+
+## 16 Oktober 2026 — Administration architecture readiness
+
+Verified main5af41294745d7eb78eb14f617cacdbc223844564 includes PR88 MERGED with
+[post-merge backend/frontend CI PASS](https://github.com/johnd-creator/reliability-knowledge-starter/actions/runs/38768396811),
+Reports Center DEVELOPMENT ACCEPTED only; export/deployment/report-definition
+approvals remain pending. [NADI-ADMIN-READINESS-01](../reliability-cockpit/docs/nadi-admin-readiness-01.md)
+provides source-grounded capability inventory, permission matrix, threat/gap register
+and [ADMIN-01–05 proposed slices](../reliability-cockpit/docs/nadi-admin-implementation-plan.md).
+These are implementation task proposals, not new phases or authority to execute.
+Seven API gap groups (5 HIGH/2 MEDIUM potential unsafe-exposure impacts),12 pending
+security/product/operator decisions; organizational role mappings PROPOSED.
+Administration UI/API remains PLANNED. Phase0–5/M01–M07 stay; M02/M03/M07 ON HOLD,
+26 engineer decisions pending, Phase1 review/checkpoint/hard-expiry unchanged.
+No runtime/session/DB/source/collector/Mart or external QA action. Next: senior
+security/product review, then separately authorize ADMIN-01 read-contract decisions.
