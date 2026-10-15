@@ -1,0 +1,79 @@
+{
+  "status": "PASS",
+  "scope": "Targeted review of known V1 table/text/badge color pairs; no claim of full WCAG certification",
+  "pairs": [
+    {
+      "theme": "light",
+      "pair": "cell/surface",
+      "ratio": 10.35,
+      "minimum": 4.5
+    },
+    {
+      "theme": "light",
+      "pair": "muted/surface",
+      "ratio": 7.58,
+      "minimum": 4.5
+    },
+    {
+      "theme": "light",
+      "pair": "muted/table-head",
+      "ratio": 7.24,
+      "minimum": 4.5
+    },
+    {
+      "theme": "light",
+      "pair": "muted-2/table-head",
+      "ratio": 5.95,
+      "minimum": 4.5
+    },
+    {
+      "theme": "light",
+      "pair": "text/surface",
+      "ratio": 17.85,
+      "minimum": 4.5
+    },
+    {
+      "theme": "light",
+      "pair": "neutral badge muted / rgba(143,168,173,.08) over surface",
+      "ratio": 7.11,
+      "minimum": 4.5
+    },
+    {
+      "theme": "dark",
+      "pair": "cell/surface",
+      "ratio": 12.22,
+      "minimum": 4.5
+    },
+    {
+      "theme": "dark",
+      "pair": "muted/surface",
+      "ratio": 9.74,
+      "minimum": 4.5
+    },
+    {
+      "theme": "dark",
+      "pair": "muted/table-head",
+      "ratio": 8.59,
+      "minimum": 4.5
+    },
+    {
+      "theme": "dark",
+      "pair": "muted-2/table-head",
+      "ratio": 7.21,
+      "minimum": 4.5
+    },
+    {
+      "theme": "dark",
+      "pair": "text/surface",
+      "ratio": 14.13,
+      "minimum": 4.5
+    },
+    {
+      "theme": "dark",
+      "pair": "neutral badge muted / rgba(143,168,173,.08) over surface",
+      "ratio": 8.52,
+      "minimum": 4.5
+    }
+  ],
+  "axe_incomplete": "Shared shell non-text controls/overlap, plus horizontally clipped table cells at768/390. No rule suppression. Keyboard-focusable overflow container; retained incomplete nodes in integration-browser.json."
+}

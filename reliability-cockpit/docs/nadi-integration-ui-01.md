@@ -89,7 +89,7 @@ React components dengan substitute Next navigation, bukan end-to-end deployment.
 | Pydantic fixture compatibility/defaults | 3/3 PASS |
 | Existing engineering/phase2/workflow/HTTP/bounded/local-auth/product-safety/UX/PdM assertions | PASS |
 | TypeScript / ESLint / production build / diff whitespace | PASS; dua lint warning existing |
-| Axe WCAG A/AA pada 8 ukuran/tema | Nol violation; incomplete contrast pada shell existing dijelaskan di bawah |
+| Axe WCAG A/AA pada 8 ukuran/tema | Nol violation; incomplete contrast pada shell/tabel clipped dijelaskan di bawah |
 | CI backend/frontend final exact-head | Lihat checks pada PR #87; dipisahkan dari hasil lokal |
 
 [Summary terstruktur](evidence/nadi-integration-ui-01/validation-summary.json) dan
@@ -108,7 +108,7 @@ milik CI untuk suite persistence existing, bukan store laptop.
 | High deployment prerequisite — endpoint factual tidak memiliki route-level auth | Kandidat dibatasi development oleh server; production mount/read ditolak; SSR regression PASS. Tidak mengubah API/security boundary |
 | Low tooling — compiler subprocess dibatasi sandbox; initial browser module path dan satu cwd test belum tepat | Perintah hermetik dijalankan dengan izin subprocess yang sesuai dan path/cwd eksplisit; seluruh gate tersebut PASS |
 | Existing low — dua warning lint | Ignored config coverage status route dan dependency `current` di EngineeringWorkspace; tidak disentuh karena di luar scope |
-| Accessibility limitation — axe incomplete pada shell | Chevron non-text aria-hidden dan sebagian catatan Engineering terhalang viewport. Detail per ukuran tersimpan; bukan violation terdeteksi dan bukan sertifikasi konformitas penuh. Focus, keyboard, V1 contrast assertions dan visual screenshot direview |
+| Accessibility limitation — axe incomplete pada shell dan tabel bergulir | Chevron/menu non-text, sebagian catatan Engineering, serta sel tabel di luar bagian scroll yang terlihat pada768/390. Detail per ukuran tersimpan; tidak disembunyikan/suppressed. [Review12 pasangan warna V1](evidence/nadi-integration-ui-01/contrast-review.json) semuanya ≥4.5:1. Focus/keyboard, contained overflow dan visual screenshot diperiksa; bukan sertifikasi konformitas penuh |
 
 Review terpisah setelah feature complete mencakup source/API boundary, tidak ada
 health calculation, independent error states, escaping konten, neutral badge,
