@@ -606,3 +606,20 @@ Development Visibility: synthetic screenshots only; active HTTPS3000 not accesse
 Product Owner Acceptance: PENDING senior/product review.
 Remaining Blockers: deployment auth/scope prerequisite, no CEMS status DTO, no standalone Data Trust observation time; engineer validation remains ON HOLD.
 Next Action: [Review evidence](reliability-cockpit/docs/nadi-integration-ui-01.md), then separately authorized conditional checkpoint; no automatic merge/promotion.
+
+## 2026-10-15 — NADI-REPORTS-UI-01
+
+Date: 2026-10-15
+Task ID: NADI-REPORTS-UI-01
+Objective: two source-grounded development report previews without export/distribution.
+Branch: codex/nadi-reports-ui-01, from main36203fe478e5a558fcf5ce4f8d5a9ff36fe92014.
+Commit SHA: implementation8438adc3091eb1920cfd9514799ec8a5b5d2c8cc; final documentation/evidence HEAD tracked at delivery.
+PR: dedicated DRAFT submission; final URL and exact-head checks recorded in handoff.
+Implementation Status: IMPLEMENTED `/reports`, candidate Coverage/no period and Maintenance/7-30-90 periods; V1 and existing factual DTOs reused.
+Test Status: TESTED Reports26, Reports browser97, integration browser67, existing browser395, PdM browser573 and backend DTO/Mart45 PASS; TypeScript/lint/build PASS.
+CI Status: final exact-head backend/frontend tracked independently on DRAFT PR; local PASS is not runtime acceptance.
+Merge Status: UNMERGED/DRAFT.
+Development Visibility: synthetic screenshots only; localhost3000 neither accessed nor changed.
+Product Owner Acceptance: PENDING senior/product review; report definitions NOT OPERATIONALLY APPROVED.
+Remaining Blockers: approved real-report definitions/privacy/deployment authorization and eventual separately approved export/distribution; no source or engineer approval inferred.
+Next Action: [Review evidence](reliability-cockpit/docs/nadi-reports-ui-01.md), then separately authorized conditional checkpoint. No automatic merge/promotion.

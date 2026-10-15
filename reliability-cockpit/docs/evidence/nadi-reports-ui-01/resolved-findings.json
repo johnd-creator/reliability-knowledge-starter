@@ -1,0 +1,23 @@
+[
+  {
+    "stage": "focus",
+    "status": "HISTORICAL_RESOLVED",
+    "failure": "AssertionError [ERR_ASSERTION]: coverage table keyboard focus 1440 light",
+    "checks_completed": 15,
+    "resolution": "Scoped focus-visible outline for table/chart region; final browser PASS"
+  },
+  {
+    "stage": "scroll-observation",
+    "status": "HISTORICAL_RESOLVED",
+    "failure": "AssertionError [ERR_ASSERTION]: coverage table scroll contained light",
+    "checks_completed": 34,
+    "resolution": "Bounded wait for native browser scroll animation; no application behavior change"
+  },
+  {
+    "stage": "period-name",
+    "status": "HISTORICAL_RESOLVED",
+    "failure": "AssertionError [ERR_ASSERTION]: period options exactly supported",
+    "checks_completed": 41,
+    "resolution": "Explicit accessible name matching visible period label; full final interaction PASS"
+  }
+]

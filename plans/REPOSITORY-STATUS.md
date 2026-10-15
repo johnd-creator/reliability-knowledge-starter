@@ -987,3 +987,14 @@ menambahkan read-only `/system-integration` pada navigation existing, tanpa back
 contract/schema/runtime change. [Laporan dan screenshot sintetis](../reliability-cockpit/docs/nadi-integration-ui-01.md)
 memisahkan local tests, exact-head CI, deployment auth prerequisite dan visual PO
 acceptance. Tidak dilakukan live preview/promotion atau operational verification.
+
+## 15 Oktober 2026 — Reports Center development candidate
+
+Main baseline36203fe478e5a558fcf5ce4f8d5a9ff36fe92014: PR87 merged at reviewed
+HEAD e9f0b687ff31d26b7e2a112fd05dfd54360ab479; backend/frontend
+[merge CI PASS](https://github.com/johnd-creator/reliability-knowledge-starter/actions/runs/38754348411).
+Development acceptance does not approve underlying API deployment access.
+`codex/nadi-reports-ui-01` adds [two read-only candidate previews](../reliability-cockpit/docs/nadi-reports-ui-01.md)
+from this baseline. DRAFT delivery; final HEAD/CI/PR URL in delivery checks. No
+laptop runtime, QA/session data, collectors/Mart, operational policy or external
+QA change. M02/M03/M07 remain ON HOLD;26 engineer decisions unchanged.
