@@ -15,10 +15,11 @@
     "check:bounded-http": "node scripts/bounded-http-check.mjs",
     "check:bounded-proxy": "node scripts/bounded-proxy-check.mjs",
     "check:local-auth": "node scripts/local-auth-check.mjs",
-    "lint": "eslint components app lib/navigation.ts lib/overview.ts lib/glossary.ts lib/id-copy.ts lib/product-records.ts lib/pdm-input.ts lib/pdm-workbook.ts lib/case-records.ts lib/advisory-records.ts lib/development-provenance.ts app/api/development/status/route.ts",
+    "lint": "eslint components app lib/navigation.ts lib/integration.ts lib/overview.ts lib/glossary.ts lib/id-copy.ts lib/product-records.ts lib/pdm-input.ts lib/pdm-workbook.ts lib/case-records.ts lib/advisory-records.ts lib/development-provenance.ts app/api/development/status/route.ts",
     "check:ux": "node scripts/ux-check.mjs && node scripts/login-design-check.mjs && node scripts/localization-check.mjs && node scripts/development-provenance-check.mjs",
     "check:pdm-input": "node scripts/pdm-input-check.mjs && node scripts/pdm-workbook-check.mjs",
-    "check:eng-product": "node scripts/eng-product-check.mjs"
+    "check:eng-product": "node scripts/eng-product-check.mjs",
+    "check:integration": "node scripts/integration-check.mjs"
   },
   "dependencies": {
     "next": "^15.5.9",

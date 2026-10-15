@@ -1,0 +1,77 @@
+[
+  {
+    "suite": "existing-browser",
+    "passed": 395,
+    "errors": [],
+    "scope": "Network-intercepted synthetic components only; no runtime or DB access"
+  },
+  {
+    "suite": "pdm-browser",
+    "passed": 573,
+    "errors": [],
+    "scope": "Network-intercepted synthetic components only; no runtime or DB access"
+  },
+  {
+    "suite": "integration-components",
+    "passed": 22,
+    "total": 22
+  },
+  {
+    "suite": "backend-integration-and-mart",
+    "passed": 63,
+    "total": 63,
+    "scope": "Temporary SQLite and mocked observation clients"
+  },
+  {
+    "suite": "existing-dto-fixture-validation",
+    "passed": 3,
+    "total": 3,
+    "scope": "Pydantic models, no I/O"
+  },
+  {
+    "suite": "frontend-gates",
+    "results": [
+      {
+        "check": "check:product-safety",
+        "exit": 0
+      },
+      {
+        "check": "check:ux",
+        "exit": 0
+      },
+      {
+        "check": "check:eng-product",
+        "exit": 0
+      },
+      {
+        "check": "check:pdm-input",
+        "exit": 0
+      },
+      {
+        "check": "check:integration",
+        "exit": 0
+      },
+      {
+        "check": "lint",
+        "exit": 0
+      },
+      {
+        "check": "typescript",
+        "exit": 0
+      },
+      {
+        "check": "build",
+        "exit": 0
+      }
+    ],
+    "earlier_gates": {
+      "check:engineering": "PASS",
+      "check:phase2": "PASS",
+      "check:workflow": "PASS",
+      "check:http-qa": "PASS",
+      "check:bounded-http": "PASS",
+      "check:bounded-proxy": "PASS",
+      "check:local-auth": "PASS"
+    }
+  }
+]

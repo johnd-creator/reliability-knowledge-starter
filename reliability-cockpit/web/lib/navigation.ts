@@ -13,6 +13,7 @@ export const navigation: NavItem[] = [
   { id: "actions", href: "/action-board", label: idText("Action Board"), icon: "board" },
   { id: "reports", label: idText("Reports"), icon: "report", planned: true },
   { id: "integration", label: idText("System Integration"), icon: "integration", children: [
+    { href: "/system-integration", label: "Ringkasan Integrasi" },
     { href: "/data-quality", label: idText("Data Trust Center") },
     { href: "/maintenance", label: idText("Maintenance"), section: "Maximo" },
     { href: "/maintenance/investigation", label: idText("Maintenance Investigation"), section: "Maximo" },

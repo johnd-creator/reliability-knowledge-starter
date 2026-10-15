@@ -344,3 +344,15 @@ Q01–Q10 and operational UAT remain pending; the general form stays available.
 ## PdM workbook checkpoint — 15 Oktober 2026 / WORKBOOK-02
 
 [WORKBOOK-02](reliability-cockpit/docs/nadi-pdm-workbook-02.md) menambah empat keluarga Vibration dan dua konteks CEP provisional pada kandidat PR85. Total48 DIRECT (9 lama +39 baru),3 label temperatur berunit unresolved; seluruh profil menunggu engineer. IR Window bukan bukti IRT lengkap; OTHER provisional tidak mengaktifkan metode operasional. Tidak ada historical import, scoring, cross-inspection trend atau perubahan boundary keamanan.
+
+## FR-07 checkpoint — 15 Oktober 2026
+
+[System Integration Center candidate](reliability-cockpit/docs/nadi-integration-ui-01.md)
+implements `/system-integration` in development from the existing read-only DTOs.
+Availability, collection/source/projection freshness, identity, quality and
+Registry/technical populations remain independent. It preserves Data Trust and
+all technical routes; no source or operational control is added. Production
+reading is not activated pending deployment authentication/authorization review.
+Synthetic implementation/tests are distinct from Product Owner, operational
+availability/freshness acceptance and engineer approval. Reports/Administration
+complete product screens remain planned.

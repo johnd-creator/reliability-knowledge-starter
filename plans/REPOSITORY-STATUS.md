@@ -977,3 +977,13 @@ M02 is CANDIDATE preparation, not completed approval;9 profiles/48 DIRECT and3
 ambiguous temperature units unchanged. No schema/API/UI/dependency/runtime or
 persistent-data changes. The documentation PR is delivered DRAFT; its own commit,
 PR and checks are recorded at handoff, not inferred from PR85 CI.
+
+## 15 Oktober 2026 — System Integration Center development candidate
+
+Baseline main `1ac1d5e709724c2b5433beba8f0305c19b5d3a0e`, PR86 MERGED sebagai
+documentation checkpoint;26 keputusan engineer tetap PENDING, M02 NOT_GRANTED.
+[DRAFT PR87](https://github.com/johnd-creator/reliability-knowledge-starter/pull/87)
+menambahkan read-only `/system-integration` pada navigation existing, tanpa backend
+contract/schema/runtime change. [Laporan dan screenshot sintetis](../reliability-cockpit/docs/nadi-integration-ui-01.md)
+memisahkan local tests, exact-head CI, deployment auth prerequisite dan visual PO
+acceptance. Tidak dilakukan live preview/promotion atau operational verification.
