@@ -487,3 +487,23 @@ menjelaskan keterbatasan runtime dan final gate.
 Root document layout shares only metadata/CSS/theme. `(authentication)` owns fullscreen `/login`; `(workspace)` owns all existing application routes and DevelopmentStatus. URL contracts are unchanged. Navy/white two-column desktop collapses to compact branding and a primary form on tablet/mobile. QA marker remains explicit; full SHA is available through the development endpoint and workspace banner. Test fullscreen/no dashboard navigation, successful QA login, invalid credentials, loading, expiry, logout, history/refresh, theme and keyboard at 1440/768/390. Global factual auth redirects, backend/security policy and recovery features remain outside scope.
 
 [Implementation, boundaries and evidence](../../reliability-cockpit/docs/nadi-ux-login-01.md).
+
+## UI-04 — NADI-PDM-CENTER-INPUT-01 candidate checkpoint — 2026-10-13
+
+PdM Center adds four functional areas: authorized register, native Input Pengukuran,
+measurement history/raw-sample plot, and reviewed evidence → existing Engineering
+Case. Permitted-asset selection and inspector attribution use the trusted QA session;
+original scalar type, unit, timestamp, point and human observation/hypothesis remain
+separate. Register and measurement-event filtering/pagination execute server-side;
+plot selection explicitly covers the loaded event page only. Superseded values live
+in immutable audit history. Unsupported cross-inspection/acquisition comparisons
+show reasons, not synthetic trends. Shared instrument/procedure/orientation context
+and three versioned workbook workflow contexts remain candidates.
+
+Save/retry/CAS, returned/rejected revisions and independent review reuse v1.1 and the
+existing QA command transport. Evidence handoff binds the exact selected approved
+inspection revision. No public production mounting, global login, database migration,
+file upload or source mutation. 1440/768/390 native input, detail/history/handoff and
+dark register evidence is [explicitly isolated](../../reliability-cockpit/docs/evidence/nadi-pdm-center-input-01/README.md).
+[Implementation, limits and self-review](../../reliability-cockpit/docs/nadi-pdm-center-input-01.md)
+separate IMPLEMENTED/TESTED from MERGED, ENGINEER APPROVED and OPERATIONALLY ACCEPTED.

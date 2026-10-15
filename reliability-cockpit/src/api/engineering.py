@@ -33,6 +33,7 @@ class LinkRequest(Change):
     kind: EvidenceKind
     record_id: str = Field(min_length=1, max_length=240, pattern=r"^[a-zA-Z0-9_.:-]+$")
     mode: Literal["LIVE_REFERENCE", "FROZEN_SNAPSHOT"]
+    expected_inspection_revision: int | None = Field(default=None, ge=1)
 
 
 class ReviewRequest(Change):
@@ -88,7 +89,7 @@ def build_router(service, *, enabled=False, trusted_principal_dependency=None):
     def mutation(action, model):
         # Explicit factories preserve concrete request model annotations for FastAPI.
         def endpoint(case_id, body, actor):
-            payload = body.model_dump(mode="json", exclude={"request_id", "expected_revision"})
+            payload = body.model_dump(mode="json", exclude={"request_id", "expected_revision"}, exclude_none=True)
             return invoke(lambda: service.command(actor, action, payload, body.request_id,
                 case_id=case_id, expected_revision=body.expected_revision))
         return endpoint

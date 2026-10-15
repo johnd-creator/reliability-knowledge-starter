@@ -71,3 +71,22 @@ button.engineering-primary {background:var(--cyan);color:var(--button-text);font
 .engineering-qa button:disabled {opacity:.55;cursor:default}
 .engineering-qa h2 {margin:0 0 12px}.engineering-qa pre {font-size:13px}.engineering-qa [role=alert] {color:var(--red)}
 .engineering-qa input:focus-visible,.engineering-qa select:focus-visible,.engineering-qa textarea:focus-visible,.engineering-qa button:focus-visible {outline:2px solid var(--cyan);outline-offset:3px}
+
+/* Native PdM multi-point input, contained desktop grid / grouped mobile cards. */
+.pdm-entry fieldset { min-width:0; border:1px solid var(--line); border-radius:var(--radius); padding:var(--space-4); }
+.pdm-entry legend { font-weight:600; padding:0 var(--space-2); }
+.pdm-entry label { display:flex; flex-direction:column; gap:var(--space-2); min-width:0; }
+.pdm-entry input,.pdm-entry select,.pdm-entry textarea { width:100%; min-width:0; min-height:44px; padding:10px 12px; border:1px solid var(--line-strong); border-radius:var(--radius-sm); color:var(--text); background:var(--surface-2); font:inherit; }
+.pdm-entry textarea { min-height:90px; resize:vertical; }
+.pdm-entry input:disabled { opacity:.6; cursor:not-allowed; }
+.pdm-entry .pdm-measurement-row + .pdm-measurement-row { margin-top:var(--space-3); }
+.pdm-grid-scroll { max-width:100%; overflow-x:auto; }
+.pdm-measurement-grid { min-width:1100px; display:grid; gap:var(--space-3); }
+.pdm-entry .pdm-measurement-row { display:grid; grid-template-columns:1fr 1fr 1.1fr 1fr .7fr 1.6fr auto; gap:var(--space-3); align-items:end; }
+.pdm-raw-plot { margin:var(--space-4) 0; }
+.pdm-raw-plot svg { width:100%; height:auto; max-height:350px; }
+@media(max-width:800px) {
+ .pdm-measurement-grid { min-width:0; }
+ .pdm-entry .pdm-measurement-row { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media(max-width:480px) { .pdm-entry .pdm-measurement-row { grid-template-columns:minmax(0,1fr); } }

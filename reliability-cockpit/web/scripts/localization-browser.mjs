@@ -42,6 +42,7 @@ await context.route('**/*',async route=>{
    return route.fulfill({json:id?item:pageOf(items)});
   }
   let rows=resource==='cases'?cases:resource==='recommendations'?recommendations:resource==='advisories'?advisories:fixture[resource]??[],row=rows.find(r=>(r.case_id??r.record_id)===id);
+  if(method==='GET'&&resource==='inspections'&&!id)return route.fulfill({json:{...pageOf(rows),filter_scope:'AUTHORIZED_POPULATION',event_time_basis:'INSPECTED_AT'}});
   if(method==='GET')return route.fulfill({json:action==='history'?[{revision:1,actor:'demo-author',action:'CREATE',occurred_at:now,reason:'QA SINTETIS — nilai rekam asli'}]:id?row:pageOf(rows)});
   if(resource==='cases'&&!id){
    if(saveFailure){saveFailure=false;return fail(503,'SYNTHETIC_RETRY_FAILURE');}

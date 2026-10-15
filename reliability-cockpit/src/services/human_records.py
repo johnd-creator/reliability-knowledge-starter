@@ -301,6 +301,85 @@ class InspectionService(ReviewedRecordService):
     revisable_statuses = {"RETURNED", "REJECTED"}
     extra_reviewer_actions = {"BEGIN_REVIEW"}
 
+    def _read_events(self, actor, *, asset_id=None, method=None, status=None,
+                     search="", since=None, until=None, offset=0, limit=25,
+                     measurements=False, point=None, quantity=None):
+        """QA-only filtered event reads. Authorization precedes filtering/counting.
+
+        Stream existing JSON documents; keep only the requested page in memory.
+        Date filtering uses actual event time (not record/update/projector time).
+        Stable order is record id then measurement index, not a claimed daily series.
+        Existing immutable revision history remains the source for superseded values.
+        """
+        from src.domain.manual_inspection import InspectionMethod, InspectionStatus
+        self.gate(actor)
+        if type(offset) is not int or type(limit) is not int or not 0 <= offset <= 10000 or not 1 <= limit <= 100:
+            raise EngineeringError("INVALID_PAGINATION", 422)
+        if asset_id is not None and asset_id not in actor.asset_ids:
+            raise EngineeringError("NOT_FOUND", 404)
+        if method is not None:
+            InspectionMethod(method)
+        if status is not None:
+            InspectionStatus(status)
+        for value, bound in ((search, 200), (point, 200), (quantity, 120)):
+            if value is not None and (not isinstance(value, str) or len(value) > bound):
+                raise EngineeringError("INVALID_FILTER", 422)
+        def timestamp(value):
+            if value is None:
+                return None
+            parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+            if parsed.tzinfo is None:
+                raise ValueError("timezone required")
+            return parsed
+        start, end = timestamp(since), timestamp(until)
+        if start and end and start > end:
+            raise EngineeringError("INVALID_DATE_RANGE", 422)
+        def in_range(value):
+            return not (start or end) or value is not None and (not start or value >= start) and (not end or value <= end)
+        def read(c):
+            doc = RecordRow.document
+            where = [RecordRow.kind == self.kind,
+                     doc["canonical_asset_id"].as_string().in_(actor.asset_ids)]
+            if Role.REVIEWER not in actor.roles:
+                where.append((doc["created_by"].as_string() == actor.principal_id) | (doc["status"].as_string() == "APPROVED"))
+            for key, value in (("canonical_asset_id", asset_id), ("method", method), ("status", status)):
+                if value is not None:
+                    where.append(doc[key].as_string() == value)
+            total, items = 0, []
+            for raw in c.scalars(select(doc).where(*where).order_by(RecordRow.record_id).execution_options(yield_per=100)):
+                row = self.visible(actor, raw)
+                text = " ".join((row.record_id, row.canonical_asset_id, row.inspector_ref, *row.observations, *row.interpretations))
+                if search.casefold() not in text.casefold():
+                    continue
+                if not measurements:
+                    events = [row] if in_range(row.inspected_at) else []
+                else:
+                    events = [dict(record_id=row.record_id, revision=row.revision,
+                        canonical_asset_id=row.canonical_asset_id, method=row.method,
+                        method_version=row.method_version, inspector_ref=row.inspector_ref,
+                        status=row.status, review=row.review, measurement_index=index,
+                        measurement=m, field_approval=row.field_approval,
+                        operating_context=row.operating_context, method_extension=row.method_extension,
+                        provenance=row.provenance)
+                        for index, m in enumerate(row.measurements)
+                        if (point is None or m.point_ref == point)
+                        and (quantity is None or m.quantity == quantity) and in_range(m.measured_at)]
+                for event in events:
+                    if offset <= total < offset + limit:
+                        items.append(event)
+                    total += 1
+            return dict(items=items, total=total, offset=offset, limit=limit,
+                        has_more=offset + limit < total,
+                        filter_scope="AUTHORIZED_POPULATION",
+                        event_time_basis="MEASURED_AT" if measurements else "INSPECTED_AT")
+        return self.repo.transact(read)
+
+    def list(self, actor, **filters):
+        return self._read_events(actor, **filters)
+
+    def measurement_history(self, actor, **filters):
+        return self._read_events(actor, measurements=True, **filters)
+
     def validate_submission(self, actor, current, connection=None):
         if not current.measurements and not current.observations:
             raise EngineeringError("INSPECTION_EVIDENCE_REQUIRED", 422)

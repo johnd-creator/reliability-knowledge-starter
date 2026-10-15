@@ -43,9 +43,39 @@ def build_record_router(
     def listing(
         offset: int = Query(0, ge=0, le=10000),
         limit: int = Query(25, ge=1, le=100),
+        asset_id: str | None = Query(None, max_length=200),
+        method: str | None = Query(None, max_length=40),
+        status: str | None = Query(None, max_length=40),
+        search: str = Query("", max_length=200),
+        since: str | None = Query(None, max_length=40),
+        until: str | None = Query(None, max_length=40),
         actor=Depends(trusted_principal_dependency),
     ):
+        if service.kind == "INSPECTION":
+            return invoke(lambda: service.list(actor, offset=offset, limit=limit,
+                asset_id=asset_id, method=method, status=status, search=search,
+                since=since, until=until))
         return invoke(lambda: service.list(actor, offset=offset, limit=limit))
+
+    # Static history path must precede /{record_id}; no new persistence tables.
+    if service.kind == "INSPECTION":
+        @router.get("/measurement-history")
+        def measurements(
+            offset: int = Query(0, ge=0, le=10000),
+            limit: int = Query(25, ge=1, le=100),
+            asset_id: str | None = Query(None, max_length=200),
+            method: str | None = Query(None, max_length=40),
+            status: str | None = Query(None, max_length=40),
+            search: str = Query("", max_length=200),
+            since: str | None = Query(None, max_length=40),
+            until: str | None = Query(None, max_length=40),
+            point: str | None = Query(None, max_length=200),
+            quantity: str | None = Query(None, max_length=120),
+            actor=Depends(trusted_principal_dependency),
+        ):
+            return invoke(lambda: service.measurement_history(actor, offset=offset,
+                limit=limit, asset_id=asset_id, method=method, status=status,
+                search=search, since=since, until=until, point=point, quantity=quantity))
 
     @router.get("/{record_id}")
     def detail(record_id: str, actor=Depends(trusted_principal_dependency)):

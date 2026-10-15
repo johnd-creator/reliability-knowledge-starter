@@ -944,3 +944,14 @@ and children,35containers/start times, original82sessions/business records/schem
 ledger/account permissions preserved. Normal login adds only session/security activity.
 PR71/PR70 OPEN, no merge. Final evidence-only source/CI verified independently at handoff.
 PO review, real engineer UAT and production activation remain PENDING.
+
+## PdM native measurement input — 2026-10-13
+
+Latest remote main reverified at `2e190c2b51fde50e0467d6d5165ebb1060902867`.
+`codex/nadi-pdm-center-input-01` is an isolated development candidate with native
+entry/history/review/Case integration and narrowly compatible QA read/link additions.
+No DB schema change or deployment. [Report and evidence](../reliability-cockpit/docs/nadi-pdm-center-input-01.md)
+record local tests, exact-head PR CI and pending engineer/PO/operational gates.
+PR75–81 remain OPEN at their existing heads and all old worktrees/evidence remain.
+Official frontend/API provenance was not probed or repaired; runtime/database/session/
+container/policy operations are outside this task.
