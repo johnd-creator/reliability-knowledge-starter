@@ -1009,3 +1009,32 @@ DRAFT submission, not an implemented Administration page or operational permissi
 grant. Local31 synthetic identity/review tests PASS; documentation/exact-head CI
 tracked at PR delivery. Existing source, private CLI boundary, migrations, accounts,
 sessions, runtime and Phase1/PdM approval gates remain untouched.
+
+
+## 16 Oktober 2026 — AUD-01 repository merge / operational gate retained
+
+[NADI-AUD-01 / PR #91](https://github.com/johnd-creator/reliability-knowledge-starter/pull/91)
+HEAD `f16ff508f07efd56535553f49e6f0007273a44e0` is **MERGED AND CI VERIFIED**
+at main `4914a73fc7b640b6dd0667d0450fdb12aa04c452`, from main
+`705a54b432dfcdfa07d29c56b3170822087e5977` (merged CI foundation PR #92).
+[Exact-head qualification](https://github.com/johnd-creator/reliability-knowledge-starter/actions/runs/38841312962)
+and [post-merge main qualification](https://github.com/johnd-creator/reliability-knowledge-starter/actions/runs/38842612489)
+PASS: Python 3.11.17 and 3.12.15 each execute 202 collector tests (including 21
+AUD-01 recovery cases) plus 21 CI-infrastructure tests; zero failures/errors/skips/
+expected failures/blocked I/O. Generic cursor safety, specialized WO and asset
+baseline protections are preserved within this synthetic qualification scope.
+
+Astra F-02 repository remediation: **IMPLEMENTED / TESTED / MERGED**, not
+operationally closed. Operational deployment **NOT AUTHORIZED**; historical
+omission recovery and Maximo source validation **NOT PERFORMED**; operational
+cursor/replay safety acceptance **PENDING OPERATOR**. A poison record can hold a
+cursor and increase bounded reprocessing cost; omissions already below a historical
+cursor are not automatically recovered. Synthetic/in-memory tests do not replace
+operational PostgreSQL qualification, and GitHub merge does not establish deployed
+runtime state. [Original source report](../maximo-collector/docs/nadi-aud01-cursor-recovery.md)
+and independent Astra audit retain their historical evidence; their delivery-time
+CI/unmerged statements are superseded only for repository status by this checkpoint.
+No live collector/source request, cursor/DB/Mart change, deployment or localhost3000
+access/restart occurred. Phase 1 governance, 26 pending engineer decisions and
+M02/M03/M07 gates remain unchanged. Next: AUD-02 in a separately authorized task;
+no implementation or operational action follows from this checkpoint.
