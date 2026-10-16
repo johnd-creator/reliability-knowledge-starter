@@ -15,7 +15,7 @@ PR90/93/94 and frozen runtime investigations are not modified.
 | [projection_store.py](../src/repositories/projection_store.py) | Disabled constructor, bounded local snapshot, seal, domain fencing, atomic item processing |
 | [mart.py](../src/services/mart.py) | Existing owning-transaction API plus caller-owned session path |
 | [004 candidate SQL](../migrations/004_projection_capture_candidate.sql) | New additive tables/immutability and progress guards; no automatic runner |
-| [offline regressions](../tests/test_projection_store.py) | 13 source-free regressions |
+| [offline regressions](../tests/test_projection_store.py) | 15 source-free regressions |
 | [PostgreSQL regressions](../tests_postgres/test_capture_postgres.py) | MVCC, transaction, interruption, identity, drift and fencing proofs |
 | [fixture context](../tests_postgres/fixture_context.py) | In-memory URL supplied only by disposable-cluster runner |
 | [PG runner](../../.github/scripts/maximo_ci/run_projection_pg.py) | Creates/verifies/stops its own private Unix-only PostgreSQL cluster |
@@ -165,7 +165,7 @@ retroactively certified. Public status vocabulary/Phase1 thresholds are unchange
 | T17 | Backdated mutation appears in next generation regardless of old timestamp |
 | T18 | Live-lease conflict, genuine lock contention, expired/stale token, newer generation and revision drift refuse |
 | T01/T12 | Missing local Equipment is DEFERRED; scan may advance with receipt but complete remains held; historical unresolved work cannot disappear behind a new generation |
-| Compatibility | Existing 202 tests preserved; 13 new offline tests include disabled gate, isolated metadata, scope/schema validation, no hidden commit |
+| Compatibility | Existing 202 tests preserved; 15 new offline tests include disabled gate, isolated metadata, scope/schema validation, no hidden commit |
 
 Additional PG negatives cover immutable seal/items/receipts, continuation without
 receipt, unknown scope vs exclusion, schema/trigger drift, migration reapply,
@@ -175,7 +175,7 @@ synthetic `sync_cursor` before/after. Source acquisition is never called.
 ## 10. Suite and CI evidence
 
 Precommit local qualification (Python 3.14.3; preliminary, not supported-version
-acceptance): **215 offline tests = 202 existing + 13 new**, PASS, no skips/failures/
+acceptance): **217 offline tests = 202 existing + 15 new**, PASS, no skips/failures/
 errors/blocked I/O. Private PostgreSQL **18.6**, new Unix-only cluster per run; no TCP
 listener, no inherited/private DSN, exact database/owner/data-directory and independent
 on-disk system-identifier checks. Cluster stopped after tests; private data/logs
@@ -185,7 +185,10 @@ retained under `/tmp/nadi-b1-pg-*`. Precommit PG suite: **38/38 PASS** after rev
 Meaningful failed attempt retained: first PG execution had 27 passing cases and one
 **test assertion error** (raw psycopg DuplicateTable was incorrectly expected to be
 SQLAlchemy DBAPIError). Corrected to the actual raw-driver exception. Later runs
-passed, including new review-driven connection-loss and drift regressions. No
+passed, including new review-driven connection-loss and drift regressions.
+A distinct compatibility review found the initial refactor created a Session even
+for dry-run/invalid input. Validation was restored ahead of session creation and two
+regressions verify the original behavior without an available Database. No
 operational retry, source request or data cleanup was used to obtain a PASS.
 
 The original offline runner remains unchanged: all existing tests are still discovered

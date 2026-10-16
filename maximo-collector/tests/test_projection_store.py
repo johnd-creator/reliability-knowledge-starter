@@ -87,3 +87,14 @@ class ProjectionFoundationTest(unittest.TestCase):
             with self.assertRaises(ScopeViolation):
                 MartWriter(db).persist_in_session(CanonicalCollection('asset_master',[asset(),invalid]),s)
             self.assertEqual(s.scalars(select(AssetMasterMartOrm)).all(),[])
+
+    def test_legacy_dry_run_and_empty_collection_never_open_session(self):
+        writer=MartWriter(None)
+        self.assertEqual(writer.persist_collection(CanonicalCollection('asset_master',[asset()]),
+                         dry_run=True).records_received,1)
+        self.assertEqual(writer.persist_collection(CanonicalCollection('asset_master',[])).records_received,0)
+
+    def test_legacy_scope_validation_precedes_database_session(self):
+        invalid=asset(); invalid['site_code']='OTHER'
+        with self.assertRaises(ScopeViolation):
+            MartWriter(None).persist_collection(CanonicalCollection('asset_master',[invalid]))

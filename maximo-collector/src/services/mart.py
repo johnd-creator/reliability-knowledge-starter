@@ -285,19 +285,20 @@ class MartWriter:
         self._db = db
 
     def persist_collection(self, collection: Any, *, dry_run: bool = False) -> MartWriteStats:
-        """Existing owning transaction API; commits only after the whole batch."""
+        """Existing owning transaction API; validate before opening any session."""
+        entity, stats, validated = self._prepare_collection(collection)
+        if dry_run or not validated:
+            return stats
         try:
             with self._db.session() as session:
-                stats = self.persist_in_session(collection, session, dry_run=dry_run)
-                if not dry_run and collection.records:
-                    session.commit()
-                return stats
+                self._persist_validated(entity, stats, validated, session)
+                session.commit()
         except MartPersistenceError:
             raise
         except Exception as error:
-            raise MartPersistenceError(
-                f"Mart transaction failed for {collection.canonical_entity}"
-            ) from error
+            stats.database_errors += 1
+            raise MartPersistenceError(f"Mart transaction failed for {entity}") from error
+        return stats
 
     def persist_in_session(
         self, collection: Any, session: Session, *, dry_run: bool = False
@@ -307,6 +308,13 @@ class MartWriter:
         Validate the entire batch before adding any rows. On error the caller
         MUST roll back its transaction, including any related receipts.
         """
+        entity, stats, validated = self._prepare_collection(collection)
+        if dry_run or not validated:
+            return stats
+        return self._persist_validated(entity, stats, validated, session)
+
+    @staticmethod
+    def _prepare_collection(collection: Any):
         entity = str(collection.canonical_entity)
         stats = MartWriteStats(entity, records_received=len(collection.records))
         if entity not in ENTITY_SPECS:
@@ -327,9 +335,10 @@ class MartWriter:
                 stats.contract_errors += 1
                 raise
 
-        if dry_run or not validated:
-            return stats
+        return entity, stats, validated
 
+    @staticmethod
+    def _persist_validated(entity, stats, validated, session):
         spec = ENTITY_SPECS[entity]
         try:
             for record in validated:
