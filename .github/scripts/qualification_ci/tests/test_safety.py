@@ -30,8 +30,8 @@ class B5SafetyTest(unittest.TestCase):
     def test_integrated_lane_required_and_no_tokens(self):
         workflow=yaml.load((ROOT/'.github/workflows/nadi-maximo-collector.yml').read_text(),Loader=yaml.BaseLoader)
         self.assertIn('integrated',workflow['jobs']['gate']['needs'])
-        self.assertEqual(workflow['jobs']['integrated', 'source_lock']['strategy']['matrix']['python'],['3.11','3.12'])
-        self.assertFalse(any('GH_TOKEN' in s.get('env',{}) for s in workflow['jobs']['integrated', 'source_lock']['steps']))
+        self.assertEqual(workflow['jobs']['integrated']['strategy']['matrix']['python'],['3.11','3.12'])
+        self.assertFalse(any('GH_TOKEN' in s.get('env',{}) for s in workflow['jobs']['integrated']['steps']))
         gate=next(s for s in workflow['jobs']['gate']['steps'] if 'INTEGRATED_RESULT' in s.get('env',{}))
         for value in ('failure','skipped','cancelled',''):
             env={k:'success' for k in ('SELECTION_RESULT','COLLECTOR_RESULT','POSTGRES_RESULT','COVERAGE_RESULT')};env['INTEGRATED_RESULT']=value;env['SOURCE_LOCK_RESULT']='success'

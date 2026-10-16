@@ -204,7 +204,9 @@ Local reviewed suite passed 39+2 on PostgreSQL18.6; CI is required for PG16.
 Initial local failures involved >63-byte schema truncation, failed setup leaking
 fixture connections and one CREATE OR REPLACE parameter-name mismatch. Fixes:
 short hashed schema names, cleanup registered before fixture initialization and
-matching declared parameter names. Failed logs/clusters are retained, stopped.
+matching declared parameter names. A CI-negative test also contained an invalid
+tuple dictionary key after lane extension; restored the exact integrated-job
+lookup and reran the safety suites. Failed logs/clusters are retained, stopped.
 
 **Execution exception — overall task process status PARTIAL:** early disposable
 negative tests actually granted synthetic projector UPDATE(id) on a synthetic
