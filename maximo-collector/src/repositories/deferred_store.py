@@ -272,7 +272,7 @@ class DeferredProjectionStore(ProjectionStore):
             raise TransitionRejected('evidence is not from the current fenced run')
         row=s.execute(select(pm.item).where(pm.item.c.run_id==run_id,pm.item.c.ordinal==ordinal)).mappings().one_or_none()
         capture = s.execute(select(pm.run).where(pm.run.c.id==run_id)).mappings().one()
-        if not capture['sealed'] or capture['domain']!=ticket.domain or capture['epoch']!=EPOCH or capture['scope']!=SCOPE:
+        if not capture['sealed'] or capture['domain']!=ticket.domain or capture['epoch']!=EPOCH or not self._scope_compatible(capture['scope']):
             raise TransitionRejected('incompatible evidence manifest')
         if (row is None or row['source_id']!=family['source_id'] or row['fingerprint']!=version['fingerprint']):
             raise TransitionRejected('receipt identity/version mismatch')

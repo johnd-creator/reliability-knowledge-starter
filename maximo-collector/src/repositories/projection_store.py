@@ -244,7 +244,7 @@ class ProjectionStore:
             if resume:
                 old = s.execute(select(pm.run).where(pm.run.c.id == resume)).mappings().one()
                 if (state["latest_run"] != resume or not old["sealed"]
-                        or old["epoch"] != EPOCH or old["scope"] != SCOPE
+                        or old["epoch"] != EPOCH or not self._scope_compatible(old["scope"])
                         or old["domain"] != domain or old["status"] == "COMPLETE"):
                     raise FencedOut("run is not resumable")
             else:
@@ -329,6 +329,12 @@ class ProjectionStore:
         return hashlib.sha256(encode({c.name: getattr(current, c.name)
                                       for c in model.__table__.columns})).hexdigest()
 
+    def _scope_compatible(self, scope):
+        return scope == SCOPE
+
+    def _before_item(self, session, ticket, row):
+        """Optional pre-write source verification; base capture stays unchanged."""
+
     def _map_item(self, domain, source_id, payload):
         return map_input(domain, source_id, payload)
 
@@ -357,7 +363,7 @@ class ProjectionStore:
                 self._lock(s, ticket)
                 r = s.execute(select(pm.run).where(pm.run.c.id == ticket.run_id)
                               .with_for_update()).mappings().one()
-                if not r["sealed"] or r["epoch"] != EPOCH or r["scope"] != SCOPE:
+                if not r["sealed"] or r["epoch"] != EPOCH or not self._scope_compatible(r["scope"]):
                     raise CaptureError("unsealed or incompatible manifest")
                 row = s.execute(select(pm.item).where(pm.item.c.run_id == ticket.run_id,
                     pm.item.c.ordinal == r["continuation"] + 1)).mappings().one_or_none()
@@ -382,6 +388,7 @@ class ProjectionStore:
                     return self.inspect(ticket.run_id, session=s)
                 if row["fingerprint"] != fingerprint(ticket.domain, row["source_id"], row["payload"]):
                     raise CaptureError("manifest fingerprint mismatch")
+                self._before_item(s, ticket, row)
                 record, disposition, reason = self._map_item(ticket.domain, row["source_id"], row["payload"])
                 target_id, target_digest = None, None
                 if record is not None:
