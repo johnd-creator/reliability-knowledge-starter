@@ -134,9 +134,23 @@ a library capability probe even though all 181 tests passed; it was corrected
 to deny connection/DNS/send operations. Both full suites and negative regressions
 were rerun successfully. CI installs dependencies independently.
 
-GitHub run evidence is added after the CI-only PR executes. A run on this branch
-qualifies its selected SHA, **not PR #91**. As of this initial candidate,
-PR #91 exact-head GitHub qualification is PENDING.
+GitHub-hosted qualification actually executed in
+[run 38839782878](https://github.com/johnd-creator/reliability-knowledge-starter/actions/runs/38839782878)
+for CI-only source `4d73565e81f2e3d845d489f4194bce73e3fcf48e`, with immutable
+workflow revision `4091bf6d5045f1cc51b0fbebf4f4f66009bc4d38` (the workflow's PR
+merge revision, distinct from the selected PR head). Python **3.11.17** and
+**3.12.15** each executed 21 infrastructure tests and 181 collector tests;
+failures/errors/skips/expected failures/blocked I/O were all zero. Both metadata
+checks, both matrix lanes, tracked-source integrity checks and final gate PASS.
+The source's collector subtree exactly equals baseline main; the runner also
+proved locally compatible with PR #91's additional tests. Detailed commands,
+Python and source/workflow identities are in each job's JSON summary/log.
+
+[CI-only DRAFT PR #92](https://github.com/johnd-creator/reliability-knowledge-starter/pull/92)
+remains separate from [PR #91](https://github.com/johnd-creator/reliability-knowledge-starter/pull/91).
+This evidence commit adds the observed run to documentation; subsequent exact-head
+results are available in PR #92's checks. A run on this branch qualifies its
+selected SHA, **not PR #91**. PR #91 exact-head GitHub qualification is PENDING.
 
 ## Default-branch prerequisite and controlled integration
 
