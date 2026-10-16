@@ -1,0 +1,10 @@
+{
+  "format": "nadi-source-lock-migration-manifest-v1",
+  "base": "ef0dc37f0e294897b79a58e681c5e87c5a646d40",
+  "unchanged_prior_manifest_sha256": "74f9ac1c77e65346e62364c33afdbda14423d0f64ed19cf1a8c9ccac81d719fe",
+  "additive_migration": {
+    "file": "007_restricted_source_lock_candidate.sql",
+    "sha256": "0d89507cd84c4a79c5fad645b5bebc3b443956cf9ede0e8421cf936f5034e5c0"
+  },
+  "mode": "DISABLED_CANDIDATE; disposable-only qualification"
+}

@@ -693,3 +693,21 @@ Product Owner Acceptance: NOT_GRANTED for operational rollout; F-03 remains OPEN
 Remaining Blockers: B5-GRANT-01 (FOR SHARE requires source UPDATE privilege), actual owner/co-location/backup/grant/writer exclusion, historical exception/absence/stale-claim policies, retention/performance, Phase1 expiry/acceptance and AUD11 endorsement.
 Next Action: Senior Review → separately authorized remediation/merge/operational preparation; do not start automatically.
 Evidence: [B5 qualification package](maximo-collector/docs/NADI-AUD-02B-B5-INTEGRATED-QUALIFICATION.md).
+
+## NADI-AUD-02B-B5-FIX-01 — least-privilege recovery lock candidate
+
+Date: 2026-10-16
+Task ID: NADI-AUD-02B-B5-FIX-01
+Objective: Resolve B5-GRANT-01 with exact source locks and a non-owner SELECT-only source projector.
+Branch: codex/nadi-aud02b-b5-fix01-source-lock
+Commit SHA: Exact containing HEAD recorded in delivery DRAFT and immutable CI evidence; base `ef0dc37f0e294897b79a58e681c5e87c5a646d40`, verified main `4914a73fc7b640b6dd0667d0450fdb12aa04c452`.
+PR: New DRAFT logically stacked on #99; PR95–99 unchanged.
+Implementation Status: IMPLEMENTED disabled opt-in SECURITY DEFINER source-lock capability and additive 007; original migrations001–006 unchanged. Helper owner alone has UPDATE(id), app retains SELECT-only sources.
+Test Status: Local reviewed qualification 39 restricted-role PostgreSQL +2 Cockpit reader tests PASS;8 new CI safety tests plus prior regression lanes. Supported-version counts/results are recorded only after final CI. Early disposable negative tests wrongly granted app source UPDATE(id)/helper membership; disclosed, removed, evidence retained. Final fixture checks require zero source-write privilege tables for app.
+CI Status: Final exact-head Python3.11/3.12 full B1–B5/new FIX and cross-component/Engineering checks required; local Python3.14/PostgreSQL18.6 is supplemental only.
+Merge Status: UNMERGED/DRAFT; prior B5 PARTIAL checkpoint remains historical and unchanged.
+Development Visibility: No operational/Persistent-QA DB/session access, source requests, localhost3000/controller/collector/runtime changes or migration.
+Product Owner Acceptance: NOT_GRANTED; independent Senior Review required. Overall execution process PARTIAL due to disclosed early fixture privilege exception, distinct from final technical test results.
+Remaining Blockers: Operational NO-GO; legacy writers RESTRICTED; Astra F-03 OPEN; owner/co-location, backup/grants/migration approval, writer exclusion, historical/absence/stale-claim policy, Phase1 and AUD11 gates unchanged.
+Next Action: Senior Review → Technical Acceptance / Separate Merge Authorization. STOP after DRAFT and report.
+Evidence: [FIX-01 qualification report](maximo-collector/docs/NADI-AUD-02B-B5-FIX-01.md).

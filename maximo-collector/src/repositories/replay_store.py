@@ -55,7 +55,7 @@ def targeted_scope(family):
 
 
 class ReplayStore(DeferredProjectionStore):
-    def __init__(self, db, *, replay_enabled=False, replay_policy=None, **kwargs):
+    def __init__(self, db, *, replay_enabled=False, replay_policy=None, source_lock_schema=None, **kwargs):
         if replay_enabled is not True:
             raise CaptureError('synthetic replay capability disabled')
         self.replay_policy = replay_policy or ReplayPolicy()
@@ -67,6 +67,12 @@ class ReplayStore(DeferredProjectionStore):
         self.policy_digest = hashlib.sha256(encode([asdict(self.replay_policy),
                                                     asdict(self.ledger_limits)])).hexdigest()
         self._replay_schema()
+        self.source_lock=None
+        if source_lock_schema is not None:
+            from src.repositories.source_lock import SourceLockBoundary
+            self.source_lock=SourceLockBoundary(db,source_lock_schema)
+            with db.session() as session:
+                self._limits(session);self.source_lock.verify(session)
 
     @contextmanager
     def invocation(self):
@@ -271,14 +277,15 @@ class ReplayStore(DeferredProjectionStore):
         model=models.EquipmentOrm if domain=='asset_master' else models.WorkOrderOrm
         query=source_query(domain).where(model.id==source_id).limit(1)
         if lock: query=query.with_for_update(read=True,of=model)
-        row=s.execute(query).mappings().one_or_none()
+        options={'schema_translate_map':{None:self.source_lock.schema}} if self.source_lock is not None else {}
+        row=s.execute(query,execution_options=options).mappings().one_or_none()
         if row is None: return None
         payload=captured_payload(domain,row)
         if domain=='maintenance_event' and payload.get('local_equipment_present'):
             equipment=normalize_identifier(payload.get('equipment_id'))
             eq=select(models.EquipmentOrm.id).where(models.EquipmentOrm.id==equipment).limit(2)
             if lock: eq=eq.with_for_update(read=True)
-            matches=s.scalars(eq).all()
+            matches=s.scalars(eq,execution_options=options).all()
             if len(matches)!=1:
                 raise CaptureError('ambiguous exact normalized Equipment dependency')
         return payload
@@ -369,7 +376,10 @@ class ReplayStore(DeferredProjectionStore):
         if run==SCOPE: return
         q,f=self._queue(s,ticket)
         if q['phase']!='WRITING': raise CaptureError('actual attempt reservation required')
-        payload=self._source(s,ticket.domain,f['source_id'],lock=True)
+        if self.source_lock is not None:
+            equipment=normalize_identifier(row['payload'].get('equipment_id')) if ticket.domain=='maintenance_event' else None
+            self.source_lock.lock(s,ticket.domain,f['source_id'],equipment)
+        payload=self._source(s,ticket.domain,f['source_id'],lock=self.source_lock is None)
         if payload is None or fingerprint(ticket.domain,f['source_id'],payload)!=row['fingerprint']:
             raise FencedOut('source/dependency changed after sealed capture; reviewed reconciliation required')
 

@@ -39,7 +39,7 @@ class B5Fixture(Fixture):
         self.db.engine.dispose();return result
 
 
-def fixture(name):return B5Fixture(URL,ROOT,'b5_'+name)
+def fixture(name):return B5Fixture(URL,ROOT,'b5_'+hashlib.sha256(name.encode()).hexdigest()[:16])
 
 def pipeline(stage):
     f=fixture(stage);f.asset('READY');f.wo('BSR-READY','READY');f.wo('BSR-HISTORIC','MISSING')
@@ -222,8 +222,19 @@ class IntegratedWriterTest(unittest.TestCase):
         store.register(t,version);store.release(t);f.asset('UNKNOWN')
         with self.assertRaises(CaptureError):ProjectionReplay(store,enabled=True).run('maintenance_event')
         with db.session() as session:self.assertEqual(session.scalar(select(rm.queue.c.phase)),'FAILED')
-        METRICS.append(dict(case='projector_grants',full_capture='PASS',read_only_source_row_lock='REFUSED',
-                            operational_gate='source-row-lock permission design required; no source UPDATE granted'))
+        with f.db.engine.connect() as connection:
+            raw=connection.connection.driver_connection
+            raw.execute("SELECT set_config('nadi.lock_projector_role','nadi_b5_projector',false)");raw.commit()
+            raw.execute((ROOT/'migrations/007_restricted_source_lock_candidate.sql').read_text());raw.commit()
+        self.make_due()
+        helper_store=ReplayStore(db,enabled=True,exclusive_writer=True,controlled_transitions=True,replay_enabled=True,
+                                 source_lock_schema=f.schema)
+        self.assertEqual(ProjectionReplay(helper_store,enabled=True).run('maintenance_event')[0]['state'],'DONE')
+        with db.engine.connect() as c:
+            self.assertFalse(c.scalar(text("SELECT has_any_column_privilege(current_user,'work_order','UPDATE')")))
+            self.assertFalse(c.scalar(text("SELECT has_any_column_privilege(current_user,'equipment','UPDATE')")))
+        METRICS.append(dict(case='projector_grants',full_capture='PASS',direct_source_row_lock='DENIED',
+                            helper_backed_replay='PASS',source_update_granted=False))
 
     def test_distinct_source_reader_and_migration_owner(self):
         f=self.f;f.asset()

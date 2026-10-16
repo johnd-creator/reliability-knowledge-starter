@@ -43,6 +43,7 @@ def main():
             c.execute('CREATE DATABASE nadi_b5_disposable OWNER nadi_b5_fixture')
             c.execute('CREATE ROLE nadi_b5_reader LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOREPLICATION')
             c.execute("ALTER ROLE nadi_b5_reader SET default_transaction_read_only=on")
+            c.execute('CREATE ROLE nadi_capture_lock_owner NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOREPLICATION NOBYPASSRLS')
             for role in ('nadi_b5_projector','nadi_b5_source','nadi_b5_migrator'):
                 c.execute('CREATE ROLE '+role+' LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOREPLICATION')
             c.execute('REVOKE CREATE,TEMPORARY ON DATABASE nadi_b5_disposable FROM PUBLIC')
