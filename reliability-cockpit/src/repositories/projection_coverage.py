@@ -27,6 +27,10 @@ ACTIVE=('OPEN','ELIGIBLE_FOR_RETRY','BLOCKED_NEEDS_REVIEW')
 TERMINAL=('PROJECTED','UNCHANGED','EXPECTED_EXCLUSION')
 # Pinned from the reviewed B3 fixture, including functions/columns/indexes/triggers.
 CATALOG_SIGNATURE='c36d02ad2f137456ee38d247c23c0d0ad0519a676f3098359c70e96c70a40afa'
+# B5: exact 001→006 SQL canonical indexes differ from ORM create_all.
+# Both reviewed complete catalogs remain pinned; no index/guard is ignored.
+SQL_CATALOG_SIGNATURE='45e77c7cc8b51de1d10d5e77d29a84607b0f5fbcbc657361e94559d65e25d6a2'
+REVIEWED_CATALOGS=frozenset((CATALOG_SIGNATURE,SQL_CATALOG_SIGNATURE))
 DEFAULT_REPLAY_DIGEST='a1a514e98b9d0f239db10b1f0bbd147bfba3474d837bcc774ac527dff6fa5d08'
 
 class EvidenceUnavailable(RuntimeError):
@@ -139,7 +143,7 @@ class ProjectionCoverageReader:
                     has_database_privilege(current_user,current_database(),'CREATE,TEMPORARY') AS db_create''',limit=1)[0]
                 if any(role.values()) or any(authority.values()) or any(p['writable'] for p in privileges):
                     return CoverageSnapshot.unknown(now,'READER_ROLE_UNVERIFIED','BLOCKED')
-                if catalog_signature(b)!=CATALOG_SIGNATURE:
+                if catalog_signature(b) not in REVIEWED_CATALOGS:
                     return CoverageSnapshot.unknown(now,'CAPABILITY_DRIFT','BLOCKED')
                 domains=[]
                 for domain in DOMAINS:

@@ -675,3 +675,21 @@ Product Owner Acceptance: NOT_GRANTED for operational activation; Senior Review 
 Remaining Blockers: Astra F-03 OPEN, B5 integration/rollout qualification, operational grant/writer exclusion, history/absence/stale-claim policies and AUD-11 endorsement.
 Next Action: Senior Review → NADI-AUD-02B-B5; do not start automatically.
 Evidence: [B4 implementation report](maximo-collector/docs/NADI-AUD-02B-B4-IMPLEMENTATION.md).
+
+## NADI-AUD-02B-B5 — integrated synthetic qualification and readiness
+
+Date: 2026-10-16
+Task ID: NADI-AUD-02B-B5
+Objective: Validate B1–B4 integration, migration/grant/restore compatibility and bounded resources; prepare a non-operational merge/rollout plan.
+Branch: codex/nadi-aud02b-b5-integrated-qualification
+Commit SHA: Exact containing HEAD and CI provenance recorded in the delivery DRAFT PR; pinned B4 base `bee49a345a63bb6083b6dd79650569febd227ba9`.
+PR: New DRAFT, stacked on PR95/96/97/98; no dependency PR modification or merge.
+Implementation Status: Qualification tests/CI/documents plus a narrow disabled-reader correction accepting two exact reviewed catalog fingerprints (ORM and actual SQL indexes); migrations unchanged.
+Test Status: Genuine synthetic pipeline and fault tests, actual SQL installation/repeat, distinct roles, capacity measurements and selected-schema restore to a different disposable DB; exact executed counts in delivery.
+CI Status: Final exact-head Python3.11/3.12 integrated and existing cross-component/Engineering checks required; local B4+dirty-tree evidence is not exact-head CI.
+Merge Status: UNMERGED; technical qualification PARTIAL pending least-privilege replay source-lock design even if regression CI passes.
+Development Visibility: Not activated. Existing frontend/API/collectors, persistent QA/operational databases and source systems not accessed or modified.
+Product Owner Acceptance: NOT_GRANTED for operational rollout; F-03 remains OPEN.
+Remaining Blockers: B5-GRANT-01 (FOR SHARE requires source UPDATE privilege), actual owner/co-location/backup/grant/writer exclusion, historical exception/absence/stale-claim policies, retention/performance, Phase1 expiry/acceptance and AUD11 endorsement.
+Next Action: Senior Review → separately authorized remediation/merge/operational preparation; do not start automatically.
+Evidence: [B5 qualification package](maximo-collector/docs/NADI-AUD-02B-B5-INTEGRATED-QUALIFICATION.md).

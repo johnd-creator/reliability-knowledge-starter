@@ -60,5 +60,5 @@ class CoverageCiTest(unittest.TestCase):
         gate=next(s for s in workflow['jobs']['gate']['steps'] if 'COVERAGE_RESULT' in s.get('env',{}))
         for value in ('failure','skipped','cancelled',''):
             run=subprocess.run(['bash','-e','-c',gate['run']],capture_output=True,timeout=5,
-                env={'SELECTION_RESULT':'success','COLLECTOR_RESULT':'success','POSTGRES_RESULT':'success','COVERAGE_RESULT':value})
+                env={'SELECTION_RESULT':'success','COLLECTOR_RESULT':'success','POSTGRES_RESULT':'success','COVERAGE_RESULT':value,'INTEGRATED_RESULT':'success'})
             self.assertNotEqual(run.returncode,0)

@@ -147,7 +147,7 @@ class WorkflowTests(unittest.TestCase):
 
     def test_gate_and_token_isolation(self):
         jobs = self.workflow['jobs']
-        self.assertEqual(jobs['gate']['needs'], ['select', 'collector', 'postgres', 'coverage'])
+        self.assertEqual(jobs['gate']['needs'], ['select', 'collector', 'postgres', 'coverage', 'integrated'])
         self.assertEqual(jobs['gate']['if'], '${{ always() }}')
         self.assertEqual(jobs['collector']['needs'], 'select')
         self.assertFalse(any('GH_TOKEN' in step.get('env', {}) for step in jobs['collector']['steps']))
@@ -155,7 +155,7 @@ class WorkflowTests(unittest.TestCase):
         for selection, collector, expected in [('success', 'success', 0), ('success', 'failure', 1),
                                                 ('failure', 'skipped', 1), ('success', 'cancelled', 1)]:
             result = subprocess.run(['bash', '-e', '-c', failure_gate['run']],
-                                    env={'SELECTION_RESULT': selection, 'COLLECTOR_RESULT': collector, 'POSTGRES_RESULT':'success', 'COVERAGE_RESULT':'success'},
+                                    env={'SELECTION_RESULT': selection, 'COLLECTOR_RESULT': collector, 'POSTGRES_RESULT':'success', 'COVERAGE_RESULT':'success','INTEGRATED_RESULT':'success'},
                                     capture_output=True, timeout=5)
             self.assertEqual(result.returncode, expected)
 
@@ -166,7 +166,7 @@ class WorkflowTests(unittest.TestCase):
         gate = next(s for s in jobs['gate']['steps'] if 'SELECTION_RESULT' in s.get('env', {}))
         for value in ('failure','cancelled','skipped',''):
             result = subprocess.run(['bash','-e','-c',gate['run']],
-                env={'SELECTION_RESULT':'success','COLLECTOR_RESULT':'success','POSTGRES_RESULT':value,'COVERAGE_RESULT':'success'},
+                env={'SELECTION_RESULT':'success','COLLECTOR_RESULT':'success','POSTGRES_RESULT':value,'COVERAGE_RESULT':'success','INTEGRATED_RESULT':'success'},
                 capture_output=True, timeout=5)
             self.assertNotEqual(result.returncode,0)
 
