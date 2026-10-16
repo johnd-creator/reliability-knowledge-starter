@@ -4,6 +4,8 @@ One queue row per B2 family; append-only stage history. A targeted manifest can
 never prove population coverage. Domain fencing excludes participating writers;
 unfenced legacy writers remain an explicit rollout prohibition.
 """
+from contextlib import contextmanager
+from contextvars import ContextVar
 from dataclasses import asdict, dataclass
 from datetime import timedelta
 import hashlib
@@ -21,6 +23,7 @@ from src.services.asset_registry_reconciliation import normalize_identifier
 
 REPLAY_EPOCH = 'replay-v1-exact-id'
 SCOPE_KEY = 'BSR:IP:WO_BSR'
+INVOCATION_DEADLINE = ContextVar('synthetic_replay_deadline', default=None)
 
 @dataclass(frozen=True)
 class ReplayPolicy:
@@ -64,6 +67,34 @@ class ReplayStore(DeferredProjectionStore):
         self.policy_digest = hashlib.sha256(encode([asdict(self.replay_policy),
                                                     asdict(self.ledger_limits)])).hexdigest()
         self._replay_schema()
+
+    @contextmanager
+    def invocation(self):
+        # Context-local: concurrent callers cannot extend each other's budget.
+        deadline=time.monotonic()+self.replay_policy.seconds
+        outer=INVOCATION_DEADLINE.get()
+        token=INVOCATION_DEADLINE.set(min(outer,deadline) if outer is not None else deadline)
+        try:
+            yield INVOCATION_DEADLINE.get()
+        finally:
+            INVOCATION_DEADLINE.reset(token)
+
+    @staticmethod
+    def _remaining():
+        deadline=INVOCATION_DEADLINE.get()
+        if deadline is None: return None
+        left=deadline-time.monotonic()
+        if left<=0: raise BudgetExceeded('replay invocation time budget; stage retained')
+        return left
+
+    def _limits(self,s,seconds=None):
+        left=self._remaining()
+        seconds=self.budget.seconds if seconds is None else seconds
+        super()._limits(s,min(seconds,left) if left is not None else seconds)
+
+    def _not_expired(self,s,ticket):
+        self._remaining()  # Refuse a late commit as well as new phase admission.
+        super()._not_expired(s,ticket)
 
     def _replay_schema(self):
         # Exact signatures generated from reviewed 006, never repaired at startup.
@@ -233,6 +264,7 @@ class ReplayStore(DeferredProjectionStore):
                 fence=ticket.fence,lease_until=until,latest_run=run_id))
             self._change(s,ticket,q,q['phase'] if q['run_id'] else 'CLAIMED',
                          'RESUMED' if q['run_id'] else 'CLAIMED',run_id=run_id,due_at=until)
+            self._not_expired(s,ticket)
             return ticket
 
     def _source(self,s,domain,source_id,*,lock=False):
@@ -329,6 +361,7 @@ class ReplayStore(DeferredProjectionStore):
                 self._change(s,ticket,q,'BLOCKED','ATTEMPT_LIMIT' if q['attempts']>=self.replay_policy.max_attempts else 'HISTORY_LIMIT')
                 return False
             self._change(s,ticket,q,'WRITING','ATTEMPT',attempts=q['attempts']+1)
+            self._not_expired(s,ticket)
             return True
 
     def _before_item(self,s,ticket,row):
@@ -391,6 +424,7 @@ class ReplayStore(DeferredProjectionStore):
             self._proof(s,ticket,f,v,(ticket.run_id,1),resolved=True)
             if v['state']!='RESOLVED': raise CaptureError('resolution not committed')
             self._change(s,ticket,q,'DONE','RESOLVED')
+            self._not_expired(s,ticket)
         return dict(state='DONE',run_id=ticket.run_id)
 
 # Generated from additive 006. Filled by schema qualification, not startup repair.

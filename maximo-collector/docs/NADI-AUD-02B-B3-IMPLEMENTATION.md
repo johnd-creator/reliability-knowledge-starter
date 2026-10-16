@@ -181,7 +181,11 @@ Defaults: one item/invocation, 20 seconds, three logical write attempts, 16
 readiness probes, 128 journal revisions, exponential 30-second base backoff capped
 at 3600 seconds. Accepted ranges are finite and strictly integer-validated.
 Capture, SQL statement, lock, lease and B2 history limits remain independently
-active. No catch/retry loop replays a failed application invocation automatically.
+active. A context-local deadline bounds phase admission, each transaction SQL
+timeout and pre-commit checks across the entire invocation. Nested invocations
+cannot extend it; concurrent invocations cannot change each other's deadline.
+Expiry after a committed projection retains PROJECTED and does not fabricate
+resolution; a later independently bounded call can reconcile that receipt. No catch/retry loop replays a failed application invocation automatically.
 
 All policy values, including B2 limits/expiry, contribute to an immutable stored
 policy digest. Different budgets cannot silently apply to an enrolled row. B3's
@@ -227,11 +231,11 @@ Python 3.11/3.12 with hosted PG16 is separately required in exact-head CI.
 
 | Suite | Composition | Final result gate |
 | --- | --- | --- |
-| Offline Collector | 202 pre-B1 + 15 B1 + 11 B2 + 10 B3 = 238 | Local PASS; zero skips/failures/errors/forbidden I/O |
-| Disposable PostgreSQL | 38 B1 + 47 B2 + 47 B3 = 132 | Local PASS; zero failures/errors/skips/forbidden I/O; owned cluster stopped |
+| Offline Collector | 202 pre-B1 + 15 B1 + 11 B2 + 12 B3 = 240 | Local PASS; zero skips/failures/errors/forbidden I/O |
+| Disposable PostgreSQL | 38 B1 + 47 B2 + 48 B3 = 133 | Local PASS; zero failures/errors/skips/forbidden I/O; owned cluster stopped |
 | CI infrastructure/security | 23 existing immutable qualifier/I-O guard tests | Local PASS; hosted Python 3.11/3.12 required |
 
-There are **57 new B3 tests**: 10 offline and 47 disposable PostgreSQL.
+There are **60 new B3 tests**: 12 offline and 48 disposable PostgreSQL.
 
 B3 covers old WO recovery and unchanged timestamps; NULL/backdated input; exact
 source and dependency queries; all four dependency kinds; unknown/invalid/deleted
@@ -247,7 +251,9 @@ catalog-signature derivation (not acceptance), cleanup of engines after fixture
 setup failure, correction of the raw psycopg migration-exception assertion, and
 an overly broad test selector counting the Equipment EXISTS subquery as a second
 row-lock query. The fixes narrow fixture assertions/cleanup; they do not weaken
-candidate evidence checks. The new 006 partial-index catalog is pinned explicitly.
+candidate evidence checks. The new 006 partial-index catalog is pinned explicitly. A distinct final review
+also tightened the cross-transaction deadline and added tests for deadline reset,
+non-extension, refusal before SQL and expiry after committed projection.
 Final exact-head artifacts/PR results supersede intermediate dirty-worktree runs,
 which were labelled against the B2 base and are not claimed as exact-head CI.
 
@@ -263,6 +269,9 @@ Delivery must include the B3 DRAFT PR URL, actual SHA, workflow run URL and four
 JSON artifacts with matching `tested_sha`, counts, zero forbidden I/O and owned
 cluster cleanup. A workflow headline or B2's green run cannot establish B3 PASS.
 The final PR body and task report supply those read-back values after checks.
+[B3 DRAFT PR #97 checks](https://github.com/johnd-creator/reliability-knowledge-starter/pull/97/checks)
+are the exact-head evidence entry point; read the selected SHA and artifact
+`tested_sha` rather than assuming a previous green run qualifies a newer commit.
 
 ## 14. B4 status handoff (design only)
 

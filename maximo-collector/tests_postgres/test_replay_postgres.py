@@ -451,3 +451,14 @@ class ReplayPostgreSQLTest(unittest.TestCase):
             plan='\n'.join(s.scalars(text('EXPLAIN '+sql)))
         self.assertIn('replay_due',plan)
         self.assertIn('due_at <= statement_timestamp()',plan)
+
+    def test_invocation_deadline_after_projection_retains_unresolved_receipt(self):
+        from src.repositories.replay_store import INVOCATION_DEADLINE
+        from src.repositories.projection_store import BudgetExceeded
+        self.debt(); self.add_asset()
+        def elapsed(): INVOCATION_DEADLINE.set(0)
+        with self.assertRaises(BudgetExceeded): self.service().run('maintenance_event',after_commit=elapsed)
+        self.assertEqual(self.rows(rm.queue)[0]['phase'],'PROJECTED')
+        self.assertNotEqual(self.current()['state'],'RESOLVED')
+        self.make_due()
+        self.assertEqual(self.service().run('maintenance_event')[0]['state'],'DONE')

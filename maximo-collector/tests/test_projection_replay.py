@@ -55,3 +55,24 @@ class ReplayPolicyTest(unittest.TestCase):
     def test_unknown_domain_refused(self):
         store=ReplayStore.__new__(ReplayStore)
         with self.assertRaises(CaptureError): store._due_query('UNKNOWN',1)
+
+    def test_invocation_deadline_is_reset_and_cannot_be_extended(self):
+        from src.repositories.replay_store import INVOCATION_DEADLINE
+        from src.repositories.projection_store import BudgetExceeded
+        store=ReplayStore.__new__(ReplayStore); store.replay_policy=ReplayPolicy()
+        with store.invocation() as outer:
+            with store.invocation() as inner:
+                self.assertLessEqual(inner,outer)
+            self.assertEqual(INVOCATION_DEADLINE.get(),outer)
+        self.assertIsNone(INVOCATION_DEADLINE.get())
+        with self.assertRaises(RuntimeError):
+            with store.invocation(): raise RuntimeError('synthetic')
+        self.assertIsNone(INVOCATION_DEADLINE.get())
+
+    def test_expired_invocation_refuses_before_sql(self):
+        from src.repositories.replay_store import INVOCATION_DEADLINE
+        from src.repositories.projection_store import BudgetExceeded
+        token=INVOCATION_DEADLINE.set(0)
+        try:
+            with self.assertRaises(BudgetExceeded): ReplayStore.__new__(ReplayStore)._limits(None)
+        finally: INVOCATION_DEADLINE.reset(token)

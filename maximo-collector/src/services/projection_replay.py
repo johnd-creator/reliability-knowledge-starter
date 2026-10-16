@@ -13,6 +13,11 @@ class ProjectionReplay:
         self.store=store
 
     def run(self,domain,*,before_commit=None,after_commit=None,after_transition=None):
+        with self.store.invocation():
+            return self._run(domain,before_commit=before_commit,after_commit=after_commit,
+                             after_transition=after_transition)
+
+    def _run(self,domain,*,before_commit=None,after_commit=None,after_transition=None):
         policy=self.store.replay_policy
         deadline=time.monotonic()+policy.seconds
         results=[]
