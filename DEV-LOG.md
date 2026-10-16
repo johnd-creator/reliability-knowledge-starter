@@ -657,3 +657,21 @@ Development Visibility: no collector execution, operational cursor/DB/Mart chang
 Product Owner Acceptance: PENDING technical review, not operational rollout authorization.
 Remaining Blockers: collector-specific exact-head CI before merge; operator-approved bounded rollout/recovery plan before any live action. Prior omissions below existing cursors not repaired automatically.
 Next Action: [Review cursor invariant/evidence](maximo-collector/docs/nadi-aud01-cursor-recovery.md), then collector CI gate. STOP after DRAFT delivery.
+
+
+## 2026-10-16 — NADI-AUD-01-MERGE-01
+
+Date: 2026-10-16
+Task ID: NADI-AUD-01-MERGE-01
+Objective: conditional repository merge and hosted post-merge qualification of the generic Maximo cursor fix; no operational activation.
+Branch: source codex/nadi-aud01-maximo-cursor-recovery; status documentation codex/nadi-aud01-merge-checkpoint is separately reviewable.
+Commit SHA: reviewed source f16ff508f07efd56535553f49e6f0007273a44e0; merge/main4914a73fc7b640b6dd0667d0450fdb12aa04c452; main before705a54b432dfcdfa07d29c56b3170822087e5977.
+PR: [#91 MERGED](https://github.com/johnd-creator/reliability-knowledge-starter/pull/91); CI foundation [#92 MERGED](https://github.com/johnd-creator/reliability-knowledge-starter/pull/92); this status-only checkpoint is a separate documentation PR.
+Implementation Status: Astra F-02 repository remediation IMPLEMENTED / TESTED / MERGED; operational finding not closed. No new source changes during this merge task.
+Test Status: each hosted Python 3.11.17/3.12.15 lane executes202 collector tests including21 AUD-01 cases, plus21 CI-infrastructure tests; failures/errors/skips/expected failures/blocked I/O all0. Generic cursor, specialized WO and asset baseline protections PRESERVED.
+CI Status: [exact-head38841312962 PASS](https://github.com/johnd-creator/reliability-knowledge-starter/actions/runs/38841312962); [post-merge main38842612489 PASS](https://github.com/johnd-creator/reliability-knowledge-starter/actions/runs/38842612489), source/workflow SHA4914a73fc7b640b6dd0667d0450fdb12aa04c452 and final gate verified from logs. Documentation-only checks are separate from these source qualifications.
+Merge Status: source MERGED; status-documentation PR remains separately reviewable and is not auto-merged.
+Development Visibility: NOT DEPLOYED by this task; localhost3000 not accessed or changed. No live collector, operational cursor, DB, Mart, QA/session or source-system action.
+Product Owner Acceptance: conditional repository merge authorized; operational deployment NOT AUTHORIZED, engineer/UAT approvals unchanged.
+Remaining Blockers: operational cursor/replay acceptance PENDING OPERATOR; Maximo source validation NOT PERFORMED; historical omission recovery NOT PERFORMED. Poison records can hold cursors/increase bounded replay; old omissions below a cursor are not automatically repaired. Synthetic/in-memory tests do not replace operational PostgreSQL qualification; merge is not runtime deployment.
+Next Action: NADI-AUD-02 — Mart Projection Coverage & Recoverable Replay, in a separate isolated task. Preserve Phase1 governance, M02/M03/M07 and26 pending engineer decisions. STOP after this checkpoint report.
