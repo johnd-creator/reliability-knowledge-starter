@@ -83,6 +83,17 @@ class MartDatabase:
         finally:
             session.close()
 
+    @contextmanager
+    def read_snapshot(self) -> Iterator[ReadOnlySession]:
+        """Opt-in consistent snapshot; same read-only engine and timeout guards.
+
+        Closing rolls back the read transaction. Existing read_session behavior
+        and operational callers remain unchanged.
+        """
+        with self._engine.connect().execution_options(isolation_level="REPEATABLE READ") as connection:
+            with self._session_factory(bind=connection) as session:
+                yield ReadOnlySession(session)
+
     def healthcheck(self) -> bool:
         with self.read_session() as session:
             return session.scalar(select(1)) == 1

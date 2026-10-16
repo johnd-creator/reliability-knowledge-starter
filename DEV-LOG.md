@@ -657,3 +657,21 @@ Development Visibility: no collector execution, operational cursor/DB/Mart chang
 Product Owner Acceptance: PENDING technical review, not operational rollout authorization.
 Remaining Blockers: collector-specific exact-head CI before merge; operator-approved bounded rollout/recovery plan before any live action. Prior omissions below existing cursors not repaired automatically.
 Next Action: [Review cursor invariant/evidence](maximo-collector/docs/nadi-aud01-cursor-recovery.md), then collector CI gate. STOP after DRAFT delivery.
+
+## NADI-AUD-02B-B4 — isolated projection coverage candidate
+
+Date: 2026-10-16
+Task ID: NADI-AUD-02B-B4
+Objective: Read-only, bounded reconciliation of attempt/complete coverage, B2 debt and B3 replay evidence.
+Branch: codex/nadi-aud02b-b4-coverage-status
+Commit SHA: Final exact-head SHA is recorded in the delivery PR qualification artifacts; based on B3 `662ce7b47c930b3ab312f3ce02223d49544b7094`.
+PR: Separate DRAFT stacked on PR95/96/97; final URL in task delivery.
+Implementation Status: IMPLEMENTED as an internal, disabled-by-default candidate; no public route or operational wiring.
+Test Status: Synthetic Collector/Cockpit/contract and private PostgreSQL role qualification; actual executed counts in the implementation report and final CI evidence.
+CI Status: Final exact-head Python 3.11/3.12 qualification required before delivery; local tests alone do not establish it.
+Merge Status: UNMERGED; dependency PRs remain independent.
+Development Visibility: Not activated; localhost:3000 and operational/Persistent-QA stores/services not accessed.
+Product Owner Acceptance: NOT_GRANTED for operational activation; Senior Review pending.
+Remaining Blockers: Astra F-03 OPEN, B5 integration/rollout qualification, operational grant/writer exclusion, history/absence/stale-claim policies and AUD-11 endorsement.
+Next Action: Senior Review → NADI-AUD-02B-B5; do not start automatically.
+Evidence: [B4 implementation report](maximo-collector/docs/NADI-AUD-02B-B4-IMPLEMENTATION.md).
