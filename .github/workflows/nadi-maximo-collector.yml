@@ -5,6 +5,18 @@ on:
     paths:
       - 'maximo-collector/**'
       - 'reliability-data-contracts/**'
+      - 'reliability-cockpit/src/repositories/projection_coverage.py'
+      - 'reliability-cockpit/src/repositories/mart_database.py'
+      - 'reliability-cockpit/src/repositories/integration_reader.py'
+      - 'reliability-cockpit/src/services/projection_coverage.py'
+      - 'reliability-cockpit/src/services/integration_status.py'
+      - 'reliability-cockpit/src/domain/projection_coverage.py'
+      - 'reliability-cockpit/src/domain/integration_status.py'
+      - 'reliability-cockpit/src/domain/condition_evidence.py'
+      - 'reliability-cockpit/tests/test_integration*.py'
+      - 'reliability-cockpit/tests/test_projection_coverage.py'
+      - 'reliability-cockpit/tests_coverage_pg/**'
+      - '.github/scripts/coverage_ci/**'
       - '.github/scripts/maximo_ci/**'
       - '.github/workflows/nadi-maximo-collector.yml'
       - 'docs/ci/**'
@@ -13,6 +25,18 @@ on:
     paths:
       - 'maximo-collector/**'
       - 'reliability-data-contracts/**'
+      - 'reliability-cockpit/src/repositories/projection_coverage.py'
+      - 'reliability-cockpit/src/repositories/mart_database.py'
+      - 'reliability-cockpit/src/repositories/integration_reader.py'
+      - 'reliability-cockpit/src/services/projection_coverage.py'
+      - 'reliability-cockpit/src/services/integration_status.py'
+      - 'reliability-cockpit/src/domain/projection_coverage.py'
+      - 'reliability-cockpit/src/domain/integration_status.py'
+      - 'reliability-cockpit/src/domain/condition_evidence.py'
+      - 'reliability-cockpit/tests/test_integration*.py'
+      - 'reliability-cockpit/tests/test_projection_coverage.py'
+      - 'reliability-cockpit/tests_coverage_pg/**'
+      - '.github/scripts/coverage_ci/**'
       - '.github/scripts/maximo_ci/**'
       - '.github/workflows/nadi-maximo-collector.yml'
       - 'docs/ci/**'
@@ -108,9 +132,117 @@ jobs:
           TESTED_SHA: ${{ needs.select.outputs.sha }}
         run: python ci-tools/.github/scripts/maximo_ci/qualify.py checkout --source source
 
+  postgres:
+    name: B1+B2 disposable PostgreSQL / Python ${{ matrix.python }}
+    needs: select
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.11', '3.12']
+    steps:
+      - name: Checkout immutable workflow tools
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.workflow_sha }}
+          path: ci-tools
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Checkout exact selected source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ needs.select.outputs.sha }}
+          path: source
+          persist-credentials: false
+      - name: Verify source identity
+        env:
+          TESTED_SHA: ${{ needs.select.outputs.sha }}
+        run: python ci-tools/.github/scripts/maximo_ci/qualify.py checkout --source source
+      - name: Install collector for isolated qualification
+        run: python -m pip install ./source/maximo-collector
+      - name: Verify available disposable server binaries
+        run: test -x /usr/lib/postgresql/16/bin/initdb
+      - name: B1+B2 real PostgreSQL transaction qualification (Unix-only private cluster)
+        env:
+          TESTED_SHA: ${{ needs.select.outputs.sha }}
+          CI_WORKFLOW_SHA: ${{ github.workflow_sha }}
+          CI_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: >-
+          python ci-tools/.github/scripts/maximo_ci/run_projection_pg.py
+          --root source/maximo-collector --sha "$TESTED_SHA"
+          --report "$RUNNER_TEMP/maximo-pg-${{ matrix.python }}.json"
+      - name: Verify tracked source unchanged after tests
+        if: ${{ always() }}
+        env:
+          TESTED_SHA: ${{ needs.select.outputs.sha }}
+        run: python ci-tools/.github/scripts/maximo_ci/qualify.py checkout --source source
+
+  coverage:
+    name: B4 cross-component / Python ${{ matrix.python }}
+    needs: select
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.11', '3.12']
+    steps:
+      - name: Checkout immutable workflow tools
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.workflow_sha }}
+          path: ci-tools
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Checkout exact selected source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ needs.select.outputs.sha }}
+          path: source
+          persist-credentials: false
+      - name: Verify source identity
+        env:
+          TESTED_SHA: ${{ needs.select.outputs.sha }}
+        run: python ci-tools/.github/scripts/maximo_ci/qualify.py checkout --source source
+      - name: Install isolated component test dependencies
+        run: python -m pip install ./source/maximo-collector './source/reliability-cockpit[test]' PyYAML==6.0.3
+      - name: B4 negative CI and boundary regressions
+        run: python -m unittest discover -s ci-tools/.github/scripts/coverage_ci/tests -v
+      - name: Cockpit reader/service and public DTO regressions (no silent skips)
+        env:
+          CI_WORKFLOW_SHA: ${{ github.workflow_sha }}
+          CI_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: >-
+          python ci-tools/.github/scripts/coverage_ci/run_offline.py --root source --component cockpit
+          --sha '${{ needs.select.outputs.sha }}' --report "$RUNNER_TEMP/b4-cockpit-${{ matrix.python }}.json"
+      - name: Complete canonical contract suite (no silent skips)
+        env:
+          CI_WORKFLOW_SHA: ${{ github.workflow_sha }}
+          CI_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: >-
+          python ci-tools/.github/scripts/coverage_ci/run_offline.py --root source --component contracts
+          --sha '${{ needs.select.outputs.sha }}' --report "$RUNNER_TEMP/b4-contracts-${{ matrix.python }}.json"
+      - name: Private B1-B4 writer-reader qualification with SELECT-only role
+        env:
+          CI_WORKFLOW_SHA: ${{ github.workflow_sha }}
+          CI_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: >-
+          python ci-tools/.github/scripts/coverage_ci/run_pg.py --source source
+          --sha '${{ needs.select.outputs.sha }}' --report "$RUNNER_TEMP/b4-read-pg-${{ matrix.python }}.json"
+      - name: Verify tracked source unchanged after tests
+        if: ${{ always() }}
+        env:
+          TESTED_SHA: ${{ needs.select.outputs.sha }}
+        run: python ci-tools/.github/scripts/maximo_ci/qualify.py checkout --source source
+
   gate:
     name: Maximo qualification gate
-    needs: [select, collector]
+    needs: [select, collector, postgres, coverage]
     if: ${{ always() }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -128,9 +260,13 @@ jobs:
         env:
           SELECTION_RESULT: ${{ needs.select.result }}
           COLLECTOR_RESULT: ${{ needs.collector.result }}
+          POSTGRES_RESULT: ${{ needs.postgres.result }}
+          COVERAGE_RESULT: ${{ needs.coverage.result }}
         run: |
           test "$SELECTION_RESULT" = success
           test "$COLLECTOR_RESULT" = success
+          test "$POSTGRES_RESULT" = success
+          test "$COVERAGE_RESULT" = success
       - name: Recheck current PR HEAD in a fresh runner without candidate execution
         env:
           GH_TOKEN: ${{ github.token }}
