@@ -137,6 +137,8 @@ proposed normal dependency-recovery mechanism and not authorization to rewind an
 source cursor. The earlier controlled-bootstrap report records nonzero dependency
 skips but does not prove which are recoverable/missing today. Current operational
 omission count and history: **UNKNOWN / REQUIRES_OPERATOR_APPROVAL**. [E18]
+Aggregate CLI reports may be retained externally; current log retention was not
+inspected. Such reports are not a durable per-record identity/retry obligation.
 
 For concurrency, the code verifies a weaker fact: batches use distinct sessions
 and the final MAX has no captured upper input fence. A late changed row may itself
@@ -153,7 +155,7 @@ explicit mitigations cited; no operational occurrence is inferred.
 
 | Group | Current behavior and supporting evidence | Risk / affected population | Current mitigation | Required correction / confidence |
 |---|---|---|---|---|
-| A — missing Equipment | Missing/blank local identity is skipped; counters are transient; state may advance. If only target Asset is absent, local membership passes and soft-reference writer can persist unresolved WO. [E03–E05, E08] | In-prefix WO without local dependency, plus target-only unresolved relations; no measured affected count. | Source row retained; project_all orders Asset before WO; integrity auditor can count persisted unresolved refs. | Durable source-identity obligation; distinguish local dependency from target readiness. Omission path VERIFIED; target-policy consequence SUPPORTED. |
+| A — missing Equipment | Missing/blank local identity is skipped; counters are in-memory/CLI output, not a persisted per-row reason; state may advance. If only target Asset is absent, local membership passes and soft-reference writer can persist unresolved WO. [E03–E05, E08] | In-prefix WO without local dependency, plus target-only unresolved relations; no measured affected count. | Source row retained; project_all orders Asset before WO; integrity auditor can count persisted unresolved refs. | Durable source-identity obligation; distinguish local dependency from target readiness. Omission path VERIFIED; target-policy consequence SUPPORTED. |
 | B — late repair | Adding Equipment does not alter old WO timestamp; fixed overlap cannot find OLD beyond its lower bound. [E04] | Old non-NULL WO/mapping failures; NULL rows remain eligible. | Overlap or explicit full local scan, neither a durable recovery guarantee. | Replay by obligation key independent of timestamp; no global rewind. VERIFIED source mechanism. |
 | C — concurrent mutation | ID ordering is deterministic in a fixed population, but OFFSET positions/filter membership can shift. Final whole-table MAX is read later and may exceed processed versions. [E04, E07] | Concurrent inserts behind offset can be missed/duplicate earlier rows; removal/filter exit can skip next row. Late updates may only cause temporary lag; old/backdated versions are at greater risk. | Canonical upserts absorb duplicates, overlap catches some versions; neither proves snapshot coverage. | Immutable bounded manifest/snapshot and proven receipts. Conditions VERIFIED, exact interleavings SUPPORTED, reproduction PENDING. |
 | D — crash boundaries | Batch commits precede state commit. Crash before state save retains old checkpoint; identical replay is idempotent if eligible. Crash after state save follows prior batch commits, but skipped rows can already be hidden. No durable STARTED/FAILED attempt. [E03–E05, E07] | Partial target progress and stale success metadata; not automatic evidence of lost successful writes. Ambiguous commit outcome needs recovery evidence. | Transaction rollback per batch; deterministic ID upsert; prior checkpoint survives pre-state crash. | Same-transaction target/disposition receipts, restartable run and fenced progress; crash tests PENDING. Separation VERIFIED; process/PG crash behavior SUPPORTED. |
@@ -441,6 +443,18 @@ decisions and M02/M03/M07 remain unchanged; no PdM semantics/thresholds are appr
 The following is **READY FOR SENIOR REVIEW**, not implementation authorization.
 B1 requires its run/work schema candidate; B2 adds debt. No intermediate slice may
 be rolled out as a complete fix before the integrated qualification gate.
+
+Concrete proposed new modules (not created here):
+`maximo-collector/src/repositories/projection_store.py` for B1/B2 receipts/debt;
+`maximo-collector/src/services/projection_replay.py` for B3;
+`maximo-collector/tests/test_projection_store.py` and
+`maximo-collector/tests/test_projection_recovery.py` for B5. Existing writer/CLI
+files are `maximo-collector/src/services/mart.py` and
+`maximo-collector/src/cli.py`; B4 reader/service paths are under
+`reliability-cockpit/src/`. New migration SQL belongs under
+`maximo-collector/migrations/`; its final identifier/checksum runner is D03,
+not an assumed extension of the Cockpit governance allowlist. No application
+file, test implementation or migration is added by this filename proposal.
 
 | Slice | Prerequisites and exact affected modules (future) | Acceptance / required tests | Rollout restrictions / rollback |
 |---|---|---|---|
