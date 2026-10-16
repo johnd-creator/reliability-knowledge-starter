@@ -657,3 +657,57 @@ Development Visibility: no collector execution, operational cursor/DB/Mart chang
 Product Owner Acceptance: PENDING technical review, not operational rollout authorization.
 Remaining Blockers: collector-specific exact-head CI before merge; operator-approved bounded rollout/recovery plan before any live action. Prior omissions below existing cursors not repaired automatically.
 Next Action: [Review cursor invariant/evidence](maximo-collector/docs/nadi-aud01-cursor-recovery.md), then collector CI gate. STOP after DRAFT delivery.
+
+## NADI-AUD-02B-B4 — isolated projection coverage candidate
+
+Date: 2026-10-16
+Task ID: NADI-AUD-02B-B4
+Objective: Read-only, bounded reconciliation of attempt/complete coverage, B2 debt and B3 replay evidence.
+Branch: codex/nadi-aud02b-b4-coverage-status
+Commit SHA: Final exact-head SHA is recorded in the delivery PR qualification artifacts; based on B3 `662ce7b47c930b3ab312f3ce02223d49544b7094`.
+PR: Separate DRAFT stacked on PR95/96/97; final URL in task delivery.
+Implementation Status: IMPLEMENTED as an internal, disabled-by-default candidate; no public route or operational wiring.
+Test Status: Synthetic Collector/Cockpit/contract and private PostgreSQL role qualification; actual executed counts in the implementation report and final CI evidence.
+CI Status: Final exact-head Python 3.11/3.12 qualification required before delivery; local tests alone do not establish it.
+Merge Status: UNMERGED; dependency PRs remain independent.
+Development Visibility: Not activated; localhost:3000 and operational/Persistent-QA stores/services not accessed.
+Product Owner Acceptance: NOT_GRANTED for operational activation; Senior Review pending.
+Remaining Blockers: Astra F-03 OPEN, B5 integration/rollout qualification, operational grant/writer exclusion, history/absence/stale-claim policies and AUD-11 endorsement.
+Next Action: Senior Review → NADI-AUD-02B-B5; do not start automatically.
+Evidence: [B4 implementation report](maximo-collector/docs/NADI-AUD-02B-B4-IMPLEMENTATION.md).
+
+## NADI-AUD-02B-B5 — integrated synthetic qualification and readiness
+
+Date: 2026-10-16
+Task ID: NADI-AUD-02B-B5
+Objective: Validate B1–B4 integration, migration/grant/restore compatibility and bounded resources; prepare a non-operational merge/rollout plan.
+Branch: codex/nadi-aud02b-b5-integrated-qualification
+Commit SHA: Exact containing HEAD and CI provenance recorded in the delivery DRAFT PR; pinned B4 base `bee49a345a63bb6083b6dd79650569febd227ba9`.
+PR: New DRAFT, stacked on PR95/96/97/98; no dependency PR modification or merge.
+Implementation Status: Qualification tests/CI/documents plus a narrow disabled-reader correction accepting two exact reviewed catalog fingerprints (ORM and actual SQL indexes); migrations unchanged.
+Test Status: Genuine synthetic pipeline and fault tests, actual SQL installation/repeat, distinct roles, capacity measurements and selected-schema restore to a different disposable DB; exact executed counts in delivery.
+CI Status: Final exact-head Python3.11/3.12 integrated and existing cross-component/Engineering checks required; local B4+dirty-tree evidence is not exact-head CI.
+Merge Status: UNMERGED; technical qualification PARTIAL pending least-privilege replay source-lock design even if regression CI passes.
+Development Visibility: Not activated. Existing frontend/API/collectors, persistent QA/operational databases and source systems not accessed or modified.
+Product Owner Acceptance: NOT_GRANTED for operational rollout; F-03 remains OPEN.
+Remaining Blockers: B5-GRANT-01 (FOR SHARE requires source UPDATE privilege), actual owner/co-location/backup/grant/writer exclusion, historical exception/absence/stale-claim policies, retention/performance, Phase1 expiry/acceptance and AUD11 endorsement.
+Next Action: Senior Review → separately authorized remediation/merge/operational preparation; do not start automatically.
+Evidence: [B5 qualification package](maximo-collector/docs/NADI-AUD-02B-B5-INTEGRATED-QUALIFICATION.md).
+
+## NADI-AUD-02B-B5-FIX-01 — least-privilege recovery lock candidate
+
+Date: 2026-10-16
+Task ID: NADI-AUD-02B-B5-FIX-01
+Objective: Resolve B5-GRANT-01 with exact source locks and a non-owner SELECT-only source projector.
+Branch: codex/nadi-aud02b-b5-fix01-source-lock
+Commit SHA: Exact containing HEAD recorded in delivery DRAFT and immutable CI evidence; base `ef0dc37f0e294897b79a58e681c5e87c5a646d40`, verified main `4914a73fc7b640b6dd0667d0450fdb12aa04c452`.
+PR: New DRAFT logically stacked on #99; PR95–99 unchanged.
+Implementation Status: IMPLEMENTED disabled opt-in SECURITY DEFINER source-lock capability and additive 007; original migrations001–006 unchanged. Helper owner alone has UPDATE(id), app retains SELECT-only sources.
+Test Status: Local reviewed qualification 39 restricted-role PostgreSQL +2 Cockpit reader tests PASS;8 new CI safety tests plus prior regression lanes. Supported-version counts/results are recorded only after final CI. Early disposable negative tests wrongly granted app source UPDATE(id)/helper membership; disclosed, removed, evidence retained. Final fixture checks require zero source-write privilege tables for app.
+CI Status: Final exact-head Python3.11/3.12 full B1–B5/new FIX and cross-component/Engineering checks required; local Python3.14/PostgreSQL18.6 is supplemental only.
+Merge Status: UNMERGED/DRAFT; prior B5 PARTIAL checkpoint remains historical and unchanged.
+Development Visibility: No operational/Persistent-QA DB/session access, source requests, localhost3000/controller/collector/runtime changes or migration.
+Product Owner Acceptance: NOT_GRANTED; independent Senior Review required. Overall execution process PARTIAL due to disclosed early fixture privilege exception, distinct from final technical test results.
+Remaining Blockers: Operational NO-GO; legacy writers RESTRICTED; Astra F-03 OPEN; owner/co-location, backup/grants/migration approval, writer exclusion, historical/absence/stale-claim policy, Phase1 and AUD11 gates unchanged.
+Next Action: Senior Review → Technical Acceptance / Separate Merge Authorization. STOP after DRAFT and report.
+Evidence: [FIX-01 qualification report](maximo-collector/docs/NADI-AUD-02B-B5-FIX-01.md).

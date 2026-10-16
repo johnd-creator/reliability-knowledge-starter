@@ -1,0 +1,32 @@
+{
+  "format": "nadi-b5-migration-manifest-v1",
+  "base": "bee49a345a63bb6083b6dd79650569febd227ba9",
+  "owner": "existing Maximo Collector/Mart store; operational identity NOT_VERIFIED",
+  "mode": "DISABLED_CANDIDATE; synthetic-only qualification",
+  "order": [
+    {
+      "file": "001_init.sql",
+      "sha256": "fae0d8fbb287cd4aeb6b82ab2bff997e7daff7c7e694d375f625227374155d63"
+    },
+    {
+      "file": "002_reliability_mart.sql",
+      "sha256": "2e03970cace45935a9d739558e848931344c7b4cbf70731964fc93c45893d272"
+    },
+    {
+      "file": "003_reliability_registry_projection.sql",
+      "sha256": "5d76b4173422eabd9d912fc0417669b4a46805b84999d4c95fe35299bb82d640"
+    },
+    {
+      "file": "004_projection_capture_candidate.sql",
+      "sha256": "575c983124b0bb6a31d7499220ba8f862e32ba60ed480d5b0dc0ee9255f33181"
+    },
+    {
+      "file": "005_deferred_obligation_candidate.sql",
+      "sha256": "1fc9c5ef4daca265fe90b41c7b2aa7389b6fe6f248f35351ae85494c24c86383"
+    },
+    {
+      "file": "006_bounded_replay_candidate.sql",
+      "sha256": "a99d3ce956a76e7e695e8e063d22f6cf433905f969fb5a6d566fbd7284e128cd"
+    }
+  ]
+}
