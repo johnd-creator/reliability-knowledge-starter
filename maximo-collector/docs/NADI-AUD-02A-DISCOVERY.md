@@ -265,8 +265,13 @@ absence policy, not automatic resolution or target deletion.
 - Use a short domain state/lease fence checked inside the write transaction;
   stale/replaced owners cannot commit. Candidate generation/target-receipt CAS
   prevents old replay overwriting a newer projected version. Source timestamp
-  order alone is insufficient. Concurrent authorized canonical writers require
-  receipt compatibility or a fail-closed conflict, never silent overwrite.
+  order alone is insufficient. Check actual target content against its sidecar
+  receipt too: an unchanged source fingerprint does not prove another writer did
+  not change the target. Concurrent canonical writers require shared fencing and
+  receipt compatibility or a fail-closed conflict. A projector-only lease cannot
+  fence legacy code that does not participate; initial rollout must exclude
+  unqualified same-target projector/bootstrap/controlled-load writers. This does
+  not require pausing source acquisition.
 - A scanner may advance its **scan continuation** across a deferred row only when
   that obligation receipt commits. **Complete coverage** remains held until all
   in-scope debt is resolved/excluded with evidence, including older generations.
