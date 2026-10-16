@@ -640,3 +640,20 @@ Development Visibility: no UI, screenshot or runtime transition; localhost3000 n
 Product Owner Acceptance: PENDING senior security/product review; no new permission mapping or operational approval.
 Remaining Blockers: approved reader/mutation contracts, organizational scope/delegation, custody/recovery, deployment approval;26 engineer decisions and M02/M03/M07 unchanged.
 Next Action: [Review architecture and numbered decisions](reliability-cockpit/docs/nadi-admin-readiness-01.md), then explicitly authorize the first Administration slice. STOP after DRAFT delivery.
+
+## 2026-10-16 — NADI-AUD-01
+
+Date: 2026-10-16
+Task ID: NADI-AUD-01
+Objective: prevent generic Maximo checkpoints from stranding failed records, without source/runtime actions.
+Branch: codex/nadi-aud01-maximo-cursor-recovery, baseline919428a906c5ef0c7fd02fe0d64e33b537c39570.
+Commit SHA: source/tests753a65034129949c0c1bc770d8d476a2b67b7312; final documentation HEAD recorded at delivery.
+PR: dedicated DRAFT; exact URL/HEAD at delivery; Astra PR90 remains independent and unchanged.
+Implementation Status: IMPLEMENTED conservative generic cursor policy, bounded failed-batch handling and idempotent equipment-status retry; specialized WO algorithm unchanged.
+Test Status: TESTED21 new recovery cases,86 focused and202 full collector tests PASS,0 skip; fake clients/stores or in-memory SQLite only,0 unexpected external I/O.
+CI Status: collector exact-head NOT_AVAILABLE; candidate workflow does not cover collector-only changes. AUD-04 CI gap OPEN, not replaced by Cockpit backend/frontend checks.
+Merge Status: UNMERGED/DRAFT; merge authorization PENDING collector CI qualification and senior review.
+Development Visibility: no collector execution, operational cursor/DB/Mart change, source request or localhost3000 access/change.
+Product Owner Acceptance: PENDING technical review, not operational rollout authorization.
+Remaining Blockers: collector-specific exact-head CI before merge; operator-approved bounded rollout/recovery plan before any live action. Prior omissions below existing cursors not repaired automatically.
+Next Action: [Review cursor invariant/evidence](maximo-collector/docs/nadi-aud01-cursor-recovery.md), then collector CI gate. STOP after DRAFT delivery.
