@@ -109,7 +109,7 @@ jobs:
         run: python ci-tools/.github/scripts/maximo_ci/qualify.py checkout --source source
 
   postgres:
-    name: B1 disposable PostgreSQL / Python ${{ matrix.python }}
+    name: B1+B2 disposable PostgreSQL / Python ${{ matrix.python }}
     needs: select
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -141,7 +141,7 @@ jobs:
         run: python -m pip install ./source/maximo-collector
       - name: Verify available disposable server binaries
         run: test -x /usr/lib/postgresql/16/bin/initdb
-      - name: B1 real PostgreSQL transaction qualification (Unix-only private cluster)
+      - name: B1+B2 real PostgreSQL transaction qualification (Unix-only private cluster)
         env:
           TESTED_SHA: ${{ needs.select.outputs.sha }}
           CI_WORKFLOW_SHA: ${{ github.workflow_sha }}

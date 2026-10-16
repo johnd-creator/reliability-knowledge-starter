@@ -1,4 +1,4 @@
-"""Create OWN disposable Unix-only PG cluster, qualify B1, stop OWN cluster.
+"""Create OWN disposable Unix-only PG cluster, qualify projection, stop OWN cluster.
 
 No input DSN, Docker, dotenv, operational host or production credentials accepted.
 Private evidence directory is retained. This accidental-I/O guard is not a
@@ -148,7 +148,7 @@ def main():
     print(json.dumps(output))
     if summary:
         with open(summary,'a') as out:
-            out.write('## Disposable PostgreSQL B1 qualification\n\n```json\n'+json.dumps(output,indent=2)+'\n```\n')
+            out.write('## Disposable PostgreSQL projection qualification\n\n```json\n'+json.dumps(output,indent=2)+'\n```\n')
     return 0 if ok else 1
 
 

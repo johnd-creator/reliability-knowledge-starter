@@ -329,6 +329,19 @@ class ProjectionStore:
         return hashlib.sha256(encode({c.name: getattr(current, c.name)
                                       for c in model.__table__.columns})).hexdigest()
 
+    def _map_item(self, domain, source_id, payload):
+        return map_input(domain, source_id, payload)
+
+    def _on_receipt(self, session, ticket, row, disposition, reason, target_id, target_digest):
+        """Optional atomic extension; base B1 writes no obligation ledger."""
+
+    def _coverage_incomplete(self, s, ticket):
+        # B1 conservatively holds complete coverage across all unresolved inputs.
+        return s.scalar(select(exists(select(pm.item.c.ordinal).join(
+            pm.run, pm.item.c.run_id == pm.run.c.id).where(pm.run.c.domain == ticket.domain,
+                pm.run.c.sealed, (pm.item.c.disposition.is_(None)
+                | pm.item.c.disposition.not_in(TERMINAL))))))
+
     def process(self, ticket, *, max_items=100, seconds=10, before_commit=None, after_commit=None):
         """Bounded scan, one item/target/receipt/continuation transaction at a time.
 
@@ -349,12 +362,7 @@ class ProjectionStore:
                 row = s.execute(select(pm.item).where(pm.item.c.run_id == ticket.run_id,
                     pm.item.c.ordinal == r["continuation"] + 1)).mappings().one_or_none()
                 if row is None:
-                    # No B2 resolution ledger: any historical unresolved/unprocessed
-                    # sealed input conservatively blocks new complete coverage too.
-                    unresolved = s.scalar(select(exists(select(pm.item.c.ordinal).join(
-                        pm.run, pm.item.c.run_id == pm.run.c.id).where(pm.run.c.domain == ticket.domain,
-                            pm.run.c.sealed, (pm.item.c.disposition.is_(None)
-                            | pm.item.c.disposition.not_in(TERMINAL))))))
+                    unresolved = self._coverage_incomplete(s, ticket)
                     receipts = s.execute(select(pm.item.c.target_id, pm.item.c.target_digest).where(
                         pm.item.c.run_id == ticket.run_id,
                         pm.item.c.target_id.is_not(None))).mappings().all()
@@ -374,7 +382,7 @@ class ProjectionStore:
                     return self.inspect(ticket.run_id, session=s)
                 if row["fingerprint"] != fingerprint(ticket.domain, row["source_id"], row["payload"]):
                     raise CaptureError("manifest fingerprint mismatch")
-                record, disposition, reason = map_input(ticket.domain, row["source_id"], row["payload"])
+                record, disposition, reason = self._map_item(ticket.domain, row["source_id"], row["payload"])
                 target_id, target_digest = None, None
                 if record is not None:
                     target_id = record["canonical_id"]
@@ -394,6 +402,7 @@ class ProjectionStore:
                 s.execute(update(pm.item).where(pm.item.c.run_id == ticket.run_id,
                     pm.item.c.ordinal == row["ordinal"]).values(disposition=disposition, reason=reason,
                         acked_at=func.clock_timestamp(), target_id=target_id, target_digest=target_digest))
+                self._on_receipt(s, ticket, row, disposition, reason, target_id, target_digest)
                 s.execute(update(pm.run).where(pm.run.c.id == ticket.run_id).values(
                     continuation=row["ordinal"], status="PARTIAL"))
                 if before_commit:
