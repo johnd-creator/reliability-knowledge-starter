@@ -126,7 +126,7 @@ def sync_config_for(object_structure: str) -> ObjectSyncConfig:
         prefix_query=spec.get("prefix_query", True),
         watermark_query=spec.get("watermark_query", True),
         recent_work_orders=spec.get("recent_work_orders", False),
-        cursor_requires_zero_errors=spec.get("cursor_requires_zero_errors", False),
+        cursor_requires_zero_errors=spec.get("cursor_requires_zero_errors", True),
     )
 
 

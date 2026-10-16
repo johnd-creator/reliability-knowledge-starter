@@ -1,0 +1,45 @@
+{
+  "scope": "SYNTHETIC / offline only; no runtime acceptance",
+  "baseline": "919428a906c5ef0c7fd02fe0d64e33b537c39570",
+  "audit_pr": 90,
+  "audit_head": "c20a764ccae892a5bb0972a59591e3f83984b0d9",
+  "audit_finding": "F-02 / AUD-01",
+  "source_and_test_commit": "753a65034129949c0c1bc770d8d476a2b67b7312",
+  "sha256": {
+    "maximo-collector/src/services/sync.py": "7866eadd0691c498b54751c3da13587bd754f209e690d7c5ac3260d6e8d7f792",
+    "maximo-collector/src/api/app.py": "76c0ac63da659c06fd83af267c8439eb092fbdb309c220f339aab5660908e911",
+    "maximo-collector/tests/test_cursor_recovery.py": "744e1710134117fd1fee1f55279fa4acad28e440619fc6f4278dfe00603e683c",
+    "maximo-collector/tests/run_offline.py": "7506f0effb7fbcf7ced72d8748ff96df370b2f8bd61a1e6c3eaa5932d3a75c97"
+  },
+  "new_regression": {
+    "tests": 21,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "focused_regression": {
+    "tests": 86,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "full_collector": {
+    "tests": 202,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "blocked_external_io": 0
+  },
+  "preserved_byte_identical": [
+    "maximo-collector/src/services/workorder_recency.py",
+    "maximo-collector/src/services/asset_baseline.py",
+    "maximo-collector/src/repositories/store.py",
+    "maximo-collector/src/adapters/maximo/oslc_client.py",
+    "maximo-collector/src/adapters/maximo/auth.py",
+    "maximo-collector/tests/test_workorder_recency.py",
+    "maximo-collector/tests/test_asset_baseline.py"
+  ],
+  "collector_exact_head_ci": "NOT_AVAILABLE",
+  "AUD04_CI_GAP": "OPEN",
+  "operational_actions": false
+}

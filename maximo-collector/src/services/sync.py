@@ -41,9 +41,9 @@ class ObjectSyncConfig:
     # IN-prefix is verified; LIKE remains unsupported. Always retain the
     # local prefix guard even when server-side restriction is enabled.
     prefix_query: bool = True
-    # A current baseline must not advance its cursor when a source row could
-    # not be mapped. Existing callers retain the historical permissive default.
-    cursor_requires_zero_errors: bool = False
+    # Retained for caller compatibility. Generic checkpoints are always strict;
+    # False cannot authorize advancing past an unresolved processing failure.
+    cursor_requires_zero_errors: bool = True
     recent_work_orders: bool = False
     request_limit: int = 40
 
@@ -109,28 +109,43 @@ class SyncService:
         def flush_pending() -> None:
             if not pending:
                 return
-            if config.batch_size > 1 and hasattr(self._store, "upsert_many_for"):
-                unique: dict[object, object] = {}
-                for index, entity in enumerate(pending):
-                    entity_id = getattr(entity, "id", None)
-                    unique[entity_id if entity_id is not None else ("row", index)] = entity
-                duplicate_count = len(pending) - len(unique)
-                if duplicate_count:
-                    stats.skipped += duplicate_count
-                self._store.upsert_many_for(config.entity_name, list(unique.values()))
-                pending_count = len(unique)
-            else:
-                for queued in pending:
-                    outcome = self._store.upsert_for(config.entity_name, queued)
-                    if outcome == "inserted":
-                        stats.inserted += 1
-                    elif outcome == "updated":
-                        stats.updated += 1
-                    elif outcome == "unchanged":
-                        stats.unchanged += 1
-                pending_count = len(pending)
-            stats.upserted += pending_count
+            # Detach once: failure is replayed next run, never retried in this
+            # traversal or allowed to poison subsequent batches.
+            batch = list(pending)
             pending.clear()
+            written = 0
+            try:
+                if config.batch_size > 1 and hasattr(self._store, "upsert_many_for"):
+                    unique: dict[object, object] = {}
+                    for index, entity in enumerate(batch):
+                        entity_id = getattr(entity, "id", None)
+                        unique[entity_id if entity_id is not None else ("row", index)] = entity
+                    stats.skipped += len(batch) - len(unique)
+                    batch = list(unique.values())
+                    self._store.upsert_many_for(config.entity_name, batch)
+                    written = len(batch)
+                    stats.upserted += written
+                else:
+                    for queued in batch:
+                        outcome = self._store.upsert_for(config.entity_name, queued)
+                        if outcome == "inserted":
+                            stats.inserted += 1
+                        elif outcome == "updated":
+                            stats.updated += 1
+                        elif outcome == "unchanged":
+                            stats.unchanged += 1
+                        written += 1
+                        stats.upserted += 1
+                if config.entity_name == "equipment":
+                    for queued in batch:
+                        self._store.record_equipment_status(queued)
+            except Exception as error:  # local persistence, not a source retry
+                stats.skipped += max(1, len(batch) - written)
+                stats.errors += 1
+                LOG.warning(
+                    "skip %s batch outcome=skipped error_class=%s",
+                    config.object_structure, type(error).__name__,
+                )
 
         try:
             for raw in self._client.iterate(
@@ -207,13 +222,15 @@ class SyncService:
                             change,
                         )
                     ):
+                        # Status history is separately persisted. Recover it
+                        # idempotently after a primary upsert in a partial run.
+                        if config.entity_name == "equipment":
+                            self._store.record_equipment_status(entity)
                         stats.skipped += 1
                         continue
                     pending.append(entity)
                     if len(pending) >= max(1, config.batch_size):
                         flush_pending()
-                    if config.entity_name == "equipment":
-                        self._store.record_equipment_status(entity)
                 except Exception as error:  # noqa: BLE001 — one bad row must not abort the sync
                     stats.skipped += 1
                     stats.errors += 1
@@ -255,14 +272,13 @@ class SyncService:
         stats.rows_seen = seen
         stats.watermark = last_change or watermark
         stats.finished_at = datetime.now(timezone.utc)
-        if config.watermark_field and stats.complete and not (
-            config.cursor_requires_zero_errors and stats.errors
-        ):
-            self._store.set_cursor(config.object_structure, stats.watermark, seen)
-        elif config.watermark_field and stats.complete and stats.errors:
+        if stats.complete and stats.errors:
             stats.complete = False
             stats.mode = "partial"
+            # Legacy reason also covers comparison/local persistence failures.
             stats.pagination_error = "MAPPING_ERRORS"
+        if config.watermark_field and stats.complete:
+            self._store.set_cursor(config.object_structure, stats.watermark, seen)
         self._store.record_run(stats)
         LOG.info(
             "%s sync %s: %d seen, %d upserted, %d skipped, watermark=%s",
