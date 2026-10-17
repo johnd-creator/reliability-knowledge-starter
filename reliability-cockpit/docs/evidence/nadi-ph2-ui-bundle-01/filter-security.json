@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "checks": [
+    "Case server-filtered DRAFT population",
+    "Edit base cannot be rebound while form is open",
+    "Method navigation filters authorized server population; honest empty state",
+    "Invalid inspection filter time rejected",
+    "Unauthenticated API denies protected records",
+    "Invalid CSRF denied without mutation"
+  ]
+}

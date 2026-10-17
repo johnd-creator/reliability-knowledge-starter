@@ -1,0 +1,29 @@
+{
+  "tls": "VERIFIED_NSS_NO_BYPASS",
+  "checks": [
+    "Case required nonblank validation",
+    "Blank investigation lines retained and rejected",
+    "Unsaved cancellation can be declined",
+    "Unsaved Case survives authorized register reload",
+    "Case persisted and exact detail selected",
+    "Reading latest does not rebase unsaved Case; stale save rejected",
+    "Explicit reconciliation saves on chosen revision",
+    "Immutable history shows actor revision and time",
+    "Server denies author self-review",
+    "Independent reviewer UI accepts exact reviewed record",
+    "Persisted PdM original zero null unit and timestamp",
+    "PdM draft persists after browser reload",
+    "Incompatible or unknown samples never become combined trend",
+    "All original Case and Inspection DTOs unchanged"
+  ],
+  "created": {
+    "case": "case:c499388f-4a73-4614-bbc5-f07d6e7eaf47",
+    "inspection": "inspection:353ebaae-bdfe-4478-9f39-e2d337a8c74a"
+  },
+  "errors": [],
+  "priorCounts": {
+    "cases": 3,
+    "inspections": 3
+  },
+  "status": "PASS"
+}

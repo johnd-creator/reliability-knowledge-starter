@@ -591,3 +591,32 @@ td strong { color: var(--text); font-weight: 650; }
 .pdm-workbook-template details { margin:12px 0; }
 .pdm-workbook-template .section-heading { flex-wrap:wrap; }
 .pdm-workbook-template .product-context-grid { grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr)); }
+
+/* Phase 2 workspace presentation; status colors do not classify equipment. */
+.case-form > .section-heading { align-items:flex-start; flex-wrap:wrap; }
+.case-form h2 { margin:0; font-size:var(--font-section,20px); }
+.case-form label small { color:var(--muted); font-weight:400; }
+.case-detail .asset-facts { margin-block:var(--space-6); }
+.case-detail .review-summary { padding:var(--space-4); border:1px solid var(--line); border-radius:var(--radius); background:var(--surface-2); }
+.case-detail .engineering-actions { flex-wrap:wrap; }
+.case-detail .button,.case-form .button,.pdm-workspace .button { white-space:normal; overflow-wrap:anywhere; }
+.workspace-steps { list-style:none; margin:var(--space-6) 0; padding:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--space-3); }
+.workspace-steps li { min-width:0; display:grid; gap:var(--space-2); padding:var(--space-4); border:1px solid var(--line); border-top:3px solid var(--primary); border-radius:var(--radius-sm); background:var(--surface-2); }
+.workspace-steps span { color:var(--muted); font-size:var(--font-small,13px); }
+.workspace-filters { margin-block:var(--space-4); min-width:0; }
+.workspace-filters summary { cursor:pointer; font-weight:600; padding-block:var(--space-3); }
+.workspace-filters form { margin-top:var(--space-4); }
+.pdm-method-filter { gap:var(--space-2); margin-block:var(--space-4); }
+.pdm-method-filter button[aria-pressed=true] { background:var(--primary); color:var(--button-text); border-color:var(--primary); }
+.case-detail .asset-facts dd,.case-form p,.workspace-steps li { overflow-wrap:anywhere; }
+@media(max-width:600px) { .workspace-steps { grid-template-columns:1fr; } .case-form fieldset { padding:var(--space-3); } .case-form .engineering-actions > .button { flex:1 1 auto; } }
+
+.pdm-register .record-open { display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-2); width:100%; text-align:left; }
+.pdm-register .record-open small { margin:0; }
+.pdm-register td { vertical-align:top; }
+.pdm-register details ul { padding-left:var(--space-4); }
+
+.pdm-history > label { display:grid; gap:var(--space-2); min-width:0; }
+.pdm-history select { width:100%; min-width:0; max-width:100%; min-height:44px; padding:var(--space-3); border:1px solid var(--line-strong); border-radius:var(--radius-sm); background:var(--surface-2); color:var(--text); font:inherit; }
+.pdm-raw-plot { margin:var(--space-6) 0; min-width:0; }
+.pdm-raw-plot svg { display:block; width:100%; height:auto; }

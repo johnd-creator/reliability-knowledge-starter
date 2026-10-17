@@ -556,3 +556,28 @@ Development Visibility: New correction NOT ACTIVATED. HTTPS3000 remains at f8d63
 Product Owner Acceptance: PENDING controlled source selection and live visual review.
 Remaining Blockers: No hermetic keyboard regression blocker; live/native-zoom visual acceptance remains separate.
 Next Action: Controlled localhost update, Product Owner review, then merge decision. [Evidence report](reliability-cockpit/docs/nadi-pdm-ui-fix-01.md).
+
+## NADI-PH2-UI-BUNDLE-01 — 17 Oktober 2026
+
+- Date: 2026-10-17.
+- Task ID: NADI-PH2-UI-BUNDLE-01.
+- Objective: Engineering Case/review dan PdM presentation dengan live Mode A.
+- Branch: prepared review ref `codex/nadi-ph2-ui-bundle-01`; preview tetap detached.
+- Commit SHA: baseline/final active HEAD `7daab3a62866f19b30fb45462a94bafff8795dc5`;
+  task edits dirty dan commit review terpisah dicatat pada handoff, tanpa mengganti serving HEAD.
+- PR: NONE; tidak push/merge.
+- Implementation Status: IMPLEMENTED — structured form/register/detail, evidence/review,
+  revision-bound save, in-memory draft recovery, PdM steps/filter/history responsiveness.
+- Test Status: TESTED — frontend assertions/TypeScript/lint/build PASS; backend99 PASS,
+  55 SKIP; persistent synthetic QA E2E, security/filter, 390/768/1440, dark mode dan
+  actual same-document Fast Refresh PASS. Warning lint existing (dependency effect dan ignored status-route target) dicatat.
+- CI Status: NOT RUN pada prepared commit; local checks bukan GitHub CI.
+- Merge Status: UNMERGED; PR95–100 unchanged.
+- Development Visibility: VISIBLE — https://localhost:3000, frontend/API parent21538/21536
+  tetap, tanpa restart/handover. Banner source/dirty state akurat.
+- Product Owner Acceptance: PENDING; self-review bukan engineer UAT/PO approval.
+- Remaining Blockers: Q01–Q10, method/point/comparability dan attachment custody pending;
+  DTO timestamp/nama/reverse-link gaps dijelaskan tanpa nilai rekaan.
+- Next Action: Senior Review → Product Owner UI Review → targeted corrections.
+- Evidence: [Implementation report](reliability-cockpit/docs/NADI-PH2-UI-BUNDLE-01.md),
+  [live screenshots](reliability-cockpit/docs/evidence/nadi-ph2-ui-bundle-01/README.md).

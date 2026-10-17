@@ -1,0 +1,196 @@
+{
+  "viewports": [
+    {
+      "name": "cases-register-1440-light",
+      "width": 1440,
+      "overflow": false,
+      "route": "/engineering/cases"
+    },
+    {
+      "name": "case-form-1440-light",
+      "width": 1440,
+      "overflow": false,
+      "route": "/engineering/cases"
+    },
+    {
+      "name": "pdm-register-1440-light",
+      "width": 1440,
+      "overflow": false,
+      "route": "/pdm"
+    },
+    {
+      "name": "pdm-input-1440-light",
+      "width": 1440,
+      "overflow": false,
+      "route": "/pdm"
+    },
+    {
+      "name": "grid-keyboard-1440",
+      "geometry": {
+        "left": 1095.0625,
+        "right": 1325.75,
+        "containerLeft": 324,
+        "containerRight": 1364,
+        "focused": true
+      }
+    },
+    {
+      "name": "case-review-1440-light",
+      "width": 1440,
+      "overflow": false,
+      "route": "/engineering/cases"
+    },
+    {
+      "name": "pdm-detail-1440-light",
+      "width": 1440,
+      "overflow": false,
+      "route": "/pdm"
+    },
+    {
+      "name": "cases-register-768-light",
+      "width": 768,
+      "overflow": false,
+      "route": "/engineering/cases"
+    },
+    {
+      "name": "case-form-768-light",
+      "width": 768,
+      "overflow": false,
+      "route": "/engineering/cases"
+    },
+    {
+      "name": "pdm-register-768-light",
+      "width": 768,
+      "overflow": false,
+      "route": "/pdm"
+    },
+    {
+      "name": "pdm-input-768-light",
+      "width": 768,
+      "overflow": false,
+      "route": "/pdm"
+    },
+    {
+      "name": "grid-keyboard-768",
+      "geometry": {
+        "left": 390,
+        "right": 689,
+        "containerLeft": 60,
+        "containerRight": 708,
+        "focused": true
+      }
+    },
+    {
+      "name": "case-review-768-light",
+      "width": 768,
+      "overflow": false,
+      "route": "/engineering/cases"
+    },
+    {
+      "name": "pdm-detail-768-light",
+      "width": 768,
+      "overflow": false,
+      "route": "/pdm"
+    },
+    {
+      "name": "cases-register-390-light",
+      "width": 390,
+      "overflow": false,
+      "route": "/engineering/cases"
+    },
+    {
+      "name": "case-form-390-light",
+      "width": 390,
+      "overflow": false,
+      "route": "/engineering/cases"
+    },
+    {
+      "name": "pdm-register-390-light",
+      "width": 390,
+      "overflow": false,
+      "route": "/pdm"
+    },
+    {
+      "name": "pdm-input-390-light",
+      "width": 390,
+      "overflow": false,
+      "route": "/pdm"
+    },
+    {
+      "name": "grid-keyboard-390",
+      "geometry": {
+        "left": 71,
+        "right": 319,
+        "containerLeft": 52,
+        "containerRight": 338,
+        "focused": true
+      }
+    },
+    {
+      "name": "case-review-390-light",
+      "width": 390,
+      "overflow": false,
+      "route": "/engineering/cases"
+    },
+    {
+      "name": "pdm-detail-390-light",
+      "width": 390,
+      "overflow": false,
+      "route": "/pdm"
+    },
+    {
+      "name": "pdm-register-1440-dark",
+      "width": 1440,
+      "overflow": false,
+      "route": "/pdm"
+    },
+    {
+      "name": "case-review-1440-dark",
+      "width": 1440,
+      "overflow": false,
+      "route": "/engineering/cases"
+    },
+    {
+      "route": "/",
+      "status": 200
+    },
+    {
+      "route": "/assets",
+      "status": 200
+    },
+    {
+      "route": "/asset-health",
+      "status": 200
+    },
+    {
+      "route": "/maintenance",
+      "status": 200
+    },
+    {
+      "route": "/work-orders",
+      "status": 200
+    },
+    {
+      "route": "/data-quality",
+      "status": 200
+    },
+    {
+      "route": "/recommendations",
+      "status": 200
+    },
+    {
+      "route": "/engineering/advisories",
+      "status": 200
+    },
+    {
+      "route": "/engineering/inbox",
+      "status": 200
+    },
+    {
+      "route": "/login",
+      "status": 200
+    }
+  ],
+  "errors": [],
+  "status": "PASS"
+}
