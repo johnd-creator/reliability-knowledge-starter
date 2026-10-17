@@ -21,7 +21,7 @@ function PdmPage({qaEnabled}:{qaEnabled:boolean}){
  const [offset,setOffset]=useState(0),[query,setQuery]=useState(''),[search,setSearch]=useState(''),[method,setMethod]=useState(''),[asset,setAsset]=useState(''),[status,setStatus]=useState(''),[since,setSince]=useState(''),[until,setUntil]=useState(''),[filterError,setFilterError]=useState(''),[selected,setSelected]=useState<string|null>(null),[view,setView]=useState('register');
  const {state,page,session,reload}=useQaRecords<Inspection>('inspections',qaEnabled,offset,query);
  useEffect(()=>{const id=new URLSearchParams(window.location.search).get('record');setSelected(validRecordId(id)?id:null);},[]);
- useEffect(()=>{if(['signed-out','denied','disabled'].includes(state)||session&&cache?.recovery&&(cache.recovery.subject!==session.subject||!session.roles.includes('AUTHOR')||!session.asset_ids.includes(cache.recovery.entry.asset)))clearDraft?.();},[state,session,cache?.recovery,clearDraft]);
+ useEffect(()=>{if(['signed-out','expired','denied','disabled'].includes(state)||session&&cache?.recovery&&(cache.recovery.subject!==session.subject||!session.roles.includes('AUTHOR')||!session.asset_ids.includes(cache.recovery.entry.asset)))clearDraft?.();},[state,session,cache?.recovery,clearDraft]);
  const proof=page as typeof page & {filter_scope?:string;event_time_basis?:string};
  const contractReady=proof?.filter_scope==='AUTHORIZED_POPULATION'&&proof?.event_time_basis==='INSPECTED_AT';
  const invalidate=useCallback(()=>reload(),[reload]);

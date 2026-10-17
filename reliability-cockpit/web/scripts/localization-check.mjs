@@ -31,7 +31,8 @@ try {
   "lib/manual-pdm.ts": "22cda16071d8d0912867397cdf916fa4bcb86cb325ecd3eeff3aac6d77aae5be",
   "lib/engineering-http.ts": "1090f7dc3d151c2a790cb954fab9d0f285972321204db0e5dd7ca3873308c5e8",
   "lib/bounded-http.ts": "3c1e79bf7fbb6ae3e9735695c3f944ee4abca87fe20d132c0139e34fa61b813e",
-  "components/useQaRecords.ts": "3a0fdc598a136c34b04035601ab93ffe3cf94b5cf4df52a542b86b709d311ed5",
+  // FIX-02: reviewed expiry presentation; server session/list authority and clearing remain regression-tested.
+  "components/useQaRecords.ts": "4c50045989349714c281dc72d4bf356abdc13e0c3d02ececb3fb5242bf7b1bc3",
   "app/api/engineering-qa/[...path]/route.ts": "460aec726cbc10a39de4a6d6c817e1d3fcacda63697b7ce3fd52d46a5856d0b3",
   "fixtures/ux-bundle-b.json": "aac1b608ec2b0ba9e0c99d6293b8c8bb016a3422f3a8e9eedc4118e535d8b061",
   "app/design-tokens.css": "803076930da5cce81fe32ba88bbad7ee01bd52ab782d8dbaa102a864ac76a2aa"

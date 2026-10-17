@@ -1,0 +1,143 @@
+{
+  "checks": [
+    "Signed-out PdM has no embedded credentials; standalone login returns to /pdm at 1440/768/390",
+    "Desktop compact header 36–48px; technical SHA details keyboard-accessible; light/dark and no page overflow",
+    "Real session revocation clears protected content and login restores exact Case record destination",
+    "Existing Case Inspection Recommendation read workflows remain available",
+    "Trusted outsider identity still denied exact foreign Case by server",
+    "Unauthenticated Engineering API remains 401",
+    "Browser rejects external login destination and uses safe internal fallback",
+    "Explicit diagnostic logout revokes own session and reaches standalone login",
+    "Factual dashboard remains accessible signed out, with unchanged healthy runtime provenance",
+    "Critical mismatch visibly actionable with technical panel collapsed (isolated fault fixture)"
+  ],
+  "viewports": [
+    {
+      "name": "pdm-signed-out-1440-light",
+      "width": 1440,
+      "page": 1440
+    },
+    {
+      "width": 1440,
+      "headerHeight": 46
+    },
+    {
+      "name": "header-details-1440-light",
+      "width": 1440,
+      "page": 1440
+    },
+    {
+      "name": "login-1440-light",
+      "width": 1440,
+      "page": 1440
+    },
+    {
+      "name": "pdm-authenticated-1440-light",
+      "width": 1440,
+      "page": 1440
+    },
+    {
+      "name": "pdm-authenticated-1440-dark",
+      "width": 1440,
+      "page": 1440
+    },
+    {
+      "name": "login-1440-dark",
+      "width": 1440,
+      "page": 1440
+    },
+    {
+      "name": "pdm-signed-out-768-light",
+      "width": 768,
+      "page": 768
+    },
+    {
+      "width": 768,
+      "headerHeight": 46
+    },
+    {
+      "name": "header-details-768-light",
+      "width": 768,
+      "page": 768
+    },
+    {
+      "name": "login-768-light",
+      "width": 768,
+      "page": 768
+    },
+    {
+      "name": "pdm-authenticated-768-light",
+      "width": 768,
+      "page": 768
+    },
+    {
+      "name": "pdm-authenticated-768-dark",
+      "width": 768,
+      "page": 768
+    },
+    {
+      "name": "login-768-dark",
+      "width": 768,
+      "page": 768
+    },
+    {
+      "name": "pdm-signed-out-390-light",
+      "width": 390,
+      "page": 390
+    },
+    {
+      "width": 390,
+      "headerHeight": 66
+    },
+    {
+      "name": "header-details-390-light",
+      "width": 390,
+      "page": 390
+    },
+    {
+      "name": "login-390-light",
+      "width": 390,
+      "page": 390
+    },
+    {
+      "name": "pdm-authenticated-390-light",
+      "width": 390,
+      "page": 390
+    },
+    {
+      "name": "pdm-authenticated-390-dark",
+      "width": 390,
+      "page": 390
+    },
+    {
+      "name": "login-390-dark",
+      "width": 390,
+      "page": 390
+    },
+    {
+      "name": "case-session-revoked-1440",
+      "width": 1440,
+      "page": 1440
+    },
+    {
+      "name": "case-session-revoked-1440",
+      "width": 1440,
+      "page": 1440
+    },
+    {
+      "name": "dashboard-compact-1440",
+      "width": 1440,
+      "page": 1440
+    },
+    {
+      "name": "fixture-only-mismatch-collapsed-1440",
+      "width": 1440,
+      "page": 1440
+    }
+  ],
+  "errors": [],
+  "fixtures": [
+    "Mismatch status injected in isolated browser; real runtime not changed"
+  ],
+  "status": "PASS"
+}

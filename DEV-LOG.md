@@ -581,3 +581,28 @@ Next Action: Controlled localhost update, Product Owner review, then merge decis
 - Next Action: Senior Review → Product Owner UI Review → targeted corrections.
 - Evidence: [Implementation report](reliability-cockpit/docs/NADI-PH2-UI-BUNDLE-01.md),
   [live screenshots](reliability-cockpit/docs/evidence/nadi-ph2-ui-bundle-01/README.md).
+
+## NADI-PH2-UI-FIX-02 — 18 Oktober 2026
+
+- Date: 2026-10-18.
+- Task ID: NADI-PH2-UI-FIX-02.
+- Objective: compact provenance header dan standalone login return flow.
+- Branch: prepared review ref `codex/nadi-ph2-ui-fix-02`, parent Bundle01
+  `61697806356918655ab2901d5e2ff2cc7a5bd902`; serving worktree tetap detached.
+- Commit SHA: baseline/final active HEAD `7daab3a62866f19b30fb45462a94bafff8795dc5`;
+  prepared review SHA dicatat pada handoff. HEAD/index preview tidak diganti.
+- PR: NONE, tidak push/merge.
+- Implementation Status: IMPLEMENTED — header46px desktop, native technical disclosure,
+  critical warnings visible, compact QA states, standalone login dan safe internal return.
+- Test Status: TESTED — frontend/type/lint/build dan browser390/768/1440 light/dark PASS;
+  auth hermetic43 PASS/19 SKIP; real own-test-session revocation/logout, denial dan return
+  destination PASS. Mismatch screenshot hanya browser fixture, actual runtime sehat.
+- CI Status: NOT RUN pada prepared commit; local verification bukan GitHub CI.
+- Merge Status: UNMERGED; PR100 tidak diubah/merge.
+- Development Visibility: VISIBLE pada HTTPS3000 melalui Mode A; kedua backend AVAILABLE,
+  dirty=true/stale=false; parent21538/21536 dan restart0 dipertahankan.
+- Product Owner Acceptance: PENDING.
+- Remaining Blockers: PO visual acceptance; Q01–Q10/engineer UAT dan global auth terpisah.
+- Next Action: Senior Review → Product Owner Visual Review.
+- Evidence: [Report](reliability-cockpit/docs/NADI-PH2-UI-FIX-02.md),
+  [screenshots](reliability-cockpit/docs/evidence/nadi-ph2-ui-fix-02/README.md).

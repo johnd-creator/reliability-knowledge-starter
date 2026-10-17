@@ -4,7 +4,7 @@ import LocalLogin from "./LocalLogin";
 import { ThemeToggle } from "./ThemeProvider";
 
 /** Standalone presentation for existing Engineering QA authentication. */
-export default function LoginPage({ expired = false }: { expired?: boolean }) {
+export default function LoginPage({ expired = false, returnTo }: { expired?: boolean; returnTo?: string }) {
   return <div className="nadi-login-page">
     <div className="login-surface">
       <aside className="login-brand-panel" aria-label={idText("NADI product identity")}>
@@ -18,7 +18,7 @@ export default function LoginPage({ expired = false }: { expired?: boolean }) {
       </aside>
       <div className="login-form-panel">
         <div className="login-utilities"><span className="scope-chip">QA SINTETIS · Engineering</span><ThemeToggle /></div>
-        <div className="login-form-content"><LocalLogin expired={expired} headingLevel={1} />
+        <div className="login-form-content"><LocalLogin returnTo={returnTo} expired={expired} headingLevel={1} />
           <p className="login-page-note">{idText("Factual development screens remain accessible. This sign-in opens the existing isolated Engineering workspace.")}</p>
         </div>
         <p className="login-footer">NADI · Platform Analitik Keandalan Aset Pembangkit</p>

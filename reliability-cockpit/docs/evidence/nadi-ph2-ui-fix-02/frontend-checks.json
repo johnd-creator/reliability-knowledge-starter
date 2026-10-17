@@ -1,0 +1,19 @@
+{
+  "engineering": 0,
+  "phase2": 0,
+  "workflow": 0,
+  "http-qa": 0,
+  "bounded-http": 0,
+  "bounded-proxy": 0,
+  "local-auth": 0,
+  "ux": 0,
+  "eng-product": 0,
+  "pdm-input": 0,
+  "pdm-workbook": 0,
+  "product-safety": 0,
+  "login-design": 0,
+  "localization": 0,
+  "development-provenance": 0,
+  "phase2-ui": 0,
+  "phase2-login-header": 0
+}

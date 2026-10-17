@@ -620,3 +620,26 @@ td strong { color: var(--text); font-weight: 650; }
 .pdm-history select { width:100%; min-width:0; max-width:100%; min-height:44px; padding:var(--space-3); border:1px solid var(--line-strong); border-radius:var(--radius-sm); background:var(--surface-2); color:var(--text); font:inherit; }
 .pdm-raw-plot { margin:var(--space-6) 0; min-width:0; }
 .pdm-raw-plot svg { display:block; width:100%; height:auto; }
+
+/* Compact development provenance: serious warnings remain outside the disclosure. */
+.nadi-development-compact { position:relative; margin-bottom:var(--space-4); border:1px solid var(--line-strong); border-radius:var(--radius-sm); background:var(--surface-2); color:var(--text); font-size:12px; min-width:0; }
+.dev-status-row { display:flex; align-items:center; flex-wrap:wrap; gap:8px 16px; min-height:44px; padding:6px 12px; }
+.dev-status-row > strong { color:var(--primary); }
+.dev-service-summary { margin-left:auto; }
+.dev-status-details summary { cursor:pointer; padding:4px; font-weight:600; }
+.dev-status-panel { position:absolute; z-index:40; inset-inline:0; top:calc(100% + 4px); max-height:65vh; overflow:auto; padding:var(--space-6); border:1px solid var(--line-strong); border-radius:var(--radius); background:var(--surface); box-shadow:var(--shadow); }
+.dev-status-panel h2 { margin-top:0; font-size:var(--font-section); }
+.dev-status-panel dl { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--space-4); }
+.dev-status-panel dl > div { min-width:0; }
+.dev-status-panel dt { color:var(--muted); }
+.dev-status-panel dd { margin:4px 0 0; overflow-wrap:anywhere; }
+.dev-status-panel nav { display:flex; flex-wrap:wrap; gap:var(--space-4); }
+.dev-status-warnings { border-top:1px solid var(--amber); padding:8px 12px; color:var(--amber); }
+.dev-status-warnings p { margin:4px 0; overflow-wrap:anywhere; }
+.qa-boundary-note { display:flex; align-items:baseline; flex-wrap:wrap; gap:8px 16px; padding:12px 16px; border:1px solid var(--line); border-left:3px solid var(--primary); border-radius:var(--radius-sm); background:var(--surface); font-size:12px; }
+.qa-boundary-note strong { color:var(--primary); }
+.qa-boundary-note details { min-width:0; }
+.qa-boundary-note summary { cursor:pointer; }
+.qa-boundary-note p { max-width:75ch; }
+.qa-sign-in-required h2 { margin-top:0; }
+@media(max-width:600px) { .dev-service-summary { margin-left:0; } .dev-status-row { gap:8px 12px; } .dev-status-panel { padding:var(--space-4); } .dev-status-panel dl { grid-template-columns:minmax(0,1fr); } }
