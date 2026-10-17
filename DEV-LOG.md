@@ -606,3 +606,27 @@ Next Action: Controlled localhost update, Product Owner review, then merge decis
 - Next Action: Senior Review → Product Owner Visual Review.
 - Evidence: [Report](reliability-cockpit/docs/NADI-PH2-UI-FIX-02.md),
   [screenshots](reliability-cockpit/docs/evidence/nadi-ph2-ui-fix-02/README.md).
+
+## NADI-AUTH-FOUNDATION-01 — 18 Oktober 2026 — BLOCKED preflight
+
+- Date: 2026-10-18.
+- Task ID: NADI-AUTH-FOUNDATION-01.
+- Objective: global local-development authentication and scoped Development ADMIN.
+- Branch: documentation review ref; active worktree/source selection unchanged.
+- Commit SHA: serving HEAD `7daab3a62866f19b30fb45462a94bafff8795dc5` unchanged;
+  Bundle01/FIX02 prepared commits and all dirty edits preserved.
+- PR: NONE; no merge/push.
+- Implementation Status: BLOCKED before application/config changes. Direct upstream8000
+  is wildcard published, anonymous factual200; Docker forwarding ACCEPT. Full network
+  restriction unverified. Page-only login would not meet the requested boundary.
+- Test Status: read-only HTTPS/API/network/source and PostgreSQL directory audit only;
+  guard/browser/CI qualification NOT RUN. Documentation links/diff checks performed.
+- CI Status: NOT RUN.
+- Merge Status: UNMERGED; PR100 unchanged.
+- Development Visibility: existing preview remains operational, global login NOT active.
+- Product Owner Acceptance: PENDING; backend/network configuration approval required.
+- Remaining Blockers: trusted upstream isolation and factual-read scopes/admin module policy.
+  Existing local-operator ADMIN verified; no role, account, password or session change.
+- Next Action: owner approval of concrete loopback/network and factual authorization plan;
+  then isolated implementation/security tests before controlled activation.
+- Evidence: [Security preflight and unapplied proposal](reliability-cockpit/docs/NADI-AUTH-FOUNDATION-01.md).
