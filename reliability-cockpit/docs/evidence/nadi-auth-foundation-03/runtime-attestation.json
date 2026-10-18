@@ -1,0 +1,53 @@
+{
+  "status": "PASS",
+  "observed_at": "2026-10-18T08:52:28.214480+07:00",
+  "active_head": "7daab3a62866f19b30fb45462a94bafff8795dc5",
+  "active_worktree": "/home/john-d/Music/reliability-knowledge-starter/.nadi-dev/pdm-ui-fix-01",
+  "review_code_sha": "fef7bccd61d3d6a5dd184f2fff94453242ff2056",
+  "bootstrap_sha": "106a4dc08b149576b2e84bbf8c70694288c7e9a7",
+  "dirty_expected": true,
+  "frontend_parent_pid": "21538",
+  "frontend_listener_pids": [
+    "728443"
+  ],
+  "qa_api_parent_pid": "21536",
+  "systemd_restart_counts": {
+    "frontend": "0",
+    "qa_api": "0"
+  },
+  "frontend_and_qa_parent_identity_unchanged": true,
+  "qa_listener_inode_unchanged": true,
+  "qa_child_before": 21549,
+  "qa_child_after": 834916,
+  "qa_child_change": "Expected source reloader 2026-10-18T08:42:07+07:00; three reviewed auth modules; no unit restart",
+  "active_source_selection_unchanged": true,
+  "unrelated_tracked_and_untracked_files_preserved": true,
+  "containers_before": 35,
+  "containers_after": 35,
+  "all_original_container_id_start_pid_mounts_equal": true,
+  "task_owned_tmpfs_test_container_removed": true,
+  "cockpit_api_binding": "127.0.0.1:8000",
+  "node": "22.23.1",
+  "public_ca_der_sha256": "125ee0237942a71f8c9d470371d745b3d956ef3b507500e5030ffb43e02d1a30",
+  "private_backup_archives": [
+    {
+      "name": "auth03-retained-before.dump",
+      "sha256": "d26915a1f68c9808338c8b7ef0e43412bd5b8959f9955233482c0b88ad05c8ad",
+      "bytes": 76452,
+      "readable": true,
+      "active_restore_attempted": false
+    },
+    {
+      "name": "auth03-retained-after.dump",
+      "sha256": "8d760c66f9c7db73432ccd2a256891e567276ab829588817980e2b5d4d39e3f3",
+      "bytes": 82234,
+      "readable": true,
+      "active_restore_attempted": false
+    }
+  ],
+  "controller_previous_release_retained": true,
+  "old_controller_metadata_retained": true,
+  "database_restore_performed": false,
+  "service_restart_performed": false,
+  "automatic_runtime_rollback_performed": false
+}

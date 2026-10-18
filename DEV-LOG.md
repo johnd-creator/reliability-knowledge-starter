@@ -670,3 +670,28 @@ Next Action: Controlled localhost update, Product Owner review, then merge decis
   code checkpoint. Application bootstrap provenance must remain separate from controller SHA.
 - Merge/PO acceptance: UNMERGED/PENDING; no main or PR100 action.
 - Report: [AUTH-03](reliability-cockpit/docs/NADI-AUTH-FOUNDATION-03.md).
+
+
+## 2026-10-18 — NADI-AUTH-FOUNDATION-03 — final local acceptance
+
+- Objective: close explicit BSR/IP ADMIN factual read, login-aware readiness and self username.
+- Branch: `codex/nadi-auth-foundation-03`; code/controller checkpoint
+  `fef7bccd61d3d6a5dd184f2fff94453242ff2056`, parent AUTH02 preserved.
+- IMPLEMENTED/TESTED/VISIBLE: local acceptance PASS. Active detached HEAD remains
+  `7daab3a62866f19b30fb45462a94bafff8795dc5` plus reviewed dirty ModeA code; no handover.
+- Tests:21 frontend groups/321 named assertions, TypeScript/lint/build PASS;1 existing warning.
+  Backend210 PASS/0SKIP disposable PostgreSQL; launcher119 PASS/0SKIP hermetic; actual trusted
+  HTTPS browser12 checks/7 redacted responsive light/dark captures PASS. GitHub CI NOT_RUN.
+- Controller: exact Git blobs, immutable release, existing ROOT binding, metadata backups and
+  independent readiness before install. Own-session positive VERIFIED; revoked proof rejected;
+  anonymous default status reports NOT_PROBED_NO_SESSION honestly. No service restart.
+- Preservation: original35 containers unchanged;4 accounts/grants/password hashes,39 old
+  sessions, business rows, schema/constraints/ledger preserved. Test sessions/audits appended
+  normally. QA source reloader child21549→834916; unit parent21536/NRestarts0 preserved.
+- Known bounds: legacy equipment/WorkOrder/KPI contracts lack safe portfolio scope and remain
+  denied. Context/integration portfolio totals require portfolio capability. No engineering
+  self-review bypass, scoring, export expansion, source collection or operational change.
+- MERGED:NO; Product Owner ACCEPTED:PENDING. Local review commit only: earlier local lineage
+  diverges from cached main; avoid mixing unrelated work in a PR. PR100/F03 unchanged.
+- Evidence: [AUTH03 final report](reliability-cockpit/docs/NADI-AUTH-FOUNDATION-03.md).
+- Next: Senior Review → Product Owner Final Authentication Acceptance → Resume Phase2.
