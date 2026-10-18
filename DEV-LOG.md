@@ -859,6 +859,7 @@ Date: 2026-10-18
 Task ID: NADI-UX-V2-OVERHAUL-01
 Objective: Implement incremental enterprise UI V2 across shared components and priority workspaces.
 Branch: codex/nadi-ux-v2-overhaul-01
+PR: https://github.com/johnd-creator/reliability-knowledge-starter/pull/102 (DRAFT)
 Base: c7930694187b61ffa6dae90e6a14938e7564c3e7
 Checkpoint commits: 268587d, a1aa64e, 3c014b9, b5b3637, 43885e4; quality/evidence in delivery commit.
 Implementation Status: IMPLEMENTED — dedicated priority changes and shared styling on secondary pages.

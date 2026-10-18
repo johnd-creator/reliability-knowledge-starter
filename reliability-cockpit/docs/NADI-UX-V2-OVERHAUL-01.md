@@ -18,8 +18,9 @@ Fetched and reverified `origin/main`: `c7930694187b61ffa6dae90e6a14938e7564c3e7`
 | E — Remaining pages | `43885e4` | Recommendation search, responsive queues, Reports disclosure, contrast fixes |
 | F — Quality / delivery | This delivery commit | Browser interaction/axe coverage, 20 screenshot pairs and this report |
 
-Exact final HEAD and backend/frontend CI outcomes are recorded in the Draft PR's
-verification section and attached check runs. CI checks out and asserts the PR HEAD
+Delivery: [Draft PR #102](https://github.com/johnd-creator/reliability-knowledge-starter/pull/102).
+Exact final HEAD and backend/frontend CI results are recorded in its verification
+section and [attached checks](https://github.com/johnd-creator/reliability-knowledge-starter/pull/102/checks). CI checks out and asserts the PR HEAD
 explicitly; it does not test an implicit merge commit. The final delivery response
 must report those results after the remote run completes.
 
