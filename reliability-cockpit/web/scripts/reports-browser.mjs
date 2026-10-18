@@ -19,6 +19,7 @@ await ctx.route('**/*',async route=>{
  if(u.origin!==base){violations.push({path:u.pathname,method:r.method()});return route.abort('blockedbyclient');}
  if(u.pathname==='/candidate.js')return route.fulfill({contentType:'application/javascript',body:bundle.js});
  if(u.pathname==='/candidate.css')return route.fulfill({contentType:'text/css',body:bundle.css});
+ if(u.pathname==='/logo_nadi.png')return route.fulfill({contentType:'image/png',body:readFileSync('public/logo_nadi.png')});
  if(r.isNavigationRequest())return route.fulfill({contentType:'text/html',body:'<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DEMO / QA SYNTHETIC — Reports</title><link rel="stylesheet" href="/candidate.css"></head><body><div id="root"></div><script src="/candidate.js"></script></body></html>'});
  const coverage=u.pathname==='/api/cockpit/v1/reliability/data-trust',maintenance=u.pathname==='/api/cockpit/v1/reliability/decision-overview',days=u.searchParams.get('window_days');
  requests.push({mode,path:u.pathname,query:u.search,method:r.method()});
@@ -103,7 +104,7 @@ try{
  await selectMaintenance();check('empty Maintenance chart is explicit',await p.getByText('Kronologi belum tersedia.',{exact:true}).isVisible()&&await p.getByText('Konsentrasi aktivitas belum tersedia pada rentang ini.',{exact:true}).isVisible());
  await go('mismatch');await catalog('Aktivitas Pemeliharaan').click();await p.getByRole('alert').waitFor();
  check('mismatched response refused before numbers render',await p.getByText('Periode respons tidak sesuai permintaan.',{exact:false}).isVisible()&&await p.locator('.report-metrics').count()===0);
- for(const fail of ['unavailable','denied-401','denied-403']){
+ for(const fail of ['unavailable','denied-403']){
   await go(fail);await p.getByRole('alert').waitFor();
   check(fail+' Coverage explicit safe error',await p.getByRole('alert').count()===1&&!((await p.locator('body').innerText()).includes('PRIVATE_SYNTHETIC')));
   await catalog('Aktivitas Pemeliharaan').click();await p.getByRole('alert').waitFor();
@@ -114,6 +115,7 @@ try{
  check('mobile drawer preserves reports access',await p.getByRole('dialog').isVisible()&&await p.locator('nav a[href="/reports"]').isVisible());await p.keyboard.press('Escape');check('Escape returns to preview',await p.getByRole('dialog').count()===0);
  check('no export, downloads or print controls',await p.locator('[download],input[type="file"]').count()===0&&await p.getByRole('button',{name:/^(Ekspor|Unduh|Kirim|Cetak)/}).count()===0);
  check('only two read-only allowlisted DTOs, no egress',violations.length===0&&requests.every(r=>r.method==='GET'));
+ await go('denied-401');await p.waitForURL(base+'/login?expired=1');await p.getByRole('heading',{name:'Masuk ke NADI',exact:true}).waitFor();check('401 clears report and returns to standalone expired login',await p.locator('.report-metrics,.nadi-shell').count()===0&&!((await p.locator('body').innerText()).includes('PRIVATE_SYNTHETIC')));
  check('no browser exceptions',errors.length===0);
  writeFileSync(resolve(out,'browser-results.json'),JSON.stringify({status:'PASS',passed:checks.length,total:checks.length,checks,requests,errors,violations,accessibility,scope:'DEMO / QA SYNTHETIC actual components; no application listener/runtime/DB'},null,2));
  console.log(`Reports browser checks passed: ${checks.length}`);

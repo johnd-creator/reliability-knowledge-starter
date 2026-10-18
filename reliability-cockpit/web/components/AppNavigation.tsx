@@ -2,6 +2,7 @@
 
 import { idText } from "../lib/id-copy";
 import Link from "next/link";
+import WorkspaceAccount from "./WorkspaceAccount";
 import { ThemeToggle } from "./ThemeProvider";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
@@ -95,7 +96,7 @@ export function AppShell({ children, engineeringVisible = false, liveDevelopment
       <button type="button" className="sidebar-collapse" onClick={() => setCollapsed(!collapsed)} aria-label={collapsed ? idText("Expand sidebar") : idText("Collapse sidebar")} aria-expanded={!collapsed}><span aria-hidden="true">{collapsed ? "»" : "«"}</span><span className="nav-copy">{idText("Collapse sidebar")}</span></button>
     </aside>
     <div className="nadi-content" inert={drawer ? true : undefined}>
-      <header className="nadi-topbar"><div className="topbar-context"><button ref={menuButton} type="button" className="menu-toggle icon-button" aria-label={idText("Open navigation")} aria-expanded={drawer} aria-controls="nadi-sidebar" onClick={() => { setCollapsed(false); setDrawer(true); }}>☰</button><div><span className="topbar-kicker">{idText("NADI / RELIABILITY PLATFORM")}</span><span className="topbar-title">PLTU Banten 1 Suralaya</span></div></div><div className="topbar-actions"><span className="topbar-status">{idText("Mart read-only")} <span className="scope-chip">BSR / IP</span></span><ThemeToggle /></div></header>
+      <header className="nadi-topbar"><div className="topbar-context"><button ref={menuButton} type="button" className="menu-toggle icon-button" aria-label={idText("Open navigation")} aria-expanded={drawer} aria-controls="nadi-sidebar" onClick={() => { setCollapsed(false); setDrawer(true); }}>☰</button><div><span className="topbar-kicker">{idText("NADI / RELIABILITY PLATFORM")}</span><span className="topbar-title">PLTU Banten 1 Suralaya</span></div></div><div className="topbar-actions"><span className="topbar-status">{idText("Mart read-only")} <span className="scope-chip">BSR / IP</span></span><ThemeToggle /><WorkspaceAccount /></div></header>
       <main id="main-content" tabIndex={-1} className="nadi-main">{children}</main>
     </div>
   </div>;

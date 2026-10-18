@@ -3,10 +3,11 @@ import { idText } from "../lib/id-copy";
 import {FormEvent,useEffect,useId,useRef,useState} from "react";
 import {useRouter} from "next/navigation";
 import {engineeringRequest,EngineeringHttpError} from "../lib/engineering-http";
+import {safeReturnDestination} from "../lib/login-navigation";
 import {Button,SectionCard} from "./ui";
 
 type Session = {subject:string;roles:string[];asset_ids:string[];csrf_token:string};
-export default function LocalLogin({onAuthenticated,expired=false,headingLevel=2}:{headingLevel?:1|2;onAuthenticated?:(who:Session)=>void;expired?:boolean}) {
+export default function LocalLogin({onAuthenticated,expired=false,headingLevel=2,returnTo}:{returnTo?:string;headingLevel?:1|2;onAuthenticated?:(who:Session)=>void;expired?:boolean}) {
  const router=useRouter();
  const Heading=headingLevel===1?"h1":"h2";
  const id=useId(),errorRef=useRef<HTMLParagraphElement>(null);
@@ -21,7 +22,7 @@ export default function LocalLogin({onAuthenticated,expired=false,headingLevel=2
    // Only backend directory supplies identity. GET resumes session-bound CSRF after reload/navigation.
    const who=await engineeringRequest("session") as Session;
    setPassword("");setNewPassword("");
-   if(onAuthenticated)onAuthenticated(who);else router.push("/engineering/local");
+   if(onAuthenticated)onAuthenticated(who);else {router.replace(safeReturnDestination(returnTo));router.refresh();}
   }catch(caught){
    setPassword("");setNewPassword("");
    if(caught instanceof EngineeringHttpError&&caught.code==="PASSWORD_CHANGE_REQUIRED"){
@@ -42,7 +43,7 @@ export default function LocalLogin({onAuthenticated,expired=false,headingLevel=2
       <input className="input-control" id={usernameId} name="username" autoComplete="username" maxLength={64} required value={username} onChange={e=>setUsername(e.target.value)} disabled={busy}/></div>
     <div className="login-field"><label htmlFor={passwordId}>{idText("Password")}</label>
       <div className="nadi-password-field"><input className="input-control" id={passwordId} name="password" type={show?"text":"password"} autoComplete="current-password" maxLength={256} required value={password} onChange={e=>setPassword(e.target.value)} disabled={busy}/>
-        <Button aria-controls={passwordId} aria-pressed={show} disabled={busy} onClick={()=>setShow(!show)}>{show?idText("Hide password"):idText("Show password")}</Button></div></div>
+        <Button className="password-visibility" type="button" aria-label={show?idText("Hide password"):idText("Show password")} title={show?idText("Hide password"):idText("Show password")} aria-controls={passwordId} aria-pressed={show} disabled={busy} onClick={()=>setShow(!show)}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/>{show&&<path d="m3 3 18 18"/>}</svg></Button></div></div>
     {change&&<div className="login-field"><label htmlFor={newPasswordId}>{idText("New password")}</label>
       <input className="input-control" id={newPasswordId} type="password" autoComplete="new-password" maxLength={256} required value={newPassword} onChange={e=>setNewPassword(e.target.value)} disabled={busy}/></div>}
     {error&&<p className="feedback error login-feedback" id={errorId} role="alert" tabIndex={-1} ref={errorRef}>{error}</p>}

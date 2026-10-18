@@ -1,0 +1,61 @@
+{
+  "source_only_expected_changes": true,
+  "modified_tracked_since_task_start": [
+    "reliability-cockpit/web/lib/login-navigation.ts",
+    "reliability-cockpit/web/scripts/phase2-login-header-check.mjs",
+    "compose.dev.yaml",
+    "reliability-cockpit/web/app/(authentication)/login/page.tsx",
+    "reliability-cockpit/web/app/(workspace)/layout.tsx",
+    "reliability-cockpit/web/app/api/development/status/route.ts",
+    "reliability-cockpit/web/app/globals.css",
+    "reliability-cockpit/web/components/LocalLogin.tsx",
+    "reliability-cockpit/web/components/LoginPage.tsx",
+    "reliability-cockpit/web/eslint.config.mjs",
+    "reliability-cockpit/web/lib/api.ts",
+    "reliability-cockpit/web/next.config.js",
+    "reliability-cockpit/web/package.json",
+    "reliability-cockpit/web/scripts/localization-check.mjs",
+    "reliability-cockpit/web/scripts/login-design-check.mjs"
+  ],
+  "prior_ui_files_preserved": true,
+  "generated_file_unchanged": true,
+  "frontend_groups": 20,
+  "all_group_exit_zero": true,
+  "named_assertions": 311,
+  "assertions_by_group": {
+    "global-auth": 16,
+    "local-auth": 16,
+    "phase2-login-header": 9,
+    "engineering": 37,
+    "phase2": 25,
+    "workflow": 38,
+    "http-qa": 10,
+    "bounded-http": 8,
+    "bounded-proxy": 9,
+    "eng-product": 8,
+    "phase2-ui": 8,
+    "pdm-input": 16,
+    "pdm-workbook": 48,
+    "ux": 43,
+    "login-design": 10,
+    "localization": 10,
+    "development-provenance": 0,
+    "product-safety": 0
+  },
+  "backend_initial": {
+    "run": 260,
+    "pass": 214,
+    "skip": 46,
+    "fail": 0
+  },
+  "backend_additional": {
+    "run": 46,
+    "pass": 46,
+    "skip": 0,
+    "fail": 0
+  },
+  "warning": "One pre-existing EngineeringWorkspace useEffect dependency warning",
+  "github_ci": "NOT_RUN_LOCAL_REVIEW_COMMIT_ONLY",
+  "final_active_source_checks": "TypeScript PASS; scoped ESLint PASS (one pre-existing warning); global-auth 16 groups PASS",
+  "production_build": "PASS final isolated copy"
+}

@@ -1,0 +1,34 @@
+{
+  "task": "NADI-AUTH-FOUNDATION-01",
+  "status": "BLOCKED",
+  "checks": [
+    {
+      "path": "/",
+      "no_cookie_sent": true,
+      "http_status": 200,
+      "final_path": "/",
+      "redirected_to_login": false
+    },
+    {
+      "path": "/assets",
+      "no_cookie_sent": true,
+      "http_status": 200,
+      "final_path": "/assets",
+      "redirected_to_login": false
+    },
+    {
+      "path": "/api/cockpit/v1/reliability/assets?limit=1",
+      "no_cookie_sent": true,
+      "http_status": 200,
+      "final_path": "/api/cockpit/v1/reliability/assets?limit=1",
+      "redirected_to_login": false
+    }
+  ],
+  "upstream_binding": [
+    "0.0.0.0:8000",
+    "[::]:8000"
+  ],
+  "docker_forwarding_policy": "ACCEPT from ANY to docker",
+  "full_nft_rules": "UNVERIFIABLE_PERMISSION",
+  "operational_changes": false
+}

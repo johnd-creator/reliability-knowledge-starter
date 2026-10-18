@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "sameDocument": true,
+  "hmrMessages": [
+    "[Fast Refresh] rebuilding",
+    "[Fast Refresh] done in 291ms"
+  ],
+  "sourceFile": "components/CaseForm.tsx",
+  "beforeSha256": "21842b10fd5aa92d2a2781081547d512947715c37ba3ff873a1f315fbe9dadc2",
+  "afterSha256": "d6a9c8e7c0c009f5ee1167bd20f0a7b46efc83f4b7b1009385b89c2737913873"
+}

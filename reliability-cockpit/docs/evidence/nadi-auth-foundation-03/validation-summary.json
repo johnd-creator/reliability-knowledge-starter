@@ -1,0 +1,76 @@
+{
+  "status": "PASS",
+  "code_checkpoint": "fef7bccd61d3d6a5dd184f2fff94453242ff2056",
+  "typescript": "PASS",
+  "eslint": {
+    "errors": 0,
+    "warnings": 1,
+    "existing_warning": "EngineeringWorkspace.tsx missing useEffect dependency current"
+  },
+  "frontend_groups": 21,
+  "frontend_named_assertions": 321,
+  "frontend_groups_all_exit_zero": true,
+  "frontend_product_safety_files": 66,
+  "production_build": "PASS isolated Next.js 15.5.9; active runtime not rebuilt",
+  "backend": {
+    "passed": 210,
+    "skipped": 0,
+    "database": "bounded temporary synthetic PostgreSQL; removed after tests"
+  },
+  "launcher": {
+    "passed": 119,
+    "skipped": 0,
+    "network_or_persistent_db_test_io": false
+  },
+  "browser": {
+    "checks": 12,
+    "screenshots": 7,
+    "trusted_https": true,
+    "intercepted_data": false,
+    "asset_rows_redacted_at_capture": true
+  },
+  "github_ci": "NOT_RUN",
+  "meaningful_failed_attempts": [
+    {
+      "failure": "Direct DTO comparison included separate query as_of/window_start timestamps",
+      "correction": "Compare stable DTO exactly; verify actual query-time difference bounded15s and equal window duration",
+      "retest": "PASS"
+    },
+    {
+      "failure": "Supplementary logout harness used non-existent /logout route, HTTP404",
+      "correction": "Use verified existing session/logout with valid CSRF; no API source change",
+      "retest": "PASS: revoked own session rejected by gateway and readiness"
+    },
+    {
+      "failure": "Initial preservation assertion incorrectly required QA child identity unchanged from pre-edit baseline",
+      "correction": "Read systemd journal; explicitly verify one source-triggered reload21549 to834916, stable parent/start/invocation/socket; no guard weakened",
+      "retest": "PASS"
+    }
+  ],
+  "self_review": [
+    {
+      "severity": "HIGH",
+      "finding": "Asset context/integration DTOs carry portfolio totals; exact asset grant alone insufficient",
+      "correction": "Deny these two subresources to non-portfolio identities; regression checks enforce distinction",
+      "status": "RESOLVED"
+    },
+    {
+      "severity": "MEDIUM",
+      "finding": "Readiness must not confuse optional proof absence with verified session",
+      "correction": "Separate NOT_PROBED_NO_SESSION from VERIFIED; supplied expired/revoked proof fails",
+      "status": "RESOLVED"
+    },
+    {
+      "severity": "MEDIUM",
+      "finding": "Controller metadata swap could fail after manifest replacement",
+      "correction": "Guarded metadata-only recovery; deterministic interrupted-swap and post-install-failure tests",
+      "status": "RESOLVED"
+    },
+    {
+      "severity": "LOW",
+      "finding": "Existing EngineeringWorkspace hook dependency lint warning",
+      "correction": "Unchanged; outside authentication task",
+      "status": "OPEN_PREEXISTING"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "checks": [
+    "Exact decorative asset public; neighboring route and protected API remain denied",
+    "Live update appears on the existing HTTPS3000 without manual restart",
+    "Live fullscreen login light/dark and no overflow 1440",
+    "Live fullscreen login light/dark and no overflow 768",
+    "Live fullscreen login light/dark and no overflow 390",
+    "Existing account authentication and trusted username work; no new navbar",
+    "Live aligned topbar and Cancel/Escape preserve own session 1440",
+    "Live aligned topbar and Cancel/Escape preserve own session 768",
+    "Live aligned topbar and Cancel/Escape preserve own session 390",
+    "Confirmed logout revokes only own test session; protected API denied afterward"
+  ],
+  "errors": [],
+  "logout_posts": 1,
+  "tls_bypass": false,
+  "synthetic": false,
+  "own_test_session_only": true
+}

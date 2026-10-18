@@ -14,7 +14,8 @@ import ssl
 import subprocess
 import time
 from pathlib import Path
-from urllib.request import urlopen
+from urllib.request import urlopen, Request, build_opener, HTTPRedirectHandler, HTTPSHandler, ProxyHandler
+from urllib.error import HTTPError
 
 DB = 'nadi_local_dev_01_test'
 ROLE = 'nadi_local_dev_01'
@@ -131,10 +132,78 @@ class LocalDevelopment:
             raise RuntimeError('DEVELOPMENT_UNIT_CHANGED_DURING_OBSERVATION')
         return {'unit': value, 'listeners': identities, 'socket_inodes': inodes}
 
+    def probe(self, url, cookie=None):
+        # Fixed local targets, no redirects, bounded bytes, trusted CA; never source I/O.
+        allowed = {self.c.ORIGIN+'/', self.c.ORIGIN+'/api/development/health',
+                   self.c.ORIGIN+'/api/cockpit/health', self.c.ORIGIN+'/api/engineering-qa/session',
+                   'http://127.0.0.1:13036/development/status', 'http://127.0.0.1:13036/health/ready',
+                   'http://127.0.0.1:8000/health'}
+        if self.c.ORIGIN != 'https://localhost:3000' or url not in allowed:
+            raise RuntimeError('READINESS_TARGET_DENIED')
+        if cookie is not None and (not url.startswith(self.c.ORIGIN+'/') or
+                not re.fullmatch(r'__Host-nadi_session=[A-Za-z0-9_-]{40,128}',cookie)):
+            raise RuntimeError('READINESS_COOKIE_DENIED')
+        class NoRedirect(HTTPRedirectHandler):
+            def redirect_request(self, req, fp, code, msg, headers, newurl):
+                return None
+        context=ssl.create_default_context(cafile=str(self.c.STATE/'localhost.pem'))
+        opener=build_opener(ProxyHandler({}),NoRedirect(),HTTPSHandler(context=context))
+        request=Request(url,headers={'Cookie':cookie} if cookie else {})
+        try:
+            response=opener.open(request,timeout=10)
+        except HTTPError as error:
+            response=error
+        with response:
+            body=response.read(1048577)
+            if len(body)>1048576:
+                raise RuntimeError('READINESS_BODY_LIMIT')
+            data=None
+            if 'application/json' in response.headers.get('Content-Type','').lower():
+                try:data=json.loads(body)
+                except (ValueError,UnicodeError):raise RuntimeError('READINESS_INVALID_JSON') from None
+            return {'status':response.status,'location':response.headers.get('Location'),
+                    'cache_control':response.headers.get('Cache-Control',''),'data':data}
+
     def request(self, url):
-        context = ssl.create_default_context(cafile=str(self.c.STATE / 'localhost.pem')) if url.startswith('https:') else None
-        with urlopen(url, context=context, timeout=25) as r:
-            return json.load(r)
+        result=self.probe(url)
+        if result['status']!=200 or not isinstance(result['data'],dict):
+            raise RuntimeError('READINESS_RESPONSE_DENIED')
+        return result['data']
+
+    def auth_readiness(self, session_file=None):
+        page=self.probe(self.c.ORIGIN+'/')
+        if page['status']!=307 or page['location']!='/login?returnTo=%2F' or 'no-store' not in page['cache_control']:
+            raise RuntimeError('ANONYMOUS_LOGIN_BOUNDARY_FAILED')
+        denied=self.probe(self.c.ORIGIN+'/api/cockpit/health')
+        if denied['status']!=401 or denied['data']!={'detail':{'code':'AUTHENTICATION_REQUIRED'}} or 'no-store' not in denied['cache_control']:
+            raise RuntimeError('ANONYMOUS_API_BOUNDARY_FAILED')
+        invalid=self.probe(self.c.ORIGIN+'/api/engineering-qa/session','__Host-nadi_session='+'0'*43)
+        if invalid['status']!=401 or invalid['data']!={'detail':{'code':'SESSION_INVALID'}}:
+            raise RuntimeError('INVALID_SESSION_ACCEPTED_OR_UNVERIFIED')
+        state='NOT_PROBED_NO_SESSION'
+        if session_file is not None:
+            path=Path(session_file)
+            if path.lstat().st_size>4096:
+                raise RuntimeError('PRIVATE_SESSION_FILE_INVALID')
+            value=private(path)
+            if set(value)!={'cookie'} or not isinstance(value['cookie'],str):
+                raise RuntimeError('PRIVATE_SESSION_FILE_INVALID')
+            cookie=value['cookie']
+            who=self.probe(self.c.ORIGIN+'/api/engineering-qa/session',cookie)
+            data=who['data']
+            if (who['status']!=200 or not isinstance(data,dict) or
+                    not re.fullmatch(r'local:[A-Za-z0-9-]{1,150}',str(data.get('subject',''))) or
+                    not isinstance(data.get('roles'),list) or not data['roles'] or
+                    any(r not in ['ADMIN','AUTHOR','REVIEWER'] for r in data['roles']) or
+                    not isinstance(data.get('asset_ids'),list) or len(data['asset_ids'])>1000 or
+                    any(not isinstance(v,str) or not re.fullmatch(r'[A-Za-z0-9_.:-]{1,200}',v) for v in data['asset_ids'])):
+                raise RuntimeError('AUTHORIZED_SESSION_INVALID_OR_EXPIRED')
+            actual=self.probe(self.c.ORIGIN+'/api/cockpit/health',cookie)
+            if actual['status']!=200 or actual['data']!={'status':'ok'}:
+                raise RuntimeError('AUTHORIZED_GATEWAY_FAILED')
+            state='VERIFIED'
+        return {'anonymous_pages':'VERIFIED_LOGIN_REDIRECT','anonymous_api':'VERIFIED_DENIED',
+                'invalid_session':'VERIFIED_DENIED','authorized_session':state}
 
     def release(self):
         record = private(self.c.STATE / 'local-development-release.json')
@@ -349,7 +418,10 @@ class LocalDevelopment:
              'NADI_ENGINEERING_DEMO_ENABLED=true','NADI_ENGINEERING_QA_ENABLED=true','NADI_QA_BACKEND_URL=http://127.0.0.1:13036',
              'COCKPIT_API_BASE=http://127.0.0.1:8000','NADI_DEV_LAUNCHED_SHA='+value['sha']], '6G')
 
-    def readiness(self, value):
+    def readiness(self, value, session_file=None):
+        release=self.release()
+        if value.get('readiness_controller_sha') and value['readiness_controller_sha']!=release:
+            raise RuntimeError('LAUNCHER_CONTROLLER_MISMATCH')
         root = source(value['root'],self.c.BASE,value['sha'])
         front = self.owners(self.c.UNITS[1],root/'reliability-cockpit/web',3000)
         api = self.owners(self.c.UNITS[0],root/'reliability-cockpit',13036)
@@ -363,7 +435,20 @@ class LocalDevelopment:
         if value.get('expected_api_parent') and self.unit(self.c.UNITS[0]) != value['expected_api_parent']:
             raise RuntimeError('UNEXPECTED_API_PARENT_REPLACEMENT')
         backend = self.request('http://127.0.0.1:13036/development/status')
-        data = self.request(self.c.ORIGIN+'/api/development/status')
+        front_data = self.request(self.c.ORIGIN+'/api/development/health')
+        qa = self.request('http://127.0.0.1:13036/health/ready')
+        factual = self.request('http://127.0.0.1:8000/health')
+        data = {'sha':front_data.get('frontend_sha'),'frontend_sha':front_data.get('frontend_sha'),
+                'backend_sha':backend.get('source_sha'),'launched_sha':front_data.get('launched_sha'),
+                'dirty':front_data.get('dirty'),'stale':front_data.get('frontend_sha')!=front_data.get('launched_sha'),
+                'database_identity':backend.get('database_identity'),
+                'backend':'AVAILABLE' if qa.get('status')=='READY' else 'UNAVAILABLE',
+                'factual_backend':'AVAILABLE' if factual=={'status':'ok'} else 'UNAVAILABLE',
+                'engineering':backend.get('engineering') is True,'engineering_data':'SYNTHETIC_FIXTURES'}
+        if (front_data.get('contract')!='NADI_LOCAL_TRANSPORT_V1' or front_data.get('origin')!=self.c.ORIGIN or
+                front_data.get('guard')!='SERVER_SESSION_AUTHORITY' or type(front_data.get('dirty')) is not bool or
+                qa.get('authentication')!='LOCAL_SESSION_AUTHORITY'):
+            raise RuntimeError('AUTHENTICATION_CAPABILITY_UNVERIFIED')
         sha = value['sha']
         if (data.get('sha') != sha or data.get('backend_sha') != sha or data.get('launched_sha') != sha or
                 backend.get('source_sha') != sha or backend.get('current_sha') != sha or
@@ -374,6 +459,11 @@ class LocalDevelopment:
                 backend.get('database_identity') != DB or data.get('backend') != 'AVAILABLE' or
                 data.get('factual_backend') != 'AVAILABLE' or not data.get('engineering')):
             raise RuntimeError('LOCAL_PAIR_NOT_READY')
+        # Never treat a random redirect/401 as authentication proof. Positive capability is separate.
+        data['authentication']=self.auth_readiness(session_file)
+        data['transport_process_readiness']='VERIFIED'
+        data['controller_source_sha']=release
+        data['bootstrap_source_sha']=value['workflow_sha']
         # Dirty source remains visible; it is never coerced to clean or discarded.
         return data
 
@@ -506,6 +596,6 @@ class LocalDevelopment:
     def active_value(self):
         return private(self.state/'active.json')
 
-    def status(self):
+    def status(self, session_file=None):
         self.release()
-        return self.readiness(self.active_value())
+        return self.readiness(self.active_value(),session_file=session_file)

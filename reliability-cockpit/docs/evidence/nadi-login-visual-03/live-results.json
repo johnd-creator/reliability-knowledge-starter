@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "checks": [
+    "Exact requested generated logo served unchanged via verified HTTPS",
+    "Live cyan logo, equal fields, inset eye, light/dark and no overflow 1440",
+    "Live cyan logo, equal fields, inset eye, light/dark and no overflow 768",
+    "Live cyan logo, equal fields, inset eye, light/dark and no overflow 390",
+    "Adjacent route and protected factual API remain denied; no login or session write"
+  ],
+  "errors": [],
+  "tls_bypass": false,
+  "synthetic": false,
+  "credential_submission": false
+}

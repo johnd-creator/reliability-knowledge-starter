@@ -1,0 +1,20 @@
+{
+  "result": "PASS",
+  "before_id": "8145de57e40fd6686fe37d46457e77e38add650d1aca9cef89acfd01af6dcfa2",
+  "after_id": "7d6a470b507d3a100a742caa53d5328947b2347a0740e81ed90d94257f70f7f0",
+  "image_unchanged": true,
+  "environment_unchanged": true,
+  "mounts_unchanged": true,
+  "bindings": {
+    "8000/tcp": [
+      {
+        "HostIp": "127.0.0.1",
+        "HostPort": "8000"
+      }
+    ]
+  },
+  "health": 200,
+  "non_target_containers_unchanged": 34,
+  "container_count": 35,
+  "restart_count": 0
+}

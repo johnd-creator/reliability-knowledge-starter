@@ -1,0 +1,9 @@
+{
+  "generated_with": "built-in image_gen",
+  "asset": "/login/power-plant-night.png",
+  "sha256": "6390baaf38d0fe46bb7228b63257ed4a648bef95225a2e381afa5e997f1c6ba0",
+  "fictional_facility": true,
+  "not_operational_evidence": true,
+  "logo": "Original logo_nadi.png unchanged; white presentation through CSS preserves alpha",
+  "prompt": "Production website login background, portrait3:4: fictional industrial power-generation plant beside calm water at blue hour/night, precise pipes/boiler structures and two slender stacks with discreet red aviation lights. Plant in bottom45%, water reflections bottom15%, clean deep navy sky in upper half for HTML logo/headline. Subtle teal and warm industrial lighting; realistic restrained editorial photography. No text, logos, UI, people, measurements or real-site claims."
+}

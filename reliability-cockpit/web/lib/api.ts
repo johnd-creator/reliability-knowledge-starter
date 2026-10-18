@@ -268,6 +268,8 @@ function query(filters: object): string {
 async function get<T>(path: string): Promise<T> {
   const response = await fetch(`/api/cockpit${path}`, { cache: "no-store" });
   if (!response.ok) {
+    if(response.status===401){window.location.replace("/login?expired=1");throw new ApiError("Sesi berakhir. Silakan masuk kembali.",401);}
+    if(response.status===403)throw new ApiError("Akses data faktual memerlukan grant scope yang disetujui. Peran ADMIN tidak memberikan akses seluruh aset.",403);
     if (response.status === 503) throw new ApiError("Reliability Mart unavailable", response.status);
     throw new ApiError(`Reliability API ${path}: HTTP ${response.status}`, response.status);
   }

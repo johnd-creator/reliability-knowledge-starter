@@ -1,0 +1,74 @@
+{
+  "result": "PASS",
+  "schema_and_constraints_equal": true,
+  "ledger_unchanged": true,
+  "unchanged_tables": [
+    "engineering_case",
+    "engineering_case_event",
+    "engineering_case_receipt",
+    "nadi_application_migration",
+    "nadi_attachment",
+    "nadi_attachment_event",
+    "nadi_human_record",
+    "nadi_human_record_receipt",
+    "nadi_human_record_revision",
+    "nadi_local_account"
+  ],
+  "old_rows_retained_in_mutable_tables": [
+    "nadi_application_session",
+    "nadi_local_security_event",
+    "nadi_security_activity"
+  ],
+  "before_counts": {
+    "engineering_case": 4,
+    "engineering_case_event": 12,
+    "engineering_case_receipt": 12,
+    "nadi_application_migration": 5,
+    "nadi_application_session": 39,
+    "nadi_attachment": 0,
+    "nadi_attachment_event": 0,
+    "nadi_human_record": 4,
+    "nadi_human_record_receipt": 15,
+    "nadi_human_record_revision": 15,
+    "nadi_local_account": 4,
+    "nadi_local_login_budget": 1,
+    "nadi_local_security_event": 45,
+    "nadi_security_activity": 1012
+  },
+  "after_counts": {
+    "engineering_case": 4,
+    "engineering_case_event": 12,
+    "engineering_case_receipt": 12,
+    "nadi_application_migration": 5,
+    "nadi_application_session": 42,
+    "nadi_attachment": 0,
+    "nadi_attachment_event": 0,
+    "nadi_human_record": 4,
+    "nadi_human_record_receipt": 15,
+    "nadi_human_record_revision": 15,
+    "nadi_local_account": 4,
+    "nadi_local_login_budget": 1,
+    "nadi_local_security_event": 48,
+    "nadi_security_activity": 1180
+  },
+  "account_grants_password_hash_and_ids_unchanged": true,
+  "old_sessions_not_revoked_or_deleted": true,
+  "session_activity_changes_allowed": [
+    "last_seen_at",
+    "csrf_hash"
+  ],
+  "security_audit_append_only": true,
+  "account_login_metadata_only_change": [
+    "updated_at"
+  ],
+  "non_target_containers_preserved": 35,
+  "original_asset_sha256": {
+    "23496711.xls": "aa0bd8fd22275aea3ecf8654ee37878106123b7dbdf58135fb783e853ee66a5f",
+    "konsep1.png": "b204566e4fc9e07512898ceca89d4e75c420cef9defc70755c3a6543d262f666",
+    "konsep2.png": "1b3686be9700257f9eb53b1c2fe1073215d7dc09dc96487b9b547033d6f2b2ee",
+    "konsep3.png": "77270507fe975b883b9317a46b0580462fd9e06f248920722bea6f2cc8f17b60",
+    "konsep4.png": "31082400dc1a501d7924ddd7be4c7865413ae7a9c125290587a979b39f293d57",
+    "konsep5.png": "a6e57d1ca29400b8e62f372b819c3f9875f7949cae2dde1736e874f32583f1ec"
+  },
+  "db_reset_or_migration": false
+}

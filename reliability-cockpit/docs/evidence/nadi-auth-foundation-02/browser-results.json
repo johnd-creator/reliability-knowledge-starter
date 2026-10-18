@@ -1,0 +1,93 @@
+{
+  "checks": [
+    "Anonymous root redirects to standalone login with verified HTTPS and no application shell",
+    "All fourteen protected application URLs reject anonymous requests before shell render",
+    "Anonymous factual Engineering and diagnostic APIs deny access",
+    "Forged cookies roles and middleware-bypass headers cannot expose pages or factual API",
+    "Standalone login light/dark at 1440 768 390 with no horizontal overflow",
+    "Incorrect credentials remain generic and do not enter application",
+    "Existing local-operator ADMIN login defaults to dashboard and survives refresh",
+    "Authenticated ADMIN navigates implemented modules within unchanged role/asset boundaries",
+    "Factual gateway healthy; ADMIN has no portfolio or foreign-asset bypass",
+    "Authenticated provenance reports exact unchanged SHA and both available backends",
+    "Compact DEV dropdown remains keyboard accessible after login",
+    "Authenticated PdM shell responsive at three widths in both themes",
+    "AUTHOR existing Cases remain readable without creating or editing records",
+    "Actual HTTPS CSRF and Origin rejection preserved",
+    "Server-revoked own test session removes private UI and denies subsequent reads",
+    "External return-to rejected; authenticated fallback is same-origin root",
+    "Header logout revokes server session and back navigation cannot restore shell"
+  ],
+  "screenshots": [
+    {
+      "name": "login-light-1440",
+      "viewport": 1440,
+      "scroll": 1440
+    },
+    {
+      "name": "login-dark-1440",
+      "viewport": 1440,
+      "scroll": 1440
+    },
+    {
+      "name": "login-light-768",
+      "viewport": 768,
+      "scroll": 768
+    },
+    {
+      "name": "login-dark-768",
+      "viewport": 768,
+      "scroll": 768
+    },
+    {
+      "name": "login-light-390",
+      "viewport": 390,
+      "scroll": 390
+    },
+    {
+      "name": "login-dark-390",
+      "viewport": 390,
+      "scroll": 390
+    },
+    {
+      "name": "authenticated-pdm-light-1440",
+      "viewport": 1440,
+      "scroll": 1440
+    },
+    {
+      "name": "authenticated-pdm-dark-1440",
+      "viewport": 1440,
+      "scroll": 1440
+    },
+    {
+      "name": "authenticated-pdm-light-768",
+      "viewport": 768,
+      "scroll": 768
+    },
+    {
+      "name": "authenticated-pdm-dark-768",
+      "viewport": 768,
+      "scroll": 768
+    },
+    {
+      "name": "authenticated-pdm-light-390",
+      "viewport": 390,
+      "scroll": 390
+    },
+    {
+      "name": "authenticated-pdm-dark-390",
+      "viewport": 390,
+      "scroll": 390
+    }
+  ],
+  "errors": [],
+  "tls": {
+    "verification": true,
+    "bypass": false,
+    "profile": "dedicated NSS local CA"
+  },
+  "scopeLimitations": [
+    "Existing ADMIN grants synthetic asset IDs only. Portfolio aggregates/register and unscoped legacy reads deliberately 403 pending approved factual grants; no invented zero values."
+  ],
+  "status": "PASS_WITH_FACTUAL_GRANT_LIMITATION"
+}

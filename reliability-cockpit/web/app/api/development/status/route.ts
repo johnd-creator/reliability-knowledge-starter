@@ -1,10 +1,12 @@
+import {localGuardEnabled,verifyLocalSession,PRIVATE_HEADERS} from "../../../../lib/local-session";
 import {execFile} from "node:child_process";
 import {promisify} from "node:util";
 import {readApproval,approvedPair} from "../../../../lib/development-provenance";
 import {NextResponse} from "next/server";
 export const dynamic="force-dynamic";
 const run=promisify(execFile);
-export async function GET(){
+export async function GET(request:Request){
+ if(localGuardEnabled()){const who=await verifyLocalSession(request.headers);if(who.state!=="authenticated")return NextResponse.json({detail:{code:"AUTHENTICATION_REQUIRED"}},{status:who.state==="anonymous"?401:503,headers:PRIVATE_HEADERS});if(!who.session.roles.includes("ADMIN"))return NextResponse.json({detail:{code:"ADMIN_REQUIRED"}},{status:403,headers:PRIVATE_HEADERS});}
  if(process.env.NODE_ENV!=="development"||process.env.NADI_LIVE_DEV!=="true")return new NextResponse(null,{status:404});
  const git=async(args:string[])=>(await run("git",args,{cwd:process.cwd(),timeout:1500,maxBuffer:1024*1024})).stdout.trim();
  let branch="UNKNOWN",sha="UNKNOWN",dirty:boolean|null=null;
