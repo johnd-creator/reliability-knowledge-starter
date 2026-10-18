@@ -37,6 +37,6 @@ export default function CaseForm({initial,assets,busy,onSave,onCancel,editing=fa
  <div className="product-context-grid">{investigationFields.map(key=><label key={key} htmlFor={'case-'+key}>{fieldLabels[key]??key}<small>Satu per baris · maksimal 20 butir, masing-masing 2.000 karakter</small><textarea id={'case-'+key} value={text(key)} onChange={e=>update({...draft,investigation:{...draft.investigation,[key]:e.target.value===''?[]:e.target.value.split(/\r?\n/)}})}/></label>)}</div>
  <p className="section-note">{idText('Observations and hypotheses remain separate human statements. Blank lists are allowed; remove empty lines before saving. No condition score is generated.')}</p></fieldset>
  {base&&<p className="feedback">Draf terikat ke revisi {base.revision}. Membaca revisi terbaru tidak mengubah basis penyimpanan; konflik harus direkonsiliasi secara sengaja.</p>}
- <div className="engineering-actions"><Button type="submit" variant="primary" disabled={busy}>{busy?idText('Saving…'):idText('Save case')}</Button><Button disabled={busy} onClick={cancel}>{idText('Cancel form')}</Button></div>
+ <div className="engineering-actions form-actions"><Button type="submit" variant="primary" busy={busy}>{busy?idText('Saving…'):idText('Save case')}</Button><Button disabled={busy} onClick={cancel}>{idText('Cancel form')}</Button></div>
  </form>;
 }
