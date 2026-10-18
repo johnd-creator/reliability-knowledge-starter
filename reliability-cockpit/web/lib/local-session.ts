@@ -3,7 +3,7 @@
 import {readBounded} from './bounded-http';
 export const SESSION_COOKIE='__Host-nadi_session';
 export const LOCAL_ORIGIN='https://localhost:3000';
-export type LocalSession={subject:string;roles:string[];asset_ids:string[]};
+export type LocalSession={subject:string;roles:string[];asset_ids:string[];username?:string};
 export type SessionResult={state:'authenticated';session:LocalSession}|{state:'anonymous'|'unavailable'};
 export function localGuardEnabled(env:NodeJS.ProcessEnv=process.env):boolean {
  // Explicit approved laptop launch identity; production/other deployments cannot opt in by cookie.
@@ -25,7 +25,7 @@ export async function verifyLocalSession(headers:Headers,requestFetch:typeof fet
   const value=JSON.parse(new TextDecoder().decode(await readBounded(response.body,256*1024,controller.signal)));
   if(!value||typeof value.subject!=='string'||!/^local:[A-Za-z0-9-]{1,150}$/.test(value.subject)||!Array.isArray(value.roles)||!value.roles.length||!value.roles.every((r:unknown)=>typeof r==='string'&&['ADMIN','AUTHOR','REVIEWER'].includes(r))||!Array.isArray(value.asset_ids)||value.asset_ids.length>1000||!value.asset_ids.every((id:unknown)=>typeof id==='string'&&/^[A-Za-z0-9_.:-]{1,200}$/.test(id)))return {state:'unavailable'};
   // CSRF is intentionally not exposed through this server-side read verifier.
-  return {state:'authenticated',session:{subject:value.subject,roles:value.roles,asset_ids:value.asset_ids}};
+  return {state:'authenticated',session:{subject:value.subject,roles:value.roles,asset_ids:value.asset_ids,...(typeof value.username==='string'&&/^[a-z0-9][a-z0-9_.@-]{1,63}$/.test(value.username)?{username:value.username}:{})}};
  }catch{return {state:'unavailable'};}finally{clearTimeout(timer);}
 }
 export const PRIVATE_HEADERS={'Cache-Control':'private, no-store, max-age=0','Pragma':'no-cache','X-Content-Type-Options':'nosniff'};

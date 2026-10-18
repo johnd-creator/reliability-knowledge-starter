@@ -17,7 +17,7 @@ export default function AuthenticatedWorkspace({identity,children}:{identity:Loc
     if(response.status===401||response.status===403){toLogin();return;}
     if(!response.ok){setState('unavailable');return;}
     const who=await response.json();
-    if(who.subject!==identity.subject||JSON.stringify(who.roles)!==JSON.stringify(identity.roles)||JSON.stringify(who.asset_ids)!==JSON.stringify(identity.asset_ids)){window.location.reload();return;}
+    if(who.username!==identity.username||who.subject!==identity.subject||JSON.stringify(who.roles)!==JSON.stringify(identity.roles)||JSON.stringify(who.asset_ids)!==JSON.stringify(identity.asset_ids)){window.location.reload();return;}
     setState('ready');
    }catch{if(active)setState('unavailable');}finally{inflight=false;}
   }
@@ -36,5 +36,5 @@ export default function AuthenticatedWorkspace({identity,children}:{identity:Loc
   catch{setState('unavailable');setError('Keluar belum dapat dikonfirmasi. Akses ditutup; coba lagi.');}
  }
  if(state!=='ready')return <main className="state-card" role="status"><h1>{state==='checking'?'Memeriksa sesi…':'Otoritas sesi tidak tersedia'}</h1><p>{error||'Tampilan terlindungi ditutup sampai sesi dapat diverifikasi.'}</p><button className="button" onClick={()=>window.location.reload()}>Periksa kembali</button><button className="button" onClick={logout}>Keluar</button></main>;
- return <><div className="session-account" aria-label="Akun terautentikasi"><span title={identity.subject}>Identitas: {identity.subject}</span><span>Peran: {identity.roles.join(', ')}</span><button className="button" onClick={logout}>Keluar</button></div>{children}</>;
+ return <><div className="session-account" aria-label="Akun terautentikasi"><span title={"ID audit: "+identity.subject}>Nama pengguna: {identity.username??identity.subject}</span><span>Peran: {identity.roles.join(', ')}</span><button className="button" onClick={logout}>Keluar</button></div>{children}</>;
 }

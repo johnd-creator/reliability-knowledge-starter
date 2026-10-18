@@ -1,3 +1,4 @@
+import {hasPortfolioRead,portfolioRoutes} from './factual-policy';
 import {readBounded} from './bounded-http';
 import {localGuardEnabled,verifyLocalSession,PRIVATE_HEADERS,type LocalSession} from './local-session';
 const assetSuffixes=new Set(['','context','condition-evidence','integration-status','timeline','fmea','health-assessments','health/latest']);
@@ -10,17 +11,20 @@ export function factualAccess(path:string[],params:URLSearchParams,session:Local
   if(key==='limit'&&(!/^\d+$/.test(value)||+value<1||+value>200))return 'QUERY_DENIED';
   if(key==='offset'&&(!/^\d+$/.test(value)||+value>1000000))return 'QUERY_DENIED';
  }
+ if((params.has('site_code')&&params.get('site_code')!=='BSR')||(params.has('organization_code')&&params.get('organization_code')!=='IP'))return 'PORTFOLIO_SCOPE_DENIED';
  if(path.join('/')==='health'&&params.size===0)return null;
  if(path[0]!=='v1'||path[1]!=='reliability')return 'FACTUAL_SCOPE_GRANT_REQUIRED';
  if(path[2]==='assets'&&path.length>=4&&assetSuffixes.has(path.slice(4).join('/'))){
   if(params.has('asset_ref')&&params.get('asset_ref')!==path[3])return 'ASSET_SCOPE_DENIED';
-  return session.asset_ids.includes(path[3])?null:'ASSET_SCOPE_DENIED';
+  // Context/integration DTOs also contain portfolio totals: exact asset grant alone is insufficient.
+  if(!hasPortfolioRead(session)&&['context','integration-status'].includes(path.slice(4).join('/')))return 'PORTFOLIO_SCOPE_DENIED';
+  return hasPortfolioRead(session)||session.asset_ids.includes(path[3])?null:'ASSET_SCOPE_DENIED';
  }
+ if(hasPortfolioRead(session)&&portfolioRoutes.has(path.slice(2).join('/')))return null;
  if(path.length===3&&collections.has(path[2])){
   const asset=params.get('asset_ref');return asset&&session.asset_ids.includes(asset)?null:'ASSET_SCOPE_DENIED';
  }
- // Current directory grants exact asset IDs, not portfolio-wide factual visibility.
- // Never infer a portfolio grant from ADMIN, an empty filter, or a synthetic QA asset.
+ // No blanket ADMIN permission, guessed relationship, legacy population or export capability.
  return 'FACTUAL_SCOPE_GRANT_REQUIRED';
 }
 function denied(code:string,status:number){return Response.json({detail:{code}},{status,headers:PRIVATE_HEADERS});}
@@ -37,6 +41,15 @@ export async function factualGateway(request:Request,path:string[],requestFetch:
  const abort=()=>controller.abort();request.signal.addEventListener('abort',abort,{once:true});
  try{
   if(request.signal.aborted)controller.abort();
+  const assetId=path[0]==='v1'&&path[1]==='reliability'&&path[2]==='assets'&&path.length>=4?path[3]:url.searchParams.get('asset_ref');
+  if(assetId){
+   // Registry membership + BSR/IP is verified server-side before any asset subresource read.
+   const lookup=new URL('/v1/reliability/assets/'+encodeURIComponent(assetId),'http://127.0.0.1:8000');
+   const registry=await requestFetch(lookup,{method:'GET',headers:{accept:'application/json'},cache:'no-store',redirect:'error',signal:controller.signal});
+   if(registry.status!==200)return denied('ASSET_SCOPE_DENIED',403);
+   const asset=JSON.parse(new TextDecoder().decode(await readBounded(registry.body,256*1024,controller.signal)));
+   if(asset.canonical_id!==assetId||asset.site_code!=='BSR'||asset.organization_code!=='IP')return denied('ASSET_SCOPE_DENIED',403);
+  }
   const upstream=await requestFetch(target,{method:'GET',headers:{accept:'application/json'},cache:'no-store',redirect:'error',signal:controller.signal});
   if(upstream.status>=300&&upstream.status<400)return denied('UPSTREAM_REDIRECT_DENIED',502);
   const type=upstream.headers.get('content-type')??'';

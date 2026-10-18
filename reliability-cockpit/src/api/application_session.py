@@ -26,6 +26,9 @@ def build_session_router(authority,*,enabled=False,resume_csrf=False):
             with authority.lease(token,renew_csrf=csrf) as actor:
                 response.headers['Cache-Control']='no-store'
                 result={'subject':actor.principal_id,'roles':sorted(actor.roles),'asset_ids':sorted(actor.asset_ids)}
+                from src.services.local_authentication import LocalIdentityProvider
+                if isinstance(authority.provider, LocalIdentityProvider):
+                    result['username']=authority.provider.self_username(actor.principal_id)
                 if resume_csrf:result['csrf_token']=csrf
                 return result
         except EngineeringError as error:fail(error)

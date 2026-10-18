@@ -656,3 +656,17 @@ Next Action: Controlled localhost update, Product Owner review, then merge decis
   canonical subject rather than username. No role expansion or anonymous diagnostics bypass.
 - Next action: Senior Review and Product Owner scope/Login/Admin review; no automatic rollout.
 - Evidence/report: [NADI-AUTH-FOUNDATION-02](reliability-cockpit/docs/NADI-AUTH-FOUNDATION-02.md).
+
+## 2026-10-18 — NADI-AUTH-FOUNDATION-03 — implementation checkpoint
+
+- Objective: explicit local ADMIN BSR/IP factual read, trusted self username, login-aware
+  readiness with source/process/database gates preserved.
+- Branch: codex/nadi-auth-foundation-03; parent review d17450d4811d8978d01f919032e7d319c523a4c1.
+- Implemented/visible: portfolio policy and username through ModeA, unchanged serving HEAD
+  7daab3a62866f19b30fb45462a94bafff8795dc5 plus reviewed dirty code.
+- Tests: staged frontend21 groups, backend210, launcher/update/lifecycle119 PASS; no failed
+  final gate. Disposable tests only; no schema/grant/password or operational source changes.
+- Controller: independently tested source; installed release update/acceptance pending this
+  code checkpoint. Application bootstrap provenance must remain separate from controller SHA.
+- Merge/PO acceptance: UNMERGED/PENDING; no main or PR100 action.
+- Report: [AUTH-03](reliability-cockpit/docs/NADI-AUTH-FOUNDATION-03.md).
