@@ -853,3 +853,16 @@ Development Visibility: VISIBLE — HTTPS3000.
 Product Owner Acceptance: Pending.
 Remaining Blockers: None for requested UI correction.
 Next Action: Product Owner visual review; see reliability-cockpit/docs/nadi-logout-popup.md.
+
+## NADI-UX-V2-CONTROLLER-RECOVERY-01
+
+- **Date:** 2026-10-18
+- **Objective:** Qualify preservation and independent source recovery before a separately authorized paired V2 upgrade.
+- **Branch:** codex/nadi-ux-v2-controller-recovery-01; based on c7930694187b61ffa6dae90e6a14938e7564c3e7.
+- **Implementation Status:** IMPLEMENTED — private source seal, exact recovery receipt and guarded paired transition.
+- **Test Status:** TESTED — hermetic recovery/controller regressions and affected contracts; exact results in task report and PR.
+- **Merge Status:** UNMERGED; PR102 unchanged.
+- **Development Visibility:** NOT ACTIVATED — controller, serving source, development processes and collectors unchanged.
+- **Product Owner Acceptance:** Pending separate review and activation authorization.
+- **Next Action:** Senior review → approve controller delivery → separately authorize local paired V2 upgrade.
+- **Evidence:** reliability-cockpit/docs/NADI-UX-V2-CONTROLLER-RECOVERY-01.md and NADI-UX-V2-PAIRED-UPGRADE-RUNBOOK.md.
