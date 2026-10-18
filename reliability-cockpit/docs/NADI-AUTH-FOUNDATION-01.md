@@ -165,23 +165,23 @@ login and identity/logout shell; explicit local enablement; independent review.
 
 ## Final status
 
-TASK: NADI-AUTH-FOUNDATION-01  
-STATUS: BLOCKED  
-GLOBAL_LOGIN_GUARD: BLOCKED; not implemented/activated  
-ANONYMOUS_ROOT: FAILED (current anonymous200, not login-only)  
-PROTECTED_PAGES: PARTIAL (existing QA record security only)  
-FACTUAL_API_GUARD: BLOCKED  
-DIRECT_UPSTREAM_EXPOSURE: BLOCKED; full remote reachability UNKNOWN  
-EXISTING_SESSION_AUTHORITY: existing QA authority retained; global integration pending  
-ADMIN_ROLE_MATRIX: VERIFIED for directory/operator/Case scopes; broader module ACL audit partial  
-DEVELOPMENT_ADMIN_ACCOUNT: EXISTING_VERIFIED  
-ADMIN_MODULE_ACCESS: PARTIAL  
-INDEPENDENT_REVIEW: PRESERVED, unchanged  
-SESSION_LOGOUT_REVOCATION: NOT_RETESTED; existing implementation unchanged  
-ACTIVE_PREVIEW: https://localhost:3000  
-BROWSER_E2E / FRONTEND_TESTS / BACKEND_TESTS: NOT_RUN; blocked before implementation  
-EXISTING_DATA_PRESERVED: YES  
-OPERATIONAL_SERVICES_CHANGED: NO  
-PRODUCT_OWNER_ACCEPTANCE: PENDING  
-PR100_MERGED: NO  
+TASK: NADI-AUTH-FOUNDATION-01\
+STATUS: BLOCKED\
+GLOBAL_LOGIN_GUARD: BLOCKED; not implemented/activated\
+ANONYMOUS_ROOT: FAILED (current anonymous200, not login-only)\
+PROTECTED_PAGES: PARTIAL (existing QA record security only)\
+FACTUAL_API_GUARD: BLOCKED\
+DIRECT_UPSTREAM_EXPOSURE: BLOCKED; full remote reachability UNKNOWN\
+EXISTING_SESSION_AUTHORITY: existing QA authority retained; global integration pending\
+ADMIN_ROLE_MATRIX: VERIFIED for directory/operator/Case scopes; broader module ACL audit partial\
+DEVELOPMENT_ADMIN_ACCOUNT: EXISTING_VERIFIED\
+ADMIN_MODULE_ACCESS: PARTIAL\
+INDEPENDENT_REVIEW: PRESERVED, unchanged\
+SESSION_LOGOUT_REVOCATION: NOT_RETESTED; existing implementation unchanged\
+ACTIVE_PREVIEW: https://localhost:3000\
+BROWSER_E2E / FRONTEND_TESTS / BACKEND_TESTS: NOT_RUN; blocked before implementation\
+EXISTING_DATA_PRESERVED: YES\
+OPERATIONAL_SERVICES_CHANGED: NO\
+PRODUCT_OWNER_ACCEPTANCE: PENDING\
+PR100_MERGED: NO\
 NEXT_ACTION: approve reviewed upstream/network and factual-scope plan, then implement and qualify global guard.
