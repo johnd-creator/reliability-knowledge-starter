@@ -1,0 +1,12 @@
+{
+  "sha": "7daab3a62866f19b30fb45462a94bafff8795dc5",
+  "backend_sha": "7daab3a62866f19b30fb45462a94bafff8795dc5",
+  "dirty": true,
+  "stale": false,
+  "backend": "AVAILABLE",
+  "factual_backend": "AVAILABLE",
+  "database_identity": "nadi_local_dev_01_test",
+  "frontend_parent": "21538",
+  "api_parent": "21536",
+  "services_restarted": false
+}

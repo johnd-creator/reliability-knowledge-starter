@@ -1,0 +1,68 @@
+{
+  "checks": [
+    "Anonymous data/diagnostics denied; narrow transport endpoint exposes no DB/session/account metadata",
+    "Existing ADMIN reads real BSR/IP registered population; gateway DTO equals stored factual API response",
+    "Executive Overview loads factual data with unchanged values provenance and DTO semantics",
+    "Trusted self username local-operator persists after refresh; canonical subject retained",
+    "Asset Register and exact registered Asset Detail open with server-verified canonical BSR/IP identity",
+    "Approved canonical maintenance FMEA RCFA overhaul integrity Data Trust and integration reads work",
+    "Cross-site parameters exports unknown legacy populations and source writes remain denied",
+    "Existing PdM Cases Recommendations and Action Board read workflows retain QA security",
+    "Factual dashboard and username header responsive in light/dark at 1440 768 390; sensitive rows redacted only in capture",
+    "Restricted AUTHOR cannot inherit portfolio or foreign asset permission through forged username/role headers",
+    "ADMIN and AUTHOR cannot approve restricted Engineering review; no business record mutation",
+    "Header logout revokes own session and removes factual access"
+  ],
+  "screenshots": [
+    {
+      "name": "asset-register-1440-redacted",
+      "viewport": 1440,
+      "scroll": 1440,
+      "redacted_asset_rows": true
+    },
+    {
+      "name": "dashboard-light-1440",
+      "viewport": 1440,
+      "scroll": 1440,
+      "redacted_asset_rows": true
+    },
+    {
+      "name": "dashboard-dark-1440",
+      "viewport": 1440,
+      "scroll": 1440,
+      "redacted_asset_rows": true
+    },
+    {
+      "name": "dashboard-light-768",
+      "viewport": 768,
+      "scroll": 768,
+      "redacted_asset_rows": true
+    },
+    {
+      "name": "dashboard-dark-768",
+      "viewport": 768,
+      "scroll": 768,
+      "redacted_asset_rows": true
+    },
+    {
+      "name": "dashboard-light-390",
+      "viewport": 390,
+      "scroll": 390,
+      "redacted_asset_rows": true
+    },
+    {
+      "name": "dashboard-dark-390",
+      "viewport": 390,
+      "scroll": 390,
+      "redacted_asset_rows": true
+    }
+  ],
+  "errors": [],
+  "fixtures": false,
+  "tls_bypass": false,
+  "register_total": 845,
+  "register_dto_sha256": "db2a6a802c131d5173f563853a7f633b557d45cb9ae743717be58d6c10759985",
+  "overview_dto_sha256": "6c77e56d22adc2a07df10ccd58af8d84c0c4eb15d5c3b586450f279b6d13747c",
+  "canonical_admin_subject": "local:c759c2d1-19a4-4291-9b66-9218dbd12dea",
+  "status": "PASS"
+}

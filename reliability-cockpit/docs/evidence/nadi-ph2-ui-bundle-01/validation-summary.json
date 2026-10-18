@@ -1,0 +1,14 @@
+{
+  "typescript": "PASS",
+  "lint": "PASS_WITH_EXISTING_WARNINGS",
+  "production_build": "PASS_ISOLATED_COPY",
+  "backend": {
+    "ran": 154,
+    "passed": 99,
+    "skipped": 55,
+    "scope": "HERMETIC_SQLITE"
+  },
+  "github_ci": "NOT_RUN",
+  "source_head": "7daab3a62866f19b30fb45462a94bafff8795dc5",
+  "working_tree": "TASK_EDITS_PLUS_PRESERVED_GENERATED_FILE"
+}

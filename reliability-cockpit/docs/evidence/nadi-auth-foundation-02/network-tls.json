@@ -1,0 +1,14 @@
+{
+  "tls_ca_sha256": "125ee0237942a71f8c9d470371d745b3d956ef3b507500e5030ffb43e02d1a30",
+  "tls_verified_no_bypass": true,
+  "browser": "Google Chrome 155.0.8059.84",
+  "non_loopback_self_checks": [
+    {
+      "interface": "wlp0s20f3",
+      "own_non_loopback_connect": 111,
+      "denied": true
+    }
+  ],
+  "remote_lan_scan_performed": false,
+  "trusted_host_direct_loopback_access_still_possible": true
+}

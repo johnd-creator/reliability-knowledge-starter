@@ -46,7 +46,8 @@ def create_qa_app(*,authority,cases,inspections,recommendations,context,environm
   from fastapi import HTTPException
   try:
    with authority.engine.connect() as c:c.scalar(text('SELECT 1'))
-   return {'status':'READY','scope':'APPLICATION_CONNECTIVITY_ONLY'}
+   return {'status':'READY','scope':'APPLICATION_CONNECTIVITY_ONLY',
+           'authentication':'LOCAL_SESSION_AUTHORITY' if isinstance(authority.provider,LocalIdentityProvider) else 'UNAVAILABLE'}
   except Exception:raise HTTPException(503,detail={'code':'QA_STORE_UNAVAILABLE'}) from None
  @app.middleware('http')
  async def private(request,call_next):

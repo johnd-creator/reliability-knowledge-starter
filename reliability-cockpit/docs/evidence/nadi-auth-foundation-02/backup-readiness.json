@@ -1,0 +1,18 @@
+{
+  "archives": [
+    {
+      "phase": "before",
+      "sha256": "046d05038960ed607b3ee115e24baac00510d903aaf9d47550fbe3f4be9e724c",
+      "bytes": 67106
+    },
+    {
+      "phase": "after",
+      "sha256": "48f162a7db9d183be9671496ecdb738d1b212468a3762ab8f6f74417e9aafb9e",
+      "bytes": 75191
+    }
+  ],
+  "private_archive_location": "existing ignored local-dev controller state; owner-only 0600",
+  "toc_readable": true,
+  "sql_extracted_only_to_memory_for_comparison": true,
+  "active_database_restore_attempted": false
+}

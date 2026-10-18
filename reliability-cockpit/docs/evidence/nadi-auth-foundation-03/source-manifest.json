@@ -1,0 +1,27 @@
+{
+  "code_checkpoint": "fef7bccd61d3d6a5dd184f2fff94453242ff2056",
+  "active_head": "7daab3a62866f19b30fb45462a94bafff8795dc5",
+  "dirty_mode": "approved Mode A with prior task code retained",
+  "files": {
+    "reliability-cockpit/web/lib/factual-policy.ts": "ae5b4c8f85647bcfe7d7177fc4aad687417a36b8c8a1d27535e5d402a550898f",
+    "reliability-cockpit/web/lib/factual-gateway.ts": "82bdf9d437bc5c5bad6fedaa6426b2aa7d0c10f69951c1febdae583748ba3156",
+    "reliability-cockpit/web/lib/local-session.ts": "34be76619e8d8042ff781ae233cc1386ba54eaf5803d567fbeb4b2bc51811fbc",
+    "reliability-cockpit/web/components/AuthenticatedWorkspace.tsx": "1b13e32287c765a718f46a11d75fe1abac3addd630f1e251b08c59f9d7ca15b1",
+    "reliability-cockpit/web/app/api/development/health/route.ts": "94db992e3be8e761ba12ba7e5ba903f94a128b9a155764e0ff40ece6da5a5c21",
+    "reliability-cockpit/web/eslint.config.mjs": "671bdcb4ea3dd8836c23032bc391beaaf7acd3d440079dff79c6a7308b0e87d7",
+    "reliability-cockpit/web/package.json": "17de9bbd767b4034da2b9598e697be43def7d2d178e2b0b4c444191c59ff5542",
+    "reliability-cockpit/web/scripts/global-auth-check.mjs": "4fa4971dde43c713ebdc6c2b04c4d08de1fbc240821d934d9cd39135d1dfb705",
+    "reliability-cockpit/web/scripts/factual-policy-check.mjs": "ae8fc14c2bd698e55c6e385fb49ec20898b9fd34c66bd29e9a61082b57306100",
+    "reliability-cockpit/src/services/local_authentication.py": "0b06151b07c43ea96474fb8a67f4b63e74c25f9795a3f63c607ac59793ef08e9",
+    "reliability-cockpit/src/api/application_session.py": "5ab49a310d88dd04b24189d7f5b2b585b46bcb5c8db9a98aeae3edd2b47d8038",
+    "reliability-cockpit/src/api/engineering_qa.py": "1d74614613a023e7e8a37842b26c2609893b39eb8d3566c215823a1d69fdd222",
+    "reliability-cockpit/tests/test_auth03_self_identity.py": "261a8d0f7ac745d4024b929729e487f8a25ae9b89e8f6b0e0b00d066646dd7cd",
+    "reliability-cockpit/tests/test_auth03_readiness.py": "9b6250b6cbab8e6c23627e48421b0610caa5a03acaaa6234420deac4b62581bc",
+    "reliability-cockpit/tests/test_local_development_reusable.py": "3f7054950d495f0fda0d6f8700db94c061f81f99be87522315d69ca179873529",
+    "deploy/development/local_development.py": "013365d57b1ec56f9b1d6b416b2c7d862e6e562ca446d9772d87414d32e32ed9",
+    "deploy/development/nadi-dev.py": "a56e81aeb1f6fb22a83163639b484a98c1f2c33a9611e8aa6121e65f39f8a08f",
+    "deploy/development/install_auth03_controller.py": "07f80910eba458d52237ee27061959de20ead17ee4be6263f2aa3978705752ad",
+    "reliability-cockpit/tests/test_auth03_controller_update.py": "e22ce194b31d8446d5742593204e9038d0b9a2bb629992a4d588e386fc95b791"
+  },
+  "generated_next_env_sha256": "42519ed219a7f50dd811c8d87a1ed7e4e1a5b61e6fd977ffc0b732b104f2b82b"
+}

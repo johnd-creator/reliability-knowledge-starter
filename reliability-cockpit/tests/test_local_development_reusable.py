@@ -132,13 +132,17 @@ class ReusableTest(unittest.TestCase):
         backend={'source':'SYNTHETIC_LOCAL_DEVELOPMENT','database':'DISPOSABLE_TEST','environment':'DEVELOPMENT','source_sha':A,'current_sha':A,'bootstrap_sha':A,'database_identity':m.DB}
         front={'sha':A,'backend_sha':A,'launched_sha':A,'stale':False,'dirty':True,
                'database_identity':m.DB,'backend':'AVAILABLE','factual_backend':'AVAILABLE','engineering':True}
-        self.d.request=Mock(side_effect=[backend,front])
+        self.d.release=Mock(return_value=A);self.d.auth_readiness=Mock(return_value={'authorized_session':'NOT_PROBED_NO_SESSION'})
+        front={'contract':'NADI_LOCAL_TRANSPORT_V1','origin':self.c.ORIGIN,'guard':'SERVER_SESSION_AUTHORITY','frontend_sha':A,'launched_sha':A,'dirty':True}
+        backend['engineering']=True
+        self.d.request=Mock(side_effect=[backend,front,{'status':'READY','authentication':'LOCAL_SESSION_AUTHORITY'},{'status':'ok'}])
         with patch.object(m,'source',return_value=self.root):
             self.assertTrue(self.d.readiness(value)['dirty'])
         self.assertEqual(self.d.owners.call_count,2)
     def test_mismatched_backend_rejected(self):
         value=dict(self.old,node='/node22');self.d.owners=Mock(side_effect=[{'listeners':{'1':{'exe':'/node22'}}}, {'listeners':{'2':{'exe':str((self.state/'python-runtime/bin/python').resolve())}}}])
-        self.d.request=Mock(side_effect=[{'source_sha':C},{}])
+        self.d.release=Mock(return_value=A)
+        self.d.request=Mock(side_effect=[{'source_sha':C},{'contract':'NADI_LOCAL_TRANSPORT_V1','origin':self.c.ORIGIN,'guard':'SERVER_SESSION_AUTHORITY','frontend_sha':A,'launched_sha':A,'dirty':True},{'status':'READY','authentication':'LOCAL_SESSION_AUTHORITY'},{'status':'ok'}])
         with patch.object(m,'source',return_value=self.root):
             self.denied('LOCAL_PAIR_NOT_READY',lambda:self.d.readiness(value))
     def test_real_git_ref_repository_and_dirty_rejection(self):

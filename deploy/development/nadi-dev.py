@@ -292,7 +292,10 @@ def main():
     parser.add_argument('ref', nargs='?')
     parser.add_argument('--preview-ref', help='Explicit feature ref; must resolve to this checkout HEAD')
     parser.add_argument('--backup', help='Existing private backup, validated read-only')
+    parser.add_argument('--session-file', help='Optional owner-only current session proof for local status; no credentials on command line')
     args = parser.parse_args()
+    if args.session_file and args.command not in ('status','local-status'):
+        raise RuntimeError('SESSION_PROOF_STATUS_ONLY')
     # Serialize official lifecycle mutations, including old all-service commands.
     lock_fd = None
     if STATE.exists() and args.command not in ('status', 'logs', 'frontend-preflight'):
@@ -306,11 +309,11 @@ def main():
     if (STATE / 'local-dev-01/active.json').exists() and not args.command.startswith('local-') and args.command not in ('status','logs','backup'):
         raise RuntimeError('LOCAL_PAIRED_SOURCE_ACTIVE: use local lifecycle; no independent source selection')
     if args.command == 'status' and (STATE / 'local-dev-01/active.json').exists():
-        print(json.dumps(local_controller().status(), indent=2)); return
+        print(json.dumps(local_controller().status(session_file=args.session_file), indent=2)); return
     if args.command.startswith('local-'):
         manager = local_controller()
         if args.command == 'local-status':
-            print(json.dumps(manager.status(), indent=2))
+            print(json.dumps(manager.status(session_file=args.session_file), indent=2))
         elif args.command == 'local-rollback':
             manager.recover(manager.active_value())
         elif not args.ref or not args.preview_ref:

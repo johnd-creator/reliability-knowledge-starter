@@ -3,10 +3,11 @@ import { idText } from "../lib/id-copy";
 import {FormEvent,useEffect,useId,useRef,useState} from "react";
 import {useRouter} from "next/navigation";
 import {engineeringRequest,EngineeringHttpError} from "../lib/engineering-http";
+import {safeReturnDestination} from "../lib/login-navigation";
 import {Button,SectionCard} from "./ui";
 
 type Session = {subject:string;roles:string[];asset_ids:string[];csrf_token:string};
-export default function LocalLogin({onAuthenticated,expired=false,headingLevel=2}:{headingLevel?:1|2;onAuthenticated?:(who:Session)=>void;expired?:boolean}) {
+export default function LocalLogin({onAuthenticated,expired=false,headingLevel=2,returnTo}:{returnTo?:string;headingLevel?:1|2;onAuthenticated?:(who:Session)=>void;expired?:boolean}) {
  const router=useRouter();
  const Heading=headingLevel===1?"h1":"h2";
  const id=useId(),errorRef=useRef<HTMLParagraphElement>(null);
@@ -21,7 +22,7 @@ export default function LocalLogin({onAuthenticated,expired=false,headingLevel=2
    // Only backend directory supplies identity. GET resumes session-bound CSRF after reload/navigation.
    const who=await engineeringRequest("session") as Session;
    setPassword("");setNewPassword("");
-   if(onAuthenticated)onAuthenticated(who);else router.push("/engineering/local");
+   if(onAuthenticated)onAuthenticated(who);else {router.replace(safeReturnDestination(returnTo));router.refresh();}
   }catch(caught){
    setPassword("");setNewPassword("");
    if(caught instanceof EngineeringHttpError&&caught.code==="PASSWORD_CHANGE_REQUIRED"){

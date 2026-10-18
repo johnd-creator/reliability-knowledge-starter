@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "controller_sha": "fef7bccd61d3d6a5dd184f2fff94453242ff2056",
+  "bootstrap_sha": "106a4dc08b149576b2e84bbf8c70694288c7e9a7",
+  "serving_head": "7daab3a62866f19b30fb45462a94bafff8795dc5",
+  "transport_process_readiness": "VERIFIED",
+  "positive_authentication": {
+    "anonymous_pages": "VERIFIED_LOGIN_REDIRECT",
+    "anonymous_api": "VERIFIED_DENIED",
+    "invalid_session": "VERIFIED_DENIED",
+    "authorized_session": "VERIFIED"
+  },
+  "after_own_logout_authentication": {
+    "anonymous_pages": "VERIFIED_LOGIN_REDIRECT",
+    "anonymous_api": "VERIFIED_DENIED",
+    "invalid_session": "VERIFIED_DENIED",
+    "authorized_session": "NOT_PROBED_NO_SESSION"
+  },
+  "revoked_own_session_api_denied": true,
+  "explicit_revoked_session_controller_rejected": true,
+  "revocation_used_existing_csrf_logout": true,
+  "service_restart": false,
+  "tls_validation_bypassed": false
+}

@@ -1,0 +1,19 @@
+{
+  "frontend_parent": 21538,
+  "frontend_worker": 728443,
+  "previous_worker": 21559,
+  "worker_change": "EXPECTED_CONFIG_RELOAD",
+  "backend_parent": 21536,
+  "backend_listener": [
+    "21549",
+    "21536"
+  ],
+  "backend_identity_unchanged": true,
+  "systemd_restarts": 0,
+  "source_sha": "7daab3a62866f19b30fb45462a94bafff8795dc5",
+  "backend_sha": "7daab3a62866f19b30fb45462a94bafff8795dc5",
+  "authenticated_official_readiness": "PASS",
+  "installed_anonymous_readiness": "FAIL_CLOSED_AUTH_REQUIRED",
+  "controller_release_unchanged": true,
+  "active_checkpoint_updated_with_official_attest": true
+}

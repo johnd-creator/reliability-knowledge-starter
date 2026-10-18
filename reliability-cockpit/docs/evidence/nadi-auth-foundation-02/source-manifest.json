@@ -1,0 +1,26 @@
+{
+  "serving_head": "7daab3a62866f19b30fb45462a94bafff8795dc5",
+  "mode": "A reviewed dirty files; HEAD intentionally unchanged",
+  "files_sha256": {
+    "lib/local-session.ts": "9d1b5e5de3abd5af497a4331400afb5b48cd1389dbeb79a7ed9b7f8b697817fe",
+    "lib/factual-gateway.ts": "d56d2c0375c568880986293ec86b39b4e8f797128957c917a6c125899e4b4b31",
+    "middleware.ts": "9809c082ea5cc753f7d7ad66352c31849f1c44a6f4e7e079e6a82d04cbdcc108",
+    "app/api/cockpit/[[...path]]/route.ts": "1f85cc55c9a9121ae25b8b90510e23182c18140bcc974b654f4a7d804c4eb29e",
+    "components/AuthenticatedWorkspace.tsx": "dd5a3dfc982ccec645639746cf8c7d538097db734dde90e9f03f0c987275161b",
+    "lib/login-navigation.ts": "759ec1544b4ddf8c473b847802121bb3e77c39897d8f9893dd2e9520b1f96eac",
+    "app/(workspace)/layout.tsx": "3ad757674e166ada251f00ff3df21c4695f642a6fb25487d93d2190bb82ef4a2",
+    "app/(authentication)/login/page.tsx": "56c6eca8933a2ddf5880d36d84e6b061aecb7bfa6b23e1deb1aa061b16f15cf0",
+    "app/api/development/status/route.ts": "43f87d9e6b4168e61ada8edf7562cfb082176211deaa2173207f64a7b0ff7f6b",
+    "lib/api.ts": "a56c03c8fefa538fc87ed30faa4614d0633e5b2a13e6726586dc97f14e68c5e0",
+    "components/LoginPage.tsx": "786221bcea75a879331511acb85487c79918fa1813483a560285506a85ab0414",
+    "components/LocalLogin.tsx": "7d201aca118521a3ff49d860b13e6b34e8485c1edde3a786ce19dff016c3b6c5",
+    "app/globals.css": "45dc82520afd011d1bec4ba92555391dbe6fbda75e7159d1153c7d3f8b061a4d",
+    "scripts/global-auth-check.mjs": "fd3935338d715872bb04a476416a12dc4f40e0930f61449d67706716cd6df638",
+    "scripts/phase2-login-header-check.mjs": "1a367ca284e2c32298eab00eafef5ab2b7d38fb0f4bc82613b66152418bc3af2",
+    "scripts/login-design-check.mjs": "2da29e8be266ad41b32a80ab814d739a540ed58de3639f498046d5e6e39405db",
+    "scripts/localization-check.mjs": "730a184199805e51f69101800f05d02e627f356def5f13a716b06a32a5e1c8d2",
+    "eslint.config.mjs": "c8dc88f4d4e859863400283ab01e4e6e31fee9ba717262eae775fe93e9b0f72f",
+    "package.json": "12bc55b39843f97e88202cb6525948b11caf08e2ba28557d441caa10952e7dcb",
+    "next.config.js": "a4b787104aabde82ae333a23931742fb5c70c643ab6b004b65639b5e47439dfe"
+  }
+}

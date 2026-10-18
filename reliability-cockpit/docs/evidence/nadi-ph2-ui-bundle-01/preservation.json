@@ -1,0 +1,32 @@
+{
+  "preserved": {
+    "next-env.d.ts": true,
+    "konsep1.png": true,
+    "konsep2.png": true,
+    "konsep3.png": true,
+    "konsep4.png": true,
+    "konsep5.png": true,
+    "23496711.xls": true
+  },
+  "units": {
+    "nadi-primary-web.service": {
+      "ActiveState": "active",
+      "InvocationID": "229ff7ae933d40838e6605754eb07ec5",
+      "MainPID": "21538",
+      "NRestarts": "0",
+      "MemoryCurrent": "1837703168",
+      "WorkingDirectory": "/home/john-d/Music/reliability-knowledge-starter/.nadi-dev/pdm-ui-fix-01/reliability-cockpit/web"
+    },
+    "nadi-live-api.service": {
+      "ActiveState": "active",
+      "InvocationID": "5f507378ad504edb9e58a6db63f3f81e",
+      "MainPID": "21536",
+      "NRestarts": "0",
+      "MemoryCurrent": "140771328",
+      "WorkingDirectory": "/home/john-d/Music/reliability-knowledge-starter/.nadi-dev/pdm-ui-fix-01/reliability-cockpit"
+    }
+  },
+  "time": 1792250594.0622857,
+  "head": "7daab3a62866f19b30fb45462a94bafff8795dc5",
+  "backend_source_changed": false
+}

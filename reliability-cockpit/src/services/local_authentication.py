@@ -100,6 +100,16 @@ class LocalIdentityProvider:
         with self.engine.connect() as c:
             return self._grant(c.execute(select(ACCOUNT).where(ACCOUNT.c.user_id == subject)).mappings().first())
 
+    def self_username(self, subject):
+        """Bounded display metadata, called only for the actor inside a valid session lease.
+
+        Does not create an identity/grant and never returns password/security fields.
+        """
+        if not isinstance(subject, str) or len(subject) > 160:
+            return None
+        with self.engine.connect() as c:
+            return c.scalar(select(ACCOUNT.c.username).where(ACCOUNT.c.user_id == subject))
+
     @contextmanager
     def _locks(self, *subjects):
         with self.engine.begin() as c:

@@ -657,3 +657,142 @@ Development Visibility: no collector execution, operational cursor/DB/Mart chang
 Product Owner Acceptance: PENDING technical review, not operational rollout authorization.
 Remaining Blockers: collector-specific exact-head CI before merge; operator-approved bounded rollout/recovery plan before any live action. Prior omissions below existing cursors not repaired automatically.
 Next Action: [Review cursor invariant/evidence](maximo-collector/docs/nadi-aud01-cursor-recovery.md), then collector CI gate. STOP after DRAFT delivery.
+
+## NADI-PH2-UI-BUNDLE-01 — 17 Oktober 2026
+
+- Date: 2026-10-17.
+- Task ID: NADI-PH2-UI-BUNDLE-01.
+- Objective: Engineering Case/review dan PdM presentation dengan live Mode A.
+- Branch: prepared review ref `codex/nadi-ph2-ui-bundle-01`; preview tetap detached.
+- Commit SHA: baseline/final active HEAD `7daab3a62866f19b30fb45462a94bafff8795dc5`;
+  task edits dirty dan commit review terpisah dicatat pada handoff, tanpa mengganti serving HEAD.
+- PR: NONE; tidak push/merge.
+- Implementation Status: IMPLEMENTED — structured form/register/detail, evidence/review,
+  revision-bound save, in-memory draft recovery, PdM steps/filter/history responsiveness.
+- Test Status: TESTED — frontend assertions/TypeScript/lint/build PASS; backend99 PASS,
+  55 SKIP; persistent synthetic QA E2E, security/filter, 390/768/1440, dark mode dan
+  actual same-document Fast Refresh PASS. Warning lint existing (dependency effect dan ignored status-route target) dicatat.
+- CI Status: NOT RUN pada prepared commit; local checks bukan GitHub CI.
+- Merge Status: UNMERGED; PR95–100 unchanged.
+- Development Visibility: VISIBLE — https://localhost:3000, frontend/API parent21538/21536
+  tetap, tanpa restart/handover. Banner source/dirty state akurat.
+- Product Owner Acceptance: PENDING; self-review bukan engineer UAT/PO approval.
+- Remaining Blockers: Q01–Q10, method/point/comparability dan attachment custody pending;
+  DTO timestamp/nama/reverse-link gaps dijelaskan tanpa nilai rekaan.
+- Next Action: Senior Review → Product Owner UI Review → targeted corrections.
+- Evidence: [Implementation report](reliability-cockpit/docs/NADI-PH2-UI-BUNDLE-01.md),
+  [live screenshots](reliability-cockpit/docs/evidence/nadi-ph2-ui-bundle-01/README.md).
+
+## NADI-PH2-UI-FIX-02 — 18 Oktober 2026
+
+- Date: 2026-10-18.
+- Task ID: NADI-PH2-UI-FIX-02.
+- Objective: compact provenance header dan standalone login return flow.
+- Branch: prepared review ref `codex/nadi-ph2-ui-fix-02`, parent Bundle01
+  `61697806356918655ab2901d5e2ff2cc7a5bd902`; serving worktree tetap detached.
+- Commit SHA: baseline/final active HEAD `7daab3a62866f19b30fb45462a94bafff8795dc5`;
+  prepared review SHA dicatat pada handoff. HEAD/index preview tidak diganti.
+- PR: NONE, tidak push/merge.
+- Implementation Status: IMPLEMENTED — header46px desktop, native technical disclosure,
+  critical warnings visible, compact QA states, standalone login dan safe internal return.
+- Test Status: TESTED — frontend/type/lint/build dan browser390/768/1440 light/dark PASS;
+  auth hermetic43 PASS/19 SKIP; real own-test-session revocation/logout, denial dan return
+  destination PASS. Mismatch screenshot hanya browser fixture, actual runtime sehat.
+- CI Status: NOT RUN pada prepared commit; local verification bukan GitHub CI.
+- Merge Status: UNMERGED; PR100 tidak diubah/merge.
+- Development Visibility: VISIBLE pada HTTPS3000 melalui Mode A; kedua backend AVAILABLE,
+  dirty=true/stale=false; parent21538/21536 dan restart0 dipertahankan.
+- Product Owner Acceptance: PENDING.
+- Remaining Blockers: PO visual acceptance; Q01–Q10/engineer UAT dan global auth terpisah.
+- Next Action: Senior Review → Product Owner Visual Review.
+- Evidence: [Report](reliability-cockpit/docs/NADI-PH2-UI-FIX-02.md),
+  [screenshots](reliability-cockpit/docs/evidence/nadi-ph2-ui-fix-02/README.md).
+
+## NADI-AUTH-FOUNDATION-01 — 18 Oktober 2026 — BLOCKED preflight
+
+- Date: 2026-10-18.
+- Task ID: NADI-AUTH-FOUNDATION-01.
+- Objective: global local-development authentication and scoped Development ADMIN.
+- Branch: documentation review ref; active worktree/source selection unchanged.
+- Commit SHA: serving HEAD `7daab3a62866f19b30fb45462a94bafff8795dc5` unchanged;
+  Bundle01/FIX02 prepared commits and all dirty edits preserved.
+- PR: NONE; no merge/push.
+- Implementation Status: BLOCKED before application/config changes. Direct upstream8000
+  is wildcard published, anonymous factual200; Docker forwarding ACCEPT. Full network
+  restriction unverified. Page-only login would not meet the requested boundary.
+- Test Status: read-only HTTPS/API/network/source and PostgreSQL directory audit only;
+  guard/browser/CI qualification NOT RUN. Documentation links/diff checks performed.
+- CI Status: NOT RUN.
+- Merge Status: UNMERGED; PR100 unchanged.
+- Development Visibility: existing preview remains operational, global login NOT active.
+- Product Owner Acceptance: PENDING; backend/network configuration approval required.
+- Remaining Blockers: trusted upstream isolation and factual-read scopes/admin module policy.
+  Existing local-operator ADMIN verified; no role, account, password or session change.
+- Next Action: owner approval of concrete loopback/network and factual authorization plan;
+  then isolated implementation/security tests before controlled activation.
+- Evidence: [Security preflight and unapplied proposal](reliability-cockpit/docs/NADI-AUTH-FOUNDATION-01.md).
+
+## 2026-10-18 — NADI-AUTH-FOUNDATION-02
+
+- Objective: activate the explicitly authorized laptop-only global login boundary and
+  authenticated factual gateway; restrict existing Cockpit API publishing.
+- Branch: `codex/nadi-auth-foundation-02` (task-owned review commit prepared without
+  moving the active detached HEAD `7daab3a62866f19b30fb45462a94bafff8795dc5`).
+- PR: none; no main or PR95–100 mutation. Review commit SHA is returned in delivery.
+- Implementation: IMPLEMENTED/VISIBLE local guard, standalone default-root login,
+  backend-verified bounded gateway, scope denials, session identity/Logout, ADMIN-only
+  diagnostics. One service-scoped Cockpit API recreate to127.0.0.1:8000, identical image/env.
+- Tests:20 frontend groups/311 named assertions plus product/provenance PASS; TypeScript,
+  lint and isolated build PASS. Backend214 PASS/46 SKIP plus supplemental46 PASS/0 SKIP;
+  34 earlier PostgreSQL skips covered in supplement.12 CI-only PdM cases remain skipped.
+  Actual trusted HTTPS browser login/revocation/logout/back/scope/CSRF/Origin/responsive
+  checks and reversible same-document Fast Refresh PASS. GitHub CI NOT RUN.
+- Merge: UNMERGED. Product Owner acceptance: PENDING. Overall PARTIAL; not production/UAT.
+- Runtime: same worktree; Node22.23.1; frontend parent21538 unchanged, worker728443 after
+  attributed Next config reload; QA parent21536 unchanged;34 non-target containers preserved.
+  Existing schema, grants, record histories and28 old sessions preserved; test session/audit
+  activity appended normally. Original workbook/PNGs and dirty generated types preserved.
+- Blockers: factual portfolio/register grants not assigned; installed launcher anonymous
+  status readiness now fails closed and needs authenticated integration; session DTO exposes
+  canonical subject rather than username. No role expansion or anonymous diagnostics bypass.
+- Next action: Senior Review and Product Owner scope/Login/Admin review; no automatic rollout.
+- Evidence/report: [NADI-AUTH-FOUNDATION-02](reliability-cockpit/docs/NADI-AUTH-FOUNDATION-02.md).
+
+## 2026-10-18 — NADI-AUTH-FOUNDATION-03 — implementation checkpoint
+
+- Objective: explicit local ADMIN BSR/IP factual read, trusted self username, login-aware
+  readiness with source/process/database gates preserved.
+- Branch: codex/nadi-auth-foundation-03; parent review d17450d4811d8978d01f919032e7d319c523a4c1.
+- Implemented/visible: portfolio policy and username through ModeA, unchanged serving HEAD
+  7daab3a62866f19b30fb45462a94bafff8795dc5 plus reviewed dirty code.
+- Tests: staged frontend21 groups, backend210, launcher/update/lifecycle119 PASS; no failed
+  final gate. Disposable tests only; no schema/grant/password or operational source changes.
+- Controller: independently tested source; installed release update/acceptance pending this
+  code checkpoint. Application bootstrap provenance must remain separate from controller SHA.
+- Merge/PO acceptance: UNMERGED/PENDING; no main or PR100 action.
+- Report: [AUTH-03](reliability-cockpit/docs/NADI-AUTH-FOUNDATION-03.md).
+
+
+## 2026-10-18 — NADI-AUTH-FOUNDATION-03 — final local acceptance
+
+- Objective: close explicit BSR/IP ADMIN factual read, login-aware readiness and self username.
+- Branch: `codex/nadi-auth-foundation-03`; code/controller checkpoint
+  `fef7bccd61d3d6a5dd184f2fff94453242ff2056`, parent AUTH02 preserved.
+- IMPLEMENTED/TESTED/VISIBLE: local acceptance PASS. Active detached HEAD remains
+  `7daab3a62866f19b30fb45462a94bafff8795dc5` plus reviewed dirty ModeA code; no handover.
+- Tests:21 frontend groups/321 named assertions, TypeScript/lint/build PASS;1 existing warning.
+  Backend210 PASS/0SKIP disposable PostgreSQL; launcher119 PASS/0SKIP hermetic; actual trusted
+  HTTPS browser12 checks/7 redacted responsive light/dark captures PASS. GitHub CI NOT_RUN.
+- Controller: exact Git blobs, immutable release, existing ROOT binding, metadata backups and
+  independent readiness before install. Own-session positive VERIFIED; revoked proof rejected;
+  anonymous default status reports NOT_PROBED_NO_SESSION honestly. No service restart.
+- Preservation: original35 containers unchanged;4 accounts/grants/password hashes,39 old
+  sessions, business rows, schema/constraints/ledger preserved. Test sessions/audits appended
+  normally. QA source reloader child21549→834916; unit parent21536/NRestarts0 preserved.
+- Known bounds: legacy equipment/WorkOrder/KPI contracts lack safe portfolio scope and remain
+  denied. Context/integration portfolio totals require portfolio capability. No engineering
+  self-review bypass, scoring, export expansion, source collection or operational change.
+- MERGED:NO; Product Owner ACCEPTED:PENDING. Local review commit only: earlier local lineage
+  diverges from cached main; avoid mixing unrelated work in a PR. PR100/F03 unchanged.
+- Evidence: [AUTH03 final report](reliability-cockpit/docs/NADI-AUTH-FOUNDATION-03.md).
+- Next: Senior Review → Product Owner Final Authentication Acceptance → Resume Phase2.

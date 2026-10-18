@@ -1,0 +1,44 @@
+{
+  "checks": [
+    "Retaken six PdM screenshots only after authenticated record-ready state (not loading)",
+    "Actual authenticated Fast Refresh preserves same document; temporary marker restored byte-for-byte",
+    "Actual outsider cannot read exact foreign existing Case",
+    "Independent REVIEWER can still read authorized Case",
+    "No unauthorized review action exposed; exact valid self-review/ADMIN role denials covered in disposable backend tests",
+    "Only newly created browser test sessions logged out; existing sessions not revoked"
+  ],
+  "screenshots": [
+    {
+      "name": "authenticated-pdm-light-1440",
+      "viewport": 1440,
+      "scroll": 1440
+    },
+    {
+      "name": "authenticated-pdm-dark-1440",
+      "viewport": 1440,
+      "scroll": 1440
+    },
+    {
+      "name": "authenticated-pdm-light-768",
+      "viewport": 768,
+      "scroll": 768
+    },
+    {
+      "name": "authenticated-pdm-dark-768",
+      "viewport": 768,
+      "scroll": 768
+    },
+    {
+      "name": "authenticated-pdm-light-390",
+      "viewport": 390,
+      "scroll": 390
+    },
+    {
+      "name": "authenticated-pdm-dark-390",
+      "viewport": 390,
+      "scroll": 390
+    }
+  ],
+  "hmr_original_sha256": "dd5a3dfc982ccec645639746cf8c7d538097db734dde90e9f03f0c987275161b",
+  "status": "PASS"
+}
