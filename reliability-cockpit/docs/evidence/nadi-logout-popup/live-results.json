@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "checks": [
+    "Existing account authentication and trusted username work; no new navbar",
+    "Actual own-session logout stays in popup with spinner, no legacy checking page, direct fullscreen login and revocation confirmed"
+  ],
+  "errors": [],
+  "logout_posts": 1,
+  "tls_bypass": false,
+  "synthetic": false,
+  "own_test_session_only": true,
+  "logout_delay_for_observation_ms": 1200
+}

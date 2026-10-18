@@ -837,3 +837,19 @@ Development Visibility: VISIBLE — verified HTTPS3000 desktop/tablet/mobile and
 Product Owner Acceptance: Pending visual review.
 Remaining Blockers: None for requested presentation correction.
 Next Action: Product Owner visual review. Evidence: reliability-cockpit/docs/nadi-login-visual-03.md
+
+
+Date: 2026-10-18
+Task ID: NADI logout popup progress correction
+Objective: Keep progress in confirmation popup and navigate directly to login.
+Branch: codex/nadi-login-visual-02
+Commit SHA: Scoped follow-up commit; active detached HEAD unchanged with Mode A presentation diff.
+PR: None; existing integration PR unchanged.
+Implementation Status: IMPLEMENTED
+Test Status: TESTED — 51 browser assertions, actual own-session HTTPS logout, TypeScript/lint/global-auth PASS.
+CI Status: No remote CI requested.
+Merge Status: UNMERGED
+Development Visibility: VISIBLE — HTTPS3000.
+Product Owner Acceptance: Pending.
+Remaining Blockers: None for requested UI correction.
+Next Action: Product Owner visual review; see reliability-cockpit/docs/nadi-logout-popup.md.
