@@ -853,3 +853,20 @@ Development Visibility: VISIBLE — HTTPS3000.
 Product Owner Acceptance: Pending.
 Remaining Blockers: None for requested UI correction.
 Next Action: Product Owner visual review; see reliability-cockpit/docs/nadi-logout-popup.md.
+
+
+Date: 2026-10-18
+Task ID: NADI-UX-V2-OVERHAUL-01
+Objective: Implement incremental enterprise UI V2 across shared components and priority workspaces.
+Branch: codex/nadi-ux-v2-overhaul-01
+Base: c7930694187b61ffa6dae90e6a14938e7564c3e7
+Checkpoint commits: 268587d, a1aa64e, 3c014b9, b5b3637, 43885e4; quality/evidence in delivery commit.
+Implementation Status: IMPLEMENTED — dedicated priority changes and shared styling on secondary pages.
+Test Status: TESTED — 15 frontend groups, types/lint/build; 1,193 browser checks; 34 axe scans, zero violations; local backend 71 pass/28 isolated-Postgres skips.
+CI Status: Exact final HEAD backend/frontend results recorded in Draft PR checks and delivery response.
+Merge Status: UNMERGED
+Development Visibility: LIVE_PREVIEW_NOT_PROMOTED — dirty active Mode A source preserved.
+Product Owner Acceptance: PENDING
+Remaining gates: Senior review, PO acceptance and separately authorized safe integration.
+Next Action: Senior Design & Code Review → Product Owner Visual Acceptance → Authorized Merge.
+Evidence: reliability-cockpit/docs/NADI-UX-V2-OVERHAUL-01.md

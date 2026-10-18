@@ -201,3 +201,19 @@ is synthetic, not live or Product Owner acceptance. No new token system is intro
 ## PdM desktop workbook candidates — WORKBOOK-02
 
 Panel kandidat memakai token/grid V1 existing dan selector keluarga eksplisit; label axis sumber terlihat tanpa canonical point binding. Unit ambigu tampil BELUM DIKETAHUI, nilai awal UNKNOWN/null, pending approval bukan severity. [24 screenshot sintetis 1440/1920 light/dark](reliability-cockpit/docs/evidence/nadi-pdm-workbook-02/README.md) adalah evidence komponen, bukan live acceptance.
+
+
+## NADI V2 — 2026-10-18 candidate
+
+Incremental workspace presentation now uses navy identity, focused teal accents,
+neutral surfaces and green primary actions. Shared controls have 44px minimum
+height, clear focus, explicit secondary/tertiary/destructive hierarchy and busy
+semantics. Labeled search and native help disclosures reduce visual noise without
+removing source limitations. Forms, tables, textual statistic cards, timelines and
+responsive follow-up queues share the same treatment. The scoped enterprise layer
+preserves the approved standalone login. No health thresholds or color-based
+condition inference were added.
+
+Implementation and automated regression complete in the isolated V2 candidate;
+PO acceptance and live integration remain pending. See the
+[V2 report and matched screenshots](reliability-cockpit/docs/NADI-UX-V2-OVERHAUL-01.md).

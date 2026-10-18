@@ -1014,3 +1014,17 @@ Administration UI/API remains PLANNED. Phase0–5/M01–M07 stay; M02/M03/M07 ON
 26 engineer decisions pending, Phase1 review/checkpoint/hard-expiry unchanged.
 No runtime/session/DB/source/collector/Mart or external QA action. Next: senior
 security/product review, then separately authorize ADMIN-01 read-contract decisions.
+
+
+## 18 Oktober 2026 — NADI Design System V2 candidate
+
+NADI-UX-V2-OVERHAUL-01 checkpoints A–E IMPLEMENTED; checkpoint F locally TESTED:
+shared controls/surfaces, PdM entry/register, Case search/review presentation,
+Executive/Assets, Recommendations/Action Board, Reports and shared factual pages.
+[Report and 20 screenshot pairs](../reliability-cockpit/docs/NADI-UX-V2-OVERHAUL-01.md).
+15 frontend check groups, types/lint/build and 1,193 synthetic browser assertions
+pass; 34 axe scans report zero violations. Exact-head remote CI belongs to the
+Draft PR checks. UNMERGED, PO acceptance PENDING, LIVE_PREVIEW_NOT_PROMOTED.
+No source/DB/API/auth architecture changes; Administration remains PLANNED.
+Existing phases, engineering approvals and ON HOLD decisions are not advanced.
+Next: senior design/code review → PO visual acceptance → authorized merge.
