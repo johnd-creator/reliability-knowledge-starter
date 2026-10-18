@@ -19,7 +19,7 @@ export default function LoginPage({ expired = false, returnTo }: { expired?: boo
       <div className="login-form-panel">
         <div className="login-utilities"><span className="scope-chip">QA SINTETIS · Engineering</span><ThemeToggle /></div>
         <div className="login-form-content"><LocalLogin returnTo={returnTo} expired={expired} headingLevel={1} />
-          <p className="login-page-note">{idText("Factual development screens remain accessible. This sign-in opens the existing isolated Engineering workspace.")}</p>
+          <p className="login-page-note">Masuk diperlukan untuk seluruh aplikasi pengembangan lokal. Data faktual tetap hanya-baca; akses mengikuti scope yang disetujui.</p>
         </div>
         <p className="login-footer">NADI · Platform Analitik Keandalan Aset Pembangkit</p>
       </div>

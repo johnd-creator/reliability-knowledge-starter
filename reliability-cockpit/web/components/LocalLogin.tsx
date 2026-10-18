@@ -22,7 +22,7 @@ export default function LocalLogin({onAuthenticated,expired=false,headingLevel=2
    // Only backend directory supplies identity. GET resumes session-bound CSRF after reload/navigation.
    const who=await engineeringRequest("session") as Session;
    setPassword("");setNewPassword("");
-   if(onAuthenticated)onAuthenticated(who);else router.replace(safeReturnDestination(returnTo));
+   if(onAuthenticated)onAuthenticated(who);else {router.replace(safeReturnDestination(returnTo));router.refresh();}
   }catch(caught){
    setPassword("");setNewPassword("");
    if(caught instanceof EngineeringHttpError&&caught.code==="PASSWORD_CHANGE_REQUIRED"){

@@ -20,9 +20,10 @@ try {
  check('errors retain exact security/conflict code without leaking transport details',()=>{for(const code of ['REVISION_CONFLICT','ACCESS_DENIED','CSRF_DENIED','SESSION_EXPIRED'])assert.ok(errorLabel(code).includes(code));assert.ok(!errorLabel(new Error('https://private/?password=secret')).includes('secret'));assert.equal(errorLabel('Unable to sign in. Check your credentials.'),idText('Unable to sign in. Check your credentials.'));assert.equal(errorLabel(idText('Enter a reviewer reason before a simulated decision.')),idText('Enter a reviewer reason before a simulated decision.')); });
  check('glossary is searchable in both languages and has unique anchors',()=>{assert.equal(new Set(glossary.map(x=>x.id)).size,glossary.length);assert.ok(searchGlossary('pemeliharaan').length);assert.ok(searchGlossary('acknowledgment').length);assert.equal(searchGlossary('   ').length,glossary.length);assert.equal(searchGlossary('no-such-term-1234').length,0);});
  check('candidate method rules remain pending engineer validation',()=>{for(const id of ['vibration','ir','mcsa','tribology','threshold'])assert.ok(glossary.find(x=>x.id===id)?.pending,id);assert.match(glossary.find(x=>x.id==='pd-dga').meaning,/tidak|bukan/);});
+ // AUTH-02 reviewed lib/api.ts: only 401 login redirect and scope-denied copy; DTOs and query paths unchanged.
  // Reviewed hashes: Inspection adds optional v1.1 read fields; original wire enums/values unchanged.
  const immutable={
-  "lib/api.ts": "ca5ec127f433f9203cb379d68e85124f25b36534b20134f9706598066755e19e",
+  "lib/api.ts": "a56c03c8fefa538fc87ed30faa4614d0633e5b2a13e6726586dc97f14e68c5e0",
   "lib/product-records.ts": "6a79950aa1786ad9d1c9d9cdccab2abaccc6738cbd6fbe60a2ebf3dc7a670993",
   "lib/case-records.ts": "443b55be0a9bd8040e791e0dc9e6e4d3a311620c45ee93e56c15677a499df74f",
   "lib/advisory-records.ts": "d1edee16e4d68b70d9657bf9787d50f65bae62db103c3937d6f91ba5f94f779a",

@@ -1,0 +1,32 @@
+[
+  {
+    "method": "GET",
+    "anonymous_status": 401,
+    "cache_control": "private, no-store, max-age=0"
+  },
+  {
+    "method": "HEAD",
+    "anonymous_status": 401,
+    "cache_control": "private, no-store, max-age=0"
+  },
+  {
+    "method": "POST",
+    "anonymous_status": 401,
+    "cache_control": "private, no-store, max-age=0"
+  },
+  {
+    "method": "PUT",
+    "anonymous_status": 401,
+    "cache_control": "private, no-store, max-age=0"
+  },
+  {
+    "method": "DELETE",
+    "anonymous_status": 401,
+    "cache_control": "private, no-store, max-age=0"
+  },
+  {
+    "method": "OPTIONS",
+    "anonymous_status": 401,
+    "cache_control": "private, no-store, max-age=0"
+  }
+]

@@ -643,3 +643,6 @@ td strong { color: var(--text); font-weight: 650; }
 .qa-boundary-note p { max-width:75ch; }
 .qa-sign-in-required h2 { margin-top:0; }
 @media(max-width:600px) { .dev-service-summary { margin-left:0; } .dev-status-row { gap:8px 12px; } .dev-status-panel { padding:var(--space-4); } .dev-status-panel dl { grid-template-columns:minmax(0,1fr); } }
+
+/* Local session identity; no credentials or expanded development banner. */
+.session-account{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:.5rem;padding:.4rem 1rem;background:var(--surface,#fff);color:var(--text,#102536);border-bottom:1px solid var(--border,#cbd5e1);font-size:.75rem;overflow-wrap:anywhere}.session-account span:first-child{max-width:26rem}.session-account .button{min-height:32px;padding:.25rem .65rem}

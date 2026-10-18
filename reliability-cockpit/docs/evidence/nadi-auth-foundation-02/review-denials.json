@@ -1,0 +1,21 @@
+{
+  "result": "PASS",
+  "denials": [
+    {
+      "role": [
+        "AUTHOR"
+      ],
+      "status": 403,
+      "code": "INDEPENDENT_REVIEWER_REQUIRED"
+    },
+    {
+      "role": [
+        "ADMIN"
+      ],
+      "status": 404,
+      "code": "NOT_FOUND"
+    }
+  ],
+  "existing_business_records_not_mutated": true,
+  "own_test_sessions_logged_out": true
+}

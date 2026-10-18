@@ -630,3 +630,29 @@ Next Action: Controlled localhost update, Product Owner review, then merge decis
 - Next Action: owner approval of concrete loopback/network and factual authorization plan;
   then isolated implementation/security tests before controlled activation.
 - Evidence: [Security preflight and unapplied proposal](reliability-cockpit/docs/NADI-AUTH-FOUNDATION-01.md).
+
+## 2026-10-18 — NADI-AUTH-FOUNDATION-02
+
+- Objective: activate the explicitly authorized laptop-only global login boundary and
+  authenticated factual gateway; restrict existing Cockpit API publishing.
+- Branch: `codex/nadi-auth-foundation-02` (task-owned review commit prepared without
+  moving the active detached HEAD `7daab3a62866f19b30fb45462a94bafff8795dc5`).
+- PR: none; no main or PR95–100 mutation. Review commit SHA is returned in delivery.
+- Implementation: IMPLEMENTED/VISIBLE local guard, standalone default-root login,
+  backend-verified bounded gateway, scope denials, session identity/Logout, ADMIN-only
+  diagnostics. One service-scoped Cockpit API recreate to127.0.0.1:8000, identical image/env.
+- Tests:20 frontend groups/311 named assertions plus product/provenance PASS; TypeScript,
+  lint and isolated build PASS. Backend214 PASS/46 SKIP plus supplemental46 PASS/0 SKIP;
+  34 earlier PostgreSQL skips covered in supplement.12 CI-only PdM cases remain skipped.
+  Actual trusted HTTPS browser login/revocation/logout/back/scope/CSRF/Origin/responsive
+  checks and reversible same-document Fast Refresh PASS. GitHub CI NOT RUN.
+- Merge: UNMERGED. Product Owner acceptance: PENDING. Overall PARTIAL; not production/UAT.
+- Runtime: same worktree; Node22.23.1; frontend parent21538 unchanged, worker728443 after
+  attributed Next config reload; QA parent21536 unchanged;34 non-target containers preserved.
+  Existing schema, grants, record histories and28 old sessions preserved; test session/audit
+  activity appended normally. Original workbook/PNGs and dirty generated types preserved.
+- Blockers: factual portfolio/register grants not assigned; installed launcher anonymous
+  status readiness now fails closed and needs authenticated integration; session DTO exposes
+  canonical subject rather than username. No role expansion or anonymous diagnostics bypass.
+- Next action: Senior Review and Product Owner scope/Login/Admin review; no automatic rollout.
+- Evidence/report: [NADI-AUTH-FOUNDATION-02](reliability-cockpit/docs/NADI-AUTH-FOUNDATION-02.md).
