@@ -38,6 +38,18 @@ try {
     const source=readFileSync("app/(workspace)/equipment/[id]/page.tsx","utf8");
     assert.match(source,/if \(!active\) return/); assert.ok(source.includes('workOrders?.total ?? statusLabel("UNKNOWN")')); assert.ok(source.includes('if (loading)'));
   });
+  test("busy button prevents duplicate activation and announces progress", () => {
+    const html = render(ui.Button, { busy: true, children: "Menyimpan…" });
+    assert.match(html, /disabled=""/); assert.match(html, /aria-busy="true"/); assert.match(html, /aria-hidden="true"/);
+  });
+  test("search field retains label and supplied controlled input value", () => {
+    const html = render(ui.SearchField, { id: "case-search", label: "Cari Case", value: "asset:A", readOnly: true });
+    assert.match(html, /for="case-search"/); assert.match(html, /type="search"/); assert.match(html, /value="asset:A"/);
+  });
+  test("extended help uses a native keyboard disclosure", () => {
+    const html = render(ui.HelpDetails, { title: "Dasar waktu", children: "Timestamp asli" });
+    assert.match(html, /<details/); assert.match(html, /<summary>Dasar waktu/); assert.match(html, /Timestamp asli/);
+  });
   test("button does not submit a form accidentally", () => assert.match(render(ui.Button, { children: "Review" }), /type="button"/));
   test("breadcrumb declares exactly one current page", () => assert.equal((render(ui.Breadcrumbs, {items:[{label:"NADI"},{label:"Overview"}]}).match(/aria-current="page"/g) ?? []).length, 1));
   test("input has persistent associated label", () => assert.match(render(ui.InputControl, { id: "scope", label: "Scope" }), /for="scope"/));
