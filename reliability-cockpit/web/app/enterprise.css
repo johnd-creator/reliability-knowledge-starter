@@ -145,3 +145,12 @@
 .nadi-shell .stat-card > strong.stat-text-value { font-size:20px; line-height:1.4; font-weight:650; letter-spacing:-.015em; }
 .nadi-shell .filter-grid .search-control input[type=search],.nadi-shell .search-control input[type=search] { padding-left:38px; }
 .nadi-shell .asset-register-stats .stat-card { min-height:144px; }
+
+.nadi-shell .maturity-badge { color:var(--cyan-strong); background:var(--cyan-soft); font-size:12px; letter-spacing:0; }
+
+.nadi-shell .scope-chip { color:var(--cyan-strong); }
+@media(max-width:600px) {
+ .nadi-shell .pdm-workspace .product-stat-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+ .nadi-shell .pdm-workspace .stat-card { padding:12px; min-height:132px; }
+ .nadi-shell .pdm-workspace .stat-card > strong.stat-text-value { font-size:17px; }
+}
