@@ -796,3 +796,18 @@ Next Action: [Review cursor invariant/evidence](maximo-collector/docs/nadi-aud01
   diverges from cached main; avoid mixing unrelated work in a PR. PR100/F03 unchanged.
 - Evidence: [AUTH03 final report](reliability-cockpit/docs/NADI-AUTH-FOUNDATION-03.md).
 - Next: Senior Review → Product Owner Final Authentication Acceptance → Resume Phase2.
+
+
+## 2026-10-18 — NADI-PH2-AUTH-INTEGRATION-01
+
+- Objective: clean latest-main GitHub review candidate preserving Phase2 UI Bundle01/FIX02 and AUTH02/AUTH03.
+- Branch: codex/nadi-ph2-auth-integration-01; main base4914a73fc7b640b6dd0667d0450fdb12aa04c452.
+- Code checkpoint: a5b04bc4188884d5d7c80517fdb82715c07134cc; both main and complete reviewed lineage retained.
+- PR: [#101 DRAFT](https://github.com/johnd-creator/reliability-knowledge-starter/pull/101), UNMERGED.
+- IMPLEMENTED/TESTED: four conflicts reconciled semantically; Reports/Integration safe login return and test harness updates; existing security gates preserved.
+- Local tests:478 backend/0skip,14 contracts,23 frontend groups/369 assertions, TypeScript/lint/build PASS;1131 synthetic browser checks PASS.
+- CI: hosted exact-head backend/frontend pending at evidence commit; read final PR checks/handoff, never infer from local PASS.
+- Runtime: no handover/restart; active7daab3a plus dirty approved edits intact;1209 file hashes and private controller unchanged;35 original containers and retained records/accounts/sessions/schema/ledger preserved.
+- Acceptance: Product Owner PENDING, not production/engineer UAT. No main/PR100/F03 action, operational migration/source acquisition or deployment.
+- Next: Senior GitHub Review → Product Owner Acceptance → Authorized Merge.
+- Evidence: [Integration delivery report](reliability-cockpit/docs/NADI-PH2-AUTH-INTEGRATION-01.md).

@@ -1,0 +1,62 @@
+{
+  "status": "PASS",
+  "active_head": "7daab3a62866f19b30fb45462a94bafff8795dc5",
+  "source_selection_unchanged": true,
+  "all_active_source_files_byte_equal": 1209,
+  "private_controller_and_active_pointer_byte_equal": true,
+  "frontend_and_qa_unit_identity_unchanged": true,
+  "original_containers_unchanged": 35,
+  "cockpit_binding": "127.0.0.1:8000",
+  "retained_schema_constraints_ledger_unchanged": true,
+  "business_records_accounts_original_sessions_preserved": true,
+  "existing_session_activity_only_allowed": [
+    "last_seen_at",
+    "csrf_hash"
+  ],
+  "audit_append_only": true,
+  "counts_before": {
+    "engineering_case": 4,
+    "engineering_case_event": 12,
+    "engineering_case_receipt": 12,
+    "nadi_application_migration": 5,
+    "nadi_application_session": 42,
+    "nadi_attachment": 0,
+    "nadi_attachment_event": 0,
+    "nadi_human_record": 4,
+    "nadi_human_record_receipt": 15,
+    "nadi_human_record_revision": 15,
+    "nadi_local_account": 4,
+    "nadi_local_login_budget": 1,
+    "nadi_local_security_event": 48,
+    "nadi_security_activity": 1181
+  },
+  "counts_after": {
+    "engineering_case": 4,
+    "engineering_case_event": 12,
+    "engineering_case_receipt": 12,
+    "nadi_application_migration": 5,
+    "nadi_application_session": 42,
+    "nadi_attachment": 0,
+    "nadi_attachment_event": 0,
+    "nadi_human_record": 4,
+    "nadi_human_record_receipt": 15,
+    "nadi_human_record_revision": 15,
+    "nadi_local_account": 4,
+    "nadi_local_login_budget": 1,
+    "nadi_local_security_event": 48,
+    "nadi_security_activity": 1181
+  },
+  "private_backup_sha256": {
+    "before": "0610b99dad225d50d1cfd61942b6a57f959294bb71a65a42b2fe692b99ba44b2",
+    "after": "39c1d205e41e96a2810fad0f649f78de2e63b33b646b530e26e2d1f00e59bb40"
+  },
+  "temporary_test_container_removed": true,
+  "https3000": "AVAILABLE",
+  "both_backends": "AVAILABLE",
+  "controller_sha": "fef7bccd61d3d6a5dd184f2fff94453242ff2056",
+  "application_bootstrap_sha": "106a4dc08b149576b2e84bbf8c70694288c7e9a7",
+  "operational_io_or_source_acquisition": false,
+  "service_restarts": false,
+  "main_or_pr100_modified": false,
+  "retained_database_restored": false
+}

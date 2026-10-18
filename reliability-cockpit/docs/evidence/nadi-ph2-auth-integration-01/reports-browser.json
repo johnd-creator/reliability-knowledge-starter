@@ -1,0 +1,1770 @@
+{
+  "status": "PASS",
+  "passed": 96,
+  "total": 96,
+  "checks": [
+    "Reports nav becomes real candidate route",
+    "two candidate catalog buttons and labels",
+    "Coverage requests no arbitrary period and no maintenance DTO",
+    "Coverage has no time period control",
+    "Registry and technical populations remain distinct",
+    "Data Trust no invented as-of",
+    "source link preserved /data-quality",
+    "source link preserved /assets",
+    "source link preserved /maintenance",
+    "source link preserved /fmea",
+    "source link preserved /asset-health",
+    "source link preserved /rcfa",
+    "source link preserved /overhauls",
+    "source link preserved /system-integration",
+    "coverage no page overflow 1440 light",
+    "coverage table keyboard focus 1440 light",
+    "coverage axe A/AA 1440 light",
+    "coverage no page overflow 1440 dark",
+    "coverage table keyboard focus 1440 dark",
+    "coverage axe A/AA 1440 dark",
+    "coverage no page overflow 1920 light",
+    "coverage table keyboard focus 1920 light",
+    "coverage axe A/AA 1920 light",
+    "coverage no page overflow 1920 dark",
+    "coverage table keyboard focus 1920 dark",
+    "coverage axe A/AA 1920 dark",
+    "coverage no page overflow 768 light",
+    "coverage table keyboard focus 768 light",
+    "coverage axe A/AA 768 light",
+    "coverage no page overflow 768 dark",
+    "coverage table keyboard focus 768 dark",
+    "coverage axe A/AA 768 dark",
+    "coverage no page overflow 390 light",
+    "coverage table keyboard focus 390 light",
+    "coverage table scroll contained light",
+    "coverage axe A/AA 390 light",
+    "coverage no page overflow 390 dark",
+    "coverage table keyboard focus 390 dark",
+    "coverage table scroll contained dark",
+    "coverage axe A/AA 390 dark",
+    "catalog keyboard selection and focus",
+    "period options exactly supported",
+    "30-day maintenance metric exact",
+    "DTO window and as-of preserved",
+    "chronology independently labeled and exact last bucket",
+    "chart and table have equivalent original rows",
+    "no unsupported new KPI numbers",
+    "maintenance no page overflow 1440 light",
+    "maintenance table keyboard focus 1440 light",
+    "maintenance axe A/AA 1440 light",
+    "maintenance no page overflow 1440 dark",
+    "maintenance table keyboard focus 1440 dark",
+    "maintenance axe A/AA 1440 dark",
+    "maintenance no page overflow 1920 light",
+    "maintenance table keyboard focus 1920 light",
+    "maintenance axe A/AA 1920 light",
+    "maintenance no page overflow 1920 dark",
+    "maintenance table keyboard focus 1920 dark",
+    "maintenance axe A/AA 1920 dark",
+    "maintenance no page overflow 768 light",
+    "maintenance table keyboard focus 768 light",
+    "maintenance axe A/AA 768 light",
+    "maintenance no page overflow 768 dark",
+    "maintenance table keyboard focus 768 dark",
+    "maintenance axe A/AA 768 dark",
+    "maintenance no page overflow 390 light",
+    "maintenance table keyboard focus 390 light",
+    "maintenance table scroll contained light",
+    "maintenance axe A/AA 390 light",
+    "maintenance no page overflow 390 dark",
+    "maintenance table keyboard focus 390 dark",
+    "maintenance table scroll contained dark",
+    "maintenance axe A/AA 390 dark",
+    "7-day actual zero is not UNKNOWN",
+    "90-day requested API metric",
+    "period-specific loading clears prior report numbers",
+    "late 7-day response cannot replace 90-day report",
+    "coverage-specific loading clears maintenance preview",
+    "late Coverage cannot replace Maintenance",
+    "null Coverage counts remain UNKNOWN",
+    "gated metrics never expose unsupported numeric values",
+    "null authoritative as-of never replaced by current time",
+    "empty Coverage has explicit domains and actual zero",
+    "empty Maintenance chart is explicit",
+    "mismatched response refused before numbers render",
+    "unavailable Coverage explicit safe error",
+    "unavailable Maintenance no data or raw errors",
+    "denied-403 Coverage explicit safe error",
+    "denied-403 Maintenance no data or raw errors",
+    "deliberate GET retry recovers",
+    "mobile drawer preserves reports access",
+    "Escape returns to preview",
+    "no export, downloads or print controls",
+    "only two read-only allowlisted DTOs, no egress",
+    "401 clears report and returns to standalone expired login",
+    "no browser exceptions"
+  ],
+  "requests": [
+    {
+      "mode": "normal",
+      "path": "/api/cockpit/v1/reliability/data-trust",
+      "query": "",
+      "method": "GET"
+    },
+    {
+      "mode": "normal",
+      "path": "/api/cockpit/v1/reliability/decision-overview",
+      "query": "?window_days=30",
+      "method": "GET"
+    },
+    {
+      "mode": "normal",
+      "path": "/api/cockpit/v1/reliability/decision-overview",
+      "query": "?window_days=7",
+      "method": "GET"
+    },
+    {
+      "mode": "normal",
+      "path": "/api/cockpit/v1/reliability/decision-overview",
+      "query": "?window_days=90",
+      "method": "GET"
+    },
+    {
+      "mode": "hold-7",
+      "path": "/api/cockpit/v1/reliability/decision-overview",
+      "query": "?window_days=7",
+      "method": "GET"
+    },
+    {
+      "mode": "normal",
+      "path": "/api/cockpit/v1/reliability/decision-overview",
+      "query": "?window_days=90",
+      "method": "GET"
+    },
+    {
+      "mode": "hold-coverage",
+      "path": "/api/cockpit/v1/reliability/data-trust",
+      "query": "",
+      "method": "GET"
+    },
+    {
+      "mode": "normal",
+      "path": "/api/cockpit/v1/reliability/decision-overview",
+      "query": "?window_days=90",
+      "method": "GET"
+    },
+    {
+      "mode": "unknown",
+      "path": "/api/cockpit/v1/reliability/data-trust",
+      "query": "",
+      "method": "GET"
+    },
+    {
+      "mode": "unknown",
+      "path": "/api/cockpit/v1/reliability/decision-overview",
+      "query": "?window_days=30",
+      "method": "GET"
+    },
+    {
+      "mode": "empty",
+      "path": "/api/cockpit/v1/reliability/data-trust",
+      "query": "",
+      "method": "GET"
+    },
+    {
+      "mode": "empty",
+      "path": "/api/cockpit/v1/reliability/decision-overview",
+      "query": "?window_days=30",
+      "method": "GET"
+    },
+    {
+      "mode": "mismatch",
+      "path": "/api/cockpit/v1/reliability/data-trust",
+      "query": "",
+      "method": "GET"
+    },
+    {
+      "mode": "mismatch",
+      "path": "/api/cockpit/v1/reliability/decision-overview",
+      "query": "?window_days=30",
+      "method": "GET"
+    },
+    {
+      "mode": "unavailable",
+      "path": "/api/cockpit/v1/reliability/data-trust",
+      "query": "",
+      "method": "GET"
+    },
+    {
+      "mode": "unavailable",
+      "path": "/api/cockpit/v1/reliability/decision-overview",
+      "query": "?window_days=30",
+      "method": "GET"
+    },
+    {
+      "mode": "denied-403",
+      "path": "/api/cockpit/v1/reliability/data-trust",
+      "query": "",
+      "method": "GET"
+    },
+    {
+      "mode": "denied-403",
+      "path": "/api/cockpit/v1/reliability/decision-overview",
+      "query": "?window_days=30",
+      "method": "GET"
+    },
+    {
+      "mode": "normal",
+      "path": "/api/cockpit/v1/reliability/decision-overview",
+      "query": "?window_days=30",
+      "method": "GET"
+    },
+    {
+      "mode": "denied-401",
+      "path": "/api/cockpit/v1/reliability/data-trust",
+      "query": "",
+      "method": "GET"
+    }
+  ],
+  "errors": [],
+  "violations": [],
+  "accessibility": [
+    {
+      "name": "coverage",
+      "width": 1440,
+      "theme": "light",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "coverage",
+      "width": 1440,
+      "theme": "dark",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "coverage",
+      "width": 1920,
+      "theme": "light",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "coverage",
+      "width": 1920,
+      "theme": "dark",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "coverage",
+      "width": 768,
+      "theme": "light",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": [
+            {
+              "target": [
+                ".menu-toggle"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                "tr:nth-child(1) > td:nth-child(6)"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(1) > td:nth-child(6) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(2) > td:nth-child(6)"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(2) > td:nth-child(6) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(3) > td:nth-child(6)"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(3) > td:nth-child(6) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(4) > td:nth-child(6)"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(4) > td:nth-child(6) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(5) > td:nth-child(6)"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(5) > td:nth-child(6) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(6) > td:nth-child(6)"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(6) > td:nth-child(6) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "coverage",
+      "width": 768,
+      "theme": "dark",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": [
+            {
+              "target": [
+                ".menu-toggle"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                "tr:nth-child(1) > td:nth-child(6)"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(1) > td:nth-child(6) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(2) > td:nth-child(6)"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(2) > td:nth-child(6) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(3) > td:nth-child(6)"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(3) > td:nth-child(6) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(4) > td:nth-child(6)"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(4) > td:nth-child(6) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(5) > td:nth-child(6)"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(5) > td:nth-child(6) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(6) > td:nth-child(6)"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(6) > td:nth-child(6) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "coverage",
+      "width": 390,
+      "theme": "light",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": [
+            {
+              "target": [
+                ".menu-toggle"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                "tr:nth-child(1) > td:nth-child(3) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(1) > td:nth-child(4) > .status-badge.neutral[title=\"VERIFIED\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(1) > td:nth-child(5) > time"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(1) > td:nth-child(5) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(1) > td:nth-child(6)"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(1) > td:nth-child(6) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(2) > td:nth-child(3) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(2) > td:nth-child(4) > .status-badge.neutral[title=\"VERIFIED\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(2) > td:nth-child(5) > time"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(2) > td:nth-child(5) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(2) > td:nth-child(6)"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(2) > td:nth-child(6) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(3) > td:nth-child(3) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(3) > td:nth-child(4) > .status-badge.neutral[title=\"VERIFIED\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(3) > td:nth-child(5) > time"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(3) > td:nth-child(5) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(3) > td:nth-child(6)"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(3) > td:nth-child(6) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(4) > td:nth-child(3) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(4) > td:nth-child(4) > .status-badge.neutral[title=\"VERIFIED\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(4) > td:nth-child(5) > time"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(4) > td:nth-child(5) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(4) > td:nth-child(6)"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(4) > td:nth-child(6) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(5) > td:nth-child(3) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(5) > td:nth-child(4) > .status-badge.neutral[title=\"VERIFIED\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(5) > td:nth-child(5) > time"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(5) > td:nth-child(5) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(5) > td:nth-child(6)"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(5) > td:nth-child(6) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(6) > td:nth-child(3) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(6) > td:nth-child(4) > .status-badge.neutral[title=\"VERIFIED\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(6) > td:nth-child(5) > time"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(6) > td:nth-child(5) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(6) > td:nth-child(6)"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(6) > td:nth-child(6) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Konteks integritas laporan\"] > .table-content > table > tbody > tr:nth-child(1) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Konteks integritas laporan\"] > .table-content > table > tbody > tr:nth-child(2) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Konteks integritas laporan\"] > .table-content > table > tbody > tr:nth-child(3) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "coverage",
+      "width": 390,
+      "theme": "dark",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": [
+            {
+              "target": [
+                ".menu-toggle"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                "tr:nth-child(1) > td:nth-child(3) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(1) > td:nth-child(4) > .status-badge.neutral[title=\"VERIFIED\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(1) > td:nth-child(5) > time"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(1) > td:nth-child(5) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(1) > td:nth-child(6)"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(1) > td:nth-child(6) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(2) > td:nth-child(3) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(2) > td:nth-child(4) > .status-badge.neutral[title=\"VERIFIED\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(2) > td:nth-child(5) > time"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(2) > td:nth-child(5) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(2) > td:nth-child(6)"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(2) > td:nth-child(6) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(3) > td:nth-child(3) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(3) > td:nth-child(4) > .status-badge.neutral[title=\"VERIFIED\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(3) > td:nth-child(5) > time"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(3) > td:nth-child(5) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(3) > td:nth-child(6)"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(3) > td:nth-child(6) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(4) > td:nth-child(3) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(4) > td:nth-child(4) > .status-badge.neutral[title=\"VERIFIED\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(4) > td:nth-child(5) > time"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(4) > td:nth-child(5) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(4) > td:nth-child(6)"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(4) > td:nth-child(6) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(5) > td:nth-child(3) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(5) > td:nth-child(4) > .status-badge.neutral[title=\"VERIFIED\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(5) > td:nth-child(5) > time"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(5) > td:nth-child(5) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(5) > td:nth-child(6)"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(5) > td:nth-child(6) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(6) > td:nth-child(3) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(6) > td:nth-child(4) > .status-badge.neutral[title=\"VERIFIED\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(6) > td:nth-child(5) > time"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(6) > td:nth-child(5) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(6) > td:nth-child(6)"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(6) > td:nth-child(6) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Konteks integritas laporan\"] > .table-content > table > tbody > tr:nth-child(1) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Konteks integritas laporan\"] > .table-content > table > tbody > tr:nth-child(2) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Konteks integritas laporan\"] > .table-content > table > tbody > tr:nth-child(3) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "maintenance",
+      "width": 1440,
+      "theme": "light",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "maintenance",
+      "width": 1440,
+      "theme": "dark",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "maintenance",
+      "width": 1920,
+      "theme": "light",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "maintenance",
+      "width": 1920,
+      "theme": "dark",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "maintenance",
+      "width": 768,
+      "theme": "light",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": [
+            {
+              "target": [
+                ".menu-toggle"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "maintenance",
+      "width": 768,
+      "theme": "dark",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": [
+            {
+              "target": [
+                ".menu-toggle"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "maintenance",
+      "width": 390,
+      "theme": "light",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": [
+            {
+              "target": [
+                ".menu-toggle"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".report-bar:nth-child(7) > strong"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                ".report-bar:nth-child(7) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                ".report-bar:nth-child(8) > strong"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                ".report-bar:nth-child(8) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                ".report-bar:nth-child(9) > strong"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                ".report-bar:nth-child(9) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                ".report-bar:nth-child(10) > strong"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                ".report-bar:nth-child(10) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                ".report-bar:nth-child(11) > strong"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                ".report-bar:nth-child(11) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                ".report-bar:nth-child(12) > strong"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                ".report-bar:nth-child(12) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it partially overlaps other elements"
+            },
+            {
+              "target": [
+                "td:nth-child(3) > time[datetime=\"2026-08-03T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "figure > .table-frame[role=\"region\"] > .table-content > table > tbody > tr:nth-child(1) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "tr:nth-child(1) > td:nth-child(5) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "td:nth-child(3) > time[datetime=\"2026-08-10T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "figure > .table-frame[role=\"region\"] > .table-content > table > tbody > tr:nth-child(2) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "tr:nth-child(2) > td:nth-child(5) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "td:nth-child(3) > time[datetime=\"2026-08-17T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "figure > .table-frame[role=\"region\"] > .table-content > table > tbody > tr:nth-child(3) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "tr:nth-child(3) > td:nth-child(5) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "td:nth-child(3) > time[datetime=\"2026-08-24T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(4) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "tr:nth-child(4) > td:nth-child(5) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "td:nth-child(3) > time[datetime=\"2026-08-31T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(5) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "tr:nth-child(5) > td:nth-child(5) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "td:nth-child(3) > time[datetime=\"2026-09-07T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(6) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "tr:nth-child(6) > td:nth-child(5) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "td:nth-child(3) > time[datetime=\"2026-09-14T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(7) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "tr:nth-child(7) > td:nth-child(5) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "td:nth-child(3) > time[datetime=\"2026-09-21T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(8) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "tr:nth-child(8) > td:nth-child(5) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "td:nth-child(3) > time[datetime=\"2026-09-28T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(9) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "tr:nth-child(9) > td:nth-child(5) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "td:nth-child(3) > time[datetime=\"2026-10-05T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(10) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "tr:nth-child(10) > td:nth-child(5) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "td:nth-child(3) > time[datetime=\"2026-10-12T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(11) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "tr:nth-child(11) > td:nth-child(5) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "time[datetime=\"2026-10-19T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(12) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "tr:nth-child(12) > td:nth-child(5) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Distribusi status Work Order\"] > .table-content > table > tbody > tr:nth-child(1) > td:nth-child(3) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Distribusi status Work Order\"] > .table-content > table > tbody > tr:nth-child(2) > td:nth-child(3) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Distribusi work type\"] > .table-content > table > tbody > tr > td:nth-child(3) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Konsentrasi aktivitas laporan\"] > .table-content > table > tbody > tr:nth-child(1) > td:nth-child(3)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Konsentrasi aktivitas laporan\"] > .table-content > table > tbody > tr:nth-child(1) > td:nth-child(3) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(1) > td:nth-child(4) > time[datetime=\"2026-10-14T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Konsentrasi aktivitas laporan\"] > .table-content > table > tbody > tr:nth-child(2) > td:nth-child(3)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Konsentrasi aktivitas laporan\"] > .table-content > table > tbody > tr:nth-child(2) > td:nth-child(3) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(2) > td:nth-child(4) > time[datetime=\"2026-10-14T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Konteks integritas laporan\"] > .table-content > table > tbody > tr:nth-child(1) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Konteks integritas laporan\"] > .table-content > table > tbody > tr:nth-child(2) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Konteks integritas laporan\"] > .table-content > table > tbody > tr:nth-child(3) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "maintenance",
+      "width": 390,
+      "theme": "dark",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": [
+            {
+              "target": [
+                ".menu-toggle"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".report-bar:nth-child(7) > strong"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                ".report-bar:nth-child(7) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                ".report-bar:nth-child(8) > strong"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                ".report-bar:nth-child(8) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                ".report-bar:nth-child(9) > strong"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                ".report-bar:nth-child(9) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                ".report-bar:nth-child(10) > strong"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                ".report-bar:nth-child(10) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                ".report-bar:nth-child(11) > strong"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                ".report-bar:nth-child(11) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                ".report-bar:nth-child(12) > strong"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                ".report-bar:nth-child(12) > small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it partially overlaps other elements"
+            },
+            {
+              "target": [
+                "td:nth-child(3) > time[datetime=\"2026-08-03T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "figure > .table-frame[role=\"region\"] > .table-content > table > tbody > tr:nth-child(1) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "tr:nth-child(1) > td:nth-child(5) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "td:nth-child(3) > time[datetime=\"2026-08-10T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "figure > .table-frame[role=\"region\"] > .table-content > table > tbody > tr:nth-child(2) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "tr:nth-child(2) > td:nth-child(5) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "td:nth-child(3) > time[datetime=\"2026-08-17T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "figure > .table-frame[role=\"region\"] > .table-content > table > tbody > tr:nth-child(3) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "tr:nth-child(3) > td:nth-child(5) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "td:nth-child(3) > time[datetime=\"2026-08-24T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(4) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "tr:nth-child(4) > td:nth-child(5) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "td:nth-child(3) > time[datetime=\"2026-08-31T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(5) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "tr:nth-child(5) > td:nth-child(5) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "td:nth-child(3) > time[datetime=\"2026-09-07T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(6) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "tr:nth-child(6) > td:nth-child(5) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "td:nth-child(3) > time[datetime=\"2026-09-14T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(7) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "tr:nth-child(7) > td:nth-child(5) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "td:nth-child(3) > time[datetime=\"2026-09-21T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(8) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "tr:nth-child(8) > td:nth-child(5) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "td:nth-child(3) > time[datetime=\"2026-09-28T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(9) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "tr:nth-child(9) > td:nth-child(5) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "td:nth-child(3) > time[datetime=\"2026-10-05T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(10) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "tr:nth-child(10) > td:nth-child(5) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "td:nth-child(3) > time[datetime=\"2026-10-12T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(11) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "tr:nth-child(11) > td:nth-child(5) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "time[datetime=\"2026-10-19T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(12) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "tr:nth-child(12) > td:nth-child(5) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Distribusi status Work Order\"] > .table-content > table > tbody > tr:nth-child(1) > td:nth-child(3) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Distribusi status Work Order\"] > .table-content > table > tbody > tr:nth-child(2) > td:nth-child(3) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Distribusi work type\"] > .table-content > table > tbody > tr > td:nth-child(3) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Konsentrasi aktivitas laporan\"] > .table-content > table > tbody > tr:nth-child(1) > td:nth-child(3)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Konsentrasi aktivitas laporan\"] > .table-content > table > tbody > tr:nth-child(1) > td:nth-child(3) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(1) > td:nth-child(4) > time[datetime=\"2026-10-14T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Konsentrasi aktivitas laporan\"] > .table-content > table > tbody > tr:nth-child(2) > td:nth-child(3)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Konsentrasi aktivitas laporan\"] > .table-content > table > tbody > tr:nth-child(2) > td:nth-child(3) > .status-badge.neutral[title=\"DERIVED_SAFE\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "tr:nth-child(2) > td:nth-child(4) > time[datetime=\"2026-10-14T00:00:00.000Z\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Konteks integritas laporan\"] > .table-content > table > tbody > tr:nth-child(1) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Konteks integritas laporan\"] > .table-content > table > tbody > tr:nth-child(2) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "div[aria-label=\"Konteks integritas laporan\"] > .table-content > table > tbody > tr:nth-child(3) > td:nth-child(4)"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scope": "DEMO / QA SYNTHETIC actual components; no application listener/runtime/DB"
+}

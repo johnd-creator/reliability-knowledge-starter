@@ -1,0 +1,62 @@
+{
+  "status": "PASS",
+  "code_checkpoint": "a5b04bc4188884d5d7c80517fdb82715c07134cc",
+  "node": "22.23.1",
+  "frontend_groups": 23,
+  "frontend_named_assertions": 369,
+  "typescript": "PASS",
+  "eslint": "PASS",
+  "production_build": "PASS",
+  "build_memory_peak": "1G",
+  "build_runtime": "76.274s",
+  "backend_tests": 478,
+  "backend_skipped": 0,
+  "contracts_tests": 14,
+  "browser": {
+    "localization": {
+      "passed": 395,
+      "scope": "Synthetic network-intercepted candidate components; no application listener or retained DB/session"
+    },
+    "pdm": {
+      "passed": 573,
+      "scope": "Synthetic network-intercepted candidate components; no application listener or retained DB/session"
+    },
+    "integration": {
+      "passed": 67,
+      "scope": "Synthetic network-intercepted candidate components; no application listener or retained DB/session"
+    },
+    "reports": {
+      "passed": 96,
+      "scope": "Synthetic network-intercepted candidate components; no application listener or retained DB/session"
+    }
+  },
+  "github_exact_head_ci": "PENDING_DRAFT_DELIVERY",
+  "preservation": "See preservation.json",
+  "failed_attempts": [
+    {
+      "failure": "Sandbox denied compiler child spawn with EPERM",
+      "disposition": "Same assertions rerun with reviewed process permission; all23 groups pass, no source gate relaxed"
+    },
+    {
+      "failure": "Old browser expectations for login destinations and PdM headings",
+      "disposition": "Harnesses aligned with accepted UI and safe internal return; Next navigation substitute no longer cancels replace with immediate reload; component network isolated on reserved origins"
+    },
+    {
+      "failure": "Report fixture repeated401 redirect because fixture rendered Reports at /login",
+      "disposition": "Actual standalone Login rendered on fixture login path;401 now proves private report removed and fullscreen expired login shown;403/unavailable still checked"
+    },
+    {
+      "failure": "Disposable suites require exact CI DB name",
+      "disposition": "Used nadi_application_test only inside labeled task-owned tmpfs container, never retained fixture"
+    },
+    {
+      "failure": "PostgreSQL18 client restore into test server16 failed",
+      "disposition": "Matched PG16 real tools via task-only disposable adapter; same complete478 tests pass. Hosted workflow explicitly selects PG16 client tools"
+    },
+    {
+      "failure": "Historical AUTH01 Markdown two-space hard breaks fail cumulative diff check",
+      "disposition": "Formatting-only backslash hard breaks preserve all words/statuses; review history retained"
+    }
+  ],
+  "github_mutation_before_draft": false
+}
