@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "serving_head": "7daab3a62866f19b30fb45462a94bafff8795dc5",
+  "dirty": true,
+  "ui_source_files": 5,
+  "frontend_and_qa_listener_identity_unchanged": true,
+  "no_unit_restarts": true,
+  "unrelated_active_files_byte_equal": true,
+  "private_controller_unchanged": true,
+  "original_containers_unchanged": 35,
+  "database_or_backend_source_changes": false,
+  "session_note": "Only task browser sessions used; normal login and CSRF logout, no cleanup/reset of existing sessions",
+  "image_generated": true,
+  "original_logo_sha256": "5e648381298f461677d1cb57a8b83dcc8ad79b3bcfe7222c96586ab400e19086"
+}

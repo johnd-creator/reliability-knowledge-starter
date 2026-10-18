@@ -9,7 +9,7 @@ export default function LoginPage({ expired = false, returnTo }: { expired?: boo
     <div className="login-surface">
       <aside className="login-brand-panel" aria-label={idText("NADI product identity")}>
         <div className="login-logo-surface">
-          <Image src="/logo_nadi.png" width={820} height={468} alt="NADI — Platform Analitik Keandalan Aset Pembangkit" priority />
+          <Image src="/login/logo_nadi-white-cyan.png" width={1939} height={811} alt="NADI — Platform Analitik Keandalan Aset Pembangkit" priority />
         </div>
         <div className="login-brand-message"><p className="login-brand-eyebrow">PLATFORM DATA KEANDALAN</p><h2 className="login-brand-headline">Data Andal<br /><span>Keputusan Terarah</span></h2><span className="login-brand-rule" aria-hidden="true" /></div>
         <svg className="login-energy-line" viewBox="0 0 700 600" fill="none" aria-hidden="true"><path d="M-30 510L320 445Q360 432 390 470L540 85Q570 15 610 75L740 300" stroke="currentColor" strokeWidth="1.5"/></svg>

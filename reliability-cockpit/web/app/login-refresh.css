@@ -1,10 +1,10 @@
 /* Reference-led login treatment; illustration is not operational evidence. */
 .nadi-login-page .login-surface { min-height:100svh; grid-template-columns:minmax(0,1fr) minmax(0,1fr); border:0; border-radius:0; }
 .nadi-login-page .login-brand-panel { position:relative; isolation:isolate; display:flex; flex-direction:column; min-height:100svh; padding:clamp(40px,6.2vw,100px); overflow:hidden; border:0; background:#092333 url('/login/power-plant-night.png') center bottom/cover no-repeat; }
-.login-brand-panel::before { content:""; position:absolute; inset:0; z-index:-1; background:linear-gradient(180deg,rgba(5,27,42,.25),rgba(5,27,42,.1) 45%,rgba(5,27,42,.2)); }
+.login-brand-panel::before { content:""; position:absolute; inset:0; z-index:-1; background:linear-gradient(180deg,rgba(5,27,42,.86) 0%,rgba(5,27,42,.82) 40%,rgba(5,27,42,.42) 70%,rgba(5,27,42,.55) 100%); }
 .nadi-login-page .login-logo-surface { padding:0; width:min(100%,290px); background:transparent; border-radius:0; }
-.nadi-login-page .login-logo-surface img { filter:brightness(0) invert(1); }
-.login-brand-message { position:relative; z-index:1; margin-top:clamp(48px,8vh,100px); }
+.nadi-login-page .login-logo-surface img { filter:none; }
+.login-brand-message { position:relative; z-index:1; margin-top:clamp(48px,8vh,100px); text-shadow:0 2px 12px #041520; }
 .nadi-login-page .login-brand-eyebrow { margin:0 0 20px; color:#b5d8da; font-size:11px; letter-spacing:.18em; font-weight:650; }
 .nadi-login-page .login-brand-headline { display:block; margin:0; max-width:520px; font-size:clamp(32px,3.1vw,52px); line-height:1.18; letter-spacing:-.035em; color:#fff; }
 .login-brand-headline span { color:#8ce2c0; }
@@ -45,7 +45,7 @@
 @media(max-width:900px) {
  .nadi-login-page .login-surface { grid-template-columns:minmax(0,1fr); }
  .nadi-login-page .login-brand-panel { min-height:230px; padding:28px; background-position:center 62%; display:block; }
- .login-brand-panel::before { background:linear-gradient(90deg,#092333ee,#09233399); }
+ .login-brand-panel::before { background:linear-gradient(90deg,#092333f2,#092333c9); }
  .nadi-login-page .login-logo-surface { width:170px; }
  .login-brand-message { margin-top:24px; }
  .nadi-login-page .login-brand-eyebrow,.login-brand-rule,.nadi-login-page .login-brand-context { display:none; }
@@ -59,3 +59,11 @@
 
 @media(max-width:767px) { .nadi-topbar { padding-inline:16px; gap:8px; } .topbar-context,.topbar-context > div { min-width:0; } .topbar-context { flex:1; } .topbar-title { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; } .topbar-kicker { font-size:8px; letter-spacing:.06em; } }
 .nadi-login-page .login-field input[name="username"] { padding-left:42px; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='%2364778b' stroke-width='1.6'%3E%3Ccircle cx='10' cy='6' r='3'/%3E%3Cpath d='M3 19v-3a7 5 0 0114 0v3'/%3E%3C/svg%3E"); background-position:14px center; background-repeat:no-repeat; }
+
+/* Keep visibility control inside the full-width field, including narrow screens. */
+.nadi-password-field { position:relative; display:block; width:100%; }
+.nadi-password-field > .input-control { width:100%; padding-right:54px; }
+.nadi-password-field > .password-visibility { position:absolute; right:4px; top:50%; transform:translateY(-50%); display:grid; place-items:center; width:44px; height:44px; min-height:44px; padding:0; border:0; background:transparent; color:var(--muted); box-shadow:none; }
+.nadi-password-field > .password-visibility:hover { background:var(--surface-2); color:var(--text); }
+.nadi-password-field > .password-visibility:focus-visible { outline:2px solid var(--primary); outline-offset:-2px; }
+.nadi-login-page .nadi-password-field > .input-control { padding-left:42px; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='%2364778b' stroke-width='1.6'%3E%3Crect x='4' y='9' width='12' height='10' rx='2'/%3E%3Cpath d='M6 9V6a4 4 0 018 0v3'/%3E%3C/svg%3E"); background-position:14px center; background-repeat:no-repeat; }

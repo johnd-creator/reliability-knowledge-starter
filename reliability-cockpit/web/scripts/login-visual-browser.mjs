@@ -14,7 +14,7 @@ await ctx.addInitScript(()=>localStorage.setItem('nadi-theme','light'));
 await ctx.route('**/*',async route=>{const r=route.request(),u=new URL(r.url());assert.equal(u.origin,base,'No external egress');
  if(u.pathname==='/candidate.js')return route.fulfill({contentType:'application/javascript',body:b.js});
  if(u.pathname==='/candidate.css')return route.fulfill({contentType:'text/css',body:b.css});
- if(u.pathname==='/logo_nadi.png'||u.pathname==='/login/power-plant-night.png')return route.fulfill({contentType:'image/png',body:readFileSync('public'+u.pathname)});
+ if(u.pathname==='/login/logo_nadi-white-cyan.png'||u.pathname==='/logo_nadi.png'||u.pathname==='/login/power-plant-night.png')return route.fulfill({contentType:'image/png',body:readFileSync('public'+u.pathname)});
  if(r.isNavigationRequest())return route.fulfill({contentType:'text/html',body:'<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="/candidate.css"></head><body><div id="root"></div><script src="/candidate.js"></script></body></html>'});
  if(u.pathname==='/api/engineering-qa/session')return route.fulfill({json:{subject:'local:SYNTHETIC-VISUAL',username:'QA_VISUAL_ONLY',roles:['ADMIN'],asset_ids:['asset:SYNTHETIC'],csrf_token:'SYNTHETIC_CSRF_ONLY'}});
  if(u.pathname==='/api/engineering-qa/session/logout'){assert.equal(r.method(),'POST');assert.equal(r.headers()['x-csrf-token'],'SYNTHETIC_CSRF_ONLY');logoutCalls++;return route.fulfill({json:{status:'REVOKED'}});}
@@ -27,6 +27,11 @@ try{
   check('exact tagline '+width,await p.getByRole('heading',{name:'Data Andal Keputusan Terarah'}).isVisible());
   check('logo has no opaque panel '+width,await p.locator('.login-logo-surface').evaluate(el=>getComputedStyle(el).backgroundColor==='rgba(0, 0, 0, 0)'));
   check('illustration loaded '+width,await p.evaluate(async()=>{const i=new Image();i.src='/login/power-plant-night.png';await i.decode();return i.naturalWidth>1000;}));
+  const username=p.locator('input[name="username"]'),password=p.locator('input[name="password"]'),eye=p.getByRole('button',{name:'Tampilkan kata sandi',exact:true});
+  const ub=await username.boundingBox(),pb=await password.boundingBox(),eb=await eye.boundingBox();
+  check('equal full-width inputs and inset eye '+width,Math.abs(ub.width-pb.width)<1&&Math.abs(ub.height-pb.height)<1&&eb.x>=pb.x&&eb.x+eb.width<=pb.x+pb.width);
+  check('icon only and selected cyan logo '+width,(await eye.innerText()).trim()===''&&await p.locator('.login-logo-surface img').getAttribute('src')==='/login/logo_nadi-white-cyan.png'&&await p.locator('.login-logo-surface img').evaluate(el=>getComputedStyle(el).filter==='none'));
+  await password.fill('SYNTHETIC_VISIBILITY_ONLY');await eye.click();check('eye shows unchanged password '+width,await password.getAttribute('type')==='text'&&await password.inputValue()==='SYNTHETIC_VISIBILITY_ONLY');await p.getByRole('button',{name:'Sembunyikan kata sandi',exact:true}).click();check('eye hides password '+width,await password.getAttribute('type')==='password');await password.fill('');
   check('login no overflow '+width,await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   await p.screenshot({path:out+'/login-light-'+width+'.png',fullPage:true});await p.getByRole('button',{name:'Ganti ke tema gelap'}).click();await p.screenshot({path:out+'/login-dark-'+width+'.png',fullPage:true});
   await p.goto(base+'/workspace',{waitUntil:'networkidle'});const trigger=p.getByRole('button',{name:'Keluar dari NADI',exact:true});await trigger.waitFor();

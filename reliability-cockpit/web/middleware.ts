@@ -4,8 +4,9 @@ import {loginHref,safeReturnDestination} from './lib/login-navigation';
 export async function middleware(request:NextRequest){
  if(!localGuardEnabled())return NextResponse.next();
  const path=request.nextUrl.pathname;
- // Exact public login illustration only; never exempt the directory or application/API routes.
+ // Exact public login assets only; never exempt the directory or application/API routes.
  if(path==='/login/power-plant-night.png')return NextResponse.next();
+ if(path==='/login/logo_nadi-white-cyan.png')return NextResponse.next();
  const finish=(response:NextResponse)=>{for(const [k,v] of Object.entries(PRIVATE_HEADERS))response.headers.set(k,v);return response;};
  // Route handlers independently enforce auth. Do not trust middleware-only protection.
  if(path.startsWith('/api/'))return NextResponse.next();
