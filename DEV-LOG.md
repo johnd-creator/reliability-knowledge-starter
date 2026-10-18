@@ -811,3 +811,13 @@ Next Action: [Review cursor invariant/evidence](maximo-collector/docs/nadi-aud01
 - Acceptance: Product Owner PENDING, not production/engineer UAT. No main/PR100/F03 action, operational migration/source acquisition or deployment.
 - Next: Senior GitHub Review → Product Owner Acceptance → Authorized Merge.
 - Evidence: [Integration delivery report](reliability-cockpit/docs/NADI-PH2-AUTH-INTEGRATION-01.md).
+
+## 2026-10-18 — Login visual refresh and compact account controls
+
+- Product Owner requested industrial login illustration, transparent logo, exact tagline Data Andal Keputusan Terarah, existing-topbar logout and confirmation popup.
+- Branch: codex/nadi-login-visual-02 from PR101 bf7f5d366ad941b1e527e24e96fc286757cbc3c5.
+- IMPLEMENTED/TESTED/VISIBLE on existing ModeA HTTPS3000; no handover/restart. Original logo preserved, built-in image_gen fictional illustration added; only its exact static URL public.
+- Validation: TypeScript/lint/build and existing auth/presentation assertions PASS;35 synthetic and10 real HTTPS browser checks PASS; desktop/tablet/mobile and dark mode verified.
+- Logout cancel/Escape preserve own session; explicit confirmation uses existing CSRF flow. No backend/schema/business-data/account-policy/collector change;35 original containers preserved.
+- GitHub CI: NOT_RUN for this follow-up; PR101 untouched. MERGED:NO; Product Owner acceptance:PENDING.
+- Report/assets/screenshots: [Login visual refresh](reliability-cockpit/docs/nadi-login-visual-02.md).

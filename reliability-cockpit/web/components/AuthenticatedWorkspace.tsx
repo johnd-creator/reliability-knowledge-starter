@@ -1,11 +1,16 @@
 "use client";
-import {useCallback,useEffect,useState,type ReactNode} from 'react';
+import {useCallback,useEffect,useRef,useState,type ReactNode} from 'react';
 import {engineeringRequest} from '../lib/engineering-http';
 import {loginHref} from '../lib/login-navigation';
+import {WorkspaceAccountContext} from './WorkspaceAccount';
 import type {LocalSession} from '../lib/local-session';
 /** Presentation/expired-session cleanup, never an authorization substitute. */
 export default function AuthenticatedWorkspace({identity,children}:{identity:LocalSession;children:ReactNode}){
  const [state,setState]=useState<'ready'|'checking'|'unavailable'>('ready'),[error,setError]=useState('');
+ const [confirmLogout,setConfirmLogout]=useState(false);
+ const dialogRef=useRef<HTMLDialogElement>(null),cancelRef=useRef<HTMLButtonElement>(null);
+ useEffect(()=>{if(confirmLogout&&!dialogRef.current?.open){dialogRef.current?.showModal();cancelRef.current?.focus();}},[confirmLogout]);
+ const requestLogout=()=>setConfirmLogout(true);
  const toLogin=useCallback(()=>{setState('checking');window.location.replace(loginHref(window.location.pathname+window.location.search,true));},[]);
  useEffect(()=>{
   let active=true,inflight=false;
@@ -21,7 +26,7 @@ export default function AuthenticatedWorkspace({identity,children}:{identity:Loc
     setState('ready');
    }catch{if(active)setState('unavailable');}finally{inflight=false;}
   }
-  const focus=()=>{void check(true);};
+  const focus=()=>{dialogRef.current?.close();setConfirmLogout(false);void check(true);};
   const visibility=()=>{if(document.visibilityState==='visible')focus();};
   const pageShow=(event:PageTransitionEvent)=>{if(event.persisted){setState('checking');window.location.reload();}};
   const pageHide=()=>{setState('checking');};
@@ -35,6 +40,7 @@ export default function AuthenticatedWorkspace({identity,children}:{identity:Loc
   try{const who=await engineeringRequest('session') as {csrf_token:string};await engineeringRequest('session/logout','POST',{},who.csrf_token);window.location.replace('/login');}
   catch{setState('unavailable');setError('Keluar belum dapat dikonfirmasi. Akses ditutup; coba lagi.');}
  }
- if(state!=='ready')return <main className="state-card" role="status"><h1>{state==='checking'?'Memeriksa sesi…':'Otoritas sesi tidak tersedia'}</h1><p>{error||'Tampilan terlindungi ditutup sampai sesi dapat diverifikasi.'}</p><button className="button" onClick={()=>window.location.reload()}>Periksa kembali</button><button className="button" onClick={logout}>Keluar</button></main>;
- return <><div className="session-account" aria-label="Akun terautentikasi"><span title={"ID audit: "+identity.subject}>Nama pengguna: {identity.username??identity.subject}</span><span>Peran: {identity.roles.join(', ')}</span><button className="button" onClick={logout}>Keluar</button></div>{children}</>;
+ const confirmation=<dialog className="logout-dialog" ref={dialogRef} aria-labelledby="logout-title" aria-describedby="logout-description" onClose={()=>setConfirmLogout(false)}><div className="logout-dialog-icon" aria-hidden="true">↗</div><h2 id="logout-title">Keluar dari NADI?</h2><p id="logout-description">Anda akan kembali ke halaman masuk. Pastikan isian yang ingin disimpan sudah tersimpan.</p><div className="logout-dialog-actions"><button ref={cancelRef} className="button" type="button" onClick={()=>dialogRef.current?.close()}>Batal</button><button className="button primary" type="button" onClick={()=>{dialogRef.current?.close();void logout();}}>Ya, keluar</button></div></dialog>;
+ if(state!=='ready')return <><main className="state-card" role="status"><h1>{state==='checking'?'Memeriksa sesi…':'Otoritas sesi tidak tersedia'}</h1><p>{error||'Tampilan terlindungi ditutup sampai sesi dapat diverifikasi.'}</p><button className="button" onClick={()=>window.location.reload()}>Periksa kembali</button><button className="button" onClick={requestLogout}>Keluar</button></main>{confirmation}</>;
+ return <WorkspaceAccountContext.Provider value={{identity,requestLogout}}>{children}{confirmation}</WorkspaceAccountContext.Provider>;
 }
