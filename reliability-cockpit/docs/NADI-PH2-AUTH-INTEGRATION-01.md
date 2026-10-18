@@ -182,3 +182,12 @@ controller state, migrate retained data implicitly or restart collectors. No act
 plan was executed. Main/F03/PR100, Phase1 policy and operational readiness remain separate.
 
 Next: Senior GitHub Review → Product Owner Acceptance → Authorized Merge.
+
+
+## Additive login and logout visual follow-up (2026-10-18)
+
+PR #101 now also includes the three descendant UI commits 6c2a4d5, fbd4054 and 10243da. Existing integration ancestry is preserved without squash or rewrite. The login uses the Product Owner-selected transparent white/cyan logo, generated illustrative plant asset, stronger navy overlay and tagline Data Andal Keputusan Terarah. The password eye is inside an input matching the username field. Logout shares the existing theme-control topbar, confirms in a native dialog, keeps pending progress/error/retry inside that dialog, and navigates directly to login using existing CSRF/session revocation.
+
+[Login report](nadi-login-visual-02.md), [cyan logo correction](nadi-login-visual-03.md), [logout progress report](nadi-logout-popup.md) retain actual and synthetic evidence separately. Additional local qualification: 51 isolated browser checks, actual trusted HTTPS own-session logout, TypeScript/lint/build and auth regressions PASS. The same browser regression is now included in exact-head hosted CI. Earlier CI receipts above are historical and do not qualify the new HEAD; new CI must pass independently.
+
+Active HTTPS3000 remains the existing detached7daab3a source plus preserved approved Mode A changes. No handover/restart, backend source/policy/database change, collector action, deployment, main merge or PR100 mutation. The new code is for senior review; Product Owner visual acceptance remains pending.
