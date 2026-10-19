@@ -288,12 +288,25 @@ def local_controller():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('command', choices=['setup', 'start', 'status', 'logs', 'stop', 'reload', 'switch', 'backup', 'cutover', 'rollback', 'retire-legacy', 'frontend-preflight', 'frontend-select', 'frontend-rollback', 'local-preflight', 'local-select', 'local-status', 'local-rollback'])
+    parser.add_argument('command', choices=['setup', 'start', 'status', 'logs', 'stop', 'reload', 'switch', 'backup', 'cutover', 'rollback', 'retire-legacy', 'frontend-preflight', 'frontend-select', 'frontend-rollback', 'local-preflight', 'local-select', 'local-status', 'local-rollback', 'local-preserve', 'local-prepare-recovery'])
     parser.add_argument('ref', nargs='?')
     parser.add_argument('--preview-ref', help='Explicit feature ref; must resolve to this checkout HEAD')
     parser.add_argument('--backup', help='Existing private backup, validated read-only')
     parser.add_argument('--session-file', help='Optional owner-only current session proof for local status; no credentials on command line')
+    parser.add_argument('--preservation', help='Owner-private source manifest, never runtime credentials')
+    parser.add_argument('--preservation-sha256', help='Exact reviewed preservation manifest digest')
+    parser.add_argument('--recovery-receipt', help='Owner-private independently prepared recovery receipt')
+    parser.add_argument('--recovery-receipt-sha256', help='Exact reviewed recovery receipt digest')
+    parser.add_argument('--acceptance-session-file', help='Private existing-session proof required for preserved paired acceptance')
     args = parser.parse_args()
+    if (args.preservation or args.preservation_sha256) and args.command != 'local-prepare-recovery':
+        raise RuntimeError('PRESERVATION_APPROVAL_PREPARATION_ONLY')
+    if args.acceptance_session_file and args.command not in ('local-select','local-rollback'):
+        raise RuntimeError('ACCEPTANCE_SESSION_LIFECYCLE_ONLY')
+    if bool(args.recovery_receipt) != bool(args.recovery_receipt_sha256):
+        raise RuntimeError('EXACT_RECOVERY_RECEIPT_APPROVAL_REQUIRED')
+    if args.recovery_receipt and args.command not in ('local-preflight','local-select'):
+        raise RuntimeError('RECOVERY_APPROVAL_SELECTION_ONLY')
     if args.session_file and args.command not in ('status','local-status'):
         raise RuntimeError('SESSION_PROOF_STATUS_ONLY')
     # Serialize official lifecycle mutations, including old all-service commands.
@@ -312,7 +325,17 @@ def main():
         print(json.dumps(local_controller().status(session_file=args.session_file), indent=2)); return
     if args.command.startswith('local-'):
         manager = local_controller()
-        if args.command == 'local-status':
+        manager.acceptance_session_file=args.acceptance_session_file
+        if args.recovery_receipt:
+            manager.preservation={'receipt':args.recovery_receipt,'receipt_sha256':args.recovery_receipt_sha256}
+        if args.command == 'local-preserve':
+            if not args.ref:raise RuntimeError('PRIVATE_ARCHIVE_DESTINATION_REQUIRED')
+            print(json.dumps(manager.preserve(Path(args.ref)),indent=2))
+        elif args.command == 'local-prepare-recovery':
+            if not args.ref or not args.preservation or not args.preservation_sha256:
+                raise RuntimeError('EXACT_PRESERVATION_APPROVAL_REQUIRED')
+            print(json.dumps(manager.prepare_preserved({'manifest':args.preservation,'digest':args.preservation_sha256},Path(args.ref)),indent=2))
+        elif args.command == 'local-status':
             print(json.dumps(manager.status(session_file=args.session_file), indent=2))
         elif args.command == 'local-rollback':
             manager.recover(manager.active_value())

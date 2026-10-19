@@ -57,6 +57,11 @@ await ctx.route('**/*',async route=>{
 const button=name=>p.getByRole('button',{name,exact:true});const go=async()=>{await p.goto(base+'/pdm',{waitUntil:'networkidle'});await button('Input Pengukuran').waitFor();};
 async function evidence(name){for(const width of [1440,768,390]){await p.setViewportSize({width,height:1086});check('no page overflow '+name+' '+width,await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await p.evaluate(()=>window.scrollTo(0,0));await p.screenshot({path:out+'/'+name+'-'+width+'.png',fullPage:true});}}
 try{
+ await go();
+ const advanced=p.locator('.workspace-filters summary');await advanced.focus();await p.keyboard.press('Enter');
+ check('advanced time filters open by keyboard',await p.getByLabel('Waktu awal (ISO + zona waktu)').isVisible());
+ await advanced.focus();await p.keyboard.press('Enter');
+ check('advanced filters collapse without hiding main search',!(await p.getByLabel('Waktu awal (ISO + zona waktu)').isVisible())&&await p.getByLabel('Cari inspeksi / observasi').isVisible());
  await pdmKeyboardChecks({p,button,go,check,out});
  // Workbook candidates: same mounted components, all network responses intercepted.
  const workbookOut=resolve(process.env.NADI_WORKBOOK_OUTPUT??out+'/workbook-candidates');mkdirSync(workbookOut,{recursive:true});
@@ -120,7 +125,7 @@ try{
   await p.evaluate(()=>delete document.documentElement.dataset.theme);p.once('dialog',dialog=>dialog.accept());await button('Batal input').click();
  }
  await p.setViewportSize({width:1440,height:1086});
- await go();await button('Input Pengukuran').click();await p.getByLabel('Konteks input kandidat').selectOption('AREA_FAN');check('template awaits validation',await p.getByText(/Menunggu Validasi Engineer\. Pemilihan konteks/).isVisible());
+ await go();await button('Input Pengukuran').click();await p.getByLabel('Konteks input kandidat').selectOption('AREA_FAN');check('template awaits validation',await p.getByText(/Menunggu Validasi Engineer\. Konteks kandidat/).isVisible());
  await p.getByLabel('Versi metode / prosedur').fill('candidate-1');await p.getByLabel('Waktu inspeksi asli').fill('2026-10-09T08:00:00+07:00');await p.getByLabel('Referensi instrumen').fill('instrument:SYNTHETIC');await p.getByLabel('Referensi prosedur').fill('procedure:SYNTHETIC');await p.getByLabel('Orientasi').fill('orientation:SYNTHETIC');await p.getByLabel('Konteks operasi',{exact:true}).fill('SYNTHETIC steady regime');
  for(let i=1;i<=3;i++){if(i>1)await button('Tambah baris').click();await p.getByLabel('Titik '+i,{exact:true}).fill('point:SYNTHETIC');await p.getByLabel('Parameter '+i,{exact:true}).fill(i===3?'synthetic_state':'synthetic_quantity');await p.getByLabel('Tipe nilai '+i,{exact:true}).selectOption(i===3?'UNKNOWN':'NUMERIC');if(i<3)await p.getByLabel('Nilai asli '+i,{exact:true}).fill(i===1?'0':'4.2');await p.getByLabel('Unit asli '+i,{exact:true}).fill(i===3?'':'unit-A');await p.getByLabel('Waktu measurement '+i,{exact:true}).fill(i===1?time:i===2?'2026-10-09T02:51:00Z':'');}
  await p.getByLabel('Observasi (satu per baris)').fill('SYNTHETIC reported observation');await p.getByLabel('Interpretasi / Hipotesis').fill('SYNTHETIC unconfirmed hypothesis');await p.getByLabel('Parameter 1',{exact:true}).focus();await p.keyboard.press('Tab');check('keyboard advances measurement fields',await p.getByLabel('Tipe nilai 1',{exact:true}).evaluate(el=>el===document.activeElement));

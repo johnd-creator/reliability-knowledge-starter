@@ -19,7 +19,7 @@ await ctx.route('**/*',async route=>{
  if(u.origin!==base){violations.push({path:u.pathname,method:r.method()});return route.abort('blockedbyclient');}
  if(u.pathname==='/candidate.js')return route.fulfill({contentType:'application/javascript',body:bundle.js});
  if(u.pathname==='/candidate.css')return route.fulfill({contentType:'text/css',body:bundle.css});
- if(u.pathname==='/logo_nadi.png')return route.fulfill({contentType:'image/png',body:readFileSync('public/logo_nadi.png')});
+ if(['/logo_nadi.png','/login/logo_nadi-white-cyan.png','/login/power-plant-night.png'].includes(u.pathname))return route.fulfill({contentType:'image/png',body:readFileSync('public'+u.pathname)});
  if(r.isNavigationRequest())return route.fulfill({contentType:'text/html',body:'<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DEMO / QA SYNTHETIC — Reports</title><link rel="stylesheet" href="/candidate.css"></head><body><div id="root"></div><script src="/candidate.js"></script></body></html>'});
  const coverage=u.pathname==='/api/cockpit/v1/reliability/data-trust',maintenance=u.pathname==='/api/cockpit/v1/reliability/decision-overview',days=u.searchParams.get('window_days');
  requests.push({mode,path:u.pathname,query:u.search,method:r.method()});

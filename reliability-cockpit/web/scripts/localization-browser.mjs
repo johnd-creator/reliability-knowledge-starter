@@ -5,6 +5,8 @@ import {resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {browserBundle} from './localization-browser-build.mjs';
 const {chromium}=await import(process.env.NADI_PLAYWRIGHT_MODULE?pathToFileURL(process.env.NADI_PLAYWRIGHT_MODULE).href:'playwright');
+const a11yFailures=[];
+const AxeBuilder=process.env.NADI_AXE_MODULE?(await import(pathToFileURL(process.env.NADI_AXE_MODULE).href)).default:null;
 const base='https://localization.synthetic.invalid',out=resolve(process.env.NADI_BROWSER_OUTPUT??'/tmp/nadi-id-evidence');mkdirSync(out,{recursive:true});
 const copy=JSON.parse(readFileSync('lib/id-messages.json')),t=k=>{assert.ok(copy[k],k);return copy[k];};
 const fixture=JSON.parse(readFileSync('fixtures/ux-bundle-b.json')),overview=JSON.parse(readFileSync('fixtures/executive-overview.json'));
@@ -110,6 +112,12 @@ try{
  check('all protected commands retain CSRF',commands.filter(x=>x.resource!=='auth').every(x=>x.csrf==='DEMO_BROWSER_ONLY'));check('structured case observation/hypothesis preserved',cases[0].investigation.observations[0]==='Observasi asli QA SINTETIS.'&&cases[0].investigation.hypotheses[0]==='Hipotesis manusia belum tervalidasi.');
  qaFailure=403;await go('/engineering/cases');check('denied access clears previous records',await page.getByRole('alert').filter({hasText:t('Record access unavailable or denied')}).isVisible()&&await page.getByText(cases[0].title,{exact:true}).count()===0);qaFailure=0;
  // Full visual route coverage, including honest unavailable/error states for absent fixture contracts.
+ await go('/engineering/cases');
+ await page.getByLabel('Cari pada halaman Case ini').fill('no-such-case-synthetic');
+ check('Case search is confined to the loaded page',await page.locator('tbody tr').count()===0);
+ await page.getByLabel('Cari pada halaman Case ini').fill('');
+ check('clearing Case search restores the authorized rows',await page.locator('tbody tr').count()===cases.length);
+ await page.screenshot({path:out+'/case-register-1440.png',fullPage:true});
  const routes=['/','/assets','/assets/'+encodeURIComponent(asset),'/asset-health','/maintenance','/maintenance/investigation','/work-orders','/fmea','/rcfa','/overhauls','/data-quality','/login','/pdm','/recommendations?record=recommendation:DEMO-ID','/action-board?record=recommendation:DEMO-ID','/engineering/cases?record=case:DEMO-ID','/engineering/advisories?record=advisory:DEMO-ID','/engineering/inbox?record=advisory:DEMO-ID','/engineering','/engineering/lab','/engineering/workflow','/panduan/istilah','/equipment/DEMO','/engineering/qa'];
  for(const width of (process.env.NADI_BROWSER_WIDTHS??"1440,768,390").split(",").map(Number)){
   await page.setViewportSize({width,height:1086});
@@ -118,6 +126,12 @@ try{
    await go(path);if(path==='/login'){check('standalone login '+width,await page.locator('.nadi-shell,.nadi-sidebar,.nadi-topbar').count()===0);await page.getByRole('button',{name:'Ganti ke tema gelap'}).click();check('standalone dark theme '+width,await page.locator('html').getAttribute('data-theme')==='dark');await page.screenshot({path:out+'/login-dark-'+width+'.png',fullPage:true});await page.reload({waitUntil:'networkidle'});check('login refresh preserves theme '+width,await page.locator('html').getAttribute('data-theme')==='dark');await page.getByRole('button',{name:'Ganti ke tema terang'}).click();await label('Username').focus();await page.keyboard.press('Tab');check('keyboard reaches password '+width,await label('Password').evaluate(n=>n===document.activeElement));}check('one main '+path+' '+width,await page.getByRole('main').count()===1);check('no horizontal page overflow '+path+' '+width,await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
    // All input controls in the rendered candidate have an accessible name.
    const unnamed=await page.locator('input:not([type=hidden]),select,textarea').evaluateAll(nodes=>nodes.filter(n=>!n.labels?.length&&!n.getAttribute('aria-label')&&!n.getAttribute('aria-labelledby')).length);check('controls labeled '+path+' '+width,unnamed===0);
+   if(AxeBuilder && ((width===1440 && [0,1,2,12,13,14,15,18,20].includes(i)) || (width===390 && i===12))){
+     const result=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa']).analyze();
+     writeFileSync(out+'/a11y-'+i+'-'+width+'.json',JSON.stringify(result.violations,null,2));
+     a11yFailures.push(...result.violations.map(v=>({route:path,width,id:v.id,nodes:v.nodes.map(n=>n.target)})));
+     console.log('A11Y '+path+' '+width+': '+result.violations.length+' violations');
+   }
    await page.screenshot({path:out+'/'+String(i).padStart(2,'0')+'-'+width+'.png',fullPage:true});
   }
   if(width<1440){await page.getByRole('button',{name:t('Open navigation'),exact:true}).click();const dialog=page.getByRole('dialog');check('mobile drawer localized '+width,await dialog.isVisible());await page.keyboard.press('Escape');check('drawer closes with keyboard '+width,!await dialog.isVisible());}
@@ -125,6 +139,7 @@ try{
  await page.setViewportSize({width:1440,height:1086});await go('/');await page.getByRole('button',{name:t('System Integration'),exact:true}).focus();await page.keyboard.press('Enter');check('translated technical submenu works by keyboard',await page.getByRole('link',{name:t('Maintenance Investigation'),exact:true}).isVisible());await page.getByRole('link',{name:t('Maintenance Investigation'),exact:true}).click();await page.waitForURL(base+'/maintenance/investigation');check('deep navigation retains original URL',true);await page.setViewportSize({width:390,height:1086});await go('/');await page.getByRole('button',{name:'Ganti ke tema gelap',exact:true}).click();check('dark mode retained',await page.locator('html').getAttribute('data-theme')==='dark');await page.screenshot({path:out+'/dark-390.png',fullPage:true});
  factualFailure=true;await page.reload({waitUntil:'networkidle'});check('localized factual unavailable state',await page.getByRole('alert').isVisible());
  check('valid UTF-8 in candidate rendered text',!/[âÃÂ]/.test(await page.locator('body').innerText()));
+ check('WCAG A/AA automated scans',a11yFailures.length===0);
  check('no candidate browser exceptions',errors.length===0);
  writeFileSync(out+'/browser-results.json',JSON.stringify({scope:'Network-isolated actual candidate components; fixture workflow only, not persistent-runtime acceptance',checks,errors,commands:commands.map(({body,...rest})=>({...rest,keys:Object.keys(body)})),screenshots:routes.length*3},null,2));
  console.log('Localization browser PASS '+checks.length+' checks; '+out);

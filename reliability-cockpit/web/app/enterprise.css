@@ -1,0 +1,156 @@
+/* NADI V2 presentation. Status colors never classify equipment condition.
+   Loaded after legacy styles; scoped to the workspace to preserve approved login. */
+.nadi-shell .nadi-main { max-width:var(--content-width); padding:28px 32px 64px; }
+.nadi-shell .page-header { align-items:center; margin-bottom:24px; }
+.nadi-shell .page-header > div:first-child { min-width:0; }
+.nadi-shell .page-header h1 { font-size:clamp(26px,2.4vw,34px); line-height:1.22; letter-spacing:-.035em; overflow-wrap:anywhere; }
+.nadi-shell .page-description { max-width:76ch; margin-top:8px; font-size:14px; line-height:1.6; }
+.nadi-shell .eyebrow { font-size:12px; letter-spacing:.035em; text-transform:none; font-weight:650; }
+.nadi-shell .section-heading { align-items:center; gap:16px; flex-wrap:wrap; }
+.nadi-shell .section-heading h2 { font-size:18px; letter-spacing:-.015em; line-height:1.4; }
+.nadi-shell .section-note { font-size:12px; line-height:1.6; max-width:100ch; }
+.nadi-shell .page-actions { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.nadi-shell .product-workspace { gap:20px; }
+.nadi-shell .product-workspace > .page-header { margin-bottom:0; }
+.nadi-shell .section-card { border:1px solid var(--line); border-radius:12px; box-shadow:0 1px 3px rgba(16,37,54,.04); }
+.nadi-shell .stat-card { padding:20px; min-height:132px; border-radius:10px; box-shadow:none; gap:10px; }
+.nadi-shell .stat-card > span { font-size:13px; letter-spacing:0; font-weight:550; }
+.nadi-shell .stat-card > strong { font-size:clamp(23px,2vw,32px); line-height:1.2; letter-spacing:-.025em; font-variant-numeric:tabular-nums; overflow-wrap:anywhere; }
+.nadi-shell .stat-card > small { font-size:12px; line-height:1.5; }
+.nadi-shell .stat-card.accent { border-top:3px solid var(--cyan); background:var(--surface); }
+.nadi-shell .stat-grid { gap:12px; }
+/* Buttons and fields share predictable size, keyboard focus, and action hierarchy. */
+.nadi-shell .button { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:var(--control-height); padding:10px 16px; border:1px solid var(--line-strong); border-radius:var(--control-radius); background:var(--surface); color:var(--text); font-size:13px; font-weight:650; line-height:1.4; text-decoration:none; transition:background-color .12s,border-color .12s; }
+.nadi-shell .button:hover:not(:disabled) { filter:none; background:var(--hover); border-color:var(--muted); }
+.nadi-shell .button:active:not(:disabled) { background:var(--surface-3); }
+.nadi-shell .button.primary { background:var(--primary); border-color:var(--primary); color:var(--button-text); }
+.nadi-shell .button.primary:hover:not(:disabled) { filter:brightness(.92); background:var(--primary); }
+.nadi-shell .button.outline { border-color:var(--cyan); color:var(--cyan-strong); }
+.nadi-shell .button:is(.tertiary,.ghost) { border-color:transparent; background:transparent; color:var(--cyan-strong); }
+.nadi-shell .button.destructive { border-color:var(--red); color:var(--red); background:var(--surface); }
+.nadi-shell .button:disabled { opacity:.55; cursor:not-allowed; filter:none; }
+.nadi-shell .button[aria-busy=true] { cursor:wait; }
+.nadi-shell :is(.icon-button,.theme-toggle) { min-width:44px; min-height:44px; border-radius:8px; }
+.nadi-shell :is(.button,.icon-button,.theme-toggle,a,input,select,textarea,summary):focus-visible { outline:3px solid var(--focus); outline-offset:3px; }
+.nadi-shell :is(input:not([type=checkbox]):not([type=radio]),select,textarea) { width:100%; min-width:0; max-width:100%; border:1px solid var(--line-strong); border-radius:var(--control-radius); background:var(--surface); color:var(--text); padding:10px 12px; min-height:var(--control-height); font-size:14px; line-height:1.5; box-shadow:none; }
+.nadi-shell :is(input,textarea)::placeholder { color:var(--muted-2); opacity:1; }
+.nadi-shell :is(input,select,textarea):disabled { background:var(--surface-2); cursor:not-allowed; }
+.nadi-shell :is(input,select,textarea)[aria-invalid=true] { border-color:var(--red); }
+.nadi-shell label { font-size:13px; color:var(--text); }
+.nadi-shell .filter-grid { grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr)); gap:16px; align-items:end; }
+.nadi-shell .filter-grid label { display:grid; gap:7px; font-weight:550; }
+.nadi-shell .filter-grid input { margin-top:0; }
+.nadi-shell .filter-card { padding:20px; }
+.nadi-shell .search-control { display:flex; align-items:center; position:relative; }
+.nadi-shell .search-control svg { position:absolute; left:12px; color:var(--muted); pointer-events:none; }
+.nadi-shell .search-control input { padding-left:38px; }
+/* Registers: stronger headers, quieter dividers, readable source metadata. */
+.nadi-shell table { font-size:13px; line-height:1.55; }
+.nadi-shell th { padding:13px 16px; background:var(--table-head); color:var(--muted); font-size:12px; font-weight:650; letter-spacing:0; text-transform:none; white-space:normal; }
+.nadi-shell td { padding:14px 16px; vertical-align:top; border-bottom:1px solid var(--line); }
+.nadi-shell tbody tr:hover { background:var(--hover); }
+.nadi-shell tbody tr:focus-within { background:var(--cyan-soft); }
+.nadi-shell .table-subtext { font-size:12px; line-height:1.5; margin-top:5px; color:var(--muted); }
+.nadi-shell .table-frame { border:1px solid var(--line); border-radius:8px; scrollbar-color:var(--line-strong) var(--surface-2); }
+.nadi-shell .table-content { padding-bottom:2px; }
+.nadi-shell .table-action { display:inline-flex; align-items:center; min-height:44px; color:var(--cyan-strong); font-weight:650; }
+.nadi-shell .status-badge { border-radius:6px; padding:4px 8px; font-size:12px; letter-spacing:0; line-height:1.5; white-space:normal; }
+.nadi-shell .pagination { padding:16px 0 0; font-size:13px; gap:12px; flex-wrap:wrap; font-variant-numeric:tabular-nums; }
+.nadi-shell .pagination > div { gap:8px; }
+.nadi-shell .page-number { border:1px solid var(--line); border-radius:6px; min-width:32px; text-align:center; }
+.nadi-shell .state-card { border-radius:10px; padding:32px 24px; font-size:14px; box-shadow:none; }
+.nadi-shell .state-symbol { width:40px; height:40px; display:grid; place-items:center; border:1px solid var(--line); border-radius:50%; color:var(--muted); margin:0 auto 12px; font-size:22px; }
+.nadi-shell .feedback { border-radius:8px; padding:12px 16px; line-height:1.6; }
+/* Navigation preserves existing drawer and selected-route behavior. */
+.nadi-shell .nadi-sidebar { background:#102536; }
+.nadi-shell .nav-link { min-height:46px; border-radius:8px; font-size:14px; }
+.nadi-shell .nav-link.active { box-shadow:inset 3px 0 0 var(--nav-edge); }
+.nadi-shell .nav-sublink { min-height:38px; display:flex; align-items:center; font-size:13px; }
+.nadi-shell .topbar-kicker { font-size:11px; letter-spacing:.08em; }
+.nadi-shell .topbar-title { font-size:13px; }
+.nadi-shell .nadi-topbar { gap:16px; border-bottom:1px solid var(--line); box-shadow:none; }
+.nadi-shell .breadcrumbs { font-size:12px; margin-bottom:14px; }
+.nadi-shell .help-details { margin:12px 0; color:var(--muted); font-size:12px; }
+.nadi-shell .help-details summary { cursor:pointer; min-height:44px; padding:12px 0; font-weight:600; color:var(--cyan-strong); }
+.nadi-shell .help-details > div { padding:0 0 12px 16px; border-left:2px solid var(--line); max-width:100ch; }
+.nadi-shell .help-details p { margin:0 0 8px; }
+/* Engineering editor: bounded reading measure and distinct evidence groups. */
+.nadi-shell .engineering-form { gap:24px; max-width:1200px; }
+.nadi-shell .engineering-form > fieldset { border:0; border-top:1px solid var(--line); border-radius:0; padding:20px 0 0; gap:16px; }
+.nadi-shell .engineering-form > fieldset > legend { padding:0 12px 0 0; color:var(--heading); font-size:16px; }
+.nadi-shell .engineering-form textarea { min-height:112px; }
+.nadi-shell .form-actions { padding:16px; border:1px solid var(--line); border-radius:10px; background:var(--surface-2); margin:0; }
+.nadi-shell .product-record-detail .asset-facts { padding:16px; background:var(--surface-2); border:1px solid var(--line); border-radius:8px; gap:16px; }
+.nadi-shell .product-record-detail .product-context-grid > div { padding:0 16px 16px; border-left:2px solid var(--line); }
+.nadi-shell .product-record-detail h3 { font-size:15px; }
+.nadi-shell .engineering-timeline li { position:relative; border-color:var(--line-strong); padding:0 0 12px 20px; }
+.nadi-shell .engineering-timeline li::before { content:""; width:7px; height:7px; background:var(--cyan); border-radius:50%; position:absolute; left:-4.5px; top:7px; }
+.nadi-shell .engineering-timeline :is(span,small) { font-size:12px; }
+/* PdM: a single workspace bar, compact context, and a structured measurement grid. */
+.nadi-shell .pdm-workspace { position:relative; }
+.nadi-shell .pdm-workspace-nav { display:flex; gap:8px; align-items:center; flex-wrap:wrap; padding:12px; background:var(--surface); border:1px solid var(--line); border-radius:10px; }
+.nadi-shell .pdm-workspace-nav .button[aria-pressed=true]:not(.primary) { background:var(--cyan-soft); border-color:var(--cyan); color:var(--cyan-strong); }
+.nadi-shell .pdm-workspace-nav a { margin-left:auto; }
+.nadi-shell .pdm-method-filter { padding-bottom:12px; border-bottom:1px solid var(--line); }
+.nadi-shell .pdm-method-filter .button { border-color:transparent; background:var(--surface-2); }
+.nadi-shell .pdm-method-filter .button[aria-pressed=true] { color:var(--cyan-strong); border-color:var(--cyan); background:var(--cyan-soft); }
+.nadi-shell .workspace-steps { gap:0; border:1px solid var(--line); border-radius:8px; overflow:hidden; margin:20px 0; }
+.nadi-shell .workspace-steps li { border:0; border-radius:0; border-right:1px solid var(--line); background:var(--surface-2); padding:12px 16px; gap:4px; }
+.nadi-shell .workspace-steps li:last-child { border-right:0; }
+.nadi-shell .workspace-steps span { font-size:12px; }
+.nadi-shell .pdm-entry .engineering-form { max-width:none; }
+.nadi-shell .pdm-grid-scroll { padding:6px; border:1px solid var(--line); border-radius:10px; background:var(--surface-2); scroll-padding-inline:8px; }
+.nadi-shell .pdm-entry .pdm-measurement-row { border:1px solid var(--line); border-radius:8px; background:var(--surface); padding:12px; gap:12px; }
+.nadi-shell .pdm-measurement-row legend { font-size:12px; background:var(--surface); border:1px solid var(--line); border-radius:5px; padding:3px 8px; }
+.nadi-shell .pdm-entry .pdm-measurement-row + .pdm-measurement-row { margin-top:0; }
+.nadi-shell .pdm-measurement-row label { font-size:12px; }
+.nadi-shell .pdm-workbook-template { margin-block:8px; background:var(--surface-2); }
+.nadi-shell .pdm-workbook-template .workbook-field { background:var(--surface); }
+.nadi-shell .pdm-register .record-open { padding:0; background:transparent; border:0; color:var(--cyan-strong); align-items:flex-start; }
+.nadi-shell .pdm-register .record-open small { color:var(--muted); }
+/* Factual pages and reports keep every population, value, and as-of timestamp. */
+.nadi-shell .trend-track span { background:var(--chart); }
+.nadi-shell .overview-filter-bar { border-radius:10px; }
+.nadi-shell .executive-summary-grid > .section-card { box-shadow:none; }
+.nadi-shell .asset-facts :is(dt,dd) { font-size:13px; line-height:1.6; }
+.nadi-shell .report-template { box-shadow:none; padding:20px; gap:10px; }
+.nadi-shell .report-template:hover { background:var(--hover); }
+.nadi-shell .report-template.selected { background:var(--cyan-soft); border-color:var(--cyan); box-shadow:inset 3px 0 0 var(--cyan); }
+.nadi-shell .integration-component { padding:20px; }
+.nadi-shell .integration-dimension { padding-block:12px; }
+@media (min-width:1700px) { .nadi-shell .nadi-main { padding-inline:40px; } }
+@media (max-width:1023px) { .nadi-shell .nadi-main { padding:24px; } }
+@media (max-width:800px) { .nadi-shell .pdm-measurement-grid { min-width:0; } .nadi-shell .pdm-entry .pdm-measurement-row { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:600px) {
+ .nadi-shell .nadi-main { padding:20px 16px 48px; }
+ .nadi-shell .page-header { align-items:flex-start; flex-direction:column; gap:12px; }
+ .nadi-shell .section-card { padding:16px; }
+ .nadi-shell .filter-grid { grid-template-columns:minmax(0,1fr); }
+ .nadi-shell .stat-card { padding:16px; }
+ .nadi-shell .topbar-actions { gap:6px; }
+ .nadi-shell .pdm-workspace-nav a { margin-left:0; }
+ .nadi-shell .pdm-workspace-nav .button { flex:1 1 42%; }
+ .nadi-shell .workspace-steps li { border-right:0; border-bottom:1px solid var(--line); }
+ .nadi-shell .form-actions .button { flex:1 1 auto; }
+ .nadi-shell .data-section { padding:16px 0 0; }
+}
+@media (max-width:480px) { .nadi-shell .pdm-entry .pdm-measurement-row { grid-template-columns:minmax(0,1fr); } }
+@media (prefers-reduced-motion:reduce) { .nadi-shell .button { transition:none; } }
+.nadi-shell .register-search { display:grid; grid-template-columns:minmax(200px,440px) minmax(0,1fr); gap:16px; align-items:end; margin-bottom:20px; }
+.nadi-shell .register-search label { display:grid; gap:8px; }
+.nadi-shell .asset-register-stats { grid-template-columns:repeat(3,minmax(0,1fr)); margin-bottom:20px; }
+.nadi-shell .action-board-queues > .section-card > h2 { font-size:18px; line-height:1.4; margin-bottom:20px; }
+@media(max-width:1100px) { .nadi-shell .action-board-queues { grid-template-columns:minmax(0,1fr); } }
+@media(max-width:600px) { .nadi-shell .register-search,.nadi-shell .asset-register-stats { grid-template-columns:minmax(0,1fr); } }
+.nadi-shell .stat-card > strong.stat-text-value { font-size:20px; line-height:1.4; font-weight:650; letter-spacing:-.015em; }
+.nadi-shell .filter-grid .search-control input[type=search],.nadi-shell .search-control input[type=search] { padding-left:38px; }
+.nadi-shell .asset-register-stats .stat-card { min-height:144px; }
+
+.nadi-shell .maturity-badge { color:var(--cyan-strong); background:var(--cyan-soft); font-size:12px; letter-spacing:0; }
+
+.nadi-shell .scope-chip { color:var(--cyan-strong); }
+@media(max-width:600px) {
+ .nadi-shell .pdm-workspace .product-stat-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+ .nadi-shell .pdm-workspace .stat-card { padding:12px; min-height:132px; }
+ .nadi-shell .pdm-workspace .stat-card > strong.stat-text-value { font-size:17px; }
+}

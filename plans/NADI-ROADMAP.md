@@ -1014,3 +1014,31 @@ Administration UI/API remains PLANNED. Phase0–5/M01–M07 stay; M02/M03/M07 ON
 26 engineer decisions pending, Phase1 review/checkpoint/hard-expiry unchanged.
 No runtime/session/DB/source/collector/Mart or external QA action. Next: senior
 security/product review, then separately authorize ADMIN-01 read-contract decisions.
+
+
+## 18 Oktober 2026 — NADI Design System V2 candidate
+
+NADI-UX-V2-OVERHAUL-01 checkpoints A–E IMPLEMENTED; checkpoint F locally TESTED:
+shared controls/surfaces, PdM entry/register, Case search/review presentation,
+Executive/Assets, Recommendations/Action Board, Reports and shared factual pages.
+[Report and 20 screenshot pairs](../reliability-cockpit/docs/NADI-UX-V2-OVERHAUL-01.md).
+15 frontend check groups, types/lint/build and 1,193 synthetic browser assertions
+pass; 34 axe scans report zero violations. Exact-head remote CI belongs to the
+Draft PR checks. UNMERGED, PO acceptance PENDING, LIVE_PREVIEW_NOT_PROMOTED.
+No source/DB/API/auth architecture changes; Administration remains PLANNED.
+Existing phases, engineering approvals and ON HOLD decisions are not advanced.
+Next: senior design/code review → PO visual acceptance → authorized merge.
+
+
+## 19 October 2026 — NADI UI source consolidation checkpoint
+
+PR103 recovery and PR102 → PR104 UI are being consolidated with all original
+ancestry and both DEV-LOG histories retained. [Integration plan](../reliability-cockpit/docs/NADI-UI-INTEGRATION-103-102-104.md)
+records immutable heads, combined validation and normal PR/main CI gates.
+The existing development appearance is PO accepted; source commit/push/merge is
+explicitly authorized only after review and CI. At this preparation checkpoint
+source integration is PENDING final exact-head qualification; final merge state
+belongs to the GitHub handoff. Actual observed runtime already serves PR104 with
+controller/bootstrap PR103; source integration does not restart or replace it.
+Operational F03/Phase1, engineer method/threshold decisions and ON HOLD items
+remain unchanged. Historical pending/not-promoted entries retain their dated scope.
