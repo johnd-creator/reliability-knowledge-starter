@@ -125,7 +125,9 @@ class ReplayStore(DeferredProjectionStore):
                 t.tgdeferrable,t.tginitdeferred,p.proname FROM pg_trigger t JOIN pg_class c ON c.oid=t.tgrelid
                 JOIN pg_proc p ON p.oid=t.tgfoid WHERE c.relnamespace=current_schema()::regnamespace
                 AND c.relname LIKE 'mart_replay_%' AND NOT t.tgisinternal''')))
-            if triggers != TRIGGERS or self._replay_catalog(s) != CATALOG_SIGNATURE:
+            signature=self._replay_catalog(s)
+            if triggers != TRIGGERS or (signature != CATALOG_SIGNATURE and not reviewed_catalog(
+                    signature,s.scalar(text("SELECT current_setting('server_version_num')")))):
                 raise CaptureError('replay index/constraint/trigger drift')
 
     @staticmethod
@@ -447,3 +449,13 @@ TRIGGERS = {
  ('mart_replay_event','replay_event_no_truncate',34,'O',False,False,'mart_deferred_append_only'),
 }
 CATALOG_SIGNATURE = 'f3471fb5a23314bf9e004fa1f006cefa304d335a80e73df4efc32b998c108bfc'
+
+# Exact PR100 952160cca72724e456b5a4e092301f5e475143e3 schema restored by
+# pg_dump/pg_restore16.14 on PostgreSQL16.14: only reviewed varchar-array deparse
+# forms differ. Full constraint/index SHA remains pinned; no normalization/trust
+# is inferred from caller metadata. Other versions require separate qualification.
+PG16_14_RESTORED_CATALOG_SIGNATURE = '24b57f5739b96a1b1179348b6af6cad70fbc98dc11e7d7790a48a571dc557d65'
+
+def reviewed_catalog(signature, server_version_num=None):
+    return signature == CATALOG_SIGNATURE or (
+        str(server_version_num) == '160014' and signature == PG16_14_RESTORED_CATALOG_SIGNATURE)

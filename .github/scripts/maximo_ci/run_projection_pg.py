@@ -17,6 +17,9 @@ import sys
 import tempfile
 import unittest
 from unittest.mock import patch
+# Also importable when safety tests load this file by absolute path.
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from owned_cluster import OwnedCluster
 
 
 def fixture_connection_allowed(parsed, socket_path, port):
@@ -53,7 +56,7 @@ def main():
     owner = 'nadi_b1_fixture'
     dbname = 'nadi_aud02b_disposable'
     port = 16479  # Unix socket suffix only; TCP is disabled, no host listener.
-    started = False
+    cluster = OwnedCluster(work, bindir, env, 'nadi-b1-pg-')
     result, blocked, failure = None, [], None
     fixture = {}
     workflow_sha = os.environ.get('CI_WORKFLOW_SHA','LOCAL_WORKTREE')
@@ -64,9 +67,9 @@ def main():
                            check=True, stdout=out, stderr=out, timeout=30)
     try:
         command('initdb','-D',str(data),'--no-locale','--encoding=UTF8','-A','trust','-U',owner)
+        cluster.before_start()
         command('pg_ctl','-D',str(data),'-l',str(work/'postgres.log'),'-w','start','-o',
                 f"-h '' -k {sock} -p {port} -c max_connections=12 -c shared_buffers=32MB -c fsync=on")
-        started = True
         import psycopg
         params = dict(host=str(sock),port=port,user=owner,dbname='postgres',connect_timeout=3)
         with psycopg.connect(**params, autocommit=True) as c:
@@ -132,17 +135,16 @@ def main():
         # flag after tests, not by weakening test guards or reusing a service.
         # See audit_enabled below for cleanup of this exact owned data directory.
         audit_enabled[0] = False
-        if started:
-            command('pg_ctl','-D',str(data),'-m','fast','-w','stop')
+        cleanup = cluster.cleanup()
     ok = bool(result and result.wasSuccessful() and result.testsRun > 0 and
               result.testsRun == discovered and not result.skipped and
-              not result.expectedFailures and not blocked and failure is None)
+              not result.expectedFailures and not blocked and failure is None and not cleanup['cleanup_error'])
     output = dict(python=platform.python_version(),tested_sha=args.sha,
         workflow_sha=workflow_sha,run_url=run_url,
         tests=result.testsRun if result else 0, discovered=discovered if result else 0,
         failures=len(result.failures) if result else 0, errors=len(result.errors) if result else 0,
         skips=len(result.skipped) if result else 0, blocked_io=len(blocked),
-        infrastructure_error=failure, fixture=fixture, cleanup='OWN_CLUSTER_STOPPED',
+        infrastructure_error=failure, fixture=fixture, **cleanup,
         conclusion='PASS' if ok else 'FAIL')
     report.write_text(json.dumps(output,indent=2)+'\n')
     print(json.dumps(output))

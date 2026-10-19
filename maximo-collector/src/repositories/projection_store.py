@@ -146,6 +146,13 @@ def map_input(domain, source_id, payload):
         return record, None, None
     if not source_id.startswith("BSR"):
         return None, "EXPECTED_EXCLUSION", "APPROVED_WO_PREFIX"
+    # Canonical asset natural keys preserve case. Legacy WO reconstruction
+    # uppercases its reference; that matching form is not an approved alias.
+    # Retain the raw captured value and existing FAILED vocabulary until the
+    # source-to-canonical identity contract is explicitly reconciled.
+    equipment = normalize_identifier(payload["equipment_id"])
+    if equipment and str(payload["equipment_id"]).strip() != equipment:
+        return None, "FAILED", "INVALID_MAPPING"
     if not normalize_identifier(payload["equipment_id"]) or not payload["local_equipment_present"]:
         return None, "DEFERRED", "MISSING_LOCAL_EQUIPMENT"
     row = dict(payload)

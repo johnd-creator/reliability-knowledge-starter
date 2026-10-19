@@ -711,3 +711,30 @@ Product Owner Acceptance: NOT_GRANTED; independent Senior Review required. Overa
 Remaining Blockers: Operational NO-GO; legacy writers RESTRICTED; Astra F-03 OPEN; owner/co-location, backup/grants/migration approval, writer exclusion, historical/absence/stale-claim policy, Phase1 and AUD11 gates unchanged.
 Next Action: Senior Review → Technical Acceptance / Separate Merge Authorization. STOP after DRAFT and report.
 Evidence: [FIX-01 qualification report](maximo-collector/docs/NADI-AUD-02B-B5-FIX-01.md).
+
+
+## 2026-10-19 — F03 night senior review (local/unpublished)
+
+- Reviewed current main35f3c101 and exact unmerged PR94–100; DAG95→96→97→98→99→100, PR94 independent docs. Only DEV-LOG conflicts in isolated no-commit integration.
+- Exact PR100 PostgreSQL16.14:133B1–B3+38B4+26B5+41FIX01 tests PASS; actual two-process claim/fence test1PASS. Integrated offline240+Cockpit43+private rehearsals6PASS; CI safety72PASS.
+- New independent-cluster restore retains56tables/19rows+roles/ACL/owner/helper, but raw catalog-deparse pins reject recovery: P1availability blocker. Extra acceptance repros confirm P2normalization and P2missing explicit next-generation enrollment. No recovery guard/migration/policy bypass.
+- Local cleanup patch uses verified pidfd only, independently reviewed; real post-start nonzero/timeout rehearsals retain originalFAIL and stop only OWN fixture. All fixture servers stopped.
+- See maximo-collector/docs/NADI-F03-NIGHT-REVIEW-01.md and task review-evidence/f03-night-* for exact provenance, outcomes, limitations and tasks. F03 operationalNO-GO; no commit/push/PR/merge/deploy/runtime/access change or expiry extension. FAU-11 remainsInProgress; FAU-7Done is separate.
+
+
+## 2026-10-19 — F03 safe fixes follow-up (local/unpublished)
+
+- P1logical restore RED→GREEN on independentPG16.14clusters: exact finite wholecatalog restore pins gated160014, unchanged hash functions/freshpins/ACL/owner/helper/triggerguards. SQL+ORMrestricted replayDONE and actualB4VERIFIED; targetedrecoveryPARTIAL preserved. Nine metadata/version negativegroups plus two actual postrestoreprovenance mutations refused.
+- Refined earlierP2normalization label after sourcecontractwitness: canonicalnaturalkeys preservea/A, legacyWOmatchingcasefold is not proof of correctlinkage. Safe partialmitigation rejects case-changingWOrefs asFAILED/INVALID_MAPPING withrawcapture retained; sixPGregressionsRED3fail→GREEN6/6, includingoldresolvedsamefingerprintrefusal withoutrewrite. Fullidentity/aliasdecision remainsOPEN.
+- Nextgenerationterminal policy deliberately unchanged; onePGwitnessprovesno reset/re-enroll/history/counterchange. Ownerdecision needed for explicitappend-onlyepisodecontract/budget/readersemantics afterDONE;BLOCKED notimplicitlyunblocked.
+- Combined main35f3c101+uncommittedPR100+localfix: PG139+38+26+41PASS; actualprocess1PASS;offline248+Cockpit43+private6+safety72PASS. No newcommit/push/PR/merge/deploy/access/runtime/expirychanges. See maximo-collector/docs/NADI-F03-FIX-REVIEW-02.md and review-evidence/f03-fix-delivery.json. F03operationalNO-GO;FAU-11InProgress;FAU-7Doneindependent.
+
+
+## 2026-10-19 — F03 authorized draft publication candidate
+
+- Dedicated codex/nadi-f03-recovery-safeguards-01 starts from exactPR100952160c; newdiffonly, dependencies95→96→97→98→99→100 remainunmerged. Main35f3c101 combinationqualified separately, noUI/mainhistoryimported into thisstackeddiff. PR94–100remoteunchanged.
+- Reused original reviewedlocalfixpatch1a51e8b...; productionfixbytes matchpriorcandidate. StrictfinitePG16.14restorepins, casechangingidentityrefusal, andpidfdfixturecleanupretained. Added portablemanualsamefixture rehearsal and guardedstackedCIselector, pinnedPRsnapshotANDlivebase.ref/type/sha atadmission/finalcheck.
+- Finalactualpublicationbranch localchecks:139+38+26+41PGPASS,248Maximooffline,43Cockpit,14contracts,46MaximoCIsafety,14qualificationCIsafety; actualtwoprocessfencing1PASS, terminalgenerationrefusal1PASS. PortableSQL/ORMtwo-clusterPG16.14restorePASS with9negativegroups+2provenancedrifts, bothclustersSTOPPED. HostedexactheadCI stillpendingpublication.
+- Authorizationcoverscommit/push/draftPR+CIonly. No merge/auto-merge/deploy/activation/activegrant/runtime/sourcechanges. Case/aliasandnextgenerationbudget/B4/BLOCKEDdecisionsstayOPEN;F03operationalNO-GO. See maximo-collector/docs/NADI-F03-PUBLICATION-01.md.
+
+- Final publication safety follow-up: mocked preflight/initdb failures retain structured FAIL/cleanup reports; qualification safety15/15PASS. Production/rehearsal runtime bytes unchanged; original portablePASS tool hashes remain current.

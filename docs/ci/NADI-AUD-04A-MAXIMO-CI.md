@@ -48,11 +48,23 @@ versions are recorded and installed-package versions remain visible in pip logs.
 [qualify.py](../../.github/scripts/maximo_ci/qualify.py) accepts an explicit PR
 number and full lowercase 40-character SHA. Before checkout it verifies the
 current GitHub PR metadata: exact number, OPEN/unmerged, both repositories equal
-`johnd-creator/reliability-knowledge-starter`, base `main`, and current head equal
-the requested SHA. Missing/unreadable PR metadata, stale heads, forks, wrong
+`johnd-creator/reliability-knowledge-starter`, an accepted base, and current head equal
+the requested SHA. The base is `main`, or the single reviewed F03 stacked base
+`codex/nadi-aud02b-b5-fix01-source-lock` at exactly
+`952160cca72724e456b5a4e092301f5e475143e3` (PR100). Branch and SHA are both pinned
+in tools, never accepted from caller arguments. Since PR base SHA is a snapshot,
+admission and final metadata recheck also read the live Git ref and require its
+commit to equal that pin; movement requires a new reviewed change. This lets the F03
+fix PR expose only its incremental diff without implying PR95–100 are merged.
+Missing/unreadable PR metadata, stale heads/bases, forks, wrong
 repositories, abbreviated SHAs, branch names and unsupported events/refs fail.
 Normal PR events select the **PR head**, not the synthetic merge commit. Main
 pushes select their immutable event SHA.
+
+The pinned stacked exception is available through normal PR-event tools at the
+candidate workflow SHA. The older default-main workflow remains main-only until
+this tool change is deliberately integrated; dispatching it is not a substitute
+for the stacked PR's exact-head checks.
 
 Tools are checked out at `github.workflow_sha`, separately from the selected
 source. The source checkout verifies HEAD, origin and clean tracked files before

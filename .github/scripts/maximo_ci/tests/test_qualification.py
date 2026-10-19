@@ -30,6 +30,69 @@ class SelectionTests(unittest.TestCase):
     def test_valid_exact_head(self):
         self.assertEqual(q.validate_pr(pr(), q.REPOSITORY, '91', HEAD), HEAD)
 
+    def test_only_reviewed_exact_stack_base_is_accepted(self):
+        payload = pr()
+        payload['base'].update(ref='codex/nadi-aud02b-b5-fix01-source-lock',
+                               sha='952160cca72724e456b5a4e092301f5e475143e3')
+        self.assertEqual(q.validate_pr(payload, q.REPOSITORY, '91', HEAD), HEAD)
+
+    def test_stack_base_wrong_branch_or_missing_or_changed_sha_refused(self):
+        for ref, sha in (('feature/arbitrary', '952160cca72724e456b5a4e092301f5e475143e3'),
+                         ('codex/nadi-aud02b-b5-fix01-source-lock', None),
+                         ('codex/nadi-aud02b-b5-fix01-source-lock', 'a' * 40),
+                         ('codex/nadi-aud02b-b5-fix01-source-lock', '952160c')):
+            payload = pr()
+            payload['base'].update(ref=ref, sha=sha)
+            with self.subTest(ref=ref, sha=sha), self.assertRaisesRegex(ValueError, 'UNSUPPORTED_PR_BASE'):
+                q.validate_pr(payload, q.REPOSITORY, '91', HEAD)
+
+    def test_pinned_stack_base_does_not_authorize_forks_or_stale_heads(self):
+        payload = pr()
+        payload['base'].update(ref='codex/nadi-aud02b-b5-fix01-source-lock',
+                               sha='952160cca72724e456b5a4e092301f5e475143e3')
+        payload['base']['repo']['full_name'] = 'someone/fork'
+        with self.assertRaisesRegex(ValueError, 'UNEXPECTED_PR_REPOSITORY'):
+            q.validate_pr(payload, q.REPOSITORY, '91', HEAD)
+        payload['base']['repo']['full_name'] = q.REPOSITORY
+        with self.assertRaisesRegex(ValueError, 'STALE_PR_HEAD'):
+            q.validate_pr(payload, q.REPOSITORY, '91', 'b' * 40)
+
+    def test_recheck_refuses_pinned_stack_base_movement(self):
+        payload = pr()
+        payload['base'].update(ref='codex/nadi-aud02b-b5-fix01-source-lock', sha='a' * 40)
+        with patch.dict(os.environ, {'GH_TOKEN': 'synthetic'}), \
+                patch.object(q.urllib.request, 'urlopen') as request:
+            request.return_value.__enter__.return_value.read.return_value = json.dumps(payload)
+            with self.assertRaisesRegex(ValueError, 'UNSUPPORTED_PR_BASE'):
+                q.current_pr(q.REPOSITORY, '91', HEAD)
+
+    def test_current_stack_base_checks_live_ref_beyond_pr_snapshot(self):
+        payload = pr()
+        payload['base'].update(ref='codex/nadi-aud02b-b5-fix01-source-lock',
+                               sha='952160cca72724e456b5a4e092301f5e475143e3')
+        target = {'ref': 'refs/heads/codex/nadi-aud02b-b5-fix01-source-lock',
+                  'object': {'type': 'commit', 'sha': payload['base']['sha']}}
+        with patch.object(q, 'github_metadata', side_effect=[payload, target]) as metadata:
+            self.assertEqual(q.current_pr(q.REPOSITORY, '91', HEAD), HEAD)
+            self.assertEqual(metadata.call_args_list[-1].args,
+                ('git/ref/heads/codex/nadi-aud02b-b5-fix01-source-lock',))
+        for live in ({}, {'object': {'type': 'commit', 'sha': 'a' * 40}},
+                     {'object': {'type': 'tag', 'sha': payload['base']['sha']}},
+                     {'ref': 'refs/heads/other', 'object': target['object']},
+                     target | {'object': {'type': 'commit', 'sha': 'a' * 40}},
+                     target | {'object': {'type': 'tag', 'sha': payload['base']['sha']}}):
+            with self.subTest(live=live), patch.object(q, 'github_metadata', side_effect=[payload, live]):
+                with self.assertRaisesRegex(ValueError, 'STALE_STACK_BASE'):
+                    q.current_pr(q.REPOSITORY, '91', HEAD)
+
+    def test_unavailable_live_stack_base_is_refused(self):
+        payload = pr()
+        payload['base'].update(ref='codex/nadi-aud02b-b5-fix01-source-lock',
+                               sha='952160cca72724e456b5a4e092301f5e475143e3')
+        with patch.object(q, 'github_metadata', side_effect=[payload, ValueError('PR_METADATA_UNAVAILABLE')]):
+            with self.assertRaisesRegex(ValueError, 'PR_METADATA_UNAVAILABLE'):
+                q.current_pr(q.REPOSITORY, '91', HEAD)
+
     def test_reject_stale_head(self):
         with self.assertRaisesRegex(ValueError, 'STALE_PR_HEAD'):
             q.validate_pr(pr(), q.REPOSITORY, '91', 'a' * 40)
