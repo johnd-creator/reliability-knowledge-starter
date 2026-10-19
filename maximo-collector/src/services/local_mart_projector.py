@@ -8,6 +8,7 @@ never constructs a Maximo client and never changes a Maximo SyncCursor.
 from __future__ import annotations
 
 import os
+import logging
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -31,6 +32,8 @@ from src.services.asset_registry_reconciliation import (
 from src.services.canonical import CanonicalCollection
 from src.services.mart import MartWriter
 
+
+LOG = logging.getLogger(__name__)
 
 REGISTRY_SOURCE = "MAXIMO_LIST_OF_ASSETS"
 SITE_CODE = "BSR"
@@ -210,6 +213,22 @@ class CollectorMartProjector:
                 state.updated_at = now
             session.commit()
 
+    def _save_failure(self, projection_key: str) -> None:
+        """Record failed attempt without advancing the last successful checkpoint."""
+        now = datetime.now(timezone.utc)
+        with self.mart_db.session() as session:
+            state = session.get(mart_models.MartProjectionStateOrm, projection_key)
+            if state is None:
+                state = mart_models.MartProjectionStateOrm(
+                    projection_key=projection_key, watermark=None, last_status="FAILED",
+                    last_success_at=None, rows_seen=0, rows_written=0, updated_at=now,
+                )
+                session.add(state)
+            else:
+                state.last_status = "FAILED"
+                state.updated_at = now
+            session.commit()
+
     def _equipment_ids(self) -> set[str]:
         with self.collector_db.session() as session:
             return {
@@ -220,9 +239,21 @@ class CollectorMartProjector:
     def project(self, projection_key: str, *, incremental: bool = False) -> ProjectionReport:
         if projection_key not in {"asset_master", "maintenance_event"}:
             raise ValueError("unsupported local projection")
+        try:
+            return self._project(projection_key, incremental=incremental)
+        except Exception:
+            try:
+                self._save_failure(projection_key)
+            except Exception:
+                # Preserve the original failure and avoid logging source payloads,
+                # credentials or exception text. An unavailable target cannot attest.
+                LOG.error("Local projection failed; FAILED state could not be persisted")
+            raise
+
+    def _project(self, projection_key: str, *, incremental: bool = False) -> ProjectionReport:
         previous = self._state(projection_key)
         mode = "incremental" if incremental else "full"
-        if incremental and previous is None:
+        if incremental and (previous is None or previous.watermark is None):
             mode = "full"
             incremental = False
         if previous and previous.watermark and previous.watermark.tzinfo is None:

@@ -6,6 +6,7 @@ from contextlib import contextmanager
 import hashlib
 from sqlalchemy.orm import Session
 from src.domain.condition_evidence import (EvidenceBatch, EvidenceSources, PiLineage, ProjectionPlan, SignalSelection, MAX_SIGNALS)
+from src.repositories.condition_integrity import utc_timestamp
 from src.repositories.condition_models import ConditionSignalSelectionMart, ConditionEvidenceLatestMart, ConditionProjectionStateMart
 from src.repositories.mart_models import AssetAfMappingMart, ReliabilityAssetRegistryMart, AssetMasterMart
 from src.services.asset_af_mapping import mapping_from_row, resolve_asset_af_mapping
@@ -125,6 +126,9 @@ class ConditionCommandStore:
         now = now or datetime.now(timezone.utc)
         if now.tzinfo is None:
             raise ValueError("aware projection clock required")
+        # Normalize technical storage clocks before SQLite can drop timezone
+        # metadata; the original source/collection representation stays in JSON.
+        now = now.astimezone(timezone.utc)
         with Session(self.engine) as session, session.begin():
             current = self._plan(session, batch.plan.canonical_asset_id, lock=True)
             if current != batch.plan:
@@ -142,19 +146,15 @@ class ConditionCommandStore:
                     row = session.get(ConditionEvidenceLatestMart, result.signal_id)
                     if e is None or row is None or row.evidence != e.model_dump(mode="json"):
                         raise ProjectionGateError("REPLAY_NOT_ACCEPTED")
-                    projected = row.projected_at
-                    if projected.tzinfo is None:
-                        projected = projected.replace(tzinfo=timezone.utc)
+                    projected = utc_timestamp(row.projected_at)
                     if projected < e.collected_at or projected > now:
                         raise ProjectionGateError("REPLAY_NOT_ACCEPTED")
                 return {"status": "REPLAYED", "written": 0}
             state_row = session.get(ConditionProjectionStateMart, current.canonical_asset_id, with_for_update=True)
             # Older handoffs must not move attempt/currentness backwards.
-            attempt_at = max((r.evidence.collected_at for r in batch.results if r.evidence), default=now)
+            attempt_at = max((r.evidence.collected_at for r in batch.results if r.evidence), default=now).astimezone(timezone.utc)
             if state_row:
-                previous = state_row.attempted_at
-                if previous.tzinfo is None:
-                    previous = previous.replace(tzinfo=timezone.utc)
+                previous = utc_timestamp(state_row.attempted_at)
                 if attempt_at < previous:
                     return {"status": "IGNORED_OLDER_BATCH", "written": 0}
             written = 0
@@ -165,19 +165,17 @@ class ConditionCommandStore:
                 row = session.get(ConditionEvidenceLatestMart, e.signal_id)
                 payload = e.model_dump(mode="json")
                 if row is not None:
-                    previous = row.collected_at
-                    if previous.tzinfo is None:
-                        previous = previous.replace(tzinfo=timezone.utc)
+                    previous = utc_timestamp(row.collected_at)
                     if e.collected_at < previous:
                         continue
                     if e.collected_at == previous:
                         if row.evidence != payload:
                             raise ProjectionGateError("CONFLICTING_SAME_COLLECTION")
                         continue
-                    row.evidence, row.collected_at, row.projected_at = payload, e.collected_at, now
+                    row.evidence, row.collected_at, row.projected_at = payload, e.collected_at.astimezone(timezone.utc), now
                 else:
                     session.add(ConditionEvidenceLatestMart(signal_id=e.signal_id, canonical_asset_id=e.canonical_asset_id,
-                        mapping_id=e.mapping_id, evidence=payload, collected_at=e.collected_at, projected_at=now))
+                        mapping_id=e.mapping_id, evidence=payload, collected_at=e.collected_at.astimezone(timezone.utc), projected_at=now))
                 written += 1
             successful = sum(r.evidence is not None for r in batch.results)
             statuses = sorted({r.status for r in batch.results if r.status != "COLLECTED"})
@@ -189,6 +187,6 @@ class ConditionCommandStore:
                 "collector_last_success_at": batch.collector_last_success_at.isoformat() if batch.collector_last_success_at else None}
             if state_row is None:
                 session.add(ConditionProjectionStateMart(canonical_asset_id=current.canonical_asset_id, attempted_at=attempt_at, state=state))
-            elif state_row.state != state or state_row.attempted_at.replace(tzinfo=timezone.utc) != attempt_at:
+            elif state_row.state != state or utc_timestamp(state_row.attempted_at) != attempt_at:
                 state_row.state, state_row.attempted_at = state, attempt_at
             return {"status": status, "written": written}

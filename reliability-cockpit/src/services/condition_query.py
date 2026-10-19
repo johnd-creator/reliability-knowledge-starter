@@ -4,9 +4,10 @@ from pydantic import Field
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 from src.domain.condition_evidence import (ConditionEvidence, EvidenceModel, EvidenceSources, FreshnessPolicy, PiLineage,
-                                         ProjectionPlan, SignalSelection, MAX_SIGNALS)
+                                         ProjectionPlan, MAX_SIGNALS)
 from src.repositories.condition_models import ConditionSignalSelectionMart, ConditionEvidenceLatestMart, ConditionProjectionStateMart
 from src.repositories.mart_reader import MartQueryRepository
+from src.repositories.condition_integrity import stored_selection, stored_evidence, stored_projection_state, utc_timestamp
 from src.services.asset_af_mapping import mapping_from_row, resolve_asset_af_mapping
 
 class EvidenceFreshness(EvidenceModel):
@@ -56,43 +57,37 @@ class ConditionQueryService:
                 if not selections:
                     return AssetConditionEvidence(canonical_asset_id=asset_id, mapping_readiness="MAPPING_VERIFIED", statuses=("NO_APPROVED_SIGNALS",))
                 plan = ProjectionPlan(canonical_asset_id=asset_id, mapping_id=mapping.id, sources=lineage,
-                    signals=tuple(SignalSelection.model_validate(r.definition) for r in selections))
+                    signals=tuple(stored_selection(r, mapping.id) for r in selections))
                 rows = list(session.scalars(select(ConditionEvidenceLatestMart).where(
                     ConditionEvidenceLatestMart.mapping_id == mapping.id, ConditionEvidenceLatestMart.canonical_asset_id == asset_id,
                     ConditionEvidenceLatestMart.signal_id.in_([s.signal_id for s in plan.signals])).order_by(ConditionEvidenceLatestMart.signal_id).limit(MAX_SIGNALS)))
                 attempt = session.get(ConditionProjectionStateMart, asset_id)
-                state = attempt.state if attempt and attempt.state.get("mapping_id") == mapping.id else {}
+                state = stored_projection_state(attempt, mapping.id, rows) or {}
                 last_success = datetime.fromisoformat(state["collector_last_success_at"]) if state.get("collector_last_success_at") else None
                 statuses = set(state.get("statuses", ["PROJECTION_NOT_RUN"]))
+                if not state and (rows or attempt is not None):
+                    statuses.add("PROJECTION_ERROR")
                 items = []
                 selected = {s.signal_id: s for s in plan.signals}
                 now = self.clock()
                 for row in rows:
-                    e = ConditionEvidence.model_validate(row.evidence)
-                    signal = selected[e.signal_id]
-                    if (e.sources.pi.model_dump(exclude={"attribute_ref", "attribute_name"}) != lineage.pi.model_dump() or e.mapping_id != mapping.id or e.canonical_asset_id != asset_id
-                        or e.attribute_ref != signal.attribute_ref or e.semantic_name != signal.semantic_name
-                        or e.provenance.selection_evidence_ref != signal.evidence_ref
-                        or e.provenance.selection_approved_by != signal.approved_by
-                        or e.provenance.selection_approved_at != signal.approved_at):
-                        raise ValueError("stored evidence differs from active selection")
+                    signal = selected[row.signal_id]
+                    e = stored_evidence(row, asset_id, mapping.id, signal, lineage.pi)
                     source_state = self.policy.state("SOURCE", e.source_timestamp, now, component="PI_CONDITION_PROJECTION")
                     item_statuses = {e.evidence_status}
                     if source_state == "SOURCE_STALE":
                         item_statuses.add("SOURCE_STALE")
                     statuses |= item_statuses
-                    projected_at = row.projected_at
-                    if projected_at.tzinfo is None:
-                        projected_at = projected_at.replace(tzinfo=timezone.utc)
+                    projected_at = utc_timestamp(row.projected_at)
                     items.append(ConditionEvidenceItem(evidence=e, projected_at=projected_at,
                         freshness=EvidenceFreshness(collector=self.policy.state("COLLECTOR", last_success, now, component="PI_COLLECTOR"),
-                            source=source_state, projection=self.policy.state("PROJECTION", projected_at, now, component="PI_CONDITION_PROJECTION"), mapping="MAPPING_VERIFIED"),
+                            source=source_state, projection=self.policy.state("PROJECTION", projected_at, now, component="PI_CONDITION_PROJECTION") if state else "PROJECTION_UNKNOWN", mapping="MAPPING_VERIFIED"),
                         statuses=tuple(sorted(item_statuses))))
                 if len(items) < len(plan.signals):
                     statuses.add("PARTIAL_SIGNAL_SET")
                 return AssetConditionEvidence(canonical_asset_id=asset_id, mapping_readiness="MAPPING_VERIFIED",
                     statuses=tuple(sorted(statuses)), expected_signals=len(plan.signals), items=tuple(items),
-                    latest_attempt_at=(attempt.attempted_at.replace(tzinfo=timezone.utc) if attempt and state else None), collector_last_success_at=last_success)
+                    latest_attempt_at=(utc_timestamp(attempt.attempted_at) if attempt and state else None), collector_last_success_at=last_success)
         except (SQLAlchemyError, ValueError, KeyError, TypeError):
             # Pending additive schema, invalid rows or query failure remain unknown.
             # Other factual routes still read their accepted unchanged tables.
