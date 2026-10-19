@@ -47,8 +47,8 @@ must be scoped and reviewed. Do not represent PostgreSQL skips as passes.
 Before merge, require terminal success of both NADI Engineering candidate jobs on
 the exact integration head, including disposable PostgreSQL tests with no skips.
 Review job logs, current main, PR mergeability, reviews and any required checks;
-resolve new failures without weakening guards. If main changes materially, rebase
-by ordinary ancestry-preserving integration and requalify the new exact head.
+resolve new failures without weakening guards. If main changes, merge updated main into the candidate without rewriting existing
+commits, then requalify the new exact head.
 
 After normal merge, dispatch that same workflow on main, require terminal success
 at the actual merge SHA, verify all original heads are ancestors, and reconcile
