@@ -1,0 +1,98 @@
+{
+  "scope": "SYNTHETIC fixtures; no live backend UAT",
+  "frontend_checks": [
+    {
+      "name": "check:product-safety",
+      "exit": 0
+    },
+    {
+      "name": "check:engineering",
+      "exit": 0
+    },
+    {
+      "name": "check:phase2",
+      "exit": 0
+    },
+    {
+      "name": "check:workflow",
+      "exit": 0
+    },
+    {
+      "name": "check:http-qa",
+      "exit": 0
+    },
+    {
+      "name": "check:bounded-http",
+      "exit": 0
+    },
+    {
+      "name": "check:bounded-proxy",
+      "exit": 0
+    },
+    {
+      "name": "check:local-auth",
+      "exit": 0
+    },
+    {
+      "name": "check:ux",
+      "exit": 0
+    },
+    {
+      "name": "check:pdm-input",
+      "exit": 0
+    },
+    {
+      "name": "check:eng-product",
+      "exit": 0
+    },
+    {
+      "name": "check:integration",
+      "exit": 0
+    },
+    {
+      "name": "check:reports",
+      "exit": 0
+    },
+    {
+      "name": "check:global-auth",
+      "exit": 0
+    },
+    {
+      "name": "check:factual-policy",
+      "exit": 0
+    },
+    {
+      "name": "typescript",
+      "exit": 0
+    },
+    {
+      "name": "lint",
+      "exit": 0
+    }
+  ],
+  "anchor_browser": {
+    "checks": 107,
+    "errors": [],
+    "axe_scans": 40,
+    "violations": []
+  },
+  "pdm_browser": {
+    "checks": 575,
+    "errors": []
+  },
+  "localization_browser": 399,
+  "reports_browser": 96,
+  "integration_browser": 67,
+  "login_browser": 56,
+  "total_browser_assertions": 1300,
+  "total_axe_scans": 74,
+  "backend_local": {
+    "run": 195,
+    "passed": 117,
+    "skipped": 78,
+    "reason": "No disposable PostgreSQL supplied locally; exact-head CI supplies hermetic PostgreSQL"
+  },
+  "existing_lint_warning": "EngineeringWorkspace.tsx:32 missing effect dependency current",
+  "production_build": "PASS",
+  "typescript": "PASS"
+}

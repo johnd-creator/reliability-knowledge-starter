@@ -1,0 +1,1091 @@
+/* Experience rework anchor pages only. Colors encode UI hierarchy, never asset condition. */
+.nadi-shell .experience-workspace {
+  --experience-accent: var(--cyan-strong);
+  font-size: 15px;
+  line-height: 1.65;
+}
+.nadi-shell .experience-workspace .page-header {
+  margin: 0 0 24px;
+  align-items: center;
+}
+.nadi-shell .experience-workspace .page-header h1 {
+  font-size: 34px;
+  line-height: 1.15;
+  letter-spacing: -0.035em;
+}
+.nadi-shell .experience-workspace .page-description {
+  font-size: 15px;
+  max-width: 74ch;
+  margin-top: 10px;
+}
+.nadi-shell .experience-workspace :is(h2, h3, p) {
+  overflow-wrap: anywhere;
+}
+.nadi-shell .experience-workspace h2 {
+  font-size: 19px;
+  letter-spacing: -0.02em;
+  line-height: 1.4;
+}
+.nadi-shell .experience-workspace h3 {
+  font-size: 16px;
+  line-height: 1.5;
+}
+.nadi-shell .experience-workspace .eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.09em;
+  margin: 0 0 6px;
+  font-weight: 700;
+}
+.nadi-shell .experience-workspace .section-card {
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 3px #10253603;
+}
+.nadi-shell .experience-workspace :is(.section-note, .table-subtext) {
+  font-size: 13px;
+  line-height: 1.6;
+}
+.nadi-shell .experience-workspace :is(input, select, textarea, label, .button) {
+  font-size: 14px;
+}
+.nadi-shell .experience-workspace :is(input, select, textarea) {
+  border-color: var(--line-strong);
+}
+.nadi-shell .experience-workspace .button.secondary {
+  background: var(--surface);
+  border-color: var(--line-strong);
+}
+.nadi-shell .experience-workspace .button.tertiary {
+  background: transparent;
+}
+.nadi-shell .experience-workspace .button.primary {
+  background: var(--primary);
+}
+.nadi-shell .experience-workspace .qa-boundary-note {
+  padding: 10px 14px;
+  border-width: 0 0 0 3px;
+  background: var(--surface-2);
+  border-radius: 0 6px 6px 0;
+  font-size: 12px;
+  line-height: 1.6;
+  gap: 8px 14px;
+  margin: 0;
+}
+.nadi-shell .experience-workspace .qa-boundary-note summary {
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+}
+.nadi-shell .experience-facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.2fr 1.4fr;
+  margin: 0;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+  gap: 24px;
+}
+.nadi-shell .experience-facts > div {
+  min-width: 0;
+  padding-right: 18px;
+  border-right: 1px solid var(--line);
+}
+.nadi-shell .experience-facts > div:last-child {
+  border: 0;
+}
+.nadi-shell .experience-facts dt {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+.nadi-shell .experience-facts dd {
+  margin: 3px 0;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.025em;
+  overflow-wrap: anywhere;
+}
+.nadi-shell .experience-facts small {
+  color: var(--muted);
+  display: block;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.nadi-shell .experience-toolbar {
+  display: flex;
+  gap: 16px;
+  align-items: end;
+  padding: 16px 0;
+  flex-wrap: wrap;
+}
+.nadi-shell .experience-toolbar .search-field {
+  flex: 1 1 260px;
+  display: grid;
+  gap: 7px;
+}
+.nadi-shell .experience-toolbar > .filter-grid {
+  display: contents;
+}
+.nadi-shell .experience-toolbar > .filter-grid > label {
+  flex: 1 1 200px;
+}
+.nadi-shell .experience-toolbar > .button {
+  flex: 0 0 auto;
+}
+.nadi-shell .register-population {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 13px;
+  color: var(--muted);
+  margin: -4px 0 8px;
+  flex-wrap: wrap;
+}
+.nadi-shell .register-population strong {
+  color: var(--text);
+  font-size: 18px;
+}
+.nadi-shell .experience-workspace table {
+  font-size: 14px;
+}
+.nadi-shell .experience-workspace th {
+  font-size: 12px;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.nadi-shell .experience-workspace td {
+  padding: 18px 16px;
+}
+.nadi-shell .experience-workspace .table-frame {
+  border-radius: 8px;
+}
+.nadi-shell .experience-workspace .table-subtext {
+  margin-top: 6px;
+  display: block;
+}
+.nadi-shell .experience-workspace .register-pagination {
+  padding: 4px 16px;
+  margin-top: -12px;
+  background: transparent;
+  border: 0;
+}
+.nadi-shell .experience-workspace .register-pagination .pagination {
+  padding: 8px 0;
+}
+.nadi-shell .experience-master-detail {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+.nadi-shell .experience-master-detail > * {
+  min-width: 0;
+}
+.nadi-shell .record-navigator {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 12px;
+}
+.nadi-shell .record-navigator > summary {
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 44px;
+  padding: 10px 4px;
+}
+.nadi-shell .record-navigator nav {
+  display: grid;
+  gap: 8px;
+}
+.nadi-shell .record-navigator .record-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 6px;
+  height: auto;
+  padding: 14px 12px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text);
+  line-height: 1.55;
+  min-width: 0;
+  width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.nadi-shell .record-nav-item :is(span, small, strong) {
+  max-width: 100%;
+}
+.nadi-shell .record-nav-item small {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+}
+.nadi-shell .record-nav-item > span:not(.status-badge) {
+  font-size: 13px;
+  font-weight: 400;
+}
+.nadi-shell .record-navigator .record-nav-item[aria-pressed="true"] {
+  background: var(--cyan-soft);
+  border-color: var(--cyan);
+  box-shadow: inset 3px 0 var(--cyan);
+}
+.nadi-shell .experience-record-pane {
+  min-width: 0;
+  display: grid;
+  gap: 20px;
+  scroll-margin-top: 90px;
+}
+.nadi-shell .experience-record-pane:focus {
+  outline: none;
+}
+/* PdM navigation and filters are a workspace, not another dashboard of cards. */
+.nadi-shell .pdm-workspace {
+  gap: 16px;
+}
+.nadi-shell .pdm-workspace .experience-toolbar {
+  padding: 0;
+}
+.nadi-shell .pdm-workspace .pdm-workspace-nav {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0 0 12px;
+  width: 100%;
+  border-bottom: 1px solid var(--line);
+}
+.nadi-shell .pdm-workspace-nav .button {
+  background: transparent;
+  border-color: transparent;
+  border-radius: 6px;
+}
+.nadi-shell .pdm-workspace-nav .button[aria-pressed="true"] {
+  background: var(--cyan-soft);
+  color: var(--cyan-strong);
+  border-color: transparent;
+  box-shadow: inset 0 -2px var(--cyan);
+}
+.nadi-shell .pdm-workspace .pdm-filter-panel {
+  padding: 18px 20px 10px;
+}
+.nadi-shell .pdm-filter-panel form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px 18px;
+  align-items: end;
+}
+.nadi-shell .pdm-filter-panel form > .filter-grid {
+  grid-column: 1 / -1;
+  grid-template-columns: 1.4fr 1fr 1fr;
+}
+.nadi-shell .pdm-filter-panel .workspace-filters {
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+.nadi-shell .pdm-filter-panel .workspace-filters[open] {
+  grid-column: 1 / -1;
+}
+.nadi-shell .pdm-filter-panel .workspace-filters summary {
+  min-height: 44px;
+  padding: 10px 0;
+  color: var(--cyan-strong);
+}
+.nadi-shell .pdm-filter-panel .filter-apply-actions {
+  justify-content: flex-end;
+  margin: 0;
+  gap: 8px;
+}
+.nadi-shell .pdm-filter-panel .help-details {
+  margin: 0;
+  border-top: 1px solid var(--line);
+}
+.nadi-shell .pdm-filter-panel .help-details summary {
+  min-height: 36px;
+  padding: 6px 0;
+}
+.nadi-shell .pdm-register td:first-child {
+  min-width: 170px;
+}
+.nadi-shell .pdm-register .record-open {
+  align-items: flex-start;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 700;
+}
+.nadi-shell .pdm-register td:nth-child(4) {
+  min-width: 200px;
+  max-width: 280px;
+}
+.nadi-shell .register-observation {
+  margin: 0;
+}
+.nadi-shell .record-time-details {
+  font-size: 12px;
+  margin-top: 8px;
+  color: var(--muted);
+}
+.nadi-shell .record-time-details summary {
+  min-height: 32px;
+  cursor: pointer;
+  color: var(--cyan-strong);
+}
+/* Continuous measurement workbench. No step unmounting, conversion or storage. */
+.nadi-shell .experience-editor .editor-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.nadi-shell .editor-heading h2 {
+  font-size: 24px;
+  margin: 0;
+}
+.nadi-shell .editor-draft-state {
+  font-size: 12px;
+  border: 1px solid var(--line-strong);
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: var(--muted);
+}
+.nadi-shell .experience-editor > p {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 12px 0;
+}
+.nadi-shell .editor-index {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--line);
+  margin: 18px 0 24px;
+}
+.nadi-shell .editor-index a {
+  color: var(--cyan-strong);
+  min-height: 44px;
+  padding: 8px 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+.nadi-shell .experience-editor .engineering-form {
+  gap: 24px;
+}
+.nadi-shell .editor-context-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.nadi-shell .editor-context-grid > fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: grid;
+  gap: 12px;
+}
+.nadi-shell .editor-context-grid legend {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  padding: 0;
+}
+.nadi-shell .editor-context-grid .filter-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.nadi-shell .editor-context-grid .filter-grid > label:first-child {
+  grid-column: 1 / -1;
+}
+.nadi-shell .editor-context-grid label {
+  display: grid;
+  gap: 6px;
+}
+.nadi-shell .editor-context-grid .section-note {
+  margin: 0;
+  font-size: 12px;
+}
+.nadi-shell .editor-context-grid textarea {
+  min-height: 88px;
+}
+.nadi-shell .editor-context-grid .help-details {
+  margin: 0;
+}
+.nadi-shell .editor-workbook:has(.pdm-workbook-template) {
+  grid-column: 1 / -1;
+}
+.nadi-shell
+  .experience-editor
+  :is(#measurement-values, #measurement-notes, #measurement-context) {
+  scroll-margin-top: 90px;
+}
+.nadi-shell .experience-editor .pdm-grid-scroll {
+  padding: 6px;
+  background: var(--surface-2);
+}
+.nadi-shell .experience-editor .pdm-measurement-grid {
+  min-width: 1040px;
+}
+.nadi-shell .experience-editor .pdm-measurement-row {
+  grid-template-columns: 1fr 1.1fr 1.1fr 0.8fr 0.65fr 1.4fr auto;
+  gap: 10px;
+  padding: 10px 12px 14px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+}
+.nadi-shell .experience-editor .pdm-measurement-row legend {
+  background: var(--surface-2);
+  border: 0;
+  font-weight: 700;
+  padding: 5px 8px;
+  font-size: 12px;
+}
+.nadi-shell .experience-editor .pdm-measurement-row label {
+  font-size: 12px;
+  gap: 6px;
+}
+.nadi-shell .experience-editor .pdm-measurement-row input {
+  font-variant-numeric: tabular-nums;
+}
+.nadi-shell .experience-editor .pdm-measurement-row .button.destructive {
+  border-color: transparent;
+  min-width: 64px;
+}
+.nadi-shell .experience-editor #measurement-notes .product-context-grid {
+  gap: 20px;
+}
+.nadi-shell .experience-editor .editor-save-bar {
+  padding: 16px 0 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  background: var(--surface);
+}
+.nadi-shell .editor-save-bar .section-note {
+  flex: 1 1 240px;
+  text-align: right;
+}
+/* Case reading hierarchy: investigation / evidence / independent decision. */
+.nadi-shell .cases-workspace {
+  gap: 16px;
+}
+.nadi-shell .case-register .button {
+  padding: 0;
+  min-height: 32px;
+  text-align: left;
+  justify-content: flex-start;
+  font-size: 15px;
+  color: var(--cyan-strong);
+}
+.nadi-shell .case-register td:first-child {
+  width: 40%;
+}
+.nadi-shell .case-assignee {
+  font-weight: 600;
+}
+.nadi-shell .case-detail > .section-heading {
+  align-items: flex-start;
+}
+.nadi-shell .case-detail #case-detail-title {
+  font-size: 24px;
+  line-height: 1.35;
+}
+.nadi-shell .case-detail > .asset-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  background: transparent;
+  padding: 16px 0;
+  border: 0;
+  border-block: 1px solid var(--line);
+  border-radius: 0;
+  margin: 20px 0;
+}
+.nadi-shell .case-detail > .asset-facts > div {
+  display: block;
+}
+.nadi-shell .case-detail .asset-facts dt {
+  font-size: 11px;
+}
+.nadi-shell .case-detail .asset-facts dd {
+  font-size: 13px;
+  line-height: 1.65;
+}
+.nadi-shell .section-jump {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 8px;
+  margin: 8px 0 24px;
+}
+.nadi-shell .section-jump .button {
+  font-size: 13px;
+  padding: 8px 10px;
+}
+.nadi-shell .case-reading-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.7fr);
+  gap: 24px;
+  align-items: start;
+}
+.nadi-shell .case-reading-grid > * {
+  min-width: 0;
+  scroll-margin-top: 90px;
+}
+.nadi-shell .case-reading-grid .feedback {
+  font-size: 13px;
+  margin-top: 0;
+}
+.nadi-shell .experience-detail-section {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+.nadi-shell .experience-detail-section h3 {
+  margin: 0 0 12px;
+  font-size: 17px;
+}
+.nadi-shell .experience-detail-section p {
+  margin: 0 0 12px;
+}
+.nadi-shell .experience-detail-section ul {
+  margin: 0;
+  padding-left: 20px;
+}
+.nadi-shell .experience-detail-section li {
+  padding-bottom: 8px;
+}
+.nadi-shell
+  .case-investigation-sections
+  .experience-detail-section:has(.eyebrow) {
+  border-left: 2px solid var(--line);
+  padding-left: 18px;
+}
+.nadi-shell .case-review-column {
+  background: var(--surface-2);
+  padding: 18px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+}
+.nadi-shell .case-review-column .experience-detail-section {
+  padding: 0 0 18px;
+}
+.nadi-shell .case-review-column .review-summary {
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+.nadi-shell .case-review-column .asset-facts {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  margin: 0 0 18px;
+}
+.nadi-shell .case-review-column .asset-facts > div {
+  display: block;
+}
+.nadi-shell .case-action-panel {
+  display: grid;
+  gap: 12px;
+  padding-top: 20px;
+}
+.nadi-shell .case-action-panel h3 {
+  margin: 0;
+}
+.nadi-shell .case-action-panel .filter-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+}
+.nadi-shell .case-action-panel label {
+  display: grid;
+  gap: 7px;
+}
+.nadi-shell .case-action-panel .engineering-actions {
+  margin: 0;
+}
+.nadi-shell .case-action-panel .button {
+  width: 100%;
+  white-space: normal;
+}
+.nadi-shell .case-conclusion-note {
+  padding: 16px 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+.nadi-shell .case-history-section {
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+  margin-top: 20px;
+  scroll-margin-top: 90px;
+}
+.nadi-shell .case-detail .case-form {
+  padding: 20px;
+  border: 1px solid var(--cyan);
+  border-radius: 10px;
+  margin-bottom: 24px;
+  background: var(--surface-2);
+}
+/* Executive: one portfolio metric, comparative counts, a large activity plot and a trust rail. */
+.nadi-shell .executive-workspace .overview-filter-bar {
+  margin: 0;
+  border-radius: 10px;
+  padding: 16px 20px;
+  gap: 20px;
+  background: var(--surface);
+}
+.nadi-shell .overview-assessment-note {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin: 12px 0 24px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.nadi-shell .overview-assessment-note .dataset-badge {
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+.nadi-shell .overview-scoreboard {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.nadi-shell .overview-scoreboard .stat-card {
+  padding: 22px 24px;
+  border: 0;
+  border-left: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  box-shadow: none;
+  min-height: 125px;
+}
+.nadi-shell .overview-scoreboard .stat-card:first-child {
+  grid-row: span 2;
+  border: 0;
+  background: #102f40;
+  color: #e4f1f4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.nadi-shell .overview-scoreboard .stat-card:first-child :is(span, small) {
+  color: #c3d7de;
+}
+.nadi-shell .overview-scoreboard .stat-card:first-child strong {
+  color: #fff;
+  font-size: 60px;
+  line-height: 1.15;
+  margin: 18px 0;
+}
+.nadi-shell .overview-scoreboard .stat-card > strong {
+  font-size: 32px;
+  line-height: 1.3;
+  margin: 8px 0;
+}
+.nadi-shell .overview-scoreboard .stat-card > span {
+  font-size: 13px;
+}
+.nadi-shell .overview-scoreboard .stat-card small {
+  font-size: 12px;
+}
+.nadi-shell .executive-analytics-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.nadi-shell .executive-analytics-grid > * {
+  min-width: 0;
+}
+.nadi-shell .executive-workspace .executive-history {
+  margin: 0;
+}
+.nadi-shell .executive-workspace .trend-chart {
+  height: 210px;
+  gap: 10px;
+  min-width: 580px;
+}
+.nadi-shell .executive-workspace .trend-track {
+  background: var(--surface-2);
+  border-radius: 4px 4px 0 0;
+}
+.nadi-shell .executive-workspace .trend-track span {
+  background: var(--cyan);
+  border-radius: 4px 4px 0 0;
+}
+.nadi-shell .executive-workspace .activity-figure figcaption {
+  font-size: 12px;
+  margin-bottom: 16px;
+}
+.nadi-shell .executive-workspace .chart-scroll-hint {
+  font-size: 12px;
+}
+.nadi-shell .executive-workspace .attention-list a {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+.nadi-shell .executive-workspace .attention-symbol {
+  color: var(--cyan-strong);
+  background: var(--cyan-soft);
+  border: 0;
+}
+.nadi-shell .executive-evidence-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(0, 2fr);
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.nadi-shell .executive-evidence-grid > * {
+  min-width: 0;
+}
+.nadi-shell .executive-workspace .distribution-grid {
+  margin-block: 24px;
+}
+.nadi-shell .executive-workspace .distribution-row {
+  padding: 12px 0;
+}
+.nadi-shell .executive-workspace .distribution-track {
+  height: 7px;
+}
+.nadi-shell .executive-workspace .distribution-track span {
+  background: var(--cyan);
+}
+.nadi-shell .executive-workspace .record-availability-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.nadi-shell .executive-workspace .record-availability-grid > div {
+  padding: 0 0 16px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+}
+.nadi-shell .executive-workspace .record-availability-grid strong {
+  font-size: 30px;
+}
+.nadi-shell .executive-workspace .executive-maturity {
+  margin-top: 24px;
+}
+@media (min-width: 1750px) {
+  .nadi-shell .experience-master-detail {
+    grid-template-columns: 280px minmax(0, 1fr);
+  }
+  .nadi-shell .case-reading-grid {
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 32px;
+  }
+  .nadi-shell .experience-editor .pdm-measurement-grid {
+    min-width: 0;
+  }
+}
+@media (max-width: 1199px) {
+  .nadi-shell .experience-master-detail {
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: 16px;
+  }
+  .nadi-shell .case-reading-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .nadi-shell .case-review-column {
+    padding: 20px;
+  }
+  .nadi-shell .editor-context-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .nadi-shell .executive-analytics-grid {
+    grid-template-columns: minmax(0, 1.6fr) minmax(250px, 1fr);
+    gap: 16px;
+  }
+  .nadi-shell .experience-facts {
+    gap: 16px;
+  }
+}
+@media (max-width: 900px) {
+  .nadi-shell .experience-master-detail {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .nadi-shell .record-navigator nav {
+    display: flex;
+    overflow-x: auto;
+    align-items: stretch;
+    gap: 8px;
+    padding: 4px;
+  }
+  .nadi-shell .record-navigator nav > .button {
+    flex: 0 0 200px;
+  }
+  .nadi-shell .record-navigator .record-nav-item {
+    width: 200px;
+  }
+  .nadi-shell .executive-analytics-grid,
+  .nadi-shell .executive-evidence-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .nadi-shell .experience-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .nadi-shell .experience-facts > div:nth-child(2) {
+    border: 0;
+  }
+  .nadi-shell .overview-scoreboard {
+    grid-template-columns: 1fr 1fr;
+  }
+  .nadi-shell .overview-scoreboard .stat-card:first-child {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    padding: 24px;
+  }
+  .nadi-shell .overview-scoreboard .stat-card:first-child strong {
+    font-size: 48px;
+    margin: 10px 0;
+  }
+  .nadi-shell .pdm-filter-panel form {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .nadi-shell .pdm-filter-panel form > .filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .nadi-shell .pdm-filter-panel .search-field {
+    grid-column: 1 / -1;
+  }
+  .nadi-shell .pdm-filter-panel .filter-apply-actions {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 540px) {
+  .nadi-shell .experience-workspace .page-header h1 {
+    font-size: 29px;
+  }
+  .nadi-shell .experience-workspace .section-card {
+    padding: 18px;
+  }
+  .nadi-shell .experience-facts {
+    gap: 16px 10px;
+  }
+  .nadi-shell .experience-facts > div {
+    padding-right: 8px;
+  }
+  .nadi-shell .experience-facts dd {
+    font-size: 18px;
+  }
+  .nadi-shell .experience-workspace .section-heading {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .nadi-shell .pdm-workspace-nav a {
+    margin-left: 0;
+  }
+  .nadi-shell .pdm-filter-panel form > .filter-grid,
+  .nadi-shell .editor-context-grid .filter-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .nadi-shell .editor-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .nadi-shell .editor-index {
+    gap: 4px;
+    flex-direction: column;
+  }
+  .nadi-shell .experience-editor .pdm-measurement-grid {
+    min-width: 0;
+  }
+  .nadi-shell .experience-editor .pdm-measurement-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 12px;
+    gap: 12px;
+  }
+  .nadi-shell .experience-editor .pdm-measurement-row > label:nth-of-type(6) {
+    grid-column: 1 / -1;
+  }
+  .nadi-shell .experience-editor .pdm-measurement-row .button {
+    justify-self: start;
+  }
+  .nadi-shell .experience-editor .editor-save-bar {
+    flex-wrap: wrap;
+  }
+  .nadi-shell .editor-save-bar .section-note {
+    text-align: left;
+  }
+  .nadi-shell .case-detail > .asset-facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .nadi-shell .case-review-column {
+    padding: 16px;
+  }
+  .nadi-shell .experience-toolbar > .filter-grid > label {
+    flex-basis: 100%;
+  }
+  .nadi-shell .executive-workspace .record-availability-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .nadi-shell .overview-scoreboard .stat-card {
+    padding: 16px;
+  }
+  .nadi-shell .overview-scoreboard .stat-card > strong {
+    font-size: 28px;
+  }
+}
+
+/* Refinement after visual review: keep evidence fully readable and narrow registers actionable. */
+.nadi-shell .executive-workspace .overview-filter-bar > div {
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+.nadi-shell .executive-workspace .overview-filter-bar .window-select {
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+.nadi-shell .executive-workspace .record-availability-grid > div {
+  background: transparent;
+  border-radius: 0;
+}
+.nadi-shell
+  .pdm-workspace
+  .pdm-workspace-nav
+  .button[aria-pressed="true"]:not(.primary) {
+  border-color: transparent;
+  background: var(--cyan-soft);
+}
+.nadi-shell .case-evidence-reference {
+  padding: 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+.nadi-shell .case-evidence-reference header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.nadi-shell .case-evidence-reference header strong {
+  font-size: 14px;
+}
+.nadi-shell .case-evidence-reference dl {
+  display: grid;
+  gap: 12px;
+  margin: 16px 0;
+}
+.nadi-shell .case-evidence-reference dt {
+  font-size: 12px;
+  color: var(--muted);
+}
+.nadi-shell .case-evidence-reference dd {
+  margin: 4px 0 0;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 900px) {
+  .nadi-shell
+    .experience-workspace
+    :is(.inspection-register-panel, .case-register-panel)
+    .table-content {
+    min-width: 0 !important;
+  }
+  .nadi-shell .experience-workspace :is(.pdm-register, .case-register) {
+    display: block;
+  }
+  .nadi-shell .experience-workspace :is(.pdm-register, .case-register) thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .nadi-shell .experience-workspace :is(.pdm-register, .case-register) tbody {
+    display: grid;
+  }
+  .nadi-shell
+    .experience-workspace
+    :is(.pdm-register, .case-register)
+    tbody
+    tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 16px;
+    gap: 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .nadi-shell .experience-workspace :is(.pdm-register, .case-register) td {
+    display: block;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+    max-width: none;
+    width: auto;
+  }
+  .nadi-shell
+    .experience-workspace
+    :is(.pdm-register, .case-register)
+    td:first-child {
+    grid-column: 1 / -1;
+    min-width: 0;
+    width: auto;
+  }
+  .nadi-shell
+    .experience-workspace
+    :is(.pdm-register, .case-register)
+    td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .nadi-shell .experience-workspace .pdm-register td:nth-child(4) {
+    min-width: 0;
+    max-width: none;
+  }
+}
+@media (max-width: 540px) {
+  .nadi-shell
+    .experience-workspace
+    :is(.pdm-register, .case-register)
+    tbody
+    tr {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+}
+
+.nadi-shell .experience-facts dd > strong {
+  font-size: 21px;
+}
+.nadi-shell .experience-facts dd small {
+  font-weight: 400;
+  letter-spacing: 0;
+  margin-top: 4px;
+}
+.nadi-shell .case-review-column .eyebrow {
+  color: var(--cyan-strong);
+}
+.nadi-shell .experience-workspace .button.secondary {
+  color: var(--text);
+}
+.nadi-shell .experience-workspace .button.destructive {
+  color: var(--red);
+}
+.nadi-shell .experience-workspace .pdm-register .record-open {
+  background: transparent;
+  color: var(--cyan-strong);
+}
+.nadi-shell .experience-workspace :is(.identifier,.text-link) { color:var(--cyan-strong); }
+
+/* Foreground colors switch immediately with theme; avoid fading through unreadable fills. */
+.nadi-shell .experience-workspace .button { transition:border-color .12s; }
+@media(min-width:901px) { .nadi-shell .record-navigator { position:sticky; top:88px; } }
