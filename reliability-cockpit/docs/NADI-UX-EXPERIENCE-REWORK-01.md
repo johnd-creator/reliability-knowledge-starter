@@ -133,20 +133,22 @@ No exhaustive graph-coverage claim is made.
 
 ## Final review record
 
-TASK: NADI-UX-EXPERIENCE-REWORK-01  
-STATUS: PASS (implementation and bounded verification; PO acceptance pending)  
-BASE_V2_SHA: 260c4f9f5f9a17aea3b36476ca4a0e202069e19d  
-BRANCH: codex/nadi-ux-experience-rework-01  
-FINAL_HEAD: this delivery commit; exact SHA is recorded on the Draft PR and final handoff  
-DRAFT_PR / EXACT_HEAD_CI: recorded on the final handoff and PR checks after publication  
-EXECUTIVE_OVERVIEW / PDM_CENTER / MEASUREMENT_EDITOR / ENGINEERING_CASES: PASS  
-SHARED_DESIGN_SYSTEM / RESPONSIVE_AND_DARK_MODE / ACCESSIBILITY: PASS within tested anchor scope  
-FUNCTIONAL_REGRESSIONS: PASS  
-LOGIN_AUTH_AND_BACKEND: UNCHANGED  
-BEFORE_AFTER_EVIDENCE: evidence/nadi-ux-experience-rework-01/README.md  
-TOP_5_UX_IMPROVEMENTS: compact inspection discovery; contextual record navigation; continuous measurement workbench; analytical KPI/chart hierarchy; distinct investigation/evidence/review sections  
-CURRENT_LIVE_PREVIEW: UNCHANGED  
-DATA_AND_SERVICES: PRESERVED  
-PRODUCT_OWNER_VISUAL_ACCEPTANCE: PENDING
+| Field | Result |
+|---|---|
+| TASK | NADI-UX-EXPERIENCE-REWORK-01 |
+| STATUS | PASS (implementation and bounded verification; PO acceptance pending) |
+| BASE_V2_SHA | 260c4f9f5f9a17aea3b36476ca4a0e202069e19d |
+| BRANCH | codex/nadi-ux-experience-rework-01 |
+| FINAL_HEAD | this delivery commit; exact SHA is recorded on the Draft PR and final handoff |
+| DRAFT_PR / EXACT_HEAD_CI | recorded on the final handoff and PR checks after publication |
+| EXECUTIVE_OVERVIEW / PDM_CENTER / MEASUREMENT_EDITOR / ENGINEERING_CASES | PASS |
+| SHARED_DESIGN_SYSTEM / RESPONSIVE_AND_DARK_MODE / ACCESSIBILITY | PASS within tested anchor scope |
+| FUNCTIONAL_REGRESSIONS | PASS |
+| LOGIN_AUTH_AND_BACKEND | UNCHANGED |
+| BEFORE_AFTER_EVIDENCE | evidence/nadi-ux-experience-rework-01/README.md |
+| TOP_5_UX_IMPROVEMENTS | compact inspection discovery; contextual record navigation; continuous measurement workbench; analytical KPI/chart hierarchy; distinct investigation/evidence/review sections |
+| CURRENT_LIVE_PREVIEW | UNCHANGED |
+| DATA_AND_SERVICES | PRESERVED |
+| PRODUCT_OWNER_VISUAL_ACCEPTANCE | PENDING |
 
 Next: **Senior Design Review → Product Owner Visual Selection → Extend Approved Design to Remaining NADI Pages**.
