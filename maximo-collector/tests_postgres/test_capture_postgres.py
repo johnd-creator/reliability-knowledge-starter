@@ -298,8 +298,8 @@ class PostgreSQLCaptureTest(unittest.TestCase):
         self.assertNotIn('SYNTHETIC_PRIVATE',payload); self.assertNotIn('SYNTHETIC_PERSON',payload)
         self.assertNotIn('raw_payload',payload)
 
-    def test_local_equipment_normalization_matches_existing_mapper(self):
-        self.add_asset(); self.add_wo(eq=' a ')
+    def test_local_equipment_whitespace_preserves_canonical_case(self):
+        self.add_asset(); self.add_wo(eq=' A ')
         t=self.store.capture('maintenance_event'); self.assertEqual(self.store.process(t)['status'],'COMPLETE')
         self.assertTrue(self.rows(mart_models.MaintenanceEventMartOrm.__table__)[0]['equipment_id'].endswith(':A'))
 

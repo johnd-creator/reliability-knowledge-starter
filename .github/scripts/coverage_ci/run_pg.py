@@ -1,6 +1,8 @@
 """Own Unix-only disposable B1-B4 qualification; no input DSN/runtime services."""
 import argparse,json,os,platform,re,shutil,subprocess,sys,tempfile
 from pathlib import Path
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'maximo_ci'))
+from owned_cluster import OwnedCluster
 
 def clean_environment():
     env={k:os.environ[k] for k in ('PATH','HOME','LANG','LC_ALL') if k in os.environ}
@@ -19,15 +21,16 @@ def main():
     work=Path(tempfile.mkdtemp(prefix='nadi-b4-pg-',dir='/tmp'));work.chmod(0o700)
     sock=work/'socket';sock.mkdir(mode=0o700); data=work/'data'
     bindir=Path(shutil.which('initdb') or '/usr/lib/postgresql/16/bin/initdb').parent
-    started=False;result={}; context={};error=None
+    result={}; context={};error=None
+    cluster=OwnedCluster(work,bindir,env,'nadi-b4-pg-')
     def command(*args):
         with (work/'cluster.log').open('a') as log:
             subprocess.run([str(bindir/args[0]),*args[1:]],env=env,stdout=log,stderr=log,check=True,timeout=30)
     try:
         command('initdb','-D',str(data),'--no-locale','--encoding=UTF8','-A','trust','-U','nadi_b4_fixture')
+        cluster.before_start()
         command('pg_ctl','-D',str(data),'-l',str(work/'postgres.log'),'-w','start','-o',
             f"-h '' -k {sock} -p 16480 -c max_connections=12 -c shared_buffers=32MB -c fsync=on")
-        started=True
         import psycopg
         args=dict(host=str(sock),port=16480,user='nadi_b4_fixture',dbname='postgres',connect_timeout=3)
         with psycopg.connect(**args,autocommit=True) as c:
@@ -61,10 +64,10 @@ def main():
     except Exception as ex:
         error=type(ex).__name__  # No raw driver/credential text in result.
     finally:
-        if started: command('pg_ctl','-D',str(data),'-m','fast','-w','stop')
-    success=bool(not error and result.get('conclusion')=='PASS')
+        cleanup=cluster.cleanup()
+    success=bool(not error and not cleanup['cleanup_error'] and result.get('conclusion')=='PASS')
     output=dict(result,python=platform.python_version(),tested_sha=a.sha,fixture=context,
-                cleanup='OWN_CLUSTER_STOPPED' if started else 'NOT_STARTED',infrastructure_error=error,
+                **cleanup,infrastructure_error=error,
                 conclusion='PASS' if success else 'FAIL')
     report.write_text(json.dumps(output,indent=2)+'\n');print(json.dumps(output))
     summary=os.getenv('GITHUB_STEP_SUMMARY')

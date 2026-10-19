@@ -163,7 +163,8 @@ class DeferredProjectionStore(ProjectionStore):
             if not REQUIRED_TRIGGERS <= set(tuple(t) for t in triggers):
                 raise CaptureError('deferred trigger capability drift')
             signature = self._catalog_signature(s)
-            if signature != CATALOG_SIGNATURE:
+            if signature != CATALOG_SIGNATURE and not reviewed_catalog(
+                    signature,s.scalar(text("SELECT current_setting('server_version_num')"))):
                 raise CaptureError('deferred constraint/index definition drift')
 
     @staticmethod
@@ -429,3 +430,13 @@ REQUIRED_TRIGGERS |= {
     ('mart_deferred_dependency','deferred_no_truncate',34,'O',False,False,'mart_deferred_append_only'),
     ('mart_deferred_occurrence','deferred_no_truncate',34,'O',False,False,'mart_deferred_append_only'),
 }
+
+# Exact PR100 952160cca72724e456b5a4e092301f5e475143e3 schema restored by
+# pg_dump/pg_restore16.14 on PostgreSQL16.14: only reviewed varchar-array deparse
+# forms differ. Full constraint/index SHA remains pinned; no normalization/trust
+# is inferred from caller metadata. Other versions require separate qualification.
+PG16_14_RESTORED_CATALOG_SIGNATURE = '9b2bbd375dee865741e1f24d5089a27090e1c2179f0ed1083170eb304c6b45d4'
+
+def reviewed_catalog(signature, server_version_num=None):
+    return signature == CATALOG_SIGNATURE or (
+        str(server_version_num) == '160014' and signature == PG16_14_RESTORED_CATALOG_SIGNATURE)

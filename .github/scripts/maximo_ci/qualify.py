@@ -10,6 +10,12 @@ from pathlib import Path
 
 REPOSITORY = "johnd-creator/reliability-knowledge-starter"
 SHA = re.compile(r"[0-9a-f]{40}\Z")
+# Reviewed F03 fix publication is stacked on immutable PR100. No caller-chosen
+# branch/SHA is accepted, and current_pr rechecks this pin before the final gate.
+PINNED_STACK_BASES = {
+    "codex/nadi-aud02b-b5-fix01-source-lock":
+        "952160cca72724e456b5a4e092301f5e475143e3",
+}
 
 
 def validate_request(repository, number, expected):
@@ -30,17 +36,19 @@ def validate_pr(payload, repository, number, expected):
     for side in ("head", "base"):
         if payload.get(side, {}).get("repo", {}).get("full_name") != repository:
             raise ValueError("UNEXPECTED_PR_REPOSITORY")
-    if payload.get("base", {}).get("ref") != "main":
-        raise ValueError("UNSUPPORTED_PR_BASE")
+    base = payload.get("base", {})
+    if base.get("ref") != "main":
+        pinned = PINNED_STACK_BASES.get(base.get("ref"))
+        if pinned is None or base.get("sha") != pinned:
+            raise ValueError("UNSUPPORTED_PR_BASE")
     if payload.get("head", {}).get("sha") != expected:
         raise ValueError("STALE_PR_HEAD")
     return expected
 
 
-def current_pr(repository, number, expected):
-    validate_request(repository, number, expected)
+def github_metadata(path):
     request = urllib.request.Request(
-        f"https://api.github.com/repos/{repository}/pulls/{number}",
+        f"https://api.github.com/repos/{REPOSITORY}/{path}",
         headers={"Authorization": "Bearer " + os.environ["GH_TOKEN"],
                  "Accept": "application/vnd.github+json",
                  "X-GitHub-Api-Version": "2022-11-28"},
@@ -50,7 +58,23 @@ def current_pr(repository, number, expected):
             payload = json.load(response)
     except (urllib.error.URLError, ValueError):
         raise ValueError("PR_METADATA_UNAVAILABLE") from None
-    return validate_pr(payload, repository, number, expected)
+    return payload
+
+
+def current_pr(repository, number, expected):
+    validate_request(repository, number, expected)
+    payload = github_metadata(f"pulls/{number}")
+    selected = validate_pr(payload, repository, number, expected)
+    base = payload['base']['ref']
+    if base in PINNED_STACK_BASES:
+        # PR base.sha is a snapshot, not proof of the current branch target.
+        # Recheck the live ref at both admission and the final CI gate.
+        live = github_metadata(f"git/ref/heads/{base}")
+        target = live.get('object', {})
+        if (live.get('ref') != f'refs/heads/{base}' or target.get('type') != 'commit'
+                or target.get('sha') != PINNED_STACK_BASES[base]):
+            raise ValueError('STALE_STACK_BASE')
+    return selected
 
 
 def select(event, payload, repository, ref, event_sha, number="", expected=""):
