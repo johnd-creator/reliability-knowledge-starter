@@ -102,6 +102,15 @@ jobs:
           python ci-tools/.github/scripts/maximo_ci/run_offline.py
           --root source/maximo-collector --sha "$TESTED_SHA"
           --report "$RUNNER_TEMP/maximo-offline-${{ matrix.python }}.json"
+      - name: Six private-file recovery rehearsals (owned temp root only)
+        env:
+          TESTED_SHA: ${{ needs.select.outputs.sha }}
+          CI_WORKFLOW_SHA: ${{ github.workflow_sha }}
+          CI_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: >-
+          python ci-tools/.github/scripts/maximo_ci/run_rehearsal.py
+          --root source/maximo-collector --sha "$TESTED_SHA"
+          --report "$RUNNER_TEMP/maximo-rehearsal-${{ matrix.python }}.json"
       - name: Verify tracked source unchanged after tests
         if: ${{ always() }}
         env:

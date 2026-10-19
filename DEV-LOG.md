@@ -897,3 +897,35 @@ Evidence: reliability-cockpit/docs/NADI-UX-V2-OVERHAUL-01.md
 - **Authorization:** explicit user approval permits candidate commit/push and normal PR merge only after review and all required CI pass. Deployment, preview replacement/restart, collector/database/auth/session changes remain excluded.
 - **Merge status at this preparation checkpoint:** PENDING exact-head integration CI and final review; final source state is recorded by the integration PR/main SHA and post-merge workflow, not inferred here.
 - **Evidence and integration plan:** [NADI source integration](reliability-cockpit/docs/NADI-UI-INTEGRATION-103-102-104.md); [reconciled runtime runbook](reliability-cockpit/docs/NADI-UX-V2-PAIRED-UPGRADE-RUNBOOK.md).
+
+
+## 19 October 2026 — PR105 verified completion / next batch opened
+
+- **Verified main:** `8bb1bcb2c485feeb792235c64b5aef6bbce5e3cc`, PR105 MERGED. PR103/102 MERGED automatically; PR104 CLOSED/SUPERSEDED after main CI, original heads retained as ancestors. This dated completion supersedes earlier preparation PENDING labels without rewriting their history.
+- **Test evidence:** exact-head candidate run39248372814 and main run39249394137 both SUCCESS; each 530 backend +14 canonical tests without skips, all frontend checks/build and1,300 fixture browser assertions pass.
+- **Preservation:** application104/controller103 retained; 35 container IDs/states/ports, original process/listener/source and dirty-file hashes verified unchanged at 12:13 UTC. No deploy/restart/session/auth/data/collector action.
+- **New authorized scope:** roadmap/status reconciliation; safe isolated Phase1 reliability fixes and F-03 closure preparation. No commit/push/merge authority carries over to this batch. PdM engineer validation explicitly DEFERRED; no signoff, threshold or factual mapping invented. Linear is handled in the parent task.
+- **Current preparation:** see [batch scope and acceptance](reliability-cockpit/docs/NADI-PHASE1-RELIABILITY-F03-PREP-01.md). Operational F-03 stays OPEN/NO-GO; source PR94–100 and security/role/migration gates remain separate.
+
+
+### NADI-PHASE1-RELIABILITY-F03-PREP-01 — local evidence checkpoint
+
+Six baseline Phase1 integrity reproductions and two projector-crash reproductions failed before repair. Local candidate binds selection/evidence identity and provenance, refuses CURRENT/PASS with missing/mismatched projection attestation, explains UNKNOWN and preserves offset instants/original JSON. Factual projector now records FAILED without advancing last-success watermark/time; failure-journal errors preserve the original exception.
+
+Validation: focused Cockpit151 =140 pass/11 PostgreSQL skips; new integrity12 pass; Maximo full offline208 pass including6 private SQLite recovery/backup/restore cases; contracts14 pass. No role/grant changes or PG fixture execution. The known old-WO/later-equipment incremental gap remains a counterexample; F-03 OPEN/NO-GO and unmerged PR94–100 are not closed by these tests. All changes remain uncommitted/unpublished for review; no operational actions or engineer signoff.
+
+
+### NADI-PHASE1-RELIABILITY-F03-PREP-01 — independent review and qualification correction
+
+Independent source reviewer found two residual P2 integrity gaps: duplicate attribute/semantic sets differed between aggregate/detail; same-mapping restored attempt could precede retained evidence. Three failing regressions reproduced them. Both are fixed locally and follow-up review found no new blocking source finding. The reviewer performed source review only; this task executed the tests.
+
+Correction to prior local checkpoint: its11 skips were10 PostgreSQL plus1 UI dependency case. Final expanded suite passes169/169 without skips on PostgreSQL18.6 and again169/169 on PostgreSQL16.14, including15 integrity regressions in each SQLite/PostgreSQL path,10 PG acceptance cases and actual UI render. Both owned disposable clusters were stopped/removed. No active auth/grant/DB/security configuration changed. Maximo208/208 and contracts14/14 remain applicable. Existing exact main8bb projector also reproduced the old-WO/later-equipment incremental omission (1 witness test asserting the limitation); this is pre-existing main behavior, not a new failure-journaling regression and not qualification of unmerged PR94–100.
+
+Post-expiry monitoring disposition is NOT ESTABLISHED in searched committed main docs/history; GOV03 exact13Oct00:00WIB supersedes older15Oct calendar reference. No renewal or rollback is inferred/executed. F03 remains OPEN/NO-GO, engineer validation deferred. Candidate remains uncommitted/unpublished pending review; no active runtime action or Linear update.
+
+
+### NADI-PHASE1-RELIABILITY-F03-PREP-01 — authorized draft publication preparation
+
+User approved commit/push, draft PR and exact-head CI; no merge/auto-merge/deploy/runtime or F03 activation. Prepublication invocation of actual Maximo CI runner reproduced6 private-file rehearsal failures despite direct208 tests passing. Standard memory-only runner is unchanged; moved the6 rehearsals to explicit rehearsal discovery with a separate runner confined to its owned0700 temporary root, strict SQLite path/URI checks and ATTACH denial. Both suites are mandatory CI steps with existing selected-SHA, source-cleanliness and fresh PR-head gate. Local guarded202 standard +6 rehearsal tests pass;29 CI qualification/safety tests pass. Independent high follow-up review requested for this CI change. Final publication SHA/terminal CI belong to PR handoff; prior PR105 CI does not qualify this batch.
+
+Independent high follow-up confirmed final guard source after URI/PathLike/NUL corrections; no blocking source finding remains. Reviewer did not execute tests. Final local rerun and remote exact-head CI are distinct evidence. No branch-protection bypass, guard weakening or standard-suite skip/filter is used.

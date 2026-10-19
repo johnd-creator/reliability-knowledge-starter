@@ -1,5 +1,7 @@
 # NADI product roadmap — main quest
 
+Latest verified source checkpoint: [19 October 2026 — PR105 integration](#19-october-2026--verified-pr105-source-integration-and-next-batch). Historical runtime/policy checkpoints below retain their dated scope.
+
 ## Source-free 72h review — 12 Oktober 2026
 
 **Monitoring PARTIAL; product readiness UNKNOWN; Phase 1 CURRENT/PARTIAL.**
@@ -1042,3 +1044,21 @@ belongs to the GitHub handoff. Actual observed runtime already serves PR104 with
 controller/bootstrap PR103; source integration does not restart or replace it.
 Operational F03/Phase1, engineer method/threshold decisions and ON HOLD items
 remain unchanged. Historical pending/not-promoted entries retain their dated scope.
+
+
+## 19 October 2026 — Verified PR105 source integration and next batch
+
+Main `8bb1bcb2c485feeb792235c64b5aef6bbce5e3cc` includes [PR105](https://github.com/johnd-creator/reliability-knowledge-starter/pull/105), merged normally on 19 October. Original PR103/PR102 heads are MERGED; PR104 is CLOSED/SUPERSEDED through PR105, with all three original heads preserved as main ancestors. Both DEV-LOG histories remain intact.
+
+[Candidate CI](https://github.com/johnd-creator/reliability-knowledge-starter/actions/runs/39248372814) and [post-merge main CI](https://github.com/johnd-creator/reliability-knowledge-starter/actions/runs/39249394137) are terminal SUCCESS on their exact SHAs: 530 backend tests plus 14 contracts, zero skips; frontend checks/lint/types/build and 1,300 synthetic browser assertions pass. These supersede the earlier preparation checkpoint's PENDING source-merge status.
+
+The accepted development appearance remains application PR104 `fc33515a3cd0ec4bd9fad81c59e65babe397c2b3`, with installed controller/bootstrap PR103 `1ec93d6f3507321617903d169451d77fdcc1216e`. Source integration did not deploy/restart it. Read-only verification preserved 35 container identities/states/ports, serving tracked source/PIDs and unrelated dirty files. Visibility and operational acceptance remain independent of source merge.
+
+The user deferred PdM engineer validation; no method/threshold signoff or domain decisions are inferred. The next authorized batch prepares (1) this status reconciliation, (2) reproducible Phase1 identity/provenance/stale-or-missing reliability fixes, and (3) F-03 recovery/backup/rollback closure evidence. It permits isolated code/docs/tests only; new commit/push/merge, operational migration/grant/security changes, deploy/restart and restore into active databases are not authorized. Linear reconciliation is handled separately.
+
+Phase1 retains the historical CURRENT/PARTIAL label; current monitoring approval after the13October expiry is NOT ESTABLISHED in reviewed committed evidence. The accepted single Coal Feeder pilot is not a full-registry mapping approval; wider identities need attributable evidence. Old monitoring expiry and condition freshness policies require explicit current disposition, not invented thresholds. Astra F-03 is distinct from AUTH-F03: its recovery work remains unmerged in PR94–100 and operationally NO-GO. No F-03 closure or engineer acceptance is claimed by this checkpoint.
+
+
+### Local follow-up qualification —19 October2026
+
+[Phase1/F03 preparation report](../reliability-cockpit/docs/NADI-PHASE1-RELIABILITY-F03-PREP-01.md): independent source review exposed two P2 aggregate/detail and restored-state gaps, reproduced and fixed locally; follow-up review found no new blocker. Final focused169/169 tests pass with zero skips on both isolated PostgreSQL16.14 and18.6; Maximo offline208/208 and canonical14/14 pass. All original35 containers, dirty worktrees, preview source/listeners and installed controller were rechecked unchanged. No new commit/push/PR/merge/deploy or active DB/security change. Phase1 software candidate ready for review/exact-head CI after authorized publication; current monitoring approval after13Oct expiry NOT ESTABLISHED, attributable owner disposition needed. F03 OPEN/NO-GO; its unmerged recovery stack/global-metadata/operational gates remain separate. PdM engineer validation stays deferred.

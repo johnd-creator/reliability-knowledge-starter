@@ -7,10 +7,11 @@ from collections import defaultdict
 from datetime import timezone
 from sqlalchemy import select, text
 from sqlalchemy.exc import SQLAlchemyError
-from src.domain.condition_evidence import PiLineage, SignalSelection, ConditionEvidence, MAX_SIGNALS
+from src.domain.condition_evidence import PiLineage, EvidenceSources, ProjectionPlan
 from src.repositories.mart_models import AssetMasterMart, ReliabilityAssetRegistryMart, AssetAfMappingMart
 from src.repositories.condition_models import ConditionSignalSelectionMart, ConditionEvidenceLatestMart, ConditionProjectionStateMart
 from src.services.asset_af_mapping import mapping_from_row, resolve_asset_af_mapping
+from src.repositories.condition_integrity import stored_selection, stored_evidence, stored_projection_state
 
 class IntegrationMartReader:
     def __init__(self,database): self.database=database
@@ -63,32 +64,41 @@ class IntegrationMartReader:
                     usable[m.id]=(identity,lineage)
             c=result["coverage"];c.update(verified_mapping_assets=len(usable),ambiguous_mapping_assets=ambiguous)
             result["mapping_readiness"]="AMBIGUOUS" if ambiguous else "UNMAPPED" if not usable else "VERIFIED" if len(usable)==len(ids) else "PARTIAL"
-            approved={};count_by_mapping=defaultdict(int)
+            approved={};count_by_mapping=defaultdict(int);signals_by_mapping=defaultdict(list)
             with self.database.read_session() as s:
                 # Probe all three relations, even if no mapping exists. Empty != missing schema.
                 for model in (ConditionSignalSelectionMart,ConditionEvidenceLatestMart,ConditionProjectionStateMart):
                     s.execute(select(model).limit(0))
                 for row in s.scalars(select(ConditionSignalSelectionMart).where(
                     ConditionSignalSelectionMart.mapping_id.in_(usable),ConditionSignalSelectionMart.approval_status=="APPROVED")):
-                    definition=SignalSelection.model_validate(row.definition)
-                    if definition.mapping_id!=row.mapping_id or definition.signal_id!=row.signal_id or definition.approval_status!="APPROVED": raise ValueError("invalid selection")
+                    definition=stored_selection(row, row.mapping_id)
                     approved[row.signal_id]=definition;count_by_mapping[row.mapping_id]+=1
-                if any(n>MAX_SIGNALS for n in count_by_mapping.values()): raise ValueError("oversized signal set")
-                projected_assets=set(); projected_signals=0
+                    signals_by_mapping[row.mapping_id].append(definition)
+                for mapping_id, signals in signals_by_mapping.items():
+                    identity,lineage=usable[mapping_id]
+                    ProjectionPlan(canonical_asset_id=identity, mapping_id=mapping_id,
+                        sources=EvidenceSources(pi=lineage), signals=tuple(signals))
+                projected_assets=set(); projected_signals=0; evidence_by_mapping=defaultdict(list)
                 for row in s.scalars(select(ConditionEvidenceLatestMart).where(ConditionEvidenceLatestMart.signal_id.in_(approved))):
                     definition=approved[row.signal_id];identity,lineage=usable[definition.mapping_id]
-                    e=ConditionEvidence.model_validate(row.evidence)
-                    if (row.canonical_asset_id!=identity or row.mapping_id!=definition.mapping_id or e.canonical_asset_id!=identity or e.mapping_id!=definition.mapping_id or e.signal_id!=row.signal_id
-                        or e.sources.pi.model_dump(exclude={"attribute_ref","attribute_name"})!=lineage.model_dump()
-                        or e.attribute_ref!=definition.attribute_ref or e.semantic_name!=definition.semantic_name
-                        or e.provenance.selection_evidence_ref!=definition.evidence_ref or e.provenance.selection_approved_by!=definition.approved_by or e.provenance.selection_approved_at!=definition.approved_at):
-                        raise ValueError("evidence lineage differs")
+                    e=stored_evidence(row, identity, definition.mapping_id, definition, lineage)
+                    evidence_by_mapping[definition.mapping_id].append(row)
                     projected_assets.add(identity);projected_signals+=1
                     result["source_times"].append(e.source_timestamp)
                     result["projection_times"].append(row.projected_at)
                     result["qualities"].append(e.evidence_status)
-                for row in s.scalars(select(ConditionProjectionStateMart).where(ConditionProjectionStateMart.canonical_asset_id.in_(ids))):
-                    if row.state.get("mapping_id") in usable: result["projection_statuses"].update(row.state.get("statuses",[]))
+                states={row.canonical_asset_id:row for row in s.scalars(select(ConditionProjectionStateMart).where(ConditionProjectionStateMart.canonical_asset_id.in_(ids)))}
+                for mapping_id,(identity,_) in usable.items():
+                    if not count_by_mapping.get(mapping_id): continue
+                    state=stored_projection_state(states.get(identity), mapping_id, evidence_by_mapping[mapping_id])
+                    if state is not None:
+                        result["projection_statuses"].update(state["statuses"])
+                    elif identity in projected_assets or identity in states:
+                        # Evidence may survive a partial restore while its attestation
+                        # is missing or bound to another mapping. Retain its counts and
+                        # original source time, but never infer a complete/current run.
+                        result["projection_statuses"].add("PROJECTION_ERROR")
+                        result["projection_times"].append(None)
             result["condition_ready"]=True
             c.update(approved_signal_assets=len(count_by_mapping),approved_signals=len(approved),projected_assets=len(projected_assets),projected_signals=projected_signals)
         except (SQLAlchemyError,ValueError,KeyError,TypeError):

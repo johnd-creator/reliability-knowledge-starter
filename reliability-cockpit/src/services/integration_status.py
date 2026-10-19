@@ -23,6 +23,11 @@ class IntegrationStatusService:
         return FreshnessDimension(state=state,observed_at=min((t for t in times if t),default=None),max_age_seconds=threshold)
 
     @staticmethod
+    def _unknown_reason(reasons, dimension):
+        if dimension.state == TrustState.UNKNOWN:
+            reasons.add(Reason.UNKNOWN_FRESHNESS_POLICY if dimension.max_age_seconds is None else Reason.UNKNOWN_TIMESTAMP)
+
+    @staticmethod
     def _state(reasons,freshness,availability):
         if availability==Availability.NOT_CONFIGURED:return TrustState.NOT_CONFIGURED
         if availability==Availability.UNAVAILABLE:return TrustState.DEGRADED
@@ -42,6 +47,7 @@ class IntegrationStatusService:
         c=dict(inventory["coverage"]);c.update(technical_registry_total=pi.registry_total,technical_registry_active=pi.registry_active,technical_snapshots=pi.snapshots)
         for component,observation in ((Component.MAXIMO,mx),(Component.PI_COLLECTOR,pi)):
             collection=self.freshness("COLLECTOR",[observation.last_successful_activity],component);reasons=set()
+            self._unknown_reason(reasons, collection)
             if observation.availability!=Availability.AVAILABLE:reasons.add(Reason.COLLECTOR_UNAVAILABLE if observation.availability==Availability.UNAVAILABLE else Reason.COLLECTOR_OBSERVATION_UNAVAILABLE)
             if observation.last_successful_activity is None:reasons.add(Reason.NO_SUCCESSFUL_ACTIVITY)
             if observation.errors:reasons.add(Reason.COLLECTOR_ERRORS)
@@ -63,6 +69,7 @@ class IntegrationStatusService:
         availability=Availability.AVAILABLE if inventory["available"] else Availability.UNAVAILABLE if self.database else Availability.NOT_CONFIGURED
         martfresh=self.freshness("PROJECTION",inventory.get("mart_success_times",[inventory.get("mart_success")]),Component.RELIABILITY_MART);reasons=set()
         if availability!=Availability.AVAILABLE:reasons.add(Reason.MART_UNAVAILABLE if self.database else Reason.MART_NOT_CONFIGURED)
+        self._unknown_reason(reasons, martfresh)
         if inventory.get("mart_degraded"):reasons.add(Reason.PROJECTION_ERROR)
         if martfresh.state==TrustState.STALE:reasons.add(Reason.PROJECTION_STALE)
         components.append(IntegrationComponentStatus(component=Component.RELIABILITY_MART,availability=availability,
@@ -75,6 +82,8 @@ class IntegrationStatusService:
         components.append(IntegrationComponentStatus(component=Component.ASSET_AF_MAPPING,availability=availability,
             state=TrustState.CURRENT if readiness==MappingReadiness.VERIFIED and not reasons else self._state(reasons,[],availability),mapping_readiness=readiness,degraded_reasons=tuple(sorted(reasons))))
         projection=self.freshness("PROJECTION",inventory.get("projection_times",[]),Component.PI_CONDITION_PROJECTION);source=self.freshness("SOURCE",inventory.get("source_times",[]),Component.PI_CONDITION_PROJECTION);reasons=set()
+        self._unknown_reason(reasons, projection)
+        self._unknown_reason(reasons, source)
         if inventory["condition_ready"] is not True:reasons.add(Reason.CONDITION_SCHEMA_NOT_READY)
         if readiness==MappingReadiness.UNMAPPED:reasons.add(Reason.HUMAN_CROSSWALK_REQUIRED)
         if readiness==MappingReadiness.AMBIGUOUS:reasons.add(Reason.AMBIGUOUS_MAPPING)
