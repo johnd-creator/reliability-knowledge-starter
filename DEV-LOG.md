@@ -871,3 +871,29 @@ Product Owner Acceptance: PENDING
 Remaining gates: Senior review, PO acceptance and separately authorized safe integration.
 Next Action: Senior Design & Code Review → Product Owner Visual Acceptance → Authorized Merge.
 Evidence: reliability-cockpit/docs/NADI-UX-V2-OVERHAUL-01.md
+
+## NADI-UX-V2-CONTROLLER-RECOVERY-01
+
+- **Date:** 2026-10-18
+- **Objective:** Qualify preservation and independent source recovery before a separately authorized paired V2 upgrade.
+- **Branch:** codex/nadi-ux-v2-controller-recovery-01; based on c7930694187b61ffa6dae90e6a14938e7564c3e7.
+- **Implementation Status:** IMPLEMENTED — private source seal, exact recovery receipt and guarded paired transition.
+- **Test Status:** TESTED — hermetic recovery/controller regressions and affected contracts; exact results in task report and PR.
+- **Merge Status:** UNMERGED; PR102 unchanged.
+- **Development Visibility:** NOT ACTIVATED — controller, serving source, development processes and collectors unchanged.
+- **Product Owner Acceptance:** Pending separate review and activation authorization.
+- **Next Action:** Senior review → approve controller delivery → separately authorize local paired V2 upgrade.
+- **Evidence:** reliability-cockpit/docs/NADI-UX-V2-CONTROLLER-RECOVERY-01.md and NADI-UX-V2-PAIRED-UPGRADE-RUNBOOK.md.
+
+
+## 19 October 2026 — NADI-UI-INTEGRATION-103-102-104 preparation
+
+- **Requirements:** FR-01–FR-05 / FR-10; source integration only, existing contracts and operational gates retained.
+- **Sources:** PR103 `1ec93d6f3507321617903d169451d77fdcc1216e`; PR102 `260c4f9f5f9a17aea3b36476ca4a0e202069e19d`; stacked PR104 `fc33515a3cd0ec4bd9fad81c59e65babe397c2b3`; main baseline `c7930694187b61ffa6dae90e6a14938e7564c3e7`.
+- **Implementation:** ancestry-preserving consolidation; both conflicting DEV-LOG histories retained verbatim, with this dated correction appended. No new product behavior.
+- **Tests:** prior isolated combined runtime tree passed 530 backend tests (395 pass / 135 disposable-PostgreSQL skips), 14 canonical contracts, 15 frontend groups, lint/types/build and 1,300 intercepted-fixture browser assertions. PostgreSQL qualification and final exact-head CI are required on the integration PR before merge; earlier individual PR CI is insufficient.
+- **Runtime observed 2026-10-19 11:52 UTC:** HTTPS3000 frontend and development API source PR104; installed four-file controller and API bootstrap PR103; retained disposable fixture `nadi_local_dev_01_test`; 35 container identities/states preserved. Active generated `next-env.d.ts` change and control checkout's unrelated dirty files remain untouched.
+- **Acceptance:** Product Owner accepted the current development appearance. This does not grant engineer/method/threshold approval, operational activation or F03/Phase1 acceptance.
+- **Authorization:** explicit user approval permits candidate commit/push and normal PR merge only after review and all required CI pass. Deployment, preview replacement/restart, collector/database/auth/session changes remain excluded.
+- **Merge status at this preparation checkpoint:** PENDING exact-head integration CI and final review; final source state is recorded by the integration PR/main SHA and post-merge workflow, not inferred here.
+- **Evidence and integration plan:** [NADI source integration](reliability-cockpit/docs/NADI-UI-INTEGRATION-103-102-104.md); [reconciled runtime runbook](reliability-cockpit/docs/NADI-UX-V2-PAIRED-UPGRADE-RUNBOOK.md).

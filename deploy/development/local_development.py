@@ -67,6 +67,184 @@ def old_source(root, sha):
     return digest(Path(root) / 'reliability-cockpit/web/next-env.d.ts')
 
 
+class SealedSource:
+    """Owner-private source-only archive, approved by its exact manifest SHA256.
+
+    No runtime state is restored. Independent recovery Git objects stay in a private
+    repository; no snapshot commit/object is written into the application repository.
+    """
+    @staticmethod
+    def path(root, name):
+        from pathlib import PurePosixPath
+        p = PurePosixPath(name)
+        if (not name or p.is_absolute() or str(p) != name or any(x in {'.','..','.git','.nadi-dev'} for x in p.parts)
+                or any(x == '.env' or x.startswith('.env.') and not x.endswith(('.example','.sample')) for x in p.parts)
+                or p.suffix in {'.dump','.key','.pem'}):
+            raise RuntimeError('PRESERVATION_PATH_DENIED')
+        target = Path(root) / name
+        for part in [target, *target.parents]:
+            if part == Path(root).parent: break
+            if part.is_symlink(): raise RuntimeError('PRESERVATION_SYMLINK_DENIED')
+        return target
+
+    @staticmethod
+    def private_root(root):
+        root = Path(root)
+        if root.resolve() != root or root.is_symlink() or not root.is_dir():
+            raise RuntimeError('PRIVATE_PRESERVATION_ROOT_REQUIRED')
+        st = root.stat()
+        if st.st_uid != os.getuid() or st.st_mode & 0o077:
+            raise RuntimeError('PRIVATE_PRESERVATION_ROOT_REQUIRED')
+        return root
+
+    @staticmethod
+    def git(root, *args, **kwargs):
+        return subprocess.check_output(['git','-c','core.hooksPath=/dev/null',*args],cwd=root,timeout=30,**kwargs)
+
+    @classmethod
+    def scan(cls, root):
+        root = Path(root)
+        if root.resolve() != root or root.is_symlink() or root.stat().st_uid != os.getuid():
+            raise RuntimeError('PRESERVATION_SOURCE_OWNER_REQUIRED')
+        git = lambda *a: cls.git(root,*a).decode().strip()
+        if cls.git(root,'ls-files','--unmerged'):
+            raise RuntimeError('UNRESOLVED_INDEX_DENIED')
+        names = cls.git(root,'ls-files','-z','--cached','--others','--exclude-standard').split(b'\0')
+        files = {}
+        for raw in sorted(set(names)):
+            if not raw: continue
+            name = raw.decode(); path = cls.path(root,name)
+            if not path.exists(): continue  # Tracked deletions are represented by absence.
+            before = path.lstat()
+            if not path.is_file() or before.st_uid != os.getuid() or before.st_nlink != 1:
+                raise RuntimeError('PRESERVATION_REGULAR_OWNED_FILE_REQUIRED')
+            data = path.read_bytes(); after = path.lstat()
+            if (before.st_ino,before.st_size,before.st_mtime_ns,before.st_mode) != (after.st_ino,after.st_size,after.st_mtime_ns,after.st_mode):
+                raise RuntimeError('PRESERVATION_CONCURRENT_CHANGE')
+            mode = before.st_mode & 0o777
+            if mode & 0o022 or before.st_mode & 0o7000:
+                raise RuntimeError('PRESERVATION_UNSAFE_FILE_MODE')
+            files[name] = {'sha256':hashlib.sha256(data).hexdigest(),'size':len(data),'mode':mode,
+                           'blob':hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest()}
+        # Even ignored frontend dotenv cannot become an implicit runtime dependency.
+        for name in ['.env','.env.local','.env.development','.env.development.local']:
+            if (root/'reliability-cockpit/web'/name).exists(): raise RuntimeError('UNREVIEWED_DOTENV_DENIED')
+        index = cls.git(root,'ls-files','--stage','-z')
+        return {'root':str(root),'head':git('rev-parse','HEAD'),'branch':git('symbolic-ref','-q','--short','HEAD') if cls.git_branch(root) else None,
+                'common_dir':git('rev-parse','--path-format=absolute','--git-common-dir'),
+                'origin':git('remote','get-url','origin'),'uid':os.getuid(),'files':files,
+                'index_sha256':hashlib.sha256(index).hexdigest(),
+                'status':cls.git(root,'status','--porcelain=v1','--untracked-files=all','-z').hex()}
+
+    @classmethod
+    def git_branch(cls, root):
+        return subprocess.run(['git','symbolic-ref','-q','--short','HEAD'],cwd=root,capture_output=True,timeout=10).returncode == 0
+
+    @classmethod
+    def seal(cls, root, destination, runtime):
+        root = Path(root); dest = Path(destination)
+        if dest.resolve() != dest or root == dest or root in dest.parents:
+            raise RuntimeError('PRESERVATION_OUTSIDE_SOURCE_REQUIRED')
+        before = cls.scan(root)
+        dest.mkdir(mode=0o700)  # Exclusive, never replace an existing archive.
+        (dest/'objects').mkdir(mode=0o700)
+        for name, item in before['files'].items():
+            data = cls.path(root,name).read_bytes()
+            if hashlib.sha256(data).hexdigest() != item['sha256']: raise RuntimeError('PRESERVATION_CONCURRENT_CHANGE')
+            target = dest/'objects'/item['sha256']
+            if not target.exists():
+                fd = os.open(target,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
+                with os.fdopen(fd,'wb') as f: f.write(data)
+        if cls.scan(root) != before: raise RuntimeError('PRESERVATION_CONCURRENT_CHANGE')
+        value = {'version':1,'source':before,'runtime':runtime,'created':time.time()}
+        path = dest/'manifest.json'; fd=os.open(path,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
+        with os.fdopen(fd,'w') as f: json.dump(value,f,sort_keys=True,separators=(',',':'))
+        return {'manifest':str(path),'digest':digest(path)}
+
+    @staticmethod
+    def approved_json(path, expected, code):
+        import stat
+        fd=os.open(path,os.O_RDONLY|os.O_NOFOLLOW)
+        with os.fdopen(fd,'rb') as f:
+            st=os.fstat(f.fileno())
+            if not stat.S_ISREG(st.st_mode) or st.st_uid!=os.getuid() or st.st_mode&0o077 or st.st_nlink!=1:
+                raise RuntimeError('PRIVATE_PRESERVATION_OBJECT_REQUIRED')
+            data=f.read(16*1024*1024+1)
+            if len(data)>16*1024*1024 or hashlib.sha256(data).hexdigest()!=expected:
+                raise RuntimeError(code)
+        return json.loads(data)
+
+    @classmethod
+    def verify(cls, approval, original=False):
+        path = Path(approval['manifest']); cls.private_root(path.parent); cls.private_root(path.parent/'objects')
+        value = cls.approved_json(path,approval['digest'],'PRESERVATION_APPROVAL_MISMATCH')
+        if value.get('version') != 1 or value['source']['uid'] != os.getuid(): raise RuntimeError('PRESERVATION_IDENTITY_MISMATCH')
+        source = value['source']
+        for name,item in source['files'].items():
+            cls.path(Path(source['root']),name)
+            if not re.fullmatch('[0-9a-f]{64}',item['sha256']): raise RuntimeError('PRESERVATION_HASH_INVALID')
+            data_path=path.parent/'objects'/item['sha256']; st=data_path.lstat()
+            if data_path.is_symlink() or not data_path.is_file() or st.st_uid!=os.getuid() or st.st_mode&0o077 or st.st_nlink!=1:
+                raise RuntimeError('PRIVATE_PRESERVATION_OBJECT_REQUIRED')
+            data=data_path.read_bytes()
+            if (len(data)!=item['size'] or hashlib.sha256(data).hexdigest()!=item['sha256'] or
+                    hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest()!=item['blob']):
+                raise RuntimeError('PRESERVATION_OBJECT_CORRUPT')
+        if original and cls.scan(source['root']) != source: raise RuntimeError('PRESERVATION_SOURCE_CHANGED')
+        return value
+
+    @classmethod
+    def prepare(cls, approval, root, base):
+        value=cls.verify(approval,original=True); root=Path(root); base=Path(base)
+        if root.parent!=base or root.resolve()!=root or root.exists(): raise RuntimeError('NEW_MANAGED_RECOVERY_ROOT_REQUIRED')
+        root.mkdir(mode=0o700)
+        cls.git(root,'init','--quiet')
+        os.chmod(root/'.git',0o700)
+        cls.git(root,'config','core.hooksPath','/dev/null')
+        cls.git(root,'remote','add','origin',value['source']['origin'])
+        cls.git(root,'config','remote.origin.pushurl','disabled://nadi-private-recovery')
+        # Immutable base objects are read through an exact local alternate. New private
+        # snapshot objects are written only inside this owner-private recovery repo.
+        objects=Path(value['source']['common_dir'])/'objects'
+        (root/'.git/objects/info/alternates').write_text(str(objects)+'\n')
+        cls.git(root,'cat-file','-e',value['source']['head']+'^{commit}')
+        for name,item in value['source']['files'].items():
+            data=(Path(approval['manifest']).parent/'objects'/item['sha256']).read_bytes()
+            path=cls.path(root,name); path.parent.mkdir(parents=True,exist_ok=True)
+            fd=os.open(path,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,item['mode'])
+            with os.fdopen(fd,'wb') as f: f.write(data)
+            os.chmod(path,item['mode'])
+            blob=cls.git(root,'hash-object','-w','--stdin',input=data).decode().strip()
+            if blob!=item['blob']: raise RuntimeError('RECOVERY_BLOB_MISMATCH')
+            cls.git(root,'update-index','--add','--cacheinfo',('100755' if item['mode']&0o111 else '100644')+','+blob+','+name)
+        tree=cls.git(root,'write-tree').decode().strip()
+        env=dict(os.environ,GIT_AUTHOR_NAME='NADI private recovery',GIT_AUTHOR_EMAIL='recovery@localhost',
+                 GIT_COMMITTER_NAME='NADI private recovery',GIT_COMMITTER_EMAIL='recovery@localhost')
+        sha=cls.git(root,'commit-tree',tree,'-p',value['source']['head'],input=('Private recovery for '+approval['digest']+'\n').encode(),env=env).decode().strip()
+        cls.git(root,'update-ref','HEAD',sha)
+        receipt=dict(approval,root=str(root),sha=sha,tree=tree)
+        cls.verify_recovery(receipt)
+        if cls.scan(value['source']['root'])!=value['source']: raise RuntimeError('PRESERVATION_SOURCE_CHANGED')
+        return receipt
+
+    @classmethod
+    def verify_recovery(cls, receipt):
+        value=cls.verify(receipt); root=cls.private_root(receipt['root']); actual=cls.scan(root)
+        expected=value['source']
+        cls.private_root(root/'.git')
+        if actual['common_dir']!=str(root/'.git'):
+            raise RuntimeError('RECOVERY_REPOSITORY_MISMATCH')
+        if cls.git(root,'config','remote.origin.pushurl').decode().strip()!='disabled://nadi-private-recovery':
+            raise RuntimeError('PRIVATE_RECOVERY_PUSH_DISABLED_REQUIRED')
+        if (actual['files']!=expected['files'] or actual['head']!=receipt['sha'] or actual['origin']!=expected['origin'] or
+                actual['status'] or cls.git(root,'rev-parse','HEAD^{tree}').decode().strip()!=receipt['tree'] or
+                cls.git(root,'rev-parse','HEAD^').decode().strip()!=expected['head']):
+            raise RuntimeError('SEALED_RECOVERY_SOURCE_CHANGED')
+        if (root/'.git/objects/info/alternates').read_text()!=str(Path(expected['common_dir'])/'objects')+'\n':
+            raise RuntimeError('RECOVERY_REPOSITORY_MISMATCH')
+        return value
+
+
 def node_pin(state):
     pin = private(state / 'frontend-runtime.json')
     node = Path(pin['node_path'])
@@ -83,6 +261,8 @@ class LocalDevelopment:
     def __init__(self, control):
         self.c = control
         self.state = control.STATE / 'local-dev-01'
+        self.preservation = None
+        self.acceptance_session_file = None
 
     def save(self, name, value):
         self.c.write_private(self.state / name, json.dumps(value, indent=2))
@@ -295,10 +475,82 @@ class LocalDevelopment:
                          str(Path(__file__).with_name('local_fixture.py')),'--check'])
         return json.loads(result)
 
+    def preservation_identity(self, value):
+        config_path = value.get('config_path',str(self.state/'config.json'))
+        config = private(config_path)
+        return {'root':value['root'],'sha':value['sha'],'workflow_sha':value['workflow_sha'],
+                'controller_sha':self.release(),'config_path':config_path,'config_hash':digest(config_path),
+                'accounts_hash':digest(config['accounts_file']),
+                'before':{'web':self.owners(self.c.UNITS[1],Path(value['root'])/'reliability-cockpit/web',3000),
+                          'api':self.owners(self.c.UNITS[0],Path(value['root'])/'reliability-cockpit',13036)}}
+
+    def preserve(self, destination):
+        with self.transaction():
+            value=self.active_value()
+            root=source(value['root'],self.c.BASE,value['sha']); self.repository(root)
+            self.readiness(value)
+            identity=self.preservation_identity(value)
+            approval=SealedSource.seal(root,destination,identity)
+            if self.active_value()!=value or self.preservation_identity(value)!=identity:
+                raise RuntimeError('PRESERVATION_RUNTIME_CHANGED')
+            return approval
+
+    def prepare_preserved(self, approval, root):
+        with self.transaction():
+            sealed=SealedSource.verify(approval,original=True)
+            if (sealed['runtime']!=self.preservation_identity(self.active_value()) or
+                    sealed['source']['root']!=sealed['runtime']['root'] or sealed['source']['head']!=sealed['runtime']['sha']):
+                raise RuntimeError('PRESERVATION_RUNTIME_CHANGED')
+            receipt=SealedSource.prepare(approval,root,self.c.BASE)
+            identity=sealed['runtime']
+            config=private(identity['config_path'])
+            if config['source_root']!=identity['root'] or config['workflow_sha']!=identity['workflow_sha']:
+                raise RuntimeError('ACTIVE_FIXTURE_SOURCE_MISMATCH')
+            config=dict(config,source_root=str(root))
+            config_name='sealed-recovery-config-'+receipt['sha']+'.json'
+            self.save(config_name,config)
+            receipt['config_path']=str(self.state/config_name)
+            receipt['config_hash']=digest(self.state/config_name)
+            token='recovery-source-'+uuid.uuid4().hex+'.json'
+            self.save(token,receipt)
+            return {'receipt':str(self.state/token),'receipt_sha256':digest(self.state/token),**receipt}
+
+    def preserved_previous(self):
+        request=self.preservation
+        receipt=SealedSource.approved_json(request['receipt'],request['receipt_sha256'],'RECOVERY_RECEIPT_APPROVAL_CHANGED')
+        sealed=SealedSource.verify_recovery(receipt)
+        SealedSource.verify(receipt,original=True)
+        value=self.active_value(); identity=self.preservation_identity(value)
+        if (sealed['runtime']!=identity or sealed['source']['root']!=identity['root'] or sealed['source']['head']!=identity['sha']):
+            raise RuntimeError('PRESERVATION_RUNTIME_CHANGED')
+        self.readiness(value)
+        root=Path(receipt['root'])
+        source(root,self.c.BASE,receipt['sha'],clean=True)
+        config=private(identity['config_path'])
+        if config['source_root']!=value['root'] or config['workflow_sha']!=value['workflow_sha']:
+            raise RuntimeError('ACTIVE_FIXTURE_SOURCE_MISMATCH')
+        config=dict(config,source_root=str(root))
+        path=Path(receipt['config_path'])
+        if path.parent!=self.state or digest(path)!=receipt['config_hash'] or private(path)!=config:
+            raise RuntimeError('RECOVERY_CONFIG_CHANGED')
+        dependency=root/'reliability-cockpit/web/node_modules/.package-lock.json'
+        if not dependency.is_file() or dependency.is_symlink():
+            raise RuntimeError('REVIEWED_RECOVERY_DEPENDENCIES_REQUIRED')
+        result=dict(value,recovery_dependency_hash=digest(dependency),root=str(root),sha=receipt['sha'],backend_sha=receipt['sha'],
+                    ref=receipt['sha'],config_path=str(path),sealed_source=receipt,
+                    original_source={'root':value['root'],'sha':value['sha'],'manifest_digest':receipt['digest']},
+                    before=identity['before'])
+        result.pop('expected_web',None);result.pop('expected_api_parent',None)
+        return result
+
     def previous(self):
+        if self.preservation:
+            return self.preserved_previous()
         value = self.active_value()
         root = source(value['root'],self.c.BASE,value['sha'])
-        self.repository(root)
+        if value.get('sealed_source'):
+            SealedSource.verify_recovery(value['sealed_source'])
+        else:self.repository(root)
         generated = old_source(root,value['sha'])
         data = self.readiness(value)
         if data.get('engineering_data') != 'SYNTHETIC_FIXTURES':
@@ -323,6 +575,8 @@ class LocalDevelopment:
         spec = importlib.util.spec_from_file_location('local_pair_compatibility',Path(__file__).with_name('frontend_preview.py'))
         module = importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
         pair = module.compatible(root,root,sha,sha)
+        if previous.get('sealed_source'):
+            module.compatible(root,Path(previous['root']),sha,previous['sha'])
         db = self.c.db()
         if not db or not db['State']['Running'] or db['NetworkSettings']['Ports'].get('5432/tcp') != [{'HostIp':'127.0.0.1','HostPort':'15443'}]:
             raise RuntimeError('EXISTING_DEVELOPMENT_POSTGRES_REQUIRED')
@@ -379,8 +633,12 @@ class LocalDevelopment:
         self.release()
         previous = value['previous']
         root = source(previous['root'],self.c.BASE,previous['sha'])
-        self.repository(root)
-        if old_source(root,previous['sha']) != previous['generated_hash']:
+        if previous.get('sealed_source'):
+            SealedSource.verify_recovery(previous['sealed_source'])
+            if digest(root/'reliability-cockpit/web/node_modules/.package-lock.json')!=previous['recovery_dependency_hash']:
+                raise RuntimeError('RECOVERY_DEPENDENCY_CHANGED')
+        else:self.repository(root)
+        if not previous.get('sealed_source') and old_source(root,previous['sha']) != previous['generated_hash']:
             raise RuntimeError('ROLLBACK_SOURCE_CHANGED')
         if (digest(previous['config_path']) != value['config_hash'] or
                 digest(private(previous['config_path'])['accounts_file']) != value['accounts_hash']):
@@ -471,7 +729,7 @@ class LocalDevelopment:
         deadline = time.monotonic()+120
         while True:
             try:
-                return self.readiness(value)
+                return self.readiness(value,session_file=self.acceptance_session_file)
             except RuntimeError as error:
                 if str(error) not in {'EXPECTED_LISTENER_MISSING','LOCAL_PAIR_NOT_READY'}:
                     raise
@@ -509,7 +767,15 @@ class LocalDevelopment:
             raise
 
     def _select(self, root, ref, token):
+        if self.preservation and not self.acceptance_session_file:
+            raise RuntimeError('AUTHENTICATED_ACCEPTANCE_PROOF_REQUIRED')
+        for event in self.state.glob('selection-*-stopping.json'):
+            stem=event.name[:-len('-stopping.json')]
+            if not any((self.state/(stem+suffix)).exists() for suffix in ['-accepted.json','-failure-recovered.json']):
+                raise RuntimeError('INTERRUPTED_TRANSITION_REQUIRES_REVIEW')
         value = self.preflight(root,ref)
+        if self.preservation:
+            self.readiness(self.active_value(),session_file=self.acceptance_session_file)
         self.backup(value,token)
         again = self.preflight(root,ref)
         if again != {k:v for k,v in value.items() if k not in {'backup','backup_sha256','backup_created'}}:
@@ -524,9 +790,11 @@ class LocalDevelopment:
         self.save(token+'-stopping.json',{'before':value['previous']['sha'],'after':value['sha'],
                                        'rollback':token+'-prepared.json'})
         source(root,self.c.BASE,value['sha'],clean=True)
+        if value['previous'].get('sealed_source'):
+            SealedSource.verify(value['previous']['sealed_source'],original=True)
         for key,unit,suffix,port in [('web',self.c.UNITS[1],'reliability-cockpit/web',3000),
                                      ('api',self.c.UNITS[0],'reliability-cockpit',13036)]:
-            if self.owners(unit,Path(value['previous']['root'])/suffix,port) != value['previous']['before'][key]:
+            if self.owners(unit,Path(value['previous'].get('original_source',{}).get('root',value['previous']['root']))/suffix,port) != value['previous']['before'][key]:
                 raise RuntimeError('BASELINE_CHANGED_BEFORE_TRANSITION')
         try:
             self.c.stop_unit(self.c.UNITS[1]); self.c.stop_unit(self.c.UNITS[0])
@@ -555,6 +823,8 @@ class LocalDevelopment:
             if self.c.active(unit):
                 current = self.unit(unit)
                 roots = [Path(value['root'])/suffix,Path(previous['root'])/suffix]
+                if previous.get('original_source'):
+                    roots.append(Path(previous['original_source']['root'])/suffix)
                 if current['WorkingDirectory'] not in {str(p) for p in roots}:
                     raise RuntimeError('UNEXPECTED_RECOVERY_UNIT_OWNER')
                 # Known unit alone is insufficient: every extant socket must be owned.
@@ -578,13 +848,15 @@ class LocalDevelopment:
     def recover(self, value):
         if 'previous' not in value:
             raise RuntimeError('REUSABLE_RECOVERY_RECORD_REQUIRED: historical recovery artifacts retained')
+        if value.get('previous',{}).get('sealed_source') and not self.acceptance_session_file:
+            raise RuntimeError('AUTHENTICATED_ACCEPTANCE_PROOF_REQUIRED')
         token = 'rollback-'+uuid.uuid4().hex
         self.save(token+'-requested.json',{'outcome':'REQUESTED','source':value['sha']})
         try:
             with self.transaction():
                 if self.active_value() != value:
                     raise RuntimeError('ACTIVE_SELECTION_CHANGED')
-                self.readiness(value)
+                self.readiness(value,session_file=self.acceptance_session_file)
                 recovery = dict(value)
                 self.backup(recovery,token)
                 self.save(token+'-prepared.json',recovery)

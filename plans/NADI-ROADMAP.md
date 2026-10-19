@@ -1028,3 +1028,17 @@ Draft PR checks. UNMERGED, PO acceptance PENDING, LIVE_PREVIEW_NOT_PROMOTED.
 No source/DB/API/auth architecture changes; Administration remains PLANNED.
 Existing phases, engineering approvals and ON HOLD decisions are not advanced.
 Next: senior design/code review → PO visual acceptance → authorized merge.
+
+
+## 19 October 2026 — NADI UI source consolidation checkpoint
+
+PR103 recovery and PR102 → PR104 UI are being consolidated with all original
+ancestry and both DEV-LOG histories retained. [Integration plan](../reliability-cockpit/docs/NADI-UI-INTEGRATION-103-102-104.md)
+records immutable heads, combined validation and normal PR/main CI gates.
+The existing development appearance is PO accepted; source commit/push/merge is
+explicitly authorized only after review and CI. At this preparation checkpoint
+source integration is PENDING final exact-head qualification; final merge state
+belongs to the GitHub handoff. Actual observed runtime already serves PR104 with
+controller/bootstrap PR103; source integration does not restart or replace it.
+Operational F03/Phase1, engineer method/threshold decisions and ON HOLD items
+remain unchanged. Historical pending/not-promoted entries retain their dated scope.
