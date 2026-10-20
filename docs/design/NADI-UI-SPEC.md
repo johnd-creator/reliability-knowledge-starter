@@ -554,3 +554,17 @@ client role labels are not authorization. Account/grant/reset/recovery actions
 remain private or separately gated. [Matrix and approval boundaries](../../reliability-cockpit/docs/nadi-admin-authorization-matrix.md)
 are PROPOSED organizational permissions; UI-11 QA login and factual development
 access remain unchanged.
+
+
+## UI-04 — PdM manual follow-up package candidate — 21 October 2026
+
+[NADI-PDM-MANUAL-FOLLOW-UP-01](../../reliability-cockpit/docs/nadi-pdm-manual-follow-up-01.md)
+adds conditional work-origin context and an optional fourth form section for
+manual analysis/follow-up and up to10 reported-unverified SR references. Keep
+measurement grid, observations and hypotheses separate; no automatic diagnosis or
+Recommendation entity. Explicit accessible names survive editor reopen. Detail and
+immutable history show values per revision and honest legacy absence. SR verification
+is never inferred from inspection APPROVED. Existing draft recovery, session/scope
+clearing, keyboard/responsive primitives and asset identity stay authoritative.
+Candidate implementation/testing is distinct from main-preview visibility and
+real PO/engineer acceptance; no new design or technical-threshold approval inferred.

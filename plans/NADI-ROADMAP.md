@@ -1062,3 +1062,14 @@ Phase1 retains the historical CURRENT/PARTIAL label; current monitoring approval
 ### Local follow-up qualification —19 October2026
 
 [Phase1/F03 preparation report](../reliability-cockpit/docs/NADI-PHASE1-RELIABILITY-F03-PREP-01.md): independent source review exposed two P2 aggregate/detail and restored-state gaps, reproduced and fixed locally; follow-up review found no new blocker. Final focused169/169 tests pass with zero skips on both isolated PostgreSQL16.14 and18.6; Maximo offline208/208 and canonical14/14 pass. All original35 containers, dirty worktrees, preview source/listeners and installed controller were rechecked unchanged. No new commit/push/PR/merge/deploy or active DB/security change. Phase1 software candidate ready for review/exact-head CI after authorized publication; current monitoring approval after13Oct expiry NOT ESTABLISHED, attributable owner disposition needed. F03 OPEN/NO-GO; its unmerged recovery stack/global-metadata/operational gates remain separate. PdM engineer validation stays deferred.
+
+
+## 21 October 2026 — PdM manual follow-up package candidate
+
+Verified baseline main44bc1def (PR108). FR-03/04/UI-04
+[NADI-PDM-MANUAL-FOLLOW-UP-01](../reliability-cockpit/docs/nadi-pdm-manual-follow-up-01.md)
+implements origin, manual engineer narrative/follow-up and reported-unverified SR
+references using existing application workflows. Scoped tests/independent review
+qualify a branch/draft PR only; exact publication SHA and CI are recorded in handoff.
+No merge, active visibility, operational engineering acceptance, Maximo writes or
+F03/PR107 integration is implied. Source/runtime/checkpoints above remain historical.

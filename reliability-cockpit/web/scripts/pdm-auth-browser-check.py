@@ -9,7 +9,7 @@ parser=argparse.ArgumentParser()
 parser.add_argument('--bundle',type=Path,required=True)
 parser.add_argument('--only',default='')
 parser.add_argument('--report',type=Path,required=True)
-parser.add_argument('--chromium',type=Path,required=True)
+parser.add_argument('--chromium',type=Path)
 args=parser.parse_args()
 bundle=args.bundle.read_text()
 ORIGIN='https://pdm-auth-workspace-fixture.invalid'
@@ -20,7 +20,7 @@ def require(value,message):
     if not value:raise AssertionError(message)
 
 with sync_playwright() as p:
-    browser=p.chromium.launch(headless=True,executable_path=str(args.chromium))
+    browser=p.chromium.launch(headless=True,**({'executable_path':str(args.chromium)} if args.chromium else {}))
     def scenario(name,test):
         if args.only and args.only not in name:return
         context=browser.new_context(viewport=dict(width=1440,height=1000))
@@ -52,7 +52,7 @@ with sync_playwright() as p:
                 body=request.post_data_json;state['posts'].append(body)
                 key=body['request_id']
                 if key not in state['receipts']:
-                    draft=body['draft'];row=dict(**draft,record_id='inspection:SYNTHETIC:'+str(len(state['records'])+1),revision=1,status='DRAFT',created_by=state['who']['subject'],created_at='2026-10-20T00:00:00Z',updated_at='2026-10-20T00:00:00Z',review=None,contributors=[state['who']['subject']],review_started_by=None,field_approval='ENGINEER_FIELDS_PENDING',assessment='NOT_ASSESSED',provenance='NADI_MANUAL_INSPECTION',contract_version='1.2')
+                    draft=body['draft'];row=dict(**draft,record_id='inspection:SYNTHETIC:'+str(len(state['records'])+1),revision=1,status='DRAFT',created_by=state['who']['subject'],created_at='2026-10-20T00:00:00Z',updated_at='2026-10-20T00:00:00Z',review=None,contributors=[state['who']['subject']],review_started_by=None,field_approval='ENGINEER_FIELDS_PENDING',assessment='NOT_ASSESSED',provenance='NADI_MANUAL_INSPECTION',contract_version='1.4' if draft.get('engineering_analysis') or draft.get('sr_references') else '1.3' if draft.get('work_origin') else '1.2')
                     state['receipts'][key]=row;state['records'].append(row)
                 row=state['receipts'][key]
                 if state['hold_write']:state['writes'].append((route,row))
@@ -75,6 +75,10 @@ with sync_playwright() as p:
             page.get_by_role('button',name='Input Pengukuran',exact=True).wait_for()
             test(page,state)
             require(not state['escaped'],'unexpected/external request: '+str(state['escaped']))
+            for body in state['posts']:
+                require(body['draft'].get('work_origin')==dict(source='DEPARTMENT_REQUEST',requesting_department='Synthetic EPA',reported_asset_label='Synthetic unknown conveyor'),'write/retry lost source context')
+                require(body['draft'].get('engineering_analysis')==dict(notes='Synthetic manual engineer reasoning',recommended_follow_up='Synthetic manual follow-up',provenance='HUMAN_ENTERED_ENGINEER_NOTES'),'write/retry lost manual analysis')
+                require(body['draft'].get('sr_references')==[dict(sr_number='00012/SYNTHETIC',follow_up_note='Synthetic follow-up, SR unverified',system='MAXIMO',verification='REPORTED_UNVERIFIED')],'write/retry lost unverified SR context')
             results.append(dict(scenario=name,status='PASS',writes=len(state['posts']),navigations=len(state['navigations'])))
             print('PASS',name,flush=True)
         except Exception as error:
@@ -89,6 +93,14 @@ with sync_playwright() as p:
         page.get_by_role('button',name='Input Pengukuran',exact=True).click()
         page.get_by_label('Jenis formulir',exact=True).select_option('WORKBOOK')
         page.get_by_label('Profil sheet / blok input',exact=True).select_option('wb-fan-s001-b01')
+        page.get_by_label('Asal pekerjaan',exact=True).select_option('DEPARTMENT_REQUEST')
+        page.get_by_label('Bidang peminta',exact=True).fill('Synthetic EPA')
+        page.get_by_label('Label aset pada permintaan / temuan (opsional)',exact=True).fill('Synthetic unknown conveyor')
+        page.get_by_label('Catatan analisis engineer (manual)',exact=True).fill('Synthetic manual engineer reasoning')
+        page.get_by_label('Saran tindak lanjut engineer (manual, opsional)',exact=True).fill('Synthetic manual follow-up')
+        page.get_by_role('button',name='Tambah referensi SR',exact=True).click()
+        page.get_by_label('Nomor SR 1',exact=True).fill('00012/SYNTHETIC')
+        page.get_by_label('Catatan tindak lanjut SR 1 (opsional)',exact=True).fill('Synthetic follow-up, SR unverified')
         page.get_by_label('Versi metode / prosedur',exact=True).fill('synthetic-auth-focus-marker')
         page.get_by_label('Tipe nilai sumber 1',exact=True).select_option('NUMERIC')
         page.get_by_label('Nilai sumber 1',exact=True).fill('0')
@@ -111,6 +123,13 @@ with sync_playwright() as p:
         page.get_by_label('Versi metode / prosedur',exact=True).wait_for()
         require(page.get_by_label('Versi metode / prosedur',exact=True).input_value()=='synthetic-auth-focus-marker','same-identity remount lost version')
         require(page.get_by_label('Nilai sumber 1',exact=True).input_value()=='0','same-identity remount lost zero/source capture')
+        require(page.get_by_label('Asal pekerjaan',exact=True).input_value()=='DEPARTMENT_REQUEST','same-identity remount lost work origin')
+        require(page.get_by_label('Bidang peminta',exact=True).input_value()=='Synthetic EPA','same-identity remount lost requesting department')
+        require(page.get_by_label('Catatan analisis engineer (manual)',exact=True).input_value()=='Synthetic manual engineer reasoning','same identity lost manual analysis')
+        require(page.get_by_label('Saran tindak lanjut engineer (manual, opsional)',exact=True).input_value()=='Synthetic manual follow-up','same identity lost follow-up')
+        require(page.get_by_label('Nomor SR 1',exact=True).input_value()=='00012/SYNTHETIC','same identity lost SR number')
+        require(page.get_by_label('Catatan tindak lanjut SR 1 (opsional)',exact=True).input_value()=='Synthetic follow-up, SR unverified','same identity lost SR note')
+        require(page.get_by_label('Label aset pada permintaan / temuan (opsional)',exact=True).input_value()=='Synthetic unknown conveyor','same-identity remount lost reported asset label')
     def focus_draft(page,state):
         edit(page);before=diagnostics(page)['recovery'];focus_hold(page,state)
         require(diagnostics(page)['recovery']==before,'provider draft destroyed during auth checking')

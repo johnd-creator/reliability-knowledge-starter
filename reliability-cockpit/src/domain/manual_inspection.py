@@ -75,6 +75,36 @@ class AttachmentMetadata(EvidenceModel):
         return value
 
 
+class DepartmentWorkOrigin(EvidenceModel):
+    """Reported work context; department/label are not canonical identities."""
+    source: Literal["DEPARTMENT_REQUEST"]
+    requesting_department: StrictStr = Field(min_length=1, max_length=160, pattern=NONBLANK_TEXT_PATTERN)
+    reported_asset_label: StrictStr | None = Field(default=None, min_length=1, max_length=200, pattern=NONBLANK_TEXT_PATTERN)
+
+
+class Pm52WorkOrigin(EvidenceModel):
+    source: Literal["PDM_PM_52_WEEK"]
+    reported_asset_label: StrictStr | None = Field(default=None, min_length=1, max_length=200, pattern=NONBLANK_TEXT_PATTERN)
+
+
+WorkOrigin = DepartmentWorkOrigin | Pm52WorkOrigin
+
+
+class EngineeringAnalysis(EvidenceModel):
+    """Manual narrative; record review does not certify technical correctness."""
+    notes: StrictStr = Field(min_length=1, max_length=6000, pattern=NONBLANK_TEXT_PATTERN)
+    recommended_follow_up: StrictStr | None = Field(default=None, min_length=1, max_length=6000, pattern=NONBLANK_TEXT_PATTERN)
+    provenance: Literal["HUMAN_ENTERED_ENGINEER_NOTES"] = "HUMAN_ENTERED_ENGINEER_NOTES"
+
+
+class ReportedSrReference(EvidenceModel):
+    """Informational human report, never an external write or verified binding."""
+    sr_number: StrictStr = Field(min_length=1, max_length=100, pattern=NONBLANK_TEXT_PATTERN)
+    follow_up_note: StrictStr | None = Field(default=None, min_length=1, max_length=2000, pattern=NONBLANK_TEXT_PATTERN)
+    system: Literal["MAXIMO"] = "MAXIMO"
+    verification: Literal["REPORTED_UNVERIFIED"] = "REPORTED_UNVERIFIED"
+
+
 class InspectionDraft(EvidenceModel):
     canonical_asset_id: StrictStr = Field(
         min_length=1, max_length=200, pattern=r"^[A-Za-z0-9_.:-]+$"
@@ -104,6 +134,9 @@ class InspectionDraft(EvidenceModel):
         json_schema_extra={"additionalProperties": False},
     )
     input_capture: InputCapture | None = None
+    work_origin: WorkOrigin | None = None
+    engineering_analysis: EngineeringAnalysis | None = None
+    sr_references: tuple[ReportedSrReference, ...] = Field(default=(), max_length=10)
 
     @model_serializer(mode="wrap")
     def preserve_native_serialization(self, handler):
@@ -112,7 +145,20 @@ class InspectionDraft(EvidenceModel):
             # Existing Case pins hash exact native 1.0/1.1 JSON. A new absent
             # field must not change those bytes or rewrite historical versions.
             data.pop("input_capture", None)
+        if self.work_origin is None:
+            data.pop("work_origin", None)  # Preserve all historical 1.0–1.2 hashes.
+        if self.engineering_analysis is None:
+            data.pop("engineering_analysis", None)
+        if not self.sr_references:
+            data.pop("sr_references", None)
         return data
+
+    @field_validator("sr_references")
+    @classmethod
+    def unique_reported_sr(cls, value):
+        if len({item.sr_number for item in value}) != len(value):
+            raise ValueError("duplicate reported SR number")
+        return value
 
     @model_validator(mode="after")
     def separate_provisional_input(self):
@@ -136,7 +182,7 @@ class InspectionDraft(EvidenceModel):
 
 
 class ManualInspection(InspectionDraft, HumanRecord):
-    contract_version: Literal["1.0", "1.1", "1.2"] = "1.1"
+    contract_version: Literal["1.0", "1.1", "1.2", "1.3", "1.4"] = "1.1"
     status: InspectionStatus = InspectionStatus.DRAFT
     review: InspectionReview | None = None
     review_started_by: StrictStr | None = None
@@ -144,8 +190,16 @@ class ManualInspection(InspectionDraft, HumanRecord):
 
     @model_validator(mode="after")
     def capture_version(self):
-        if (self.contract_version == "1.2") != (self.input_capture is not None):
-            raise ValueError("only provisional input capture uses contract 1.2")
+        if self.engineering_analysis is not None or self.sr_references:
+            if self.contract_version != "1.4":
+                raise ValueError("manual analysis/SR context requires contract 1.4")
+        elif self.contract_version == "1.4":
+            raise ValueError("contract 1.4 requires manual analysis or SR context")
+        elif self.work_origin is not None:
+            if self.contract_version != "1.3":
+                raise ValueError("work origin requires contract 1.3")
+        elif self.contract_version == "1.3" or (self.contract_version == "1.2") != (self.input_capture is not None):
+            raise ValueError("legacy native/capture contract mismatch")
         return self
 
     @model_validator(mode="after")

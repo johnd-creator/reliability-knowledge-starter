@@ -415,5 +415,14 @@ class InspectionService(ReviewedRecordService):
         for case in draft.case_refs:
             self.catalog.validate_case(actor, draft.canonical_asset_id, case)
         data = super().draft_data(actor, draft)
-        data["contract_version"] = "1.2" if draft.input_capture is not None else "1.1"
+        # UPDATE merges with the prior record. Explicitly clear absent optional
+        # context here; final record serialization still omits absent fields so
+        # legacy evidence hashes are unchanged.
+        data.update(
+            work_origin=draft.work_origin.model_dump(mode="json") if draft.work_origin is not None else None,
+            engineering_analysis=draft.engineering_analysis.model_dump(mode="json") if draft.engineering_analysis is not None else None,
+            sr_references=[ref.model_dump(mode="json") for ref in draft.sr_references],
+        )
+        data["contract_version"] = ("1.4" if draft.engineering_analysis is not None or draft.sr_references else
+                                    "1.3" if draft.work_origin is not None else "1.2" if draft.input_capture is not None else "1.1")
         return data
