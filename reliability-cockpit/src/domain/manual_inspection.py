@@ -12,10 +12,12 @@ from pydantic import (
     StrictStr,
     field_validator,
     model_validator,
+    model_serializer,
 )
 from src.domain.condition_evidence import EvidenceModel
 from src.domain.engineering import InvestigationItem, NONBLANK_TEXT_PATTERN
 from src.domain.human_records import HumanRecord
+from src.domain.pdm_input_capture import InputCapture
 
 
 class InspectionMethod(StrEnum):
@@ -101,6 +103,22 @@ class InspectionDraft(EvidenceModel):
         default_factory=dict, max_length=20,
         json_schema_extra={"additionalProperties": False},
     )
+    input_capture: InputCapture | None = None
+
+    @model_serializer(mode="wrap")
+    def preserve_native_serialization(self, handler):
+        data = handler(self)
+        if self.input_capture is None:
+            # Existing Case pins hash exact native 1.0/1.1 JSON. A new absent
+            # field must not change those bytes or rewrite historical versions.
+            data.pop("input_capture", None)
+        return data
+
+    @model_validator(mode="after")
+    def separate_provisional_input(self):
+        if self.input_capture is not None and self.measurements:
+            raise ValueError("provisional input capture cannot mix with native measurements")
+        return self
 
     @field_validator("method_version", "inspector_ref")
     @classmethod
@@ -118,11 +136,17 @@ class InspectionDraft(EvidenceModel):
 
 
 class ManualInspection(InspectionDraft, HumanRecord):
-    contract_version: Literal["1.0", "1.1"] = "1.1"
+    contract_version: Literal["1.0", "1.1", "1.2"] = "1.1"
     status: InspectionStatus = InspectionStatus.DRAFT
     review: InspectionReview | None = None
     review_started_by: StrictStr | None = None
     review_started_at: datetime | None = None
+
+    @model_validator(mode="after")
+    def capture_version(self):
+        if (self.contract_version == "1.2") != (self.input_capture is not None):
+            raise ValueError("only provisional input capture uses contract 1.2")
+        return self
 
     @model_validator(mode="after")
     def lifecycle(self):

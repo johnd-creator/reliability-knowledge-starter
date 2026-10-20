@@ -1,25 +1,21 @@
 'use client';
 import {idText,statusLabel,fieldLabels} from '../lib/id-copy';
-import {type FormEvent,useEffect,useState} from 'react';
+import {type FormEvent,useState} from 'react';
 import type {CaseDraft,CaseRecord} from '../lib/case-records';
 import {investigationFields} from '../lib/case-records';
 import {validateCaseForm} from '../lib/case-form';
 import {useCaseDraft} from './CaseDraftContext';
+import {useUnsavedDraftGuard} from './useUnsavedDraftGuard';
 import {Button,Feedback,InputControl} from './ui';
 export default function CaseForm({initial,assets,busy,onSave,onCancel,editing=false,subject,base}:{initial:CaseDraft;assets:string[];busy:boolean;onSave:(draft:CaseDraft)=>Promise<void>;onCancel:()=>void;editing?:boolean;subject?:string;base?:CaseRecord}){
  const cache=useCaseDraft();
  const recovered=cache?.recovery?.subject===subject&&cache?.recovery?.base?.case_id===base?.case_id?cache?.recovery:null;
  const [draft,setDraft]=useState(()=>recovered?.draft??initial),[dirty,setDirty]=useState(!!recovered),[error,setError]=useState('');
- useEffect(()=>{
-  const unload=(e:BeforeUnloadEvent)=>{if(dirty){e.preventDefault();e.returnValue='';}};
-  const navigate=(e:MouseEvent)=>{const a=(e.target as Element).closest?.('a[href]');if(dirty&&a&&!a.getAttribute('href')?.startsWith('#')&&!window.confirm('Keluar dan buang isian Case yang belum disimpan?')){e.preventDefault();e.stopImmediatePropagation();}};
-  window.addEventListener('beforeunload',unload);document.addEventListener('click',navigate,true);
-  return()=>{window.removeEventListener('beforeunload',unload);document.removeEventListener('click',navigate,true);};
- },[dirty]);
- function update(next:CaseDraft){setDraft(next);setDirty(true);if(subject)cache?.keep({subject,draft:next,base});}
+ useUnsavedDraftGuard(dirty);
+ function update(next:CaseDraft){if(cache?.recovery&&cache.recovery.base?.case_id!==base?.case_id&&!cache.discard())return;setDraft(next);setDirty(true);if(subject)cache?.keep({subject,draft:next,base});}
  function text(key:typeof investigationFields[number]){return draft.investigation[key].join('\n');}
  async function submit(e:FormEvent){e.preventDefault();if(busy)return;setError('');try{validateCaseForm(draft);await onSave(draft);}catch(e){setError(e instanceof Error?e.message:'Periksa isian Case.');}}
- function cancel(){if(dirty&&!window.confirm('Buang isian Case yang belum disimpan?'))return;cache?.clear();onCancel();}
+ function cancel(){if(dirty&&!window.confirm('Buang isian Case yang belum disimpan?'))return;const saved=cache?.recovery;if(cache&&saved&&saved.subject===subject&&saved.base?.case_id===base?.case_id)cache.clear();onCancel();}
  return <form className="engineering-form case-form" onSubmit={submit} aria-busy={busy}>
  <div className="section-heading"><div><h2>{editing?idText('Edit draft case'):idText('Create Engineering Case')}</h2><p className="section-note">Draf tersimpan sebagai rekam NADI setelah Anda memilih Simpan. Isian sementara hanya berada di halaman ini.</p></div>{dirty&&<span className="status-badge" role="status">Isian belum disimpan</span>}</div>
  {error&&<Feedback error>{error} Isian tetap tersedia untuk dikoreksi.</Feedback>}

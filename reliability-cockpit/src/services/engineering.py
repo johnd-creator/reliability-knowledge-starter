@@ -148,6 +148,7 @@ class CaseService:
             else:
                 if current.revision != expected_revision:
                     raise EngineeringError("REVISION_CONFLICT")
+                self.repo.lock_revision(c, case_id, expected_revision)
                 data = current.model_dump(mode="json")
                 data.update(revision=current.revision+1, updated_at=now)
                 if action in {"UPDATE", "NOTE", "LINK", "SUBMIT", "REVISE"}:

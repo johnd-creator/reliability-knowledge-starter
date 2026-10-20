@@ -1,0 +1,33 @@
+import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
+import {mkdtempSync,rmSync} from 'node:fs';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+import {createRequire} from 'node:module';
+const require=createRequire(import.meta.url),temp=mkdtempSync(join(tmpdir(),'nadi-recommendation-draft-'));
+try{
+ execFileSync(process.execPath,['node_modules/typescript/bin/tsc','lib/recommendation-draft.ts','components/RecommendationActions.tsx','--outDir',temp,'--rootDir','.','--module','commonjs','--target','ES2022','--jsx','react-jsx','--esModuleInterop','--skipLibCheck','--resolveJsonModule','--moduleResolution','node'],{stdio:'pipe'});
+ process.env.NODE_PATH=join(process.cwd(),'node_modules');require('node:module').Module._initPaths();
+ const {recommendationDraft,sameRecommendationDraft,recoverableRecommendation,recommendationSessionKey}=require(join(temp,'lib/recommendation-draft.js'));
+ const row={record_id:'recommendation:fixture',revision:7,created_by:'author',canonical_asset_id:'asset:qa',status:'DRAFT',rationale:'Original rationale',proposed_action:'Original action',responsible_person_ref:null,responsible_team_ref:'team:qa',target_date:null,supporting_evidence:[]};
+ const who={subject:'author',roles:['AUTHOR','REVIEWER'],asset_ids:['asset:qa','asset:other'],csrf_token:'synthetic-only'};
+ const baseline=recommendationDraft(row),recovery={subject:who.subject,sessionKey:recommendationSessionKey(who),base:row,draft:{...baseline,rationale:'Edited rationale'}};
+ assert.equal(sameRecommendationDraft(baseline,recommendationDraft(row)),true);
+ for(const key of Object.keys(baseline))assert.equal(sameRecommendationDraft(baseline,{...baseline,[key]:'changed'}),false,key);
+ assert.equal(sameRecommendationDraft(baseline,{...baseline,rationale:' Original rationale '}),false);
+ assert.equal(sameRecommendationDraft(baseline,{...baseline,responsible_person_ref:''}),false);
+ assert.equal(recovery.base.revision,7);assert.equal(recovery.base.rationale,'Original rationale');
+ console.log('PASS all editable fields, whitespace/null and original CAS base remain distinct');
+ assert.equal(recoverableRecommendation(recovery,who),true);
+ for(const patch of [{subject:'other'},{roles:['REVIEWER']},{asset_ids:['asset:other']}])assert.equal(recoverableRecommendation(recovery,{...who,...patch}),false);
+ assert.equal(recoverableRecommendation({...recovery,base:{...row,created_by:'other'}},who),false);
+ console.log('PASS recovery requires exact subject, creator, author role and authorized asset');
+ assert.equal(recommendationSessionKey(who),recommendationSessionKey({...who,roles:['REVIEWER','AUTHOR','AUTHOR'],asset_ids:['asset:other','asset:qa'],csrf_token:'refreshed'}));
+ for(const patch of [{subject:'other'},{roles:['AUTHOR']},{asset_ids:['asset:qa']}])assert.notEqual(recommendationSessionKey(who),recommendationSessionKey({...who,...patch}));
+ console.log('PASS identity key ignores ordering/token refresh and detects subject/role/scope changes');
+ const React=require('react'),{renderToStaticMarkup}=require('react-dom/server'),Actions=require(join(temp,'components/RecommendationActions.js')).default;
+ const html=renderToStaticMarkup(React.createElement(Actions,{row,session:who,onChanged(){}}));
+ assert.match(html,/<button[^>]*disabled=""[^>]*>Simpan draf rekomendasi<\/button>/);
+ assert.match(html,/<button(?![^>]*disabled)[^>]*>Ajukan rekomendasi untuk review<\/button>/);
+ console.log('PASS untouched draft can submit while redundant save is disabled');
+}finally{rmSync(temp,{recursive:true,force:true});}

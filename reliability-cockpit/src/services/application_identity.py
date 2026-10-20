@@ -15,6 +15,7 @@ from urllib.parse import urlsplit
 from uuid import uuid4
 
 from fastapi import HTTPException, Request
+from fastapi.exceptions import RequestValidationError
 from pydantic import Field, StrictInt
 from sqlalchemy import Column, String, Integer, JSON, select, update
 from sqlalchemy.orm import DeclarativeBase
@@ -268,7 +269,11 @@ class SessionAuthority:
             raise
         except SQLAlchemyError:
             raise EngineeringError("IDENTITY_STORE_UNAVAILABLE", 503) from None
-        except HTTPException:
+        except (HTTPException, RequestValidationError):
+            # Downstream request validation is thrown through this dependency's
+            # yield during cleanup. Preserve it for the QA app's sanitized 422
+            # handler; it is not a provider outage. Transaction rollback and
+            # thread-affine guard release still run before propagation.
             raise
         except Exception:
             raise EngineeringError("IDENTITY_PROVIDER_UNAVAILABLE", 503) from None
