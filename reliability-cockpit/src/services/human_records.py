@@ -381,7 +381,7 @@ class InspectionService(ReviewedRecordService):
         return self._read_events(actor, measurements=True, **filters)
 
     def validate_submission(self, actor, current, connection=None):
-        if not current.measurements and not current.observations:
+        if not current.measurements and not current.observations and current.input_capture is None:
             raise EngineeringError("INSPECTION_EVIDENCE_REQUIRED", 422)
 
     def validate_review(self, actor, current, connection=None):
@@ -414,4 +414,6 @@ class InspectionService(ReviewedRecordService):
             raise EngineeringError("INSPECTOR_ATTRIBUTION_REQUIRED", 422)
         for case in draft.case_refs:
             self.catalog.validate_case(actor, draft.canonical_asset_id, case)
-        return super().draft_data(actor, draft)
+        data = super().draft_data(actor, draft)
+        data["contract_version"] = "1.2" if draft.input_capture is not None else "1.1"
+        return data

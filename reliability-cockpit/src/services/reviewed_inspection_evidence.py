@@ -20,6 +20,8 @@ class ReviewedInspectionCatalog:
         if not isinstance(actor,Principal) or actor.principal_id != actor_id or not actor.roles or asset not in actor.asset_ids:
             raise EngineeringError('AUTHENTICATION_REQUIRED',401)
         row=self.inspections.get(actor,record)
+        if row.input_capture is not None:
+            raise EngineeringError('PROVISIONAL_INPUT_NOT_CASE_EVIDENCE',409)
         if row.canonical_asset_id != asset or row.status != 'APPROVED' or row.review is None:
             raise EngineeringError('NO_APPROVED_INSPECTION',422)
         version=sha256(row.model_dump_json().encode()).hexdigest()
@@ -44,5 +46,7 @@ class ReviewedInspectionCatalog:
             raw = connection.scalar(select(RecordRow.document).where(
                 RecordRow.kind == "INSPECTION", RecordRow.record_id == ref.record_id).with_for_update())
             row = self.inspections.visible(actor, raw)
+            if row.input_capture is not None:
+                raise EngineeringError("PROVISIONAL_INPUT_NOT_CASE_EVIDENCE", 409)
             if row.canonical_asset_id != asset or row.status != "APPROVED" or sha256(row.model_dump_json().encode()).hexdigest() != ref.stable_version:
                 raise EngineeringError("EVIDENCE_VERSION_CHANGED", 409)

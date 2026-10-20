@@ -1,0 +1,4947 @@
+{
+  "kind": "HEADER_ONLY_INPUT_CAPTURE_COVERAGE",
+  "sources": [
+    {
+      "id": "WB-FAN",
+      "filename": "AREA FAN.xlsx",
+      "sha256": "38097314ad0bf64cfca3fe5fdd2cad509b8eadda78b7706dbcd07daa571f3c64",
+      "context": "AREA_FAN"
+    },
+    {
+      "id": "WB-MILL",
+      "filename": "AREA MILL.xlsx",
+      "sha256": "b0541ceb7a7b16f2d38a190066e68307ba236cee67fe357abd7c84d9bed830a1",
+      "context": "AREA_MILL"
+    },
+    {
+      "id": "WB-6KV",
+      "filename": "Logsheet 6 kV.xls",
+      "sha256": "1ec7f31e2541aa962644e52cbbec647caa0569270fefdc885094b5e39c98723f",
+      "context": "LOGSHEET_6KV"
+    },
+    {
+      "id": "WB-CEP",
+      "filename": "New Log Sheet_CEP_CBM1.xls",
+      "sha256": "0e44eac3703a7e3dd241561967d428d9b8b60dd44441786a4e92eabbc546ed7d",
+      "context": "CEP_CBM"
+    },
+    {
+      "id": "WB-VIB-BC",
+      "filename": "TRENDING VIBRASI BC AREA EPA.xlsx",
+      "sha256": "b89e8bb2ee047ec0e7805af048b82b3553ec427f038a97797400721e1ee61bf1",
+      "context": "VIBRATION_BC"
+    },
+    {
+      "id": "WB-VIB-BOILER",
+      "filename": "TRENDING VIBRASI BOILER AREA.xlsx",
+      "sha256": "45163c4fed6fc5ead0fba2e8dc89c713f37f76365bd4a458c312cca4b8e18182",
+      "context": "VIBRATION_BOILER"
+    },
+    {
+      "id": "WB-VIB-TURBINE",
+      "filename": "TRENDING VIBRASI TURBIN AREA.xlsx",
+      "sha256": "f1e23b7f42f12f7bd5955c85715b19d53bf52e7ed7c6c9b78c8c7f31759998cc",
+      "context": "VIBRATION_TURBINE"
+    }
+  ],
+  "totals": {
+    "workbooks": 7,
+    "sheets": 200,
+    "nonempty_sheets": 199,
+    "profiles": 226,
+    "fields": 3624,
+    "formula_cells": 3308,
+    "literal_label_checks": 3624
+  },
+  "sheets": [
+    {
+      "source_ref": "WB-FAN",
+      "sheet_index": 0,
+      "sheet_label": "S001",
+      "rows": 280,
+      "columns": 48,
+      "family": "TRIBOLOGY",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-fan-s001-b01"
+      ],
+      "field_count": 17,
+      "role_counts": {
+        "INPUT": 14,
+        "REFERENCE": 2,
+        "SOURCE_ASSESSMENT": 1
+      },
+      "formula_cells": 141,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "03772550ceec42b665ce48fc6db5deb429f6e7cf03a407add0a465fade2b5ff7",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-FAN",
+      "sheet_index": 1,
+      "sheet_label": "S002",
+      "rows": 237,
+      "columns": 45,
+      "family": "TRIBOLOGY",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-fan-s002-b01"
+      ],
+      "field_count": 18,
+      "role_counts": {
+        "INPUT": 15,
+        "REFERENCE": 2,
+        "SOURCE_ASSESSMENT": 1
+      },
+      "formula_cells": 250,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "371f1eb8f8511da9a15e495806cd720e4651e10739929f6a72002394759d6f34",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-FAN",
+      "sheet_index": 2,
+      "sheet_label": "S003",
+      "rows": 279,
+      "columns": 47,
+      "family": "TRIBOLOGY",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-fan-s003-b01"
+      ],
+      "field_count": 17,
+      "role_counts": {
+        "INPUT": 14,
+        "REFERENCE": 2,
+        "SOURCE_ASSESSMENT": 1
+      },
+      "formula_cells": 154,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "a3698026b1fe04a20de681d29b41a7c474ad79402352864b26162cd01db94432",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-FAN",
+      "sheet_index": 3,
+      "sheet_label": "S004",
+      "rows": 249,
+      "columns": 51,
+      "family": "TRIBOLOGY",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-fan-s004-b01"
+      ],
+      "field_count": 21,
+      "role_counts": {
+        "INPUT": 16,
+        "REFERENCE": 5
+      },
+      "formula_cells": 280,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "62423f3c90dc53e4b00c42e98641ac9b48c9590fbb572593aab865af475bd4db",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-FAN",
+      "sheet_index": 4,
+      "sheet_label": "S005",
+      "rows": 179,
+      "columns": 46,
+      "family": "TRIBOLOGY",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-fan-s005-b01"
+      ],
+      "field_count": 25,
+      "role_counts": {
+        "INPUT": 16,
+        "SOURCE_ASSESSMENT": 1,
+        "REFERENCE": 8
+      },
+      "formula_cells": 223,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "a307227d79b5b6b0fe7b6838fc7a60163f518325e99a6c3ca14ed9e863297ad0",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-FAN",
+      "sheet_index": 5,
+      "sheet_label": "S006",
+      "rows": 139,
+      "columns": 44,
+      "family": "TRIBOLOGY",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-fan-s006-b01"
+      ],
+      "field_count": 38,
+      "role_counts": {
+        "INPUT": 16,
+        "SOURCE_ASSESSMENT": 1,
+        "REFERENCE": 21
+      },
+      "formula_cells": 217,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "1ae6f4ade3e1aba89bcd49762d9a1ce53c03d16be7988940a00ba42bdf5b58a0",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-FAN",
+      "sheet_index": 6,
+      "sheet_label": "S007",
+      "rows": 257,
+      "columns": 51,
+      "family": "TRIBOLOGY",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-fan-s007-b01"
+      ],
+      "field_count": 41,
+      "role_counts": {
+        "INPUT": 17,
+        "REFERENCE": 24
+      },
+      "formula_cells": 229,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "4dfb5ecef574cbc036949b1d790c640c0e647dabc1ac163b26888b174fdf2bce",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-FAN",
+      "sheet_index": 7,
+      "sheet_label": "S008",
+      "rows": 151,
+      "columns": 50,
+      "family": "TRIBOLOGY",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-fan-s008-b01"
+      ],
+      "field_count": 18,
+      "role_counts": {
+        "INPUT": 16,
+        "SOURCE_ASSESSMENT": 1,
+        "REFERENCE": 1
+      },
+      "formula_cells": 49,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "03423190d2ac2c490ef33eb24539688ea84a1064c38e71d298bf8cbb9f1052ef",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-FAN",
+      "sheet_index": 8,
+      "sheet_label": "S009",
+      "rows": 139,
+      "columns": 50,
+      "family": "TRIBOLOGY",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-fan-s009-b01"
+      ],
+      "field_count": 41,
+      "role_counts": {
+        "INPUT": 17,
+        "REFERENCE": 24
+      },
+      "formula_cells": 220,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "af6fb5ff80b5bf5fdc600e95a114cd9e6f467c7b70efd40209f943c4d73292b9",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-FAN",
+      "sheet_index": 9,
+      "sheet_label": "S010",
+      "rows": 152,
+      "columns": 50,
+      "family": "TRIBOLOGY",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-fan-s010-b01"
+      ],
+      "field_count": 32,
+      "role_counts": {
+        "INPUT": 16,
+        "SOURCE_ASSESSMENT": 1,
+        "REFERENCE": 15
+      },
+      "formula_cells": 51,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "aecbf8976c34cfa95ac5599200993e2a2b3d55b4daf63f82e031852edf192128",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-MILL",
+      "sheet_index": 0,
+      "sheet_label": "S001",
+      "rows": 179,
+      "columns": 45,
+      "family": "TRIBOLOGY",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-mill-s001-b01"
+      ],
+      "field_count": 19,
+      "role_counts": {
+        "INPUT": 17,
+        "SOURCE_ASSESSMENT": 1,
+        "REFERENCE": 1
+      },
+      "formula_cells": 222,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "1c21a4a22860b4fdcd5da1df0e16607d90af2bd2594a8843c49117c1909cdb6f",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-MILL",
+      "sheet_index": 1,
+      "sheet_label": "S002",
+      "rows": 212,
+      "columns": 45,
+      "family": "TRIBOLOGY",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-mill-s002-b01"
+      ],
+      "field_count": 18,
+      "role_counts": {
+        "INPUT": 16,
+        "SOURCE_ASSESSMENT": 1,
+        "REFERENCE": 1
+      },
+      "formula_cells": 178,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "6253541dac6200a6d37ef47ae4eb0a3414a94f30917f883f52a010f9ed3c661d",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-MILL",
+      "sheet_index": 2,
+      "sheet_label": "S003",
+      "rows": 132,
+      "columns": 47,
+      "family": "TRIBOLOGY",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-mill-s003-b01"
+      ],
+      "field_count": 26,
+      "role_counts": {
+        "INPUT": 17,
+        "REFERENCE": 9
+      },
+      "formula_cells": 203,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "03d4c353c0769ac1cac7c04d467fe4078770db67cd2921a3befc0e6cacec06b7",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-MILL",
+      "sheet_index": 3,
+      "sheet_label": "S004",
+      "rows": 143,
+      "columns": 45,
+      "family": "TRIBOLOGY",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-mill-s004-b01"
+      ],
+      "field_count": 24,
+      "role_counts": {
+        "INPUT": 15,
+        "SOURCE_ASSESSMENT": 1,
+        "REFERENCE": 8
+      },
+      "formula_cells": 195,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "01645210b9345704865284e83e6efd447fde8c5a840202c3f8fdef965c2dca05",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-MILL",
+      "sheet_index": 4,
+      "sheet_label": "S005",
+      "rows": 133,
+      "columns": 44,
+      "family": "TRIBOLOGY",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-mill-s005-b01"
+      ],
+      "field_count": 24,
+      "role_counts": {
+        "INPUT": 15,
+        "SOURCE_ASSESSMENT": 1,
+        "REFERENCE": 8
+      },
+      "formula_cells": 193,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "56b5d0c399fe7c25ea585cbb6341ac57ff10c7ca583990f9aea31885173f0f77",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-MILL",
+      "sheet_index": 5,
+      "sheet_label": "S006",
+      "rows": 122,
+      "columns": 44,
+      "family": "TRIBOLOGY",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-mill-s006-b01"
+      ],
+      "field_count": 24,
+      "role_counts": {
+        "INPUT": 15,
+        "SOURCE_ASSESSMENT": 1,
+        "REFERENCE": 8
+      },
+      "formula_cells": 172,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "243e61376fb9f46c76f919f3fb18013ef0b3c4a0629bcd7bb5ee2e8db50efb8d",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-MILL",
+      "sheet_index": 6,
+      "sheet_label": "S007",
+      "rows": 130,
+      "columns": 46,
+      "family": "TRIBOLOGY",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-mill-s007-b01"
+      ],
+      "field_count": 24,
+      "role_counts": {
+        "INPUT": 15,
+        "SOURCE_ASSESSMENT": 1,
+        "REFERENCE": 8
+      },
+      "formula_cells": 177,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "4b2663c8b72ba9ea16abc028a5f9d5830a9eff00ce17eddace1afe349f8aa681",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-MILL",
+      "sheet_index": 7,
+      "sheet_label": "S008",
+      "rows": 152,
+      "columns": 36,
+      "family": "TRIBOLOGY",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-mill-s008-b01"
+      ],
+      "field_count": 23,
+      "role_counts": {
+        "REFERENCE": 12,
+        "INPUT": 10,
+        "SOURCE_ASSESSMENT": 1
+      },
+      "formula_cells": 26,
+      "clock_count": 2,
+      "date_precision_observed": [
+        "DATE_ONLY",
+        "TIME_ONLY"
+      ],
+      "signature": "883b1674db93440c67dc476587da71c5177dac9d56a1d3036cfa2f218ab9fce3",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-6KV",
+      "sheet_index": 0,
+      "sheet_label": "S001",
+      "rows": 210,
+      "columns": 53,
+      "family": "MCSA",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-6kv-s001-b01",
+        "wb-6kv-s001-b02",
+        "wb-6kv-s001-b03",
+        "wb-6kv-s001-b04",
+        "wb-6kv-s001-b05",
+        "wb-6kv-s001-b06"
+      ],
+      "field_count": 174,
+      "role_counts": {
+        "INPUT": 156,
+        "SOURCE_ASSESSMENT": 18
+      },
+      "formula_cells": 0,
+      "clock_count": 2,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "d407b2c95ebd59d597a59b43aa9ca3dea7fd0edcd5ebb89457220f1e46d301cc",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-6KV",
+      "sheet_index": 1,
+      "sheet_label": "S002",
+      "rows": 231,
+      "columns": 53,
+      "family": "MCSA",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-6kv-s002-b01",
+        "wb-6kv-s002-b02",
+        "wb-6kv-s002-b03",
+        "wb-6kv-s002-b04",
+        "wb-6kv-s002-b05",
+        "wb-6kv-s002-b06",
+        "wb-6kv-s002-b07"
+      ],
+      "field_count": 203,
+      "role_counts": {
+        "INPUT": 182,
+        "SOURCE_ASSESSMENT": 21
+      },
+      "formula_cells": 0,
+      "clock_count": 2,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "890ee4f185f123e4ea1b91aa300a6a67336048d60e2e2c21a261d01b3d2733bc",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-6KV",
+      "sheet_index": 2,
+      "sheet_label": "S003",
+      "rows": 250,
+      "columns": 53,
+      "family": "MCSA",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-6kv-s003-b01",
+        "wb-6kv-s003-b02",
+        "wb-6kv-s003-b03",
+        "wb-6kv-s003-b04",
+        "wb-6kv-s003-b05",
+        "wb-6kv-s003-b06",
+        "wb-6kv-s003-b07"
+      ],
+      "field_count": 203,
+      "role_counts": {
+        "INPUT": 182,
+        "SOURCE_ASSESSMENT": 21
+      },
+      "formula_cells": 0,
+      "clock_count": 2,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "890ee4f185f123e4ea1b91aa300a6a67336048d60e2e2c21a261d01b3d2733bc",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-6KV",
+      "sheet_index": 3,
+      "sheet_label": "S004",
+      "rows": 210,
+      "columns": 53,
+      "family": "MCSA",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-6kv-s004-b01",
+        "wb-6kv-s004-b02",
+        "wb-6kv-s004-b03",
+        "wb-6kv-s004-b04",
+        "wb-6kv-s004-b05",
+        "wb-6kv-s004-b06"
+      ],
+      "field_count": 174,
+      "role_counts": {
+        "INPUT": 156,
+        "SOURCE_ASSESSMENT": 18
+      },
+      "formula_cells": 0,
+      "clock_count": 2,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "d407b2c95ebd59d597a59b43aa9ca3dea7fd0edcd5ebb89457220f1e46d301cc",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-6KV",
+      "sheet_index": 4,
+      "sheet_label": "S005",
+      "rows": 210,
+      "columns": 53,
+      "family": "MCSA",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-6kv-s005-b01",
+        "wb-6kv-s005-b02",
+        "wb-6kv-s005-b03",
+        "wb-6kv-s005-b04",
+        "wb-6kv-s005-b05",
+        "wb-6kv-s005-b06"
+      ],
+      "field_count": 174,
+      "role_counts": {
+        "INPUT": 156,
+        "SOURCE_ASSESSMENT": 18
+      },
+      "formula_cells": 0,
+      "clock_count": 2,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "d407b2c95ebd59d597a59b43aa9ca3dea7fd0edcd5ebb89457220f1e46d301cc",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-CEP",
+      "sheet_index": 0,
+      "sheet_label": "S001",
+      "rows": 80,
+      "columns": 72,
+      "family": "CEP_BEARING",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-cep-s001-b01"
+      ],
+      "field_count": 42,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 38,
+        "REFERENCE": 3
+      },
+      "formula_cells": 0,
+      "clock_count": 3,
+      "date_precision_observed": [
+        "DATE_ONLY",
+        "TIME_ONLY"
+      ],
+      "signature": "3e2e42b4009e5d1df02c34be9c2f249d0a28bb5ec4c022f07b92b48b81940e3f",
+      "excluded": [
+        {
+          "cell": "D35",
+          "reason": "REPEATED_LABEL_WITH_NO_VALUE_CELLS"
+        },
+        {
+          "cell": "D53",
+          "reason": "REPEATED_LABEL_WITH_NO_VALUE_CELLS"
+        },
+        {
+          "cell": "D54",
+          "reason": "REPEATED_LABEL_WITH_NO_VALUE_CELLS"
+        },
+        {
+          "cell": "D55",
+          "reason": "REPEATED_LABEL_WITH_NO_VALUE_CELLS"
+        },
+        {
+          "section": "BASELINE_NORMAL_ALARM_TRIP_VALUES",
+          "reason": "NO_LIMIT_VALUES_OR_RULES_EXPORTED"
+        }
+      ]
+    },
+    {
+      "source_ref": "WB-CEP",
+      "sheet_index": 1,
+      "sheet_label": "S002",
+      "rows": 80,
+      "columns": 116,
+      "family": "CEP_BEARING",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-cep-s002-b01"
+      ],
+      "field_count": 37,
+      "role_counts": {
+        "INPUT": 33,
+        "SOURCE_ASSESSMENT": 1,
+        "REFERENCE": 3
+      },
+      "formula_cells": 0,
+      "clock_count": 5,
+      "date_precision_observed": [
+        "DATE_ONLY",
+        "TIME_ONLY"
+      ],
+      "signature": "3ac689e93465579f102cebaff3bd0ddabba897ab0e6f340d38028ecce7931b6d",
+      "excluded": [
+        {
+          "section": "BASELINE_NORMAL_ALARM_TRIP_VALUES",
+          "reason": "NO_LIMIT_VALUES_OR_RULES_EXPORTED"
+        }
+      ]
+    },
+    {
+      "source_ref": "WB-CEP",
+      "sheet_index": 2,
+      "sheet_label": "S003",
+      "rows": 18,
+      "columns": 13,
+      "family": "CEP_IR_WINDOW",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-cep-s003-b01"
+      ],
+      "field_count": 7,
+      "role_counts": {
+        "INPUT": 7
+      },
+      "formula_cells": 0,
+      "clock_count": 2,
+      "date_precision_observed": [
+        "DATE_ONLY",
+        "TIME_ONLY"
+      ],
+      "signature": "6cd6ff777bb85b422b15341fe2c374e84998edaf9d47d0405cedd2d19964c216",
+      "excluded": [
+        {
+          "section": "BASELINE_NORMAL_ALARM_TRIP_VALUES",
+          "reason": "NO_LIMIT_VALUES_OR_RULES_EXPORTED"
+        }
+      ]
+    },
+    {
+      "source_ref": "WB-CEP",
+      "sheet_index": 3,
+      "sheet_label": "S004",
+      "rows": 15,
+      "columns": 20,
+      "family": "CEP_IR_WINDOW",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-cep-s004-b01"
+      ],
+      "field_count": 7,
+      "role_counts": {
+        "INPUT": 6,
+        "REFERENCE": 1
+      },
+      "formula_cells": 15,
+      "clock_count": 2,
+      "date_precision_observed": [
+        "DATE_ONLY",
+        "TIME_ONLY"
+      ],
+      "signature": "d7089d9e093f1ec0aa684b39ce57251f7ad492eaab41df8a0a067e9303dd6949",
+      "excluded": [
+        {
+          "section": "BASELINE_NORMAL_ALARM_TRIP_VALUES",
+          "reason": "NO_LIMIT_VALUES_OR_RULES_EXPORTED"
+        }
+      ]
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 0,
+      "sheet_label": "S001",
+      "rows": 59,
+      "columns": 28,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s001-b01"
+      ],
+      "field_count": 27,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 26
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "8ebc1fbd465d69f4595d194e62ad62e5a40817a7441ec89cc043f8fed9430c7a",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 1,
+      "sheet_label": "S002",
+      "rows": 76,
+      "columns": 29,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s002-b01"
+      ],
+      "field_count": 27,
+      "role_counts": {
+        "INPUT": 27
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "089e4321add448a3a9c07378121b9e940f2c3ed12328c5e78b3f7522f48dc0bc",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 2,
+      "sheet_label": "S003",
+      "rows": 74,
+      "columns": 28,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s003-b01"
+      ],
+      "field_count": 27,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 26
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "57389ebd1e5fb89d4659d277e181e3389da31bbe33711655e05bf039f5c935a2",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 3,
+      "sheet_label": "S004",
+      "rows": 76,
+      "columns": 29,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s004-b01"
+      ],
+      "field_count": 28,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 27
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "2c33faaa9739c9fedd788fb4868fe70472b91d7a8f04fbf169c15b13e17077b1",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 4,
+      "sheet_label": "S005",
+      "rows": 94,
+      "columns": 29,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s005-b01"
+      ],
+      "field_count": 28,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 27
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "adca0d458e6f68a6a879936f3f534587dccada91f767afdfc8418f67b552351b",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 5,
+      "sheet_label": "S006",
+      "rows": 80,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s006-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "INPUT": 6
+      },
+      "formula_cells": 0,
+      "clock_count": 0,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "e5c0f7f7591c571adbebe33b1bcd1a36c90fa3668c64c65299472d76f87b745f",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 6,
+      "sheet_label": "S007",
+      "rows": 78,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s007-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "INPUT": 6
+      },
+      "formula_cells": 0,
+      "clock_count": 0,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "e5c0f7f7591c571adbebe33b1bcd1a36c90fa3668c64c65299472d76f87b745f",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 7,
+      "sheet_label": "S008",
+      "rows": 120,
+      "columns": 27,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s008-b01"
+      ],
+      "field_count": 26,
+      "role_counts": {
+        "INPUT": 25,
+        "SOURCE_ASSESSMENT": 1
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "9ff126830b44223cdf2869f12f2ce548e8be527f22f962b3acaeff533ce35c4e",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 8,
+      "sheet_label": "S009",
+      "rows": 88,
+      "columns": 27,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s009-b01"
+      ],
+      "field_count": 25,
+      "role_counts": {
+        "INPUT": 25
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "26245a8247257deb8dd05882404d4e1962b3f9551ccbddf9d7cd2ff42d741298",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 9,
+      "sheet_label": "S010",
+      "rows": 76,
+      "columns": 28,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s010-b01"
+      ],
+      "field_count": 26,
+      "role_counts": {
+        "INPUT": 26
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "54f385a5b99549be09c2d90401dad0b5398008f9d6f85de168d57504799cdee0",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 10,
+      "sheet_label": "S011",
+      "rows": 78,
+      "columns": 30,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s011-b01"
+      ],
+      "field_count": 28,
+      "role_counts": {
+        "INPUT": 27,
+        "SOURCE_ASSESSMENT": 1
+      },
+      "formula_cells": 0,
+      "clock_count": 2,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "7b38ed49a6cf0dc245eedc6d785876988a957c356e836484d196bc050cf8ee86",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 11,
+      "sheet_label": "S012",
+      "rows": 87,
+      "columns": 28,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s012-b01"
+      ],
+      "field_count": 27,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 26
+      },
+      "formula_cells": 0,
+      "clock_count": 0,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "926ba3c1b401736500e19b8a8f89c1dc31eca3ef36fbb3a7627b94236426cc7d",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 12,
+      "sheet_label": "S013",
+      "rows": 41,
+      "columns": 29,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s013-b01"
+      ],
+      "field_count": 27,
+      "role_counts": {
+        "INPUT": 27
+      },
+      "formula_cells": 0,
+      "clock_count": 0,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "089e4321add448a3a9c07378121b9e940f2c3ed12328c5e78b3f7522f48dc0bc",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 13,
+      "sheet_label": "S014",
+      "rows": 56,
+      "columns": 28,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s014-b01"
+      ],
+      "field_count": 26,
+      "role_counts": {
+        "INPUT": 26
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "e8185aeb7c16e7c7196f5893668c5ad35ae12c355cfc29d9c75f03ded0e36da0",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 14,
+      "sheet_label": "S015",
+      "rows": 49,
+      "columns": 28,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s015-b01"
+      ],
+      "field_count": 27,
+      "role_counts": {
+        "INPUT": 27
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "089e4321add448a3a9c07378121b9e940f2c3ed12328c5e78b3f7522f48dc0bc",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 15,
+      "sheet_label": "S016",
+      "rows": 55,
+      "columns": 27,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s016-b01"
+      ],
+      "field_count": 26,
+      "role_counts": {
+        "INPUT": 26
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "23dd77d3529034c48bdc7b761fd936546f24d3387ef4b95ffefc330fc952b80f",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 16,
+      "sheet_label": "S017",
+      "rows": 86,
+      "columns": 28,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s017-b01"
+      ],
+      "field_count": 26,
+      "role_counts": {
+        "INPUT": 26
+      },
+      "formula_cells": 0,
+      "clock_count": 0,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "69231a35fe4b48f6e4162f0444b6977c7090378d6f764f44e0548c3aa59b9895",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 17,
+      "sheet_label": "S018",
+      "rows": 65,
+      "columns": 29,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s018-b01"
+      ],
+      "field_count": 27,
+      "role_counts": {
+        "INPUT": 27
+      },
+      "formula_cells": 0,
+      "clock_count": 0,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "ee687c712062da9712ad8c7395269d1b7a2619c9b6ea6b74448d820c5511b472",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 18,
+      "sheet_label": "S019",
+      "rows": 10,
+      "columns": 28,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s019-b01"
+      ],
+      "field_count": 27,
+      "role_counts": {
+        "INPUT": 27
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "089e4321add448a3a9c07378121b9e940f2c3ed12328c5e78b3f7522f48dc0bc",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 19,
+      "sheet_label": "S020",
+      "rows": 34,
+      "columns": 29,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s020-b01"
+      ],
+      "field_count": 28,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 27
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "7749a9db456d89ed5b28c24c7c569468cdb24638aaee37ff00aaa76ba51eb933",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 20,
+      "sheet_label": "S021",
+      "rows": 5,
+      "columns": 29,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s021-b01"
+      ],
+      "field_count": 27,
+      "role_counts": {
+        "INPUT": 27
+      },
+      "formula_cells": 1,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY",
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "6a38b162dfbd4e423ad791677f3fbb81af3fdf09ab09996941d9e618826950d1",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 21,
+      "sheet_label": "S022",
+      "rows": 8,
+      "columns": 29,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s022-b01"
+      ],
+      "field_count": 27,
+      "role_counts": {
+        "INPUT": 27
+      },
+      "formula_cells": 1,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "6a38b162dfbd4e423ad791677f3fbb81af3fdf09ab09996941d9e618826950d1",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 22,
+      "sheet_label": "S023",
+      "rows": 9,
+      "columns": 29,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s023-b01"
+      ],
+      "field_count": 27,
+      "role_counts": {
+        "INPUT": 27
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "73e93af27789820d84919632a15b657d67f074d39835881a72cf81b9150ec18c",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 23,
+      "sheet_label": "S024",
+      "rows": 6,
+      "columns": 29,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s024-b01"
+      ],
+      "field_count": 27,
+      "role_counts": {
+        "INPUT": 27
+      },
+      "formula_cells": 1,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "6a38b162dfbd4e423ad791677f3fbb81af3fdf09ab09996941d9e618826950d1",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 24,
+      "sheet_label": "S025",
+      "rows": 5,
+      "columns": 29,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s025-b01"
+      ],
+      "field_count": 27,
+      "role_counts": {
+        "INPUT": 27
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "089e4321add448a3a9c07378121b9e940f2c3ed12328c5e78b3f7522f48dc0bc",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 25,
+      "sheet_label": "S026",
+      "rows": 56,
+      "columns": 20,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s026-b01"
+      ],
+      "field_count": 19,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 18
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY",
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "a6262cae6ef9304c309fd3bbba62d355d809d06194a0961efb484317f2a02c21",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 26,
+      "sheet_label": "S027",
+      "rows": 22,
+      "columns": 8,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s027-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "INPUT": 6
+      },
+      "formula_cells": 1,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "76a8dba5e97d4ffd4308f3c53ad2b42446a2d4321421221da0a002baff3766e1",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 27,
+      "sheet_label": "S028",
+      "rows": 65,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s028-b01"
+      ],
+      "field_count": 13,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 12
+      },
+      "formula_cells": 0,
+      "clock_count": 0,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "ff8214f298f4b6823ffcf8c16c21a501b02d4af7a082e1b445ffbe1380d1e5b9",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 28,
+      "sheet_label": "S029",
+      "rows": 90,
+      "columns": 15,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s029-b01"
+      ],
+      "field_count": 13,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 12
+      },
+      "formula_cells": 0,
+      "clock_count": 2,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "25dac1a04d44674507a44186b7f222f10082b6e4ab12fe8a23ee024d02286606",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 29,
+      "sheet_label": "S030",
+      "rows": 12,
+      "columns": 20,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s030-b01"
+      ],
+      "field_count": 19,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 18
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "275ce586f9069624bfed5b53a33324d820bada33c18117601922e5403221080f",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 30,
+      "sheet_label": "S031",
+      "rows": 11,
+      "columns": 20,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s031-b01"
+      ],
+      "field_count": 19,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 18
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "275ce586f9069624bfed5b53a33324d820bada33c18117601922e5403221080f",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BC",
+      "sheet_index": 31,
+      "sheet_label": "S032",
+      "rows": 3,
+      "columns": 52,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-bc-s032-b01"
+      ],
+      "field_count": 25,
+      "role_counts": {
+        "INPUT": 25
+      },
+      "formula_cells": 1,
+      "clock_count": 1,
+      "date_precision_observed": [],
+      "signature": "86dbe5eb750a4c264d0351fb32f6c43641dc4a4e514a1bf53ef074c45bc2885e",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 0,
+      "sheet_label": "S001",
+      "rows": 146,
+      "columns": 17,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s001-b01"
+      ],
+      "field_count": 15,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 14
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "ISO_LIKE_TEXT",
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TIME_ONLY"
+      ],
+      "signature": "494c6494b24e45b5d079f72ee7ed5e525ea874d59f7e22b60c47042a291b193a",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 1,
+      "sheet_label": "S002",
+      "rows": 158,
+      "columns": 15,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s002-b01"
+      ],
+      "field_count": 13,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 12
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "ISO_LIKE_TEXT",
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TIME_ONLY"
+      ],
+      "signature": "4505eef06062f45edc0cdaffeb557663deb13b7f13173d6f22d0d2257dc3ade3",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 2,
+      "sheet_label": "S003",
+      "rows": 179,
+      "columns": 15,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s003-b01"
+      ],
+      "field_count": 13,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 12
+      },
+      "formula_cells": 0,
+      "clock_count": 0,
+      "date_precision_observed": [
+        "ISO_LIKE_TEXT",
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TIME_ONLY"
+      ],
+      "signature": "4505eef06062f45edc0cdaffeb557663deb13b7f13173d6f22d0d2257dc3ade3",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 3,
+      "sheet_label": "S004",
+      "rows": 135,
+      "columns": 74,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s004-b01"
+      ],
+      "field_count": 60,
+      "role_counts": {
+        "INPUT": 60
+      },
+      "formula_cells": 0,
+      "clock_count": 10,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "6d5d8c03d3ea69ee41a07ee2cfa9c163ece20c99a32bfad50dcaf5aa60814dc8",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 4,
+      "sheet_label": "S005",
+      "rows": 529,
+      "columns": 29,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s005-b01"
+      ],
+      "field_count": 18,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 17
+      },
+      "formula_cells": 1,
+      "clock_count": 2,
+      "date_precision_observed": [
+        "ISO_LIKE_TEXT",
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE",
+        "TIME_ONLY"
+      ],
+      "signature": "27d56c2eea4d3b17c1bf364881eb13f2ab0dbcc1fcf98f28f593466c062c64e6",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 5,
+      "sheet_label": "S006",
+      "rows": 42,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s006-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "05c7681040a683bd77031d1446b7ad4aa0c25ad7c10d0f11607e685618fd18c2",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 6,
+      "sheet_label": "S007",
+      "rows": 49,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s007-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "122b690e2f35c29366c697520e573c0693a4a0b5eaccc7f8157c2ba74d9eaf77",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 7,
+      "sheet_label": "S008",
+      "rows": 39,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s008-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "122b690e2f35c29366c697520e573c0693a4a0b5eaccc7f8157c2ba74d9eaf77",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 8,
+      "sheet_label": "S009",
+      "rows": 40,
+      "columns": 8,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s009-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "245106a07437746e6a6e419787242a441039ceb41dc39881c9c8aca84f15ed0d",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 9,
+      "sheet_label": "S010",
+      "rows": 26,
+      "columns": 8,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s010-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "122b690e2f35c29366c697520e573c0693a4a0b5eaccc7f8157c2ba74d9eaf77",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 10,
+      "sheet_label": "S011",
+      "rows": 186,
+      "columns": 22,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s011-b01"
+      ],
+      "field_count": 19,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 18
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "85c5f958731aaa8603feb4cf5b075af00f19f7192f84a6637d029fd3668cbd78",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 11,
+      "sheet_label": "S012",
+      "rows": 33,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s012-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "05c7681040a683bd77031d1446b7ad4aa0c25ad7c10d0f11607e685618fd18c2",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 12,
+      "sheet_label": "S013",
+      "rows": 77,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s013-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "0c59b9804a4ef43cb6f60e4808263ab656e504468fc43dad456c470867dfc917",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 13,
+      "sheet_label": "S014",
+      "rows": 43,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s014-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "122b690e2f35c29366c697520e573c0693a4a0b5eaccc7f8157c2ba74d9eaf77",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 14,
+      "sheet_label": "S015",
+      "rows": 42,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s015-b01"
+      ],
+      "field_count": 5,
+      "role_counts": {
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 0,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "e706006fa0bba741033f2b0a8c1daf06792263cd5399289025f5fea539dc1726",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 15,
+      "sheet_label": "S016",
+      "rows": 1,
+      "columns": 1,
+      "family": "VIBRATION",
+      "status": "EMPTY",
+      "profile_ids": [],
+      "field_count": 0,
+      "role_counts": {},
+      "formula_cells": 0,
+      "clock_count": 0,
+      "date_precision_observed": [],
+      "signature": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 16,
+      "sheet_label": "S017",
+      "rows": 38,
+      "columns": 8,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s017-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "122b690e2f35c29366c697520e573c0693a4a0b5eaccc7f8157c2ba74d9eaf77",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 17,
+      "sheet_label": "S018",
+      "rows": 145,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s018-b01"
+      ],
+      "field_count": 12,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 11
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "f5aecd561d8c28ba2e23ea425d5b5774e8fa524e185e67154f3d26d2844570a5",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 18,
+      "sheet_label": "S019",
+      "rows": 54,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s019-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "05c7681040a683bd77031d1446b7ad4aa0c25ad7c10d0f11607e685618fd18c2",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 19,
+      "sheet_label": "S020",
+      "rows": 27,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s020-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "122b690e2f35c29366c697520e573c0693a4a0b5eaccc7f8157c2ba74d9eaf77",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 20,
+      "sheet_label": "S021",
+      "rows": 127,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s021-b01"
+      ],
+      "field_count": 12,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 11
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "f5aecd561d8c28ba2e23ea425d5b5774e8fa524e185e67154f3d26d2844570a5",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 21,
+      "sheet_label": "S022",
+      "rows": 48,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s022-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "05c7681040a683bd77031d1446b7ad4aa0c25ad7c10d0f11607e685618fd18c2",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 22,
+      "sheet_label": "S023",
+      "rows": 38,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s023-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "122b690e2f35c29366c697520e573c0693a4a0b5eaccc7f8157c2ba74d9eaf77",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 23,
+      "sheet_label": "S024",
+      "rows": 323,
+      "columns": 30,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s024-b01"
+      ],
+      "field_count": 21,
+      "role_counts": {
+        "INPUT": 20,
+        "SOURCE_ASSESSMENT": 1
+      },
+      "formula_cells": 68,
+      "clock_count": 2,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "4c6fb88eb7e529778215e805affc645e47b5aa9b420b39270cdaee8153ca0413",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 24,
+      "sheet_label": "S025",
+      "rows": 46,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s025-b01"
+      ],
+      "field_count": 5,
+      "role_counts": {
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 0,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "e706006fa0bba741033f2b0a8c1daf06792263cd5399289025f5fea539dc1726",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 25,
+      "sheet_label": "S026",
+      "rows": 45,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s026-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY",
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "245106a07437746e6a6e419787242a441039ceb41dc39881c9c8aca84f15ed0d",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 26,
+      "sheet_label": "S027",
+      "rows": 6,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s027-b01"
+      ],
+      "field_count": 5,
+      "role_counts": {
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 0,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "e706006fa0bba741033f2b0a8c1daf06792263cd5399289025f5fea539dc1726",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 27,
+      "sheet_label": "S028",
+      "rows": 6,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s028-b01"
+      ],
+      "field_count": 5,
+      "role_counts": {
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 0,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "e706006fa0bba741033f2b0a8c1daf06792263cd5399289025f5fea539dc1726",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 28,
+      "sheet_label": "S029",
+      "rows": 8,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s029-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 0,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "c35d8f70f2b37ce5741e9d779d4ddde7b67e6e874042404b4415d752f49303c0",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 29,
+      "sheet_label": "S030",
+      "rows": 295,
+      "columns": 24,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s030-b01"
+      ],
+      "field_count": 22,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 21
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY",
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TIME_ONLY"
+      ],
+      "signature": "d249bce74bd471f2064c69486e165edeea505ea7fd40ca2f4e85e21d0c38f57b",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 30,
+      "sheet_label": "S031",
+      "rows": 41,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s031-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "122b690e2f35c29366c697520e573c0693a4a0b5eaccc7f8157c2ba74d9eaf77",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 31,
+      "sheet_label": "S032",
+      "rows": 49,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s032-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "122b690e2f35c29366c697520e573c0693a4a0b5eaccc7f8157c2ba74d9eaf77",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 32,
+      "sheet_label": "S033",
+      "rows": 6,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s033-b01"
+      ],
+      "field_count": 5,
+      "role_counts": {
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 0,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "e706006fa0bba741033f2b0a8c1daf06792263cd5399289025f5fea539dc1726",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 33,
+      "sheet_label": "S034",
+      "rows": 6,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s034-b01"
+      ],
+      "field_count": 5,
+      "role_counts": {
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 0,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "e706006fa0bba741033f2b0a8c1daf06792263cd5399289025f5fea539dc1726",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 34,
+      "sheet_label": "S035",
+      "rows": 48,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s035-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "11972e9a6e2d408d148f4cc3e4fe8a2a6642bf62c7b4b62f8dd102f60e541d58",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 35,
+      "sheet_label": "S036",
+      "rows": 145,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s036-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "ed68adf41635883873e7088ef3a90afd333bba3f027c7ec97329a4edf45dfce1",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 36,
+      "sheet_label": "S037",
+      "rows": 148,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s037-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "fad94c3c1b24847f1901473c8ff9af77974ccc7807e5784c870607baa021cf2c",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 37,
+      "sheet_label": "S038",
+      "rows": 135,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s038-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "ed68adf41635883873e7088ef3a90afd333bba3f027c7ec97329a4edf45dfce1",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 38,
+      "sheet_label": "S039",
+      "rows": 148,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s039-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "fad94c3c1b24847f1901473c8ff9af77974ccc7807e5784c870607baa021cf2c",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 39,
+      "sheet_label": "S040",
+      "rows": 147,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s040-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "ed68adf41635883873e7088ef3a90afd333bba3f027c7ec97329a4edf45dfce1",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 40,
+      "sheet_label": "S041",
+      "rows": 148,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s041-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY",
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "fad94c3c1b24847f1901473c8ff9af77974ccc7807e5784c870607baa021cf2c",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 41,
+      "sheet_label": "S042",
+      "rows": 145,
+      "columns": 15,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s042-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "afc8256862cfddc49c84173a4a3b625c98d7877c0edf3c9b54ad90dbb9f16d96",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 42,
+      "sheet_label": "S043",
+      "rows": 148,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s043-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "7c868bace1c3ce1448b9e0102c508b07e11f57036fd3005bf040abe78870c2db",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 43,
+      "sheet_label": "S044",
+      "rows": 151,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s044-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "c95d2da4c03c896a111ba05fa21eae466c6377d7b3f8311659a960574f48e4d9",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 44,
+      "sheet_label": "S045",
+      "rows": 147,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s045-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "fad94c3c1b24847f1901473c8ff9af77974ccc7807e5784c870607baa021cf2c",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 45,
+      "sheet_label": "S046",
+      "rows": 94,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s046-b01"
+      ],
+      "field_count": 9,
+      "role_counts": {
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "f71c15a5cb0b7f3b3c72fe969ce6595f7a7ef12404e75f496dd6323e8e881bf7",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 46,
+      "sheet_label": "S047",
+      "rows": 147,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s047-b01"
+      ],
+      "field_count": 9,
+      "role_counts": {
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "7f09cbd2fcb29ed344e1f804cc1e2899e3144fd1493e02a26a49e9227db2ea0f",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 47,
+      "sheet_label": "S048",
+      "rows": 154,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s048-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "ed68adf41635883873e7088ef3a90afd333bba3f027c7ec97329a4edf45dfce1",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 48,
+      "sheet_label": "S049",
+      "rows": 148,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s049-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "fad94c3c1b24847f1901473c8ff9af77974ccc7807e5784c870607baa021cf2c",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 49,
+      "sheet_label": "S050",
+      "rows": 149,
+      "columns": 13,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s050-b01"
+      ],
+      "field_count": 9,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 8
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "0397eb9187fc8e60ec41db7b997cbae952e1cc3f1fa652ff74c9675a6b2af1b5",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 50,
+      "sheet_label": "S051",
+      "rows": 150,
+      "columns": 13,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s051-b01"
+      ],
+      "field_count": 9,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 8
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "0397eb9187fc8e60ec41db7b997cbae952e1cc3f1fa652ff74c9675a6b2af1b5",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 51,
+      "sheet_label": "S052",
+      "rows": 150,
+      "columns": 13,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s052-b01"
+      ],
+      "field_count": 9,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 8
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "0397eb9187fc8e60ec41db7b997cbae952e1cc3f1fa652ff74c9675a6b2af1b5",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 52,
+      "sheet_label": "S053",
+      "rows": 148,
+      "columns": 13,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s053-b01"
+      ],
+      "field_count": 9,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 8
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "0397eb9187fc8e60ec41db7b997cbae952e1cc3f1fa652ff74c9675a6b2af1b5",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 53,
+      "sheet_label": "S054",
+      "rows": 148,
+      "columns": 13,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s054-b01"
+      ],
+      "field_count": 9,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 8
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "8808663edf7e1a54ff38e07cf4e943858f1409e0e4703c3230ecbcb10b196d6f",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 54,
+      "sheet_label": "S055",
+      "rows": 148,
+      "columns": 13,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s055-b01"
+      ],
+      "field_count": 9,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 8
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "0397eb9187fc8e60ec41db7b997cbae952e1cc3f1fa652ff74c9675a6b2af1b5",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 55,
+      "sheet_label": "S056",
+      "rows": 148,
+      "columns": 13,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s056-b01"
+      ],
+      "field_count": 9,
+      "role_counts": {
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "f6f55640f876272aef150c8a03c02e59ea3fd2e848e90c2ae7e1d8ee4ddde3a9",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 56,
+      "sheet_label": "S057",
+      "rows": 132,
+      "columns": 17,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s057-b01"
+      ],
+      "field_count": 16,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 15
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "4e76da7d7af7f464b7eae6d55e1feba62fdccfa30a07e99f79974319c4789e5d",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 57,
+      "sheet_label": "S058",
+      "rows": 358,
+      "columns": 45,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s058-b01"
+      ],
+      "field_count": 21,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 20
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "1114224e6b27f7c0cc6d7bdafdd65b91aaa81634ec1ff5ac83f946a1b2b619c5",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 58,
+      "sheet_label": "S059",
+      "rows": 89,
+      "columns": 10,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s059-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "0c59b9804a4ef43cb6f60e4808263ab656e504468fc43dad456c470867dfc917",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 59,
+      "sheet_label": "S060",
+      "rows": 89,
+      "columns": 10,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s060-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "0c59b9804a4ef43cb6f60e4808263ab656e504468fc43dad456c470867dfc917",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 60,
+      "sheet_label": "S061",
+      "rows": 89,
+      "columns": 10,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s061-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "0c59b9804a4ef43cb6f60e4808263ab656e504468fc43dad456c470867dfc917",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 61,
+      "sheet_label": "S062",
+      "rows": 89,
+      "columns": 10,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s062-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "0c59b9804a4ef43cb6f60e4808263ab656e504468fc43dad456c470867dfc917",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 62,
+      "sheet_label": "S063",
+      "rows": 131,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s063-b01"
+      ],
+      "field_count": 5,
+      "role_counts": {
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 2,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "8466a99daff8e2001bf37ac308f18dcfed6b290958010051c72101b8390cdac7",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 63,
+      "sheet_label": "S064",
+      "rows": 131,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s064-b01"
+      ],
+      "field_count": 5,
+      "role_counts": {
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 2,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TEXT_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "8466a99daff8e2001bf37ac308f18dcfed6b290958010051c72101b8390cdac7",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 64,
+      "sheet_label": "S065",
+      "rows": 131,
+      "columns": 6,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s065-b01"
+      ],
+      "field_count": 5,
+      "role_counts": {
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "fbc07616a79f1d1c490eb0010dc60691c31639446e20646a0d232478f0996ad6",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 65,
+      "sheet_label": "S066",
+      "rows": 127,
+      "columns": 17,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s066-b01"
+      ],
+      "field_count": 13,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 12
+      },
+      "formula_cells": 0,
+      "clock_count": 0,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "ff8214f298f4b6823ffcf8c16c21a501b02d4af7a082e1b445ffbe1380d1e5b9",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 66,
+      "sheet_label": "S067",
+      "rows": 148,
+      "columns": 17,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s067-b01"
+      ],
+      "field_count": 13,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 12
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "2affde4a17cdb328a5d3a51bca8e2e93a3a8a8820612a35b63e8df7a499d6ab8",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 67,
+      "sheet_label": "S068",
+      "rows": 148,
+      "columns": 9,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s068-b01"
+      ],
+      "field_count": 5,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 4
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "c2acea4b16c8609efcd61795e180ab86badbd1d2b8d0052e5994819bacf177f8",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-BOILER",
+      "sheet_index": 68,
+      "sheet_label": "S069",
+      "rows": 148,
+      "columns": 9,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-boiler-s069-b01"
+      ],
+      "field_count": 5,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 4
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "c2acea4b16c8609efcd61795e180ab86badbd1d2b8d0052e5994819bacf177f8",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 0,
+      "sheet_label": "S001",
+      "rows": 20,
+      "columns": 18,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s001-b01"
+      ],
+      "field_count": 12,
+      "role_counts": {
+        "INPUT": 12
+      },
+      "formula_cells": 0,
+      "clock_count": 3,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "b88e5e676e695f13086f29ed5565795ce828a825cfe2d08507f12c5b5e6e441b",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 1,
+      "sheet_label": "S002",
+      "rows": 17,
+      "columns": 13,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s002-b01"
+      ],
+      "field_count": 13,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 12
+      },
+      "formula_cells": 0,
+      "clock_count": 3,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "bb2d9b765511e389f1b9ff7a2197f18d9905230bc0d711d1baaa9413dc6fecb0",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 2,
+      "sheet_label": "S003",
+      "rows": 17,
+      "columns": 34,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s003-b01"
+      ],
+      "field_count": 28,
+      "role_counts": {
+        "INPUT": 28
+      },
+      "formula_cells": 0,
+      "clock_count": 3,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "fc3d76868238776eb75112a1adc2989cab1297f1872776ce3f5a089a575e5293",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 3,
+      "sheet_label": "S004",
+      "rows": 42,
+      "columns": 30,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s004-b01"
+      ],
+      "field_count": 29,
+      "role_counts": {
+        "INPUT": 29
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "6bddfd4b3196ec49bdfb328a8396f02594df1c680ab884498c346651753fe414",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 4,
+      "sheet_label": "S005",
+      "rows": 110,
+      "columns": 33,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s005-b01"
+      ],
+      "field_count": 28,
+      "role_counts": {
+        "INPUT": 28
+      },
+      "formula_cells": 39,
+      "clock_count": 3,
+      "date_precision_observed": [
+        "DATE_ONLY",
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "fd420254a08578c6d4cca010e044f4ab3ad28edf65fc4b9e3d77d588df59f2a8",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 5,
+      "sheet_label": "S006",
+      "rows": 89,
+      "columns": 33,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s006-b01"
+      ],
+      "field_count": 31,
+      "role_counts": {
+        "INPUT": 31
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY",
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "6ce5100c62df21f5cb4d77e73536764ffb158654fe8cb865396ce4dae4f82766",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 6,
+      "sheet_label": "S007",
+      "rows": 337,
+      "columns": 16,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s007-b01"
+      ],
+      "field_count": 13,
+      "role_counts": {
+        "INPUT": 13
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY",
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TIME_ONLY"
+      ],
+      "signature": "2e9c142cdde75e82dba7adbc0e873b1fd10d4abdef98f592ba07bde7b3fad24e",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 7,
+      "sheet_label": "S008",
+      "rows": 9,
+      "columns": 11,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s008-b01"
+      ],
+      "field_count": 9,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 8
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "afce949f7ea128bf76484cf4d7aa88c01b734813dc0285b95170e7ad0cc9e1d2",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 8,
+      "sheet_label": "S009",
+      "rows": 212,
+      "columns": 15,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s009-b01"
+      ],
+      "field_count": 13,
+      "role_counts": {
+        "INPUT": 13
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY",
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "94a3514eb39315f894354da7425fe49dd34af1d9734c5d68bac9016705c2e3e4",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 9,
+      "sheet_label": "S010",
+      "rows": 14,
+      "columns": 13,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s010-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 2,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "8253387c6fbdb2dd438ff2d21a5a7f2d74af89b75b8d11e0e18e80a76cfc1ea2",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 10,
+      "sheet_label": "S011",
+      "rows": 117,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s011-b01"
+      ],
+      "field_count": 13,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 12
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATETIME",
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "2affde4a17cdb328a5d3a51bca8e2e93a3a8a8820612a35b63e8df7a499d6ab8",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 11,
+      "sheet_label": "S012",
+      "rows": 110,
+      "columns": 16,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s012-b01"
+      ],
+      "field_count": 13,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 12
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "2f46f3c4a2f8e102b221a5e22b2067d646693e5a8f7534e729ea09934625519b",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 12,
+      "sheet_label": "S013",
+      "rows": 135,
+      "columns": 16,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s013-b01"
+      ],
+      "field_count": 12,
+      "role_counts": {
+        "INPUT": 11,
+        "SOURCE_ASSESSMENT": 1
+      },
+      "formula_cells": 0,
+      "clock_count": 2,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TIME_ONLY"
+      ],
+      "signature": "337e0d0179e94c1e081960d7de7986e70bafda2bccfc379a3c7c4e4bd203b4c6",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 13,
+      "sheet_label": "S014",
+      "rows": 114,
+      "columns": 13,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s014-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 3,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TIME_ONLY"
+      ],
+      "signature": "2a16f0ef70f5ec1d53bdcf15ff2fb21d0396e2debdb92fc5a0a16c857238fce2",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 14,
+      "sheet_label": "S015",
+      "rows": 95,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s015-b01"
+      ],
+      "field_count": 13,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 12
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "582a19e6e9230a116f00e7c58e1fcaa9b02666571293f26d8601eedbf9a975b2",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 15,
+      "sheet_label": "S016",
+      "rows": 77,
+      "columns": 15,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s016-b01"
+      ],
+      "field_count": 13,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 12
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "648f6388de96e68a0a5b5487335306d13c96886933b0f8079904d9a270fcc44b",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 16,
+      "sheet_label": "S017",
+      "rows": 101,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s017-b01"
+      ],
+      "field_count": 13,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 12
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY",
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "582a19e6e9230a116f00e7c58e1fcaa9b02666571293f26d8601eedbf9a975b2",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 17,
+      "sheet_label": "S018",
+      "rows": 93,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s018-b01"
+      ],
+      "field_count": 13,
+      "role_counts": {
+        "INPUT": 12,
+        "SOURCE_ASSESSMENT": 1
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY",
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "52be188b789b52177278b666e3826e2f76ac5f534d01c62a3963cf037082d781",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 18,
+      "sheet_label": "S019",
+      "rows": 105,
+      "columns": 15,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s019-b01"
+      ],
+      "field_count": 12,
+      "role_counts": {
+        "INPUT": 12
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "DATE_ONLY",
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "a55388747cebd687b0827c78accf3676aa45cabdc21e8b2ce4ad1790596c8f99",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 19,
+      "sheet_label": "S020",
+      "rows": 18,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s020-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "122b690e2f35c29366c697520e573c0693a4a0b5eaccc7f8157c2ba74d9eaf77",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 20,
+      "sheet_label": "S021",
+      "rows": 33,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s021-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "122b690e2f35c29366c697520e573c0693a4a0b5eaccc7f8157c2ba74d9eaf77",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 21,
+      "sheet_label": "S022",
+      "rows": 17,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s022-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "122b690e2f35c29366c697520e573c0693a4a0b5eaccc7f8157c2ba74d9eaf77",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 22,
+      "sheet_label": "S023",
+      "rows": 21,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s023-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "122b690e2f35c29366c697520e573c0693a4a0b5eaccc7f8157c2ba74d9eaf77",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 23,
+      "sheet_label": "S024",
+      "rows": 191,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s024-b01"
+      ],
+      "field_count": 12,
+      "role_counts": {
+        "INPUT": 11,
+        "SOURCE_ASSESSMENT": 1
+      },
+      "formula_cells": 0,
+      "clock_count": 2,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TIME_ONLY"
+      ],
+      "signature": "eb230dfb77b13b35e01a9740fcc033e00fb713b7abe8c375cb0089f926fe7894",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 24,
+      "sheet_label": "S025",
+      "rows": 114,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s025-b01"
+      ],
+      "field_count": 12,
+      "role_counts": {
+        "INPUT": 11,
+        "SOURCE_ASSESSMENT": 1
+      },
+      "formula_cells": 0,
+      "clock_count": 2,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TIME_ONLY"
+      ],
+      "signature": "eb230dfb77b13b35e01a9740fcc033e00fb713b7abe8c375cb0089f926fe7894",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 25,
+      "sheet_label": "S026",
+      "rows": 233,
+      "columns": 32,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s026-b01"
+      ],
+      "field_count": 12,
+      "role_counts": {
+        "INPUT": 11,
+        "SOURCE_ASSESSMENT": 1
+      },
+      "formula_cells": 0,
+      "clock_count": 2,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE",
+        "TIME_ONLY"
+      ],
+      "signature": "eb230dfb77b13b35e01a9740fcc033e00fb713b7abe8c375cb0089f926fe7894",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 26,
+      "sheet_label": "S027",
+      "rows": 69,
+      "columns": 8,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s027-b01"
+      ],
+      "field_count": 7,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 6
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "e0a81ea0845ed00fe8ae90c184daa8099f6ef4c9eb6c5caa8b8885dbd1880480",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 27,
+      "sheet_label": "S028",
+      "rows": 73,
+      "columns": 9,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s028-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "INPUT": 6
+      },
+      "formula_cells": 0,
+      "clock_count": 2,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "6961330351bc011768220f194444619e07d806652029cacaeb468d55db92f3af",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 28,
+      "sheet_label": "S029",
+      "rows": 116,
+      "columns": 15,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s029-b01"
+      ],
+      "field_count": 13,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 12
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "25dac1a04d44674507a44186b7f222f10082b6e4ab12fe8a23ee024d02286606",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 29,
+      "sheet_label": "S030",
+      "rows": 152,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s030-b01"
+      ],
+      "field_count": 13,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 12
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "ff8214f298f4b6823ffcf8c16c21a501b02d4af7a082e1b445ffbe1380d1e5b9",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 30,
+      "sheet_label": "S031",
+      "rows": 46,
+      "columns": 9,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s031-b01"
+      ],
+      "field_count": 7,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 6
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "dfd74e57dc017d31f4bd61c7524c8dd8f5eff32732fc25f28a5b9494d6405152",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 31,
+      "sheet_label": "S032",
+      "rows": 44,
+      "columns": 8,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s032-b01"
+      ],
+      "field_count": 7,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 6
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "0717c3f3959d7b8d8ec16053511da354ca787d61bcaf45d775122ebe4d8b63a9",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 32,
+      "sheet_label": "S033",
+      "rows": 81,
+      "columns": 10,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s033-b01"
+      ],
+      "field_count": 9,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 8
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "8808663edf7e1a54ff38e07cf4e943858f1409e0e4703c3230ecbcb10b196d6f",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 33,
+      "sheet_label": "S034",
+      "rows": 96,
+      "columns": 10,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s034-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "INPUT": 5,
+        "SOURCE_ASSESSMENT": 1
+      },
+      "formula_cells": 0,
+      "clock_count": 3,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "184aaeab83f709de3fe4ab15a7259497bbc378db4ca368e628d5000d76010ad1",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 34,
+      "sheet_label": "S035",
+      "rows": 73,
+      "columns": 10,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s035-b01"
+      ],
+      "field_count": 9,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 8
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "0397eb9187fc8e60ec41db7b997cbae952e1cc3f1fa652ff74c9675a6b2af1b5",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 35,
+      "sheet_label": "S036",
+      "rows": 16,
+      "columns": 8,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s036-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "INPUT": 6
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "76a8dba5e97d4ffd4308f3c53ad2b42446a2d4321421221da0a002baff3766e1",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 36,
+      "sheet_label": "S037",
+      "rows": 28,
+      "columns": 8,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s037-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "INPUT": 6
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "76a8dba5e97d4ffd4308f3c53ad2b42446a2d4321421221da0a002baff3766e1",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 37,
+      "sheet_label": "S038",
+      "rows": 46,
+      "columns": 8,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s038-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "INPUT": 6
+      },
+      "formula_cells": 0,
+      "clock_count": 2,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "76a8dba5e97d4ffd4308f3c53ad2b42446a2d4321421221da0a002baff3766e1",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 38,
+      "sheet_label": "S039",
+      "rows": 40,
+      "columns": 9,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s039-b01"
+      ],
+      "field_count": 7,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 6
+      },
+      "formula_cells": 0,
+      "clock_count": 2,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "cbf00ae9eaca1df0ab96e15d4bfc59b6b0dd0ec63f4b831cfaa652ae3e4af629",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 39,
+      "sheet_label": "S040",
+      "rows": 60,
+      "columns": 11,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s040-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "301ce092e6f75f6676588bd3165244e79c9703d3f5025d114ed16c8417b44b30",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 40,
+      "sheet_label": "S041",
+      "rows": 63,
+      "columns": 11,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s041-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "7c868bace1c3ce1448b9e0102c508b07e11f57036fd3005bf040abe78870c2db",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 41,
+      "sheet_label": "S042",
+      "rows": 55,
+      "columns": 11,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s042-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "301ce092e6f75f6676588bd3165244e79c9703d3f5025d114ed16c8417b44b30",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 42,
+      "sheet_label": "S043",
+      "rows": 35,
+      "columns": 12,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s043-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "653de96a50f8043d41cadcd82bbb7b7a679280f07b3798b348c0efcd7eac6071",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 43,
+      "sheet_label": "S044",
+      "rows": 39,
+      "columns": 11,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s044-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "c64ac7e49e37df389b0e7ece9772adf26a9112c0b1e007820d8dba9aeb05fc81",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 44,
+      "sheet_label": "S045",
+      "rows": 16,
+      "columns": 10,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s045-b01"
+      ],
+      "field_count": 9,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 8
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "85abc6ffa7b8149eecd8938f2e00fd87b4e4fd95f0cd9a51a905e40d90b40ecb",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 45,
+      "sheet_label": "S046",
+      "rows": 16,
+      "columns": 12,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s046-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "88a168e26267b6e315e414d6bccae2f1ecdc9ebd8f3d0c370ee12df4f499fb09",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 46,
+      "sheet_label": "S047",
+      "rows": 16,
+      "columns": 11,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s047-b01"
+      ],
+      "field_count": 9,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 8
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "eab2f48edc47b22c99351bd4674748929b2286dead838f1ddca19cd2271277f3",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 47,
+      "sheet_label": "S048",
+      "rows": 5,
+      "columns": 12,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s048-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "88a168e26267b6e315e414d6bccae2f1ecdc9ebd8f3d0c370ee12df4f499fb09",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 48,
+      "sheet_label": "S049",
+      "rows": 16,
+      "columns": 12,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s049-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "e2330fedf2cafa1718da969200a3600a786df39f70ba9d4692c484eab5e54c8f",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 49,
+      "sheet_label": "S050",
+      "rows": 16,
+      "columns": 12,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s050-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "e2330fedf2cafa1718da969200a3600a786df39f70ba9d4692c484eab5e54c8f",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 50,
+      "sheet_label": "S051",
+      "rows": 16,
+      "columns": 12,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s051-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "e2330fedf2cafa1718da969200a3600a786df39f70ba9d4692c484eab5e54c8f",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 51,
+      "sheet_label": "S052",
+      "rows": 16,
+      "columns": 12,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s052-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "e2330fedf2cafa1718da969200a3600a786df39f70ba9d4692c484eab5e54c8f",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 52,
+      "sheet_label": "S053",
+      "rows": 16,
+      "columns": 12,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s053-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "e2330fedf2cafa1718da969200a3600a786df39f70ba9d4692c484eab5e54c8f",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 53,
+      "sheet_label": "S054",
+      "rows": 16,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s054-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "c35d8f70f2b37ce5741e9d779d4ddde7b67e6e874042404b4415d752f49303c0",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 54,
+      "sheet_label": "S055",
+      "rows": 16,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s055-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "c35d8f70f2b37ce5741e9d779d4ddde7b67e6e874042404b4415d752f49303c0",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 55,
+      "sheet_label": "S056",
+      "rows": 11,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s056-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "c35d8f70f2b37ce5741e9d779d4ddde7b67e6e874042404b4415d752f49303c0",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 56,
+      "sheet_label": "S057",
+      "rows": 10,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s057-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "c35d8f70f2b37ce5741e9d779d4ddde7b67e6e874042404b4415d752f49303c0",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 57,
+      "sheet_label": "S058",
+      "rows": 18,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s058-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "c35d8f70f2b37ce5741e9d779d4ddde7b67e6e874042404b4415d752f49303c0",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 58,
+      "sheet_label": "S059",
+      "rows": 17,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s059-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "c35d8f70f2b37ce5741e9d779d4ddde7b67e6e874042404b4415d752f49303c0",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 59,
+      "sheet_label": "S060",
+      "rows": 16,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s060-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "c35d8f70f2b37ce5741e9d779d4ddde7b67e6e874042404b4415d752f49303c0",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 60,
+      "sheet_label": "S061",
+      "rows": 16,
+      "columns": 11,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s061-b01"
+      ],
+      "field_count": 9,
+      "role_counts": {
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "0bce668779374ac6ccc9c3696d7ce8d2cb86c6d8255437ef2ab74daefff84a3c",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 61,
+      "sheet_label": "S062",
+      "rows": 16,
+      "columns": 11,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s062-b01"
+      ],
+      "field_count": 9,
+      "role_counts": {
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "0bce668779374ac6ccc9c3696d7ce8d2cb86c6d8255437ef2ab74daefff84a3c",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 62,
+      "sheet_label": "S063",
+      "rows": 42,
+      "columns": 9,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s063-b01"
+      ],
+      "field_count": 7,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 6
+      },
+      "formula_cells": 0,
+      "clock_count": 2,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "47c82a4c90eb0b8a1247cf0be53a2430d5235e1399216f52e8b2d74db3e5a7bd",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 63,
+      "sheet_label": "S064",
+      "rows": 26,
+      "columns": 8,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s064-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 2,
+      "date_precision_observed": [
+        "DATE_ONLY"
+      ],
+      "signature": "d64d4f23806817e6c9a1c30b0728bd126e8abfb85b8cfddc44cb5e98c7926cfa",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 64,
+      "sheet_label": "S065",
+      "rows": 14,
+      "columns": 7,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s065-b01"
+      ],
+      "field_count": 6,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 5
+      },
+      "formula_cells": 0,
+      "clock_count": 0,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "d0e25b8b1be7d5bbdb46358b0e184fd0478cd0012f8c6b034e09fbcbbd144443",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 65,
+      "sheet_label": "S066",
+      "rows": 43,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s066-b01"
+      ],
+      "field_count": 13,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 12
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "ff8214f298f4b6823ffcf8c16c21a501b02d4af7a082e1b445ffbe1380d1e5b9",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 66,
+      "sheet_label": "S067",
+      "rows": 31,
+      "columns": 14,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s067-b01"
+      ],
+      "field_count": 13,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 12
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "ff8214f298f4b6823ffcf8c16c21a501b02d4af7a082e1b445ffbe1380d1e5b9",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 67,
+      "sheet_label": "S068",
+      "rows": 4,
+      "columns": 10,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s068-b01"
+      ],
+      "field_count": 9,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 8
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "0397eb9187fc8e60ec41db7b997cbae952e1cc3f1fa652ff74c9675a6b2af1b5",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 68,
+      "sheet_label": "S069",
+      "rows": 4,
+      "columns": 10,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s069-b01"
+      ],
+      "field_count": 9,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 8
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "0397eb9187fc8e60ec41db7b997cbae952e1cc3f1fa652ff74c9675a6b2af1b5",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 69,
+      "sheet_label": "S070",
+      "rows": 16,
+      "columns": 12,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s070-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "88a168e26267b6e315e414d6bccae2f1ecdc9ebd8f3d0c370ee12df4f499fb09",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 70,
+      "sheet_label": "S071",
+      "rows": 16,
+      "columns": 12,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s071-b01"
+      ],
+      "field_count": 10,
+      "role_counts": {
+        "SOURCE_ASSESSMENT": 1,
+        "INPUT": 9
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [
+        "NUMERIC_YYYYMMDD_CANDIDATE"
+      ],
+      "signature": "88a168e26267b6e315e414d6bccae2f1ecdc9ebd8f3d0c370ee12df4f499fb09",
+      "excluded": []
+    },
+    {
+      "source_ref": "WB-VIB-TURBINE",
+      "sheet_index": 71,
+      "sheet_label": "S072",
+      "rows": 26,
+      "columns": 25,
+      "family": "VIBRATION",
+      "status": "INPUT_HEADERS",
+      "profile_ids": [
+        "wb-vib-turbine-s072-b01"
+      ],
+      "field_count": 12,
+      "role_counts": {
+        "INPUT": 12
+      },
+      "formula_cells": 0,
+      "clock_count": 1,
+      "date_precision_observed": [],
+      "signature": "1aa5405e36ecc314e0d006ab3692975d94725476cd5835237be8ef17cfb832de",
+      "excluded": []
+    }
+  ],
+  "limits": [
+    "No raw values, equipment identifiers, formula expressions or numerical thresholds exported.",
+    "Provisional input capture is not canonical point binding, method approval, diagnosis or alarm policy.",
+    "No workbook evaluation, macro execution, link refresh or source import performed."
+  ]
+}

@@ -39,12 +39,19 @@ class RecommendationService(ReviewedRecordService):
     def validate_submission(self, actor, current, connection=None):
         if not current.supporting_evidence:
             raise EngineeringError("SUPPORTING_EVIDENCE_REQUIRED", 422)
+        # Owning-store order: Case -> sorted Inspections -> Recommendation CAS.
+        reviewed_case = self.case_link(actor, current, connection)
         self.check_evidence(actor, current, current.supporting_evidence, connection)
-        return {"reviewed_case": self.case_link(actor, current, connection)}
+        return {"reviewed_case": reviewed_case}
 
-    def validate_review(self, actor, current, connection=None):
+    def validate_review(self, actor, current, connection=None, *, additional_refs=()):
         if not current.reviewed_case or self.case_link(actor, current, connection) != current.reviewed_case:
             raise EngineeringError("REVIEWED_CASE_CHANGED", 409)
+        if additional_refs and connection is not None and hasattr(self.catalog, "guard_evidence"):
+            # Completion can add inspections before/after supporting ones in ID
+            # order. Lock the whole union first, never two separately sorted sets.
+            self.catalog.guard_evidence(connection, actor, current.canonical_asset_id,
+                (*current.supporting_evidence, *additional_refs))
         self.check_evidence(actor, current, current.supporting_evidence, connection)
 
     def check_evidence(self, actor, current, refs, connection=None):
@@ -115,7 +122,6 @@ class RecommendationService(ReviewedRecordService):
         if action == "VERIFY_COMPLETION":
             if current.status != CaseStatus.APPROVED or current.follow_up_status != FollowUpStatus.COMPLETED or set(payload) != {"reason", "evidence_selections"}:
                 raise EngineeringError("INVALID_TRANSITION", 409)
-            self.validate_review(actor, current, connection)
             selections = payload["evidence_selections"]
             if not isinstance(selections, list) or not 1 <= len(selections) <= 20:
                 raise EngineeringError("COMPLETION_EVIDENCE_REQUIRED", 422)
@@ -123,6 +129,7 @@ class RecommendationService(ReviewedRecordService):
             if len({(x.kind, x.record_id) for x in selected}) != len(selected) or any(x.mode != "FROZEN_SNAPSHOT" for x in selected):
                 raise EngineeringError("COMPLETION_EVIDENCE_REQUIRED", 422)
             refs = [self.resolve_selection(actor, current.canonical_asset_id, x) for x in selected]
+            self.validate_review(actor, current, connection, additional_refs=refs)
             self.check_evidence(actor, current, refs, connection)
             data.update(follow_up_status=FollowUpStatus.VERIFIED,
                 completion_verification=CompletionVerification(reviewer=actor.principal_id,

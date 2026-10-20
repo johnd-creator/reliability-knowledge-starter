@@ -50,6 +50,14 @@ class CaseRepository:
         raw = c.execute(select(CaseRow.document).where(CaseRow.case_id == case_id)).scalar_one_or_none()
         return EngineeringCase.model_validate(raw) if raw is not None else None
 
+    def lock_revision(self, c, case_id, expected_revision):
+        # Every Case mutation takes its owning row before any Inspection locks.
+        # The earlier unlocked read is still subject to CAS after waiting here.
+        revision = c.scalar(select(CaseRow.revision).where(
+            CaseRow.case_id == case_id).with_for_update())
+        if revision != expected_revision:
+            raise EngineeringError("REVISION_CONFLICT", 409)
+
     def receipt(self, c, actor, request_id, fingerprint):
         row = c.execute(select(ReceiptRow.fingerprint, ReceiptRow.result).where(
             ReceiptRow.actor == actor, ReceiptRow.request_id == request_id)).first()

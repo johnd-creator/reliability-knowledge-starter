@@ -1,4 +1,5 @@
-// Native presentation mapping to the unchanged strict InspectionDraft v1.1.
+// Native measurement v1.1 and explicit provisional source capture v1.2.
+import {buildCapture,captureFromStored,type CaptureEntry,type InputCapture} from './pdm-capture';
 import {enteredValue,methods,type Method} from './manual-pdm';
 import type {Inspection,Measurement} from './product-records';
 export const inputContexts = [
@@ -14,11 +15,11 @@ export const inputContexts = [
 export const inputFields={inspection:['canonical_asset_id','method','method_version','inspected_at','operating_context'],measurement:['point_ref','quantity','value','unit','measured_at'],optionalContext:['instrument_ref','procedure_ref','orientation']} as const;
 export type ValueKind='NUMERIC'|'TEXT'|'BOOLEAN'|'UNKNOWN';
 export type EntryRow={sourceHint?:string;key:string;point:string;quantity:string;kind:ValueKind;value:string;unit:string;time:string};
-export interface Entry {inputContext?:string;asset:string;method:Method;version:string;time:string;context:string;rows:EntryRow[];observation:string;hypothesis:string;instrument:string;procedure:string;orientation:string;metadata?:{ref:string;filename:string;type:string;size:string;sha256:string};}
-export interface InspectionDraft {canonical_asset_id:string;method:Method;method_version:string;inspector_ref:string;inspected_at:string|null;operating_context:string|null;measurements:Measurement[];observations:string[];interpretations:string[];attachments:Inspection['attachments'];case_refs:string[];method_extension:Record<string,string|number|boolean|null>;}
+export interface Entry {mode?:'NATIVE'|'WORKBOOK';capture?:CaptureEntry;inputContext?:string;asset:string;method:Method;version:string;time:string;context:string;rows:EntryRow[];observation:string;hypothesis:string;instrument:string;procedure:string;orientation:string;metadata?:{ref:string;filename:string;type:string;size:string;sha256:string};}
+export interface InspectionDraft {input_capture?:InputCapture;canonical_asset_id:string;method:Method;method_version:string;inspector_ref:string;inspected_at:string|null;operating_context:string|null;measurements:Measurement[];observations:string[];interpretations:string[];attachments:Inspection['attachments'];case_refs:string[];method_extension:Record<string,string|number|boolean|null>;}
 export function emptyRow(key:string):EntryRow{return {key,point:'',quantity:'',kind:'UNKNOWN',value:'',unit:'',time:''};}
 export function newEntry(asset:string):Entry{return {asset,method:'VIBRATION',version:'',time:'',context:'',rows:[emptyRow('row-1')],observation:'',hypothesis:'',instrument:'',procedure:'',orientation:''};}
-export function fromInspection(row:Inspection):Entry{return {asset:row.canonical_asset_id,method:row.method as Method,version:row.method_version,time:row.inspected_at??'',context:row.operating_context??'',rows:row.measurements.map((m,i)=>({key:`row-${i}`,point:m.point_ref??'',quantity:m.quantity,kind:m.value===null?'UNKNOWN':typeof m.value==='number'?'NUMERIC':typeof m.value==='boolean'?'BOOLEAN':'TEXT',value:m.value===null?'':String(m.value),unit:m.unit??'',time:m.measured_at??''})),observation:row.observations.join('\n'),hypothesis:row.interpretations.join('\n'),instrument:String(row.method_extension?.instrument_ref??''),procedure:String(row.method_extension?.procedure_ref??''),orientation:String(row.method_extension?.orientation??'')};}
+export function fromInspection(row:Inspection):Entry{return {mode:row.input_capture?'WORKBOOK':'NATIVE',capture:row.input_capture?captureFromStored(row.input_capture):undefined,asset:row.canonical_asset_id,method:row.method as Method,version:row.method_version,time:row.inspected_at??'',context:row.operating_context??'',rows:row.measurements.map((m,i)=>({key:`row-${i}`,point:m.point_ref??'',quantity:m.quantity,kind:m.value===null?'UNKNOWN':typeof m.value==='number'?'NUMERIC':typeof m.value==='boolean'?'BOOLEAN':'TEXT',value:m.value===null?'':String(m.value),unit:m.unit??'',time:m.measured_at??''})),observation:row.observations.join('\n'),hypothesis:row.interpretations.join('\n'),instrument:String(row.method_extension?.instrument_ref??''),procedure:String(row.method_extension?.procedure_ref??''),orientation:String(row.method_extension?.orientation??'')};}
 function bounded(value:string,max:number,label:string,required=false){if(Array.from(value).length>max||required&&!value.trim())throw Error(`${label}: isi teks yang tidak kosong, maksimal ${max} karakter.`);return value;}
 export function eventTime(value:string,label:string,now:number):string|null{
  if(value==='')return null;
@@ -33,14 +34,16 @@ export function buildDraft(entry:Entry,subject:string,assets:string[],base?:Insp
  if(!assets.includes(entry.asset))throw Error('Pilih identitas aset dari direktori berotorisasi.');
  if(!methods.includes(entry.method))throw Error('Metode tidak tersedia dalam kontrak.');
  if(entry.rows.length>100)throw Error('Maksimal 100 measurement per inspeksi.');
- const measurements=entry.rows.map((row,i)=>{
-  const label=`Baris ${i+1}`;
-  if(row.kind!=='UNKNOWN'&&row.value==='')throw Error(`${label}: nilai kosong bukan nol; pilih Belum diketahui untuk null.`);
+ const measurements=(entry.mode==='WORKBOOK'?[]:entry.rows).map((row,i)=>{
+  const label=`Baris ${i+1}`,original=base?.measurements[Number(row.key.replace('row-',''))];
+  if(['NUMERIC','BOOLEAN'].includes(row.kind)&&row.value==='')throw Error(`${label}: nilai kosong bukan nol; pilih Belum diketahui untuk null.`);
   let value:Measurement['value'];try{value=enteredValue(row.value,row.kind);}catch{throw Error(`${label}: masukkan angka finite, teks asli, true/false, atau pilih Belum diketahui untuk null.`);}if(typeof value==='string')bounded(value,2000,label);
-  return {point_ref:bounded(row.point,200,label)||null,quantity:bounded(row.quantity,120,label+' parameter',true),value,unit:bounded(row.unit,40,label)||null,measured_at:eventTime(row.time,label+' waktu',now),quality:base?.measurements[Number(row.key.replace('row-',''))]?.quality??'INSPECTOR_REPORTED',provenance:'HUMAN_ENTERED_MEASUREMENT'};
+  return {point_ref:original&&row.point===(original.point_ref??'')?original.point_ref:bounded(row.point,200,label)||null,quantity:bounded(row.quantity,120,label+' parameter',true),value,unit:original&&row.unit===(original.unit??'')?original.unit:bounded(row.unit,40,label)||null,measured_at:eventTime(row.time,label+' waktu',now),quality:base?.measurements[Number(row.key.replace('row-',''))]?.quality??'INSPECTOR_REPORTED',provenance:'HUMAN_ENTERED_MEASUREMENT'};
  });
  const extension={...base?.method_extension};
  for(const [key,value] of [['instrument_ref',entry.instrument],['procedure_ref',entry.procedure],['orientation',entry.orientation]]){
+  // Preserve a legacy typed scalar when its displayed value was not edited.
+  if(base&&Object.prototype.hasOwnProperty.call(base.method_extension??{},key)&&String(base.method_extension?.[key]??'')===value)continue;
   // Explicit candidate scalar fields only, never an arbitrary metadata editor.
   if(value!=='')extension[key]=bounded(value,2000,key);else delete extension[key];
  }
@@ -55,7 +58,8 @@ export function buildDraft(entry:Entry,subject:string,assets:string[],base?:Insp
   if(attachments.length>=10||attachments.some(x=>x.attachment_ref===metadata.ref))throw Error('Maksimal 10 referensi metadata unik.');
   attachments=[...attachments,{attachment_ref:metadata.ref,filename:metadata.filename,content_type:metadata.type,size_bytes:Number(metadata.size),sha256:metadata.sha256||null,status:'METADATA_ONLY_NOT_UPLOADED'}];
  }
- return {canonical_asset_id:entry.asset,method:entry.method,method_version:bounded(entry.version,80,'Versi metode',true),inspector_ref:subject,inspected_at:eventTime(entry.time,'Waktu inspeksi',now),operating_context:bounded(entry.context,6000,'Konteks operasi')||null,measurements,observations:lines(entry.observation,'Observasi'),interpretations:lines(entry.hypothesis,'Hipotesis'),attachments,case_refs:base?.case_refs??[],method_extension:extension};
+ if(entry.mode==='WORKBOOK'&&!entry.capture)throw Error('Pilih profil workbook sebelum menyimpan.');
+ return {...(entry.mode==='WORKBOOK'?{input_capture:buildCapture(entry.capture!)}:{}),canonical_asset_id:entry.asset,method:entry.method,method_version:bounded(entry.version,80,'Versi metode',true),inspector_ref:subject,inspected_at:entry.mode==='WORKBOOK'?null:eventTime(entry.time,'Waktu inspeksi',now),operating_context:base&&entry.context===(base.operating_context??'')?base.operating_context:bounded(entry.context,6000,'Konteks operasi')||null,measurements,observations:base&&entry.observation===base.observations.join('\n')?base.observations:lines(entry.observation,'Observasi'),interpretations:base&&entry.hypothesis===base.interpretations.join('\n')?base.interpretations:lines(entry.hypothesis,'Hipotesis'),attachments,case_refs:base?.case_refs??[],method_extension:extension};
 }
 export interface MeasurementEvent {record_id:string;revision:number;measurement_index:number;canonical_asset_id:string;method:string;method_version:string;inspector_ref:string;status:string;measurement:Measurement;operating_context:string|null;method_extension:Record<string,string|number|boolean|null>;field_approval:string;provenance:string;}
 // Within ONE acquisition only. Equal labels never authorize cross-inspection comparison.

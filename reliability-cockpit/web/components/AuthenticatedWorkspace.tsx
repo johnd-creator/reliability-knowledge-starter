@@ -8,7 +8,7 @@ import type {LocalSession} from '../lib/local-session';
 export default function AuthenticatedWorkspace({identity,children}:{identity:LocalSession;children:ReactNode}){
  const [state,setState]=useState<'ready'|'checking'|'unavailable'>('ready'),[error,setError]=useState('');
  const [confirmLogout,setConfirmLogout]=useState(false),[logoutPhase,setLogoutPhase]=useState<'idle'|'pending'|'failed'>('idle');
- const logoutActive=useRef(false),logoutInFlight=useRef(false);
+ const logoutActive=useRef(false),logoutInFlight=useRef(false),retrySession=useRef<()=>void>(()=>{});
  const dialogRef=useRef<HTMLDialogElement>(null),cancelRef=useRef<HTMLButtonElement>(null);
  useEffect(()=>{if(confirmLogout&&!dialogRef.current?.open){dialogRef.current?.showModal();cancelRef.current?.focus();}},[confirmLogout]);
  const requestLogout=()=>setConfirmLogout(true);
@@ -27,6 +27,7 @@ export default function AuthenticatedWorkspace({identity,children}:{identity:Loc
     setState('ready');
    }catch{if(active&&!logoutActive.current)setState('unavailable');}finally{inflight=false;}
   }
+  const recheck=()=>{void check(true);};retrySession.current=recheck;
   const focus=()=>{if(logoutActive.current)return;dialogRef.current?.close();setConfirmLogout(false);void check(true);};
   const visibility=()=>{if(document.visibilityState==='visible')focus();};
   const pageShow=(event:PageTransitionEvent)=>{if(event.persisted){setState('checking');window.location.reload();}};
@@ -34,7 +35,7 @@ export default function AuthenticatedWorkspace({identity,children}:{identity:Loc
   window.addEventListener('pagehide',pageHide);
   window.addEventListener('focus',focus);document.addEventListener('visibilitychange',visibility);window.addEventListener('pageshow',pageShow);
   const timer=setInterval(()=>{if(document.visibilityState==='visible')void check();},30000);
-  return()=>{active=false;clearInterval(timer);window.removeEventListener('pagehide',pageHide);window.removeEventListener('focus',focus);document.removeEventListener('visibilitychange',visibility);window.removeEventListener('pageshow',pageShow);};
+  return()=>{active=false;if(retrySession.current===recheck)retrySession.current=()=>{};clearInterval(timer);window.removeEventListener('pagehide',pageHide);window.removeEventListener('focus',focus);document.removeEventListener('visibilitychange',visibility);window.removeEventListener('pageshow',pageShow);};
  },[identity,toLogin]);
  async function logout(){
   if(logoutInFlight.current)return;
@@ -44,5 +45,5 @@ export default function AuthenticatedWorkspace({identity,children}:{identity:Loc
  }
  const pending=logoutPhase==='pending',locked=logoutPhase!=='idle';
  const confirmation=<dialog className="logout-dialog" ref={dialogRef} aria-labelledby="logout-title" aria-describedby="logout-description" aria-busy={pending} onCancel={event=>{if(locked)event.preventDefault();}} onClose={()=>{if(locked){dialogRef.current?.showModal();return;}setConfirmLogout(false);}}><div className="logout-dialog-icon" aria-hidden="true">{pending?<span className="spinner"/>:'↗'}</div><h2 id="logout-title">{pending?'Sedang keluar…':logoutPhase==='failed'?'Belum dapat keluar':'Keluar dari NADI?'}</h2><p id="logout-description" role={pending?'status':undefined}>{pending?'Mohon tunggu. Anda akan diarahkan ke halaman masuk.':'Anda akan kembali ke halaman masuk. Pastikan isian yang ingin disimpan sudah tersimpan.'}</p>{error&&<p role="alert">{error}</p>}<div className="logout-dialog-actions">{!locked&&<button ref={cancelRef} className="button" type="button" onClick={()=>dialogRef.current?.close()}>Batal</button>}<button className="button primary" type="button" disabled={pending} onClick={()=>{void logout();}}>{pending?<><span className="spinner" aria-hidden="true"/> Sedang keluar…</>:logoutPhase==='failed'?'Coba keluar lagi':'Ya, keluar'}</button></div></dialog>;
- return <WorkspaceAccountContext.Provider value={{identity,requestLogout}}>{!locked&&(state==='ready'?children:<main className="state-card" role="status"><h1>{state==='checking'?'Memeriksa sesi…':'Otoritas sesi tidak tersedia'}</h1><p>Tampilan terlindungi ditutup sampai sesi dapat diverifikasi.</p><button className="button" onClick={()=>window.location.reload()}>Periksa kembali</button><button className="button" onClick={requestLogout}>Keluar</button></main>)}{confirmation}</WorkspaceAccountContext.Provider>;
+ return <WorkspaceAccountContext.Provider value={{identity,requestLogout}}>{!locked&&(state==='ready'?children:<main className="state-card" role="status"><h1>{state==='checking'?'Memeriksa sesi…':'Otoritas sesi tidak tersedia'}</h1><p>Tampilan terlindungi ditutup sampai sesi dapat diverifikasi.</p><button className="button" onClick={()=>retrySession.current()}>Periksa kembali</button><button className="button" onClick={requestLogout}>Keluar</button></main>)}{confirmation}</WorkspaceAccountContext.Provider>;
 }
