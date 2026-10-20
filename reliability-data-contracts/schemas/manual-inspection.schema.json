@@ -386,6 +386,84 @@
       "title": "CaptureRow",
       "type": "object"
     },
+    "DepartmentWorkOrigin": {
+      "additionalProperties": false,
+      "description": "Reported work context; department/label are not canonical identities.",
+      "properties": {
+        "source": {
+          "const": "DEPARTMENT_REQUEST",
+          "title": "Source",
+          "type": "string"
+        },
+        "requesting_department": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+          "title": "Requesting Department",
+          "type": "string"
+        },
+        "reported_asset_label": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reported Asset Label"
+        }
+      },
+      "required": [
+        "source",
+        "requesting_department"
+      ],
+      "title": "DepartmentWorkOrigin",
+      "type": "object"
+    },
+    "EngineeringAnalysis": {
+      "additionalProperties": false,
+      "description": "Manual narrative; record review does not certify technical correctness.",
+      "properties": {
+        "notes": {
+          "maxLength": 6000,
+          "minLength": 1,
+          "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+          "title": "Notes",
+          "type": "string"
+        },
+        "recommended_follow_up": {
+          "anyOf": [
+            {
+              "maxLength": 6000,
+              "minLength": 1,
+              "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recommended Follow Up"
+        },
+        "provenance": {
+          "const": "HUMAN_ENTERED_ENGINEER_NOTES",
+          "default": "HUMAN_ENTERED_ENGINEER_NOTES",
+          "title": "Provenance",
+          "type": "string"
+        }
+      },
+      "required": [
+        "notes"
+      ],
+      "title": "EngineeringAnalysis",
+      "type": "object"
+    },
     "InputCapture": {
       "additionalProperties": false,
       "properties": {
@@ -657,6 +735,81 @@
       ],
       "title": "ManualMeasurement",
       "type": "object"
+    },
+    "Pm52WorkOrigin": {
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "const": "PDM_PM_52_WEEK",
+          "title": "Source",
+          "type": "string"
+        },
+        "reported_asset_label": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reported Asset Label"
+        }
+      },
+      "required": [
+        "source"
+      ],
+      "title": "Pm52WorkOrigin",
+      "type": "object"
+    },
+    "ReportedSrReference": {
+      "additionalProperties": false,
+      "description": "Informational human report, never an external write or verified binding.",
+      "properties": {
+        "sr_number": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+          "title": "Sr Number",
+          "type": "string"
+        },
+        "follow_up_note": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "minLength": 1,
+              "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Follow Up Note"
+        },
+        "system": {
+          "const": "MAXIMO",
+          "default": "MAXIMO",
+          "title": "System",
+          "type": "string"
+        },
+        "verification": {
+          "const": "REPORTED_UNVERIFIED",
+          "default": "REPORTED_UNVERIFIED",
+          "title": "Verification",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sr_number"
+      ],
+      "title": "ReportedSrReference",
+      "type": "object"
     }
   },
   "additionalProperties": false,
@@ -666,7 +819,9 @@
       "enum": [
         "1.0",
         "1.1",
-        "1.2"
+        "1.2",
+        "1.3",
+        "1.4"
       ],
       "title": "Contract Version",
       "type": "string"
@@ -884,6 +1039,41 @@
       ],
       "default": null
     },
+    "work_origin": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/DepartmentWorkOrigin"
+        },
+        {
+          "$ref": "#/$defs/Pm52WorkOrigin"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Work Origin"
+    },
+    "engineering_analysis": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/EngineeringAnalysis"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "sr_references": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ReportedSrReference"
+      },
+      "maxItems": 10,
+      "title": "Sr References",
+      "type": "array"
+    },
     "review_started_by": {
       "anyOf": [
         {
@@ -942,6 +1132,6 @@
   "title": "ManualInspection",
   "type": "object",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://nadi.example/schema/manual-inspection/v1.2",
-  "description": "Human-entered inspection envelope; native1.0/1.1 retained, optional1.2 provisional source input is not Case evidence. Record review does not assert equipment health."
+  "$id": "https://nadi.example/schema/manual-inspection/v1.4",
+  "description": "Human-entered inspection: optional1.4 manual engineering analysis and reported-unverified SR references, native or provisional input. Legacy1.0\u20131.3 exact serialization retained; no automatic diagnosis, technical approval, SR verification or source writes."
 }

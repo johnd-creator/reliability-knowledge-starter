@@ -938,3 +938,13 @@ User authorized local fixes/regressions and independent review after the Enginee
 - Verified all seven Library workbooks by exact SHA256 and independently parsed 200 sheets; added 226 provisional input profiles / 3,624 selected source descriptors without importing real readings.
 - Added typed inspection capture 1.2, precision-aware source clocks, explicit unknown units/labels, revision readback and guarded draft/receipt recovery; native 1.0/1.1 evidence digests remain compatible and provisional capture cannot become Case evidence.
 - See `reliability-cockpit/docs/nadi-pdm-input-first-implementation-01.md` and `nadi-pdm-input-first-contract-01.md`. Existing Engineering patch remains uncommitted and preserved; no main preview/controller/collector, operational data, grants, commit/push/PR/merge/deploy change.
+
+
+### 21 October 2026 — NADI-PDM-MANUAL-FOLLOW-UP-01 package candidate
+
+- FR-03/04,UI-04,NFR-01/04/05 on verifiedmain44bc/PR108; prior local origin candidate copied exactly into a separate worktree and preserved.
+- PO requested items2–3 then reviewed branch/draftPR publication ifGO. Added manual engineer notes/follow-up and exact reported SR references, always unverified; no automatic diagnosis, SR/WO creation, source writes, operator requirement, F03 inclusion or realDB migration.
+- Contract1.4 reuses existing inspection JSON store/session/asset/CAS/receipt/review/audit; legacy1.0–1.3 serialization unchanged. New contexts appear in detail and immutable revisions; unknown history is not inferred.
+- Independent review reproduced optional-field clearing retention on update. Owning service now explicitly overwrites None/empty contexts; regressions cover individual/combined clears and legacy downgrade. Actual reopened textarea controls now have stable accessible names.
+- Scoped backend/contracts, frontend lint/types/build,13session-draft and4UI/API/PG scenarios plus existing browser regressions qualify the candidate; remote exact-headCI remains a separate publication gate recorded at handoff. See [contract and evidence scope](reliability-cockpit/docs/nadi-pdm-manual-follow-up-01.md).
+- No merge/deploy/preview/controller/security/realDB/source change authorized. Chrome certificate/login handoff and engineer/UAT acceptance remain pending.

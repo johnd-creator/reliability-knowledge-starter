@@ -380,3 +380,17 @@ contract groups and12 pending PO/security/operator decisions are recorded in the
 organizational mappings remain PROPOSED. No Administration UI/API, account/grant/
 recovery operation, global authentication, source privilege or deployment is
 implemented or activated by this task; ADMIN cannot override independent review.
+
+
+## FR-03/04 — manual PdM package1–3 candidate — 21 October 2026
+
+PO authorized origin of work, manual engineer analysis/follow-up text and reported
+SR references on main44bc (PR108), followed by review, branch push and draft PR
+when GO. [NADI-PDM-MANUAL-FOLLOW-UP-01](reliability-cockpit/docs/nadi-pdm-manual-follow-up-01.md)
+extends FR-03/04 and NFR-01/04/05. Work origin can be department request or own PM52
+finding, without mandatory operator approval. Analysis is human narrative; actual
+measurements/observations/hypotheses stay separate. SR is reported-unverified,
+distinct from WO, with no lookup/create/write to Maximo. Existing roles/session,
+asset identity, audit/CAS/review and application JSON store are reused. Legacy
+absence is not backfilled. Publication/CI, merge, visibility and operational/UAT
+acceptance remain distinct; merge/activation/security changes are not authorized.
