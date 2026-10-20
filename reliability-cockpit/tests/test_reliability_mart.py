@@ -273,6 +273,14 @@ class ReliabilityMartApiTest(unittest.TestCase):
         self.assertEqual(response.summary.assets_active_7d.value, 2)
         parameter = self.app.openapi()["paths"]["/v1/reliability/decision-overview"]["get"]["parameters"][0]
         self.assertEqual(parameter["schema"]["enum"], [7, 30, 90])
+        for invalid in (0, 14, 180, 365):
+            with self.assertRaises(HTTPException) as error:
+                reliability_api.decision_overview(window_days=invalid, service=self.service)
+            self.assertEqual(error.exception.status_code, 422)
+        parameters = self.app.openapi()["paths"]["/v1/reliability/maintenance-investigation"]["get"]["parameters"]
+        for name, expected in (("window_days", [30, 90, 180]), ("min_events", [2, 3, 5])):
+            self.assertEqual(next(p for p in parameters if p["name"] == name)["schema"]["enum"], expected)
+
 
     def test_decision_overview_returns_503_when_mart_is_unavailable(self):
         with patch("src.api.reliability.get_mart_database", side_effect=reliability_api.MartDatabaseConfigError("offline")):

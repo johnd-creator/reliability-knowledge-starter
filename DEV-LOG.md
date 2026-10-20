@@ -948,3 +948,16 @@ User authorized local fixes/regressions and independent review after the Enginee
 - Independent review reproduced optional-field clearing retention on update. Owning service now explicitly overwrites None/empty contexts; regressions cover individual/combined clears and legacy downgrade. Actual reopened textarea controls now have stable accessible names.
 - Scoped backend/contracts, frontend lint/types/build,13session-draft and4UI/API/PG scenarios plus existing browser regressions qualify the candidate; remote exact-headCI remains a separate publication gate recorded at handoff. See [contract and evidence scope](reliability-cockpit/docs/nadi-pdm-manual-follow-up-01.md).
 - No merge/deploy/preview/controller/security/realDB/source change authorized. Chrome certificate/login handoff and engineer/UAT acceptance remain pending.
+
+
+### NADI-PDM-MANUAL-FOLLOW-UP-01 — exact-head CI compatibility follow-up
+
+Initial draftPR109/headb4fb258 CI resolved FastAPI0.156.3/Pydantic2.14.1, newer than
+local FastAPI0.141.1/Pydantic2.13.4. Existing Query(enum=...) and Query(help=...)
+metadata prevented Cockpit import and Maximo read-view construction. Replace three
+enum extras with documented json_schema_extra and two help extras with description;
+retain all query values/limits, explicit422 guards, GET-only/source/auth boundaries
+and every CI gate. Regression assertions cover identical OpenAPI enums, invalid
+window422, changed-date descriptions and equipment GET-only methods. This is a
+bounded CI compatibility repair, not F03/PR107 or source acquisition work. Final
+review/tested head and terminal CI are recorded separately in task handoff.

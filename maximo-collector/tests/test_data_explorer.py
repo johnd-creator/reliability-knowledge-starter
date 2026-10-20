@@ -118,6 +118,13 @@ class DataExplorerTest(unittest.TestCase):
         params = paths["/data-explorer/resources/{resource}/records"]["get"]["parameters"]
         limit = next(item for item in params if item["name"] == "limit")
         self.assertEqual(limit["schema"]["maximum"], 200)
+        equipment = paths["/equipment"]["get"]["parameters"]
+        for name, description in (("changed_since", "ISO-8601; only rows changed after this"),
+                                  ("changed_until", "ISO-8601; only rows changed up to this")):
+            parameter = next(item for item in equipment if item["name"] == name)
+            self.assertEqual(parameter["description"], description)
+        self.assertEqual(set(paths["/equipment"]), {"get"})
+
 
     def test_unknown_record_and_entity_are_rejected(self):
         with self.assertRaises(KeyError):

@@ -946,7 +946,7 @@ def registry(service: ReliabilityQueryService = Depends(_service)) -> RegistryVi
 
 @router.get("/decision-overview", response_model=DecisionOverviewView, summary="Bounded factual Reliability decision overview")
 def decision_overview(
-    window_days: int = Query(30, enum=[7, 30, 90]),
+    window_days: int = Query(30, json_schema_extra={"enum": [7, 30, 90]}),
     service: ReliabilityQueryService = Depends(_service),
 ) -> DecisionOverviewView:
     if window_days not in {7, 30, 90}:
@@ -971,8 +971,8 @@ def rcfa_overview(service: ReliabilityQueryService = Depends(_service)) -> RcfaO
 
 @router.get("/maintenance-investigation", response_model=MaintenanceInvestigationView, summary="Bounded repeat maintenance activity investigation")
 def maintenance_investigation(
-    window_days: int = Query(90, enum=[30, 90, 180]),
-    min_events: int = Query(2, enum=[2, 3, 5]),
+    window_days: int = Query(90, json_schema_extra={"enum": [30, 90, 180]}),
+    min_events: int = Query(2, json_schema_extra={"enum": [2, 3, 5]}),
     offset: int = Query(0, ge=0),
     limit: int = Query(25, ge=1, le=100),
     sort: Literal["event_count_desc", "latest_activity_desc", "latest_gap_asc"] = "event_count_desc",
