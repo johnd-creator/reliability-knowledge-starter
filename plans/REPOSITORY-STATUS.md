@@ -1055,3 +1055,15 @@ legacy contracts, explicit clear semantics and regression gates.
 PO permits push/draft PR after GO and terminal exact-head CI, not merge/activation.
 No F03/PR107 patch or runtime/security/realDB migration included. Publication SHA,
 URL/terminalCI and preservation evidence are separately recorded at handoff.
+
+
+## 21 October 2026 — local factual-error and staged-history candidate
+
+NADI-PDM-HISTORY-STAGING-01 is implemented locally on PR109/main891dfee8.
+Executive Overview distinguishes403 capability/scope,401 session and actual
+upstream/network unavailability without changing access policy. Offline XLS/XLSX
+staging preserves source cells/dates/units/formula cache and identifies existing
+partial events; a maximum25-record pilot is restricted to disposable application
+copies and the existing validated CREATE/audit/receipt path. No guard increase,
+canonical mapping, active-demo mutation, publication or deployment is implied.
+[Scope, gates, qualification and next activation](../reliability-cockpit/docs/nadi-pdm-history-staging-01.md).

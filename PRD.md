@@ -394,3 +394,15 @@ distinct from WO, with no lookup/create/write to Maximo. Existing roles/session,
 asset identity, audit/CAS/review and application JSON store are reused. Legacy
 absence is not backfilled. Publication/CI, merge, visibility and operational/UAT
 acceptance remain distinct; merge/activation/security changes are not authorized.
+
+
+## 21 October 2026 — local factual-error and staged-history candidate
+
+NADI-PDM-HISTORY-STAGING-01 is implemented locally on PR109/main891dfee8.
+Executive Overview distinguishes403 capability/scope,401 session and actual
+upstream/network unavailability without changing access policy. Offline XLS/XLSX
+staging preserves source cells/dates/units/formula cache and identifies existing
+partial events; a maximum25-record pilot is restricted to disposable application
+copies and the existing validated CREATE/audit/receipt path. No guard increase,
+canonical mapping, active-demo mutation, publication or deployment is implied.
+[Scope, gates, qualification and next activation](reliability-cockpit/docs/nadi-pdm-history-staging-01.md).
