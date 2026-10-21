@@ -447,6 +447,9 @@
   font-size: 12px;
   gap: 6px;
 }
+.nadi-shell .experience-editor .pdm-measurement-row .pdm-date-preview {
+  grid-column: 1 / -1;
+}
 .nadi-shell .experience-editor .pdm-measurement-row input {
   font-variant-numeric: tabular-nums;
 }

@@ -979,3 +979,26 @@ local candidate. A separate v2 preserves the original patch and corrects them wi
 focused regressions, disposable-target validation before fixture setup, and explicit
 PostgreSQL pilot CI coverage. See the scoped staging document; no live write or
 publication/activation is implied.
+
+## 21 October 2026 — NADI-PDM-DATE-UI-01 local candidate
+
+- User-authorized scope: understandable Indonesian dates/times in Pusat PdM.
+- Implementation: source-precision-aware date presentation; known instants in
+  fixed UTC+07:00/WIB; list/detail/measurement/revision/audit/form consistency;
+  original ISO/raw/conflicting claims retained. No storage/API/domain changes.
+- Evidence: [scoped report](reliability-cockpit/docs/nadi-pdm-date-ui-01.md),
+  synthetic date/locale/timezone component checks and existing PdM regressions.
+- Tests: focused date9 groups + date browser40 + existing PdM browser575 PASS;
+  input21/workbook48/capture11/follow-up9/product8/Phase2UI8/localization10 PASS;
+  TypeScript/full lint/production build/diff whitespace PASS (existing warnings).
+- Status: local candidate, independent review/exact-head CI/publication pending;
+  no commit/push/runtime/data/source/authentication change or engineer acceptance.
+
+### NADI-PDM-DATE-UI-01 independent review correction
+
+- V2: application WIB is fixed UTC+07:00 for historical dates; source-reported
+  date/offset semantics remain intact. New 1900/1948/1960 and midnight positive/
+  negative controls reproduced the prior issue and pass after the correction.
+- V2 qualification: date9 groups, component browser40, TypeScript, focused lint
+  and diff whitespace PASS. Prior broader browser575/build evidence remains V1;
+  form/CSS/focus geometry bytes unchanged. Review and exact-head CI remain gated.
