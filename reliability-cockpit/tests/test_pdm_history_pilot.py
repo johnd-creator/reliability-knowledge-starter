@@ -54,6 +54,14 @@ class HistoryPilotTest(unittest.TestCase):
  def test_no_live_database_adapter(self):
   for name in ['nadi_local_dev_01_test','nadi_live_dev_test','maximo_collector','pdm_history_pilot_fake']:
    with self.assertRaisesRegex(ValueError,'DISPOSABLE_HISTORY_COPY_ONLY'):HistoryPilot(self.service,self.provider,database=name)
+ def test_query_target_overrides_rejected_before_any_connection(self):
+  from unittest.mock import patch
+  for query in ['host=192.0.2.1','port=15444','dbname=unexpected','service=unexpected','sslmode=require']:
+   engine=create_engine('postgresql+psycopg://synthetic@127.0.0.1:15954/pdm_history_pilot_query_test?'+query)
+   try:
+    with patch.object(engine,'connect',side_effect=AssertionError('must not connect')):
+     with self.assertRaisesRegex(ValueError,'DISPOSABLE_LOOPBACK_PORT_REQUIRED'):validate_disposable_target(engine,'pdm_history_pilot_query_test')
+   finally:engine.dispose()
  def test_existing_partial_preserved_without_overwrite_even_missing_index(self):
   d,rows=self.plan(1);draft=dict(rows[0]['draft'],inspector_ref=AUTHOR);draft['input_capture']=dict(draft['input_capture'],rows=draft['input_capture']['rows'][:1]);actor=self.provider.current_grant(AUTHOR).principal;old=self.service.command(actor,'CREATE',draft,'partial-'+uuid.uuid4().hex);before=self.stats()
   with self.assertRaisesRegex(Exception,'EXISTING_SOURCE_EVENT_PRESERVED'):self.pilot.run(d,AUTHOR,self.root/'journal.json')

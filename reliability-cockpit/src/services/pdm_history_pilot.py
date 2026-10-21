@@ -33,7 +33,7 @@ def validate_disposable_target(engine,database):
     # Shared by qualification setup before any migrations/test account writes.
     if engine.dialect.name!='postgresql' or not database.startswith('pdm_history_pilot_') or not database.endswith('_test'):
         raise ValueError('DISPOSABLE_HISTORY_COPY_ONLY')
-    if engine.url.host!='127.0.0.1' or engine.url.port in {None,5432,15443}:raise ValueError('DISPOSABLE_LOOPBACK_PORT_REQUIRED')
+    if engine.url.host!='127.0.0.1' or engine.url.port in {None,5432,15443} or engine.url.query:raise ValueError('DISPOSABLE_LOOPBACK_PORT_REQUIRED')
     with engine.connect() as c:
         if c.scalar(text('SELECT current_database()'))!=database:raise ValueError('DISPOSABLE_DATABASE_IDENTITY_MISMATCH')
 

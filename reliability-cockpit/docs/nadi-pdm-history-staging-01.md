@@ -235,3 +235,9 @@ demo-target adapter is being prepared and reviewed locally; it is not part of th
 candidate. Merge, activation, grants/security changes and additional demo imports
 remain unauthorized. Snapshot/cloud portability is feasibility-only and deferred
 until the Excel target is complete; no data export or upload is authorized here.
+
+A publication follow-up rejects all connection URL query parameters before opening
+a disposable-pilot connection. Driver-level host/port/dbname/service overrides must
+not bypass the loopback target guard. Supplied owning engines remain trusted
+application wiring; this does not claim to validate arbitrary Python engine
+creators/connect_args/events. Tests reject query overrides without network access.
