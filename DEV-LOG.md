@@ -961,3 +961,21 @@ and every CI gate. Regression assertions cover identical OpenAPI enums, invalid
 window422, changed-date descriptions and equipment GET-only methods. This is a
 bounded CI compatibility repair, not F03/PR107 or source acquisition work. Final
 review/tested head and terminal CI are recorded separately in task handoff.
+
+
+## 21 October 2026 — local factual-error and staged-history candidate
+
+NADI-PDM-HISTORY-STAGING-01 is implemented locally on PR109/main891dfee8.
+Executive Overview distinguishes403 capability/scope,401 session and actual
+upstream/network unavailability without changing access policy. Offline XLS/XLSX
+staging preserves source cells/dates/units/formula cache and identifies existing
+partial events; a maximum25-record pilot is restricted to disposable application
+copies and the existing validated CREATE/audit/receipt path. No guard increase,
+canonical mapping, active-demo mutation, publication or deployment is implied.
+[Scope, gates, qualification and next activation](reliability-cockpit/docs/nadi-pdm-history-staging-01.md).
+
+Independent review found four P2 planner/replay/history-dedup defects in the first
+local candidate. A separate v2 preserves the original patch and corrects them with
+focused regressions, disposable-target validation before fixture setup, and explicit
+PostgreSQL pilot CI coverage. See the scoped staging document; no live write or
+publication/activation is implied.

@@ -4,6 +4,7 @@ import { idText, statusLabel } from "../lib/id-copy";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { reliabilityApi, type DecisionOverviewView } from "../lib/api";
+import { factualErrorMessage } from "../lib/factual-error";
 import { formatNumber } from "../lib/format";
 import { attentionItems, factualMetric as metric, overviewDate } from "../lib/overview";
 import { Breadcrumbs, Button, DataMaturity, EmptyState, ErrorState, HelpDetails, LoadingState, PageHeader, SectionCard, StatCard, TableFrame } from "./ui";
@@ -40,8 +41,8 @@ export default function ExecutiveOverview() {
     setError(null);
     reliabilityApi.decisionOverview(windowDays).then(next => {
       if (!cancelled) { setData(next); setError(null); }
-    }).catch(() => {
-      if (!cancelled) { setData(null); setError(idText("Reliability Mart unavailable")); }
+    }).catch((reason: unknown) => {
+      if (!cancelled) { setData(null); setError(factualErrorMessage(reason)); }
     }).finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
   }, [windowDays, retry]);

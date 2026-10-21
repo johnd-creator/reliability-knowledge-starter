@@ -568,3 +568,15 @@ is never inferred from inspection APPROVED. Existing draft recovery, session/sco
 clearing, keyboard/responsive primitives and asset identity stay authoritative.
 Candidate implementation/testing is distinct from main-preview visibility and
 real PO/engineer acceptance; no new design or technical-threshold approval inferred.
+
+
+## 21 October 2026 — local factual-error and staged-history candidate
+
+NADI-PDM-HISTORY-STAGING-01 is implemented locally on PR109/main891dfee8.
+Executive Overview distinguishes403 capability/scope,401 session and actual
+upstream/network unavailability without changing access policy. Offline XLS/XLSX
+staging preserves source cells/dates/units/formula cache and identifies existing
+partial events; a maximum25-record pilot is restricted to disposable application
+copies and the existing validated CREATE/audit/receipt path. No guard increase,
+canonical mapping, active-demo mutation, publication or deployment is implied.
+[Scope, gates, qualification and next activation](../../reliability-cockpit/docs/nadi-pdm-history-staging-01.md).

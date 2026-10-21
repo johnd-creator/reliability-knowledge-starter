@@ -1073,3 +1073,15 @@ references using existing application workflows. Scoped tests/independent review
 qualify a branch/draft PR only; exact publication SHA and CI are recorded in handoff.
 No merge, active visibility, operational engineering acceptance, Maximo writes or
 F03/PR107 integration is implied. Source/runtime/checkpoints above remain historical.
+
+
+## 21 October 2026 — local factual-error and staged-history candidate
+
+NADI-PDM-HISTORY-STAGING-01 is implemented locally on PR109/main891dfee8.
+Executive Overview distinguishes403 capability/scope,401 session and actual
+upstream/network unavailability without changing access policy. Offline XLS/XLSX
+staging preserves source cells/dates/units/formula cache and identifies existing
+partial events; a maximum25-record pilot is restricted to disposable application
+copies and the existing validated CREATE/audit/receipt path. No guard increase,
+canonical mapping, active-demo mutation, publication or deployment is implied.
+[Scope, gates, qualification and next activation](../reliability-cockpit/docs/nadi-pdm-history-staging-01.md).
