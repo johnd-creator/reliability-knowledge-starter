@@ -16,8 +16,8 @@ class ApplicationMigrationTest(unittest.TestCase):
   self.runner=ApplicationMigrator(self.engine,expected_database=url.database,isolated=True)
  def tearDown(self):self.engine.dispose()
  def test_order_idempotency_preservation_and_grants(self):
-  self.assertEqual([s['status'] for s in self.runner.status()],['PENDING']*5)
-  self.assertEqual([s['status'] for s in self.runner.apply()],['APPLIED']*5)
+  self.assertEqual([s['status'] for s in self.runner.status()],['PENDING']*6)
+  self.assertEqual([s['status'] for s in self.runner.apply()],['APPLIED']*6)
   self.assertEqual(self.runner.apply(),self.runner.status())
   with self.engine.begin() as c:
    self.assertEqual(c.scalar(text('SELECT count(*) FROM legacy_fixture')),1)
@@ -27,6 +27,11 @@ class ApplicationMigrationTest(unittest.TestCase):
    for right in ['UPDATE','DELETE','TRUNCATE','REFERENCES','TRIGGER']:
     self.assertFalse(c.scalar(text("SELECT has_table_privilege('nadi_d_writer_test','engineering_case_event',:right)"),{'right':right}))
    self.assertTrue(c.scalar(text("SELECT has_table_privilege('nadi_d_writer_test','engineering_case','UPDATE')")))
+   for relation in ['nadi_history_source','nadi_history_profile','nadi_history_cell','nadi_history_event','nadi_history_alias','nadi_history_receipt']:
+    for right in ['UPDATE','DELETE','TRUNCATE','REFERENCES','TRIGGER']:
+     self.assertFalse(c.scalar(text("SELECT has_table_privilege('nadi_d_writer_test',:relation,:right)"),{'relation':relation,'right':right}))
+    self.assertTrue(c.scalar(text("SELECT has_table_privilege('nadi_d_writer_test',:relation,'INSERT')"),{'relation':relation}))
+   self.assertTrue(c.scalar(text("SELECT has_table_privilege('nadi_d_writer_test','nadi_history_batch','UPDATE')")))
  def test_untracked_and_checksum_drift_fail_closed(self):
   self.runner.apply()
   with self.engine.begin() as c:c.exec_driver_sql("UPDATE nadi_application_migration SET checksum='invalid'")

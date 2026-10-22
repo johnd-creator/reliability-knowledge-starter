@@ -1002,3 +1002,33 @@ publication/activation is implied.
 - V2 qualification: date9 groups, component browser40, TypeScript, focused lint
   and diff whitespace PASS. Prior broader browser575/build evidence remains V1;
   form/CSS/focus geometry bytes unchanged. Review and exact-head CI remain gated.
+
+## 21 October 2026 — NADI-PDM-HISTORY-COMPLETE-01 isolated implementation
+
+- Added missing source profile, compact7-table owning-store history, pinned-plan
+  bounded importer, receipt/cursor replay, 13-table recovery preimage and GET-only
+  authorized source browsing within Riwayat & Tren. No new chart subsystem.
+- Reconciled7 workbooks/200 sheets/173,147 physical cells, 25,278 groups; all cells
+  navigable, 20 SOURCE_READY/25,258 RAW. Unknown metadata/formula claims preserved.
+- Full isolated import/readback/replay/recovery passed; old35/46/46/4 business
+  baseline unchanged; 32 sample aliases7 partial/25 complete. Native test clusters
+  stopped. Synthetic component checks include desktop/mobile and access errors.
+- Independent initial findings corrected locally; final frozen review recorded
+  at delivery. [Detailed evidence and next gates](reliability-cockpit/docs/nadi-pdm-complete-history-01.md).
+- Not committed, published, merged, activated, live-imported or engineer accepted.
+  No source collector, credential/grant, live data, cloud export or deployment change.
+
+## 22 October 2026 — complete-history receipt/alias correction
+
+The user explicitly authorized the previously blocked local correction and
+isolated revalidation. Receipt V2 now fingerprints the exact bounded alias proofs;
+replay verifies existing immutable aliases rather than rebuilding from later
+human revisions. Missing/changed aliases and malformed/legacy evidence fail closed.
+Focused30/30, related Python131 (19 prior-fixture skips), native importer/migration/
+auth23/23 passed. Full seven-source import/readback/replay and13-table recovery
+passed again, including missing/changed-alias faults on the recovered disposable
+copy without repair. Legitimate later human revision2 retains source alias rev1.
+Independent delta review GO with12 offline controls; frozen final binding is
+recorded with delivery evidence. All live35/46/46/4 business counts and35 container
+identities preserved; no publication, migration, activation, import or cloud transfer.
+[Updated scope and evidence](reliability-cockpit/docs/nadi-pdm-complete-history-01.md).

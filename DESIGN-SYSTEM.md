@@ -217,3 +217,12 @@ condition inference were added.
 Implementation and automated regression complete in the isolated V2 candidate;
 PO acceptance and live integration remain pending. See the
 [V2 report and matched screenshots](reliability-cockpit/docs/NADI-UX-V2-OVERHAUL-01.md).
+
+## PdM source-history candidate — 21 October 2026
+
+Reuse existing section, feedback, button and scrollable-table primitives for
+provisional source history. Show workbook/sheet/date/status before hashes; retain
+raw proofs in explicit details. Unknown unit/date/mapping remains visible; empty
+values differ from zero. Byte-bounded field paging and mobile wrapping preserve
+access to long proofs. No new global tokens or chart semantics are approved.
+[Candidate UI/evidence](reliability-cockpit/docs/nadi-pdm-complete-history-01.md).

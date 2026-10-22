@@ -25,6 +25,7 @@ await ctx.route('**/*',async route=>{
  if(resource==='session'){if(denied)return fail(denied,'AUTHENTICATION_REQUIRED');return route.fulfill({json:{subject,roles:[role],asset_ids:[asset],csrf_token:'SYNTHETIC_NON_SESSION'}});}
  if(denied)return fail(denied,'FORBIDDEN');
  if(resource==='asset-context')return route.fulfill({json:{canonical_asset_id:asset,identity_availability:'AVAILABLE',identity:{description:'DEMO — equipment sintetis',location_ref:'SYNTHETIC AREA'}}});
+ if(resource==='source-history'&&method==='GET')return route.fulfill({json:{scope:'AUTHORIZED_PROVISIONAL_SOURCE',items:[],total:0,has_more:false,next_after:null}});
  if(resource==='inspections'&&id==='measurement-history'){
   let events=inspections.flatMap(row=>row.measurements.map((measurement,measurement_index)=>({...row,measurement,measurement_index})));
   for(const [param,key] of [['point','point_ref'],['quantity','quantity']])if(u.searchParams.get(param))events=events.filter(e=>e.measurement[key]===u.searchParams.get(param));

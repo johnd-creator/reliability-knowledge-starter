@@ -1067,3 +1067,24 @@ partial events; a maximum25-record pilot is restricted to disposable application
 copies and the existing validated CREATE/audit/receipt path. No guard increase,
 canonical mapping, active-demo mutation, publication or deployment is implied.
 [Scope, gates, qualification and next activation](../reliability-cockpit/docs/nadi-pdm-history-staging-01.md).
+
+## 21 October 2026 — PdM complete-history local implementation
+
+Base e84eaec0 (PR110), isolated branch codex/pdm-complete-history-local-01.
+Compact source storage/import and navigable GET-only history implemented; full
+7 source qualification and13-table empty-copy recovery passed. Three initial
+independent P2 findings (stream race, response size, Boolean/numeric alias) and
+related detail byte-paging were corrected with focused tests. Final immutable
+review tracked at delivery. No commit/push/PR/merge/live migration/activation/import
+or collector/access change. [Scope, counts and gates](../reliability-cockpit/docs/nadi-pdm-complete-history-01.md).
+
+### 22 October 2026 — authorized receipt/alias correction
+
+The complete-history candidate's later P2 (successful replay despite a missing
+committed alias after incomplete recovery) is corrected locally. Fingerprint-bound
+receipt proofs and require-existing checks reject missing/changed aliases without
+repair or user-revision overwrite. Independent delta review GO; final immutable
+binding is in delivery evidence. Revalidated full seven-source import/readback/
+recovery plus131 Python tests (19 prerequisite skips) and23 native importer/
+migration/auth tests. No publication or live activation/import.
+[Scope and next gates](../reliability-cockpit/docs/nadi-pdm-complete-history-01.md).

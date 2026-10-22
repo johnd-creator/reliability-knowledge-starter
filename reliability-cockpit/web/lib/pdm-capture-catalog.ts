@@ -62693,4 +62693,100 @@ export const captureProfiles:readonly CaptureProfile[]=[
     ],
     "approval": "PENDING_ENGINEER_VALIDATION"
   }
+,
+{
+  "id": "wb-vib-boiler-s016-b01",
+  "version": "NADI-PDM-COMPLETE-HISTORY-01",
+  "source_ref": "WB-VIB-BOILER",
+  "sheet_index": 15,
+  "method": "VIBRATION",
+  "label": "Sheet 16 — source axes, unit unresolved",
+  "fields": [
+    {
+      "id": "field-b2",
+      "source_label": "1V",
+      "unit": null,
+      "source_axis": "1V",
+      "header_cells": [
+        "B2"
+      ],
+      "unit_cells": [],
+      "value_region": "B3:B56",
+      "value_origin": "UNKNOWN",
+      "row_role": "INPUT",
+      "role": "SOURCE_AXIS_VALUE"
+    },
+    {
+      "id": "field-c2",
+      "source_label": "1H",
+      "unit": null,
+      "source_axis": "1H",
+      "header_cells": [
+        "C2"
+      ],
+      "unit_cells": [],
+      "value_region": "C3:C56",
+      "value_origin": "UNKNOWN",
+      "row_role": "INPUT",
+      "role": "SOURCE_AXIS_VALUE"
+    },
+    {
+      "id": "field-d2",
+      "source_label": "2V",
+      "unit": null,
+      "source_axis": "2V",
+      "header_cells": [
+        "D2"
+      ],
+      "unit_cells": [],
+      "value_region": "D3:D56",
+      "value_origin": "UNKNOWN",
+      "row_role": "INPUT",
+      "role": "SOURCE_AXIS_VALUE"
+    },
+    {
+      "id": "field-e2",
+      "source_label": "2H",
+      "unit": null,
+      "source_axis": "2H",
+      "header_cells": [
+        "E2"
+      ],
+      "unit_cells": [],
+      "value_region": "E3:E56",
+      "value_origin": "UNKNOWN",
+      "row_role": "INPUT",
+      "role": "SOURCE_AXIS_VALUE"
+    },
+    {
+      "id": "field-f2",
+      "source_label": "2A",
+      "unit": null,
+      "source_axis": "2A",
+      "header_cells": [
+        "F2"
+      ],
+      "unit_cells": [],
+      "value_region": "F3:F56",
+      "value_origin": "UNKNOWN",
+      "row_role": "INPUT",
+      "role": "SOURCE_AXIS_VALUE"
+    }
+  ],
+  "clocks": [
+    {
+      "role": "DATE",
+      "source_label": "TANGGAL YYYYMMDD",
+      "header_cells": [
+        "A1"
+      ]
+    }
+  ],
+  "approval": "PENDING_ENGINEER_VALIDATION",
+  "warnings": [
+    "UNIT_UNKNOWN",
+    "SOURCE_ASSET_UNVERIFIED",
+    "DATE_ENCODING_REQUIRES_HASH_BOUND_REVIEW"
+  ]
+}
 ];

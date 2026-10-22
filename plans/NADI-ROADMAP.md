@@ -1085,3 +1085,15 @@ partial events; a maximum25-record pilot is restricted to disposable application
 copies and the existing validated CREATE/audit/receipt path. No guard increase,
 canonical mapping, active-demo mutation, publication or deployment is implied.
 [Scope, gates, qualification and next activation](../reliability-cockpit/docs/nadi-pdm-history-staging-01.md).
+
+## 21 October 2026 — complete PdM source history, isolated candidate
+
+NADI-PDM-HISTORY-COMPLETE-01: IMPLEMENTED locally and TESTED on disposable copies;
+7 workbooks/200 sheets/173,147 physical cells preserved as25,278 navigable provisional
+source groups. Existing32 sample records linked, not duplicated; old35 inspections/
+46 revisions/4 Cases preserved in qualification. Compact owning-store migration 007
+and13-table recovery roundtrip tested. Not published/merged/active/UAT accepted.
+Next: independent final review and authorized publication/CI, then separately
+approved migration/controller activation and full-history demo adapter/import.
+Canonical mapping, historical chart, engineering qualification and cloud transfer
+remain distinct future acceptance. [Evidence](../reliability-cockpit/docs/nadi-pdm-complete-history-01.md).

@@ -11,8 +11,9 @@ MIGRATIONS={
  '004_human_records.sql':{'nadi_human_record','nadi_human_record_revision','nadi_human_record_receipt'},
  '005_private_attachments.sql':{'nadi_attachment','nadi_attachment_event'},
  '006_local_authentication.sql':{'nadi_local_account','nadi_local_login_budget','nadi_local_security_event'},
+ '007_pdm_source_history.sql':{'nadi_history_source','nadi_history_profile','nadi_history_cell','nadi_history_event','nadi_history_alias','nadi_history_batch','nadi_history_receipt'},
 }
-CURRENT={'engineering_case','nadi_application_session','nadi_human_record','nadi_local_account','nadi_local_login_budget'}
+CURRENT={'engineering_case','nadi_application_session','nadi_human_record','nadi_local_account','nadi_local_login_budget','nadi_history_batch'}
 LEDGER='nadi_application_migration'
 class ApplicationMigrator:
     def __init__(self,engine,*,expected_database,isolated=False,dedicated=False):

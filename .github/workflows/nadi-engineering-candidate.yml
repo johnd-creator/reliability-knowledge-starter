@@ -26,6 +26,7 @@ jobs:
       COCKPIT_CONFIG_MODE: managed
       DATABASE_URL: 'sqlite://'
       NADI_APPLICATION_TEST_DSN: postgresql+psycopg://postgres:isolated-ci-only@127.0.0.1:5432/nadi_application_test
+      NADI_COMPLETE_HISTORY_TEST_DSN: postgresql+psycopg://postgres:isolated-ci-only@127.0.0.1:15953/pdm_history_complete_ci_test
       NADI_HISTORY_PILOT_TEST_DSN: postgresql+psycopg://postgres:isolated-ci-only@127.0.0.1:15953/pdm_history_pilot_ci_test
       NADI_MART_TEST_DSN: postgresql+psycopg://postgres:isolated-ci-only@127.0.0.1:5432/nadi_mart_test
       NADI_ENGINEERING_TEST_DSN: postgresql+psycopg://postgres:isolated-ci-only@127.0.0.1:5432/nadi_application_test
@@ -49,6 +50,7 @@ jobs:
           with engine.connect() as connection:
               connection.exec_driver_sql("CREATE DATABASE nadi_mart_test")
               connection.exec_driver_sql("CREATE DATABASE pdm_history_pilot_ci_test")
+              connection.exec_driver_sql("CREATE DATABASE pdm_history_complete_ci_test")
           engine.dispose()
           PYTHON
       - name: Select PostgreSQL 16 client tools for isolated restore qualification
@@ -60,7 +62,7 @@ jobs:
         working-directory: reliability-cockpit
         env:
           PYTHONPATH: '.:tests'
-        run: python -m unittest test_application_identity test_identity_adapter.AdapterTest test_application_migrations test_attachments test_session_cleanup test_bundle_d_http.RealHttpQaTest test_identity_configuration test_application_access test_attachment_readiness test_qa_limits test_qa_preflight test_qa_release test_bundle_e_rehearsal test_local_authentication test_local_login_http test_live_development test_frontend_preview test_local_development test_local_development_reusable test_source_preservation test_advisory.AdvisoryTest test_advisory_http.AdvisoryHttpTest test_advisory_http.AdvisorySchemaGateTest test_qa_advisory_schema test_integration_status test_phase1_read_integrity test_projection_acceptance.ProjectionPostgresAcceptanceTest test_integration_observations_client test_integration_ui_contract test_reports_ui_contract test_pdm_workbook_contract test_pdm_input.PdmInputTest test_pdm_input.PdmPostgresInputTest test_manual_inspection test_inspection_workflow test_auth03_self_identity test_auth03_readiness test_auth03_controller_update test_engineering test_engineering_qa test_recommendation_workflow test_engineering_integrity test_pdm_input_capture test_pdm_work_origin test_pdm_manual_follow_up test_pdm_history_staging test_pdm_workbook_reader test_pdm_history_pilot.HistoryPilotTest -v
+        run: python -m unittest test_application_identity test_identity_adapter.AdapterTest test_application_migrations test_attachments test_session_cleanup test_bundle_d_http.RealHttpQaTest test_identity_configuration test_application_access test_attachment_readiness test_qa_limits test_qa_preflight test_qa_release test_bundle_e_rehearsal test_local_authentication test_local_login_http test_live_development test_frontend_preview test_local_development test_local_development_reusable test_source_preservation test_advisory.AdvisoryTest test_advisory_http.AdvisoryHttpTest test_advisory_http.AdvisorySchemaGateTest test_qa_advisory_schema test_integration_status test_phase1_read_integrity test_projection_acceptance.ProjectionPostgresAcceptanceTest test_integration_observations_client test_integration_ui_contract test_reports_ui_contract test_pdm_workbook_contract test_pdm_input.PdmInputTest test_pdm_input.PdmPostgresInputTest test_manual_inspection test_inspection_workflow test_auth03_self_identity test_auth03_readiness test_auth03_controller_update test_engineering test_engineering_qa test_recommendation_workflow test_engineering_integrity test_pdm_input_capture test_pdm_work_origin test_pdm_manual_follow_up test_pdm_history_staging test_pdm_workbook_reader test_pdm_history_pilot.HistoryPilotTest test_pdm_complete_plan test_pdm_source_history test_pdm_complete_postgres.CompleteHistoryPostgresTest -v
       - name: Canonical contracts
         working-directory: reliability-data-contracts
         run: python -m unittest discover -s tests -v
@@ -114,6 +116,7 @@ jobs:
           NADI_AXE_MODULE="$RUNNER_TEMP/nadi-browser/node_modules/@axe-core/playwright/dist/index.mjs" NADI_PLAYWRIGHT_MODULE="$RUNNER_TEMP/nadi-browser/node_modules/playwright/index.mjs" node scripts/localization-browser.mjs
           NADI_PLAYWRIGHT_MODULE="$RUNNER_TEMP/nadi-browser/node_modules/playwright/index.mjs" node scripts/pdm-input-browser.mjs
           NADI_PLAYWRIGHT_MODULE="$RUNNER_TEMP/nadi-browser/node_modules/playwright/index.mjs" node scripts/pdm-date-browser.mjs
+          NADI_PLAYWRIGHT_MODULE="$RUNNER_TEMP/nadi-browser/node_modules/playwright/index.mjs" node scripts/pdm-source-history-browser.mjs
           NADI_AXE_MODULE="$RUNNER_TEMP/nadi-browser/node_modules/@axe-core/playwright/dist/index.mjs" NADI_PLAYWRIGHT_MODULE="$RUNNER_TEMP/nadi-browser/node_modules/playwright/index.mjs" node scripts/integration-browser.mjs
           NADI_AXE_MODULE="$RUNNER_TEMP/nadi-browser/node_modules/@axe-core/playwright/dist/index.mjs" NADI_PLAYWRIGHT_MODULE="$RUNNER_TEMP/nadi-browser/node_modules/playwright/index.mjs" node scripts/reports-browser.mjs
           NADI_PLAYWRIGHT_MODULE="$RUNNER_TEMP/nadi-browser/node_modules/playwright/index.mjs" node scripts/login-visual-browser.mjs

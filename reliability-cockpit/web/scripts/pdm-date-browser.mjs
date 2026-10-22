@@ -33,6 +33,9 @@ try {
    const row=sourceMode?{...native,inspected_at:null,measurements:[],input_capture:capture}:native;
    if(path==='/api/engineering-qa/asset-context/'+asset)return route.fulfill({json:{canonical_asset_id:asset,identity_availability:'AVAILABLE',identity:{description:'DEMO equipment',location_ref:'DEMO AREA'}}});
    if(path==='/api/engineering-qa/session')return route.fulfill({json:{subject:'synthetic-author',roles:['AUTHOR'],asset_ids:[asset],csrf_token:'SYNTHETIC_NON_SESSION'}});
+   // This date fixture has no imported full-source batch; keep the GET contract explicit.
+   if(path==='/api/engineering-qa/source-history/batches')return route.fulfill({json:{scope:'AUTHORIZED_PROVISIONAL_SOURCE',items:[],has_more:false,next_after:null}});
+   if(path==='/api/engineering-qa/source-history')return route.fulfill({json:{scope:'AUTHORIZED_PROVISIONAL_SOURCE',items:[],total:0,has_more:false,next_after:null}});
    if(path==='/api/engineering-qa/inspections/measurement-history')return route.fulfill({json:{items:native.measurements.map((m,i)=>({...native,measurement:m,measurement_index:i})),total:2,offset:0,limit:25,has_more:false,filter_scope:'AUTHORIZED_POPULATION',event_time_basis:'MEASURED_AT'}});
    if(path.endsWith('/history'))return route.fulfill({json:[{revision:1,action:'CREATE',actor:'synthetic-author',occurred_at:instant,reason:'DEMO audit reason',snapshot:row}]});
    if(path==='/api/engineering-qa/inspections/'+record)return route.fulfill({json:row});
