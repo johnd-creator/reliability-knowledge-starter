@@ -6,7 +6,7 @@ from src.api.human_records import build_inspection_router,build_recommendation_r
 from src.api.asset_context import build_asset_context_router
 from src.domain.engineering import EngineeringError
 
-def create_qa_app(*,authority,cases,inspections,recommendations,context,environment):
+def create_qa_app(*,authority,cases,inspections,recommendations,context,environment,source_history=None):
  if environment!='development':raise EngineeringError('QA_ONLY',503)
  url=authority.engine.url
  if url.get_backend_name()!='postgresql' or url.host not in {'127.0.0.1','localhost'} or not (url.database or '').endswith('_test'):
@@ -27,6 +27,11 @@ def create_qa_app(*,authority,cases,inspections,recommendations,context,environm
  if isinstance(authority.provider,LocalIdentityProvider):
   app.include_router(build_local_login_router(authority,enabled=True))
  dep=authority.dependency()
+ from src.services.pdm_source_history import SourceHistoryService
+ from src.api.pdm_source_history import build_source_history_router
+ source_history=source_history or SourceHistoryService(inspections,enabled=inspections.enabled)
+ if source_history.engine is not authority.engine:raise EngineeringError('QA_STORE_MISMATCH',503)
+ app.include_router(build_source_history_router(source_history,trusted_principal_dependency=dep))
  from src.services.advisory import AdvisoryService
  from src.api.advisory import build_advisory_router, build_inbox_router
  from src.repositories.qa_advisory_schema import qa_advisory_schema_ready

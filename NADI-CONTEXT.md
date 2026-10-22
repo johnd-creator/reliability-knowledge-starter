@@ -87,3 +87,11 @@ each material milestone. GitHub reviewed documents are the persistent knowledge
 source; chat decisions become durable only when their provenance is recorded.
 
 Bundle C login presentation and UX-09 preparation are recorded in the [readiness report](reliability-cockpit/docs/nadi-ux-bundle-c.md). Global enforcement and operational engineer acceptance remain separate.
+
+## 21 October 2026 — complete PdM source-history candidate
+
+NADI-PDM-HISTORY-COMPLETE-01 is implemented locally on PR110/main e84eaec0,
+with isolated full-source qualification: 7 workbooks/200 sheets/173,147 populated
+cells/25,278 navigable source groups. RAW/provisional content stays distinct from
+canonical trends and human inspections. Migration 007 and full-history demo-target
+activation/import are not applied. [Scope and evidence](reliability-cockpit/docs/nadi-pdm-complete-history-01.md).

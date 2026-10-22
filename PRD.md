@@ -406,3 +406,21 @@ partial events; a maximum25-record pilot is restricted to disposable application
 copies and the existing validated CREATE/audit/receipt path. No guard increase,
 canonical mapping, active-demo mutation, publication or deployment is implied.
 [Scope, gates, qualification and next activation](reliability-cockpit/docs/nadi-pdm-history-staging-01.md).
+
+## NADI-PDM-HISTORY-COMPLETE-01 — source-preserving historical coverage
+
+Authorized implementation/test scope: preserve all relevant supplied Excel content
+as navigable source history, including explicit unresolved dates/units/formulas,
+compact provenance, safe retries and recoverable import. Source occurrences are
+not new approved inspections, canonical asset mappings or diagnostic trends.
+Acceptance requires per-source/sheet/physical-cell reconciliation, bounded authorized
+reads, immutable links to prior samples, unchanged user revisions and isolated
+recovery proof. Local full-source tests pass; live migration/import, publication,
+engineer UAT and chart implementation remain separate.
+[Detailed contract and qualification](reliability-cockpit/docs/nadi-pdm-complete-history-01.md).
+
+Receipt integrity acceptance (22 October 2026): each committed source-to-existing-
+record alias must be preserved as immutable receipt evidence. Replay must reject
+missing/changed aliases after recovery, preserve legitimate later user revisions,
+and never silently reconstruct links. This correction is implemented/tested only
+in disposable copies; demo-target activation/import remains separately gated.

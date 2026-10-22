@@ -592,3 +592,13 @@ measurement/revision history and form previews use the same presentation rules.
 Stored DTOs, filters, input values and operational activation are unchanged.
 This is an isolated implementation/test candidate; independent review, exact-head
 CI, publication and live/PO acceptance remain separate.
+
+## PdM complete source history — local candidate
+
+Inside Riwayat & Tren, show Riwayat Sumber Excel with DEMO/HISTORIS and unmapped
+source context; workbook/sheet/status/kind filters, per-sheet reconciliation,
+source-group paging, paged value/header/unit/clock/formula evidence and immutable
+sample links. AUTHOR ownership/current asset authority governs RAW visibility.
+Date-only claims do not gain midnight or a timezone. Unknown claims remain RAW;
+list summaries hand off long raw claims to detail without fabricating substitutes.
+Canonical trend UI remains independent. [Qualification and limits](../../reliability-cockpit/docs/nadi-pdm-complete-history-01.md).

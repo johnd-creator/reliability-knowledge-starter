@@ -174,7 +174,7 @@ class LocalAuthTest(unittest.TestCase):
         from src.qa.users import secret
         with patch("sys.stdin.isatty",return_value=False):
             with self.assertRaises(EngineeringError):secret("test")
-        self.assertEqual([s["status"] for s in self.runner.apply()],["APPLIED"]*5)
+        self.assertEqual([s["status"] for s in self.runner.apply()],["APPLIED"]*6)
         with self.assertRaises(EngineeringError):ApplicationMigrator(self.engine,expected_database="wrong_test",isolated=True)
 
     def test_old_administrative_grant_cannot_mutate_after_revocation(self):

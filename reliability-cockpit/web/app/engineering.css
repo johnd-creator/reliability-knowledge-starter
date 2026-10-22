@@ -90,3 +90,9 @@ button.engineering-primary {background:var(--cyan);color:var(--button-text);font
  .pdm-entry .pdm-measurement-row { grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
 @media(max-width:480px) { .pdm-entry .pdm-measurement-row { grid-template-columns:minmax(0,1fr); } }
+
+/* Source proof stays readable without expanding the page on mobile. */
+.pdm-source-history { min-width: 0; max-width: 100%; }
+.pdm-source-history pre { white-space: pre-wrap; overflow-wrap: anywhere; max-width: 100%; }
+.pdm-source-history code { overflow-wrap: anywhere; word-break: break-word; white-space: normal; }
+.pdm-source-history select { min-width: 0; max-width: 100%; }
