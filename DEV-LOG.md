@@ -1032,3 +1032,16 @@ Independent delta review GO with12 offline controls; frozen final binding is
 recorded with delivery evidence. All live35/46/46/4 business counts and35 container
 identities preserved; no publication, migration, activation, import or cloud transfer.
 [Updated scope and evidence](reliability-cockpit/docs/nadi-pdm-complete-history-01.md).
+
+
+### 2026-10-22 — NADI-PDM-COMPLETE-HISTORY-SUPPORT-001: isolated release support
+
+Prepared the exact PR110/PR111 schema007 rollback bridge as a separate controller
+package, bounded demo adapter and explicit-approval installer. Generic launcher
+modules remain unchanged. Compatibility remains e84eaec0 →85e6bb61 with the exact
+reviewed007 checksum/schema; this supporting commit is not a new runtime target.
+Local isolated full-source qualification, later-revision preservation and independent
+review passed. Portable synthetic controller/installer/PostgreSQL checks are added
+to the exact-head candidate workflow. Publication/testing is separate from live
+installation, migration, SQL privilege changes, activation and import; none of those
+live actions is performed by this support package. See the owning activation proposal.

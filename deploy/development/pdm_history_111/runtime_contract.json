@@ -1,0 +1,55 @@
+{
+  "from_sha": "e84eaec0e38e57cf0f057abaeda04e34739b01f8",
+  "to_sha": "85e6bb61eb5cb724e436846b9bdeee31709dffd4",
+  "objects": {
+    "reliability-cockpit/application-migrations": [
+      "f8584713e8c5ce4f86aecb0212d0e68665ff8aa9",
+      "a4c314c3f52116fcfe4d3ffb879bd798cb796d95"
+    ],
+    "reliability-cockpit/src/repositories": [
+      "abaf256282df8433e05eda2f760ac7c9cddaf2a5",
+      "ee7f92d2ec9a21e3616b092a4158e4407819cf3b"
+    ],
+    "reliability-cockpit/src/services/local_authentication.py": [
+      "f24f08f4b0993cfa730c1c88f5a8a1bc4038fae4",
+      "f24f08f4b0993cfa730c1c88f5a8a1bc4038fae4"
+    ],
+    "reliability-cockpit/src/services/application_identity.py": [
+      "101149a2d096419bf49a1bf6668ea6c66b7e29e2",
+      "101149a2d096419bf49a1bf6668ea6c66b7e29e2"
+    ],
+    "reliability-cockpit/src/api/engineering_qa.py": [
+      "627be44f04b92a7d468322db2735715618c150f7",
+      "8ae698ce751a810fa0783f9cc34c0c6139f65b2c"
+    ],
+    "reliability-cockpit/pyproject.toml": [
+      "6cbf209cf390ed844bc8e1f89031a87f9855034e",
+      "6cbf209cf390ed844bc8e1f89031a87f9855034e"
+    ],
+    "reliability-cockpit/tests/qa/live_server.py": [
+      "033bc1bb534e92b51fee14de4cb8945e71a0eb6d",
+      "033bc1bb534e92b51fee14de4cb8945e71a0eb6d"
+    ],
+    "reliability-cockpit/tests/test_condition_evidence.py": [
+      "26c379ba59a2ef76f66ae44459c786181044ed44",
+      "26c379ba59a2ef76f66ae44459c786181044ed44"
+    ],
+    "reliability-cockpit/tests/test_asset_af_mapping_admin.py": [
+      "37b578d2b93f4d4740adc73c8cc7b9edabdfd5a0",
+      "37b578d2b93f4d4740adc73c8cc7b9edabdfd5a0"
+    ],
+    "pi-collector/tests/fixtures/condition_source.py": [
+      "9456d29bf54882c4f69515bea765682a5d63a160",
+      "9456d29bf54882c4f69515bea765682a5d63a160"
+    ]
+  },
+  "migrations": {
+    "002_engineering_workspace.sql": "b56246974ed9caccd44eebf8223dc23187b5a5cc989d2e5b7d7dd2bbad733d00",
+    "003_application_identity.sql": "e4898aae1f15e7016614b22523625709efcbae4aab4c2ea351b3d318268e5a6d",
+    "004_human_records.sql": "89f1b7348b976b2db848861af1eb8eb29bd90b275549f3e06883b796cdc71455",
+    "005_private_attachments.sql": "fca9c2d5e494caf8dad9240ed346f4e9b7322afc7700f1916d93df24540698dd",
+    "006_local_authentication.sql": "d77c1ed91b638cb088cfef2c6e3ead86b1ae05241809da72c3d2414998c25e76",
+    "007_pdm_source_history.sql": "95806119fe0a131ec8c64733da9f41de85e59389cae3ee80820876f27abad524"
+  },
+  "schema_sha256": "7dc4b17be2b6281887fcd02fe2042794d8a5f1d67bf05cdad3856d54c8f56411"
+}

@@ -146,11 +146,17 @@ def checked_alias_proofs(links, allowed):
 class CompleteHistoryImporter:
     def __init__(self, inspections, provider):
         self.inspections, self.provider, self.engine = inspections, provider, inspections.repo.engine
-        target(self.engine)
+        self._target()
         if not isinstance(provider, LocalIdentityProvider) or provider.engine is not self.engine:
             raise EngineeringError('COMPLETE_OWNING_PROVIDER_REQUIRED', 403)
         with self.engine.connect() as c:
             if not set(TABLES) <= set(inspect(c).get_table_names()): raise EngineeringError('HISTORY_SCHEMA_PREREQUISITE', 503)
+
+    def _target(self):
+        return target(self.engine)  # Default qualification guard stays fail-closed.
+
+    def _validate_prewrite(self, connection):
+        pass  # Subclasses may add stricter reviewed preconditions, never relax core ones.
 
     def grant(self, subject, asset):
         grant = self.provider.current_grant(subject)
@@ -245,7 +251,7 @@ class CompleteHistoryImporter:
                              expected_snapshot_sha256=expected_snapshot_sha256, max_chunks=max_chunks, after_commit=after_commit)
 
     def _run(self, plan, subject, *, access_asset_id, expected_plan_id, source_paths, recovery_snapshot, expected_snapshot_sha256, max_chunks, after_commit):
-        target(self.engine); manifest = plan['manifest']
+        self._target(); manifest = plan['manifest']
         if max_chunks is not None and (type(max_chunks) is not int or not 1 <= max_chunks <= 10000): raise ValueError('BOUNDED_CHUNKS_REQUIRED')
         source_meta = list(plan_lines(plan, 'sources'))
         if set(source_paths) != {s['sha256'] for s in source_meta}: raise EngineeringError('SOURCE_FILE_BINDING_REQUIRED', 409)
@@ -263,6 +269,7 @@ class CompleteHistoryImporter:
                 with self.provider.guard(subject, grant.version), self.engine.begin() as c:
                     from src.services.pdm_history_recovery import validate_snapshot
                     recovery = validate_snapshot(c, recovery_snapshot, expected_snapshot_sha256)
+                    self._validate_prewrite(c)
                     if c.scalar(select(func.count()).select_from(Event).where(Event.c.source_sha.in_([s['sha256'] for s in source_meta]), (Event.c.owner_id != subject) | (Event.c.access_asset_id != access_asset_id))): raise EngineeringError('SOURCE_CUSTODY_CONFLICT',409)
                     baseline_batches={r['batch_id'] for r in recovery['history']['nadi_history_batch']}
                     actual_batches=set(c.scalars(select(Batch.c.batch_id)))
